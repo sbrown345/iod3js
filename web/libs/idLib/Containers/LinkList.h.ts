@@ -115,18 +115,18 @@ class idLinkList<type> {
 		return this.head.next == this.head;
 	}
 
-	/////*
-	////================
-	////idLinkList<type>::InList
-	////
-	////Returns true if the node is in a list.  If called on the head of a list, will always return false.
-	////================
-	////*/
-	//////template< class type >
-	////bool idLinkList<type>::InList( ) const {
-	////	return this.head != this;
-	////}
-	////
+	/*
+	================
+	idLinkList<type>::InList
+	
+	Returns true if the node is in a list.  If called on the head of a list, will always return false.
+	================
+	*/
+	//template< class type >
+	InList ( ): boolean {
+		return this.head != this;
+	}
+
 	/////*
 	////================
 	////idLinkList<type>::Num

@@ -88,12 +88,12 @@ class idAngles {
 		this.values[2] = value;
 	}
 
-////	idAngles(void);
+////	idAngles();
 ////	idAngles(float pitch, float yaw, float roll);
 ////	explicit idAngles(const idVec3 &v);
 ////
 ////	void 			Set(float pitch, float yaw, float roll);
-////	idAngles &		Zero(void);
+////	idAngles &		Zero();
 ////
 ////	float			operator[](int index) const;
 ////	float &			operator[](int index);
@@ -115,22 +115,22 @@ class idAngles {
 ////	bool			operator==(const idAngles &a) const;						// exact compare, no epsilon
 ////	bool			operator!=(const idAngles &a) const;						// exact compare, no epsilon
 ////
-////	idAngles &		Normalize360(void);	// normalizes 'this'
-////	idAngles &		Normalize180(void);	// normalizes 'this'
+////	idAngles &		Normalize360();	// normalizes 'this'
+////	idAngles &		Normalize180();	// normalizes 'this'
 ////
 ////	void			Clamp(const idAngles &min, const idAngles &max);
 ////
-////	int				GetDimension(void) const;
+////	int				GetDimension() const;
 ////
 ////	void			ToVectors(idVec3 *forward, idVec3 *right = NULL, idVec3 *up = NULL) const;
-////	idVec3			ToForward(void) const;
-////	idQuat			ToQuat(void) const;
-////	idRotation		ToRotation(void) const;
-////	idMat3			ToMat3(void) const;
-////	idMat4			ToMat4(void) const;
-////	idVec3			ToAngularVelocity(void) const;
-////	const float *	ToFloatPtr(void) const;
-////	float *			ToFloatPtr(void);
+////	idVec3			ToForward() const;
+////	idQuat			ToQuat() const;
+////	idRotation		ToRotation() const;
+////	idMat3			ToMat3() const;
+////	idMat4			ToMat4() const;
+////	idVec3			ToAngularVelocity() const;
+////	const float *	ToFloatPtr() const;
+////	float *			ToFloatPtr();
 ////	const char *	ToString(int precision = 2) const;
 ////};
 ////
@@ -147,7 +147,7 @@ class idAngles {
 		}
 	}
 
-////ID_INLINE idAngles::idAngles(void) {
+////ID_INLINE idAngles::idAngles() {
 ////}
 
 	private constructor_3args ( /*float*/ pitch: number, /*float */yaw: number, /*float */roll: number ): void {
@@ -168,7 +168,7 @@ class idAngles {
 ////	this.roll = roll;
 ////}
 ////
-////ID_INLINE idAngles &idAngles::Zero(void) {
+////ID_INLINE idAngles &idAngles::Zero() {
 ////	pitch = yaw = roll = 0.0f;
 ////	return *this;
 ////}
@@ -294,16 +294,16 @@ class idAngles {
 ////		roll = max.roll;
 ////	}
 ////}
-////
-////ID_INLINE int idAngles::GetDimension(void) const {
-////	return 3;
-////}
-////
-////ID_INLINE const float *idAngles::ToFloatPtr(void) const {
-////	return &pitch;
-////}
-////
-////ID_INLINE float *idAngles::ToFloatPtr(void) {
+
+	GetDimension ( ): number {
+		return 3;
+	}
+
+	ToFloatPtr ( ): Float32Array {
+		return this.values;
+	}
+
+////ID_INLINE float *idAngles::ToFloatPtr() {
 ////	return &pitch;
 ////}
 ////
@@ -522,14 +522,14 @@ class idAngles {
 ////	return rotation.GetVec() * DEG2RAD( rotation.GetAngle() );
 ////}
 ////
-/////*
-////=============
-////idAngles::ToString
-////=============
-////*/
-////const char *idAngles::ToString( int precision ) const {
-////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
-////}
+	/*
+	=============
+	idAngles::ToString
+	=============
+	*/
+	ToString(/*int */precision = 2): string{
+		return idStr.FloatArrayToString( this.ToFloatPtr(), this.GetDimension(), precision );
+	}
 }
 
 var ang_zero = new idAngles( 0.0, 0.0, 0.0 );

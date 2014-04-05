@@ -59,14 +59,14 @@ var DELAY_DORMANT_TIME = 3000;
 ////extern const idEventDef EV_StopSound;
 ////extern const idEventDef EV_CacheSoundShader;
 ////
-////// Think flags
+// Think flags
 ////enum {
-////	TH_ALL					= -1,
-////	TH_THINK				= 1,		// run think function each frame
-////	TH_PHYSICS				= 2,		// run physics each frame
-////	TH_ANIMATE				= 4,		// update animation each frame
-////	TH_UPDATEVISUALS		= 8,		// update renderEntity
-////	TH_UPDATEPARTICLES		= 16
+var TH_ALL = -1,
+	TH_THINK = 1, // run think function each frame
+	TH_PHYSICS = 2, // run physics each frame
+	TH_ANIMATE = 4, // update animation each frame
+	TH_UPDATEVISUALS = 8, // update renderEntity
+	TH_UPDATEPARTICLES = 16;
 ////};
 
 //
@@ -145,30 +145,30 @@ class idEntity extends idClass {
 ////public:
 	static MAX_PVS_AREAS = 4;
 
-	entityNumber: number;		// index into the entity list		//	int						
-	entityDefNumber:number;		// index into the entity def list	//	int						
+	entityNumber: number; // index into the entity list		//	int						
+	entityDefNumber: number; // index into the entity def list	//	int						
 
-	spawnNode = new idLinkList<idEntity>();				// for being linked into spawnedEntities list
-	activeNode = new idLinkList<idEntity>();				// for being linked into activeEntities list
+	spawnNode = new idLinkList<idEntity> ( ); // for being linked into spawnedEntities list
+	activeNode = new idLinkList<idEntity> ( ); // for being linked into activeEntities list
 
-	snapshotNode = new idLinkList<idEntity>();			// for being linked into snapshotEntities list
-	snapshotSequence: number /*int*/;		// last snapshot this entity was in
-	snapshotBits: number /*int*/;			// number of bits this entity occupied in the last snapshot
+	snapshotNode = new idLinkList<idEntity> ( ); // for being linked into snapshotEntities list
+	snapshotSequence: number /*int*/; // last snapshot this entity was in
+	snapshotBits: number /*int*/; // number of bits this entity occupied in the last snapshot
 
-	name = new idStr;					// name of entity
-	spawnArgs = new idDict;				// key/value pairs used to spawn and initialize entity
-	scriptObject = new idScriptObject;			// contains all script defined data for this entity
-	
-	thinkFlags:number/*int*/;				// TH_? flags
-	dormantStart :number/*int*/;			// time that the entity was first closed off from player
-	cinematic:boolean;				// during cinematics, entity will only think if cinematic is set
+	name = new idStr; // name of entity
+	spawnArgs = new idDict; // key/value pairs used to spawn and initialize entity
+	scriptObject = new idScriptObject; // contains all script defined data for this entity
 
-	renderView:renderView_t;				// for camera views from this entity
-	cameraTarget: idEntity;			// any remoteRenderMap shaders will use this
+	thinkFlags: number /*int*/; // TH_? flags
+	dormantStart: number /*int*/; // time that the entity was first closed off from player
+	cinematic: boolean; // during cinematics, entity will only think if cinematic is set
 
-	targets: idList<idEntityPtr<idEntity>>;		// when this entity is activated these entities entity are activated
+	renderView: renderView_t; // for camera views from this entity
+	cameraTarget: idEntity; // any remoteRenderMap shaders will use this
 
-	health :number/*int*/;					// FIXME: do all objects really need health?
+	targets: idList<idEntityPtr<idEntity>>; // when this entity is activated these entities entity are activated
+
+	health: number /*int*/; // FIXME: do all objects really need health?
 
 	fl = new entityFlags_s;
 
@@ -380,25 +380,25 @@ class idEntity extends idClass {
 ////	void					ClientSendEvent( int eventId, const idBitMsg *msg ) const;
 ////
 ////protected:
-	renderEntity = new renderEntity_t;						// used to present a model to the renderer
-	modelDefHandle:number/*int*/;						// handle to static renderer model
-	refSound = new refSound_t;							// used to present sound to the audio engine
+	renderEntity = new renderEntity_t; // used to present a model to the renderer
+	modelDefHandle: number /*int*/; // handle to static renderer model
+	refSound = new refSound_t; // used to present sound to the audio engine
 ////
 ////private:
-	defaultPhysicsObj = new idPhysics_Static;					// default physics object
-	physics:idPhysics;							// physics used for this entity
-	bindMaster:idEntity;							// entity bound to if unequal NULL
-	bindJoint: jointHandle_t;							// joint bound to if unequal INVALID_JOINT
-	bindBody :number/*int*/;							// body bound to if unequal -1
-	teamMaster:idEntity;							// master of the physics team
-	teamChain:idEntity;							// next entity in physics team
+	defaultPhysicsObj = new idPhysics_Static; // default physics object
+	physics: idPhysics; // physics used for this entity
+	bindMaster: idEntity; // entity bound to if unequal NULL
+	bindJoint: jointHandle_t; // joint bound to if unequal INVALID_JOINT
+	bindBody: number /*int*/; // body bound to if unequal -1
+	teamMaster: idEntity; // master of the physics team
+	teamChain: idEntity; // next entity in physics team
 
-	numPVSAreas :number/*int*/;						// number of renderer areas the entity covers
-	PVSAreas = new Int32Array(idEntity.MAX_PVS_AREAS);			// numbers of the renderer areas the entity covers
+	numPVSAreas: number /*int*/; // number of renderer areas the entity covers
+	PVSAreas = new Int32Array( idEntity.MAX_PVS_AREAS ); // numbers of the renderer areas the entity covers
 
 	signals: signalList_t;
 
-	mpGUIState :number/*int*/;							// local cache to avoid systematic SetStateInt
+	mpGUIState: number /*int*/; // local cache to avoid systematic SetStateInt
 ////
 ////private:
 ////	void					FixupLocalizedStrings();
@@ -482,8 +482,7 @@ class idEntity extends idClass {
 	Event_Wait ( /*float*/ time: number ): void { throw "placeholder"; }
 	Event_HasFunction ( name: string ): void { throw "placeholder"; }
 	Event_CallFunction ( name: string ): void { throw "placeholder"; }
-	Event_SetNeverDormant( /*int*/ enable: number): void { throw "placeholder"; }
-
+	Event_SetNeverDormant ( /*int*/ enable: number ): void { throw "placeholder"; }
 
 
 /////*
@@ -520,46 +519,46 @@ class idEntity extends idClass {
 idEntity::idEntity
 ================
 */
-	constructor() {
+	constructor ( ) {
 		super ( );
 
-	this.entityNumber	= ENTITYNUM_NONE;
-	this.entityDefNumber = -1;
+		this.entityNumber = ENTITYNUM_NONE;
+		this.entityDefNumber = -1;
 
-	this.spawnNode.SetOwner( this );
-	this.activeNode.SetOwner( this );
+		this.spawnNode.SetOwner( this );
+		this.activeNode.SetOwner( this );
 
-	this.snapshotNode.SetOwner( this );
-	this.snapshotSequence = -1;
-	this.snapshotBits = 0;
+		this.snapshotNode.SetOwner( this );
+		this.snapshotSequence = -1;
+		this.snapshotBits = 0;
 
-	this.thinkFlags		= 0;
-	this.dormantStart	= 0;
-	this.cinematic		= false;
-	this.renderView		= null;
-	this.cameraTarget = null;
-	this.health			= 0;
+		this.thinkFlags = 0;
+		this.dormantStart = 0;
+		this.cinematic = false;
+		this.renderView = null;
+		this.cameraTarget = null;
+		this.health = 0;
 
-	this.physics = null;
-	this.bindMaster = null;
-	this.bindJoint = jointHandle_t.INVALID_JOINT;
-	this.bindBody		= -1;
-	this.teamMaster = null;
-	this.teamChain = null;
-	this.signals = null;
+		this.physics = null;
+		this.bindMaster = null;
+		this.bindJoint = jointHandle_t.INVALID_JOINT;
+		this.bindBody = -1;
+		this.teamMaster = null;
+		this.teamChain = null;
+		this.signals = null;
 
-	memset( this.PVSAreas, 0, sizeof( this.PVSAreas ) );
-	this.numPVSAreas		= -1;
+		memset( this.PVSAreas, 0, sizeof( this.PVSAreas ) );
+		this.numPVSAreas = -1;
 
-	this.fl.memset0 ( );//	memset( this.fl, 0, sizeof( this.fl ) );
-	this.fl.neverDormant	= true;			// most entities never go dormant
+		this.fl.memset0 ( ); //	memset( this.fl, 0, sizeof( this.fl ) );
+		this.fl.neverDormant = true; // most entities never go dormant
 
-	this.renderEntity.memset0();
-	this.modelDefHandle	= -1;
-	this.refSound.memset0 ( );
+		this.renderEntity.memset0 ( );
+		this.modelDefHandle = -1;
+		this.refSound.memset0 ( );
 
-	this.mpGUIState = -1;
-}
+		this.mpGUIState = -1;
+	}
 
 /*
 ================
@@ -582,65 +581,65 @@ idEntity::Spawn
 */
 	Spawn ( ): void {
 		var i: number /*int*/;
-		var temp = new R<string>();//const char*temp;
+		var temp = new R<string> ( ); //const char*temp;
 		var origin = new idVec3;
 		var axis = new idMat3;
 		var networkSync: idKeyValue;
 		var classname = new R<string> ( );
-		var scriptObjectName = new R<string>();
+		var scriptObjectName = new R<string> ( );
 
-	gameLocal.RegisterEntity( this );
+		gameLocal.RegisterEntity( this );
 
-	this.spawnArgs.GetString_Rstring( "classname", null, classname );
-	var def = gameLocal.FindEntityDef( classname.$, false );
-	if ( def ) {
-		this.entityDefNumber = def.Index();
-	}
+		this.spawnArgs.GetString_Rstring( "classname", null, classname );
+		var def = gameLocal.FindEntityDef( classname.$, false );
+		if ( def ) {
+			this.entityDefNumber = def.Index ( );
+		}
 
-	this.FixupLocalizedStrings();
+		this.FixupLocalizedStrings ( );
 
-	// parse static models the same way the editor display does
-	gameEdit.ParseSpawnArgsToRenderEntity( this.spawnArgs, this.renderEntity );
+		// parse static models the same way the editor display does
+		gameEdit.ParseSpawnArgsToRenderEntity( this.spawnArgs, this.renderEntity );
 
-	this.renderEntity.entityNum = this.entityNumber;
+		this.renderEntity.entityNum = this.entityNumber;
 
-	// go dormant within 5 frames so that when the map starts most monsters are dormant
-	this.dormantStart = gameLocal.time - DELAY_DORMANT_TIME + gameLocal.msec * 5;
+		// go dormant within 5 frames so that when the map starts most monsters are dormant
+		this.dormantStart = gameLocal.time - DELAY_DORMANT_TIME + gameLocal.msec * 5;
 
-	origin = this.renderEntity.origin;
-	axis = this.renderEntity.axis;
+		origin = this.renderEntity.origin;
+		axis = this.renderEntity.axis;
 
-	// do the audio parsing the same way dmap and the editor do
-	gameEdit.ParseSpawnArgsToRefSound( this.spawnArgs, this.refSound );
+		// do the audio parsing the same way dmap and the editor do
+		gameEdit.ParseSpawnArgsToRefSound( this.spawnArgs, this.refSound );
 
-	// only play SCHANNEL_PRIVATE when sndworld.PlaceListener() is called with this listenerId
-	// don't spatialize sounds from the same entity
-	this.refSound.listenerId = this.entityNumber + 1;
+		// only play SCHANNEL_PRIVATE when sndworld.PlaceListener() is called with this listenerId
+		// don't spatialize sounds from the same entity
+		this.refSound.listenerId = this.entityNumber + 1;
 
-	this.cameraTarget = null;
-	temp.$ = this.spawnArgs.GetString( "cameraTarget" );
-		if (temp && temp.$ ) {
-		// update the camera taget
-		this.PostEventMS( EV_UpdateCameraTarget, 0 );
-	}
+		this.cameraTarget = null;
+		temp.$ = this.spawnArgs.GetString( "cameraTarget" );
+		if ( temp && temp.$ ) {
+			// update the camera taget
+			this.PostEventMS( EV_UpdateCameraTarget, 0 );
+		}
 
-	for ( i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
-		UpdateGuiParms( this.renderEntity.gui[ i ], this.spawnArgs );
-	}
+		for ( i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
+			UpdateGuiParms( this.renderEntity.gui[i], this.spawnArgs );
+		}
 
-	this.fl.solidForTeam = this.spawnArgs.GetBool( "solidForTeam", "0" );
-	this.fl.neverDormant = this.spawnArgs.GetBool( "neverDormant", "0" );
-	this.fl.hidden = this.spawnArgs.GetBool( "hide", "0" );
-	if ( this.fl.hidden ) {
-		// make sure we're hidden, since a spawn function might not set it up right
-		this.PostEventMS( EV_Hide, 0 );
-	}
-	this.cinematic = this.spawnArgs.GetBool( "cinematic", "0" );
+		this.fl.solidForTeam = this.spawnArgs.GetBool( "solidForTeam", "0" );
+		this.fl.neverDormant = this.spawnArgs.GetBool( "neverDormant", "0" );
+		this.fl.hidden = this.spawnArgs.GetBool( "hide", "0" );
+		if ( this.fl.hidden ) {
+			// make sure we're hidden, since a spawn function might not set it up right
+			this.PostEventMS( EV_Hide, 0 );
+		}
+		this.cinematic = this.spawnArgs.GetBool( "cinematic", "0" );
 
-	networkSync = this.spawnArgs.FindKey( "networkSync" );
-	if ( networkSync ) {
-		this.fl.networkSync = ( atoi( networkSync.GetValue() .data) != 0 );
-	}
+		networkSync = this.spawnArgs.FindKey( "networkSync" );
+		if ( networkSync ) {
+			this.fl.networkSync = ( atoi( networkSync.GetValue ( ).data ) != 0 );
+		}
 
 //#if 0
 //	if ( !gameLocal.isClient ) {
@@ -651,49 +650,49 @@ idEntity::Spawn
 //	}
 //#endif
 
-	// every object will have a unique name
-		temp.$ = this.spawnArgs.GetString( "name", va( "%s_%s_%d", this.GetClassname(), this.spawnArgs.GetString( "classname" ), this.entityNumber ) );
-		this.SetName(temp.$ );
+		// every object will have a unique name
+		temp.$ = this.spawnArgs.GetString( "name", va( "%s_%s_%d", this.GetClassname ( ), this.spawnArgs.GetString( "classname" ), this.entityNumber ) );
+		this.SetName( temp.$ );
 
-	// if we have targets, wait until all entities are spawned to get them
-	if ( this.spawnArgs.MatchPrefix( "target" ) || this.spawnArgs.MatchPrefix( "guiTarget" ) ) {
-		if (gameLocal.GameState() == gameState_t.GAMESTATE_STARTUP ) {
-			this.PostEventMS( EV_FindTargets, 0 );
-		} else {
-			// not during spawn, so it's ok to get the targets
-			this.FindTargets();
+		// if we have targets, wait until all entities are spawned to get them
+		if ( this.spawnArgs.MatchPrefix( "target" ) || this.spawnArgs.MatchPrefix( "guiTarget" ) ) {
+			if ( gameLocal.GameState ( ) == gameState_t.GAMESTATE_STARTUP ) {
+				this.PostEventMS( EV_FindTargets, 0 );
+			} else {
+				// not during spawn, so it's ok to get the targets
+				this.FindTargets ( );
+			}
 		}
-	}
 
-	this.health = this.spawnArgs.GetInt( "health" );
+		this.health = this.spawnArgs.GetInt( "health" );
 
-	this.InitDefaultPhysics( origin, axis );
+		this.InitDefaultPhysics( origin, axis );
 
-	this.SetOrigin( origin );
-	this.SetAxis( axis );
+		this.SetOrigin( origin );
+		this.SetAxis( axis );
 
 		temp.$ = this.spawnArgs.GetString( "model" );
-		if (temp.$ && temp.$ ) {
-		this.SetModel(temp.$ );
-	}
-
-	if ( this.spawnArgs.GetString_Rstring( "bind", "", temp ) ) {
-		this.PostEventMS( EV_SpawnBind, 0 );
-	}
-
-	// auto-start a sound on the entity
-	if ( this.refSound.shader && !this.refSound.waitfortrigger ) {
-		this.StartSoundShader(this.refSound.shader, gameSoundChannel_t.SND_CHANNEL_ANY, 0, false, null );
-	}
-
-	// setup script object
-	if ( this.ShouldConstructScriptObjectAtSpawn() && this.spawnArgs.GetString_Rstring( "scriptobject", null, scriptObjectName ) ) {
-		if ( !this.scriptObject.SetType( scriptObjectName.$ ) ) {
-			gameLocal.Error("Script object '%s' not found on entity '%s'.", scriptObjectName.$, this.name.c_str() );
+		if ( temp.$ && temp.$ ) {
+			this.SetModel( temp.$ );
 		}
 
-		this.ConstructScriptObject();
-	}
+		if ( this.spawnArgs.GetString_Rstring( "bind", "", temp ) ) {
+			this.PostEventMS( EV_SpawnBind, 0 );
+		}
+
+		// auto-start a sound on the entity
+		if ( this.refSound.shader && !this.refSound.waitfortrigger ) {
+			this.StartSoundShader( this.refSound.shader, gameSoundChannel_t.SND_CHANNEL_ANY, 0, false, null );
+		}
+
+		// setup script object
+		if ( this.ShouldConstructScriptObjectAtSpawn ( ) && this.spawnArgs.GetString_Rstring( "scriptobject", null, scriptObjectName ) ) {
+			if ( !this.scriptObject.SetType( scriptObjectName.$ ) ) {
+				gameLocal.Error( "Script object '%s' not found on entity '%s'.", scriptObjectName.$, this.name.c_str ( ) );
+			}
+
+			this.ConstructScriptObject ( );
+		}
 	}
 
 /*
@@ -717,7 +716,7 @@ idEntity::~idEntity
 		////	this.scriptObject.Free();
 		////
 		////	if ( this.thinkFlags ) {
-		////		BecomeInactive( this.thinkFlags );
+		////		this.BecomeInactive( this.thinkFlags );
 		////	}
 		////	this.activeNode.Remove();
 		////
@@ -937,32 +936,32 @@ idEntity::SetName
 		}
 	}
 
-/////*
-////================
-////idEntity::GetName
-////================
-////*/
-////const char * idEntity::GetName( ):void const {
-////	return this.name.c_str();
-////}
-////
-////
-/////***********************************************************************
-////
-////	Thinking
-////	
-////***********************************************************************/
-////
-/////*
-////================
-////idEntity::Think
-////================
-////*/
-////Think( ):void {
-////	RunPhysics();
-////	Present();
-////}
-////
+/*
+================
+idEntity::GetName
+================
+*/
+	GetName ( ): string {
+		return this.name.c_str ( );
+	}
+
+
+/***********************************************************************
+
+	Thinking
+	
+***********************************************************************/
+
+/*
+================
+idEntity::Think
+================
+*/
+	Think ( ): void {
+		this.RunPhysics ( );
+		this.Present ( );
+	}
+
 /////*
 ////================
 ////idEntity::DoDormantTests
@@ -1048,15 +1047,15 @@ idEntity::SetName
 ////DormantEnd( ):void {
 ////}
 ////
-/////*
-////================
-////idEntity::IsActive
-////================
-////*/
-////bool idEntity::IsActive( ):void const {
-////	return this.activeNode.InList();
-////}
-////
+/*
+================
+idEntity::IsActive
+================
+*/
+	IsActive ( ): boolean {
+		return this.activeNode.InList ( );
+	}
+
 /////*
 ////================
 ////idEntity::BecomeActive
@@ -1078,7 +1077,7 @@ idEntity::SetName
 ////	int oldFlags = this.thinkFlags;
 ////	this.thinkFlags |= flags;
 ////	if ( this.thinkFlags ) {
-////		if ( !IsActive() ) {
+////		if ( !this.IsActive() ) {
 ////			this.activeNode.AddToEnd( gameLocal.activeEntities );
 ////		} else if ( !oldFlags ) {
 ////			// we became inactive this frame, so we have to decrease the count of entities to deactivate
@@ -1086,42 +1085,42 @@ idEntity::SetName
 ////		}
 ////	}
 ////}
-////
-/////*
-////================
-////idEntity::BecomeInactive
-////================
-////*/
-////BecomeInactive( int flags ) {
-////	if ( ( flags & TH_PHYSICS ) ) {
-////		// may only disable physics on a team master if no team members are running physics or bound to a joints
-////		if ( this.teamMaster == this ) {
-////			for ( var ent:idEntity = this.teamMaster.teamChain; ent; ent = ent.teamChain ) {
-////				if ( ( ent.thinkFlags & TH_PHYSICS ) || ( ( ent.bindMaster == this ) && ( ent.bindJoint != INVALID_JOINT ) ) ) {
-////					flags &= ~TH_PHYSICS;
-////					break;
-////				}
-////			}
-////		}
-////	}
-////
-////	if ( this.thinkFlags ) {
-////		this.thinkFlags &= ~flags;
-////		if ( !this.thinkFlags && IsActive() ) {
-////			gameLocal.numEntitiesToDeactivate++;
-////		}
-////	}
-////
-////	if ( ( flags & TH_PHYSICS ) ) {
-////		// if this entity has a team master
-////		if ( this.teamMaster && this.teamMaster != this ) {
-////			// if the team master is at rest
-////			if ( this.teamMaster.IsAtRest() ) {
-////				this.teamMaster.BecomeInactive( TH_PHYSICS );
-////			}
-////		}
-////	}
-////}
+
+/*
+================
+idEntity::BecomeInactive
+================
+*/
+	BecomeInactive ( /*int*/ flags: number ): void {
+		if ( ( flags & TH_PHYSICS ) ) {
+			// may only disable physics on a team master if no team members are running physics or bound to a joints
+			if ( this.teamMaster == this ) {
+				for ( var ent: idEntity = this.teamMaster.teamChain; ent; ent = ent.teamChain ) {
+					if ( ( ent.thinkFlags & TH_PHYSICS ) || ( ( ent.bindMaster == this ) && ( ent.bindJoint != jointHandle_t.INVALID_JOINT ) ) ) {
+						flags &= ~TH_PHYSICS;
+						break;
+					}
+				}
+			}
+		}
+
+		if ( this.thinkFlags ) {
+			this.thinkFlags &= ~flags;
+			if ( !this.thinkFlags && this.IsActive ( ) ) {
+				gameLocal.numEntitiesToDeactivate++;
+			}
+		}
+
+		if ( ( flags & TH_PHYSICS ) ) {
+			// if this entity has a team master
+			if ( this.teamMaster && this.teamMaster != this ) {
+				// if the team master is at rest
+				if ( this.teamMaster.IsAtRest ( ) ) {
+					this.teamMaster.BecomeInactive( TH_PHYSICS );
+				}
+			}
+		}
+	}
 ////
 /////***********************************************************************
 ////
@@ -1217,28 +1216,28 @@ idEntity::SetName
 idEntity::SetModel
 ================
 */
-SetModel( modelname :string):void {
-	assert( modelname );
+	SetModel ( modelname: string ): void {
+		assert( modelname );
 
-	this.FreeModelDef();
+		this.FreeModelDef ( );
 
-	this.renderEntity.hModel = renderModelManager.FindModel( modelname );
+		this.renderEntity.hModel = renderModelManager.FindModel( modelname );
 
-	if ( this.renderEntity.hModel ) {
-		this.renderEntity.hModel.Reset();
+		if ( this.renderEntity.hModel ) {
+			this.renderEntity.hModel.Reset ( );
+		}
+
+		this.renderEntity.callback = null;
+		this.renderEntity.numJoints = 0;
+		this.renderEntity.joints = null;
+		if ( this.renderEntity.hModel ) {
+			this.renderEntity.bounds = this.renderEntity.hModel.Bounds( this.renderEntity );
+		} else {
+			this.renderEntity.bounds.Zero ( );
+		}
+
+		this.UpdateVisuals ( );
 	}
-
-	this.renderEntity.callback = null;
-	this.renderEntity.numJoints = 0;
-	this.renderEntity.joints = null;
-	if ( this.renderEntity.hModel ) {
-		this.renderEntity.bounds = this.renderEntity.hModel.Bounds( this.renderEntity );
-	} else {
-		this.renderEntity.bounds.Zero();
-	}
-
-	this.UpdateVisuals();
-}
 ////
 /////*
 ////================
@@ -1264,30 +1263,30 @@ SetModel( modelname :string):void {
 idEntity::FreeModelDef
 ================
 */
-FreeModelDef( ):void {
-	if ( this.modelDefHandle != -1 ) {
-		gameRenderWorld.FreeEntityDef( this.modelDefHandle );
-		this.modelDefHandle = -1;
+	FreeModelDef ( ): void {
+		if ( this.modelDefHandle != -1 ) {
+			gameRenderWorld.FreeEntityDef( this.modelDefHandle );
+			this.modelDefHandle = -1;
+		}
 	}
+
+/*
+================
+idEntity::FreeLightDef
+================
+*/
+FreeLightDef( ):void {
 }
 
-/////*
-////================
-////idEntity::FreeLightDef
-////================
-////*/
-////FreeLightDef( ):void {
-////}
-////
-/////*
-////================
-////idEntity::IsHidden
-////================
-////*/
-////bool idEntity::IsHidden( ):void const {
-////	return this.fl.hidden;
-////}
-////
+/*
+================
+idEntity::IsHidden
+================
+*/
+	IsHidden ( ): boolean {
+		return this.fl.hidden;
+	}
+
 /////*
 ////================
 ////idEntity::Hide
@@ -1336,33 +1335,33 @@ FreeModelDef( ):void {
 idEntity::UpdateModel
 ================
 */
-	UpdateModel(): void {
+	UpdateModel ( ): void {
 		todoThrow ( );
-	//UpdateModelTransform();
+		//UpdateModelTransform();
 
-	//// check if the entity has an MD5 model
-	//idAnimator *animator = GetAnimator();
-	//if ( animator && animator.ModelHandle() ) {
-	//	// set the callback to update the joints
-	//	this.renderEntity.callback = idEntity::ModelCallback;
-	//}
+		//// check if the entity has an MD5 model
+		//idAnimator *animator = GetAnimator();
+		//if ( animator && animator.ModelHandle() ) {
+		//	// set the callback to update the joints
+		//	this.renderEntity.callback = idEntity::ModelCallback;
+		//}
 
-	//// set to invalid number to force an update the next time the PVS areas are retrieved
-	//ClearPVSAreas();
+		//// set to invalid number to force an update the next time the PVS areas are retrieved
+		//ClearPVSAreas();
 
-	//// ensure that we call Present this frame
-	//BecomeActive( TH_UPDATEVISUALS );
-}
+		//// ensure that we call Present this frame
+		//BecomeActive( TH_UPDATEVISUALS );
+	}
 
 /*
 ================
 idEntity::UpdateVisuals
 ================
 */
-UpdateVisuals( ):void {
-	this.UpdateModel();
-	this.UpdateSound();
-}
+	UpdateVisuals ( ): void {
+		this.UpdateModel ( );
+		this.UpdateSound ( );
+	}
 
 /////*
 ////================
@@ -1512,44 +1511,44 @@ UpdateVisuals( ):void {
 ////	// make sure non-animating models update their overlay
 ////	UpdateVisuals();
 ////}
-////
-/////*
-////================
-////idEntity::Present
-////
-////Present is called to allow entities to generate refEntities, lights, etc for the renderer.
-////================
-////*/
-////Present( ):void {
-////
-////	if ( !gameLocal.isNewFrame ) {
-////		return;
-////	}
-////
-////	// don't present to the renderer if the entity hasn't changed
-////	if ( !( this.thinkFlags & TH_UPDATEVISUALS ) ) {
-////		return;
-////	}
-////	BecomeInactive( TH_UPDATEVISUALS );
-////
-////	// camera target for remote render views
-////	if ( this.cameraTarget && gameLocal.InPlayerPVS( this ) ) {
-////		this.renderEntity.remoteRenderView = this.cameraTarget.GetRenderView();
-////	}
-////
-////	// if set to invisible, skip
-////	if ( !this.renderEntity.hModel || IsHidden() ) {
-////		return;
-////	}
-////
-////	// add to refresh list
-////	if ( this.modelDefHandle == -1 ) {
-////		this.modelDefHandle = gameRenderWorld.AddEntityDef( &this.renderEntity );
-////	} else {
-////		gameRenderWorld.UpdateEntityDef( this.modelDefHandle, &this.renderEntity );
-////	}
-////}
-////
+
+/*
+================
+idEntity::Present
+
+Present is called to allow entities to generate refEntities, lights, etc for the renderer.
+================
+*/
+	Present ( ): void {
+
+		if ( !gameLocal.isNewFrame ) {
+			return;
+		}
+
+		// don't present to the renderer if the entity hasn't changed
+		if ( !( this.thinkFlags & TH_UPDATEVISUALS ) ) {
+			return;
+		}
+		this.BecomeInactive( TH_UPDATEVISUALS );
+
+		// camera target for remote render views
+		if ( this.cameraTarget && gameLocal.InPlayerPVS( this ) ) {
+			this.renderEntity.remoteRenderView = this.cameraTarget.GetRenderView ( );
+		}
+
+		// if set to invisible, skip
+		if ( !this.renderEntity.hModel || this.IsHidden ( ) ) {
+			return;
+		}
+
+		// add to refresh list
+		if ( this.modelDefHandle == -1 ) {
+			this.modelDefHandle = gameRenderWorld.AddEntityDef(   this.renderEntity );
+		} else {
+			gameRenderWorld.UpdateEntityDef( this.modelDefHandle,  this.renderEntity );
+		}
+	}
+
 /////*
 ////================
 ////idEntity::GetRenderEntity
@@ -1604,64 +1603,64 @@ UpdateVisuals( ):void {
 ////	return ent.UpdateRenderEntity( this.renderEntity, this.renderView );
 ////}
 ////
-/////*
-////================
-////idEntity::GetAnimator
-////
-////Subclasses will be responsible for allocating animator.
-////================
-////*/
-////idAnimator *idEntity::GetAnimator( ):void {
-////	return NULL;
-////}
-////
-/////*
-////=============
-////idEntity::GetRenderView
-////
-////This is used by remote camera views to look from an entity
-////=============
-////*/
-////renderView_t *idEntity::GetRenderView( ):void {
-////	if ( !this.renderView ) {
-////		this.renderView = new renderView_t;
-////	}
-////	memset( this.renderView, 0, sizeof( *this.renderView ) );
-////
-////	this.renderView.vieworg = this.GetPhysics().GetOrigin();
-////	this.renderView.fov_x = 120;
-////	this.renderView.fov_y = 120;
-////	this.renderView.viewaxis = this.GetPhysics().GetAxis();
-////
-////	// copy global shader parms
-////	for( int i = 0; i < MAX_GLOBAL_SHADER_PARMS; i++ ) {
-////		this.renderView.shaderParms[ i ] = gameLocal.globalShaderParms[ i ];
-////	}
-////
-////	this.renderView.globalMaterial = gameLocal.GetGlobalMaterial();
-////
-////	this.renderView.time = gameLocal.time;
-////
-////	return this.renderView;
-////}
-////
-/////***********************************************************************
-////
-////  Sound
-////	
-////***********************************************************************/
-////
-/////*
-////================
-////idEntity::CanPlayChatterSounds
-////
-////Used for playing chatter sounds on monsters.
-////================
-////*/
-////bool idEntity::CanPlayChatterSounds( ):void const {
-////	return true;
-////}
-////
+/*
+================
+idEntity::GetAnimator
+
+Subclasses will be responsible for allocating animator.
+================
+*/
+	GetAnimator ( ): idAnimator {
+		return null;
+	}
+
+/*
+=============
+idEntity::GetRenderView
+
+This is used by remote camera views to look from an entity
+=============
+*/
+	GetRenderView ( ): renderView_t {
+		if ( !this.renderView ) {
+			this.renderView = new renderView_t;
+		}
+		this.renderView.memset0 ( );
+
+		this.renderView.vieworg = this.GetPhysics ( ).GetOrigin ( );
+		this.renderView.fov_x = 120;
+		this.renderView.fov_y = 120;
+		this.renderView.viewaxis = this.GetPhysics ( ).GetAxis ( );
+
+		// copy global shader parms
+		for ( var i = 0; i < MAX_GLOBAL_SHADER_PARMS; i++ ) {
+			this.renderView.shaderParms[i] = gameLocal.globalShaderParms[i];
+		}
+
+		this.renderView.globalMaterial = gameLocal.GetGlobalMaterial ( );
+
+		this.renderView.time = gameLocal.time;
+
+		return this.renderView;
+	}
+
+/***********************************************************************
+
+  Sound
+	
+***********************************************************************/
+
+/*
+================
+idEntity::CanPlayChatterSounds
+
+Used for playing chatter sounds on monsters.
+================
+*/
+	CanPlayChatterSounds ( ): boolean {
+		return true;
+	}
+
 /////*
 ////================
 ////idEntity::StartSound
@@ -1778,67 +1777,68 @@ idEntity::StartSoundShader
 ////	}
 ////}
 ////
-/////*
-////================
-////idEntity::SetSoundVolume
-////
-////  Must be called before starting a new sound.
-////================
-////*/
-////SetSoundVolume( float volume ) {
-////	this.refSound.parms.volume = volume;
-////}
+/*
+================
+idEntity::SetSoundVolume
+
+  Must be called before starting a new sound.
+================
+*/
+	SetSoundVolume ( /*float*/ volume: number ): void {
+		this.refSound.parms.volume = volume;
+	}
 
 /*
 ================
 idEntity::UpdateSound
 ================
 */
-UpdateSound( ):void {
-	if (this.refSound.referenceSound) {
-	todoThrow ( );
-		//var origin = new idVec3;
-		//var axis = new idMat3 ;
+	UpdateSound ( ): void {
+		if ( this.refSound.referenceSound ) {
+			todoThrow ( );
+			//var origin = new idVec3;
+			//var axis = new idMat3 ;
 
-		//if ( this.GetPhysicsToSoundTransform( origin, axis ) ) {
-		//	this.refSound.origin = this.GetPhysics().GetOrigin() + origin * axis;
-		//} else {
-		//	this.refSound.origin.opEquals( this.GetPhysics ( ).GetOrigin ( ) );
-		//}
+			//if ( this.GetPhysicsToSoundTransform( origin, axis ) ) {
+			//	this.refSound.origin = this.GetPhysics().GetOrigin() + origin * axis;
+			//} else {
+			//	this.refSound.origin.opEquals( this.GetPhysics ( ).GetOrigin ( ) );
+			//}
 
-		//this.refSound.referenceSound.UpdateEmitter( this.refSound.origin, this.refSound.listenerId, this.refSound.parms );
+			//this.refSound.referenceSound.UpdateEmitter( this.refSound.origin, this.refSound.listenerId, this.refSound.parms );
+		}
 	}
-}
 
-/////*
-////================
-////idEntity::GetListenerId
-////================
-////*/
-////int idEntity::GetListenerId( ):void const {
-////	return this.refSound.listenerId;
-////}
-////
-/////*
-////================
-////idEntity::GetSoundEmitter
-////================
-////*/
-////idSoundEmitter *idEntity::GetSoundEmitter( ):void const {
-////	return this.refSound.referenceSound;
-////}
-////
-/////*
-////================
-////idEntity::FreeSoundEmitter
-////================
-////*/
-////FreeSoundEmitter( bool immediate ) {
-////	if ( this.refSound.referenceSound ) {
-////		this.refSound.referenceSound.Free( immediate );
-////		this.refSound.referenceSound = NULL;
-////	}
-////}
+/*
+================
+idEntity::GetListenerId
+================
+*/
+	GetListenerId ( ): number {
+		return this.refSound.listenerId;
+	}
+
+/*
+================
+idEntity::GetSoundEmitter
+================
+*/
+	GetSoundEmitter ( ): idSoundEmitter {
+		return this.refSound.referenceSound;
+	}
+
+/*
+================
+idEntity::FreeSoundEmitter
+================
+*/
+	FreeSoundEmitter ( /*bool*/ immediate: boolean ): void {
+		if (this.refSound.referenceSound) {
+			todoThrow ( );
+			//this.refSound.referenceSound.Free( immediate );
+			//this.refSound.referenceSound = null;
+		}
+	}
 ////
 /////***********************************************************************
 ////
@@ -2547,74 +2547,74 @@ UpdateSound( ):void {
 idEntity::InitDefaultPhysics
 ================
 */
-	InitDefaultPhysics(origin: idVec3, axis: idMat3): void {
-	todoThrow();
-	//var temp = new R<string> ( );
-	//var clipModel: idClipModel = null;
+	InitDefaultPhysics ( origin: idVec3, axis: idMat3 ): void {
+		todoThrow ( );
+		//var temp = new R<string> ( );
+		//var clipModel: idClipModel = null;
 
-	//// check if a clipmodel key/value pair is set
-	//if ( this.spawnArgs.GetString( "clipmodel", "", temp ) ) {
-	//	if ( idClipModel.CheckModel( temp ) ) {
-	//		clipModel = new idClipModel( temp );
-	//	}
-	//}
+		//// check if a clipmodel key/value pair is set
+		//if ( this.spawnArgs.GetString( "clipmodel", "", temp ) ) {
+		//	if ( idClipModel.CheckModel( temp ) ) {
+		//		clipModel = new idClipModel( temp );
+		//	}
+		//}
 
-	//if ( !spawnArgs.GetBool( "noclipmodel", "0" ) ) {
+		//if ( !spawnArgs.GetBool( "noclipmodel", "0" ) ) {
 
-	//	// check if mins/maxs or size key/value pairs are set
-	//	if ( !clipModel ) {
-	//		idVec3 size;
-	//		idBounds bounds;
-	//		bool setClipModel = false;
+		//	// check if mins/maxs or size key/value pairs are set
+		//	if ( !clipModel ) {
+		//		idVec3 size;
+		//		idBounds bounds;
+		//		bool setClipModel = false;
 
-	//		if ( this.spawnArgs.GetVector( "mins", NULL, bounds[0] ) &&
-	//			this.spawnArgs.GetVector( "maxs", NULL, bounds[1] ) ) {
-	//			setClipModel = true;
-	//			if ( bounds[0][0] > bounds[1][0] || bounds[0][1] > bounds[1][1] || bounds[0][2] > bounds[1][2] ) {
-	//				gameLocal.Error( "Invalid bounds '%s'-'%s' on entity '%s'", bounds[0].ToString(), bounds[1].ToString(), this.name.c_str() );
-	//			}
-	//		} else if ( this.spawnArgs.GetVector( "size", NULL, size ) ) {
-	//			if ( ( size.x < 0.0 ) || ( size.y < 0.0 ) || ( size.z < 0.0 ) ) {
-	//				gameLocal.Error( "Invalid size '%s' on entity '%s'", size.ToString(), this.name.c_str() );
-	//			}
-	//			bounds[0].Set( size.x * -0.5f, size.y * -0.5f, 0.0 );
-	//			bounds[1].Set( size.x * 0.5f, size.y * 0.5f, size.z );
-	//			setClipModel = true;
-	//		}
+		//		if ( this.spawnArgs.GetVector( "mins", NULL, bounds[0] ) &&
+		//			this.spawnArgs.GetVector( "maxs", NULL, bounds[1] ) ) {
+		//			setClipModel = true;
+		//			if ( bounds[0][0] > bounds[1][0] || bounds[0][1] > bounds[1][1] || bounds[0][2] > bounds[1][2] ) {
+		//				gameLocal.Error( "Invalid bounds '%s'-'%s' on entity '%s'", bounds[0].ToString(), bounds[1].ToString(), this.name.c_str() );
+		//			}
+		//		} else if ( this.spawnArgs.GetVector( "size", NULL, size ) ) {
+		//			if ( ( size.x < 0.0 ) || ( size.y < 0.0 ) || ( size.z < 0.0 ) ) {
+		//				gameLocal.Error( "Invalid size '%s' on entity '%s'", size.ToString(), this.name.c_str() );
+		//			}
+		//			bounds[0].Set( size.x * -0.5f, size.y * -0.5f, 0.0 );
+		//			bounds[1].Set( size.x * 0.5f, size.y * 0.5f, size.z );
+		//			setClipModel = true;
+		//		}
 
-	//		if ( setClipModel ) {
-	//			int numSides;
-	//			idTraceModel trm;
+		//		if ( setClipModel ) {
+		//			int numSides;
+		//			idTraceModel trm;
 
-	//			if ( this.spawnArgs.GetInt( "cylinder", "0", numSides ) && numSides > 0 ) {
-	//				trm.SetupCylinder( bounds, numSides < 3 ? 3 : numSides );
-	//			} else if ( this.spawnArgs.GetInt( "cone", "0", numSides ) && numSides > 0 ) {
-	//				trm.SetupCone( bounds, numSides < 3 ? 3 : numSides );
-	//			} else {
-	//				trm.SetupBox( bounds );
-	//			}
-	//			clipModel = new idClipModel( trm );
-	//		}
-	//	}
+		//			if ( this.spawnArgs.GetInt( "cylinder", "0", numSides ) && numSides > 0 ) {
+		//				trm.SetupCylinder( bounds, numSides < 3 ? 3 : numSides );
+		//			} else if ( this.spawnArgs.GetInt( "cone", "0", numSides ) && numSides > 0 ) {
+		//				trm.SetupCone( bounds, numSides < 3 ? 3 : numSides );
+		//			} else {
+		//				trm.SetupBox( bounds );
+		//			}
+		//			clipModel = new idClipModel( trm );
+		//		}
+		//	}
 
-	//	// check if the visual model can be used as collision model
-	//	if ( !clipModel ) {
-	//		temp = this.spawnArgs.GetString( "model" );
-	//		if ( ( temp != NULL ) && ( *temp != 0 ) ) {
-	//			if ( idClipModel.CheckModel( temp ) ) {
-	//				clipModel = new idClipModel( temp );
-	//			}
-	//		}
-	//	}
-	//}
+		//	// check if the visual model can be used as collision model
+		//	if ( !clipModel ) {
+		//		temp = this.spawnArgs.GetString( "model" );
+		//		if ( ( temp != NULL ) && ( *temp != 0 ) ) {
+		//			if ( idClipModel.CheckModel( temp ) ) {
+		//				clipModel = new idClipModel( temp );
+		//			}
+		//		}
+		//	}
+		//}
 
-	//defaultPhysicsObj.SetSelf( this );
-	//defaultPhysicsObj.SetClipModel( clipModel, 1.0 );
-	//defaultPhysicsObj.SetOrigin( origin );
-	//defaultPhysicsObj.SetAxis( axis );
+		//defaultPhysicsObj.SetSelf( this );
+		//defaultPhysicsObj.SetClipModel( clipModel, 1.0 );
+		//defaultPhysicsObj.SetOrigin( origin );
+		//defaultPhysicsObj.SetAxis( axis );
 
-	//this.physics = defaultPhysicsObj;
-}
+		//this.physics = defaultPhysicsObj;
+	}
 
 /////*
 ////================
@@ -2654,153 +2654,154 @@ idEntity::InitDefaultPhysics
 idEntity::GetPhysics
 ================
 */
-	GetPhysics(): idPhysics {
+	GetPhysics ( ): idPhysics {
 		return this.physics;
 	}
-////
-/////*
-////================
-////idEntity::RunPhysics
-////================
-////*/
-////bool idEntity::RunPhysics( ):void {
-////	int			i, reachedTime, startTime, endTime;
-////	idEntity *	part, *blockedPart, *blockingEntity = NULL;
-////	trace_t		results;
-////	bool		moved;
-////
-////	// don't run physics if not enabled
-////	if ( !( this.thinkFlags & TH_PHYSICS ) ) {
-////		// however do update any animation controllers
-////		if ( UpdateAnimationControllers() ) {
-////			BecomeActive( TH_ANIMATE );
-////		}
-////		return false;
-////	}
-////
-////	// if this entity is a team slave don't do anything because the team master will handle everything
-////	if ( this.teamMaster && this.teamMaster != this ) {
-////		return false;
-////	}
-////
-////	startTime = gameLocal.previousTime;
-////	endTime = gameLocal.time;
-////
-////	gameLocal.push.InitSavingPushedEntityPositions();
-////	blockedPart = NULL;
-////
-////	// save the physics state of the whole team and disable the team for collision detection
-////	for ( part = this; part != NULL; part = part.teamChain ) {
-////		if ( part.physics ) {
-////			if ( !part.fl.solidForTeam ) {
-////				part.physics.DisableClip();
-////			}
-////			part.physics.SaveState();
-////		}
-////	}
-////
-////	// move the whole team
-////	for ( part = this; part != NULL; part = part.teamChain ) {
-////
-////		if ( part.physics ) {
-////
-////			// run physics
-////			moved = part.physics.Evaluate( endTime - startTime, endTime );
-////
-////			// check if the object is blocked
-////			blockingEntity = part.physics.GetBlockingEntity();
-////			if ( blockingEntity ) {
-////				blockedPart = part;
-////				break;
-////			}
-////
-////			// if moved or forced to update the visual position and orientation from the physics
-////			if ( moved || part.fl.forcePhysicsUpdate ) {
-////				part.UpdateFromPhysics( false );
-////			}
-////
-////			// update any animation controllers here so an entity bound
-////			// to a joint of this entity gets the correct position
-////			if ( part.UpdateAnimationControllers() ) {
-////				part.BecomeActive( TH_ANIMATE );
-////			}
-////		}
-////	}
-////
-////	// enable the whole team for collision detection
-////	for ( part = this; part != NULL; part = part.teamChain ) {
-////		if ( part.physics ) {
-////			if ( !part.fl.solidForTeam ) {
-////				part.physics.EnableClip();
-////			}
-////		}
-////	}
-////
-////	// if one of the team entities is a pusher and blocked
-////	if ( blockedPart ) {
-////		// move the parts back to the previous position
-////		for ( part = this; part != blockedPart; part = part.teamChain ) {
-////
-////			if ( part.physics ) {
-////
-////				// restore the physics state
-////				part.physics.RestoreState();
-////
-////				// move back the visual position and orientation
-////				part.UpdateFromPhysics( true );
-////			}
-////		}
-////		for ( part = this; part != NULL; part = part.teamChain ) {
-////			if ( part.physics ) {
-////				// update the physics time without moving
-////				part.physics.UpdateTime( endTime );
-////			}
-////		}
-////
-////		// restore the positions of any pushed entities
-////		gameLocal.push.RestorePushedEntityPositions();
-////
-////		if ( gameLocal.isClient ) {
-////			return false;
-////		}
-////
-////		// if the master pusher has a "blocked" function, call it
-////		Signal( SIG_BLOCKED );
-////		ProcessEvent( &EV_TeamBlocked, blockedPart, blockingEntity );
-////		// call the blocked function on the blocked part
-////		blockedPart.ProcessEvent( &EV_PartBlocked, blockingEntity );
-////		return false;
-////	}
-////
-////	// set pushed
-////	for ( i = 0; i < gameLocal.push.GetNumPushedEntities(); i++ ) {
-////		var ent:idEntity = gameLocal.push.GetPushedEntity( i );
-////		ent.physics.SetPushed( endTime - startTime );
-////	}
-////
-////	if ( gameLocal.isClient ) {
-////		return true;
-////	}
-////
-////	// post reached event if the current time is at or past the end point of the motion
-////	for ( part = this; part != NULL; part = part.teamChain ) {
-////
-////		if ( part.physics ) {
-////
-////			reachedTime = part.physics.GetLinearEndTime();
-////			if ( startTime < reachedTime && endTime >= reachedTime ) {
-////				part.ProcessEvent( &EV_ReachedPos );
-////			}
-////			reachedTime = part.physics.GetAngularEndTime();
-////			if ( startTime < reachedTime && endTime >= reachedTime ) {
-////				part.ProcessEvent( &EV_ReachedAng );
-////			}
-////		}
-////	}
-////
-////	return true;
-////}
-////
+
+/*
+================
+idEntity::RunPhysics
+================
+*/
+	RunPhysics ( ): boolean {
+		todoThrow ( );
+		//int			i, reachedTime, startTime, endTime;
+		//idEntity *	part, *blockedPart, *blockingEntity = NULL;
+		//trace_t		results;
+		//bool		moved;
+
+		//// don't run physics if not enabled
+		//if ( !( this.thinkFlags & TH_PHYSICS ) ) {
+		//	// however do update any animation controllers
+		//	if ( UpdateAnimationControllers() ) {
+		//		BecomeActive( TH_ANIMATE );
+		//	}
+		//	return false;
+		//}
+
+		//// if this entity is a team slave don't do anything because the team master will handle everything
+		//if ( this.teamMaster && this.teamMaster != this ) {
+		//	return false;
+		//}
+
+		//startTime = gameLocal.previousTime;
+		//endTime = gameLocal.time;
+
+		//gameLocal.push.InitSavingPushedEntityPositions();
+		//blockedPart = NULL;
+
+		//// save the physics state of the whole team and disable the team for collision detection
+		//for ( part = this; part != NULL; part = part.teamChain ) {
+		//	if ( part.physics ) {
+		//		if ( !part.fl.solidForTeam ) {
+		//			part.physics.DisableClip();
+		//		}
+		//		part.physics.SaveState();
+		//	}
+		//}
+
+		//// move the whole team
+		//for ( part = this; part != NULL; part = part.teamChain ) {
+
+		//	if ( part.physics ) {
+
+		//		// run physics
+		//		moved = part.physics.Evaluate( endTime - startTime, endTime );
+
+		//		// check if the object is blocked
+		//		blockingEntity = part.physics.GetBlockingEntity();
+		//		if ( blockingEntity ) {
+		//			blockedPart = part;
+		//			break;
+		//		}
+
+		//		// if moved or forced to update the visual position and orientation from the physics
+		//		if ( moved || part.fl.forcePhysicsUpdate ) {
+		//			part.UpdateFromPhysics( false );
+		//		}
+
+		//		// update any animation controllers here so an entity bound
+		//		// to a joint of this entity gets the correct position
+		//		if ( part.UpdateAnimationControllers() ) {
+		//			part.BecomeActive( TH_ANIMATE );
+		//		}
+		//	}
+		//}
+
+		//// enable the whole team for collision detection
+		//for ( part = this; part != NULL; part = part.teamChain ) {
+		//	if ( part.physics ) {
+		//		if ( !part.fl.solidForTeam ) {
+		//			part.physics.EnableClip();
+		//		}
+		//	}
+		//}
+
+		//// if one of the team entities is a pusher and blocked
+		//if ( blockedPart ) {
+		//	// move the parts back to the previous position
+		//	for ( part = this; part != blockedPart; part = part.teamChain ) {
+
+		//		if ( part.physics ) {
+
+		//			// restore the physics state
+		//			part.physics.RestoreState();
+
+		//			// move back the visual position and orientation
+		//			part.UpdateFromPhysics( true );
+		//		}
+		//	}
+		//	for ( part = this; part != NULL; part = part.teamChain ) {
+		//		if ( part.physics ) {
+		//			// update the physics time without moving
+		//			part.physics.UpdateTime( endTime );
+		//		}
+		//	}
+
+		//	// restore the positions of any pushed entities
+		//	gameLocal.push.RestorePushedEntityPositions();
+
+		//	if ( gameLocal.isClient ) {
+		//		return false;
+		//	}
+
+		//	// if the master pusher has a "blocked" function, call it
+		//	Signal( SIG_BLOCKED );
+		//	ProcessEvent( &EV_TeamBlocked, blockedPart, blockingEntity );
+		//	// call the blocked function on the blocked part
+		//	blockedPart.ProcessEvent( &EV_PartBlocked, blockingEntity );
+		//	return false;
+		//}
+
+		//// set pushed
+		//for ( i = 0; i < gameLocal.push.GetNumPushedEntities(); i++ ) {
+		//	var ent:idEntity = gameLocal.push.GetPushedEntity( i );
+		//	ent.physics.SetPushed( endTime - startTime );
+		//}
+
+		//if ( gameLocal.isClient ) {
+		//	return true;
+		//}
+
+		//// post reached event if the current time is at or past the end point of the motion
+		//for ( part = this; part != NULL; part = part.teamChain ) {
+
+		//	if ( part.physics ) {
+
+		//		reachedTime = part.physics.GetLinearEndTime();
+		//		if ( startTime < reachedTime && endTime >= reachedTime ) {
+		//			part.ProcessEvent( &EV_ReachedPos );
+		//		}
+		//		reachedTime = part.physics.GetAngularEndTime();
+		//		if ( startTime < reachedTime && endTime >= reachedTime ) {
+		//			part.ProcessEvent( &EV_ReachedAng );
+		//		}
+		//	}
+		//}
+
+		return true;
+	}
+
 /////*
 ////================
 ////idEntity::UpdateFromPhysics
@@ -2843,16 +2844,16 @@ idEntity::SetOrigin
 idEntity::SetAxis
 ================
 */
-	SetAxis(axis: idMat3) {
+	SetAxis ( axis: idMat3 ) {
 		todoThrow ( );
-	//if ( this.GetPhysics().IsType( idPhysics_Actor.Type ) ) {
-	//	static_cast<idActor *>(this).viewAxis = axis;
-	//} else {
-	//	this.GetPhysics().SetAxis( axis );
-	//}
+		//if ( this.GetPhysics().IsType( idPhysics_Actor.Type ) ) {
+		//	static_cast<idActor *>(this).viewAxis = axis;
+		//} else {
+		//	this.GetPhysics().SetAxis( axis );
+		//}
 
-	//this.UpdateVisuals();
-}
+		//this.UpdateVisuals();
+	}
 ////
 /////*
 ////================
@@ -2900,15 +2901,15 @@ idEntity::SetAxis
 idEntity::GetPhysicsToSoundTransform
 ================
 */
-	GetPhysicsToSoundTransform(origin: idVec3 , axis: idMat3) :boolean{
-	// by default play the sound at the center of the bounding box of the first clip model
-	if ( this.GetPhysics().GetNumClipModels() > 0 ) {
-		origin = this.GetPhysics().GetBounds().GetCenter();
-		axis.Identity();
-		return true;
+	GetPhysicsToSoundTransform ( origin: idVec3, axis: idMat3 ): boolean {
+		// by default play the sound at the center of the bounding box of the first clip model
+		if ( this.GetPhysics ( ).GetNumClipModels ( ) > 0 ) {
+			origin = this.GetPhysics ( ).GetBounds ( ).GetCenter ( );
+			axis.Identity ( );
+			return true;
+		}
+		return false;
 	}
-	return false;
-}
 ////
 /////*
 ////================
@@ -2955,16 +2956,16 @@ idEntity::GetPhysicsToSoundTransform
 ////ActivatePhysics( ent:idEntity ) {
 ////	this.GetPhysics().Activate();
 ////}
-////
-/////*
-////================
-////idEntity::IsAtRest
-////================
-////*/
-////bool idEntity::IsAtRest( ):void const {
-////	return this.GetPhysics().IsAtRest();
-////}
-////
+
+/*
+================
+idEntity::IsAtRest
+================
+*/
+	IsAtRest ( ): boolean {
+		return this.GetPhysics ( ).IsAtRest ( );
+	}
+
 /////*
 ////================
 ////idEntity::GetRestStartTime
@@ -4713,7 +4714,7 @@ idEntity::Event_FindTargets
 ////================
 ////*/
 ////ClientPredictionThink( ):void {
-////	RunPhysics();
+////	this.RunPhysics();
 ////	Present();
 ////}
 ////

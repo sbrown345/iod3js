@@ -226,14 +226,14 @@ class idDict {
 	SetVec2 ( key: string, val: idVec2 ): void {
 		this.Set( key, val.ToString ( ) );
 	}
-////
-////SetAngles( key:string, const idAngles &val ):void {
-////	this.Set( key, val.ToString() );
-////}
-////
-////SetMatrix( key:string, const idMat3 &val ):void {
-////	this.Set( key, val.ToString() );
-////}
+
+	SetAngles ( key: string, val: idAngles ): void {
+		this.Set( key, val.ToString ( ) );
+	}
+
+	SetMatrix ( key: string, val: idMat3 ): void {
+		this.Set( key, val.ToString ( ) );
+	}
 
 	GetString_Rstring ( key: string, defaultString: string, out: R<string> ): boolean {
 		var kv = this.FindKey( key );
@@ -417,8 +417,8 @@ idDict::TransferKeyValues
 		n = other.args.Num ( );
 		this.args.SetNum( n );
 		for ( i = 0; i < n; i++ ) {
-			this.args[i].key.equals( other.args[i].key );
-			this.args[i].value.equals( other.args[i].value );
+			this.args[i].key = other.args[i].key;
+			this.args[i].value = other.args[i].value;
 		}
 		this.argHash.opEquals(other.argHash );
 

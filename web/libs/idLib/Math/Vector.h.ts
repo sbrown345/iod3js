@@ -1110,7 +1110,7 @@ class idVec3 {
 ////=============
 ////*/
 ////const char *idVec3::ToString( int precision = 2) const {
-////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
+////	return idStr.FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
 ////}
 
 /////*
@@ -1816,7 +1816,7 @@ class idVec5 {
 ////=============
 ////*/
 ////const char *idVec5::ToString( int precision = 2) const {
-////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
+////	return idStr.FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
 ////}
 
 /////*
@@ -2114,7 +2114,7 @@ class idVec6 {
 ////=============
 ////*/
 ////const char *idVec6::ToString( int precision = 2) const {
-////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
+////	return idStr.FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
 ////}
 
 }
@@ -2630,7 +2630,7 @@ class idVec6 {
 ////=============
 ////*/
 ////const char *idVecX::ToString( int precision = 2) const {
-////	return idStr::FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
+////	return idStr.FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
 ////}
 
 

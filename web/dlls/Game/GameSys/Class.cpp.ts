@@ -588,7 +588,7 @@ idClass::CallSpawnFunc
 			}
 		}
 
-		( /*this->**/cls.Spawn ) ( );
+		cls.Spawn.call(this); //( this->*cls->Spawn )();
 
 		return cls.Spawn;
 	}
@@ -620,27 +620,27 @@ idClass::Spawn
 */
 	Spawn ( ): void {
 	}
-////
-/////*
-////================
-////idClass::~idClass
-////
-////Destructor for object.  Cancels any events that depend on this object.
-////================
-////*/
-////idClass::~idClass() {
-////	idEvent::CancelEvents( this );
-////}
-////
-/////*
-////================
-////idClass::DisplayInfo_f
-////================
-////*/
-////void idClass::DisplayInfo_f( const idCmdArgs &args ) {
-////	gameLocal.Printf( "Class memory status: %i bytes allocated in %i objects\n", memused, numobjects );
-////}
-////
+
+/*
+================
+idClass::~idClass
+
+Destructor for object.  Cancels any events that depend on this object.
+================
+*/
+	destructor ( ): void {
+		idEvent.CancelEvents( this );
+	}
+	
+	/*
+	================
+	idClass::DisplayInfo_f
+	================
+	*/
+	DisplayInfo_f ( args: idCmdArgs ): void {
+		gameLocal.Printf( "Class memory status: %i bytes allocated in %i objects\n", idClass.memused, idClass.numobjects);
+	}
+
 /////*
 ////================
 ////idClass::ListClasses_f
@@ -660,24 +660,24 @@ idClass::Spawn
 ////
 ////	gameLocal.Printf( "...%d classes", idClass.types.Num() );
 ////}
-////
-/////*
-////================
-////idClass::CreateInstance
-////================
-////*/
-////idClass *idClass::CreateInstance( name:string ) {
-////	const idTypeInfo	*type;
-////	idClass				*obj;
-////
-////	type = idClass::GetClass( name );
-////	if ( !type ) {
-////		return NULL;
-////	}
-////
-////	obj = type.CreateInstance();
-////	return obj;
-////}
+//
+///*
+//================
+//idClass::CreateInstance
+//================
+//*/
+//idClass *idClass::CreateInstance( name:string ) {
+//	const idTypeInfo	*type;
+//	idClass				*obj;
+//
+//	type = idClass::GetClass( name );
+//	if ( !type ) {
+//		return NULL;
+//	}
+//
+//	obj = type.CreateInstance();
+//	return obj;
+//}
 
 /*
 ================
@@ -766,8 +766,8 @@ once during the execution of the program or DLL.
 ////	s += sizeof( int );
 ////	p = (int *)Mem_Alloc( s );
 ////	*p = s;
-////	memused += s;
-////	numobjects++;
+////	idClass.memused += s;
+////	this.numobjects++;
 ////
 ////#ifdef ID_DEBUG_UNINITIALIZED_MEMORY
 ////	unsigned long *ptr = (unsigned long *)p;
@@ -788,8 +788,8 @@ once during the execution of the program or DLL.
 ////	s += sizeof( int );
 ////	p = (int *)Mem_Alloc( s );
 ////	*p = s;
-////	memused += s;
-////	numobjects++;
+////	idClass.memused += s;
+////	this.numobjects++;
 ////
 ////#ifdef ID_DEBUG_UNINITIALIZED_MEMORY
 ////	unsigned long *ptr = (unsigned long *)p;
@@ -818,8 +818,8 @@ once during the execution of the program or DLL.
 ////
 ////	if ( ptr ) {
 ////		p = ( ( int * )ptr ) - 1;
-////		memused -= *p;
-////		numobjects--;
+////		idClass.memused -= *p;
+////		this.numobjects--;
 ////        Mem_Free( p );
 ////	}
 ////}
@@ -829,8 +829,8 @@ once during the execution of the program or DLL.
 ////
 ////	if ( ptr ) {
 ////		p = ( ( int * )ptr ) - 1;
-////		memused -= *p;
-////		numobjects--;
+////		idClass.memused -= *p;
+////		this.numobjects--;
 ////        Mem_Free( p );
 ////	}
 ////}

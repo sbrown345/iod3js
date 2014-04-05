@@ -2532,19 +2532,20 @@ idGameLocal::InitScriptForMap
 ////	}
 ////}
 
-/////*
-////================
-////idGameLocal::InPlayerPVS
+/*
+================
+idGameLocal::InPlayerPVS
 
-////  should only be called during entity thinking and event handling
-////================
-////*/
-////bool idGameLocal::InPlayerPVS( ent: idEntity ) const {
-////	if ( this.playerPVS.i == -1 ) {
-////		return false;
-////	}
-////    return this.pvs.InCurrentPVS( this.playerPVS, ent.GetPVSAreas(), ent.GetNumPVSAreas() );
-////}
+  should only be called during entity thinking and event handling
+================
+*/
+	InPlayerPVS ( ent: idEntity ): boolean {
+		if ( this.playerPVS.i == -1 ) {
+			return false;
+		}
+		todoThrow ( );
+		//return this.pvs.InCurrentPVS( this.playerPVS, ent.GetPVSAreas(), ent.GetNumPVSAreas() );
+	}
 
 /////*
 ////================
@@ -3427,7 +3428,8 @@ idGameLocal::InitScriptForMap
 idGameLocal::RegisterEntity
 ===================
 */
-	RegisterEntity ( ent: idEntity ): void {
+	RegisterEntity(ent: idEntity): void {
+		assert( ent instanceof idEntity );
 		var /*int */spawn_entnum = new R<number> ( );
 
 		if ( this.spawnCount >= ( 1 << ( 32 - GENTITYNUM_BITS ) ) ) {
@@ -4452,14 +4454,14 @@ Returns the entity whose name matches the specified string.
 ////	}
 ////}
 
-/////*
-////=============
-////idGameLocal::GetCamera
-////=============
-////*/
-////idCamera *idGameLocal::GetCamera( ) const {
-////	return this.camera;
-////}
+/*
+=============
+idGameLocal::GetCamera
+=============
+*/
+	GetCamera ( ): idCamera {
+		return this.camera;
+	}
 
 /////*
 ////=============
@@ -4752,32 +4754,32 @@ UpdateServerInfoFlags (): void {
 	}
 
 
-/////*
-////================
-////idGameLocal::SetGlobalMaterial
-////================
-////*/
-////SetGlobalMaterial( const idMaterial *mat ):void  {
-////	this.globalMaterial = mat;
-////}
+/*
+================
+idGameLocal::SetGlobalMaterial
+================
+*/
+	SetGlobalMaterial ( mat: idMaterial ): void {
+		this.globalMaterial = mat;
+	}
 
-/////*
-////================
-////idGameLocal::GetGlobalMaterial
-////================
-////*/
-////const idMaterial *idGameLocal::GetGlobalMaterial() {
-////	return this.globalMaterial;
-////}
+/*
+================
+idGameLocal::GetGlobalMaterial
+================
+*/
+	GetGlobalMaterial ( ): idMaterial {
+		return this.globalMaterial;
+	}
 
-/////*
-////================
-////idGameLocal::GetSpawnId
-////================
-////*/
-////int idGameLocal::GetSpawnId( const idEntity* ent ) const {
-////	return ( gameLocal.spawnIds[ ent.entityNumber ] << GENTITYNUM_BITS ) | ent.entityNumber;
-////}
+/*
+================
+idGameLocal::GetSpawnId
+================
+*/
+	GetSpawnId ( ent: idEntity ): number /*int*/ {
+		return ( gameLocal.spawnIds[ent.entityNumber] << GENTITYNUM_BITS ) | ent.entityNumber;
+	}
 
 /////*
 ////================
@@ -4788,21 +4790,21 @@ UpdateServerInfoFlags (): void {
 ////	this.mpGame.ThrottleUserInfo();
 ////}
 
-/////*
-////===========
-////idGameLocal::SelectTimeGroup
-////============
-////*/
-////SelectTimeGroup( int timeGroup ):void  { }
+/*
+===========
+idGameLocal::SelectTimeGroup
+============
+*/
+	SelectTimeGroup ( /*int*/ timeGroup: number ): void {}
 
-/////*
-////===========
-////idGameLocal::GetTimeGroupTime
-////============
-////*/
-////int idGameLocal::GetTimeGroupTime( int timeGroup ) {
-////	return gameLocal.time;
-////}
+/*
+===========
+idGameLocal::GetTimeGroupTime
+============
+*/
+	GetTimeGroupTime ( /*int*/ timeGroup: number ): number /*int*/ {
+		return gameLocal.time;
+	}
 
 /////*
 ////===========

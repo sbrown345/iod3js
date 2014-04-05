@@ -129,8 +129,8 @@ class idPhysics extends idClass {
 	   //	virtual void				AddForce(const int id, const idVec3 &point, const idVec3 &force) = 0;
 	   //	virtual void				Activate() = 0;
 	   //	virtual void				PutToRest() = 0;
-	   //	virtual bool				IsAtRest() const = 0;
-	   //	virtual int					GetRestStartTime() const = 0;
+	IsAtRest ( ): boolean { throw "placeholder"; }
+	//	virtual int					GetRestStartTime() const = 0;
 	   //	virtual bool				IsPushable() const = 0;
 	   //	// save and restore the physics state
 	   //	virtual void				SaveState() = 0;
@@ -142,9 +142,9 @@ class idPhysics extends idClass {
 	   //	virtual void				Translate(const idVec3 &translation, int id = -1) = 0;
 	   //	virtual void				Rotate(const idRotation &rotation, int id = -1) = 0;
 	   //	// get the position and orientation in world space
-	   //	virtual const idVec3 &		GetOrigin(int id = 0) const = 0;
-	   //	virtual const idMat3 &		GetAxis(int id = 0) const = 0;
-	   //	// set linear and angular velocity
+	GetOrigin ( /*int */id = 0 ): idVec3 { throw "placeholder"; }
+	GetAxis ( /*int */id = 0 ): idMat3 { throw "placeholder"; }
+	//	// set linear and angular velocity
 	   //	virtual void				SetLinearVelocity(const idVec3 &newLinearVelocity, int id = 0) = 0;
 	   //	virtual void				SetAngularVelocity(const idVec3 &newAngularVelocity, int id = 0) = 0;
 	   //	// get linear and angular velocity
