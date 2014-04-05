@@ -334,7 +334,7 @@ class idAngles {
 ////=================
 ////*/
 ////idAngles& idAngles::Normalize360( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < 3; i++ ) {
 ////		if ( ( (*this)[i] >= 360.0f ) || ( (*this)[i] < 0.0f ) ) {

@@ -122,7 +122,7 @@ class idEntityFx extends idEntity {
 ////================
 ////*/
 ////void idEntityFx::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile.WriteInt( started );
 ////	savefile.WriteInt( nextTriggerTime );
@@ -162,7 +162,7 @@ class idEntityFx extends idEntity {
 ////================
 ////*/
 ////void idEntityFx::Restore( idRestoreGame *savefile ) {
-////	int i;
+////	var/*int*/i:number;
 ////	int num;
 ////	bool hasObject;
 ////

@@ -367,7 +367,7 @@ idGuiScript::~idGuiScript
 ////=========================
 ////*/
 ////void idGuiScript::WriteToSaveGame( idFile *savefile ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( ifList ) {
 ////		ifList.WriteToSaveGame( savefile );
@@ -391,7 +391,7 @@ idGuiScript::~idGuiScript
 ////=========================
 ////*/
 ////void idGuiScript::ReadFromSaveGame( idFile *savefile ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( ifList ) {
 ////		ifList.ReadFromSaveGame( savefile );
@@ -712,7 +712,7 @@ idGuiScriptList::FixupParms
 ////=========================
 ////*/
 ////void idGuiScriptList::WriteToSaveGame( idFile *savefile ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < list.Num(); i++ ) {
 ////		list[i].WriteToSaveGame( savefile );
@@ -725,7 +725,7 @@ idGuiScriptList::FixupParms
 ////=========================
 ////*/
 ////void idGuiScriptList::ReadFromSaveGame( idFile *savefile ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < list.Num(); i++ ) {
 ////		list[i].ReadFromSaveGame( savefile );

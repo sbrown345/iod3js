@@ -442,7 +442,7 @@
 //==========================
 //*/
 //void IN_ActivateMouse( void ) {
-//	int i;
+//	var/*int*/i:number;
 //	HRESULT hr;
 //
 //	if ( !win32.in_mouse.GetBool() || win32.mouseGrabbed || !win32.g_pMouse ) {
@@ -472,7 +472,7 @@
 //==========================
 //*/
 //void IN_DeactivateMouse( void ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	if (!win32.g_pMouse || !win32.mouseGrabbed ) {
 //		return;

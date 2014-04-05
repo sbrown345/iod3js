@@ -641,7 +641,7 @@ class idGameBustOutWindow extends idWindow {
 ////	savefile.Write( &ballHitCeiling, sizeof(ballHitCeiling) );
 ////
 ////	// Write Entities
-////	int i;
+////	var/*int*/i:number;
 ////	int numberOfEnts = entities.Num();
 ////	savefile.Write( &numberOfEnts, sizeof(numberOfEnts) );
 ////	for ( i=0; i<numberOfEnts; i++ ) {
@@ -717,7 +717,7 @@ class idGameBustOutWindow extends idWindow {
 ////	savefile.Read( &ballsInPlay, sizeof(ballsInPlay) );
 ////	savefile.Read( &ballHitCeiling, sizeof(ballHitCeiling) );
 ////
-////	int i;
+////	var/*int*/i:number;
 ////	int numberOfEnts;
 ////
 ////	// Read entities
@@ -1057,7 +1057,7 @@ idGameBustOutWindow::Activate
 ////=============================
 ////*/
 ////void idGameBustOutWindow::LoadBoardFiles( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	int w,h;
 ////	ID_TIME_T time;
 ////	int boardSize;
@@ -1470,7 +1470,7 @@ idGameBustOutWindow::Activate
 ////=============================
 ////*/
 ////void idGameBustOutWindow::UpdateGame() {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( onNewGame ) {
 ////		ResetGameState();

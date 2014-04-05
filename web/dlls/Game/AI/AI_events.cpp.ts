@@ -1888,7 +1888,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////=====================
 ////*/
 ////void idAI::Event_SetSmokeVisibility( int num, int on ) {
-////	int i;
+////	var/*int*/i:number;
 ////	/*int*/time:number;
 ////
 ////	if ( num >= particles.Num() ) {

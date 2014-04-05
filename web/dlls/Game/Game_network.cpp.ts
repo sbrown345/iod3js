@@ -533,7 +533,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////================
 ////*/
 ////void idGameLocal::WriteGameStateToSnapshot( idBitMsgDelta &msg ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for( i = 0; i < MAX_GLOBAL_SHADER_PARMS; i++ ) {
 ////		msg.WriteFloat( globalShaderParms[i] );
@@ -548,7 +548,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////================
 ////*/
 ////void idGameLocal::ReadGameStateFromSnapshot( const idBitMsgDelta &msg ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for( i = 0; i < MAX_GLOBAL_SHADER_PARMS; i++ ) {
 ////		globalShaderParms[i] = msg.ReadFloat();

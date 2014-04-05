@@ -581,7 +581,7 @@ idServerScan::GUIConfig
 //================
 //*/
 //void idServerScan::ApplyFilter( ) {
-//	int i;
+//	var/*int*/i:number;
 //	networkServer_t serv;
 //	idStr s;
 //
@@ -605,7 +605,7 @@ idServerScan::GUIConfig
 //================
 //*/
 //bool idServerScan::IsFiltered( const networkServer_t server ) {
-//	int i;
+//	var/*int*/i:number;
 //	const idKeyValue *keyval;
 //
 //	// OS support filter

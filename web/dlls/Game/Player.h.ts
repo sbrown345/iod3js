@@ -1391,7 +1391,7 @@ idPlayer::idPlayer
 ////===========
 ////*/
 ////void idPlayer::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile.WriteUsercmd( usercmd );
 ////	playerView.Save( savefile );
@@ -2918,7 +2918,7 @@ idPlayer::UserInfoChanged
 ////==============
 ////*/
 ////void idPlayer::UpdatePowerUps( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( !gameLocal.isClient ) {
 ////		for ( i = 0; i < MAX_POWERUPS; i++ ) {
@@ -2968,7 +2968,7 @@ idPlayer::UserInfoChanged
 ////===============
 ////*/
 ////void idPlayer::ClearPowerUps( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < MAX_POWERUPS; i++ ) {
 ////		if ( PowerUpActive( i ) ) {
 ////			ClearPowerup( i );
@@ -3237,7 +3237,7 @@ idPlayer::UserInfoChanged
 ////==================
 ////*/
 ////int idPlayer::SlotForWeapon( const char *weaponName ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for( i = 0; i < MAX_WEAPONS; i++ ) {
 ////		const char *weap = spawnArgs.GetString( va( "def_weapon%d", i ) );
@@ -4642,7 +4642,7 @@ idPlayer::UserInfoChanged
 ////================
 ////*/
 ////void idPlayer::UpdateViewAngles( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idAngles delta;
 ////
 ////	if ( !this.noclip && ( gameLocal.inCinematic || privateCameraView || gameLocal.GetCamera() || influenceActive == INFLUENCE_LEVEL2 || this.objectiveSystemOpen ) ) {
@@ -5681,7 +5681,7 @@ idPlayer::UserInfoChanged
 ////==============
 ////*/
 ////void idPlayer::GetAASLocation( idAAS *aas, pos:idVec3, int &areaNum ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( aas != NULL ) {
 ////		for( i = 0; i < aasLocation.Num(); i++ ) {
@@ -5844,7 +5844,7 @@ idPlayer::UserInfoChanged
 ////			if ( this.inventory.nextItemPickup && gameLocal.time - this.inventory.nextItemPickup > 2000 ) {
 ////				this.inventory.nextItemNum = 1;
 ////			}
-////			int i;
+////			var/*int*/i:number;
 ////			for ( i = 0; i < 5, i < c; i++ ) {
 ////				this.hud.SetStateString( va( "itemtext%i", this.inventory.nextItemNum ), this.inventory.pickupItemNames[0].name );
 ////				this.hud.SetStateString( va( "itemicon%i", this.inventory.nextItemNum ), this.inventory.pickupItemNames[0].icon );
@@ -7085,7 +7085,7 @@ idPlayer::UserInfoChanged
 ////==================
 ////*/
 ////void idPlayer::CalculateRenderView( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float range;
 ////
 ////	if ( !renderView ) {
@@ -7442,7 +7442,7 @@ idPlayer::UserInfoChanged
 ////==================
 ////*/
 ////void idPlayer::Event_SelectWeapon( const char *weaponName ) {
-////	int i;
+////	var/*int*/i:number;
 ////	int weaponNum;
 ////
 ////	if ( gameLocal.isClient ) {
@@ -7942,7 +7942,7 @@ idPlayer::UserInfoChanged
 ////================
 ////*/
 ////void idPlayer::WritePlayerStateToSnapshot( idBitMsgDelta &msg ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	msg.WriteByte( bobCycle );
 ////	msg.WriteLong( stepUpTime );

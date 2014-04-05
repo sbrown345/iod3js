@@ -246,7 +246,7 @@ idSecurityCamera.Type = new idTypeInfo("idSecurityCamera", "idEntity",
 ////================
 ////*/
 ////void idSecurityCamera::DrawFov( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float radius, a, s, c, halfRadius;
 ////	idVec3 right, up;
 ////	idVec4 color(1, 0, 0, 1), color2(0, 0, 1, 1);
@@ -305,7 +305,7 @@ idSecurityCamera.Type = new idTypeInfo("idSecurityCamera", "idEntity",
 ////================
 ////*/
 ////bool idSecurityCamera::CanSeePlayer( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float dist;
 ////	idPlayer *ent;
 ////	trace_t tr;

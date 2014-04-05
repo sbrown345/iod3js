@@ -384,7 +384,7 @@ class idSphere {
 ////============
 ////*/
 ////void idSphere::FromPoints( const idVec3 *points, const int numPoints ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float radiusSqr, dist;
 ////	idVec3 mins, maxs;
 ////

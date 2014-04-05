@@ -164,7 +164,7 @@ class idSaveGame {
 	////================
 	////*/
 	////void idSaveGame::Close( void ) {
-	////	int i;
+	////	var/*int*/i:number;
 	////
 	////	WriteSoundCommands();
 	////
@@ -190,7 +190,7 @@ class idSaveGame {
 	////================
 	////*/
 	////void idSaveGame::WriteObjectList( void ) {
-	////	int i;
+	////	var/*int*/i:number;
 	////
 	////	WriteInt( objects.Num() - 1 );
 	////	for( i = 1; i < objects.Num(); i++ ) {
@@ -429,7 +429,7 @@ class idSaveGame {
 	////*/
 	////void idSaveGame::WriteDict( const idDict *dict ) {
 	////	int num;
-	////	int i;
+	////	var/*int*/i:number;
 	////	const idKeyValue *kv;
 	////
 	////	if ( !dict ) {
@@ -568,7 +568,7 @@ class idSaveGame {
 	////================
 	////*/
 	////void idSaveGame::WriteRenderEntity( const renderEntity_t &renderEntity ) {
-	////	int i;
+	////	var/*int*/i:number;
 	////
 	////	WriteModel( renderEntity.hModel );
 	////
@@ -621,7 +621,7 @@ class idSaveGame {
 	////================
 	////*/
 	////void idSaveGame::WriteRenderLight( const renderLight_t &renderLight ) {
-	////	int i;
+	////	var/*int*/i:number;
 	////
 	////	WriteMat3( renderLight.axis );
 	////	WriteVec3( renderLight.origin );
@@ -691,7 +691,7 @@ class idSaveGame {
 	////================
 	////*/
 	////void idSaveGame::WriteRenderView( const renderView_t &view ) {
-	////	int i;
+	////	var/*int*/i:number;
 	////
 	////	WriteInt( view.viewID );
 	////	WriteInt( view.x );
@@ -964,7 +964,7 @@ class idRestoreGame {
 	////================
 	////*/
 	////void idRestoreGame::RestoreObjects( void ) {
-	////	int i;
+	////	var/*int*/i:number;
 	////
 	////	ReadSoundCommands();
 	////
@@ -1243,7 +1243,7 @@ class idRestoreGame {
 	////*/
 	////void idRestoreGame::ReadDict( idDict *dict ) {
 	////	int num;
-	////	int i;
+	////	var/*int*/i:number;
 	////	idStr key;
 	////	idStr value;
 	////
@@ -1404,7 +1404,7 @@ class idRestoreGame {
 	////================
 	////*/
 	////void idRestoreGame::ReadRenderEntity( renderEntity_t &renderEntity ) {
-	////	int i;
+	////	var/*int*/i:number;
 	////	int index;
 	////
 	////	ReadModel( renderEntity.hModel );
@@ -1464,7 +1464,7 @@ class idRestoreGame {
 	////*/
 	////void idRestoreGame::ReadRenderLight( renderLight_t &renderLight ) {
 	////	int index;
-	////	int i;
+	////	var/*int*/i:number;
 	////
 	////	ReadMat3( renderLight.axis );
 	////	ReadVec3( renderLight.origin );
@@ -1531,7 +1531,7 @@ class idRestoreGame {
 	////================
 	////*/
 	////void idRestoreGame::ReadRenderView( renderView_t &view ) {
-	////	int i;
+	////	var/*int*/i:number;
 	////
 	////	ReadInt( view.viewID );
 	////	ReadInt( view.x );

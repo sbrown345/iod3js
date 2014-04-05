@@ -549,7 +549,7 @@ idSoundEmitterLocal::Clear
 ////*/
 ////void idSoundEmitterLocal::CheckForCompletion( int current44kHzTime ) {
 ////	bool hasActive;
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	hasActive = false;
 ////	hasShakes = false;
@@ -770,7 +770,7 @@ idSoundEmitterLocal::Clear
 ////=====================
 ////*/
 ////int idSoundEmitterLocal::StartSound( const idSoundShader *shader, const s_channelType channel, float diversity, int soundShaderFlags, bool allowSlow ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( !shader ) {
 ////		return 0;
@@ -1037,7 +1037,7 @@ idSoundEmitterLocal::Clear
 ////===================
 ////*/
 ////void idSoundEmitterLocal::StopSound( const s_channelType channel ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
 ////		common.Printf( "StopSound(%i,%i)\n", index, channel );

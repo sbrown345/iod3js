@@ -880,7 +880,7 @@ class idBitMsg {
 	////================
 	////*/
 	////void idBitMsg::ReadNetadr( netadr_t *adr ) const {
-	////	int i;
+	////	var/*int*/i:number;
 	//// 
 	////	adr.type = NA_IP;
 	////	for ( i = 0; i < 4; i++ ) {

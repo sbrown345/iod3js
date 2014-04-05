@@ -600,7 +600,7 @@ class idDeclAF {
 ////================
 ////*/
 ////bool idDeclAF::RebuildTextSource( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idFile_Memory f;
 ////
 ////	f.WriteFloatString("\n\n/*\n"
@@ -1587,7 +1587,7 @@ idDeclAF::DefaultDefinition
 ////================
 ////*/
 ////void idDeclAF::Finish( const getJointTransform_t GetJointTransform, const idJointMat *frame, void *model ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	name:string = GetName();
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
@@ -1632,7 +1632,7 @@ idDeclAF::DefaultDefinition
 ////================
 ////*/
 ////void idDeclAF::RenameBody( const char *oldName, const char *newName ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
 ////		if ( bodies[i]->name.Icmp( oldName ) == 0 ) {
@@ -1658,7 +1658,7 @@ idDeclAF::DefaultDefinition
 ////================
 ////*/
 ////void idDeclAF::DeleteBody( name:string ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
 ////		if ( bodies[i]->name.Icmp( name ) == 0 ) {
@@ -1697,7 +1697,7 @@ idDeclAF::DefaultDefinition
 ////================
 ////*/
 ////void idDeclAF::RenameConstraint( const char *oldName, const char *newName ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < constraints.Num(); i++ ) {
 ////		if ( constraints[i]->name.Icmp( oldName ) == 0 ) {
@@ -1713,7 +1713,7 @@ idDeclAF::DefaultDefinition
 ////================
 ////*/
 ////void idDeclAF::DeleteConstraint( name:string ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < constraints.Num(); i++ ) {
 ////		if ( constraints[i]->name.Icmp( name ) == 0 ) {

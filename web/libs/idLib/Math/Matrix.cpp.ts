@@ -2999,7 +2999,7 @@
 //============
 //*/
 //idMatX &idMatX::RemoveRow( int r ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	assert( r < numRows );
 //
@@ -3018,7 +3018,7 @@
 //============
 //*/
 //idMatX &idMatX::RemoveColumn( int r ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	assert( r < numColumns );
 //
@@ -3038,7 +3038,7 @@
 //============
 //*/
 //idMatX &idMatX::RemoveRowColumn( int r ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	assert( r < numRows && r < numColumns );
 //
@@ -3498,7 +3498,7 @@
 //============
 //*/
 //void idMatX::Update_RowColumn( const idVecX &v, const idVecX &w, int r ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	assert( w[r] == 0.0f );
 //	assert( v.GetSize() >= numColumns );
@@ -3526,7 +3526,7 @@
 //============
 //*/
 //void idMatX::Update_RowColumnSymmetric( const idVecX &v, int r ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	assert( numRows == numColumns );
 //	assert( v.GetSize() >= numRows );
@@ -3555,7 +3555,7 @@
 //============
 //*/
 //void idMatX::Update_Increment( const idVecX &v, const idVecX &w ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	assert( numRows == numColumns );
 //	assert( v.GetSize() >= numRows+1 );
@@ -3584,7 +3584,7 @@
 //============
 //*/
 //void idMatX::Update_IncrementSymmetric( const idVecX &v ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	assert( numRows == numColumns );
 //	assert( v.GetSize() >= numRows+1 );
@@ -6264,7 +6264,7 @@
 //============
 //*/
 //bool idMatX::TriDiagonal_Solve( idVecX &x, const idVecX &b ) const {
-//	int i;
+//	var/*int*/i:number;
 //	float d;
 //	idVecX tmp;
 //
@@ -6518,7 +6518,7 @@
 //============
 //*/
 //bool idMatX::Eigen_SolveSymmetricTriDiagonal( idVecX &eigenValues ) {
-//	int i;
+//	var/*int*/i:number;
 //	idVecX subd;
 //
 //	assert( numRows == numColumns );

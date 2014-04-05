@@ -207,7 +207,7 @@
 ////=================
 ////*/
 ////void idRenderModelDecal::AddWinding( const idWinding &w, const idMaterial *decalMaterial, const idPlane fadePlanes[2], float fadeDepth, int startTime ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float invFadeDepth, fade;
 ////	decalInfo_t	decalInfo;
 

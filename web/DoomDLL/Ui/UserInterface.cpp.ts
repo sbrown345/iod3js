@@ -616,7 +616,7 @@ StateChanged( /*int*/ _time:number, /*bool */redraw :boolean = false):void {
 //}
 //
 //void idUserInterfaceLocal::RecurseSetKeyBindingNames( idWindow *window ) {
-//	int i;
+//	var/*int*/i:number;
 //	idWinVar *v = window.GetWinVarByName( "bind" );
 //	if ( v ) {
 //		SetStateString( v.GetName(), idKeyInput::KeysFromBinding( v.GetName() ) );

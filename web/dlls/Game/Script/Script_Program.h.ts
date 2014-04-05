@@ -127,40 +127,7 @@ class eval_t {
 }
 
 
-/***********************************************************************
 
-idScriptObject
-
-In-game representation of objects in scripts.  Use the idScriptVariable template
-(below) to access variables.
-
-***********************************************************************/
-
-class idScriptObject {
-//private:
-//	idTypeDef					*type;
-//	
-//public:
-//	byte						*data;
-//
-//								idScriptObject();
-//								~idScriptObject();
-//
-//	void						Save ( savefile: idSaveGame ): void { throw "placeholder"; }			// archives object for save game file
-//	void						Restore( idRestoreGame *savefile );			// unarchives object from save game file
-//
-//	void						Free( void );
-//	bool						SetType( const char *typeName );
-//	void						ClearObject( void );
-//	bool						HasObject( void ) const;
-//	idTypeDef					*GetTypeDef( void ) const;
-//	const char					*GetTypeName( void ) const;
-//	const function_t			*GetConstructor( void ) const;
-//	const function_t			*GetDestructor( void ) const;
-//	const function_t			*GetFunction( name:string ) const;
-//
-//	byte						*GetVariable( name:string, etype_t etype ) const;
-};
 //
 ///***********************************************************************
 //

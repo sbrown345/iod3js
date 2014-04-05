@@ -405,7 +405,7 @@ class idStr implements ITrackedObject {
 ////}
 
 ////ID_INLINE idStr::idStr( const idStr &text, int start, int end ) {
-////	int i;
+////	var/*int*/i:number;
 ////	int l;
 
 ////	Init();
@@ -446,7 +446,7 @@ class idStr implements ITrackedObject {
 ////}
 
 ////ID_INLINE idStr::idStr( text:string, int start, int end ) {
-////	int i;
+////	var/*int*/i:number;
 ////	int l = strlen( text );
 
 ////	Init();
@@ -776,7 +776,7 @@ class idStr implements ITrackedObject {
 
 ////ID_INLINE void idStr::Append( const idStr &text ) {
 ////	int newLen;
-////	int i;
+////	var/*int*/i:number;
 
 ////	newLen = len + text.Length();
 ////	EnsureAlloced( newLen + 1 );
@@ -818,7 +818,7 @@ class idStr implements ITrackedObject {
 
 ////ID_INLINE void idStr::Append( text:string, int l ) {
 ////	int newLen;
-////	int i;
+////	var/*int*/i:number;
 
 ////	if ( text && l ) {
 ////		newLen = len + l;
@@ -1224,7 +1224,7 @@ idStr::operator=
 	equals ( text: any ): void {
 		var l: number /*int*/;
 		//int diff;
-		//int i;
+		//var/*int*/i:number;
 
 		//if ( !text ) {
 		//	// safe behaviour if NULL
@@ -1539,7 +1539,7 @@ idStr::FloatArrayToString
 ////============
 ////*/
 ////int idStr::Last( const char c ) const {
-////	int i;
+////	var/*int*/i:number;
 
 ////	for( i = Length(); i > 0; i-- ) {
 ////		if ( this.data[ i - 1 ] == c ) {
@@ -1817,7 +1817,7 @@ idStr::StripFileExtension
 ////============
 ////*/
 ////idStr &idStr::StripAbsoluteFileExtension( ) {
-////	int i;
+////	var/*int*/i:number;
 
 ////	for ( i = 0; i < len; i++ ) {
 ////		if ( this.data[i] == '.' ) {

@@ -61,7 +61,7 @@
 ////===============
 ////*/
 ////bool idEFXFile::FindEffect( idStr &name, idSoundEffect **effect, int *index ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < effects.Num(); i++ ) {
 ////		if ( ( effects[i] ) && ( effects[i]->name == name ) ) {

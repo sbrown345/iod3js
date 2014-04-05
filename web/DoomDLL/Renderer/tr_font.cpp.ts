@@ -115,7 +115,7 @@
 //============
 //*/
 //glyphInfo_t *RE_ConstructGlyphInfo( unsigned char *imageOut, int *xOut, int *yOut, int *maxHeight, FT_Face face, const unsigned char c, qboolean calcHeight ) {
-//	int i;
+//	var/*int*/i:number;
 //	static glyphInfo_t glyph;
 //	unsigned char *src, *dst;
 //	float scaled_width, scaled_height;

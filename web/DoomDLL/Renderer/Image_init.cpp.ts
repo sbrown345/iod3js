@@ -1871,7 +1871,7 @@ idImageManager.prototype.CompleteBackgroundImageLoads = function ( ) {
 ////*/
 ////int idImageManager::SumOfUsedImages() {
 ////	int	total;
-////	int i;
+////	var/*int*/i:number;
 ////	idImage	*image;
 
 ////	total = 0;
@@ -2108,7 +2108,7 @@ idImageManager.prototype.BeginLevelLoad = function ( ) {
 ////	}
 ////	batchFile = fileSystem.OpenFileWrite( ( removeDups ) ? "makedds2.bat" : "makedds.bat" );
 ////	if ( batchFile ) {
-////		int i;
+////		var/*int*/i:number;
 ////		int ddsNum = ddsList.Num();
 
 ////		for ( i = 0; i < ddsNum; i++ ) {

@@ -135,7 +135,7 @@ class idPush {
 //============
 //*/
 //void idPush::SaveEntityPosition( idEntity *ent ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	// if already saved the physics state for this entity
 //	for ( i = 0; i < numPushed; i++ ) {
@@ -170,7 +170,7 @@ class idPush {
 //============
 //*/
 //void idPush::RestorePushedEntityPositions( void ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	for ( i = 0; i < numPushed; i++ ) {
 //
@@ -191,7 +191,7 @@ class idPush {
 //============
 //*/
 //bool idPush::RotateEntityToAxial( idEntity *ent, idVec3 rotationPoint ) {
-//	int i;
+//	var/*int*/i:number;
 //	trace_t trace;
 //	idRotation rotation;
 //	idMat3 axis;
@@ -323,7 +323,7 @@ class idPush {
 //============
 //*/
 //bool idPush::IsFullyPushed( idEntity *ent ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	for ( i = 0; i < pushedGroupSize; i++ ) {
 //		if ( pushedGroup[i].fraction < 1.0f ) {

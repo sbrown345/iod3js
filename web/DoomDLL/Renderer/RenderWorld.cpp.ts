@@ -1241,7 +1241,7 @@ it will return 0 <= value < tr.world.numPortalAreas
 //===================
 //*/
 //bool idRenderWorldLocal::ModelTrace( modelTrace_t &trace, qhandle_t entityHandle, start:idVec3, end:idVec3, const float radius ) const {
-//	int i;
+//	var/*int*/i:number;
 //	bool collisionSurface;
 //	const modelSurface_t *surf;
 //	localTrace_t localTrace;
@@ -1933,7 +1933,7 @@ idRenderWorldLocal::DebugClearLines
 //void idRenderWorldLocal::DebugArrow( const idVec4 &color, start:idVec3, const idVec3 &end, int size, const int lifetime ) {
 //	idVec3 forward, right, up, v1, v2;
 //	float a, s;
-//	int i;
+//	var/*int*/i:number;
 //	static float arrowCos[40];
 //	static float arrowSin[40];
 //	static int arrowStep;
@@ -1981,7 +1981,7 @@ idRenderWorldLocal::DebugClearLines
 //====================
 //*/
 //void idRenderWorldLocal::DebugWinding( const idVec4 &color, const idWinding &w, const idVec3 &origin, const idMat3 &axis, const int lifetime, const bool depthTest ) {
-//	int i;
+//	var/*int*/i:number;
 //	idVec3 point, lastPoint;
 //
 //	if ( w.GetNumPoints() < 2 ) {
@@ -2002,7 +2002,7 @@ idRenderWorldLocal::DebugClearLines
 //====================
 //*/
 //void idRenderWorldLocal::DebugCircle( const idVec4 &color, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const int lifetime, const bool depthTest ) {
-//	int i;
+//	var/*int*/i:number;
 //	float a;
 //	idVec3 left, up, point, lastPoint;
 //
@@ -2061,7 +2061,7 @@ idRenderWorldLocal::DebugClearLines
 //====================
 //*/
 //void idRenderWorldLocal::DebugBounds( const idVec4 &color, const idBounds &bounds, const idVec3 &org, const int lifetime ) {
-//	int i;
+//	var/*int*/i:number;
 //	idVec3 v[8];
 //
 //	if ( bounds.IsCleared() ) {
@@ -2086,7 +2086,7 @@ idRenderWorldLocal::DebugClearLines
 //====================
 //*/
 //void idRenderWorldLocal::DebugBox( const idVec4 &color, const idBox &box, const int lifetime ) {
-//	int i;
+//	var/*int*/i:number;
 //	idVec3 v[8];
 //
 //	box.ToPoints( v );
@@ -2103,7 +2103,7 @@ idRenderWorldLocal::DebugClearLines
 //================
 //*/
 //void idRenderWorldLocal::DebugFrustum( const idVec4 &color, const idFrustum &frustum, const bool showFromOrigin, const int lifetime ) {
-//	int i;
+//	var/*int*/i:number;
 //	idVec3 v[8];
 //
 //	frustum.ToPoints( v );
@@ -2134,7 +2134,7 @@ idRenderWorldLocal::DebugClearLines
 //============
 //*/
 //void idRenderWorldLocal::DebugCone( const idVec4 &color, const idVec3 &apex, const idVec3 &dir, float radius1, float radius2, const int lifetime ) {
-//	int i;
+//	var/*int*/i:number;
 //	idMat3 axis;
 //	idVec3 top, p1, p2, lastp1, lastp2, d;
 //
@@ -2214,7 +2214,7 @@ idRenderWorldLocal::DebugPolygon
 //================
 //*/
 //void idRenderWorldLocal::DebugScreenRect( const idVec4 &color, const idScreenRect &rect, const viewDef_t *viewDef, const int lifetime ) {
-//	int i;
+//	var/*int*/i:number;
 //	float centerx, centery, dScale, hScale, vScale;
 //	idBounds bounds;
 //	idVec3 p[4];
@@ -2357,7 +2357,7 @@ FreeWorld  (): void {
 //================
 //*/
 //void idRenderWorldLocal::TouchWorldModels( void ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	for ( i = 0 ; i < this.localModels.Num() ; i++ ) {
 //		renderModelManager.CheckModel( this.localModels[i].Name() );

@@ -603,7 +603,7 @@ function R_GlobalPointToLocal( /*const float*/ modelMatrix: Float32Array /*[16]*
 //==========================
 //*/
 //void R_TransformModelToClip( const idVec3 &src, const float *modelMatrix, const float *projectionMatrix, idPlane &eye, idPlane &dst ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	for ( i = 0 ; i < 4 ; i++ ) {
 //		eye[i] = 

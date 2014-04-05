@@ -135,7 +135,7 @@
 ////================
 ////*/
 ////bool idAF::UpdateAnimation( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idVec3 origin, renderOrigin, bodyOrigin;
 ////	idMat3 axis, renderAxis, bodyAxis;
 ////	renderEntity_t *renderEntity;
@@ -193,7 +193,7 @@
 ////================
 ////*/
 ////idBounds idAF::GetBounds( void ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////	idVec3 origin, entityOrigin;
 ////	idMat3 axis, entityAxis;
@@ -229,7 +229,7 @@
 ////================
 ////*/
 ////void idAF::SetupPose( ent:idEntity, /*int*/time:number ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////	idVec3 origin;
 ////	idMat3 axis;
@@ -282,7 +282,7 @@
 ////================
 ////*/
 ////void idAF::ChangePose( ent:idEntity, /*int*/time:number ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float invDelta;
 ////	idAFBody *body;
 ////	idVec3 origin, lastOrigin;
@@ -959,7 +959,7 @@
 ////================
 ////*/
 ////bool idAF::TestSolid( void ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////	trace_t trace;
 ////	idStr str;
@@ -1105,7 +1105,7 @@
 ////================
 ////*/
 ////void idAF::SaveState( idDict &args ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////	idStr key, value;
 ////

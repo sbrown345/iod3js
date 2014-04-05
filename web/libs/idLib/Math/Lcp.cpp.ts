@@ -384,7 +384,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////*/
 ////ID_INLINE void idLCP_Square::CalcForceDelta( int d, float dir ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float *ptr;
 ////
 ////	delta_f[d] = dir;
@@ -461,7 +461,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////*/
 ////void idLCP_Square::GetMaxStep( int d, float dir, float &maxStep, int &limit, int &limitSide ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	float s;
 ////
 ////	// default to a full step for the current variable
@@ -1180,7 +1180,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////*/
 ////ID_INLINE void idLCP_Symmetric::CalcForceDelta( int d, float dir ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float *ptr;
 ////
 ////	delta_f[d] = dir;
@@ -1251,7 +1251,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////*/
 ////void idLCP_Symmetric::GetMaxStep( int d, float dir, float &maxStep, int &limit, int &limitSide ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	float s;
 ////
 ////	// default to a full step for the current variable

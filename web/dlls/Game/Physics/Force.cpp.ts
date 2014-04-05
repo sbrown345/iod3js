@@ -99,7 +99,7 @@ class idForce extends idClass {
 	//================
 	//*/
 	//void idForce::DeletePhysics( const idPhysics *phys ) {
-	//	int i;
+	//	var/*int*/i:number;
 	//
 	//	for ( i = 0; i < forceList.Num(); i++ ) {
 	//		forceList[i]->RemovePhysics( phys );

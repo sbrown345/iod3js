@@ -534,7 +534,7 @@ class idPlane {
 	//================
 	//*/
 	//bool idPlane::HeightFit(const idVec3 *points, const int numPoints) {
-	//	int i;
+	//	var/*int*/i:number;
 	//	float sumXX = 0.0, sumXY = 0.0, sumXZ = 0.0;
 	//	float sumYY = 0.0, sumYZ = 0.0;
 	//	idVec3 sum, average, dir;

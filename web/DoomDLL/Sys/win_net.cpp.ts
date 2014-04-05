@@ -789,7 +789,7 @@ var net_socksPassword = new idCVar ( "net_socksPassword", "", CVAR_SYSTEM | CVAR
 ////	}
 ////
 ////	if( num_interfaces ) {
-////		int i;
+////		var/*int*/i:number;
 ////		unsigned long *p_ip;
 ////		unsigned long ip;
 ////		p_ip = (unsigned long *)&adr.ip[0];

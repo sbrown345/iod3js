@@ -550,7 +550,7 @@ idDeclParticle::DefaultDefinition
 ////*/
 ////void idDeclParticle::WriteStage( idFile *f, idParticleStage *stage ) {
 ////	
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	f.WriteFloatString( "\t{\n" );
 ////	f.WriteFloatString( "\t\tcount\t\t\t\t%i\n", stage.totalParticles );

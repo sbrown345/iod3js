@@ -296,7 +296,7 @@ idSmokeParticles::Shutdown
 ////
 ////		// find an activeSmokeStage that matches this
 ////		activeSmokeStage_t	*active = NULL;
-////		int i;
+////		var/*int*/i:number;
 ////		for ( i = 0 ; i < this.activeStages.Num() ; i++ ) {
 ////			active = &this.activeStages[i];
 ////			if ( active.stage == stage ) {

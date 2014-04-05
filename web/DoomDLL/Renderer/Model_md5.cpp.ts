@@ -884,7 +884,7 @@
 ////====================
 ////*/
 ////int idRenderModelMD5::NearestJoint( int surfaceNum, int a, int b, int c ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	const idMD5Mesh *mesh;
 
 ////	if ( surfaceNum > meshes.Num() ) {

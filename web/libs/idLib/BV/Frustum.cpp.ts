@@ -1049,7 +1049,7 @@ class idFrustum {
 //============
 //*/
 //bool idFrustum::LocalFrustumIntersectsFrustum( const idVec3 points[8], const bool testFirstSide ) const {
-//	int i;
+//	var/*int*/i:number;
 //
 //	// test if any edges of the other frustum intersect this frustum
 //	for ( i = 0; i < 4; i++ ) {
@@ -1079,7 +1079,7 @@ class idFrustum {
 //============
 //*/
 //bool idFrustum::LocalFrustumIntersectsBounds( const idVec3 points[8], const idBounds &bounds ) const {
-//	int i;
+//	var/*int*/i:number;
 //
 //	// test if any edges of the other frustum intersect this frustum
 //	for ( i = 0; i < 4; i++ ) {
@@ -1739,7 +1739,7 @@ class idFrustum {
 //============
 //*/
 //void idFrustum::ToPlanes( idPlane planes[6] ) const {
-//	int i;
+//	var/*int*/i:number;
 //	idVec3 scaled[2];
 //	idVec3 points[4];
 //

@@ -592,7 +592,7 @@ class idFileSystemLocal extends idFileSystem {
 ////================
 ////*/
 ////FILE *idFileSystemLocal::OpenOSFile( const char *fileName, const char *mode, idStr *caseSensitiveName ) {
-////	int i;
+////	var/*int*/i:number;
 ////	FILE *fp;
 ////	idStr fpath, entry;
 ////	idStrList list;
@@ -1668,7 +1668,7 @@ idFileSystemLocal::ListFiles
 ////===============
 ////*/
 ////int idFileSystemLocal::GetFileListTree( const char *relativePath, const idStrList &extensions, idStrList &list, idHashIndex &hashIndex, const char* gamedir ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idStrList slash, folders( 128 );
 ////	idHashIndex folderHashIndex( 1024, 128 );
 ////
@@ -2000,7 +2000,7 @@ idFileSystemLocal::FreeFileList
 ////*/
 ////void idFileSystemLocal::Path_f( args:idCmdArgs ) {
 ////	searchpath_t *sp;
-////	int i;
+////	var/*int*/i:number;
 ////	idStr status;
 ////
 ////	common.Printf( "Current search path:\n" );
@@ -2812,7 +2812,7 @@ idFileSystemLocal::FreeFileList
 ////=====================
 ////*/
 ////void idFileSystemLocal::GetPureServerChecksums( int checksums[ MAX_PURE_PAKS ], int OS, int *_gamePakChecksum ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < serverPaks.Num(); i++ ) {
 ////		checksums[ i ] = serverPaks[ i ].checksum;
@@ -4045,7 +4045,7 @@ PerformingCopyFiles( ):boolean {
 ////================
 ////*/
 ////void idFileSystemLocal::ClearDirCache( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	dir_cache_index = 0;
 ////	dir_cache_count = 0;

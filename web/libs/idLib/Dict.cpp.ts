@@ -508,7 +508,7 @@ idDict::Clear
 ////================
 ////*/
 ////void idDict::Print() const {
-////	int i;
+////	var/*int*/i:number;
 ////	int n;
 ////
 ////	n = this.args.Num();
@@ -958,7 +958,7 @@ idDict::MatchPrefix
 ////================
 ////*/
 ////void idDict::ListKeys_f( const idCmdArgs &args ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idList<const idPoolStr *> keyStrings;
 ////
 ////	for ( i = 0; i < idDict.globalKeys.Num(); i++ ) {
@@ -977,7 +977,7 @@ idDict::MatchPrefix
 ////================
 ////*/
 ////void idDict::ListValues_f( const idCmdArgs &args ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idList<const idPoolStr *> valueStrings;
 ////
 ////	for ( i = 0; i < idDict.globalValues.Num(); i++ ) {

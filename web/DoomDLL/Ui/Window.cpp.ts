@@ -938,7 +938,7 @@ idWindow::UpdateWinVars
 ////*/
 ////RunNamedEvent ( const char* eventName ):void
 ////{
-////	int i;
+////	var/*int*/i:number;
 ////	int c;
 ////
 ////	// Find and run the event	
@@ -3782,7 +3782,7 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////===============
 ////*/
 ////WriteToSaveGame( idFile *savefile ):void {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	WriteSaveGameString( cmd, savefile );
 ////
@@ -3925,7 +3925,7 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////===============
 ////*/
 ////ReadFromSaveGame( idFile *savefile ):void {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	transitions.Clear();
 ////

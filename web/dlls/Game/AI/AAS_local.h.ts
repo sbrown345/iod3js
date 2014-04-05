@@ -576,7 +576,7 @@ idAASLocal::SetupRoutingCache
 ////============
 ////*/
 ////void idAASLocal::DeleteClusterCache( int clusterNum ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idRoutingCache *cache;
 ////
 ////	for ( i = 0; i < this.file.GetCluster( clusterNum ).numReachableAreas; i++ ) {
@@ -594,7 +594,7 @@ idAASLocal::SetupRoutingCache
 ////============
 ////*/
 ////void idAASLocal::DeletePortalCache( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idRoutingCache *cache;
 ////
 ////	for ( i = 0; i < this.file.GetNumAreas(); i++ ) {
@@ -612,7 +612,7 @@ idAASLocal::SetupRoutingCache
 ////============
 ////*/
 ////void idAASLocal::ShutdownRoutingCache( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < this.file.GetNumClusters(); i++ ) {
 ////		DeleteClusterCache( i );
@@ -837,7 +837,7 @@ idAASLocal::SetupRouting
 ////============
 ////*/
 ////void idAASLocal::SetObstacleState( const idRoutingObstacle *obstacle, bool enable ) {
-////	int i;
+////	var/*int*/i:number;
 ////	const aasArea_t *area;
 ////	idReachability *reach, *rev_reach;
 ////	bool inside;
@@ -930,7 +930,7 @@ idAASLocal::SetupRouting
 ////============
 ////*/
 ////void idAASLocal::RemoveAllObstacles( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( !this.file ) {
 ////		return;

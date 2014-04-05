@@ -371,7 +371,7 @@ var declManager = declManagerLocal;
 ////================
 ////*/
 ////void ClearHuffmanFrequencies( ) {
-////	int i;
+////	var/*int*/i:number;
 
 ////	for( i = 0; i < MAX_HUFFMAN_SYMBOLS; i++ ) {
 ////		huffmanFrequencies[i] = 1;

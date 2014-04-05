@@ -693,7 +693,7 @@ function Sys_Milliseconds ( ): number {
 //*/
 //void Sys_GetCallStack( address_t *callStack, const int callStackSize ) {
 //#if 1 //def _DEBUG
-//	int i;
+//	var/*int*/i:number;
 //	long m_ebp;
 
 //	__asm {

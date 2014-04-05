@@ -1110,7 +1110,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////================
 ////*/
 ////void idLight::Event_SetSoundHandles( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idEntity *targetEnt;
 ////
 ////	if ( !refSound.referenceSound ) {

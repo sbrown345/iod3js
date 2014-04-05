@@ -211,63 +211,88 @@ idVarDefName::RemoveDef
 		def.name = null;
 	}
 }
+/***********************************************************************
 
-//
-///***********************************************************************
-//
-//  idScriptObject
-//
-//***********************************************************************/
-//
-///*
-//============
-//idScriptObject::idScriptObject
-//============
-//*/
-//idScriptObject::idScriptObject() {
-//	data = null;
-//	type = &type_object;
-//}
-//
-///*
-//============
-//idScriptObject::~idScriptObject
-//============
-//*/
-//idScriptObject::~idScriptObject() {
-//	Free();
-//}
-//
-///*
-//============
-//idScriptObject::Free
-//============
-//*/
-//void idScriptObject::Free( ) {
-//	if ( data ) {
-//		Mem_Free( data );
-//	}
-//
-//	data = null;
-//	type = &type_object;
-//}
-//
+idScriptObject
+
+In-game representation of objects in scripts.  Use the idScriptVariable template
+(below) to access variables.
+
+***********************************************************************/
+
+class idScriptObject {
+	//private:
+	type:idTypeDef;
+		
+	//public:
+	data:Uint8Array;
+	//
+	//								idScriptObject();
+	//								~idScriptObject();
+	//
+	//	void						Save ( savefile: idSaveGame ): void { throw "placeholder"; }			// archives object for save game file
+	//	void						Restore( idRestoreGame *savefile );			// unarchives object from save game file
+	//
+	//	void						Free( void );
+	//	bool						SetType( const char *typeName );
+	//	void						ClearObject( void );
+	//	bool						HasObject( void ) const;
+	//	idTypeDef					*GetTypeDef( void ) const;
+	//	const char					*GetTypeName( void ) const;
+	//	const function_t			*GetConstructor( void ) const;
+	//	const function_t			*GetDestructor( void ) const;
+	//	const function_t			*GetFunction( name:string ) const;
+	//
+	//	byte						*GetVariable( name:string, etype_t etype ) const;
+/*
+============
+idScriptObject::idScriptObject
+============
+*/
+	constructor ( ) {
+		this.data = null;
+		this.type = type_object;
+	}
+
+/*
+============
+idScriptObject::~idScriptObject
+============
+*/
+	destructor ( ): void {
+		this.Free ( );
+	}
+
+/*
+============
+idScriptObject::Free
+============
+*/
+	Free ( ): void {
+		if ( this.data ) {
+			Mem_Free( this.data );
+		}
+
+		this.data = null;
+		this.type = type_object;
+	}
+
 ///*
 //================
 //idScriptObject::Save
 //================
 //*/
 //void idScriptObject::Save( idSaveGame *savefile ) const {
-//	size_t size;
+//	var/*size_t */size:number;
 //
-//	if ( type == &type_object && data == null ) {
+//	if ( this.type == &type_object && this.data == null ) {
 //		// Write empty string for uninitialized object
 //		savefile.WriteString( "" );
 //	} else {
-//		savefile.WriteString( type.Name() );
-//		size = type.Size();
+//		savefile.WriteString( this.type.Name() );
+//		size = this.type.Size();
 //		savefile.WriteInt( size );
-//		savefile.Write( data, size );
+//		savefile.Write( this.data, size );
 //	}
 //}
 //
@@ -278,7 +303,7 @@ idVarDefName::RemoveDef
 //*/
 //void idScriptObject::Restore( idRestoreGame *savefile ) {
 //	idStr typeName;
-//	size_t size;
+//	var/*size_t */size:number;
 //
 //	savefile.ReadString( typeName );
 //
@@ -292,78 +317,78 @@ idVarDefName::RemoveDef
 //	}
 //
 //	savefile.ReadInt( (int &)size );
-//	if ( size != type.Size() ) {
+//	if ( size != this.type.Size() ) {
 //		savefile.Error( "idScriptObject::Restore: size of object '%s' doesn't match size in save game.", typeName.c_str() );
 //	}
 //
-//	savefile.Read( data, size );
+//	savefile.Read( this.data, size );
 //}
-//
-///*
-//============
-//idScriptObject::SetType
-//
-//Allocates an object and initializes memory.
-//============
-//*/
-//bool idScriptObject::SetType( const char *typeName ) {
-//	size_t size;
-//	idTypeDef *newtype;
-//
-//	// lookup the type
-//	newtype = gameLocal.program.FindType( typeName );
-//
-//	// only allocate memory if the object type changes
-//	if ( newtype != type ) {	
-//		Free();
-//		if ( !newtype ) {
-//			gameLocal.Warning( "idScriptObject::SetType: Unknown type '%s'", typeName );
-//			return false;
-//		}
-//
-//		if ( !newtype.Inherits( &type_object ) ) {
-//			gameLocal.Warning( "idScriptObject::SetType: Can't create object of type '%s'.  Must be an object type.", newtype.Name() );
-//			return false;
-//		}
-//
-//		// set the type
-//		type = newtype;
-//
-//		// allocate the memory
-//		size = type.Size();
-//		data = ( byte * )Mem_Alloc( size );
-//	}
-//
-//	// init object memory
-//	ClearObject();
-//
-//	return true;
-//}
-//
-///*
-//============
-//idScriptObject::ClearObject
-//
-//Resets the memory for the script object without changing its type.
-//============
-//*/
-//void idScriptObject::ClearObject( ) {
-//	size_t size;
-//
-//	if ( type != &type_object ) {
-//		// init object memory
-//		size = type.Size();
-//		memset( data, 0, size );
-//	}
-//}
-//
+
+/*
+============
+idScriptObject::SetType
+
+Allocates an object and initializes memory.
+============
+*/
+	SetType ( typeName: string ): boolean {
+		var /*size_t */size: number;
+		var newtype: idTypeDef;
+
+		// lookup the type
+		newtype = gameLocal.program.FindType( typeName );
+
+		// only allocate memory if the object type changes
+		if ( newtype != this.type ) {
+			this.Free ( );
+			if ( !newtype ) {
+				gameLocal.Warning( "idScriptObject::SetType: Unknown type '%s'", typeName );
+				return false;
+			}
+
+			if ( !newtype.Inherits( type_object ) ) {
+				gameLocal.Warning( "idScriptObject::SetType: Can't create object of type '%s'.  Must be an object type.", newtype.Name ( ) );
+				return false;
+			}
+
+			// set the type
+			this.type = newtype;
+
+			// allocate the memory
+			size = this.type.Size ( );
+			this.data = new Uint8Array( Mem_Alloc( size ) ); //( byte * )Mem_Alloc( size );
+		}
+
+		// init object memory
+		this.ClearObject ( );
+
+		return true;
+	}
+
+/*
+============
+idScriptObject::ClearObject
+
+Resets the memory for the script object without changing its type.
+============
+*/
+	ClearObject ( ): void {
+		var /*size_t */size: number;
+
+		if ( this.type != type_object ) {
+			// init object memory
+			size = this.type.Size ( );
+			memset( this.data, 0, size );
+		}
+	}
+
 ///*
 //============
 //idScriptObject::HasObject
 //============
 //*/
 //bool idScriptObject::HasObject( ) const {
-//	return ( type != &type_object );
+//	return ( this.type != &type_object );
 //}
 //
 ///*
@@ -372,7 +397,7 @@ idVarDefName::RemoveDef
 //============
 //*/
 //idTypeDef *idScriptObject::GetTypeDef( ) const {
-//	return type;
+//	return this.type;
 //}
 //
 ///*
@@ -381,7 +406,7 @@ idVarDefName::RemoveDef
 //============
 //*/
 //const char *idScriptObject::GetTypeName( ) const {
-//	return type.Name();
+//	return this.type.Name();
 //}
 //
 ///*
@@ -416,11 +441,11 @@ idVarDefName::RemoveDef
 //const function_t *idScriptObject::GetFunction( name:string ) const {
 //	const function_t *func;
 //
-//	if ( type == &type_object ) {
+//	if ( this.type == &type_object ) {
 //		return null;
 //	}
 //
-//	func = gameLocal.program.FindFunction( name, type );
+//	func = gameLocal.program.FindFunction( name, this.type );
 //	return func;
 //}
 //
@@ -435,11 +460,11 @@ idVarDefName::RemoveDef
 //	const idTypeDef	*t;
 //	const idTypeDef	*parm;
 //
-//	if ( type == &type_object ) {
+//	if ( this.type == &type_object ) {
 //		return null;
 //	}
 //
-//	t = type;
+//	t = this.type;
 //	do {
 //		if ( t.SuperClass() != &type_object ) {
 //			pos = t.SuperClass().Size();
@@ -452,7 +477,7 @@ idVarDefName::RemoveDef
 //				if ( etype != parm.FieldType().Type() ) {
 //					return null;
 //				}
-//				return &data[ pos ];
+//				return &this.data[ pos ];
 //			}
 //
 //			if ( parm.FieldType().Inherits( &type_object ) ) {
@@ -466,7 +491,7 @@ idVarDefName::RemoveDef
 //
 //	return null;
 //}
-//
+}
 
 ///***********************************************************************
 //
@@ -1497,7 +1522,7 @@ idProgram::Startup
 //================
 //*/
 //void idProgram::Save( idSaveGame *savefile ) const {
-//	int i;
+//	var/*int*/i:number;
 //	int currentFileNum = this.top_files;
 //
 //	savefile.WriteInt( (this.fileList.Num() - currentFileNum) );

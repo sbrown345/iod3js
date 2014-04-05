@@ -136,7 +136,7 @@ class /*idCmdSystemLocal*/ idCmdSystem {
 ////}
 
 ////void idCmdSystemLocal::ListByFlags( const idCmdArgs &args, cmdFlags_t flags ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idStr match;
 ////	const commandDef_t *cmd;
 ////	idList<const commandDef_t *> cmdList;
@@ -710,7 +710,7 @@ idCmdSystemLocal::ExecuteCommandBuffer
 ////============
 ////*/
 ////void idCmdSystemLocal::ArgCompletion_FolderExtension( const idCmdArgs &args, void(*callback)( const char *s ), const char *folder, bool stripFolder, ... ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idStr string;
 ////	const char *extension;
 ////	va_list argPtr;

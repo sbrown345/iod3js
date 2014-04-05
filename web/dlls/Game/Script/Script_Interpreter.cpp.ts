@@ -303,7 +303,7 @@ idInterpreter::idInterpreter()
 //================
 //*/
 //void idInterpreter::Save( idSaveGame *savefile ) const {
-//	int i;
+//	var/*int*/i:number;
 //
 //	savefile.WriteInt( this.callStackDepth );
 //	for( i = 0; i < this.callStackDepth; i++ ) {
@@ -353,7 +353,7 @@ idInterpreter::idInterpreter()
 //================
 //*/
 //void idInterpreter::Restore( idRestoreGame *savefile ) {
-//	int i;
+//	var/*int*/i:number;
 //	idStr funcname;
 //	int func_index;
 //
@@ -727,7 +727,7 @@ Aborts the currently executing function
 //*/
 //void idInterpreter::DisplayInfo( ) const {
 //	const function_t *f;
-//	int i;
+//	var/*int*/i:number;
 //
 //	gameLocal.Printf( " Stack depth: %d bytes, %d max\n", this.localstackUsed, this.maxLocalstackUsed );
 //	gameLocal.Printf( "  Call depth: %d, %d max\n", this.callStackDepth, this.maxStackDepth );

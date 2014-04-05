@@ -59,7 +59,7 @@
 //=====================
 //*/
 //idAnim::idAnim( const idDeclModelDef *modelDef, const idAnim *anim ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	this.modelDef = modelDef;
 //	numAnims = anim.numAnims;
@@ -91,7 +91,7 @@
 //=====================
 //*/
 //idAnim::~idAnim() {
-//	int i;
+//	var/*int*/i:number;
 //
 //	for( i = 0; i < numAnims; i++ ) {
 //		anims[ i ].DecreaseRefs();
@@ -108,7 +108,7 @@
 //=====================
 //*/
 //void idAnim::SetAnim( const idDeclModelDef *modelDef, const char *sourcename, const char *animname, /*int*/num:number, const idMD5Anim *md5anims[ ANIM_MaxSyncedAnims ] ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	this.modelDef = modelDef;
 //
@@ -1025,7 +1025,7 @@
 //=====================
 //*/
 //void idAnimBlend::Save( idSaveGame *savefile ) const {
-//	int i;
+//	var/*int*/i:number;
 //
 //	savefile.WriteInt( starttime );
 //	savefile.WriteInt( endtime );
@@ -2165,7 +2165,7 @@ class idDeclModelDef extends idDecl {
 //=====================
 //*/
 //void idDeclModelDef::CopyDecl( const idDeclModelDef *decl ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	FreeData();
 //
@@ -3106,7 +3106,7 @@ idDeclModelDef::DefaultDefinition
 //=====================
 //*/
 //void idAnimator::Save( idSaveGame *savefile ) const {
-//	int i;
+//	var/*int*/i:number;
 //	int j;
 //
 //	savefile.WriteModelDef( modelDef );
@@ -3177,7 +3177,7 @@ idDeclModelDef::DefaultDefinition
 //=====================
 //*/
 //void idAnimator::Restore( idRestoreGame *savefile ) {
-//	int i;
+//	var/*int*/i:number;
 //	int j;
 //	/*int*/num:number;
 //
@@ -3615,7 +3615,7 @@ idDeclModelDef::DefaultDefinition
 //=====================
 //*/
 //void idAnimator::SetJointPos( jointnum:jointHandle_t, transform_type:jointModTransform_t, pos:idVec3 ) {
-//	int i;
+//	var/*int*/i:number;
 //	jointMod_t *jointMod;
 //
 //	if ( !modelDef || !modelDef.ModelHandle() || ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
@@ -3655,7 +3655,7 @@ idDeclModelDef::DefaultDefinition
 //=====================
 //*/
 //void idAnimator::SetJointAxis( jointnum:jointHandle_t, transform_type:jointModTransform_t, const idMat3 &mat ) {
-//	int i;
+//	var/*int*/i:number;
 //	jointMod_t *jointMod;
 //
 //	if ( !modelDef || !modelDef.ModelHandle() || ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
@@ -3695,7 +3695,7 @@ idDeclModelDef::DefaultDefinition
 //=====================
 //*/
 //void idAnimator::ClearJoint( jointnum:jointHandle_t ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	if ( !modelDef || !modelDef.ModelHandle() || ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
 //		return;

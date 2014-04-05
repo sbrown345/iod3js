@@ -403,7 +403,7 @@
 ////=====================
 ////*/
 ////void idAI::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile->WriteInt( travelFlags );
 ////	move.Save( savefile );
@@ -1274,7 +1274,7 @@
 ////============
 ////*/
 ////bool ValidForBounds( const idAASSettings *settings, const idBounds &bounds ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < 3; i++ ) {
 ////		if ( bounds[0][i] < settings->boundingBoxes[0][0][i] ) {

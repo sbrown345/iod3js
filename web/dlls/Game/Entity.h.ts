@@ -497,7 +497,7 @@ class idEntity extends idClass {
 ////===============
 ////*/
 ////UpdateChangeableSpawnArgs( const idDict *source ) {
-////	int i;
+////	var/*int*/i:number;
 ////	const char *target;
 ////
 ////	if ( !source ) {
@@ -1372,7 +1372,7 @@ UpdateVisuals( ):void {
 ////UpdatePVSAreas( ):void {
 ////	int localNumPVSAreas, localPVSAreas[32];
 ////	idBounds modelAbsBounds;
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	modelAbsBounds.FromTransformedBounds( this.renderEntity.bounds, this.renderEntity.origin, this.renderEntity.axis );
 ////	localNumPVSAreas = gameLocal.pvs.GetPVSAreas( modelAbsBounds, localPVSAreas, sizeof( localPVSAreas ) / sizeof( localPVSAreas[0] ) );
@@ -1398,7 +1398,7 @@ UpdateVisuals( ):void {
 ////================
 ////*/
 ////UpdatePVSAreas( pos:idVec3 ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	this.numPVSAreas = gameLocal.pvs.GetPVSAreas( idBounds( pos ), this.PVSAreas, MAX_PVS_AREAS );
 ////	i = this.numPVSAreas;
@@ -2831,12 +2831,12 @@ idEntity::GetPhysics
 idEntity::SetOrigin
 ================
 */
-	SetOrigin(org: idVec3) {
+	SetOrigin ( org: idVec3 ) {
 
-	this.GetPhysics().SetOrigin( org );
+		this.GetPhysics ( ).SetOrigin( org );
 
-	this.UpdateVisuals();
-}
+		this.UpdateVisuals ( );
+	}
 
 /*
 ================
@@ -3459,7 +3459,7 @@ Can be overridden by subclasses when a thread doesn't need to be allocated.
 ////================
 ////*/
 ////TriggerGuis( ):void {
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < MAX_RENDERENTITY_GUI; i++ ) {
 ////		if ( this.renderEntity.gui[ i ] ) {
 ////			this.renderEntity.gui[ i ].Trigger( gameLocal.time );
@@ -3605,7 +3605,7 @@ Can be overridden by subclasses when a thread doesn't need to be allocated.
 ////				}
 ////
 ////				int c = entityGui.targets.Num();
-////				int i;
+////				var/*int*/i:number;
 ////				for ( i = 0; i < c; i++) {
 ////					targetEnt = entityGui.targets[ i ].GetEntity();
 ////					if ( targetEnt && targetEnt.HandleSingleGuiCommand( entityGui, &src ) ) {
@@ -3669,7 +3669,7 @@ have been spawned when the entity is created at map load time, we have to wait
 ////================
 ////*/
 ////RemoveNullTargets( ):void {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for( i = this.targets.Num() - 1; i >= 0; i-- ) {
 ////		if ( !this.targets[ i ].GetEntity() ) {
@@ -3894,7 +3894,7 @@ idEntity::Event_FindTargets
 ////================
 ////*/
 ////Event_GetTarget( float index ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	i = ( int )index;
 ////	if ( ( i < 0 ) || i >= this.targets.Num() ) {
@@ -4067,7 +4067,7 @@ idEntity::Event_FindTargets
 ////================
 ////*/
 ////Event_SetOwner( idEntity *owner ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < this.GetPhysics().GetNumClipModels(); i++ ) {
 ////		this.GetPhysics().GetClipModel( i ).SetOwner( owner );

@@ -315,7 +315,7 @@ idTimer::InitBaseClockTicks
 ////*/
 ////void idTimerReport::AddTime(const char *name, idTimer *time) {
 ////	assert(timers.Num() == names.Num());
-////	int i;
+////	var/*int*/i:number;
 ////	for (i = 0; i < names.Num(); i++) {
 ////		if (names[i].Icmp(name) == 0) {
 ////			*timers[i] += *time;

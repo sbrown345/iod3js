@@ -1811,7 +1811,7 @@ idBFGProjectile.Type = new idTypeInfo("idBFGProjectile", "idProjectile",
 ////================
 ////*/
 ////void idBFGProjectile::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile->WriteInt( beamTargets.Num() );
 ////	for ( i = 0; i < beamTargets.Num(); i++ ) {

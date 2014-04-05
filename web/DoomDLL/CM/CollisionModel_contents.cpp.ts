@@ -416,7 +416,7 @@
 ////================
 ////*/
 ////int idCollisionModelManagerLocal::PointContents( const idVec3 p, cmHandle_t model ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float d;
 ////	cm_node_t *node;
 ////	cm_brushRef_t *bref;
@@ -478,7 +478,7 @@
 ////int idCollisionModelManagerLocal::ContentsTrm( trace_t *results, start:idVec3,
 ////									const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////									cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) {
-////	int i;
+////	var/*int*/i:number;
 ////	bool model_rotated, trm_rotated;
 ////	idMat3 invModelAxis, tmpAxis;
 ////	idVec3 dir;

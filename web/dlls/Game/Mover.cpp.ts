@@ -184,7 +184,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////================
 ////*/
 ////void idMover::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile->WriteStaticObject( physicsObj );
 ////
@@ -584,7 +584,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////================
 ////*/
 ////void idMover::SetGuiStates( const char *state ) {
-////	int i;
+////	var/*int*/i:number;
 ////	if ( guiTargets.Num() ) {
 ////		SetGuiState( "movestate", state );
 ////	}
@@ -1666,7 +1666,7 @@ idElevator.Type = new idTypeInfo("idElevator", "idMover",
 ////================
 ////*/
 ////void idElevator::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile->WriteInt( (int)state );
 ////
@@ -2235,7 +2235,7 @@ idMover_Binary.Type = new idTypeInfo("idMover_Binary", "idEntity",
 ////================
 ////*/
 ////void idMover_Binary::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile->WriteVec3( pos1 );
 ////	savefile->WriteVec3( pos2 );
@@ -2974,7 +2974,7 @@ idMover_Binary.Type = new idTypeInfo("idMover_Binary", "idEntity",
 ////==============================
 ////*/
 ////void idMover_Binary::SetGuiState( const char *key, const char *val ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for( i = 0; i < guiTargets.Num(); i++ ) {
 ////		var ent:idEntity = guiTargets[ i ].GetEntity();

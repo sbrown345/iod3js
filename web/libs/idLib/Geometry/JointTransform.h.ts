@@ -195,7 +195,7 @@ class idJointMat {
 	//}
 	//
 	//ID_INLINE bool idJointMat::Compare( const idJointMat &a ) const {
-	//	int i;
+	//	var/*int*/i:number;
 	//
 	//	for ( i = 0; i < 12; i++ ) {
 	//		if ( mat[i] != a.mat[i] ) {
@@ -206,7 +206,7 @@ class idJointMat {
 	//}
 	//
 	//ID_INLINE bool idJointMat::Compare( const idJointMat &a, const float epsilon ) const {
-	//	int i;
+	//	var/*int*/i:number;
 	//
 	//	for ( i = 0; i < 12; i++ ) {
 	//		if ( idMath::Fabs( mat[i] - a.mat[i] ) > epsilon ) {

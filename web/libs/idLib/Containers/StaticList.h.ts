@@ -136,7 +136,7 @@ Sets the number of elements in the list to 0.  Assumes that type automatically h
 ////*/
 ////template<class type,int size>
 ////ID_INLINE void idStaticList<type,size>::DeleteContents( bool clear ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for( i = 0; i < size; i++ ) {
 ////		delete list[ i ];
@@ -328,7 +328,7 @@ Returns a pointer to a new data element at the end of the list.
 ////*/
 ////template<class type,int size>
 ////ID_INLINE int idStaticList<type,size>::Insert( type const & obj, int index ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	assert( num < size );
 ////	if ( num >= size ) {
@@ -362,7 +362,7 @@ Returns a pointer to a new data element at the end of the list.
 ////*/
 ////template<class type,int size>
 ////ID_INLINE int idStaticList<type,size>::Append( const idStaticList<type,size> &other ) {
-////	int i;
+////	var/*int*/i:number;
 ////	int n = other.Num();
 ////
 ////	if ( num + n > size ) {
@@ -403,7 +403,7 @@ Returns a pointer to a new data element at the end of the list.
 ////*/
 ////template<class type,int size>
 ////ID_INLINE int idStaticList<type,size>::FindIndex( type const & obj ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for( i = 0; i < num; i++ ) {
 ////		if ( list[ i ] == obj ) {
@@ -424,7 +424,7 @@ Returns a pointer to a new data element at the end of the list.
 ////*/
 ////template<class type,int size>
 ////ID_INLINE type *idStaticList<type,size>::Find( type const & obj ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	i = FindIndex( obj );
 ////	if ( i >= 0 ) {
@@ -446,7 +446,7 @@ Returns a pointer to a new data element at the end of the list.
 ////*/
 ////template<class type,int size>
 ////ID_INLINE int idStaticList<type,size>::FindNull( void ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for( i = 0; i < num; i++ ) {
 ////		if ( list[ i ] == NULL ) {
@@ -491,7 +491,7 @@ Returns a pointer to a new data element at the end of the list.
 ////*/
 ////template<class type,int size>
 ////ID_INLINE bool idStaticList<type,size>::RemoveIndex( int index ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	assert( index >= 0 );
 ////	assert( index < num );

@@ -353,7 +353,7 @@ class /*idSIMD_Generic*/SIMDProcessor {
 //			return;
 //		}
 //		default: {
-//			int i;
+//			var/*int*/i:number;
 //			double s0, s1, s2, s3;
 //			s0 = src1[0] * src2[0];
 //			s1 = src1[1] * src2[1];
@@ -2283,7 +2283,7 @@ idSIMD_Generic::Memcpy
 //============
 //*/
 //void VPCALL idSIMD_Generic::BlendJoints( idJointQuat *joints, const idJointQuat *blendJoints, const float lerp, const int *index, const int numJoints ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	for ( i = 0; i < numJoints; i++ ) {
 //		int j = index[i];
@@ -2298,7 +2298,7 @@ idSIMD_Generic::Memcpy
 //============
 //*/
 //void VPCALL idSIMD_Generic::ConvertJointQuatsToJointMats( idJointMat *jointMats, const idJointQuat *jointQuats, const int numJoints ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	for ( i = 0; i < numJoints; i++ ) {
 //		jointMats[i].SetRotation( jointQuats[i].q.ToMat3() );
@@ -2312,7 +2312,7 @@ idSIMD_Generic::Memcpy
 //============
 //*/
 //void VPCALL idSIMD_Generic::ConvertJointMatsToJointQuats( idJointQuat *jointQuats, const idJointMat *jointMats, const int numJoints ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	for ( i = 0; i < numJoints; i++ ) {
 //		jointQuats[i] = jointMats[i].ToJointQuat();
@@ -2325,7 +2325,7 @@ idSIMD_Generic::Memcpy
 //============
 //*/
 //void VPCALL idSIMD_Generic::TransformJoints( idJointMat *jointMats, const int *parents, const int firstJoint, const int lastJoint ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	for( i = firstJoint; i <= lastJoint; i++ ) {
 //		assert( parents[i] < i );
@@ -2339,7 +2339,7 @@ idSIMD_Generic::Memcpy
 //============
 //*/
 //void VPCALL idSIMD_Generic::UntransformJoints( idJointMat *jointMats, const int *parents, const int firstJoint, const int lastJoint ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	for( i = lastJoint; i >= firstJoint; i-- ) {
 //		assert( parents[i] < i );
@@ -2376,7 +2376,7 @@ idSIMD_Generic::Memcpy
 //============
 //*/
 //void VPCALL idSIMD_Generic::TracePointCull( byte *cullBits, byte &totalOr, const float radius, const idPlane *planes, const idDrawVert *verts, const int numVerts ) {
-//	int i;
+//	var/*int*/i:number;
 //	byte tOr;
 //
 //	tOr = 0;
@@ -2424,7 +2424,7 @@ idSIMD_Generic::Memcpy
 //============
 //*/
 //void VPCALL idSIMD_Generic::DecalPointCull( byte *cullBits, const idPlane *planes, const idDrawVert *verts, const int numVerts ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	for ( i = 0; i < numVerts; i++ ) {
 //		byte bits;
@@ -2455,7 +2455,7 @@ idSIMD_Generic::Memcpy
 //============
 //*/
 //void VPCALL idSIMD_Generic::OverlayPointCull( byte *cullBits, idVec2 *texCoords, const idPlane *planes, const idDrawVert *verts, const int numVerts ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	for ( i = 0; i < numVerts; i++ ) {
 //		byte bits;

@@ -120,7 +120,7 @@ var soundSystem = soundSystemLocal;
 ////===============
 ////*/
 ////void ListSounds_f( const idCmdArgs &args ) {
-////	int i;
+////	var/*int*/i:number;
 ////	const char	*snd = args.Argv( 1 );
 ////
 ////	if ( !soundSystemLocal.soundCache ) {

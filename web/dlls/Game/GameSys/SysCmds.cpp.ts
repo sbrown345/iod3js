@@ -118,7 +118,7 @@
 ////===================
 ////*/
 ////void Cmd_ListSpawnArgs_f( const idCmdArgs &args ) {
-////	int i;
+////	var/*int*/i:number;
 ////	var ent:idEntity
 
 ////	ent = gameLocal.FindEntity( args.Argv( 1 ) );
@@ -1254,7 +1254,7 @@
 ////==================
 ////*/
 ////void D_DrawDebugLines( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idVec3 forward, right, up, p1, p2;
 ////	idVec4 color;
 ////	float l;
@@ -1573,7 +1573,7 @@
 ////==================
 ////*/
 ////static void Cmd_SaveSelected_f( const idCmdArgs &args ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idPlayer *player;
 ////	idEntity *s;
 ////	idMapEntity *mapEnt;

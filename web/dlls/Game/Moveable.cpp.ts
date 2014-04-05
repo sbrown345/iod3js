@@ -1166,7 +1166,7 @@ idExplodingBarrel.Type = new idTypeInfo("idExplodingBarrel", "idBarrel",
 ////================
 ////*/
 ////void idExplodingBarrel::Event_Respawn() {
-////	int i;
+////	var/*int*/i:number;
 ////	int minRespawnDist = spawnArgs.GetInt( "respawn_range", "256" );
 ////	if ( minRespawnDist ) {
 ////		float minDist = -1;

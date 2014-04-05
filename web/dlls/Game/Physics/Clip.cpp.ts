@@ -402,7 +402,7 @@ idClipModel::GetTraceModelHashKey
 ////===============
 ////*/
 ////void idClipModel::SaveTraceModels( idSaveGame *savefile ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile.WriteInt( traceModelCache.Num() );
 ////	for ( i = 0; i < traceModelCache.Num(); i++ ) {
@@ -1895,7 +1895,7 @@ idClip::Shutdown
 ////============
 ////*/
 ////bool idClip::GetModelContactFeature( const contactInfo_t &contact, const idClipModel *clipModel, idFixedWinding &winding ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	cmHandle_t handle;
 ////	idVec3 start, end;
 ////
@@ -1995,7 +1995,7 @@ idClip::Shutdown
 ////============
 ////*/
 ////bool idClip::DrawModelContactFeature( const contactInfo_t &contact, const idClipModel *clipModel, int lifetime ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	idMat3 axis;
 ////	idFixedWinding winding;
 ////

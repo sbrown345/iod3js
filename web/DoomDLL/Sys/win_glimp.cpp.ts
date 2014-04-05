@@ -192,7 +192,7 @@ The renderer calls this when the user adjusts r_gamma or r_brightness
 function GLimp_SetGamma( red:Uint8Array/*[256]*/, green:Uint8Array/*[256]*/, blue:Uint8Array/*[256]*/ ):void {
 	notNeeded("GLimp_SetGamma ?");
 	//unsigned short table[3][256];
-	//int i;
+	//var/*int*/i:number;
 
 	//if ( !win32.hDC ) {
 	//	return;

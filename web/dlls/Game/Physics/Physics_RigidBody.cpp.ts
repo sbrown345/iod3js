@@ -389,7 +389,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////================
 ////*/
 ////void idPhysics_RigidBody::ContactFriction( float deltaTime ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float magnitude, impulseNumerator, impulseDenominator;
 ////	idMat3 inverseWorldInertiaTensor;
 ////	idVec3 linearVelocity, angularVelocity;
@@ -446,7 +446,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////================
 ////*/
 ////bool idPhysics_RigidBody::TestIfAtRest( void ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	float gv;
 ////	idVec3 v, av, normal, point;
 ////	idMat3 inverseWorldInertiaTensor;

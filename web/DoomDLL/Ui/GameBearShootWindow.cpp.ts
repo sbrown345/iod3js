@@ -649,7 +649,7 @@ idGameBearShootWindow::Draw
 */
 	Draw ( /*int*/ time: number, /*float */x: number, /*float */y: number ): void {
 		todoThrow ( );
-		//int i;
+		//var/*int*/i:number;
 
 		////Update the game every frame before drawing
 		//UpdateGame();
@@ -924,7 +924,7 @@ idGameBearShootWindow::Activate
 ////=============================
 ////*/
 ////void idGameBearShootWindow::UpdateGame() {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( onNewGame ) {
 ////		ResetGameState();

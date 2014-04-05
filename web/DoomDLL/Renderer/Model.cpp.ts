@@ -2267,7 +2267,7 @@ idRenderModelStatic.prototype.TouchData = function ( ) {
 ////=================
 ////*/
 ////bool idRenderModelStatic::DeleteSurfaceWithId( int id ) {
-////	int i;
+////	var/*int*/i:number;
 
 ////	for ( i = 0; i < this.surfaces.Num(); i++ ) {
 ////		if ( this.surfaces[i].id == id ) {
@@ -2285,7 +2285,7 @@ idRenderModelStatic.prototype.TouchData = function ( ) {
 ////=================
 ////*/
 ////void idRenderModelStatic::DeleteSurfacesWithNegativeId( ) {
-////	int i;
+////	var/*int*/i:number;
 
 ////	for ( i = 0; i < this.surfaces.Num(); i++ ) {
 ////		if ( this.surfaces[i].id < 0 ) {
@@ -2302,7 +2302,7 @@ idRenderModelStatic.prototype.TouchData = function ( ) {
 ////=================
 ////*/
 ////bool idRenderModelStatic::FindSurfaceWithId( int id, int &surfaceNum ) {
-////	int i;
+////	var/*int*/i:number;
 
 ////	for ( i = 0; i < this.surfaces.Num(); i++ ) {
 ////		if ( this.surfaces[i].id == id ) {

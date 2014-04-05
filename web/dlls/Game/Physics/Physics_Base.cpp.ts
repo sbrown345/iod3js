@@ -209,7 +209,7 @@ class idPhysics_Base extends idPhysics {
 	//================
 	//*/
 	//void idPhysics_Base::Save( idSaveGame *savefile ) const {
-	//	int i;
+	//	var/*int*/i:number;
 	//
 	//	savefile->WriteObject( self );
 	//	savefile->WriteInt( clipMask );
@@ -674,7 +674,7 @@ class idPhysics_Base extends idPhysics {
 	//================
 	//*/
 	//void idPhysics_Base::ClearContacts( void ) {
-	//	int i;
+	//	var/*int*/i:number;
 	//	idEntity *ent;
 	//
 	//	for ( i = 0; i < contacts.Num(); i++ ) {
@@ -692,7 +692,7 @@ class idPhysics_Base extends idPhysics {
 	//================
 	//*/
 	//void idPhysics_Base::AddContactEntity( idEntity *e ) {
-	//	int i;
+	//	var/*int*/i:number;
 	//	idEntity *ent;
 	//	bool found = false;
 	//
@@ -716,7 +716,7 @@ class idPhysics_Base extends idPhysics {
 	//================
 	//*/
 	//void idPhysics_Base::RemoveContactEntity( idEntity *e ) {
-	//	int i;
+	//	var/*int*/i:number;
 	//	idEntity *ent;
 	//
 	//	for ( i = 0; i < contactEntities.Num(); i++ ) {
@@ -738,7 +738,7 @@ class idPhysics_Base extends idPhysics {
 	//================
 	//*/
 	//bool idPhysics_Base::HasGroundContacts( void ) const {
-	//	int i;
+	//	var/*int*/i:number;
 	//
 	//	for ( i = 0; i < contacts.Num(); i++ ) {
 	//		if ( contacts[i].normal * -gravityNormal > 0.0f ) {
@@ -754,7 +754,7 @@ class idPhysics_Base extends idPhysics {
 	//================
 	//*/
 	//bool idPhysics_Base::IsGroundEntity( int entityNum ) const {
-	//	int i;
+	//	var/*int*/i:number;
 	//
 	//	for ( i = 0; i < contacts.Num(); i++ ) {
 	//		if ( contacts[i].entityNum == entityNum && ( contacts[i].normal * -gravityNormal > 0.0f ) ) {
@@ -770,7 +770,7 @@ class idPhysics_Base extends idPhysics {
 	//================
 	//*/
 	//bool idPhysics_Base::IsGroundClipModel( int entityNum, int id ) const {
-	//	int i;
+	//	var/*int*/i:number;
 	//
 	//	for ( i = 0; i < contacts.Num(); i++ ) {
 	//		if ( contacts[i].entityNum == entityNum && contacts[i].id == id && ( contacts[i].normal * -gravityNormal > 0.0f ) ) {
@@ -875,7 +875,7 @@ class idPhysics_Base extends idPhysics {
 	//================
 	//*/
 	//void idPhysics_Base::AddContactEntitiesForContacts( void ) {
-	//	int i;
+	//	var/*int*/i:number;
 	//	idEntity *ent;
 	//
 	//	for ( i = 0; i < contacts.Num(); i++ ) {
@@ -892,7 +892,7 @@ class idPhysics_Base extends idPhysics {
 	//================
 	//*/
 	//void idPhysics_Base::ActivateContactEntities( void ) {
-	//	int i;
+	//	var/*int*/i:number;
 	//	idEntity *ent;
 	//
 	//	for ( i = 0; i < contactEntities.Num(); i++ ) {

@@ -70,7 +70,7 @@
 ////==============
 ////*/
 ////void idPlayerView::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	const screenBlob_t *blob;
 ////
 ////	blob = &screenBlobs[ 0 ];
@@ -121,7 +121,7 @@
 ////==============
 ////*/
 ////void idPlayerView::Restore( idRestoreGame *savefile ) {
-////	int i;
+////	var/*int*/i:number;
 ////	screenBlob_t *blob;
 ////
 ////	blob = &screenBlobs[ 0 ];

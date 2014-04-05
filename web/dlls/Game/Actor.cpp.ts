@@ -483,7 +483,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////=====================
 ////*/
 ////idActor::~idActor( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	var ent:idEntity
 ////
 ////	DeconstructScriptObject();
@@ -783,7 +783,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////*/
 ////void idActor::Save( idSaveGame *savefile ) const {
 ////	idActor *ent;
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile.WriteInt( team );
 ////	savefile.WriteInt( rank );
@@ -1712,7 +1712,7 @@ idActor.Type = new idTypeInfo("idActor", "idAFEntity_Gibbable",
 ////================
 ////*/
 ////void idActor::RemoveAttachments( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	var ent:idEntity
 ////
 ////	// remove any attached entities

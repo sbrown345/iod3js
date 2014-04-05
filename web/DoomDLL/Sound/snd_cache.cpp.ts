@@ -167,7 +167,7 @@ Adds a sound object to the cache and returns a handle for it.
 ////===================
 ////*/
 ////void idSoundCache::ReloadSounds( bool force ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for( i = 0; i < listCache.Num(); i++ ) {
 ////		idSoundSample *def = listCache[i];
@@ -538,7 +538,7 @@ Adds a sound object to the cache and returns a handle for it.
 ////					amplitudeData = (byte *)soundCacheAllocator.Alloc( ( objectSize / blockSize + 1 ) * 2 * sizeof( short) );
 ////
 ////					// Creating array of min/max amplitude pairs per blockSize samples
-////					int i;
+////					var/*int*/i:number;
 ////					for ( i = 0; i < objectSize; i+=blockSize ) {
 ////						short min = 32767;
 ////						short max = -32768;
@@ -618,7 +618,7 @@ Adds a sound object to the cache and returns a handle for it.
 ////						amplitudeData = (byte *)soundCacheAllocator.Alloc( ( objectSize / blockSize + 1 ) * 2 * sizeof( short ) );
 ////
 ////						// Creating array of min/max amplitude pairs per blockSize samples
-////						int i;
+////						var/*int*/i:number;
 ////						for ( i = 0; i < objectSize; i+=blockSize ) {
 ////							short min = 32767;
 ////							short max = -32768;

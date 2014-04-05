@@ -288,7 +288,7 @@ var s_wcd = new WinConData;
 ////	int nHeight;
 ////	int swidth, sheight;
 ////	int DEDSTYLE = WS_POPUPWINDOW | WS_CAPTION | WS_MINIMIZEBOX;
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	memset( &wc, 0, sizeof( wc ) );
 ////

@@ -559,7 +559,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////void idMultiplayerGame::Clear() {
-////	int i;
+////	var/*int*/i:number;
 
 ////	gameState = INACTIVE;
 ////	nextState = INACTIVE;
@@ -605,7 +605,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////void idMultiplayerGame::ClearGuis() {
-////	int i;
+////	var/*int*/i:number;
 	
 ////	for ( i = 0; i < MAX_CLIENTS; i++ ) {
 ////		scoreBoard.SetStateString( va( "player%i",i+1 ), "" );
@@ -996,7 +996,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////idPlayer *idMultiplayerGame::FragLimitHit() {
-////	int i;
+////	var/*int*/i:number;
 ////	int fragLimit = gameLocal.serverInfo.GetInt( "si_fragLimit" );
 ////	idPlayer *leader;
 
@@ -1065,7 +1065,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////idPlayer *idMultiplayerGame::FragLeader( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	int frags[ MAX_CLIENTS ];
 ////	idPlayer *leader = NULL;
 ////	var ent:idEntity
@@ -1302,7 +1302,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////void idMultiplayerGame::DumpTourneyLine( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < gameLocal.numClients; i++ ) {
 ////		if ( gameLocal.entities[ i ] && gameLocal.entities[ i ].IsType( idPlayer::Type ) ) {
 ////			common.Printf( "client %d: rank %d\n", i, static_cast< idPlayer * >( gameLocal.entities[ i ] ).tourneyRank );
@@ -1505,7 +1505,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////void idMultiplayerGame::CycleTourneyPlayers( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	var ent:idEntity
 ////	idPlayer *player;
 
@@ -1804,7 +1804,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////void idMultiplayerGame::UpdateMainGui( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	mainGui.SetStateInt( "readyon", gameState == WARMUP ? 1 : 0 );
 ////	mainGui.SetStateInt( "readyoff", gameState != WARMUP ? 1 : 0 );
 ////	idStr strReady = cvarSystem.GetCVarString( "ui_ready" );
@@ -2294,7 +2294,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////void idMultiplayerGame::UpdateHud( idPlayer *player, idUserInterface *hud ) {
-////	int i;
+////	var/*int*/i:number;
 
 ////	if ( !hud ) {
 ////		return;
@@ -2446,7 +2446,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////void idMultiplayerGame::WriteToSnapshot( idBitMsgDelta &msg ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	int value;
 
 ////	msg.WriteByte( gameState );
@@ -2472,7 +2472,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////void idMultiplayerGame::ReadFromSnapshot( const idBitMsgDelta &msg ) {
-////	int i;
+////	var/*int*/i:number;
 ////	gameState_t newState;
 
 ////	newState = (idMultiplayerGame::gameState_t)msg.ReadByte();
@@ -2619,7 +2619,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////void idMultiplayerGame::SuddenRespawn( ) {
-////	int i;
+////	var/*int*/i:number;
 
 ////	if ( gameLocal.gameType != GAME_LASTMAN ) {
 ////		return;
@@ -2874,7 +2874,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////void idMultiplayerGame::ServerStartVote( int clientNum, vote_flags_t voteIndex, value:string ) {
-////	int i;
+////	var/*int*/i:number;
 
 ////	assert( vote == VOTE_NONE );
 
@@ -3199,7 +3199,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////void idMultiplayerGame::CheckAbortGame( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	if ( gameLocal.gameType == GAME_TOURNEY && gameState == WARMUP ) {
 ////		// if a tourney player joined spectators, let someone else have his spot
 ////		for ( i = 0; i < 2; i++ ) {
@@ -3276,7 +3276,7 @@ idMultiplayerGame::Reset
 ////*/
 ////void idMultiplayerGame::SwitchToTeam( int clientNum, int oldteam, int newteam ) {
 ////	var ent:idEntity
-////	int i;
+////	var/*int*/i:number;
 
 ////	assert( gameLocal.gameType == GAME_TDM );
 ////	assert( oldteam != newteam );
@@ -3510,7 +3510,7 @@ idMultiplayerGame::Precache
 ////================
 ////*/
 ////void idMultiplayerGame::ThrottleUserInfo( ) {
-////	int i;
+////	var/*int*/i:number;
 
 ////	assert( gameLocal.localClientNum >= 0 );
 

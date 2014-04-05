@@ -2496,7 +2496,7 @@ var mat4_default = mat4_identity;
 //}
 //
 //ID_INLINE idMatX &idMatX::SwapColumns( int r1, int r2 ) {
-//	int i;
+//	var/*int*/i:number;
 //	float tmp, *ptr;
 //
 //	for ( i = 0; i < numRows; i++ ) {
@@ -2531,7 +2531,7 @@ var mat4_default = mat4_identity;
 //}
 //
 //ID_INLINE void idMatX::SquareSubMatrix( const idMatX &m, int size ) {
-//	int i;
+//	var/*int*/i:number;
 //	assert( size <= m.numRows && size <= m.numColumns );
 //	SetSize( size, size );
 //	for ( i = 0; i < size; i++ ) {

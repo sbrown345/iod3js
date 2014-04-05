@@ -306,7 +306,7 @@ idLangDict::GetString
 ////		return true;
 ////	}
 
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < c; i++ ) {
 ////		if ( isalpha( str[i] ) ) {
 ////			break;

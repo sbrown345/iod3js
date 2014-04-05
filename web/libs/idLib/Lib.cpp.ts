@@ -471,7 +471,7 @@ function LittleFloat( /*float*/ l: number): number { return l/*return _LittleFlo
 //// Reverses the bitfield of size elsize.
 //// ===================================================================== */
 ////void RevBitFieldSwap( void *bp, int elsize) {
-////	int i;
+////	var/*int*/i:number;
 ////	unsigned char *p, t, v;
 	
 ////	LittleRevBytes( bp, elsize, 1 );

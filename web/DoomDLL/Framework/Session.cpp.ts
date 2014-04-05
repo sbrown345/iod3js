@@ -337,7 +337,7 @@ SESSION LOCAL
 //===============
 //*/
 //void idSessionLocal::Shutdown() {
-//	int i;
+//	var/*int*/i:number;
 //
 //	if ( this.aviCaptureMode ) {
 //		EndAVICapture();
@@ -492,7 +492,7 @@ idSessionLocal.prototype.ShowLoadingGui = function ( ): void {
 //================
 //*/
 //static idStr FindUnusedFileName( const char *format ) {
-//	int i;
+//	var/*int*/i:number;
 //	char	filename[1024];
 //
 //	for ( i = 0 ; i < 999 ; i++ ) {
@@ -1786,7 +1786,7 @@ todoThrow()
 //===============
 //*/
 //void idSessionLocal::ScrubSaveGameFileName( idStr &saveFileName ) const {
-//	int i;
+//	var/*int*/i:number;
 //	idStr inFileName;
 //
 //	inFileName = saveFileName;
@@ -1825,7 +1825,7 @@ idSessionLocal.prototype.SaveGame = function (saveName: string, autosave = false
 //	common.Printf( "Dedicated servers cannot save games.\n" );
 //	return false;
 //#else
-//	int i;
+//	var/*int*/i:number;
 //	idStr gameFile, previewFile, descriptionFile, mapName;
 //
 //	if ( !this.mapSpawned ) {
@@ -1971,7 +1971,7 @@ idSessionLocal.prototype.SaveGame = function (saveName: string, autosave = false
 //	common.Printf( "Dedicated servers cannot load games.\n" );
 //	return false;
 //#else
-//	int i;
+//	var/*int*/i:number;
 //	idStr in, loadFile, saveMap, gamename;
 //
 //	if ( IsMultiplayer() ) {
@@ -2656,7 +2656,7 @@ idSessionLocal.prototype.UpdateScreen = function ( outOfSequence: boolean= true 
 //	}
 //
 //	int	gameTicsToRun = latchedTicNumber - lastGameTic;
-//	int i;
+//	var/*int*/i:number;
 //	for ( i = 0 ; i < gameTicsToRun ; i++ ) {
 //		RunGameTic();
 //		if ( !this.mapSpawned ) {
@@ -3088,7 +3088,7 @@ idSessionLocal.prototype.GetLocalClientNum = function ( ): number /*int*/ {
 //	offline_valid[ 0 ] = offline_valid[ 1 ] = true;
 //	for( i_key = 0; i_key < imax; i_key++ ) {
 //		// check that the characters are from the valid set
-//		int i;
+//		var/*int*/i:number;
 //		for ( i = 0; i < CDKEY_BUF_LEN - 1; i++ ) {
 //			if ( !strchr( CDKEY_DIGITS, lkey[i_key][i] ) ) {
 //				offline_valid[ i_key ] = false;
@@ -3141,7 +3141,7 @@ idSessionLocal.prototype.GetLocalClientNum = function ( ): number /*int*/ {
 //===============
 //*/
 //bool idSessionLocal::CDKeysAreValid( bool strict ) {
-//	int i;
+//	var/*int*/i:number;
 //	bool emitAuth = false;
 //
 //	if ( cdkey_state == CDKEY_UNKNOWN ) {

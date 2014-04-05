@@ -5030,8 +5030,8 @@ so it can perform tab completion
 // make sure to change script/doom_defs.script if you add any channels, or change their order
 //
 enum gameSoundChannel_t{
-	SND_CHANNEL_ANY = SCHANNEL_ANY,
-	SND_CHANNEL_VOICE = SCHANNEL_ONE,
+	SND_CHANNEL_ANY = 0/*SCHANNEL_ANY*/,
+	SND_CHANNEL_VOICE = 1/* = SCHANNEL_ONE*/,
 	SND_CHANNEL_VOICE2,
 	SND_CHANNEL_BODY,
 	SND_CHANNEL_BODY2,

@@ -114,7 +114,7 @@ class idAsyncServer {
 //==================
 //*/
 //idAsyncServer::idAsyncServer( ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	active = false;
 //	realTime = 0;
@@ -182,7 +182,7 @@ class idAsyncServer {
 //==================
 //*/
 //void idAsyncServer::ClosePort( ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	serverPort.Close();
 //	for ( i = 0; i < MAX_CHALLENGES; i++ ) {
@@ -709,7 +709,7 @@ idAsyncServer::IsClientInGame
 //==================
 //*/
 //void idAsyncServer::InitClient( int clientNum, int clientId, int clientRate ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	// clear the user info
 //	sessLocal.mapSpawnData.userInfo[ clientNum ].Clear();	// always start with a clean base
@@ -1681,7 +1681,7 @@ idAsyncServer::IsClientInGame
 //==================
 //*/
 //int idAsyncServer::ValidateChallenge( const netadr_t from, int challenge, int clientId ) {
-//	int i;
+//	var/*int*/i:number;
 //	for ( i = 0; i < MAX_ASYNC_CLIENTS; i++ ) {
 //		const serverClient_t &client = clients[i];
 //
@@ -2151,7 +2151,7 @@ idAsyncServer::IsClientInGame
 //===============
 //*/
 //void idAsyncServer::PrintLocalServerInfo( ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	common->Printf( "server '%s' IP = %s\nprotocol %d.%d OS mask 0x%x\n", 
 //					sessLocal.mapSpawnData.serverInfo.GetString( "si_name" ),
@@ -2691,7 +2691,7 @@ idAsyncServer::PacifierUpdate
 //		stats_max_index = stats_current;
 //	} else if ( stats_current == stats_max_index ) {
 //		// find the new max
-//		int i;
+//		var/*int*/i:number;
 //		stats_max = 0;
 //		for ( i = 0; i < stats_numsamples ; i++ ) {
 //			if ( stats_outrate[ i ] > stats_max ) {

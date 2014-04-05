@@ -577,7 +577,7 @@
 //	if ( numIndexes != 4 ) {
 //		return;
 //	}
-//	int i;
+//	var/*int*/i:number;
 //	// calculate vector directions
 //	for ( i = 0 ; i < 4 ; i++ ) {
 //		ac[i].xyz = tri.verts[ indexes[i] ].xyz;

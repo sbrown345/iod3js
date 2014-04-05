@@ -209,7 +209,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////void idPhysics_StaticMulti::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile.WriteObject( self );
 ////
@@ -292,7 +292,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////void idPhysics_StaticMulti::SetClipModel( idClipModel *model, float density, int id, bool freeOld ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	assert( self );
 ////
@@ -362,7 +362,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////void idPhysics_StaticMulti::SetContents( int contents, int id ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( id >= 0 && id < clipModels.Num() ) {
 ////		if ( clipModels[id] ) {
@@ -422,7 +422,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////const idBounds &idPhysics_StaticMulti::GetBounds( int id ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	static idBounds bounds;
 ////
 ////	if ( id >= 0 && id < clipModels.Num() ) {
@@ -455,7 +455,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////const idBounds &idPhysics_StaticMulti::GetAbsBounds( int id ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	static idBounds absBounds;
 ////
 ////	if ( id >= 0 && id < clipModels.Num() ) {
@@ -481,7 +481,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////bool idPhysics_StaticMulti::Evaluate( int timeStepMSec, int endTimeMSec ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////
@@ -679,7 +679,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////void idPhysics_StaticMulti::Translate( const idVec3 &translation, int id ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( id >= 0 && id < clipModels.Num() ) {
 ////		current[id].localOrigin += translation;
@@ -706,7 +706,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////void idPhysics_StaticMulti::Rotate( const idRotation &rotation, int id ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////
@@ -889,7 +889,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////void idPhysics_StaticMulti::DisableClip( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < clipModels.Num(); i++ ) {
 ////        if ( clipModels[i] ) {
@@ -904,7 +904,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////void idPhysics_StaticMulti::EnableClip( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < clipModels.Num(); i++ ) {
 ////		if ( clipModels[i] ) {
@@ -919,7 +919,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////void idPhysics_StaticMulti::UnlinkClip( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < clipModels.Num(); i++ ) {
 ////        if ( clipModels[i] ) {
@@ -934,7 +934,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////void idPhysics_StaticMulti::LinkClip( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < clipModels.Num(); i++ ) {
 ////		if ( clipModels[i] ) {
@@ -1055,7 +1055,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////void idPhysics_StaticMulti::SetMaster( idEntity *master, const bool orientated ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////
@@ -1123,7 +1123,7 @@ class idPhysics_StaticMulti extends idPhysics {
 ////================
 ////*/
 ////void idPhysics_StaticMulti::WriteToSnapshot( idBitMsgDelta &msg ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	idCQuat quat, localQuat;
 ////
 ////	msg.WriteByte( current.Num() );

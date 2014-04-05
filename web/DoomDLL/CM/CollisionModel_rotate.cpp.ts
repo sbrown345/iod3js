@@ -922,7 +922,7 @@
 ////================
 ////*/
 ////void idCollisionModelManagerLocal::RotateTrmVertexThroughPolygon( cm_traceWork_t *tw, cm_polygon_t *poly, cm_trmVertex_t *v, int vertexNum ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float tanHalfAngle;
 ////	idVec3 endDir, collisionPoint;
 ////	idPluecker pl;
@@ -1210,7 +1210,7 @@
 ////================
 ////*/
 ////void idCollisionModelManagerLocal::BoundsForRotation( const idVec3 &origin, const idVec3 &axis, start:idVec3, end:idVec3, idBounds &bounds ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float radiusSqr;
 ////	idVec3 v1, v2;
 ////

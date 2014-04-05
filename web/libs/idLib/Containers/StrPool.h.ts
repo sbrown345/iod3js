@@ -197,7 +197,7 @@ class idStrPool {
 	////================
 	////*/
 	////ID_INLINE void idStrPool::Clear( void ) {
-	////	int i;
+	////	var/*int*/i:number;
 	////
 	////	for ( i = 0; i < this.pool.Num(); i++ ) {
 	////		this.pool[i].numUsers = 0;
@@ -212,8 +212,8 @@ class idStrPool {
 	////================
 	////*/
 	////ID_INLINE size_t idStrPool::Allocated( void ) const {
-	////	int i;
-	////	size_t size;
+	////	var/*int*/i:number;
+	////	var/*size_t */size:number;
 	////
 	////	size = this.pool.Allocated() + this.poolHash.Allocated();
 	////	for ( i = 0; i < this.pool.Num(); i++ ) {
@@ -228,8 +228,8 @@ class idStrPool {
 	////================
 	////*/
 	////ID_INLINE size_t idStrPool::Size( void ) const {
-	////	int i;
-	////	size_t size;
+	////	var/*int*/i;
+	////	var/*size_t */size:number;
 	////
 	////	size = this.pool.Size() + this.poolHash.Size();
 	////	for ( i = 0; i < this.pool.Num(); i++ ) {

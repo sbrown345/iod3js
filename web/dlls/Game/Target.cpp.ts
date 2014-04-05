@@ -663,7 +663,7 @@ idTarget_FadeEntity.Type = new idTypeInfo("idTarget_FadeEntity", "idTarget",
 ////*/
 ////void idTarget_FadeEntity::Event_Activate( activator:idEntity ) {
 ////	var ent:idEntity
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( !targets.Num() ) {
 ////		return;
@@ -761,7 +761,7 @@ idTarget_LightFadeIn.Type = new idTypeInfo("idTarget_LightFadeIn", "idTarget",
 ////void idTarget_LightFadeIn::Event_Activate( activator:idEntity ) {
 ////	var ent:idEntity
 ////	idLight *light;
-////	int i;
+////	var/*int*/i:number;
 ////	var /*float*/time:number;
 ////
 ////	if ( !targets.Num() ) {
@@ -825,7 +825,7 @@ idTarget_LightFadeOut.Type = new idTypeInfo("idTarget_LightFadeOut", "idTarget",
 ////void idTarget_LightFadeOut::Event_Activate( activator:idEntity ) {
 ////	var ent:idEntity
 ////	idLight *light;
-////	int i;
+////	var/*int*/i:number;
 ////	var /*float*/time:number;
 ////
 ////	if ( !targets.Num() ) {
@@ -1108,7 +1108,7 @@ idTarget_SetInfluence.Type = new idTypeInfo("idTarget_SetInfluence", "idTarget",
 ////================
 ////*/
 ////void idTarget_SetInfluence::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile->WriteInt( lightList.Num() );
 ////	for( i = 0; i < lightList.Num(); i++ ) {
@@ -1621,7 +1621,7 @@ idTarget_SetKeyVal.Type = new idTypeInfo("idTarget_SetKeyVal", "idTarget",
 ////================
 ////*/
 ////void idTarget_SetKeyVal::Event_Activate( activator:idEntity ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idStr key, val;
 ////	var ent:idEntity
 ////	const idKeyValue *kv;
@@ -1840,7 +1840,7 @@ idTarget_LockDoor.Type = new idTypeInfo("idTarget_LockDoor", "idTarget",
 ////================
 ////*/
 ////void idTarget_LockDoor::Event_Activate( activator:idEntity ) {
-////	int i;
+////	var/*int*/i:number;
 ////	var ent:idEntity
 ////	int lock;
 ////
@@ -1964,7 +1964,7 @@ idTarget_EnableLevelWeapons.Type = new idTypeInfo("idTarget_EnableLevelWeapons",
 ////================
 ////*/
 ////void idTarget_EnableLevelWeapons::Event_Activate( activator:idEntity ) {
-////	int i;
+////	var/*int*/i:number;
 ////	const char *weap;
 ////
 ////	gameLocal.world->spawnArgs.SetBool( "no_Weapons", spawnArgs.GetBool( "disable" ) );

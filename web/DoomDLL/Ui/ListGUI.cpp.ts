@@ -72,7 +72,7 @@ class idListGUI extends idList<idStr> /*, public idListGUI */ {
 ////====================
 ////*/
 ////void idListGUILocal::StateChanged() {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( !m_stateUpdates ) {
 ////		return;

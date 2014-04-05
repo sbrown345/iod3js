@@ -146,7 +146,7 @@ idSessionLocal.prototype.SetGUI = function ( gui: idUserInterface, handle: ( str
 ////===============
 ////*/
 ////void idSessionLocal::GetSaveGameList( idStrList &fileList, idList<fileTIME_T> &fileTimes ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idFileList *files;
 ////
 ////	// NOTE: no fs_game_base for savegames
@@ -182,7 +182,7 @@ idSessionLocal.prototype.SetGUI = function ( gui: idUserInterface, handle: ( str
 ////===============
 ////*/
 ////void idSessionLocal::SetSaveGameGuiVars( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idStr name;
 ////	idStrList fileList;
 ////	idList<fileTIME_T> fileTimes;
@@ -226,7 +226,7 @@ idSessionLocal.prototype.SetGUI = function ( gui: idUserInterface, handle: ( str
 ////===============
 ////*/
 ////void idSessionLocal::SetModsMenuGuiVars( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idModList *list = fileSystem.ListMods();
 ////
 ////	modsList.SetNum( list.GetNumMods() );
@@ -519,7 +519,7 @@ idSessionLocal.prototype.SetGUI = function ( gui: idUserInterface, handle: ( str
 ////*/
 ////void idSessionLocal::HandleIntroMenuCommands( const char *menuCommand ) {
 ////	// execute the command from the menu
-////	int i;
+////	var/*int*/i:number;
 ////	idCmdArgs args;
 ////
 ////	args.TokenizeString( menuCommand, false );
@@ -1060,7 +1060,7 @@ idSessionLocal.prototype.SetGUI = function ( gui: idUserInterface, handle: ( str
 ////*/
 ////void idSessionLocal::HandleChatMenuCommands( const char *menuCommand ) {
 ////	// execute the command from the menu
-////	int i;
+////	var/*int*/i:number;
 ////	idCmdArgs args;
 ////
 ////	args.TokenizeString( menuCommand, false );
@@ -1548,7 +1548,7 @@ idSessionLocal.prototype.SetGUI = function ( gui: idUserInterface, handle: ( str
 ////			fileSystem.CloseFile( file );
 ////		}
 ////
-////		int i;
+////		var/*int*/i:number;
 ////		idStr str, noteNum, shotName, workName, fileName = "viewnotes/";
 ////		idStrList fileList;
 ////

@@ -39,7 +39,7 @@
 ////============
 ////*/
 ////void idAASLocal::DrawCone( const idVec3 &origin, const idVec3 &dir, float radius, const idVec4 &color ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	idMat3 axis;
 ////	idVec3 center, top, p, lastp;
 ////

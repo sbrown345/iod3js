@@ -79,7 +79,7 @@ idMultiModelAF.Type = new idTypeInfo( "idMultiModelAF", "idEntity",
 ////================
 ////*/
 ////idMultiModelAF::~idMultiModelAF( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < modelDefHandles.Num(); i++ ) {
 ////		if ( modelDefHandles[i] != -1 ) {
@@ -106,7 +106,7 @@ idMultiModelAF.Type = new idTypeInfo( "idMultiModelAF", "idEntity",
 ////================
 ////*/
 ////void idMultiModelAF::Present( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	// don't present to the renderer if the entity hasn't changed
 ////	if ( !( thinkFlags & TH_UPDATEVISUALS ) ) {
@@ -186,7 +186,7 @@ idChain.Type = new idTypeInfo("idChain", "idMultiModelAF",
 ////================
 ////*/
 ////void idChain::BuildChain( const idStr &name, const idVec3 &origin, float linkLength, float linkWidth, float density, int numLinks, bool bindToWorld ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float halfLinkLength = linkLength * 0.5f;
 ////	idTraceModel trm;
 ////	idClipModel *clip;
@@ -1199,7 +1199,7 @@ idAFEntity_Gibbable.Type = new idTypeInfo("idAFEntity_Gibbable", "idAFEntity_Bas
 ////=====================
 ////*/
 ////void idAFEntity_Gibbable::SpawnGibs( const idVec3 &dir, const char *damageDefName ) {
-////	int i;
+////	var/*int*/i:number;
 ////	bool gibNonSolid;
 ////	idVec3 entityCenter, velocity;
 ////	idList<idEntity *> list;
@@ -1889,7 +1889,7 @@ idAFEntity_VehicleSimple.Type = new idTypeInfo("idAFEntity_VehicleSimple", "idAF
 ////================
 ////*/
 ////idAFEntity_VehicleSimple::idAFEntity_VehicleSimple( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < 4; i++ ) {
 ////		suspension[i] = NULL;
 ////	}
@@ -1919,7 +1919,7 @@ idAFEntity_VehicleSimple.Type = new idTypeInfo("idAFEntity_VehicleSimple", "idAF
 ////	};
 ////	static idVec3 wheelPoly[4] = { idVec3( 2, 2, 0 ), idVec3( 2, -2, 0 ), idVec3( -2, -2, 0 ), idVec3( -2, 2, 0 ) };
 ////
-////	int i;
+////	var/*int*/i:number;
 ////	idVec3 origin;
 ////	idMat3 axis;
 ////	idTraceModel trm;
@@ -1962,7 +1962,7 @@ idAFEntity_VehicleSimple.Type = new idTypeInfo("idAFEntity_VehicleSimple", "idAF
 ////================
 ////*/
 ////void idAFEntity_VehicleSimple::Think( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float force = 0.0f, velocity = 0.0f, steerAngle = 0.0f;
 ////	idVec3 origin;
 ////	idMat3 axis;
@@ -2104,7 +2104,7 @@ idAFEntity_VehicleFourWheels.Type = new idTypeInfo("idAFEntity_VehicleFourWheels
 ////================
 ////*/
 ////idAFEntity_VehicleFourWheels::idAFEntity_VehicleFourWheels( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < 4; i++ ) {
 ////		wheels[i]		= NULL;
@@ -2121,7 +2121,7 @@ idAFEntity_VehicleFourWheels.Type = new idTypeInfo("idAFEntity_VehicleFourWheels
 ////================
 ////*/
 ////void idAFEntity_VehicleFourWheels::Spawn( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	static const char *wheelBodyKeys[] = {
 ////		"wheelBodyFrontLeft",
 ////		"wheelBodyFrontRight",
@@ -2181,7 +2181,7 @@ idAFEntity_VehicleFourWheels.Type = new idTypeInfo("idAFEntity_VehicleFourWheels
 ////================
 ////*/
 ////void idAFEntity_VehicleFourWheels::Think( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float force = 0.0f, velocity = 0.0f, steerAngle = 0.0f;
 ////	idVec3 origin;
 ////	idMat3 axis;
@@ -2301,7 +2301,7 @@ idAFEntity_VehicleSixWheels.Type = new idTypeInfo("idAFEntity_VehicleSixWheels",
 ////================
 ////*/
 ////idAFEntity_VehicleSixWheels::idAFEntity_VehicleSixWheels( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < 6; i++ ) {
 ////		wheels[i]		= NULL;
@@ -2320,7 +2320,7 @@ idAFEntity_VehicleSixWheels.Type = new idTypeInfo("idAFEntity_VehicleSixWheels",
 ////================
 ////*/
 ////void idAFEntity_VehicleSixWheels::Spawn( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	static const char *wheelBodyKeys[] = {
 ////		"wheelBodyFrontLeft",
 ////		"wheelBodyFrontRight",
@@ -2386,7 +2386,7 @@ idAFEntity_VehicleSixWheels.Type = new idTypeInfo("idAFEntity_VehicleSixWheels",
 ////================
 ////*/
 ////void idAFEntity_VehicleSixWheels::Think( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float force = 0.0f, velocity = 0.0f, steerAngle = 0.0f;
 ////	idVec3 origin;
 ////	idMat3 axis;
@@ -2704,7 +2704,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////================
 ////*/
 ////void idAFEntity_ClawFourFingers::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < 4; i++ ) {
 ////		fingers[i].Save( savefile );
@@ -2717,7 +2717,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////================
 ////*/
 ////void idAFEntity_ClawFourFingers::Restore( idRestoreGame *savefile ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < 4; i++ ) {
 ////		fingers[i] = static_cast<idAFConstraint_Hinge *>(af.GetPhysics().GetConstraint( clawConstraintNames[i] ));
@@ -2734,7 +2734,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////================
 ////*/
 ////void idAFEntity_ClawFourFingers::Spawn( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	LoadAF();
 ////
@@ -2760,7 +2760,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////================
 ////*/
 ////void idAFEntity_ClawFourFingers::Event_SetFingerAngle( /*float*/angle:number ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < 4; i++ ) {
 ////		fingers[i].SetSteerAngle( angle );
@@ -2775,7 +2775,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////================
 ////*/
 ////void idAFEntity_ClawFourFingers::Event_StopFingers( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < 4; i++ ) {
 ////		fingers[i].SetSteerAngle( fingers[i].GetAngle() );
@@ -2911,7 +2911,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////} jointTransformData_t;
 ////
 ////static bool GetJointTransform( void *model, const idJointMat *frame, const char *jointName, idVec3 &origin, idMat3 &axis ) {
-////	int i;
+////	var/*int*/i:number;
 ////	jointTransformData_t *data = reinterpret_cast<jointTransformData_t *>(model);
 ////
 ////	for ( i = 0; i < data.ent.numJoints; i++ ) {

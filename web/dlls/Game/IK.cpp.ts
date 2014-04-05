@@ -236,7 +236,7 @@
 ////================
 ////*/
 ////idIK_Walk::idIK_Walk() {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	initialized = false;
 ////	footModel = NULL;
@@ -295,7 +295,7 @@
 ////================
 ////*/
 ////void idIK_Walk::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	
 ////	idIK::Save( savefile );
 ////
@@ -358,7 +358,7 @@
 ////================
 ////*/
 ////void idIK_Walk::Restore( idRestoreGame *savefile ) {
-////	int i;
+////	var/*int*/i:number;
 ////	
 ////	idIK::Restore( savefile );
 ////
@@ -421,7 +421,7 @@
 ////================
 ////*/
 ////bool idIK_Walk::Init( idEntity *self, const char *anim, const idVec3 &modelOffset ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float footSize;
 ////	idVec3 verts[4];
 ////	idTraceModel trm;
@@ -777,7 +777,7 @@
 ////================
 ////*/
 ////void idIK_Walk::ClearJointMods( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( !self || !ik_activate ) {
 ////		return;
@@ -847,7 +847,7 @@
 ////================
 ////*/
 ////idIK_Reach::idIK_Reach() {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	initialized = false;
 ////	numArms = 0;
@@ -880,7 +880,7 @@
 ////================
 ////*/
 ////void idIK_Reach::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	idIK::Save( savefile );
 ////
 ////	savefile->WriteInt( numArms );
@@ -916,7 +916,7 @@
 ////================
 ////*/
 ////void idIK_Reach::Restore( idRestoreGame *savefile ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idIK::Restore( savefile );
 ////
 ////	savefile->ReadInt( numArms );
@@ -952,7 +952,7 @@
 ////================
 ////*/
 ////bool idIK_Reach::Init( idEntity *self, const char *anim, const idVec3 &modelOffset ) {
-////	int i;
+////	var/*int*/i:number;
 ////	const char *jointName;
 ////	idTraceModel trm;
 ////	idVec3 dir, handOrigin, elbowOrigin, shoulderOrigin, dirOrigin;
@@ -1049,7 +1049,7 @@
 ////================
 ////*/
 ////void idIK_Reach::Evaluate( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idVec3 modelOrigin, shoulderOrigin, elbowOrigin, handOrigin, shoulderDir, elbowDir;
 ////	idMat3 modelAxis, axis;
 ////	idMat3 shoulderAxis[MAX_ARMS], elbowAxis[MAX_ARMS];
@@ -1111,7 +1111,7 @@
 ////================
 ////*/
 ////void idIK_Reach::ClearJointMods( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( !self || !ik_activate ) {
 ////		return;

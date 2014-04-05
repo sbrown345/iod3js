@@ -1072,7 +1072,7 @@
 
 ////int getI4( idFile *fp )
 ////{
-////   int i;
+////   var/*int*/i:number;
 
 ////   if ( flen == FLEN_ERROR ) return 0;
 ////   if ( 4 != fp.Read( &i, 4 )) {
@@ -1118,7 +1118,7 @@
 
 ////unsigned int getU4( idFile *fp )
 ////{
-////   unsigned int i;
+////   unsigned var/*int*/i:number;
 
 ////   if ( flen == FLEN_ERROR ) return 0;
 ////   if ( 4 != fp.Read( &i, 4 )) {
@@ -1134,7 +1134,7 @@
 ////int getVX( idFile *fp )
 ////{
 ////    byte c;
-////   int i;
+////   var/*int*/i:number;
 
 ////   if ( flen == FLEN_ERROR ) return 0;
 
@@ -1242,7 +1242,7 @@
 
 ////int sgetI1( unsigned char **bp )
 ////{
-////   int i;
+////   var/*int*/i:number;
 
 ////   if ( flen == FLEN_ERROR ) return 0;
 ////   i = **bp;
@@ -1268,7 +1268,7 @@
 
 ////int sgetI4( unsigned char **bp )
 ////{
-////   int i;
+////   var/*int*/i:number;
 
 ////   if ( flen == FLEN_ERROR ) return 0;
 ////   memcpy( &i, *bp, 4 );
@@ -1306,7 +1306,7 @@
 
 ////unsigned int sgetU4( unsigned char **bp )
 ////{
-////   unsigned int i;
+////   unsigned var/*int*/i:number;
 
 ////   if ( flen == FLEN_ERROR ) return 0;
 ////   memcpy( &i, *bp, 4 );
@@ -1320,7 +1320,7 @@
 ////int sgetVX( unsigned char **bp )
 ////{
 ////   unsigned char *buf = *bp;
-////   int i;
+////   var/*int*/i:number;
 
 ////   if ( flen == FLEN_ERROR ) return 0;
 
@@ -1735,7 +1735,7 @@
 ////{
 ////   lwEnvelope *env;
 ////   lwKey *key0, *key1;
-////   int i;
+////   var/*int*/i:number;
 
 ////   for ( i = 0; i < 3; i++ ) {
 ////      env = (lwEnvelope*)Mem_ClearedAlloc( sizeof( lwEnvelope ) );
@@ -2347,7 +2347,7 @@
 
 ////void lwFreePoints( lwPointList *point )
 ////{
-////   int i;
+////   var/*int*/i:number;
 
 ////   if ( point ) {
 ////      if ( point.pt ) {
@@ -2478,7 +2478,7 @@
 
 ////int lwAllocPolygons( lwPolygonList *plist, int npols, int nverts )
 ////{
-////	int i;
+////	var/*int*/i:number;
 
 ////	plist.offset = plist.count;
 ////	plist.count += npols;
@@ -2772,7 +2772,7 @@
 
 ////void lwFreeTags( lwTagList *tlist )
 ////{
-////	int i;
+////	var/*int*/i:number;
 
 ////	if ( tlist ) {
 ////		if ( tlist.tag ) {

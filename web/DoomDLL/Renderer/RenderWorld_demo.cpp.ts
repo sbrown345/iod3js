@@ -327,7 +327,7 @@
 //================
 //*/
 //void	idRenderWorldLocal::WriteRenderView( const renderView_t *renderView ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	// only the main renderWorld writes stuff to demos, not the wipes or
 //	// menu renders

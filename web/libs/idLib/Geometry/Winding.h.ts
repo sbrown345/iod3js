@@ -143,7 +143,7 @@ class idWinding {
 	}
 
 //ID_INLINE idWinding::idWinding( const idVec3 *verts, const int n ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	this.numPoints = this.allocedSize = 0;
 //	this.p = NULL;
@@ -171,7 +171,7 @@ class idWinding {
 //}
 //
 //ID_INLINE idWinding::idWinding( const idWinding &winding ) {
-//	int i;
+//	var/*int*/i:number;
 //	if ( !this.EnsureAlloced( winding.GetNumPoints() ) ) {
 //		this.numPoints = 0;
 //		return;
@@ -188,7 +188,7 @@ class idWinding {
 //}
 //
 //ID_INLINE idWinding &idWinding::operator=( const idWinding &winding ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	if ( !this.EnsureAlloced( winding.numPoints ) ) {
 //		this.numPoints = 0;
@@ -844,7 +844,7 @@ idWinding::ReverseSelf
 //=============
 //*/
 //float idWinding::GetArea() const {
-//	int i;
+//	var/*int*/i:number;
 //	idVec3 d1, d2, cross;
 //	float total;
 //
@@ -864,7 +864,7 @@ idWinding::ReverseSelf
 //=============
 //*/
 //float idWinding::GetRadius(const idVec3 &center) const {
-//	int i;
+//	var/*int*/i:number;
 //	float radius, r;
 //	idVec3 dir;
 //
@@ -1369,7 +1369,7 @@ idWinding::GetBounds
 //=============
 //*/
 //void idWinding::InsertPoint(const idVec3 &point, int spot) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	if (spot > this.numPoints) {
 //		idLib::common.FatalError("idWinding::insertPoint: spot > this.numPoints");
@@ -1393,7 +1393,7 @@ idWinding::GetBounds
 //=============
 //*/
 //bool idWinding::InsertPointIfOnEdge(const idVec3 &point, const idPlane &plane, const float epsilon) {
-//	int i;
+//	var/*int*/i:number;
 //	float dist, dot;
 //	idVec3 normal;
 //
@@ -1492,7 +1492,7 @@ idWinding::IsHuge
 //=============
 //*/
 //void idWinding::Print() const {
-//	int i;
+//	var/*int*/i:number;
 //
 //	for (i = 0; i < this.numPoints; i++) {
 //		idLib::common.Printf("(%5.1f, %5.1f, %5.1f)\n", this.p[i][0], this.p[i][1], this.p[i][2]);
@@ -1581,7 +1581,7 @@ idWinding::IsHuge
 //#define WCONVEX_EPSILON		0.2f
 //
 //bool idWinding::PlanesConcave(const idWinding &w2, const idVec3 &normal1, const idVec3 &normal2, float dist1, float dist2) const {
-//	int i;
+//	var/*int*/i:number;
 //
 //	// check if one of the points of winding 1 is at the back of the plane of winding 2
 //	for (i = 0; i < this.numPoints; i++) {
@@ -1605,7 +1605,7 @@ idWinding::IsHuge
 //=============
 //*/
 //bool idWinding::PointInside(const idVec3 &normal, const idVec3 &point, const float epsilon) const {
-//	int i;
+//	var/*int*/i:number;
 //	idVec3 dir, n, pointvec;
 //
 //	for (i = 0; i < this.numPoints; i++) {
@@ -1667,7 +1667,7 @@ idWinding::IsHuge
 //=============
 //*/
 //bool idWinding::RayIntersection(const idPlane &windingPlane, start:idVec3, const idVec3 &dir, float &scale, bool backFaceCull) const {
-//	int i;
+//	var/*int*/i:number;
 //	bool side, lastside = false;
 //	idPluecker pl1, pl2;
 //
@@ -1904,7 +1904,7 @@ idFixedWinding::Split
 //}
 //
 //ID_INLINE idFixedWinding::idFixedWinding( const idVec3 *verts, const int n ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	this.numPoints = 0;
 //	this.p = this.data;
@@ -1935,7 +1935,7 @@ idFixedWinding::Split
 //}
 //
 //ID_INLINE idFixedWinding::idFixedWinding( const idWinding &winding ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	this.p = this.data;
 //	this.allocedSize = MAX_POINTS_ON_WINDING;
@@ -1950,7 +1950,7 @@ idFixedWinding::Split
 //}
 //
 //ID_INLINE idFixedWinding::idFixedWinding( const idFixedWinding &winding ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	this.p = this.data;
 //	this.allocedSize = MAX_POINTS_ON_WINDING;

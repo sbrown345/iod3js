@@ -92,8 +92,8 @@ class idUserInterface {
 //	virtual int					GetStateInt( varName:string, const char* defaultString = "0" ) const = 0;
 //	virtual float				GetStateFloat( varName:string, const char* defaultString = "0" ) const = 0;
 //
-//								// The state has changed and the gui needs to update from the state idDict.
-//	virtual void				StateChanged( /*int*/time:number, bool redraw = false ) = 0;
+	// The state has changed and the gui needs to update from the state idDict.
+	StateChanged( /*int*/time: number, redraw = false): void { throw "placeholder"; }
 //
 //								// Activated the gui.
 //	virtual const char *		Activate( bool activate, /*int*/time:number ) = 0;

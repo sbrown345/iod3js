@@ -737,7 +737,7 @@ GL_CheckErrors
 ////==============
 ////*/
 ////static void R_ListModes_f( args:idCmdArgs ) {
-////	int i;
+////	var/*int*/i:number;
 
 ////	common.Printf( "\n" );
 ////	for ( i = 0; i < s_numVidModes; i++ ) {

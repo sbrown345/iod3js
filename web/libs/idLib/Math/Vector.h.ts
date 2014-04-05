@@ -2247,7 +2247,7 @@ class idVec6 {
 ////}
 
 ////ID_INLINE idVecX idVecX::operator-() const {
-////	int i;
+////	var/*int*/i:number;
 ////	idVecX m;
 
 ////	m.SetTempSize( size );
@@ -2276,7 +2276,7 @@ class idVec6 {
 ////#ifdef VECX_SIMD
 ////	SIMDProcessor.Add16( m.p, p, a.p, size );
 ////#else
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < size; i++ ) {
 ////		m.p[i] = p[i] + a.p[i];
 ////	}
@@ -2292,7 +2292,7 @@ class idVec6 {
 ////#ifdef VECX_SIMD
 ////	SIMDProcessor.Sub16( m.p, p, a.p, size );
 ////#else
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < size; i++ ) {
 ////		m.p[i] = p[i] - a.p[i];
 ////	}
@@ -2305,7 +2305,7 @@ class idVec6 {
 ////#ifdef VECX_SIMD
 ////	SIMDProcessor.AddAssign16( p, a.p, size );
 ////#else
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < size; i++ ) {
 ////		p[i] += a.p[i];
 ////	}
@@ -2319,7 +2319,7 @@ class idVec6 {
 ////#ifdef VECX_SIMD
 ////	SIMDProcessor.SubAssign16( p, a.p, size );
 ////#else
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < size; i++ ) {
 ////		p[i] -= a.p[i];
 ////	}
@@ -2335,7 +2335,7 @@ class idVec6 {
 ////#ifdef VECX_SIMD
 ////	SIMDProcessor.Mul16( m.p, p, a, size );
 ////#else
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < size; i++ ) {
 ////		m.p[i] = p[i] * a;
 ////	}
@@ -2347,7 +2347,7 @@ class idVec6 {
 ////#ifdef VECX_SIMD
 ////	SIMDProcessor.MulAssign16( p, a, size );
 ////#else
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < size; i++ ) {
 ////		p[i] *= a;
 ////	}
@@ -2371,7 +2371,7 @@ class idVec6 {
 ////}
 
 ////ID_INLINE float idVecX::operator*( const idVecX &a ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	float sum = 0.0;
 
 ////	assert( size == a.size );
@@ -2382,7 +2382,7 @@ class idVec6 {
 ////}
 
 ////ID_INLINE bool idVecX::Compare( const idVecX &a ) const {
-////	int i;
+////	var/*int*/i:number;
 
 ////	assert( size == a.size );
 ////	for ( i = 0; i < size; i++ ) {
@@ -2394,7 +2394,7 @@ class idVec6 {
 ////}
 
 ////ID_INLINE bool idVecX::Compare( const idVecX &a, const float epsilon ) const {
-////	int i;
+////	var/*int*/i:number;
 
 ////	assert( size == a.size );
 ////	for ( i = 0; i < size; i++ ) {
@@ -2491,7 +2491,7 @@ class idVec6 {
 ////}
 
 ////ID_INLINE void idVecX::Random( int seed, float l, float u ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float c;
 ////	idRandom rnd( seed );
 
@@ -2502,7 +2502,7 @@ class idVec6 {
 ////}
 
 ////ID_INLINE void idVecX::Random( int length, int seed, float l, float u ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float c;
 ////	idRandom rnd( seed );
 
@@ -2517,7 +2517,7 @@ class idVec6 {
 ////#ifdef VECX_SIMD
 ////	SIMDProcessor.Negate16( p, size );
 ////#else
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < size; i++ ) {
 ////		p[i] = -p[i];
 ////	}
@@ -2525,7 +2525,7 @@ class idVec6 {
 ////}
 
 ////ID_INLINE void idVecX::Clamp( float min, float max ) {
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < size; i++ ) {
 ////		if ( p[i] < min ) {
 ////			p[i] = min;
@@ -2544,7 +2544,7 @@ class idVec6 {
 ////}
 
 ////ID_INLINE float idVecX::Length( ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	float sum = 0.0;
 
 ////	for ( i = 0; i < size; i++ ) {
@@ -2554,7 +2554,7 @@ class idVec6 {
 ////}
 
 ////ID_INLINE float idVecX::LengthSqr( ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	float sum = 0.0;
 
 ////	for ( i = 0; i < size; i++ ) {
@@ -2564,7 +2564,7 @@ class idVec6 {
 ////}
 
 ////ID_INLINE idVecX idVecX::Normalize( ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	idVecX m;
 ////	float invSqrt, sum = 0.0;
 
@@ -2581,7 +2581,7 @@ class idVec6 {
 
 ////ID_INLINE float idVecX::NormalizeSelf( ) {
 ////	float invSqrt, sum = 0.0;
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < size; i++ ) {
 ////		sum += p[i] * p[i];
 ////	}

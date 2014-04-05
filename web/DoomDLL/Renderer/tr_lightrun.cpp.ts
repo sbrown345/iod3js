@@ -130,7 +130,7 @@
 //	}
 //
 //	float	modulate[3];
-//	int i;
+//	var/*int*/i:number;
 //	for ( i = 0 ; i < 3 ; i++ ) {
 //		modulate[i] = atof( args.Argv( i+1 ) );
 //	}
@@ -325,7 +325,7 @@ function R_CreateEntityRefs ( def: idRenderEntityLocal ): void {
 //====================
 //*/
 //void R_FreeLightDefFrustum( idRenderLightLocal *ldef ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	// free the frustum tris
 //	if ( ldef.frustumTris ) {
@@ -349,7 +349,7 @@ function R_CreateEntityRefs ( def: idRenderEntityLocal ): void {
 //=================
 //*/
 //void R_DeriveLightData( idRenderLightLocal *light ) {
-//	int i;
+//	var/*int*/i:number;
 //
 //	// decide which light shader we are going to use
 //	if ( light.parms.shader ) {

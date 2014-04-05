@@ -98,7 +98,7 @@ idSoundWorldLocal.prototype.Init = function ( renderWorld: idRenderWorld ): void
 ////===============
 ////*/
 ////void idSoundWorldLocal::Shutdown() {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( soundSystemLocal.currentSoundWorld == this ) {
 ////		soundSystemLocal.currentSoundWorld = NULL;
@@ -622,7 +622,7 @@ idSoundWorldLocal::AVIClose
 ===================
 */
 idSoundWorldLocal.prototype.AVIClose = function ( ): void {
-	//int i;
+	//var/*int*/i:number;
 
 	if ( !this.fpa[0] ) {
 		return;

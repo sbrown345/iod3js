@@ -258,7 +258,7 @@ idCollisionModelManagerLocal.prototype.ContentsFromString = function ( $string: 
 ////void idCollisionModelManagerLocal::DrawNodePolygons( cm_model_t *model, cm_node_t *node,
 ////										   const idVec3 &origin, const idMat3 &axis,
 ////										   const idVec3 &viewOrigin, const float radius ) {
-////	int i;
+////	var/*int*/i:number;
 ////	cm_polygon_t *p;
 ////	cm_polygonRef_t *pref;
 ////

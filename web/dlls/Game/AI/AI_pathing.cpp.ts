@@ -123,7 +123,7 @@
 ////============
 ////*/
 ////int PointInsideObstacle( const obstacle_t *obstacles, const int numObstacles, const idVec2 &point ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < numObstacles; i++ ) {
 ////
@@ -502,7 +502,7 @@
 ////============
 ////*/
 ////void DrawPathTree( const pathNode_t *root, const float height ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idVec3 start, end;
 ////	const pathNode_t *node;
 ////
@@ -694,7 +694,7 @@
 ////============
 ////*/
 ////void PrunePathTree( pathNode_t *root, const idVec2 &seekPos ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float bestDist;
 ////	pathNode_t *node, *lastNode, *n, *bestNode;
 ////
@@ -806,7 +806,7 @@
 ////============
 ////*/
 ////float PathLength( idVec2 optimizedPath[MAX_OBSTACLE_PATH], int numPathPoints, const idVec2 &curDir ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float pathLength;
 ////
 ////	// calculate the path length

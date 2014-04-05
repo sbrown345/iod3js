@@ -2144,7 +2144,7 @@ idWeapon.Type = new idTypeInfo("idWeapon", "idAnimatedEntity",
 ////================
 ////*/
 ////const char *idWeapon::GetAmmoNameForNum( ammo_t ammonum ) {
-////	int i;
+////	var/*int*/i:number;
 ////	int num;
 ////	const idDict *ammoDict;
 ////	const idKeyValue *kv;
@@ -2174,7 +2174,7 @@ idWeapon.Type = new idTypeInfo("idWeapon", "idAnimatedEntity",
 ////================
 ////*/
 ////const char *idWeapon::GetAmmoPickupNameForNum( ammo_t ammonum ) {
-////	int i;
+////	var/*int*/i:number;
 ////	int num;
 ////	const idDict *ammoDict;
 ////	const idKeyValue *kv;

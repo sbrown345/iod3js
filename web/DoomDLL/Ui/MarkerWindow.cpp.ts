@@ -151,7 +151,7 @@ class idMarkerWindow extends idWindow {
 ////		gui.GetDesktop().SetChildWinVarVal("markerText", "text", "");
 ////		idRectangle r;
 ////		int c = markerTimes.Num();
-////		int i;
+////		var/*int*/i:number;
 ////		for (i = 0; i < c; i++) {
 ////			markerData_t &md = markerTimes[i];
 ////			if (md.rect.Contains(gui.CursorX(), gui.CursorY())) {
@@ -324,7 +324,7 @@ class idMarkerWindow extends idWindow {
 		todoThrow ( );
 ////	idWindow::Activate(activate, act);
 ////	if (activate) {
-////		int i;
+////		var/*int*/i:number;
 ////		gui.GetDesktop().SetChildWinVarVal("markerText", "text", "");
 ////		imageBuff = (dword*)Mem_Alloc(512*64*4);
 ////		markerTimes.Clear();

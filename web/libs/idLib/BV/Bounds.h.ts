@@ -235,9 +235,9 @@ Zero( ):void {
 	this.b[1][0] = this.b[1][1] = this.b[1][2] = 0;
 }
 
-//ID_INLINE idVec3 idBounds::GetCenter( ) const {
-//	return idVec3( ( this.b[1][0] + this.b[0][0] ) * 0.5, ( this.b[1][1] + this.b[0][1] ) * 0.5, ( this.b[1][2] + this.b[0][2] ) * 0.5 );
-//}
+	GetCenter ( ): idVec3 {
+		return new idVec3( ( this.b[1][0] + this.b[0][0] ) * 0.5, ( this.b[1][1] + this.b[0][1] ) * 0.5, ( this.b[1][2] + this.b[0][2] ) * 0.5 );
+	}
 
 //ID_INLINE float idBounds::GetVolume( ) const {
 //	if ( this.b[0][0] >= this.b[1][0] || this.b[0][1] >= this.b[1][1] || this.b[0][2] >= this.b[1][2] ) {
@@ -642,7 +642,7 @@ idBounds::PlaneSide
 //============
 //*/
 //void idBounds::FromTransformedBounds(const idBounds &bounds, const idVec3 &origin, const idMat3 &axis) {
-//	int i;
+//	var/*int*/i:number;
 //	idVec3 center, extents, rotatedExtents;
 
 //	center = (bounds[0] + bounds[1]) * 0.5;
@@ -678,7 +678,7 @@ idBounds::PlaneSide
 //============
 //*/
 //void idBounds::FromPointTranslation(const idVec3 &point, const idVec3 &translation) {
-//	int i;
+//	var/*int*/i:number;
 
 //	for (i = 0; i < 3; i++) {
 //		if (translation[i] < 0.0) {
@@ -700,7 +700,7 @@ idBounds::PlaneSide
 //============
 //*/
 //void idBounds::FromBoundsTranslation(const idBounds &bounds, const idVec3 &origin, const idMat3 &axis, const idVec3 &translation) {
-//	int i;
+//	var/*int*/i:number;
 
 //	if (axis.IsRotated()) {
 //		FromTransformedBounds(bounds, origin, axis);
@@ -727,7 +727,7 @@ idBounds::PlaneSide
 //================
 //*/
 //idBounds BoundsForPointRotation(start:idVec3, const idRotation &rotation) {
-//	int i;
+//	var/*int*/i:number;
 //	float radiusSqr;
 //	idVec3 v1, v2;
 //	idVec3 origin, axis, end;
@@ -796,7 +796,7 @@ idBounds::PlaneSide
 //============
 //*/
 //void idBounds::FromBoundsRotation(const idBounds &bounds, const idVec3 &origin, const idMat3 &axis, const idRotation &rotation) {
-//	int i;
+//	var/*int*/i:number;
 //	float radius;
 //	idVec3 point;
 //	idBounds rBounds;

@@ -411,7 +411,7 @@
 ////==================
 ////*/
 ////void idAsyncClient::ListServers( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < serverList.Num(); i++ ) {
 ////		common.Printf( "%3d: %s %dms (%s)\n", i, serverList[i].serverInfo.GetString( "si_name" ), serverList[ i ].ping, Sys_NetAdrToString( serverList[i].adr ) );

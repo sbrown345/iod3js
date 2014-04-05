@@ -97,7 +97,7 @@ var SHARD_FADE_START	= 2000;
 ////================
 ////*/
 ////idBrittleFracture::~idBrittleFracture( void ) {
-////	int i;
+////	var/*int*/i:number;
 
 ////	for ( i = 0; i < shards.Num(); i++ ) {
 ////		shards[i]->decals.DeleteContents( true );
@@ -331,7 +331,7 @@ var SHARD_FADE_START	= 2000;
 ////================
 ////*/
 ////void idBrittleFracture::RemoveShard( int index ) {
-////	int i;
+////	var/*int*/i:number;
 
 ////	delete shards[index];
 ////	shards.RemoveIndex( index );
@@ -853,7 +853,7 @@ var SHARD_FADE_START	= 2000;
 ////================
 ////*/
 ////void idBrittleFracture::Shatter( const idVec3 &point, const idVec3 &impulse, const /*int*/time:number ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idVec3 dir;
 ////	shard_t *shard;
 ////	float m;

@@ -224,7 +224,7 @@ var MAX_INVENTORY_ITEMS = 20;
 ////==============
 ////*/
 ////void idInventory::ClearPowerUps( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	for ( i = 0; i < MAX_POWERUPS; i++ ) {
 ////		powerupEndTime[ i ] = 0;
 ////	}
@@ -437,7 +437,7 @@ var MAX_INVENTORY_ITEMS = 20;
 ////==============
 ////*/
 ////void idInventory::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile.WriteInt( maxHealth );
 ////	savefile.WriteInt( weapons );
@@ -681,7 +681,7 @@ var MAX_INVENTORY_ITEMS = 20;
 ////==============
 ////*/
 ////int idInventory::WeaponIndexForAmmoClass( const idDict & spawnArgs, const char *ammo_classname ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	const char *weapon_classname;
 ////	for( i = 0; i < MAX_WEAPONS; i++ ) {
 ////		weapon_classname = spawnArgs.GetString( va( "def_weapon%d", i ) );

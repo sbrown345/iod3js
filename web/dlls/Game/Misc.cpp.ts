@@ -2611,7 +2611,7 @@ idBeam.Type = new idTypeInfo("idBeam", "idEntity",
 ////================
 ////*/
 ////void idBeam::Event_MatchTarget( void ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idEntity *targetEnt;
 ////	idBeam *targetBeam;
 ////
@@ -3490,7 +3490,7 @@ idPhantomObjects.Type = new idTypeInfo( "idPhantomObjects", "idEntity",
 ////===============
 ////*/
 ////void idPhantomObjects::Save( idSaveGame *savefile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile.WriteInt( end_time );
 ////	savefile.WriteFloat( throw_time );
@@ -3517,7 +3517,7 @@ idPhantomObjects.Type = new idTypeInfo( "idPhantomObjects", "idEntity",
 ////*/
 ////void idPhantomObjects::Restore( idRestoreGame *savefile ) {
 ////	int num;
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	savefile.ReadInt( end_time );
 ////	savefile.ReadFloat( throw_time );
@@ -3577,7 +3577,7 @@ idPhantomObjects.Type = new idTypeInfo( "idPhantomObjects", "idEntity",
 ////================
 ////*/
 ////void idPhantomObjects::Event_Activate( activator:idEntity ) {
-////	int i;
+////	var/*int*/i:number;
 ////	var /*float*/time:number;
 ////	float frac;
 ////	float scale;

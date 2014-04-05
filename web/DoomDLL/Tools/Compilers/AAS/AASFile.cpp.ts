@@ -83,7 +83,7 @@ function Reachability_Read ( src: idLexer, reach: idReachability ): boolean {
 ////================
 ////*/
 ////bool Reachability_Special_Write( idFile *fp, idReachability_Special *reach ) {
-////	int i;
+////	var/*int*/i:number;
 ////	const idKeyValue *keyValue;
 ////
 ////	fp.WriteFloatString( "\n\t\t{\n" );
@@ -538,7 +538,7 @@ idAASSettings::FromParser
 ////============
 ////*/
 ////WriteToFile( idFile *fp ) :boolean {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	fp.WriteFloatString( "{\n" );
 ////	fp.WriteFloatString( "\tbboxes\n\t{\n" );
@@ -573,7 +573,7 @@ idAASSettings::FromParser
 ////============
 ////*/
 ////ValidForBounds( const idBounds &bounds ) :boolean {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < 3; i++ ) {
 ////		if ( bounds[0][i] < this.boundingBoxes[0][0][i] ) {

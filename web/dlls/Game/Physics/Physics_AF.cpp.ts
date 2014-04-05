@@ -3695,7 +3695,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////bool idAFConstraint_PyramidLimit::Add( idPhysics_AF *phys, float invTimeStep ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float a[2];
 ////	idVec6 J1row, J2row;
 ////	idMat3 worldBase;
@@ -3810,7 +3810,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idAFConstraint_PyramidLimit::DebugDraw( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float size = 10.0f;
 ////	idVec3 anchor, dir, p[4];
 ////	idMat3 worldBase, m[2];
@@ -4813,7 +4813,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idAFTree::SortBodies_r( idList<idAFBody*>&sortedList, idAFBody *body ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < body.children.Num(); i++ ) {
 ////		sortedList.Append( body.children[i] );
@@ -4831,7 +4831,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idAFTree::SortBodies( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////
 ////	// find the root
@@ -4857,7 +4857,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idAFTree::DebugDraw( const idVec4 &color ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////
 ////	for ( i = 1; i < sortedBodies.Num(); i++ ) {
@@ -4879,7 +4879,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::EvaluateConstraints( float timeStep ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float invTimeStep;
 ////	idAFBody *body;
 ////	idAFConstraint *c;
@@ -4917,7 +4917,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::EvaluateBodies( float timeStep ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////	idMat3 axis;
 ////
@@ -4964,7 +4964,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::AddFrameConstraints( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	// add frame constraints to auxiliary constraints
 ////	for ( i = 0; i < frameConstraints.Num(); i++ ) {
@@ -4989,7 +4989,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::ApplyFriction( float timeStep, float endTimeMSec ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float invTimeStep;
 ////
 ////	if ( af_skipFriction.GetBool() ) {
@@ -5037,7 +5037,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::PrimaryFactor( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < trees.Num(); i++ ) {
 ////		trees[i].Factor();
@@ -5050,7 +5050,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::PrimaryForces( float timeStep ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < trees.Num(); i++ ) {
 ////		trees[i].CalculateForces( timeStep );
@@ -5291,7 +5291,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////*/
 ////void idPhysics_AF::VerifyContactConstraints( ) {
 ////#if 0
-////	int i;
+////	var/*int*/i:number;
 ////	float impulseNumerator, impulseDenominator;
 ////	idVec3 r, velocity, normalVelocity, normal, impulse;
 ////	idAFBody *body;
@@ -5322,7 +5322,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////		}
 ////	}
 ////#else
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////	idVec3 normal;
 ////
@@ -5350,7 +5350,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::Evolve( float timeStep ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float angle;
 ////	idVec3 vec;
 ////	idAFBody *body;
@@ -5465,7 +5465,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////bool idPhysics_AF::ApplyCollisions( float timeStep ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < collisions.Num(); i++ ) {
 ////		if ( CollisionImpulse( timeStep, collisions[i].body, collisions[i].trace ) ) {
@@ -5481,7 +5481,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////idEntity *idPhysics_AF::SetupCollisionForBody( idAFBody *body ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *b;
 ////	idEntity *passEntity;
 ////
@@ -5709,7 +5709,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::SetupContactConstraints( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	// make sure enough contact constraints are allocated
 ////	contactConstraints.AssureSizeAlloc( contacts.Num(), idListNewElement<idAFConstraint_Contact> );
@@ -5735,7 +5735,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////*/
 ////void idPhysics_AF::ApplyContactForces( ) {
 ////#if 0
-////	int i;
+////	var/*int*/i:number;
 ////	idEntity *ent;
 ////	idVec3 force;
 ////
@@ -5760,7 +5760,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::ClearExternalForce( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
@@ -5778,7 +5778,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::AddGravity( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
@@ -5794,7 +5794,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::SwapStates( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////	AFBodyPState_t *swap;
 ////
@@ -5815,7 +5815,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::UpdateClipModels( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
@@ -5925,7 +5925,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////bool idPhysics_AF::TestIfAtRest( float timeStep ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float translationSqr, maxTranslationSqr, rotation, maxRotation;
 ////	idAFBody *body;
 ////
@@ -6007,7 +6007,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::Rest( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	current.atRest = gameLocal.time;
 ////
@@ -6073,7 +6073,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::AddPushVelocity( const idVec6 &pushVelocity ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( pushVelocity != vec6_origin ) {
 ////		for ( i = 0; i < bodies.Num(); i++ ) {
@@ -6143,7 +6143,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::SetContents( int contents, int id ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	if ( id >= 0 && id < bodies.Num() ) {
 ////		bodies[id].GetClipModel().SetContents( contents );
@@ -6181,7 +6181,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////const idBounds &idPhysics_AF::GetBounds( int id ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	static idBounds relBounds;
 ////
 ////	if ( id >= 0 && id < bodies.Num() ) {
@@ -6210,7 +6210,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////const idBounds &idPhysics_AF::GetAbsBounds( int id ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	static idBounds absBounds;
 ////
 ////	if ( id >= 0 && id < bodies.Num() ) {
@@ -6472,7 +6472,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::DebugDraw( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body, *highlightBody = NULL, *constrainedBody1 = NULL, *constrainedBody2 = NULL;
 ////	idAFConstraint *constraint;
 ////	idVec3 center;
@@ -6675,7 +6675,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////idPhysics_AF::~idPhysics_AF( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	trees.DeleteContents( true );
 ////
@@ -6731,7 +6731,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::Save( idSaveGame *saveFile ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	// the articulated figure structure is handled by the owner
 ////
@@ -6896,7 +6896,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::BuildTrees( ) {
-////	int i;
+////	var/*int*/i:number;
 ////	float scale;
 ////	idAFBody *b;
 ////	idAFConstraint *c;
@@ -7137,7 +7137,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////int idPhysics_AF::GetBodyId( const char *bodyName ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
 ////		if ( !bodies[i].name.Icmp( bodyName ) ) {
@@ -7169,7 +7169,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////int idPhysics_AF::GetConstraintId( const char *constraintName ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < constraints.Num(); i++ ) {
 ////		if ( constraints[i].name.Icmp( constraintName ) == 0 ) {
@@ -7204,7 +7204,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////idAFBody *idPhysics_AF::GetBody( const char *bodyName ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
 ////		if ( !bodies[i].name.Icmp( bodyName ) ) {
@@ -7234,7 +7234,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////idAFConstraint *idPhysics_AF::GetConstraint( const char *constraintName ) const {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < constraints.Num(); i++ ) {
 ////		if ( constraints[i].name.Icmp( constraintName ) == 0 ) {
@@ -7264,7 +7264,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::DeleteBody( const char *bodyName ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	// find the body with the given name
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
@@ -7322,7 +7322,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::DeleteConstraint( const char *constraintName ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	// find the constraint with the given name
 ////	for ( i = 0; i < constraints.Num(); i++ ) {
@@ -7487,7 +7487,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::SaveState( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	saved = current;
 ////
@@ -7502,7 +7502,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::RestoreState( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	current = saved;
 ////
@@ -7552,7 +7552,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::Translate( const idVec3 &translation, int id ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////
 ////	if ( !worldConstraintsLocked ) {
@@ -7580,7 +7580,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::Rotate( const idRotation &rotation, int id ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////
 ////	if ( !worldConstraintsLocked ) {
@@ -7691,7 +7691,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::ClipTranslation( trace_t &results, const idVec3 &translation, const idClipModel *model ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////	trace_t bodyResults;
 ////
@@ -7726,7 +7726,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::ClipRotation( trace_t &results, const idRotation &rotation, const idClipModel *model ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	idAFBody *body;
 ////	trace_t bodyResults;
 ////	idRotation partialRotation;
@@ -7793,7 +7793,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::DisableClip( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
 ////		bodies[i].clipModel.Disable();
@@ -7806,7 +7806,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::EnableClip( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
 ////		bodies[i].clipModel.Enable();
@@ -7819,7 +7819,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::UnlinkClip( ) {
-////	int i;
+////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < bodies.Num(); i++ ) {
 ////		bodies[i].clipModel.Unlink();
@@ -7880,7 +7880,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::SetMaster( idEntity *master, const bool orientated ) {
-////	int i;
+////	var/*int*/i:number;
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////	idRotation rotation;
@@ -7935,7 +7935,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idPhysics_AF::WriteToSnapshot( idBitMsgDelta &msg ) const {
-////	int i;
+////	var/*int*/i:number;
 ////	idCQuat quat;
 ////
 ////	msg.WriteLong( current.atRest );

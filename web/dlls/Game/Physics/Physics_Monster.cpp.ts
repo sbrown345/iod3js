@@ -217,7 +217,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//=====================
 	//*/
 	//monsterMoveResult_t idPhysics_Monster::SlideMove( idVec3 &start, idVec3 &velocity, const idVec3 &delta ) {
-	//	int i;
+	//	var/*int*/i:number;
 	//	trace_t tr;
 	//	idVec3 move;
 	//
