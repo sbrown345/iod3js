@@ -869,8 +869,8 @@ idEntity::~idEntity
 ////	savefile.ReadObject( reinterpret_cast<idClass *&>( this.teamMaster ) );
 ////	savefile.ReadObject( reinterpret_cast<idClass *&>( this.teamChain ) );
 ////
-////	savefile.ReadStaticObject( defaultPhysicsObj );
-////	RestorePhysics( &defaultPhysicsObj );
+////	savefile.ReadStaticObject( this.defaultPhysicsObj );
+////	RestorePhysics( &this.defaultPhysicsObj );
 ////
 ////	savefile.ReadInt( this.numPVSAreas );
 ////	for( i = 0; i < MAX_PVS_AREAS; i++ ) {
@@ -2558,7 +2558,7 @@ idEntity::InitDefaultPhysics
 			}
 		}
 
-		if ( !spawnArgs.GetBool( "noclipmodel", "0" ) ) {
+		if ( !this.spawnArgs.GetBool( "noclipmodel", "0" ) ) {
 
 			// check if mins/maxs or size key/value pairs are set
 			if ( !clipModel ) {
@@ -2566,13 +2566,13 @@ idEntity::InitDefaultPhysics
 				var bounds = new idBounds;
 				var setClipModel = false;
 
-				if ( this.spawnArgs.GetVector( "mins", null, bounds[0] ) &&
-					this.spawnArgs.GetVector("maxs", null, bounds[1] ) ) {
+				if (this.spawnArgs.GetVector_R( "mins", null, bounds[0] ) &&
+					this.spawnArgs.GetVector_R("maxs", null, bounds[1] ) ) {
 					setClipModel = true;
 					if ( bounds[0][0] > bounds[1][0] || bounds[0][1] > bounds[1][1] || bounds[0][2] > bounds[1][2] ) {
 						gameLocal.Error( "Invalid bounds '%s'-'%s' on entity '%s'", bounds[0].ToString(), bounds[1].ToString(), this.name.c_str() );
 					}
-				} else if (this.spawnArgs.GetVector("size", null, size ) ) {
+				} else if (this.spawnArgs.GetVector_R("size", null, size ) ) {
 					if ( ( size.x < 0.0 ) || ( size.y < 0.0 ) || ( size.z < 0.0 ) ) {
 						gameLocal.Error( "Invalid size '%s' on entity '%s'", size.ToString(), this.name.c_str() );
 					}
@@ -2584,15 +2584,15 @@ idEntity::InitDefaultPhysics
 				if ( setClipModel ) {
 					var /*int */numSides = new R<number> ( );
 					var trm = new idTraceModel ;
-
-					if (this.spawnArgs.GetInt_R("cylinder", "0", numSides) && numSides.$ > 0 ) {
-						trm.SetupCylinder(bounds, numSides.$ < 3 ? 3 : numSides.$ );
-					} else if (this.spawnArgs.GetInt_R("cone", "0", numSides) && numSides.$> 0 ) {
-						trm.SetupCone(bounds, numSides.$ < 3 ? 3 : numSides.$ );
-					} else {
-						trm.SetupBox( bounds );
-					}
-					clipModel = new idClipModel( trm );
+					todoThrow ( );
+					//if (this.spawnArgs.GetInt_R("cylinder", "0", numSides) && numSides.$ > 0 ) {
+					//	trm.SetupCylinder(bounds, numSides.$ < 3 ? 3 : numSides.$ );
+					//} else if (this.spawnArgs.GetInt_R("cone", "0", numSides) && numSides.$> 0 ) {
+					//	trm.SetupCone(bounds, numSides.$ < 3 ? 3 : numSides.$ );
+					//} else {
+					//	trm.SetupBox( bounds );
+					//}
+					//clipModel = new idClipModel( trm );
 				}
 			}
 
@@ -2600,19 +2600,19 @@ idEntity::InitDefaultPhysics
 			if ( !clipModel ) {
 				temp.$ = this.spawnArgs.GetString( "model" );
 				if ( temp && temp.$) {
-					if ( idClipModel.CheckModel( temp ) ) {
-						clipModel = new idClipModel( temp );
+					if (idClipModel.CheckModel(temp.$ ) ) {
+						clipModel = new idClipModel( temp .$);
 					}
 				}
 			}
 		}
 
-		defaultPhysicsObj.SetSelf( this );
-		defaultPhysicsObj.SetClipModel( clipModel, 1.0 );
-		defaultPhysicsObj.SetOrigin( origin );
-		defaultPhysicsObj.SetAxis( axis );
+		this.defaultPhysicsObj.SetSelf( this );
+		this.defaultPhysicsObj.SetClipModel( clipModel, 1.0 );
+		this.defaultPhysicsObj.SetOrigin( origin );
+		this.defaultPhysicsObj.SetAxis( axis );
 
-		this.physics = defaultPhysicsObj;
+		this.physics = this.defaultPhysicsObj;
 	}
 
 /////*
@@ -2627,11 +2627,11 @@ idEntity::InitDefaultPhysics
 ////	}
 ////	// set new physics object or set the default physics if NULL
 ////	if ( phys != NULL ) {
-////		defaultPhysicsObj.SetClipModel( NULL, 1.0 );
+////		this.defaultPhysicsObj.SetClipModel( NULL, 1.0 );
 ////		this.physics = phys;
 ////		this.physics.Activate();
 ////	} else {
-////		this.physics = &defaultPhysicsObj;
+////		this.physics = &this.defaultPhysicsObj;
 ////	}
 ////	this.physics.UpdateTime( gameLocal.time );
 ////	this.physics.SetMaster( this.bindMaster, this.fl.bindOrientated );

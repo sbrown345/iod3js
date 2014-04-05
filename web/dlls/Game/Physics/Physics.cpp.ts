@@ -72,13 +72,20 @@ from the physics.
 var CONTACT_EPSILON = 0.25;				// maximum contact seperation distance
 
 //class idEntity;
-//
-//typedef struct impactInfo_s {
-//	float						invMass;			// inverse mass
-//	idMat3						invInertiaTensor;	// inverse inertia tensor
-//	idVec3						position;			// impact position relative to center of mass
-//	idVec3						velocity;			// velocity at the impact position
-//} impactInfo_t;
+
+class impactInfo_t {
+	invMass: number /*float*/; // inverse mass
+	invInertiaTensor = new idMat3 ( ); // inverse inertia tensor
+	position = new idVec3; // impact position relative to center of mass
+	velocity = new idVec3; // velocity at the impact position
+
+	memset0 ( ): void {
+		this.invMass = 0;
+		this.invInertiaTensor.memset0 ( );
+		this.position.memset0 ( );
+		this.velocity.memset0 ( );
+	}
+}
 
 
 class idPhysics extends idClass {

@@ -50,7 +50,7 @@ class clipSector_t {
 	axis: number /*int*/; // -1 = leaf node
 	dist: number /*float*/;
 	children = new Array<clipSector_t>( 2 );
-	clipLinks: clipSector_t;
+	clipLinks: clipLink_t;
 
 	memset0 ( ): void {
 		this.axis = 0;
@@ -62,11 +62,11 @@ class clipSector_t {
 }
 
 class clipLink_t {
-	//idClipModel *			clipModel;
-	//struct clipSector_s *	sector;
-	//struct clipLink_s *		prevInSector;
-	//struct clipLink_s *		nextInSector;
-	//struct clipLink_s *		nextLink;
+	clipModel: idClipModel;
+	sector: clipSector_t;
+	prevInSector: clipLink_t;
+	nextInSector: clipLink_t;
+	nextLink: clipLink_t;
 }
 
 class trmCache_t {
@@ -210,12 +210,12 @@ class idClipModel {
 ////
 ////
 ////ID_INLINE void idClipModel::Translate( const idVec3 &translation ) {
-////	Unlink();
+////	this.Unlink();
 ////	origin += translation;
 ////}
 ////
 ////ID_INLINE void idClipModel::Rotate( const idRotation &rotation ) {
-////	Unlink();
+////	this.Unlink();
 ////	origin *= rotation;
 ////	axis *= rotation.ToMat3();
 ////}
@@ -293,7 +293,7 @@ class idClipModel {
 ////}
 ////
 ////ID_INLINE bool idClipModel::IsLinked( ) const {
-////	return ( clipLinks != NULL );
+////	return ( this.clipLinks != NULL );
 ////}
 ////
 ////ID_INLINE bool idClipModel::IsEnabled( ) const {
@@ -588,7 +588,7 @@ idClipModel::idClipModel
 ================
 */
 	private constructor_trace(trm: idTraceModel ):void {
-	Init();
+	this.Init();
 	this.LoadModel( trm );
 }
 
@@ -598,7 +598,7 @@ idClipModel::idClipModel
 ////================
 ////*/
 ////idClipModel::idClipModel( const int renderModelHandle ) {
-////	Init();
+////	this.Init();
 ////	this.contents = CONTENTS_RENDERMODEL;
 ////	this.LoadModel( renderModelHandle );
 ////}
@@ -625,7 +625,7 @@ idClipModel::idClipModel
 ////		this.LoadModel( *GetCachedTraceModel( model.traceModelIndex ) );
 ////	}
 ////	renderModelHandle = model.renderModelHandle;
-////	clipLinks = NULL;
+////	this.clipLinks = NULL;
 ////	this.touchCount = -1;
 ////}
 ////
@@ -665,7 +665,7 @@ idClipModel::~idClipModel
 ////	}
 ////	savefile.WriteInt( this.traceModelIndex );
 ////	savefile.WriteInt( renderModelHandle );
-////	savefile.WriteBool( clipLinks != NULL );
+////	savefile.WriteBool( this.clipLinks != NULL );
 ////	savefile.WriteInt( this.touchCount );
 ////}
 ////
@@ -704,7 +704,7 @@ idClipModel::~idClipModel
 ////
 ////	// the render model will be set when the clip model is linked
 ////	renderModelHandle = -1;
-////	clipLinks = NULL;
+////	this.clipLinks = NULL;
 ////	this.touchCount = -1;
 ////
 ////	if ( linked ) {
@@ -718,8 +718,8 @@ idClipModel::~idClipModel
 ////================
 ////*/
 ////void idClipModel::SetPosition( const idVec3 &newOrigin, const idMat3 &newAxis ) {
-////	if ( clipLinks ) {
-////		Unlink();	// unlink from old position
+////	if ( this.clipLinks ) {
+////		this.Unlink();	// unlink from old position
 ////	}
 ////	origin = newOrigin;
 ////	axis = newAxis;
@@ -759,28 +759,28 @@ idClipModel::~idClipModel
 ////	inertiaTensor = density * entry.inertiaTensor;
 ////}
 ////
-/////*
-////===============
-////idClipModel::Unlink
-////===============
-////*/
-////void idClipModel::Unlink( ) {
-////	clipLink_t *link;
-////
-////	for ( link = clipLinks; link; link = clipLinks ) {
-////		clipLinks = link.nextLink;
-////		if ( link.prevInSector ) {
-////			link.prevInSector.nextInSector = link.nextInSector;
-////		} else {
-////			link.sector.clipLinks = link.nextInSector;
-////		}
-////		if ( link.nextInSector ) {
-////			link.nextInSector.prevInSector = link.prevInSector;
-////		}
-////		clipLinkAllocator.Free( link );
-////	}
-////}
-////
+/*
+===============
+idClipModel::Unlink
+===============
+*/
+Unlink( ):void {
+	var link: clipLink_t;
+
+	for ( link = this.clipLinks; link; link = this.clipLinks ) {
+		this.clipLinks = link.nextLink;
+		if ( link.prevInSector ) {
+			link.prevInSector.nextInSector = link.nextInSector;
+		} else {
+			link.sector.clipLinks = link.nextInSector;
+		}
+		if ( link.nextInSector ) {
+			link.nextInSector.prevInSector = link.prevInSector;
+		}
+		clipLinkAllocator.Free( link );
+	}
+}
+
 /////*
 ////===============
 ////idClipModel::Link_r
@@ -809,68 +809,68 @@ idClipModel::~idClipModel
 ////		node.clipLinks.prevInSector = link;
 ////	}
 ////	node.clipLinks = link;
-////	link.nextLink = clipLinks;
-////	clipLinks = link;
+////	link.nextLink = this.clipLinks;
+////	this.clipLinks = link;
 ////}
-////
-/////*
-////===============
-////idClipModel::Link
-////===============
-////*/
-////void idClipModel::Link( idClip &clp ) {
-////
-////	assert( idClipModel::entity );
-////	if ( !idClipModel::entity ) {
-////		return;
-////	}
-////
-////	if ( clipLinks ) {
-////		Unlink();	// unlink from old position
-////	}
-////
-////	if ( this.bounds.IsCleared() ) {
-////		return;
-////	}
-////
-////	// set the abs box
-////	if ( axis.IsRotated() ) {
-////		// expand for rotation
-////		absBounds.FromTransformedBounds( this.bounds, origin, axis );
-////	} else {
-////		// normal
-////		absBounds[0] = this.bounds[0] + origin;
-////		absBounds[1] = this.bounds[1] + origin;
-////	}
-////
-////	// because movement is clipped an epsilon away from an actual edge,
-////	// we must fully check even when bounding boxes don't quite touch
-////	absBounds[0] -= vec3_boxEpsilon;
-////	absBounds[1] += vec3_boxEpsilon;
-////
-////	Link_r( clp.clipSectors );
-////}
-////
-/////*
-////===============
-////idClipModel::Link
-////===============
-////*/
-////void idClipModel::Link( idClip &clp, ent:idEntity, int newId, const idVec3 &newOrigin, const idMat3 &newAxis, int renderModelHandle ) {
-////
-////	this.entity = ent;
-////	this.id = newId;
-////	this.origin = newOrigin;
-////	this.axis = newAxis;
-////	if ( renderModelHandle != -1 ) {
-////		this.renderModelHandle = renderModelHandle;
-////		const renderEntity_t *renderEntity = gameRenderWorld.GetRenderEntity( renderModelHandle );
-////		if ( renderEntity ) {
-////			this.bounds = renderEntity.bounds;
-////		}
-////	}
-////	this.Link( clp );
-////}
+
+/*
+===============
+idClipModel::Link
+===============
+*/
+	Link ( clp: idClip ): void {
+
+		assert( this.entity );
+		if ( !this.entity ) {
+			return;
+		}
+
+		if ( this.clipLinks ) {
+			this.Unlink ( ); // unlink from old position
+		}
+
+		if ( this.bounds.IsCleared ( ) ) {
+			return;
+		}
+		todoThrow ( );
+		//// set the abs box
+		//if ( axis.IsRotated() ) {
+		//	// expand for rotation
+		//	absBounds.FromTransformedBounds( this.bounds, origin, axis );
+		//} else {
+		//	// normal
+		//	absBounds[0] = this.bounds[0] + origin;
+		//	absBounds[1] = this.bounds[1] + origin;
+		//}
+
+		//// because movement is clipped an epsilon away from an actual edge,
+		//// we must fully check even when bounding boxes don't quite touch
+		//absBounds[0] -= vec3_boxEpsilon;
+		//absBounds[1] += vec3_boxEpsilon;
+
+		//Link_r( clp.clipSectors );
+	}
+
+/*
+===============
+idClipModel::Link
+===============
+*/
+	Link_ent ( clp: idClip, ent: idEntity, /*int */newId: number, newOrigin: idVec3, newAxis: idMat3, /*int */renderModelHandle = -1 ): void {
+
+		this.entity = ent;
+		this.id = newId;
+		this.origin = newOrigin;
+		this.axis = newAxis;
+		if ( renderModelHandle != -1 ) {
+			this.renderModelHandle = renderModelHandle;
+			var renderEntity = gameRenderWorld.GetRenderEntity( renderModelHandle );
+			if ( renderEntity ) {
+				this.bounds = renderEntity.bounds;
+			}
+		}
+		this.Link( clp );
+	}
 
 /*
 ============
@@ -974,13 +974,13 @@ class idClip {
 ////
 ////ID_INLINE bool idClip::TracePoint( trace_t &results, start:idVec3, const idVec3 &end, int contentMask, const passEntity:idEntity ) {
 ////	Translation( results, start, end, NULL, mat3_identity, contentMask, passEntity );
-////	return ( results.fraction < 1.0f );
+////	return ( results.fraction < 1.0 );
 ////}
 ////
 ////ID_INLINE bool idClip::TraceBounds( trace_t &results, start:idVec3, end:idVec3, const bounds: idBounds, int contentMask, const passEntity:idEntity ) {
 ////	this.temporaryClipModel.LoadModel( idTraceModel( bounds ) );
 ////	Translation( results, start, end, &this.temporaryClipModel, mat3_identity, contentMask, passEntity );
-////	return ( results.fraction < 1.0f );
+////	return ( results.fraction < 1.0 );
 ////}
 ////
 ////ID_INLINE const idBounds & idClip::GetWorldBounds( ) const {

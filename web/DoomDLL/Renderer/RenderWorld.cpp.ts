@@ -517,28 +517,28 @@ NULL's out it's entry in the world list
 		this.entityDefs[entityHandle] = null;
 	}
 
-///*
-//==================
-//GetRenderEntity
-//==================
-//*/
-//const renderEntity_t *idRenderWorldLocal::GetRenderEntity( qhandle_t entityHandle ) const {
-//	idRenderEntityLocal	*def;
-//
-//	if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num() ) {
-//		common.Printf( "idRenderWorld::GetRenderEntity: invalid handle %i [0, %i]\n", entityHandle, this.entityDefs.Num() );
-//		return NULL;
-//	}
-//
-//	def = this.entityDefs[entityHandle];
-//	if ( !def ) {
-//		common.Printf( "idRenderWorld::GetRenderEntity: handle %i is NULL\n", entityHandle );
-//		return NULL;
-//	}
-//
-//	return &def.parms;
-//}
-//
+/*
+==================
+GetRenderEntity
+==================
+*/
+	GetRenderEntity ( /*qhandle_t*/ entityHandle: number ): renderEntity_t {
+		var def: idRenderEntityLocal;
+
+		if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num ( ) ) {
+			common.Printf( "idRenderWorld::GetRenderEntity: invalid handle %i [0, %i]\n", entityHandle, this.entityDefs.Num ( ) );
+			return null;
+		}
+
+		def = this.entityDefs[entityHandle];
+		if ( !def ) {
+			common.Printf( "idRenderWorld::GetRenderEntity: handle %i is NULL\n", entityHandle );
+			return null;
+		}
+
+		return def.parms;
+	}
+
 ///*
 //==================
 //AddLightDef

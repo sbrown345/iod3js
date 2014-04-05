@@ -253,13 +253,14 @@ class idBlockAlloc<T> {
 		return /*&*/element.t;
 	}
 
-////template<class type, int blockSize>
-////void idBlockAlloc<type,blockSize>::Free( type *t ) {
-////	element_t *element = (element_t *)( ( (unsigned char *) t ) - ( (int) &((element_t *)0).t ) );
-////	element.next = free;
-////	free = element;
-////	active--;
-////}
+//template<class type, int blockSize>
+	Free ( t: T ): void {
+		todoThrow ( );
+		//var element = (element_t *)( ( (unsigned char *) t ) - ( (int) &((element_t *)0).t ) );
+		//element.next = free;
+		//this.free = element;
+		//this.active--;
+	}
 
 ////template<class type, int blockSize>
 	Shutdown ( ): void {
