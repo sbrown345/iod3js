@@ -53,17 +53,17 @@
 ////#undef FLT_EPSILON
 ////#endif
 
-////#define DEG2RAD(a)				( (a) * idMath::M_DEG2RAD )
-////#define RAD2DEG(a)				( (a) * idMath::M_RAD2DEG )
+function DEG2RAD ( a: number ) { return a * idMath.M_DEG2RAD; }
+function RAD2DEG ( a: number ) { return a * idMath.M_RAD2DEG; }
 
 ////#define SEC2MS(t)				( idMath::FtoiFast( (t) * idMath::M_SEC2MS ) )
 ////#define MS2SEC(t)				( (t) * idMath::M_MS2SEC )
 
-////#define	ANGLE2SHORT(x)			( idMath::FtoiFast( (x) * 65536.0f / 360.0f ) & 65535 )
-////#define	SHORT2ANGLE(x)			( (x) * ( 360.0f / 65536.0f ) )
+////#define	ANGLE2SHORT(x)			( idMath::FtoiFast( (x) * 65536.0 / 360.0 ) & 65535 )
+////#define	SHORT2ANGLE(x)			( (x) * ( 360.0 / 65536.0 ) )
 
-////#define	ANGLE2BYTE(x)			( idMath::FtoiFast( (x) * 256.0f / 360.0f ) & 255 )
-////#define	BYTE2ANGLE(x)			( (x) * ( 360.0f / 256.0f ) )
+////#define	ANGLE2BYTE(x)			( idMath::FtoiFast( (x) * 256.0 / 360.0 ) & 255 )
+////#define	BYTE2ANGLE(x)			( (x) * ( 360.0 / 256.0 ) )
 
 ////#define FLOATSIGNBITSET(f)		((*(const unsigned long *)&(f)) >> 31)
 ////#define FLOATSIGNBITNOTSET(f)	((~(*(const unsigned long *)&(f))) >> 31)
@@ -340,7 +340,7 @@ static Sqrt( /*float */x:number):number {
 ////	}
 ////#endif
 ////	s = a * a;
-////	return a * ( ( ( ( ( -2.39e-08f * s + 2.7526e-06f ) * s - 1.98409e-04f ) * s + 8.3333315e-03f ) * s - 1.666666664e-01f ) * s + 1.0f );
+////	return a * ( ( ( ( ( -2.39e-08f * s + 2.7526e-06f ) * s - 1.98409e-04f ) * s + 8.3333315e-03f ) * s - 1.666666664e-01f ) * s + 1.0 );
 ////}
 
 ////ID_INLINE double idMath::Sin64( float a ) {
@@ -361,51 +361,51 @@ static Sqrt( /*float */x:number):number {
 ////	if ( a < PI ) {
 ////		if ( a > HALF_PI ) {
 ////			a = PI - a;
-////			d = -1.0f;
+////			d = -1.0;
 ////		} else {
-////			d = 1.0f;
+////			d = 1.0;
 ////		}
 ////	} else {
 ////		if ( a > PI + HALF_PI ) {
 ////			a = a - TWO_PI;
-////			d = 1.0f;
+////			d = 1.0;
 ////		} else {
 ////			a = PI - a;
-////			d = -1.0f;
+////			d = -1.0;
 ////		}
 ////	}
 ////#else
 ////	a = PI - a;
 ////	if ( fabs( a ) >= HALF_PI ) {
 ////		a = ( ( a < 0.0 ) ? -PI : PI ) - a;
-////		d = 1.0f;
+////		d = 1.0;
 ////	} else {
-////		d = -1.0f;
+////		d = -1.0;
 ////	}
 ////#endif
 ////	s = a * a;
-////	return d * ( ( ( ( ( -2.605e-07f * s + 2.47609e-05f ) * s - 1.3888397e-03f ) * s + 4.16666418e-02f ) * s - 4.999999963e-01f ) * s + 1.0f );
+////	return d * ( ( ( ( ( -2.605e-07f * s + 2.47609e-05f ) * s - 1.3888397e-03f ) * s + 4.16666418e-02f ) * s - 4.999999963e-01f ) * s + 1.0 );
 ////}
 
 ////ID_INLINE double idMath::Cos64( float a ) {
 ////	return cos( a );
 ////}
 
-////ID_INLINE void idMath::SinCos( float a, float &s, float &c ) {
-////#ifdef _WIN32
-////	_asm {
-////		fld		a
-////		fsincos
-////		mov		ecx, c
-////		mov		edx, s
-////		fstp	dword ptr [ecx]
-////		fstp	dword ptr [edx]
-////	}
-////#else
-////	s = sinf( a );
-////	c = cosf( a );
-////#endif
-////}
+	static SinCos ( /*float*/ a: number, /*float */s: R<number>, /*float */c: R<number> ): void {
+//#ifdef _WIN32
+//	_asm {
+//		fld		a
+//		fsincos
+//		mov		ecx, c
+//		mov		edx, s
+//		fstp	dword ptr [ecx]
+//		fstp	dword ptr [edx]
+//	}
+//#else
+		s.$ = sinf( a );
+		c.$ = cosf( a );
+//#endif
+	}
 
 ////ID_INLINE void idMath::SinCos16( float a, float &s, float &c ) {
 ////	float t, d;
@@ -417,31 +417,31 @@ static Sqrt( /*float */x:number):number {
 ////	if ( a < PI ) {
 ////		if ( a > HALF_PI ) {
 ////			a = PI - a;
-////			d = -1.0f;
+////			d = -1.0;
 ////		} else {
-////			d = 1.0f;
+////			d = 1.0;
 ////		}
 ////	} else {
 ////		if ( a > PI + HALF_PI ) {
 ////			a = a - TWO_PI;
-////			d = 1.0f;
+////			d = 1.0;
 ////		} else {
 ////			a = PI - a;
-////			d = -1.0f;
+////			d = -1.0;
 ////		}
 ////	}
 ////#else
 ////	a = PI - a;
 ////	if ( fabs( a ) >= HALF_PI ) {
 ////		a = ( ( a < 0.0 ) ? -PI : PI ) - a;
-////		d = 1.0f;
+////		d = 1.0;
 ////	} else {
-////		d = -1.0f;
+////		d = -1.0;
 ////	}
 ////#endif
 ////	t = a * a;
-////	s = a * ( ( ( ( ( -2.39e-08f * t + 2.7526e-06f ) * t - 1.98409e-04f ) * t + 8.3333315e-03f ) * t - 1.666666664e-01f ) * t + 1.0f );
-////	c = d * ( ( ( ( ( -2.605e-07f * t + 2.47609e-05f ) * t - 1.3888397e-03f ) * t + 4.16666418e-02f ) * t - 4.999999963e-01f ) * t + 1.0f );
+////	s = a * ( ( ( ( ( -2.39e-08f * t + 2.7526e-06f ) * t - 1.98409e-04f ) * t + 8.3333315e-03f ) * t - 1.666666664e-01f ) * t + 1.0 );
+////	c = d * ( ( ( ( ( -2.605e-07f * t + 2.47609e-05f ) * t - 1.3888397e-03f ) * t + 4.16666418e-02f ) * t - 4.999999963e-01f ) * t + 1.0 );
 ////}
 
 ////ID_INLINE void idMath::SinCos64( float a, double &s, double &c ) {
@@ -498,9 +498,9 @@ static Sqrt( /*float */x:number):number {
 ////	}
 ////#endif
 ////	s = a * a;
-////	s = a * ( ( ( ( ( ( 9.5168091e-03f * s + 2.900525e-03f ) * s + 2.45650893e-02f ) * s + 5.33740603e-02f ) * s + 1.333923995e-01f ) * s + 3.333314036e-01f ) * s + 1.0f );
+////	s = a * ( ( ( ( ( ( 9.5168091e-03f * s + 2.900525e-03f ) * s + 2.45650893e-02f ) * s + 5.33740603e-02f ) * s + 1.333923995e-01f ) * s + 3.333314036e-01f ) * s + 1.0 );
 ////	if ( reciprocal ) {
-////		return 1.0f / s;
+////		return 1.0 / s;
 ////	} else {
 ////		return s;
 ////	}
@@ -511,10 +511,10 @@ static Sqrt( /*float */x:number):number {
 ////}
 
 ////ID_INLINE float idMath::ASin( float a ) {
-////	if ( a <= -1.0f ) {
+////	if ( a <= -1.0 ) {
 ////		return -HALF_PI;
 ////	}
-////	if ( a >= 1.0f ) {
+////	if ( a >= 1.0 ) {
 ////		return HALF_PI;
 ////	}
 ////	return asinf( a );
@@ -522,34 +522,34 @@ static Sqrt( /*float */x:number):number {
 
 ////ID_INLINE float idMath::ASin16( float a ) {
 ////	if ( FLOATSIGNBITSET( a ) ) {
-////		if ( a <= -1.0f ) {
+////		if ( a <= -1.0 ) {
 ////			return -HALF_PI;
 ////		}
 ////		a = fabs( a );
-////		return ( ( ( -0.0187293f * a + 0.0742610f ) * a - 0.2121144f ) * a + 1.5707288f ) * sqrt( 1.0f - a ) - HALF_PI;
+////		return ( ( ( -0.0187293f * a + 0.0742610f ) * a - 0.2121144f ) * a + 1.5707288f ) * sqrt( 1.0 - a ) - HALF_PI;
 ////	} else {
-////		if ( a >= 1.0f ) {
+////		if ( a >= 1.0 ) {
 ////			return HALF_PI;
 ////		}
-////		return HALF_PI - ( ( ( -0.0187293f * a + 0.0742610f ) * a - 0.2121144f ) * a + 1.5707288f ) * sqrt( 1.0f - a );
+////		return HALF_PI - ( ( ( -0.0187293f * a + 0.0742610f ) * a - 0.2121144f ) * a + 1.5707288f ) * sqrt( 1.0 - a );
 ////	}
 ////}
 
 ////ID_INLINE double idMath::ASin64( float a ) {
-////	if ( a <= -1.0f ) {
+////	if ( a <= -1.0 ) {
 ////		return -HALF_PI;
 ////	}
-////	if ( a >= 1.0f ) {
+////	if ( a >= 1.0 ) {
 ////		return HALF_PI;
 ////	}
 ////	return asin( a );
 ////}
 
 ////ID_INLINE float idMath::ACos( float a ) {
-////	if ( a <= -1.0f ) {
+////	if ( a <= -1.0 ) {
 ////		return PI;
 ////	}
-////	if ( a >= 1.0f ) {
+////	if ( a >= 1.0 ) {
 ////		return 0.0;
 ////	}
 ////	return acosf( a );
@@ -557,24 +557,24 @@ static Sqrt( /*float */x:number):number {
 
 ////ID_INLINE float idMath::ACos16( float a ) {
 ////	if ( FLOATSIGNBITSET( a ) ) {
-////		if ( a <= -1.0f ) {
+////		if ( a <= -1.0 ) {
 ////			return PI;
 ////		}
 ////		a = fabs( a );
-////		return PI - ( ( ( -0.0187293f * a + 0.0742610f ) * a - 0.2121144f ) * a + 1.5707288f ) * sqrt( 1.0f - a );
+////		return PI - ( ( ( -0.0187293f * a + 0.0742610f ) * a - 0.2121144f ) * a + 1.5707288f ) * sqrt( 1.0 - a );
 ////	} else {
-////		if ( a >= 1.0f ) {
+////		if ( a >= 1.0 ) {
 ////			return 0.0;
 ////		}
-////		return ( ( ( -0.0187293f * a + 0.0742610f ) * a - 0.2121144f ) * a + 1.5707288f ) * sqrt( 1.0f - a );
+////		return ( ( ( -0.0187293f * a + 0.0742610f ) * a - 0.2121144f ) * a + 1.5707288f ) * sqrt( 1.0 - a );
 ////	}
 ////}
 
 ////ID_INLINE double idMath::ACos64( float a ) {
-////	if ( a <= -1.0f ) {
+////	if ( a <= -1.0 ) {
 ////		return PI;
 ////	}
-////	if ( a >= 1.0f ) {
+////	if ( a >= 1.0 ) {
 ////		return 0.0;
 ////	}
 ////	return acos( a );
@@ -587,11 +587,11 @@ static Sqrt( /*float */x:number):number {
 ////ID_INLINE float idMath::ATan16( float a ) {
 ////	float s;
 
-////	if ( fabs( a ) > 1.0f ) {
-////		a = 1.0f / a;
+////	if ( fabs( a ) > 1.0 ) {
+////		a = 1.0 / a;
 ////		s = a * a;
 ////		s = - ( ( ( ( ( ( ( ( ( 0.0028662257f * s - 0.0161657367f ) * s + 0.0429096138f ) * s - 0.0752896400f )
-////				* s + 0.1065626393f ) * s - 0.1420889944f ) * s + 0.1999355085f ) * s - 0.3333314528f ) * s ) + 1.0f ) * a;
+////				* s + 0.1065626393f ) * s - 0.1420889944f ) * s + 0.1999355085f ) * s - 0.3333314528f ) * s ) + 1.0 ) * a;
 ////		if ( FLOATSIGNBITSET( a ) ) {
 ////			return s - HALF_PI;
 ////		} else {
@@ -600,7 +600,7 @@ static Sqrt( /*float */x:number):number {
 ////	} else {
 ////		s = a * a;
 ////		return ( ( ( ( ( ( ( ( ( 0.0028662257f * s - 0.0161657367f ) * s + 0.0429096138f ) * s - 0.0752896400f )
-////			* s + 0.1065626393f ) * s - 0.1420889944f ) * s + 0.1999355085f ) * s - 0.3333314528f ) * s ) + 1.0f ) * a;
+////			* s + 0.1065626393f ) * s - 0.1420889944f ) * s + 0.1999355085f ) * s - 0.3333314528f ) * s ) + 1.0 ) * a;
 ////	}
 ////}
 
@@ -619,7 +619,7 @@ static Sqrt( /*float */x:number):number {
 ////		a = x / y;
 ////		s = a * a;
 ////		s = - ( ( ( ( ( ( ( ( ( 0.0028662257f * s - 0.0161657367f ) * s + 0.0429096138f ) * s - 0.0752896400f )
-////				* s + 0.1065626393f ) * s - 0.1420889944f ) * s + 0.1999355085f ) * s - 0.3333314528f ) * s ) + 1.0f ) * a;
+////				* s + 0.1065626393f ) * s - 0.1420889944f ) * s + 0.1999355085f ) * s - 0.3333314528f ) * s ) + 1.0 ) * a;
 ////		if ( FLOATSIGNBITSET( a ) ) {
 ////			return s - HALF_PI;
 ////		} else {
@@ -629,7 +629,7 @@ static Sqrt( /*float */x:number):number {
 ////		a = y / x;
 ////		s = a * a;
 ////		return ( ( ( ( ( ( ( ( ( 0.0028662257f * s - 0.0161657367f ) * s + 0.0429096138f ) * s - 0.0752896400f )
-////			* s + 0.1065626393f ) * s - 0.1420889944f ) * s + 0.1999355085f ) * s - 0.3333314528f ) * s ) + 1.0f ) * a;
+////			* s + 0.1065626393f ) * s - 0.1420889944f ) * s + 0.1999355085f ) * s - 0.3333314528f ) * s ) + 1.0 ) * a;
 ////	}
 ////}
 
@@ -701,7 +701,7 @@ static Sqrt( /*float */x:number):number {
 ////	i -= ( exponent + 1 ) << IEEE_FLT_MANTISSA_BITS;	// get value in the range [.5, 1>
 ////	y = *reinterpret_cast<float *>(&i);
 ////	y *= 1.4142135623730950488f;						// multiply with sqrt( 2 )
-////	y = ( y - 1.0f ) / ( y + 1.0f );
+////	y = ( y - 1.0 ) / ( y + 1.0 );
 ////	y2 = y * y;
 ////	y = y * ( 2.000000000046727f + y2 * ( 0.666666635059382f + y2 * ( 0.4000059794795f + y2 * ( 0.28525381498f + y2 * 0.2376245609f ) ) ) );
 ////	y += 0.693147180559945f * ( (float)exponent + 0.5 );
@@ -880,16 +880,16 @@ static Sqrt( /*float */x:number):number {
 ////}
 
 ////ID_INLINE float idMath::AngleNormalize360( /*float*/angle:number ) {
-////	if ( ( angle >= 360.0f ) || ( angle < 0.0 ) ) {
-////		angle -= floor( angle / 360.0f ) * 360.0f;
+////	if ( ( angle >= 360.0 ) || ( angle < 0.0 ) ) {
+////		angle -= floor( angle / 360.0 ) * 360.0;
 ////	}
 ////	return angle;
 ////}
 
 ////ID_INLINE float idMath::AngleNormalize180( /*float*/angle:number ) {
 ////	angle = AngleNormalize360( angle );
-////	if ( angle > 180.0f ) {
-////		angle -= 360.0f;
+////	if ( angle > 180.0 ) {
+////		angle -= 360.0;
 ////	}
 ////	return angle;
 ////}

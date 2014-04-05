@@ -606,8 +606,8 @@ idEntity::Spawn
 		// go dormant within 5 frames so that when the map starts most monsters are dormant
 		this.dormantStart = gameLocal.time - DELAY_DORMANT_TIME + gameLocal.msec * 5;
 
-		origin = this.renderEntity.origin;
-		axis = this.renderEntity.axis;
+		origin.equals( this.renderEntity.origin );
+		axis.equals( this.renderEntity.axis );
 
 		// do the audio parsing the same way dmap and the editor do
 		gameEdit.ParseSpawnArgsToRefSound( this.spawnArgs, this.refSound );
@@ -1549,24 +1549,24 @@ Present is called to allow entities to generate refEntities, lights, etc for the
 		}
 	}
 
-/////*
-////================
-////idEntity::GetRenderEntity
-////================
-////*/
-////renderEntity_t *idEntity::GetRenderEntity( ):void {
-////	return &this.renderEntity;
-////}
-////
-/////*
-////================
-////idEntity::GetModelDefHandle
-////================
-////*/
-////int idEntity::GetModelDefHandle( ):void {
-////	return this.modelDefHandle;
-////}
-////
+/*
+================
+idEntity::GetRenderEntity
+================
+*/
+	GetRenderEntity ( ): renderEntity_t {
+		return this.renderEntity;
+	}
+
+/*
+================
+idEntity::GetModelDefHandle
+================
+*/
+	GetModelDefHandle ( ): number {
+		return this.modelDefHandle;
+	}
+
 /////*
 ////================
 ////idEntity::UpdateRenderEntity

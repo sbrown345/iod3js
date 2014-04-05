@@ -204,16 +204,16 @@ function UpdateGuiParms ( gui: idUserInterface, args: idDict ): void {
 	gui.StateChanged( gameLocal.time );
 }
 
-/////*
-////================
-////AddRenderGui
-////================
-////*/
-////void AddRenderGui( name:string, idUserInterface **gui, const idDict *args ) {
-////	const idKeyValue *kv = args.MatchPrefix( "gui_parm", NULL );
-////	*gui = uiManager.FindGui( name, true, ( kv != NULL ) );
-////	UpdateGuiParms( *gui, args );
-////}
+/*
+================
+AddRenderGui
+================
+*/
+function AddRenderGui ( name: string, gui: R<idUserInterface>, args: idDict ): void {
+	var kv = args.MatchPrefix( "gui_parm", null );
+	gui.$ = uiManager.FindGui( name, true, ( kv != null ) );
+	UpdateGuiParms( gui.$, args );
+}
 
 /*
 ===============================================================================

@@ -262,16 +262,16 @@ class idMD5Anim {
 //	void					GetOriginRotation( idQuat &rotation, /*int*/time:number, int cyclecount ) const;
 //	void					GetBounds( idBounds &bounds, int currentTime, int cyclecount ) const;
 };
-//
-///*
-//==============================================================================================
-//
-//	idAnim
-//
-//==============================================================================================
-//*/
-//
-//class idAnim {
+
+/*
+==============================================================================================
+
+	idAnim
+
+==============================================================================================
+*/
+
+class idAnim {
 //private:
 //	const class idDeclModelDef	*modelDef;
 //	const idMD5Anim				*anims[ ANIM_MaxSyncedAnims ];
@@ -307,9 +307,9 @@ class idMD5Anim {
 //	int							FindFrameForFrameCommand( frameCommandType_t framecommand, const frameCommand_t **command ) const;
 //	void						SetAnimFlags( const animFlags_t &animflags );
 //	const animFlags_t			&GetAnimFlags( ) const;
-//};
-//
-//
+};
+
+
 ///*
 //==============================================================================================
 //

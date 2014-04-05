@@ -169,22 +169,22 @@ class idAngles {
 ////}
 ////
 ////ID_INLINE idAngles &idAngles::Zero() {
-////	pitch = yaw = roll = 0.0f;
+////	this.pitch = this.yaw = this.roll = 0.0;
 ////	return *this;
 ////}
 ////
 ////ID_INLINE float idAngles::operator[](int index) const {
 ////	assert((index >= 0) && (index < 3));
-////	return (&pitch)[index];
+////	return (this.pitch)[index];
 ////}
 ////
 ////ID_INLINE float &idAngles::operator[](int index) {
 ////	assert((index >= 0) && (index < 3));
-////	return (&pitch)[index];
+////	return (this.pitch)[index];
 ////}
 ////
 ////ID_INLINE idAngles idAngles::operator-() const {
-////	return idAngles(-pitch, -yaw, -roll);
+////	return idAngles(-pitch, -this.yaw, -this.roll);
 ////}
 
 	opEquals ( a: idAngles ): idAngles {
@@ -195,50 +195,50 @@ class idAngles {
 	}
 
 ////ID_INLINE idAngles idAngles::operator+(const idAngles &a) const {
-////	return idAngles(pitch + a.pitch, yaw + a.yaw, roll + a.roll);
+////	return idAngles(this.pitch + a.pitch, this.yaw + a.yaw, this.roll + a.roll);
 ////}
 ////
 ////ID_INLINE idAngles& idAngles::operator+=(const idAngles &a) {
-////	pitch += a.pitch;
-////	yaw += a.yaw;
-////	roll += a.roll;
+////	this.pitch += a.pitch;
+////	this.yaw += a.yaw;
+////	this.roll += a.roll;
 ////
 ////	return *this;
 ////}
 ////
 ////ID_INLINE idAngles idAngles::operator-(const idAngles &a) const {
-////	return idAngles(pitch - a.pitch, yaw - a.yaw, roll - a.roll);
+////	return idAngles(this.pitch - a.pitch, this.yaw - a.yaw, this.roll - a.roll);
 ////}
 ////
 ////ID_INLINE idAngles& idAngles::operator-=(const idAngles &a) {
-////	pitch -= a.pitch;
-////	yaw -= a.yaw;
-////	roll -= a.roll;
+////	this.pitch -= a.pitch;
+////	this.yaw -= a.yaw;
+////	this.roll -= a.roll;
 ////
 ////	return *this;
 ////}
 ////
 ////ID_INLINE idAngles idAngles::operator*(const float a) const {
-////	return idAngles(pitch * a, yaw * a, roll * a);
+////	return idAngles(this.pitch * a, this.yaw * a, this.roll * a);
 ////}
 ////
 ////ID_INLINE idAngles& idAngles::operator*=(float a) {
-////	pitch *= a;
-////	yaw *= a;
-////	roll *= a;
+////	this.pitch *= a;
+////	this.yaw *= a;
+////	this.roll *= a;
 ////	return *this;
 ////}
 ////
 ////ID_INLINE idAngles idAngles::operator/(const float a) const {
-////	float inva = 1.0f / a;
-////	return idAngles(pitch * inva, yaw * inva, roll * inva);
+////	float inva = 1.0 / a;
+////	return idAngles(this.pitch * inva, this.yaw * inva, this.roll * inva);
 ////}
 ////
 ////ID_INLINE idAngles& idAngles::operator/=(float a) {
-////	float inva = 1.0f / a;
-////	pitch *= inva;
-////	yaw *= inva;
-////	roll *= inva;
+////	float inva = 1.0 / a;
+////	this.pitch *= inva;
+////	this.yaw *= inva;
+////	this.roll *= inva;
 ////	return *this;
 ////}
 ////
@@ -247,19 +247,19 @@ class idAngles {
 ////}
 ////
 ////ID_INLINE bool idAngles::Compare(const idAngles &a) const {
-////	return ((a.pitch == pitch) && (a.yaw == yaw) && (a.roll == roll));
+////	return ((a.pitch == this.pitch) && (a.yaw == this.yaw) && (a.roll == this.roll));
 ////}
 ////
 ////ID_INLINE bool idAngles::Compare(const idAngles &a, const float epsilon) const {
-////	if (idMath::Fabs(pitch - a.pitch) > epsilon) {
+////	if (idMath::Fabs(this.pitch - a.pitch) > epsilon) {
 ////		return false;
 ////	}
 ////
-////	if (idMath::Fabs(yaw - a.yaw) > epsilon) {
+////	if (idMath::Fabs(this.yaw - a.yaw) > epsilon) {
 ////		return false;
 ////	}
 ////
-////	if (idMath::Fabs(roll - a.roll) > epsilon) {
+////	if (idMath::Fabs(this.roll - a.roll) > epsilon) {
 ////		return false;
 ////	}
 ////
@@ -275,23 +275,23 @@ class idAngles {
 ////}
 ////
 ////ID_INLINE void idAngles::Clamp(const idAngles &min, const idAngles &max) {
-////	if (pitch < min.pitch) {
-////		pitch = min.pitch;
+////	if (this.pitch < min.pitch) {
+////		this.pitch = min.pitch;
 ////	}
-////	else if (pitch > max.pitch) {
-////		pitch = max.pitch;
+////	else if (this.pitch > max.pitch) {
+////		this.pitch = max.pitch;
 ////	}
-////	if (yaw < min.yaw) {
-////		yaw = min.yaw;
+////	if (this.yaw < min.yaw) {
+////		this.yaw = min.yaw;
 ////	}
-////	else if (yaw > max.yaw) {
-////		yaw = max.yaw;
+////	else if (this.yaw > max.yaw) {
+////		this.yaw = max.yaw;
 ////	}
-////	if (roll < min.roll) {
-////		roll = min.roll;
+////	if (this.roll < min.roll) {
+////		this.roll = min.roll;
 ////	}
-////	else if (roll > max.roll) {
-////		roll = max.roll;
+////	else if (this.roll > max.roll) {
+////		this.roll = max.roll;
 ////	}
 ////}
 
@@ -318,7 +318,7 @@ class idAngles {
 ////
 ////
 ////
-////idAngles ang_zero( 0.0f, 0.0f, 0.0f );
+////idAngles ang_zero( 0.0, 0.0, 0.0 );
 ////
 ////
 ////
@@ -333,18 +333,18 @@ class idAngles {
 ////returns angles normalized to the range [0 <= angle < 360]
 ////=================
 ////*/
-////idAngles& idAngles::Normalize360( void ) {
+////idAngles& idAngles::Normalize360( ) {
 ////	var/*int*/i:number;
 ////
 ////	for ( i = 0; i < 3; i++ ) {
-////		if ( ( (*this)[i] >= 360.0f ) || ( (*this)[i] < 0.0f ) ) {
-////			(*this)[i] -= floor( (*this)[i] / 360.0f ) * 360.0f;
+////		if ( ( (*this)[i] >= 360.0 ) || ( (*this)[i] < 0.0 ) ) {
+////			(*this)[i] -= floor( (*this)[i] / 360.0 ) * 360.0;
 ////
-////			if ( (*this)[i] >= 360.0f ) {
-////				(*this)[i] -= 360.0f;
+////			if ( (*this)[i] >= 360.0 ) {
+////				(*this)[i] -= 360.0;
 ////			}
-////			if ( (*this)[i] < 0.0f ) {
-////				(*this)[i] += 360.0f;
+////			if ( (*this)[i] < 0.0 ) {
+////				(*this)[i] += 360.0;
 ////			}
 ////		}
 ////	}
@@ -359,19 +359,19 @@ class idAngles {
 ////returns angles normalized to the range [-180 < angle <= 180]
 ////=================
 ////*/
-////idAngles& idAngles::Normalize180( void ) {
+////idAngles& idAngles::Normalize180( ) {
 ////	Normalize360();
 ////
-////	if ( pitch > 180.0f ) {
-////		pitch -= 360.0f;
+////	if ( this.pitch > 180.0 ) {
+////		this.pitch -= 360.0;
 ////	}
 ////	
-////	if ( yaw > 180.0f ) {
-////		yaw -= 360.0f;
+////	if ( this.yaw > 180.0 ) {
+////		this.yaw -= 360.0;
 ////	}
 ////
-////	if ( roll > 180.0f ) {
-////		roll -= 360.0f;
+////	if ( this.roll > 180.0 ) {
+////		this.roll -= 360.0;
 ////	}
 ////	return *this;
 ////}
@@ -384,9 +384,9 @@ class idAngles {
 ////void idAngles::ToVectors( idVec3 *forward, idVec3 *right, idVec3 *up ) const {
 ////	float sr, sp, sy, cr, cp, cy;
 ////	
-////	idMath::SinCos( DEG2RAD( yaw ), sy, cy );
-////	idMath::SinCos( DEG2RAD( pitch ), sp, cp );
-////	idMath::SinCos( DEG2RAD( roll ), sr, cr );
+////	idMath::SinCos( DEG2RAD( this.yaw ), sy, cy );
+////	idMath::SinCos( DEG2RAD( this.pitch ), sp, cp );
+////	idMath::SinCos( DEG2RAD( this.roll ), sr, cr );
 ////
 ////	if ( forward ) {
 ////		forward.Set( cp * cy, cp * sy, -sp );
@@ -406,11 +406,11 @@ class idAngles {
 ////idAngles::ToForward
 ////=================
 ////*/
-////idVec3 idAngles::ToForward( void ) const {
+////idVec3 idAngles::ToForward( ) const {
 ////	float sp, sy, cp, cy;
 ////	
-////	idMath::SinCos( DEG2RAD( yaw ), sy, cy );
-////	idMath::SinCos( DEG2RAD( pitch ), sp, cp );
+////	idMath::SinCos( DEG2RAD( this.yaw ), sy, cy );
+////	idMath::SinCos( DEG2RAD( this.pitch ), sp, cp );
 ////
 ////	return idVec3( cp * cy, cp * sy, -sp );
 ////}
@@ -420,13 +420,13 @@ class idAngles {
 ////idAngles::ToQuat
 ////=================
 ////*/
-////idQuat idAngles::ToQuat( void ) const {
+////idQuat idAngles::ToQuat( ) const {
 ////	float sx, cx, sy, cy, sz, cz;
 ////	float sxcy, cxcy, sxsy, cxsy;
 ////
-////	idMath::SinCos( DEG2RAD( yaw ) * 0.5f, sz, cz );
-////	idMath::SinCos( DEG2RAD( pitch ) * 0.5f, sy, cy );
-////	idMath::SinCos( DEG2RAD( roll ) * 0.5f, sx, cx );
+////	idMath::SinCos( DEG2RAD( this.yaw ) * 0.5f, sz, cz );
+////	idMath::SinCos( DEG2RAD( this.pitch ) * 0.5f, sy, cy );
+////	idMath::SinCos( DEG2RAD( this.roll ) * 0.5f, sx, cx );
 ////
 ////	sxcy = sx * cy;
 ////	cxcy = cx * cy;
@@ -441,26 +441,26 @@ class idAngles {
 ////idAngles::ToRotation
 ////=================
 ////*/
-////idRotation idAngles::ToRotation( void ) const {
+////idRotation idAngles::ToRotation( ) const {
 ////	idVec3 vec;
 ////	/*float*/angle:number, w;
 ////	float sx, cx, sy, cy, sz, cz;
 ////	float sxcy, cxcy, sxsy, cxsy;
 ////
-////	if ( pitch == 0.0f ) {
-////		if ( yaw == 0.0f ) {
-////			return idRotation( vec3_origin, idVec3( -1.0f, 0.0f, 0.0f ), roll );
+////	if ( this.pitch == 0.0 ) {
+////		if ( this.yaw == 0.0 ) {
+////			return idRotation( vec3_origin, idVec3( -1.0, 0.0, 0.0 ), this.roll );
 ////		}
-////		if ( roll == 0.0f ) {
-////			return idRotation( vec3_origin, idVec3( 0.0f, 0.0f, -1.0f ), yaw );
+////		if ( this.roll == 0.0 ) {
+////			return idRotation( vec3_origin, idVec3( 0.0, 0.0, -1.0 ), this.yaw );
 ////		}
-////	} else if ( yaw == 0.0f && roll == 0.0f ) {
-////		return idRotation( vec3_origin, idVec3( 0.0f, -1.0f, 0.0f ), pitch );
+////	} else if ( this.yaw == 0.0 && this.roll == 0.0 ) {
+////		return idRotation( vec3_origin, idVec3( 0.0, -1.0, 0.0 ), this.pitch );
 ////	}
 ////
-////	idMath::SinCos( DEG2RAD( yaw ) * 0.5f, sz, cz );
-////	idMath::SinCos( DEG2RAD( pitch ) * 0.5f, sy, cy );
-////	idMath::SinCos( DEG2RAD( roll ) * 0.5f, sx, cx );
+////	idMath::SinCos( DEG2RAD( this.yaw ) * 0.5f, sz, cz );
+////	idMath::SinCos( DEG2RAD( this.pitch ) * 0.5f, sy, cy );
+////	idMath::SinCos( DEG2RAD( this.roll ) * 0.5f, sx, cx );
 ////
 ////	sxcy = sx * cy;
 ////	cxcy = cx * cy;
@@ -472,43 +472,43 @@ class idAngles {
 ////	vec.z =  sxsy * cz - cxcy * sz;
 ////	w =		 cxcy * cz + sxsy * sz;
 ////	angle = idMath::ACos( w );
-////	if ( angle == 0.0f ) {
-////		vec.Set( 0.0f, 0.0f, 1.0f );
+////	if ( angle == 0.0 ) {
+////		vec.Set( 0.0, 0.0, 1.0 );
 ////	} else {
-////		//vec *= (1.0f / sin( angle ));
+////		//vec *= (1.0 / sin( angle ));
 ////		vec.Normalize();
 ////		vec.FixDegenerateNormal();
-////		angle *= 2.0f * idMath::M_RAD2DEG;
+////		angle *= 2.0 * idMath::M_RAD2DEG;
 ////	}
 ////	return idRotation( vec3_origin, vec, angle );
 ////}
 ////
-/////*
-////=================
-////idAngles::ToMat3
-////=================
-////*/
-////idMat3 idAngles::ToMat3( void ) const {
-////	idMat3 mat;
-////	float sr, sp, sy, cr, cp, cy;
-////
-////	idMath::SinCos( DEG2RAD( yaw ), sy, cy );
-////	idMath::SinCos( DEG2RAD( pitch ), sp, cp );
-////	idMath::SinCos( DEG2RAD( roll ), sr, cr );
-////
-////	mat[ 0 ].Set( cp * cy, cp * sy, -sp );
-////	mat[ 1 ].Set( sr * sp * cy + cr * -sy, sr * sp * sy + cr * cy, sr * cp );
-////	mat[ 2 ].Set( cr * sp * cy + -sr * -sy, cr * sp * sy + -sr * cy, cr * cp );
-////
-////	return mat;
-////}
-////
+/*
+=================
+idAngles::ToMat3
+=================
+*/
+	ToMat3 ( ): idMat3 {
+		var mat = new idMat3;
+		var /*float */sr = new R<number> ( ), sp = new R<number> ( ), sy = new R<number> ( ), cr = new R<number> ( ), cp = new R<number> ( ), cy = new R<number> ( );
+
+		idMath.SinCos( DEG2RAD( this.yaw ), sy, cy );
+		idMath.SinCos( DEG2RAD( this.pitch ), sp, cp );
+		idMath.SinCos( DEG2RAD( this.roll ), sr, cr );
+
+		mat[0].Set( cp.$ * cy.$, cp.$ * sy.$, -sp );
+		mat[1].Set( sr.$ * sp.$ * cy.$ + cr.$ * -sy, sr.$ * sp.$ * sy.$ + cr.$ * cy.$, sr.$ * cp.$ );
+		mat[2].Set( cr.$ * sp.$ * cy.$ + -sr.$ * -sy, cr.$ * sp.$ * sy.$ + -sr.$ * cy.$, cr.$ * cp.$ );
+
+		return mat;
+	}
+
 /////*
 ////=================
 ////idAngles::ToMat4
 ////=================
 ////*/
-////idMat4 idAngles::ToMat4( void ) const {
+////idMat4 idAngles::ToMat4( ) const {
 ////	return ToMat3().ToMat4();
 ////}
 ////
@@ -517,7 +517,7 @@ class idAngles {
 ////idAngles::ToAngularVelocity
 ////=================
 ////*/
-////idVec3 idAngles::ToAngularVelocity( void ) const {
+////idVec3 idAngles::ToAngularVelocity( ) const {
 ////	idRotation rotation = idAngles::ToRotation();
 ////	return rotation.GetVec() * DEG2RAD( rotation.GetAngle() );
 ////}

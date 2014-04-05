@@ -646,24 +646,27 @@ idDict::GetBool
 ////	return found;
 ////}
 ////
-/////*
-////================
-////idDict::GetVector
-////================
-////*/
-////bool idDict::GetVector( key:string, defaultString:string, idVec3 &out ) const {
-////	bool		found;
-////	const char	*s;
-////	
-////	if ( !defaultString ) {
-////		defaultString = "0 0 0";
-////	}
-////
-////	found = GetString( key, defaultString, &s );
-////	out.Zero();
-////	sscanf( s, "%f %f %f", &out.x, &out.y, &out.z );
-////	return found;
-////}
+/*
+================
+idDict::GetVector
+================
+*/
+	GetVector_R ( key: string, defaultString: string, out: idVec3 ): boolean {
+		var found: boolean;
+		var s = new R<string> ( );
+
+		if ( !defaultString ) {
+			defaultString = "0 0 0";
+		}
+
+		found = this.GetString_Rstring( key, defaultString, s );
+		out.Zero ( );
+		var arr = sscanf( s.$, "%f %f %f" );
+		out.x = arr[0];
+		out.y = arr[1];
+		out.z = arr[2];
+		return found;
+	}
 ////
 /////*
 ////================
@@ -703,25 +706,34 @@ idDict::GetBool
 ////	return found;
 ////}
 ////
-/////*
-////================
-////idDict::GetMatrix
-////================
-////*/
-////bool idDict::GetMatrix( key:string, defaultString:string, idMat3 &out ) const {
-////	const char	*s;
-////	bool		found;
-////		
-////	if ( !defaultString ) {
-////		defaultString = "1 0 0 0 1 0 0 0 1";
-////	}
-////
-////	found = GetString( key, defaultString, &s );
-////	out.Identity();		// sccanf has a bug in it on Mac OS 9.  Sigh.
-////	sscanf( s, "%f %f %f %f %f %f %f %f %f", &out[0].x, &out[0].y, &out[0].z, &out[1].x, &out[1].y, &out[1].z, &out[2].x, &out[2].y, &out[2].z );
-////	return found;
-////}
-////
+/*
+================
+idDict::GetMatrix
+================
+*/
+	GetMatrix_R ( key: string, defaultString: string, out: idMat3 ): boolean {
+		var s = new R<string> ( );
+		var found: boolean;
+
+		if ( !defaultString ) {
+			defaultString = "1 0 0 0 1 0 0 0 1";
+		}
+
+		found = this.GetString_Rstring( key, defaultString, s );
+		out.Identity ( ); // sccanf has a bug in it on Mac OS 9.  Sigh.
+		var arr = sscanf( s.$, "%f %f %f %f %f %f %f %f %f" );
+		out[0].x = arr[0];
+		out[0].y = arr[1];
+		out[0].z = arr[2];
+		out[1].x = arr[3];
+		out[1].y = arr[4];
+		out[1].z = arr[5];
+		out[2].x = arr[6];
+		out[2].y = arr[7];
+		out[2].z = arr[8];
+		return found;
+	}
+
 /////*
 ////================
 ////WriteString

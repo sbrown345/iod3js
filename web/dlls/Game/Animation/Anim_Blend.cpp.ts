@@ -2120,20 +2120,20 @@ class idDeclModelDef extends idDecl {
 	//	bool						ParseAnim( idLexer &src, int numDefaultAnims );
 	//
 	//private:
-	//	idVec3						offset;
+	offset = new idVec3;
 	//	idList<jointInfo_t>			joints;
-	//	idList<int>					jointParents;
+	jointParents = new idList</*int*/number>(Number);
 	//	idList<int>					channelJoints[ ANIM_NumAnimChannels ];
-	//	idRenderModel *				modelHandle;
-	//	idList<idAnim *>			anims;
-	//	const idDeclSkin *			skin;
+	modelHandle:idRenderModel;
+	anims = new idList<idAnim >(idAnim ,true)	;
+	skin:idDeclSkin;
 ///*
 //=====================
 //idDeclModelDef::idDeclModelDef
 //=====================
 //*/
 //idDeclModelDef::idDeclModelDef() {
-//	modelHandle	= NULL;
+//	this.modelHandle	= NULL;
 //	skin		= NULL;
 //	offset.Zero();
 //	for ( int i = 0; i < ANIM_NumAnimChannels; i++ ) {
@@ -2170,7 +2170,7 @@ class idDeclModelDef extends idDecl {
 //	FreeData();
 //
 //	offset = decl.offset;
-//	modelHandle = decl.modelHandle;
+//	this.modelHandle = decl.modelHandle;
 //	skin = decl.skin;
 //
 //	anims.SetNum( decl.anims.Num() );
@@ -2196,7 +2196,7 @@ class idDeclModelDef extends idDecl {
 //	anims.DeleteContents( true );
 //	joints.Clear();
 //	jointParents.Clear();
-//	modelHandle	= NULL;
+//	this.modelHandle	= NULL;
 //	skin = NULL;
 //	offset.Zero();
 //	for ( int i = 0; i < ANIM_NumAnimChannels; i++ ) {
@@ -2222,11 +2222,11 @@ idDeclModelDef::DefaultDefinition
 //	int					i;
 //	const idMD5Joint	*joint;
 //
-//	if ( !modelHandle ) {
+//	if ( !this.modelHandle ) {
 //		return NULL;
 //	}
 //	
-//	joint = modelHandle.GetJoints();
+//	joint = this.modelHandle.GetJoints();
 //	for( i = 0; i < joints.Num(); i++, joint++ ) {
 //		if ( !joint.name.Icmp( name ) ) {
 //			return &joints[ i ];
@@ -2235,16 +2235,16 @@ idDeclModelDef::DefaultDefinition
 //
 //	return NULL;
 //}
-//
-///*
-//=====================
-//idDeclModelDef::ModelHandle
-//=====================
-//*/
-//idRenderModel *idDeclModelDef::ModelHandle( ) const {
-//	return ( idRenderModel * )modelHandle;
-//}
-//
+
+/*
+=====================
+idDeclModelDef::ModelHandle
+=====================
+*/
+	ModelHandle ( ): idRenderModel {
+		return <idRenderModel >this.modelHandle;
+	}
+
 ///*
 //=====================
 //idDeclModelDef::GetJointList
@@ -2260,13 +2260,13 @@ idDeclModelDef::DefaultDefinition
 //	bool				getChildren;
 //	bool				subtract;
 //
-//	if ( !modelHandle ) {
+//	if ( !this.modelHandle ) {
 //		return;
 //	}
 //
 //	jointList.Clear();
 //
-//	num = modelHandle.NumJoints();
+//	num = this.modelHandle.NumJoints();
 //
 //	// scan through list of joints and add each to the joint list
 //	pos = jointnames;
@@ -2343,27 +2343,27 @@ idDeclModelDef::DefaultDefinition
 //=====================
 //*/
 //void idDeclModelDef::Touch( ) const {
-//	if ( modelHandle ) {
-//		renderModelManager.FindModel( modelHandle.Name() );
+//	if ( this.modelHandle ) {
+//		renderModelManager.FindModel( this.modelHandle.Name() );
 //	}
 //}
-//
-///*
-//=====================
-//idDeclModelDef::GetDefaultSkin
-//=====================
-//*/
-//const idDeclSkin *idDeclModelDef::GetDefaultSkin( ) const {
-//	return skin;
-//}
-//
+
+/*
+=====================
+idDeclModelDef::GetDefaultSkin
+=====================
+*/
+	GetDefaultSkin ( ): idDeclSkin {
+		return this.skin;
+	}
+
 ///*
 //=====================
 //idDeclModelDef::GetDefaultPose
 //=====================
 //*/
 //const idJointQuat *idDeclModelDef::GetDefaultPose( ) const {
-//	return modelHandle.GetDefaultPose();
+//	return this.modelHandle.GetDefaultPose();
 //}
 //
 ///*
@@ -2376,7 +2376,7 @@ idDeclModelDef::DefaultDefinition
 //	const idJointQuat	*pose;
 //	idJointMat			*list;
 //
-//	if ( !modelHandle || modelHandle.IsDefaultModel() ) {
+//	if ( !this.modelHandle || this.modelHandle.IsDefaultModel() ) {
 //		Mem_Free16( (*jointList) );
 //		(*jointList) = NULL;
 //		frameBounds.Clear();
@@ -2384,10 +2384,10 @@ idDeclModelDef::DefaultDefinition
 //	}
 //
 //	// get the number of joints
-//	num = modelHandle.NumJoints();
+//	num = this.modelHandle.NumJoints();
 //
 //	if ( !num ) {
-//		gameLocal.Error( "model '%s' has no joints", modelHandle.Name() );
+//		gameLocal.Error( "model '%s' has no joints", this.modelHandle.Name() );
 //	}
 //
 //	// set up initial pose for model (with no pose, model is just a jumbled mess)
@@ -2415,7 +2415,7 @@ idDeclModelDef::DefaultDefinition
 //	*jointList = list;
 //
 //	// get the bounds of the default pose
-//	frameBounds = modelHandle.Bounds( NULL );
+//	frameBounds = this.modelHandle.Bounds( NULL );
 //}
 //
 ///*
@@ -2499,7 +2499,7 @@ idDeclModelDef::DefaultDefinition
 //			return false;
 //		}
 //
-//		md5anim.CheckModelHierarchy( modelHandle );
+//		md5anim.CheckModelHierarchy( this.modelHandle );
 //
 //		if ( numAnims > 0 ) {
 //			// make sure it's the same length as the other anims
@@ -2668,21 +2668,21 @@ idDeclModelDef::DefaultDefinition
 //				MakeDefault();
 //				return false;
 //			}
-//			modelHandle = renderModelManager.FindModel( filename );
-//			if ( !modelHandle ) {
+//			this.modelHandle = renderModelManager.FindModel( filename );
+//			if ( !this.modelHandle ) {
 //				src.Warning( "Model '%s' not found", filename.c_str() );
 //				MakeDefault();
 //				return false;
 //			}
 //
-//			if ( modelHandle.IsDefaultModel() ) {
+//			if ( this.modelHandle.IsDefaultModel() ) {
 //				src.Warning( "Model '%s' defaulted", filename.c_str() );
 //				MakeDefault();
 //				return false;
 //			}
 //
 //			// get the number of joints
-//			num = modelHandle.NumJoints();
+//			num = this.modelHandle.NumJoints();
 //			if ( !num ) {
 //				src.Warning( "Model '%s' has no joints", filename.c_str() );
 //			}
@@ -2692,7 +2692,7 @@ idDeclModelDef::DefaultDefinition
 //			joints.SetNum( num );
 //			jointParents.SetNum( num );
 //			channelJoints[0].SetNum( num );
-//			md5joints = modelHandle.GetJoints();
+//			md5joints = this.modelHandle.GetJoints();
 //			md5joint = md5joints;
 //			for( i = 0; i < num; i++, md5joint++ ) {
 //				joints[i].channel = ANIMCHANNEL_ALL;
@@ -2734,7 +2734,7 @@ idDeclModelDef::DefaultDefinition
 //				return false;
 //			}
 //		} else if ( token == "anim" ) {
-//			if ( !modelHandle ) {
+//			if ( !this.modelHandle ) {
 //				src.Warning( "Must specify mesh before defining anims" );
 //				MakeDefault();
 //				return false;
@@ -2750,7 +2750,7 @@ idDeclModelDef::DefaultDefinition
 //				return false;
 //			}
 //		} else if ( token == "channel" ) {
-//			if ( !modelHandle ) {
+//			if ( !this.modelHandle ) {
 //				src.Warning( "Must specify mesh before defining channels" );
 //				MakeDefault();
 //				return false;
@@ -2801,7 +2801,7 @@ idDeclModelDef::DefaultDefinition
 //			for( num = i = 0; i < jointList.Num(); i++ ) {
 //				jointnum = jointList[ i ];
 //				if ( joints[ jointnum ].channel != ANIMCHANNEL_ALL ) {
-//					src.Warning( "Joint '%s' assigned to multiple channels", modelHandle.GetJointName( jointnum ) );
+//					src.Warning( "Joint '%s' assigned to multiple channels", this.modelHandle.GetJointName( jointnum ) );
 //					continue;
 //				}
 //				joints[ jointnum ].channel = channel;
@@ -2938,8 +2938,8 @@ idDeclModelDef::DefaultDefinition
 //=====================
 //*/
 //const char *idDeclModelDef::GetModelName( ) const {
-//	if ( modelHandle ) {
-//		return modelHandle.Name();
+//	if ( this.modelHandle ) {
+//		return this.modelHandle.Name();
 //	} else {
 //		return "";
 //	}
@@ -2992,7 +2992,7 @@ idDeclModelDef::DefaultDefinition
 //const char *idDeclModelDef::GetJointName( int jointHandle ) const {
 //	const idMD5Joint *joint;
 //
-//	if ( !modelHandle ) {
+//	if ( !this.modelHandle ) {
 //		return NULL;
 //	}
 //	
@@ -3000,7 +3000,7 @@ idDeclModelDef::DefaultDefinition
 //		gameLocal.Error( "idDeclModelDef::GetJointName : joint handle out of range" );
 //	}
 //
-//	joint = modelHandle.GetJoints();
+//	joint = this.modelHandle.GetJoints();
 //	return joint[ jointHandle ].name.c_str();
 //}
 //
