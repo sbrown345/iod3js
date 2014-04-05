@@ -1381,14 +1381,14 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	return current.i.position;
 ////}
 ////
-/////*
-////================
-////idPhysics_RigidBody::GetAxis
-////================
-////*/
-////const idMat3 &idPhysics_RigidBody::GetAxis( int id ) const {
-////	return current.i.orientation;
-////}
+/*
+================
+idPhysics_RigidBody::GetAxis
+================
+*/
+const idMat3 &idPhysics_RigidBody::GetAxis( int id ) const {
+	return current.i.orientation;
+}
 ////
 /////*
 ////================

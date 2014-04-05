@@ -510,14 +510,14 @@ class idPhysics_Base extends idPhysics {
 	//	return vec3_origin;
 	//}
 	//
-	///*
-	//================
-	//idPhysics_Base::GetAxis
-	//================
-	//*/
-	//const idMat3 &idPhysics_Base::GetAxis( int id ) const {
-	//	return mat3_identity;
-	//}
+	/*
+	================
+	idPhysics_Base::GetAxis
+	================
+	*/
+	const idMat3 &idPhysics_Base::GetAxis( int id ) const {
+		return mat3_identity;
+	}
 	//
 	///*
 	//================

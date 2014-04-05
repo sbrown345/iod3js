@@ -967,16 +967,16 @@ class idPhysics_Parametric extends idPhysics_Base {
 //const idVec3 &idPhysics_Parametric::GetOrigin( int id ) const {
 //	return current.origin;
 //}
-//
-///*
-//================
-//idPhysics_Parametric::GetAxis
-//================
-//*/
-//const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
-//	return current.axis;
-//}
-//
+
+/*
+================
+idPhysics_Parametric::GetAxis
+================
+*/
+const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
+	return current.axis;
+}
+
 ///*
 //================
 //idPhysics_Parametric::GetAngles

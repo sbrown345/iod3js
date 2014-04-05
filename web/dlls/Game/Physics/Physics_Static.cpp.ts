@@ -593,16 +593,16 @@ idPhysics_Static::idPhysics_Static
 	////const idVec3 &idPhysics_Static::GetOrigin( /*int*/ id:number  = 0) const {
 	////	return this.current.origin;
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::GetAxis
-	////================
-	////*/
-	////const idMat3 &idPhysics_Static::GetAxis( /*int*/ id:number  = 0) const {
-	////	return this.current.axis;
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_Static::GetAxis
+	================
+	*/
+	const idMat3 &idPhysics_Static::GetAxis( /*int*/ id:number  = 0) const {
+		return this.current.axis;
+	}
+	
 	/////*
 	////================
 	////idPhysics_Static::SetLinearVelocity

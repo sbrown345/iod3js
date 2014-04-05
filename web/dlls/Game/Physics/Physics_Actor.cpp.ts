@@ -350,15 +350,15 @@ class idPhysics_Actor extends idPhysics_Base {
 	//	return clipModel.GetOrigin();
 	//}
 	//
-	///*
-	//================
-	//idPhysics_Player::GetAxis
-	//================
-	//*/
-	//const idMat3 &idPhysics_Actor::GetAxis( int id ) const {
-	//	return clipModel.GetAxis();
-	//}
-	//
+	/*
+	================
+	idPhysics_Player::GetAxis
+	================
+	*/
+	const idMat3 &idPhysics_Actor::GetAxis( int id ) const {
+		return clipModel.GetAxis();
+	}
+	
 	///*
 	//================
 	//idPhysics_Actor::SetGravity

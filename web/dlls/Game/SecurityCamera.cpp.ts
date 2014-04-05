@@ -437,14 +437,14 @@ idSecurityCamera.Type = new idTypeInfo("idSecurityCamera", "idEntity",
 ////	Present();
 ////}
 
-/////*
-////================
-////idSecurityCamera::GetAxis
-////================
-////*/
-////const idVec3 idSecurityCamera::GetAxis( void ) const {
-////	return (flipAxis) ? -GetPhysics()->GetAxis()[modelAxis] : GetPhysics()->GetAxis()[modelAxis];
-////};
+///*
+//================
+//idSecurityCamera::GetAxis
+//================
+//*/
+//const idVec3 idSecurityCamera::GetAxis( void ) const {
+//	return (flipAxis) ? -GetPhysics()->GetAxis()[modelAxis] : GetPhysics()->GetAxis()[modelAxis];
+//};
 
 /////*
 ////================

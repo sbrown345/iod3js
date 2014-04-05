@@ -1680,18 +1680,18 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	}
 ////}
 ////
-/////*
-////================
-////idAFConstraint_Hinge::GetAxis
-////================
-////*/
-////idVec3 idAFConstraint_Hinge::GetAxis( ) const {
-////	if ( body2 ) {
-////		return axis2 * body2.GetWorldAxis();
-////	}
-////	return axis2;
-////}
-////
+/*
+================
+idAFConstraint_Hinge::GetAxis
+================
+*/
+idVec3 idAFConstraint_Hinge::GetAxis( ) const {
+	if ( body2 ) {
+		return axis2 * body2.GetWorldAxis();
+	}
+	return axis2;
+}
+
 /////*
 ////================
 ////idAFConstraint_Hinge::SetNoLimit
@@ -7616,21 +7616,21 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////		return bodies[id].current.worldOrigin;
 ////	}
 ////}
-////
-/////*
-////================
-////idPhysics_AF::GetAxis
-////================
-////*/
-////const idMat3 &idPhysics_AF::GetAxis( int id ) const {
-////	if ( id < 0 || id >= bodies.Num() ) {
-////		return mat3_identity;
-////	}
-////	else {
-////		return bodies[id].current.worldAxis;
-////	}
-////}
-////
+
+/*
+================
+idPhysics_AF::GetAxis
+================
+*/
+const idMat3 &idPhysics_AF::GetAxis( int id ) const {
+	if ( id < 0 || id >= bodies.Num() ) {
+		return mat3_identity;
+	}
+	else {
+		return bodies[id].current.worldAxis;
+	}
+}
+
 /////*
 ////================
 ////idPhysics_AF::SetLinearVelocity

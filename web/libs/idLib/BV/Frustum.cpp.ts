@@ -59,9 +59,9 @@
 //	idMat3 ax;
 //	idVec3 temp[4];
 //
-//	ax[0] = extents[0] * axis[0];
-//	ax[1] = extents[1] * axis[1];
-//	ax[2] = extents[2] * axis[2];
+//	ax[0] = extents[0] * this.axis[0];
+//	ax[1] = extents[1] * this.axis[1];
+//	ax[2] = extents[2] * this.axis[2];
 //	temp[0] = center - ax[0];
 //	temp[1] = center + ax[0];
 //	temp[2] = ax[1] - ax[2];
@@ -89,7 +89,7 @@
 
 class idFrustum {
 //	public:
-//	idFrustum( void );
+//	idFrustum( );
 
 //	void SetOrigin( const idVec3 & origin );
 //void SetAxis( const idMat3 & axis );
@@ -98,15 +98,15 @@ class idFrustum {
 //void MoveNearDistance(float dNear);
 //void MoveFarDistance(float dFar);
 
-//	const idVec3 & GetOrigin( void ) const;						// returns frustum origin
-//	const idMat3 & GetAxis( void ) const;							// returns frustum orientation
-//	idVec3			GetCenter( void ) const;						// returns center of frustum
+//	const idVec3 & GetOrigin( ) const;						// returns frustum origin
+//	const idMat3 & GetAxis( ) const;							// returns frustum orientation
+//	idVec3			GetCenter( ) const;						// returns center of frustum
 
-//	bool			IsValid( void ) const;							// returns true if the frustum is valid
-//	float			GetNearDistance( void ) const;					// returns distance to near plane
-//	float			GetFarDistance( void ) const;					// returns distance to far plane
-//	float			GetLeft( void ) const;							// returns left vector length
-//	float			GetUp( void ) const;							// returns up vector length
+//	bool			IsValid( ) const;							// returns true if the frustum is valid
+//	float			GetNearDistance( ) const;					// returns distance to near plane
+//	float			GetFarDistance( ) const;					// returns distance to far plane
+//	float			GetLeft( ) const;							// returns left vector length
+//	float			GetUp( ) const;							// returns up vector length
 
 //	idFrustum		Expand( const float d ) const;					// returns frustum expanded in all directions with the given value
 //idFrustum & ExpandSelf( const float d );					// expands frustum in all directions with the given value
@@ -249,35 +249,35 @@ class idFrustum {
 //	this. invFar = 1.0f / dFar;
 //}
 
-//ID_INLINE const idVec3 &idFrustum::GetOrigin( void ) const {
-//	return origin;
+GetOrigin( ) :idVec3 {
+	return this.origin;
+}
+
+GetAxis( ) :idMat3 {
+	return this.axis;
+}
+
+//ID_INLINE idVec3 idFrustum::GetCenter( ) const {
+//	return (origin + this.axis[0] * ((dFar - dNear) * 0.5f ) );
 //}
 
-//ID_INLINE const idMat3 &idFrustum::GetAxis( void ) const {
-//	return axis;
-//}
-
-//ID_INLINE idVec3 idFrustum::GetCenter( void ) const {
-//	return (origin + axis[0] * ((dFar - dNear) * 0.5f ) );
-//}
-
-//ID_INLINE bool idFrustum::IsValid( void ) const {
+//ID_INLINE bool idFrustum::IsValid( ) const {
 //	return (dFar > dNear);
 //}
 
-//ID_INLINE float idFrustum::GetNearDistance( void ) const {
+//ID_INLINE float idFrustum::GetNearDistance( ) const {
 //	return dNear;
 //}
 
-//ID_INLINE float idFrustum::GetFarDistance( void ) const {
+//ID_INLINE float idFrustum::GetFarDistance( ) const {
 //	return dFar;
 //}
 
-//ID_INLINE float idFrustum::GetLeft( void ) const {
+//ID_INLINE float idFrustum::GetLeft( ) const {
 //	return dLeft;
 //}
 
-//ID_INLINE float idFrustum::GetUp( void ) const {
+//ID_INLINE float idFrustum::GetUp( ) const {
 //	return dUp;
 //}
 
@@ -292,7 +292,7 @@ class idFrustum {
 //}
 
 //ID_INLINE idFrustum &idFrustum::ExpandSelf( const float d ) {
-//	origin -= d * axis[0];
+//	this.origin -= d * this.axis[0];
 //	dFar += 2.0f * d;
 //	dLeft = dFar * dLeft * invFar;
 //	dUp = dFar * dUp * invFar;
@@ -307,7 +307,7 @@ class idFrustum {
 //}
 
 //ID_INLINE idFrustum &idFrustum::TranslateSelf( const idVec3 & translation ) {
-//	origin += translation;
+//	this.origin += translation;
 //	return *this;
 //}
 
@@ -318,7 +318,7 @@ class idFrustum {
 //}
 
 //ID_INLINE idFrustum &idFrustum::RotateSelf( const idMat3 & rotation ) {
-//	axis *= rotation;
+//	this.axis *= rotation;
 //	return *this;
 //}
 
@@ -369,7 +369,7 @@ class idFrustum {
 //	float scale;
 //
 //	// transform point to frustum space
-//	p = ( point - origin ) * axis.Transpose();
+//	p = ( point - this.origin ) * this.axis.Transpose();
 //	// test whether or not the point is within the frustum
 //	if ( p.x < dNear || p.x > dFar ) {
 //		return true;
@@ -470,8 +470,8 @@ class idFrustum {
 //	extents = bounds[1] - center;
 //
 //	// transform the bounds into the space of this frustum
-//	localOrigin = ( center - origin ) * axis.Transpose();
-//	localAxis = axis.Transpose();
+//	localOrigin = ( center - this.origin ) * this.axis.Transpose();
+//	localAxis = this.axis.Transpose();
 //
 //	return CullLocalBox( localOrigin, extents, localAxis );
 //}
@@ -491,8 +491,8 @@ class idFrustum {
 //	idMat3 localAxis;
 //
 //	// transform the box into the space of this frustum
-//	localOrigin = ( box.GetCenter() - origin ) * axis.Transpose();
-//	localAxis = box.GetAxis() * axis.Transpose();
+//	localOrigin = ( box.GetCenter() - this.origin ) * this.axis.Transpose();
+//	localAxis = box.GetAxis() * this.axis.Transpose();
 //
 //	return CullLocalBox( localOrigin, box.GetExtents(), localAxis );
 //}
@@ -511,7 +511,7 @@ class idFrustum {
 //	float d, r, rs, sFar;
 //	idVec3 center;
 //
-//	center = ( sphere.GetOrigin() - origin ) * axis.Transpose();
+//	center = ( sphere.GetOrigin() - this.origin ) * this.axis.Transpose();
 //	r = sphere.GetRadius();
 //
 //	// test near plane
@@ -645,8 +645,8 @@ class idFrustum {
 //
 //	// transform the given frustum into the space of this frustum
 //	localFrustum = frustum;
-//	localFrustum.origin = ( frustum.origin - origin ) * axis.Transpose();
-//	localFrustum.axis = frustum.axis * axis.Transpose();
+//	localFrustum.origin = ( frustum.origin - this.origin ) * this.axis.Transpose();
+//	localFrustum.axis = frustum.axis * this.axis.Transpose();
 //
 //	localFrustum.ToIndexPointsAndCornerVecs( indexPoints, cornerVecs );
 //
@@ -701,9 +701,9 @@ class idFrustum {
 //	localPoints = (idVec3 *) _alloca16( winding.GetNumPoints() * sizeof( idVec3 ) );
 //	pointCull = (int *) _alloca16( winding.GetNumPoints() * sizeof( int ) );
 //
-//	transpose = axis.Transpose();
+//	transpose = this.axis.Transpose();
 //	for ( i = 0; i < winding.GetNumPoints(); i++ ) {
-//		localPoints[i] = ( winding[i].ToVec3() - origin ) * transpose;
+//		localPoints[i] = ( winding[i].ToVec3() - this.origin ) * transpose;
 //	}
 //
 //	return CullLocalWinding( localPoints, winding.GetNumPoints(), pointCull );
@@ -1115,8 +1115,8 @@ class idFrustum {
 //	center = ( bounds[0] + bounds[1] ) * 0.5f;
 //	extents = bounds[1] - center;
 //
-//	localOrigin = ( center - origin ) * axis.Transpose();
-//	localAxis = axis.Transpose();
+//	localOrigin = ( center - this.origin ) * this.axis.Transpose();
+//	localAxis = this.axis.Transpose();
 //
 //	if ( CullLocalBox( localOrigin, extents, localAxis ) ) {
 //		return false;
@@ -1155,8 +1155,8 @@ class idFrustum {
 //	idVec3 localOrigin;
 //	idMat3 localAxis;
 //
-//	localOrigin = ( box.GetCenter() - origin ) * axis.Transpose();
-//	localAxis = box.GetAxis() * axis.Transpose();
+//	localOrigin = ( box.GetCenter() - this.origin ) * this.axis.Transpose();
+//	localAxis = box.GetAxis() * this.axis.Transpose();
 //
 //	if ( CullLocalBox( localOrigin, box.GetExtents(), localAxis ) ) {
 //		return false;
@@ -1166,8 +1166,8 @@ class idFrustum {
 //	idFrustum localFrustum;
 //
 //	localFrustum = *this;
-//	localFrustum.origin = ( origin - box.GetCenter() ) * box.GetAxis().Transpose();
-//	localFrustum.axis = axis * box.GetAxis().Transpose();
+//	localFrustum.origin = ( this.origin - box.GetCenter() ) * box.GetAxis().Transpose();
+//	localFrustum.axis = this.axis * box.GetAxis().Transpose();
 //	localFrustum.ToIndexPointsAndCornerVecs( indexPoints, cornerVecs );
 //
 //	if ( BoundsCullLocalFrustum( idBounds( -box.GetExtents(), box.GetExtents() ), localFrustum, indexPoints, cornerVecs ) ) {
@@ -1211,7 +1211,7 @@ class idFrustum {
 //	x = y = z = 0;
 //	dir.Zero();
 //
-//	p = ( sphere.GetOrigin() - origin ) * axis.Transpose();
+//	p = ( sphere.GetOrigin() - this.origin ) * this.axis.Transpose();
 //
 //	if ( p.x <= dNear ) {
 //		scale = dNear * invFar;
@@ -1304,8 +1304,8 @@ class idFrustum {
 //	idFrustum localFrustum2;
 //
 //	localFrustum2 = frustum;
-//	localFrustum2.origin = ( frustum.origin - origin ) * axis.Transpose();
-//	localFrustum2.axis = frustum.axis * axis.Transpose();
+//	localFrustum2.origin = ( frustum.origin - this.origin ) * this.axis.Transpose();
+//	localFrustum2.axis = frustum.axis * this.axis.Transpose();
 //	localFrustum2.ToIndexPointsAndCornerVecs( indexPoints2, cornerVecs2 );
 //
 //	if ( CullLocalFrustum( localFrustum2, indexPoints2, cornerVecs2 ) ) {
@@ -1316,8 +1316,8 @@ class idFrustum {
 //	idFrustum localFrustum1;
 //
 //	localFrustum1 = *this;
-//	localFrustum1.origin = ( origin - frustum.origin ) * frustum.axis.Transpose();
-//	localFrustum1.axis = axis * frustum.axis.Transpose();
+//	localFrustum1.origin = ( this.origin - frustum.origin ) * frustum.axis.Transpose();
+//	localFrustum1.axis = this.axis * frustum.axis.Transpose();
 //	localFrustum1.ToIndexPointsAndCornerVecs( indexPoints1, cornerVecs1 );
 //
 //	if ( frustum.CullLocalFrustum( localFrustum1, indexPoints1, cornerVecs1 ) ) {
@@ -1356,9 +1356,9 @@ class idFrustum {
 //	localPoints = (idVec3 *) _alloca16( winding.GetNumPoints() * sizeof( idVec3 ) );
 //	pointCull = (int *) _alloca16( winding.GetNumPoints() * sizeof( int ) );
 //
-//	transpose = axis.Transpose();
+//	transpose = this.axis.Transpose();
 //	for ( i = 0; i < winding.GetNumPoints(); i++ ) {
-//		localPoints[i] = ( winding[i].ToVec3() - origin ) * transpose;
+//		localPoints[i] = ( winding[i].ToVec3() - this.origin ) * transpose;
 //	}
 //
 //	// if the winding is culled
@@ -1419,7 +1419,7 @@ class idFrustum {
 //============
 //*/
 //bool idFrustum::LineIntersection( start:idVec3, end:idVec3 ) const {
-//	return LocalLineIntersection( ( start - origin ) * axis.Transpose(), ( end - origin ) * axis.Transpose() );
+//	return LocalLineIntersection( ( start - this.origin ) * this.axis.Transpose(), ( end - this.origin ) * this.axis.Transpose() );
 //}
 //
 	///*
@@ -1432,7 +1432,7 @@ class idFrustum {
 //============
 //*/
 //bool idFrustum::RayIntersection( start:idVec3, const idVec3 &dir, float &scale1, float &scale2 ) const {
-//	if ( LocalRayIntersection( ( start - origin ) * axis.Transpose(), dir * axis.Transpose(), scale1, scale2 ) ) {
+//	if ( LocalRayIntersection( ( start - this.origin ) * this.axis.Transpose(), dir * this.axis.Transpose(), scale1, scale2 ) ) {
 //		return true;
 //	}
 //	if ( scale1 <= scale2 ) {
@@ -1492,12 +1492,12 @@ class idFrustum {
 //
 //	for ( j = 0; j < 2; j++ ) {
 //
-//		axis[0] = dir;
-//		axis[1] = box.GetAxis()[bestAxis] - ( box.GetAxis()[bestAxis] * axis[0] ) * axis[0];
-//		axis[1].Normalize();
-//		axis[2].Cross( axis[0], axis[1] );
+//		this.axis[0] = dir;
+//		this.axis[1] = box.GetAxis()[bestAxis] - ( box.GetAxis()[bestAxis] * this.axis[0] ) * this.axis[0];
+//		this.axis[1].Normalize();
+//		this.axis[2].Cross( this.axis[0], this.axis[1] );
 //
-//		BoxToPoints( ( box.GetCenter() - projectionOrigin ) * axis.Transpose(), box.GetExtents(), box.GetAxis() * axis.Transpose(), points );
+//		BoxToPoints( ( box.GetCenter() - projectionOrigin ) * this.axis.Transpose(), box.GetExtents(), box.GetAxis() * this.axis.Transpose(), points );
 //
 //		if ( points[0].x <= 1.0f ) {
 //			return false;
@@ -1524,8 +1524,8 @@ class idFrustum {
 //		}
 //
 //		if ( j == 0 ) {
-//			dir += idMath::Tan16( 0.5f * ( idMath::ATan16( points[minY].y, points[minY].x ) + idMath::ATan16( points[maxY].y, points[maxY].x ) ) ) * axis[1];
-//			dir += idMath::Tan16( 0.5f * ( idMath::ATan16( points[minZ].z, points[minZ].x ) + idMath::ATan16( points[maxZ].z, points[maxZ].x ) ) ) * axis[2];
+//			dir += idMath::Tan16( 0.5f * ( idMath::ATan16( points[minY].y, points[minY].x ) + idMath::ATan16( points[maxY].y, points[maxY].x ) ) ) * this.axis[1];
+//			dir += idMath::Tan16( 0.5f * ( idMath::ATan16( points[minZ].z, points[minZ].x ) + idMath::ATan16( points[maxZ].z, points[maxZ].x ) ) ) * this.axis[2];
 //			dir.Normalize();
 //		}
 //	}
@@ -1546,12 +1546,12 @@ class idFrustum {
 //
 //	for ( j = 0; j < 2; j++ ) {
 //
-//		axis[0] = dir;
-//		axis[1] = box.GetAxis()[bestAxis] - ( box.GetAxis()[bestAxis] * axis[0] ) * axis[0];
-//		axis[1].Normalize();
-//		axis[2].Cross( axis[0], axis[1] );
+//		this.axis[0] = dir;
+//		this.axis[1] = box.GetAxis()[bestAxis] - ( box.GetAxis()[bestAxis] * this.axis[0] ) * this.axis[0];
+//		this.axis[1].Normalize();
+//		this.axis[2].Cross( this.axis[0], this.axis[1] );
 //
-//		BoxToPoints( ( box.GetCenter() - projectionOrigin ) * axis.Transpose(), box.GetExtents(), box.GetAxis() * axis.Transpose(), points );
+//		BoxToPoints( ( box.GetCenter() - projectionOrigin ) * this.axis.Transpose(), box.GetExtents(), box.GetAxis() * this.axis.Transpose(), points );
 //
 //		b.Clear();
 //		for ( i = 0; i < 8; i++ ) {
@@ -1566,8 +1566,8 @@ class idFrustum {
 //		}
 //
 //		if ( j == 0 ) {
-//			dir += idMath::Tan16( 0.5f * ( idMath::ATan16( b[1][1] ) + idMath::ATan16( b[0][1] ) ) ) * axis[1];
-//			dir += idMath::Tan16( 0.5f * ( idMath::ATan16( b[1][2] ) + idMath::ATan16( b[0][2] ) ) ) * axis[2];
+//			dir += idMath::Tan16( 0.5f * ( idMath::ATan16( b[1][1] ) + idMath::ATan16( b[0][1] ) ) ) * this.axis[1];
+//			dir += idMath::Tan16( 0.5f * ( idMath::ATan16( b[1][2] ) + idMath::ATan16( b[0][2] ) ) ) * this.axis[2];
 //			dir.Normalize();
 //		}
 //	}
@@ -1584,18 +1584,18 @@ class idFrustum {
 //	float dist;
 //	idVec3 org;
 //
-//	axis[0] = dir;
-//	axis[1] = box.GetAxis()[bestAxis] - ( box.GetAxis()[bestAxis] * axis[0] ) * axis[0];
-//	axis[1].Normalize();
-//	axis[2].Cross( axis[0], axis[1] );
+//	this.axis[0] = dir;
+//	this.axis[1] = box.GetAxis()[bestAxis] - ( box.GetAxis()[bestAxis] * this.axis[0] ) * this.axis[0];
+//	this.axis[1].Normalize();
+//	this.axis[2].Cross( this.axis[0], this.axis[1] );
 //
 //	for ( i = 0; i < 3; i++ ) {
-//		dist[i] = idMath::Fabs( box.GetExtents()[0] * ( axis[i] * box.GetAxis()[0] ) ) +
-//					idMath::Fabs( box.GetExtents()[1] * ( axis[i] * box.GetAxis()[1] ) ) +
-//						idMath::Fabs( box.GetExtents()[2] * ( axis[i] * box.GetAxis()[2] ) );
+//		dist[i] = idMath::Fabs( box.GetExtents()[0] * ( this.axis[i] * box.GetAxis()[0] ) ) +
+//					idMath::Fabs( box.GetExtents()[1] * ( this.axis[i] * box.GetAxis()[1] ) ) +
+//						idMath::Fabs( box.GetExtents()[2] * ( this.axis[i] * box.GetAxis()[2] ) );
 //	}
 //
-//	dist[0] = axis[0] * ( box.GetCenter() - projectionOrigin ) - dist[0];
+//	dist[0] = this.axis[0] * ( box.GetCenter() - projectionOrigin ) - dist[0];
 //	if ( dist[0] <= 1.0f ) {
 //		return false;
 //	}
@@ -1635,8 +1635,8 @@ class idFrustum {
 //		return false;
 //	}
 //
-//	origin = projectionOrigin;
-//	axis = dir.ToMat3();
+//	this.origin = projectionOrigin;
+//	this.axis = dir.ToMat3();
 //
 //	s = idMath::Sqrt( d * d - r * r );
 //	x = r / d * s;
@@ -1661,8 +1661,8 @@ class idFrustum {
 //bool idFrustum::ConstrainToBounds( const idBounds &bounds ) {
 //	float min, max, newdFar;
 //
-//	bounds.AxisProjection( axis[0], min, max );
-//	newdFar = max - axis[0] * origin;
+//	bounds.AxisProjection( this.axis[0], min, max );
+//	newdFar = max - this.axis[0] * this.origin;
 //	if ( newdFar <= dNear ) {
 //		MoveFarDistance( dNear + 1.0f );
 //		return false;
@@ -1681,8 +1681,8 @@ class idFrustum {
 //bool idFrustum::ConstrainToBox( const idBox &box ) {
 //	float min, max, newdFar;
 //
-//	box.AxisProjection( axis[0], min, max );
-//	newdFar = max - axis[0] * origin;
+//	box.AxisProjection( this.axis[0], min, max );
+//	newdFar = max - this.axis[0] * this.origin;
 //	if ( newdFar <= dNear ) {
 //		MoveFarDistance( dNear + 1.0f );
 //		return false;
@@ -1701,8 +1701,8 @@ class idFrustum {
 //bool idFrustum::ConstrainToSphere( const idSphere &sphere ) {
 //	float min, max, newdFar;
 //
-//	sphere.AxisProjection( axis[0], min, max );
-//	newdFar = max - axis[0] * origin;
+//	sphere.AxisProjection( this.axis[0], min, max );
+//	newdFar = max - this.axis[0] * this.origin;
 //	if ( newdFar <= dNear ) {
 //		MoveFarDistance( dNear + 1.0f );
 //		return false;
@@ -1721,8 +1721,8 @@ class idFrustum {
 //bool idFrustum::ConstrainToFrustum( const idFrustum &frustum ) {
 //	float min, max, newdFar;
 //
-//	frustum.AxisProjection( axis[0], min, max );
-//	newdFar = max - axis[0] * origin;
+//	frustum.AxisProjection( this.axis[0], min, max );
+//	newdFar = max - this.axis[0] * this.origin;
 //	if ( newdFar <= dNear ) {
 //		MoveFarDistance( dNear + 1.0f );
 //		return false;
@@ -1745,11 +1745,11 @@ class idFrustum {
 //
 //	planes[0].Normal() = -axis[0];
 //	planes[0].SetDist( -dNear );
-//	planes[1].Normal() = axis[0];
+//	planes[1].Normal() = this.axis[0];
 //	planes[1].SetDist( dFar );
 //
-//	scaled[0] = axis[1] * dLeft;
-//	scaled[1] = axis[2] * dUp;
+//	scaled[0] = this.axis[1] * dLeft;
+//	scaled[1] = this.axis[2] * dUp;
 //	points[0] = scaled[0] + scaled[1];
 //	points[1] = -scaled[0] + scaled[1];
 //	points[2] = -scaled[0] - scaled[1];
@@ -1770,9 +1770,9 @@ class idFrustum {
 //void idFrustum::ToPoints( idVec3 points[8] ) const {
 //	idMat3 scaled;
 //
-//	scaled[0] = origin + axis[0] * dNear;
-//	scaled[1] = axis[1] * ( dLeft * dNear * invFar );
-//	scaled[2] = axis[2] * ( dUp * dNear * invFar );
+//	scaled[0] = this.origin + this.axis[0] * dNear;
+//	scaled[1] = this.axis[1] * ( dLeft * dNear * invFar );
+//	scaled[2] = this.axis[2] * ( dUp * dNear * invFar );
 //
 //	points[0] = scaled[0] + scaled[1];
 //	points[1] = scaled[0] - scaled[1];
@@ -1781,9 +1781,9 @@ class idFrustum {
 //	points[0] += scaled[2];
 //	points[1] += scaled[2];
 //
-//	scaled[0] = origin + axis[0] * dFar;
-//	scaled[1] = axis[1] * dLeft;
-//	scaled[2] = axis[2] * dUp;
+//	scaled[0] = this.origin + this.axis[0] * dFar;
+//	scaled[1] = this.axis[1] * dLeft;
+//	scaled[2] = this.axis[2] * dUp;
 //
 //	points[4] = scaled[0] + scaled[1];
 //	points[5] = scaled[0] - scaled[1];
@@ -1801,9 +1801,9 @@ class idFrustum {
 //void idFrustum::ToClippedPoints( const float fractions[4], idVec3 points[8] ) const {
 //	idMat3 scaled;
 //
-//	scaled[0] = origin + axis[0] * dNear;
-//	scaled[1] = axis[1] * ( dLeft * dNear * invFar );
-//	scaled[2] = axis[2] * ( dUp * dNear * invFar );
+//	scaled[0] = this.origin + this.axis[0] * dNear;
+//	scaled[1] = this.axis[1] * ( dLeft * dNear * invFar );
+//	scaled[2] = this.axis[2] * ( dUp * dNear * invFar );
 //
 //	points[0] = scaled[0] + scaled[1];
 //	points[1] = scaled[0] - scaled[1];
@@ -1812,9 +1812,9 @@ class idFrustum {
 //	points[0] += scaled[2];
 //	points[1] += scaled[2];
 //
-//	scaled[0] = axis[0] * dFar;
-//	scaled[1] = axis[1] * dLeft;
-//	scaled[2] = axis[2] * dUp;
+//	scaled[0] = this.axis[0] * dFar;
+//	scaled[1] = this.axis[1] * dLeft;
+//	scaled[2] = this.axis[2] * dUp;
 //
 //	points[4] = scaled[0] + scaled[1];
 //	points[5] = scaled[0] - scaled[1];
@@ -1823,10 +1823,10 @@ class idFrustum {
 //	points[4] += scaled[2];
 //	points[5] += scaled[2];
 //
-//	points[4] = origin + fractions[0] * points[4];
-//	points[5] = origin + fractions[1] * points[5];
-//	points[6] = origin + fractions[2] * points[6];
-//	points[7] = origin + fractions[3] * points[7];
+//	points[4] = this.origin + fractions[0] * points[4];
+//	points[5] = this.origin + fractions[1] * points[5];
+//	points[6] = this.origin + fractions[2] * points[6];
+//	points[7] = this.origin + fractions[3] * points[7];
 //}
 //
 	///*
@@ -1837,9 +1837,9 @@ class idFrustum {
 //void idFrustum::ToIndexPoints( idVec3 indexPoints[8] ) const {
 //	idMat3 scaled;
 //
-//	scaled[0] = origin + axis[0] * dNear;
-//	scaled[1] = axis[1] * ( dLeft * dNear * invFar );
-//	scaled[2] = axis[2] * ( dUp * dNear * invFar );
+//	scaled[0] = this.origin + this.axis[0] * dNear;
+//	scaled[1] = this.axis[1] * ( dLeft * dNear * invFar );
+//	scaled[2] = this.axis[2] * ( dUp * dNear * invFar );
 //
 //	indexPoints[0] = scaled[0] - scaled[1];
 //	indexPoints[2] = scaled[0] + scaled[1];
@@ -1848,9 +1848,9 @@ class idFrustum {
 //	indexPoints[0] -= scaled[2];
 //	indexPoints[2] -= scaled[2];
 //
-//	scaled[0] = origin + axis[0] * dFar;
-//	scaled[1] = axis[1] * dLeft;
-//	scaled[2] = axis[2] * dUp;
+//	scaled[0] = this.origin + this.axis[0] * dFar;
+//	scaled[1] = this.axis[1] * dLeft;
+//	scaled[2] = this.axis[2] * dUp;
 //
 //	indexPoints[4] = scaled[0] - scaled[1];
 //	indexPoints[6] = scaled[0] + scaled[1];
@@ -1870,9 +1870,9 @@ class idFrustum {
 //void idFrustum::ToIndexPointsAndCornerVecs( idVec3 indexPoints[8], idVec3 cornerVecs[4] ) const {
 //	idMat3 scaled;
 //
-//	scaled[0] = origin + axis[0] * dNear;
-//	scaled[1] = axis[1] * ( dLeft * dNear * invFar );
-//	scaled[2] = axis[2] * ( dUp * dNear * invFar );
+//	scaled[0] = this.origin + this.axis[0] * dNear;
+//	scaled[1] = this.axis[1] * ( dLeft * dNear * invFar );
+//	scaled[2] = this.axis[2] * ( dUp * dNear * invFar );
 //
 //	indexPoints[0] = scaled[0] - scaled[1];
 //	indexPoints[2] = scaled[0] + scaled[1];
@@ -1881,9 +1881,9 @@ class idFrustum {
 //	indexPoints[0] -= scaled[2];
 //	indexPoints[2] -= scaled[2];
 //
-//	scaled[0] = axis[0] * dFar;
-//	scaled[1] = axis[1] * dLeft;
-//	scaled[2] = axis[2] * dUp;
+//	scaled[0] = this.axis[0] * dFar;
+//	scaled[1] = this.axis[1] * dLeft;
+//	scaled[2] = this.axis[2] * dUp;
 //
 //	cornerVecs[0] = scaled[0] - scaled[1];
 //	cornerVecs[2] = scaled[0] + scaled[1];
@@ -1892,10 +1892,10 @@ class idFrustum {
 //	cornerVecs[0] -= scaled[2];
 //	cornerVecs[2] -= scaled[2];
 //
-//	indexPoints[4] = cornerVecs[0] + origin;
-//	indexPoints[5] = cornerVecs[1] + origin;
-//	indexPoints[6] = cornerVecs[2] + origin;
-//	indexPoints[7] = cornerVecs[3] + origin;
+//	indexPoints[4] = cornerVecs[0] + this.origin;
+//	indexPoints[5] = cornerVecs[1] + this.origin;
+//	indexPoints[6] = cornerVecs[2] + this.origin;
+//	indexPoints[7] = cornerVecs[3] + this.origin;
 //}
 //
 	///*
@@ -1909,8 +1909,8 @@ class idFrustum {
 //	float dx, dy, dz;
 //	int index;
 //
-//	dy = dir.x * axis[1].x + dir.y * axis[1].y + dir.z * axis[1].z;
-//	dz = dir.x * axis[2].x + dir.y * axis[2].y + dir.z * axis[2].z;
+//	dy = dir.x * this.axis[1].x + dir.y * this.axis[1].y + dir.z * this.axis[1].z;
+//	dz = dir.x * this.axis[2].x + dir.y * this.axis[2].y + dir.z * this.axis[2].z;
 //	index = ( FLOATSIGNBITSET( dy ) << 1 ) | FLOATSIGNBITSET( dz );
 //	dx = dir.x * cornerVecs[index].x + dir.y * cornerVecs[index].y + dir.z * cornerVecs[index].z;
 //	index |= ( FLOATSIGNBITSET( dx ) << 2 );
@@ -1965,7 +1965,7 @@ class idFrustum {
 //#ifdef FRUSTUM_DEBUG
 //	static idCVar r_showInteractionScissors( "r_showInteractionScissors", "0", CVAR_RENDERER | CVAR_INTEGER, "", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
 //	if ( r_showInteractionScissors.GetInteger() > 1 ) {
-//		session->rw->DebugLine( colorGreen, origin + start * axis, origin + end * axis );
+//		session->rw->DebugLine( colorGreen, this.origin + start * this.axis, this.origin + end * this.axis );
 //	}
 //#endif
 //
@@ -2109,7 +2109,7 @@ class idFrustum {
 //#ifdef FRUSTUM_DEBUG
 //	static idCVar r_showInteractionScissors( "r_showInteractionScissors", "0", CVAR_RENDERER | CVAR_INTEGER, "", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
 //	if ( r_showInteractionScissors.GetInteger() > 1 ) {
-//		session->rw->DebugLine( colorGreen, origin + start * axis, origin + end * axis );
+//		session->rw->DebugLine( colorGreen, this.origin + start * this.axis, this.origin + end * this.axis );
 //	}
 //#endif
 //
@@ -2306,13 +2306,13 @@ class idFrustum {
 //	idMat3 localAxis, localScaled;
 //	idBounds bounds( -box.GetExtents(), box.GetExtents() );
 //
-//	// if the frustum origin is inside the bounds
-//	if ( bounds.ContainsPoint( ( origin - box.GetCenter() ) * box.GetAxis().Transpose() ) ) {
+//	// if the frustum this.origin is inside the bounds
+//	if ( bounds.ContainsPoint( ( this.origin - box.GetCenter() ) * box.GetAxis().Transpose() ) ) {
 //		// bounds that cover the whole frustum
 //		float boxMin, boxMax, base;
 //
-//		base = origin * axis[0];
-//		box.AxisProjection( axis[0], boxMin, boxMax );
+//		base = this.origin * this.axis[0];
+//		box.AxisProjection( this.axis[0], boxMin, boxMax );
 //
 //		projectionBounds[0].x = boxMin - base;
 //		projectionBounds[1].x = boxMax - base;
@@ -2325,8 +2325,8 @@ class idFrustum {
 //	projectionBounds.Clear();
 //
 //	// transform the bounds into the space of this frustum
-//	localOrigin = ( box.GetCenter() - origin ) * axis.Transpose();
-//	localAxis = box.GetAxis() * axis.Transpose();
+//	localOrigin = ( box.GetCenter() - this.origin ) * this.axis.Transpose();
+//	localAxis = box.GetAxis() * this.axis.Transpose();
 //	BoxToPoints( localOrigin, box.GetExtents(), localAxis, points );
 //
 //	// test outer four edges of the bounds
@@ -2366,8 +2366,8 @@ class idFrustum {
 //	// if the bounds extend beyond two or more boundaries of this frustum
 //	if ( outside != 1 && outside != 2 && outside != 4 && outside != 8 ) {
 //
-//		localOrigin = ( origin - box.GetCenter() ) * box.GetAxis().Transpose();
-//		localScaled = axis * box.GetAxis().Transpose();
+//		localOrigin = ( this.origin - box.GetCenter() ) * box.GetAxis().Transpose();
+//		localScaled = this.axis * box.GetAxis().Transpose();
 //		localScaled[0] *= dFar;
 //		localScaled[1] *= dLeft;
 //		localScaled[2] *= dUp;
@@ -2419,7 +2419,7 @@ class idFrustum {
 //
 //	projectionBounds.Clear();
 //
-//	center = ( sphere.GetOrigin() - origin ) * axis.Transpose();
+//	center = ( sphere.GetOrigin() - this.origin ) * this.axis.Transpose();
 //	r = sphere.GetRadius();
 //	rs = r * r;
 //	sFar = dFar * dFar;
@@ -2456,13 +2456,13 @@ class idFrustum {
 //	idVec3 points[8], localOrigin;
 //	idMat3 localScaled;
 //
-//	// if the frustum origin is inside the other frustum
-//	if ( frustum.ContainsPoint( origin ) ) {
+//	// if the frustum this.origin is inside the other frustum
+//	if ( frustum.ContainsPoint( this.origin ) ) {
 //		// bounds that cover the whole frustum
 //		float frustumMin, frustumMax, base;
 //
-//		base = origin * axis[0];
-//		frustum.AxisProjection( axis[0], frustumMin, frustumMax );
+//		base = this.origin * this.axis[0];
+//		frustum.AxisProjection( this.axis[0], frustumMin, frustumMax );
 //
 //		projectionBounds[0].x = frustumMin - base;
 //		projectionBounds[1].x = frustumMax - base;
@@ -2475,8 +2475,8 @@ class idFrustum {
 //
 //	// transform the given frustum into the space of this frustum
 //	localFrustum = frustum;
-//	localFrustum.origin = ( frustum.origin - origin ) * axis.Transpose();
-//	localFrustum.axis = frustum.axis * axis.Transpose();
+//	localFrustum.origin = ( frustum.origin - this.origin ) * this.axis.Transpose();
+//	localFrustum.axis = frustum.axis * this.axis.Transpose();
 //	localFrustum.ToPoints( points );
 //
 //	// test outer four edges of the other frustum
@@ -2518,8 +2518,8 @@ class idFrustum {
 //	// if the other frustum extends beyond two or more boundaries of this frustum
 //	if ( outside != 1 && outside != 2 && outside != 4 && outside != 8 ) {
 //
-//		localOrigin = ( origin - frustum.origin ) * frustum.axis.Transpose();
-//		localScaled = axis * frustum.axis.Transpose();
+//		localOrigin = ( this.origin - frustum.origin ) * frustum.axis.Transpose();
+//		localScaled = this.axis * frustum.axis.Transpose();
 //		localScaled[0] *= dFar;
 //		localScaled[1] *= dLeft;
 //		localScaled[2] *= dUp;
@@ -2574,9 +2574,9 @@ class idFrustum {
 //
 //	// transform the winding points into the space of this frustum
 //	localPoints = (idVec3 *) _alloca16( winding.GetNumPoints() * sizeof( idVec3 ) );
-//	transpose = axis.Transpose();
+//	transpose = this.axis.Transpose();
 //	for ( i = 0; i < winding.GetNumPoints(); i++ ) {
-//		localPoints[i] = ( winding[i].ToVec3() - origin ) * transpose;
+//		localPoints[i] = ( winding[i].ToVec3() - this.origin ) * transpose;
 //	}
 //
 //	// test the winding edges
@@ -2612,28 +2612,28 @@ class idFrustum {
 //	if ( outside != 1 && outside != 2 && outside != 4 && outside != 8 ) {
 //
 //		winding.GetPlane( plane );
-//		scaled[0] = axis[0] * dFar;
-//		scaled[1] = axis[1] * dLeft;
-//		scaled[2] = axis[2] * dUp;
+//		scaled[0] = this.axis[0] * dFar;
+//		scaled[1] = this.axis[1] * dLeft;
+//		scaled[2] = this.axis[2] * dUp;
 //
 //		// test the outer edges of this frustum for intersection with the winding
 //		if ( (outside & 2) && (outside & 8) ) {
-//			if ( winding.RayIntersection( plane, origin, scaled[0] - scaled[1] - scaled[2], scale ) ) {
+//			if ( winding.RayIntersection( plane, this.origin, scaled[0] - scaled[1] - scaled[2], scale ) ) {
 //				projectionBounds.AddPoint( idVec3( scale * dFar, -1.0f, -1.0f ) );
 //			}
 //		}
 //		if ( (outside & 2) && (outside & 4) ) {
-//			if ( winding.RayIntersection( plane, origin, scaled[0] - scaled[1] + scaled[2], scale ) ) {
+//			if ( winding.RayIntersection( plane, this.origin, scaled[0] - scaled[1] + scaled[2], scale ) ) {
 //				projectionBounds.AddPoint( idVec3( scale * dFar, -1.0f, 1.0f ) );
 //			}
 //		}
 //		if ( (outside & 1) && (outside & 8) ) {
-//			if ( winding.RayIntersection( plane, origin, scaled[0] + scaled[1] - scaled[2], scale ) ) {
+//			if ( winding.RayIntersection( plane, this.origin, scaled[0] + scaled[1] - scaled[2], scale ) ) {
 //				projectionBounds.AddPoint( idVec3( scale * dFar, 1.0f, -1.0f ) );
 //			}
 //		}
 //		if ( (outside & 1) && (outside & 2) ) {
-//			if ( winding.RayIntersection( plane, origin, scaled[0] + scaled[1] + scaled[2], scale ) ) {
+//			if ( winding.RayIntersection( plane, this.origin, scaled[0] + scaled[1] + scaled[2], scale ) ) {
 //				projectionBounds.AddPoint( idVec3( scale * dFar, 1.0f, 1.0f ) );
 //			}
 //		}
@@ -2658,8 +2658,8 @@ class idFrustum {
 //
 //	transpose = box.GetAxis();
 //	transpose.TransposeSelf();
-//	localOrigin = ( origin - box.GetCenter() ) * transpose;
-//	localAxis = axis * transpose;
+//	localOrigin = ( this.origin - box.GetCenter() ) * transpose;
+//	localAxis = this.axis * transpose;
 //
 //	scaled[0] = localAxis[0] * dFar;
 //	scaled[1] = localAxis[1] * dLeft;
@@ -2877,13 +2877,13 @@ class idFrustum {
 //	idBounds clipBounds;
 //
 //	// if the frustum origin is inside the other frustum
-//	if ( frustum.ContainsPoint( origin ) ) {
+//	if ( frustum.ContainsPoint( this.origin ) ) {
 //		// bounds that cover the whole frustum
 //		float clipBoxMin, clipBoxMax, frustumMin, frustumMax, base;
 //
-//		base = origin * axis[0];
-//		clipBox.AxisProjection( axis[0], clipBoxMin, clipBoxMax );
-//		frustum.AxisProjection( axis[0], frustumMin, frustumMax );
+//		base = this.origin * this.axis[0];
+//		clipBox.AxisProjection( this.axis[0], clipBoxMin, clipBoxMax );
+//		frustum.AxisProjection( this.axis[0], frustumMin, frustumMax );
 //
 //		projectionBounds[0].x = Max( clipBoxMin, frustumMin ) - base;
 //		projectionBounds[1].x = Min( clipBoxMax, frustumMax ) - base;
@@ -2899,10 +2899,10 @@ class idFrustum {
 //	usedClipPlanes = clipPlanes[0] | clipPlanes[1] | clipPlanes[2] | clipPlanes[3];
 //
 //	// transform the clipped frustum to the space of this frustum
-//	transpose = axis;
+//	transpose = this.axis;
 //	transpose.TransposeSelf();
 //	localFrustum = frustum;
-//	localFrustum.origin = ( frustum.origin - origin ) * transpose;
+//	localFrustum.origin = ( frustum.origin - this.origin ) * transpose;
 //	localFrustum.axis = frustum.axis * transpose;
 //	localFrustum.ToClippedPoints( clipFractions, clipPoints );
 //
@@ -2972,9 +2972,9 @@ class idFrustum {
 //		}
 //
 //		// transform the clip box into the space of this frustum
-//		transpose = axis;
+//		transpose = this.axis;
 //		transpose.TransposeSelf();
-//		localOrigin2 = ( clipBox.GetCenter() - origin ) * transpose;
+//		localOrigin2 = ( clipBox.GetCenter() - this.origin ) * transpose;
 //		localAxis2 = clipBox.GetAxis() * transpose;
 //		BoxToPoints( localOrigin2, clipBox.GetExtents(), localAxis2, localPoints2 );
 //
@@ -3025,8 +3025,8 @@ class idFrustum {
 //		// transform this frustum into the space of the other frustum
 //		transpose = frustum.axis;
 //		transpose.TransposeSelf();
-//		localOrigin1 = ( origin - frustum.origin ) * transpose;
-//		localAxis1 = axis * transpose;
+//		localOrigin1 = ( this.origin - frustum.origin ) * transpose;
+//		localAxis1 = this.axis * transpose;
 //		localAxis1[0] *= dFar;
 //		localAxis1[1] *= dLeft;
 //		localAxis1[2] *= dUp;
@@ -3034,8 +3034,8 @@ class idFrustum {
 //		// transform this frustum into the space of the clip bounds
 //		transpose = clipBox.GetAxis();
 //		transpose.TransposeSelf();
-//		localOrigin2 = ( origin - clipBox.GetCenter() ) * transpose;
-//		localAxis2 = axis * transpose;
+//		localOrigin2 = ( this.origin - clipBox.GetCenter() ) * transpose;
+//		localAxis2 = this.axis * transpose;
 //		localAxis2[0] *= dFar;
 //		localAxis2[1] *= dLeft;
 //		localAxis2[2] *= dUp;

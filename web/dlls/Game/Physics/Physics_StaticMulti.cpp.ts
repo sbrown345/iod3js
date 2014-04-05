@@ -763,21 +763,21 @@ class idPhysics_StaticMulti extends idPhysics {
 ////	}
 ////}
 ////
-/////*
-////================
-////idPhysics_StaticMulti::GetAxis
-////================
-////*/
-////const idMat3 &idPhysics_StaticMulti::GetAxis( int id ) const {
-////	if ( id >= 0 && id < clipModels.Num() ) {
-////		return current[id].axis;
-////	}
-////	if ( clipModels.Num() ) {
-////		return current[0].axis;
-////	} else {
-////		return mat3_identity;
-////	}
-////}
+/*
+================
+idPhysics_StaticMulti::GetAxis
+================
+*/
+const idMat3 &idPhysics_StaticMulti::GetAxis( int id ) const {
+	if ( id >= 0 && id < clipModels.Num() ) {
+		return current[id].axis;
+	}
+	if ( clipModels.Num() ) {
+		return current[0].axis;
+	} else {
+		return mat3_identity;
+	}
+}
 ////
 /////*
 ////================
