@@ -1498,10 +1498,10 @@ idEntity::UpdateVisuals
 ////	localAxis[1] *= size;
 ////
 ////	localPlane[0] = localAxis[0];
-////	localPlane[0][3] = -( localOrigin * localAxis[0] ) + 0.5f;
+////	localPlane[0][3] = -( localOrigin * localAxis[0] ) + 0.5;
 ////
 ////	localPlane[1] = localAxis[1];
-////	localPlane[1][3] = -( localOrigin * localAxis[1] ) + 0.5f;
+////	localPlane[1][3] = -( localOrigin * localAxis[1] ) + 0.5;
 ////
 ////	const idMaterial *mtr = declManager.FindMaterial( material );
 ////
@@ -2548,72 +2548,71 @@ idEntity::InitDefaultPhysics
 ================
 */
 	InitDefaultPhysics ( origin: idVec3, axis: idMat3 ): void {
-		todoThrow ( );
-		//var temp = new R<string> ( );
-		//var clipModel: idClipModel = null;
+		var temp = new R<string> ( );
+		var clipModel: idClipModel = null;
 
-		//// check if a clipmodel key/value pair is set
-		//if ( this.spawnArgs.GetString( "clipmodel", "", temp ) ) {
-		//	if ( idClipModel.CheckModel( temp ) ) {
-		//		clipModel = new idClipModel( temp );
-		//	}
-		//}
+		// check if a clipmodel key/value pair is set
+		if ( this.spawnArgs.GetString_Rstring( "clipmodel", "", temp ) ) {
+			if ( idClipModel.CheckModel( temp .$) ) {
+				clipModel = new idClipModel( temp .$);
+			}
+		}
 
-		//if ( !spawnArgs.GetBool( "noclipmodel", "0" ) ) {
+		if ( !spawnArgs.GetBool( "noclipmodel", "0" ) ) {
 
-		//	// check if mins/maxs or size key/value pairs are set
-		//	if ( !clipModel ) {
-		//		idVec3 size;
-		//		idBounds bounds;
-		//		bool setClipModel = false;
+			// check if mins/maxs or size key/value pairs are set
+			if ( !clipModel ) {
+				var size = new idVec3;
+				var bounds = new idBounds;
+				var setClipModel = false;
 
-		//		if ( this.spawnArgs.GetVector( "mins", NULL, bounds[0] ) &&
-		//			this.spawnArgs.GetVector( "maxs", NULL, bounds[1] ) ) {
-		//			setClipModel = true;
-		//			if ( bounds[0][0] > bounds[1][0] || bounds[0][1] > bounds[1][1] || bounds[0][2] > bounds[1][2] ) {
-		//				gameLocal.Error( "Invalid bounds '%s'-'%s' on entity '%s'", bounds[0].ToString(), bounds[1].ToString(), this.name.c_str() );
-		//			}
-		//		} else if ( this.spawnArgs.GetVector( "size", NULL, size ) ) {
-		//			if ( ( size.x < 0.0 ) || ( size.y < 0.0 ) || ( size.z < 0.0 ) ) {
-		//				gameLocal.Error( "Invalid size '%s' on entity '%s'", size.ToString(), this.name.c_str() );
-		//			}
-		//			bounds[0].Set( size.x * -0.5f, size.y * -0.5f, 0.0 );
-		//			bounds[1].Set( size.x * 0.5f, size.y * 0.5f, size.z );
-		//			setClipModel = true;
-		//		}
+				if ( this.spawnArgs.GetVector( "mins", null, bounds[0] ) &&
+					this.spawnArgs.GetVector("maxs", null, bounds[1] ) ) {
+					setClipModel = true;
+					if ( bounds[0][0] > bounds[1][0] || bounds[0][1] > bounds[1][1] || bounds[0][2] > bounds[1][2] ) {
+						gameLocal.Error( "Invalid bounds '%s'-'%s' on entity '%s'", bounds[0].ToString(), bounds[1].ToString(), this.name.c_str() );
+					}
+				} else if (this.spawnArgs.GetVector("size", null, size ) ) {
+					if ( ( size.x < 0.0 ) || ( size.y < 0.0 ) || ( size.z < 0.0 ) ) {
+						gameLocal.Error( "Invalid size '%s' on entity '%s'", size.ToString(), this.name.c_str() );
+					}
+					bounds[0].Set( size.x * -0.5, size.y * -0.5, 0.0 );
+					bounds[1].Set( size.x * 0.5, size.y * 0.5, size.z );
+					setClipModel = true;
+				}
 
-		//		if ( setClipModel ) {
-		//			int numSides;
-		//			idTraceModel trm;
+				if ( setClipModel ) {
+					var /*int */numSides = new R<number> ( );
+					var trm = new idTraceModel ;
 
-		//			if ( this.spawnArgs.GetInt( "cylinder", "0", numSides ) && numSides > 0 ) {
-		//				trm.SetupCylinder( bounds, numSides < 3 ? 3 : numSides );
-		//			} else if ( this.spawnArgs.GetInt( "cone", "0", numSides ) && numSides > 0 ) {
-		//				trm.SetupCone( bounds, numSides < 3 ? 3 : numSides );
-		//			} else {
-		//				trm.SetupBox( bounds );
-		//			}
-		//			clipModel = new idClipModel( trm );
-		//		}
-		//	}
+					if (this.spawnArgs.GetInt_R("cylinder", "0", numSides) && numSides.$ > 0 ) {
+						trm.SetupCylinder(bounds, numSides.$ < 3 ? 3 : numSides.$ );
+					} else if (this.spawnArgs.GetInt_R("cone", "0", numSides) && numSides.$> 0 ) {
+						trm.SetupCone(bounds, numSides.$ < 3 ? 3 : numSides.$ );
+					} else {
+						trm.SetupBox( bounds );
+					}
+					clipModel = new idClipModel( trm );
+				}
+			}
 
-		//	// check if the visual model can be used as collision model
-		//	if ( !clipModel ) {
-		//		temp = this.spawnArgs.GetString( "model" );
-		//		if ( ( temp != NULL ) && ( *temp != 0 ) ) {
-		//			if ( idClipModel.CheckModel( temp ) ) {
-		//				clipModel = new idClipModel( temp );
-		//			}
-		//		}
-		//	}
-		//}
+			// check if the visual model can be used as collision model
+			if ( !clipModel ) {
+				temp.$ = this.spawnArgs.GetString( "model" );
+				if ( temp && temp.$) {
+					if ( idClipModel.CheckModel( temp ) ) {
+						clipModel = new idClipModel( temp );
+					}
+				}
+			}
+		}
 
-		//defaultPhysicsObj.SetSelf( this );
-		//defaultPhysicsObj.SetClipModel( clipModel, 1.0 );
-		//defaultPhysicsObj.SetOrigin( origin );
-		//defaultPhysicsObj.SetAxis( axis );
+		defaultPhysicsObj.SetSelf( this );
+		defaultPhysicsObj.SetClipModel( clipModel, 1.0 );
+		defaultPhysicsObj.SetOrigin( origin );
+		defaultPhysicsObj.SetAxis( axis );
 
-		//this.physics = defaultPhysicsObj;
+		this.physics = defaultPhysicsObj;
 	}
 
 /////*

@@ -444,35 +444,37 @@ idClipModel::GetTraceModelHashKey
 ////}
 ////
 ////
-/////*
-////===============================================================
-////
-////	idClipModel
-////
-////===============================================================
-////*/
-////
-/////*
-////================
-////idClipModel::LoadModel
-////================
-////*/
-////bool idClipModel::LoadModel( name: string ) {
-////	renderModelHandle = -1;
-////	if ( traceModelIndex != -1 ) {
-////		idClipModel.FreeTraceModel( traceModelIndex );
-////		traceModelIndex = -1;
-////	}
-////	collisionModelHandle = collisionModelManager.LoadModel( name, false );
-////	if ( collisionModelHandle ) {
-////		collisionModelManager.GetModelBounds( collisionModelHandle, bounds );
-////		collisionModelManager.GetModelContents( collisionModelHandle, contents );
-////		return true;
-////	} else {
-////		bounds.Zero();
-////		return false;
-////	}
-////}
+/*
+===============================================================
+
+	idClipModel
+
+===============================================================
+*/
+
+/*
+================
+idClipModel::LoadModel
+================
+*/
+	LoadModel_name ( name: string ): boolean {
+		this.renderModelHandle = -1;
+		if ( this.traceModelIndex != -1 ) {
+			idClipModel.FreeTraceModel( this.traceModelIndex );
+			this.traceModelIndex = -1;
+		}
+		this.collisionModelHandle = collisionModelManager.LoadModel( name, false );
+		if ( this.collisionModelHandle ) {
+			collisionModelManager.GetModelBounds( this.collisionModelHandle, this.bounds );
+			var $contents = new R( this.contents );
+			collisionModelManager.GetModelContents( this.collisionModelHandle, $contents );
+			this.contents = $contents.$;
+			return true;
+		} else {
+			this.bounds.Zero ( );
+			return false;
+		}
+	}
 
 /*
 ================
@@ -488,27 +490,27 @@ idClipModel::LoadModel
 		this.traceModelIndex = this.AllocTraceModel( trm );
 		this.bounds.opEquals( trm.bounds );
 	}
-////
-/////*
-////================
-////idClipModel::LoadModel
-////================
-////*/
-////void idClipModel::LoadModel( const int renderModelHandle ) {
-////	collisionModelHandle = 0;
-////	this.renderModelHandle = renderModelHandle;
-////	if ( renderModelHandle != -1 ) {
-////		const renderEntity_t *renderEntity = gameRenderWorld.GetRenderEntity( renderModelHandle );
-////		if ( renderEntity ) {
-////			bounds = renderEntity.bounds;
-////		}
-////	}
-////	if ( traceModelIndex != -1 ) {
-////		idClipModel.FreeTraceModel( traceModelIndex );
-////		traceModelIndex = -1;
-////	}
-////}
-////
+//
+///*
+//================
+//idClipModel::LoadModel
+//================
+//*/
+//void idClipModel::LoadModel( const int renderModelHandle ) {
+//	this.collisionModelHandle = 0;
+//	this.renderModelHandle = renderModelHandle;
+//	if ( renderModelHandle != -1 ) {
+//		const renderEntity_t *renderEntity = gameRenderWorld.GetRenderEntity( renderModelHandle );
+//		if ( renderEntity ) {
+//			this.bounds = renderEntity.bounds;
+//		}
+//	}
+//	if ( this.traceModelIndex != -1 ) {
+//		idClipModel.FreeTraceModel( this.traceModelIndex );
+//		this.traceModelIndex = -1;
+//	}
+//}
+//
 /*
 ================
 idClipModel::Init
@@ -532,35 +534,64 @@ idClipModel::Init
 		this.touchCount = -1;
 	}
 
+	constructor ( )
+	constructor ( name: string )
+	constructor(trm: idTraceModel )
+	constructor(a1?: any) {
+		if ( arguments.length === 0 ) {
+			this.constructor_default();
+			return;
+		}
+
+		switch ( typeof a1) {
+			case "string":
+				var name: string = a1;
+				this.constructor_name( name );
+				break;
+
+			case "number":
+				todoThrow ( );
+			break;
+
+			case "object":
+				var name: string = a1;
+				this.constructor_name(name);
+				break;
+			break;
+
+		default:
+			todoThrow ( );
+		}
+	}
+
 /*
 ================
 idClipModel::idClipModel
 ================
 */
-	constructor ( ) {
+	private constructor_default ( ): void {
 		this.Init ( );
 	}
-////
-/////*
-////================
-////idClipModel::idClipModel
-////================
-////*/
-////idClipModel::idClipModel( name: string ) {
-////	Init();
-////	LoadModel( name );
-////}
-////
-/////*
-////================
-////idClipModel::idClipModel
-////================
-////*/
-////idClipModel::idClipModel( const idTraceModel &trm ) {
-////	Init();
-////	LoadModel( trm );
-////}
-////
+/*
+================
+idClipModel::idClipModel
+================
+*/
+	private constructor_name ( name: string ): void {
+		this.Init ( );
+		this.LoadModel_name( name );
+	}
+
+/*
+================
+idClipModel::idClipModel
+================
+*/
+	private constructor_trace(trm: idTraceModel ):void {
+	Init();
+	this.LoadModel( trm );
+}
+
 /////*
 ////================
 ////idClipModel::idClipModel
@@ -568,8 +599,8 @@ idClipModel::idClipModel
 ////*/
 ////idClipModel::idClipModel( const int renderModelHandle ) {
 ////	Init();
-////	contents = CONTENTS_RENDERMODEL;
-////	LoadModel( renderModelHandle );
+////	this.contents = CONTENTS_RENDERMODEL;
+////	this.LoadModel( renderModelHandle );
 ////}
 ////
 /////*
@@ -584,33 +615,33 @@ idClipModel::idClipModel
 ////	owner = model.owner;
 ////	origin = model.origin;
 ////	axis = model.axis;
-////	bounds = model.bounds;
+////	this.bounds = model.bounds;
 ////	absBounds = model.absBounds;
 ////	material = model.material;
-////	contents = model.contents;
-////	collisionModelHandle = model.collisionModelHandle;
-////	traceModelIndex = -1;
+////	this.contents = model.contents;
+////	this.collisionModelHandle = model.collisionModelHandle;
+////	this.traceModelIndex = -1;
 ////	if ( model.traceModelIndex != -1 ) {
-////		LoadModel( *GetCachedTraceModel( model.traceModelIndex ) );
+////		this.LoadModel( *GetCachedTraceModel( model.traceModelIndex ) );
 ////	}
 ////	renderModelHandle = model.renderModelHandle;
 ////	clipLinks = NULL;
 ////	this.touchCount = -1;
 ////}
 ////
-/////*
-////================
-////idClipModel::~idClipModel
-////================
-////*/
-////idClipModel::~idClipModel( ) {
-////	// make sure the clip model is no longer linked
-////	Unlink();
-////	if ( traceModelIndex != -1 ) {
-////		idClipModel.FreeTraceModel( traceModelIndex );
-////	}
-////}
-////
+/*
+================
+idClipModel::~idClipModel
+================
+*/
+	destructor ( ): void {
+		// make sure the clip model is no longer linked
+		this.Unlink ( );
+		if ( this.traceModelIndex != -1 ) {
+			idClipModel.FreeTraceModel( this.traceModelIndex );
+		}
+	}
+
 /////*
 ////================
 ////idClipModel::Save
@@ -623,16 +654,16 @@ idClipModel::idClipModel
 ////	savefile.WriteObject( owner );
 ////	savefile.WriteVec3( origin );
 ////	savefile.WriteMat3( axis );
-////	savefile.WriteBounds( bounds );
+////	savefile.WriteBounds( this.bounds );
 ////	savefile.WriteBounds( absBounds );
 ////	savefile.WriteMaterial( material );
-////	savefile.WriteInt( contents );
-////	if ( collisionModelHandle >= 0 ) {
-////		savefile.WriteString( collisionModelManager.GetModelName( collisionModelHandle ) );
+////	savefile.WriteInt( this.contents );
+////	if ( this.collisionModelHandle >= 0 ) {
+////		savefile.WriteString( collisionModelManager.GetModelName( this.collisionModelHandle ) );
 ////	} else {
 ////		savefile.WriteString( "" );
 ////	}
-////	savefile.WriteInt( traceModelIndex );
+////	savefile.WriteInt( this.traceModelIndex );
 ////	savefile.WriteInt( renderModelHandle );
 ////	savefile.WriteBool( clipLinks != NULL );
 ////	savefile.WriteInt( this.touchCount );
@@ -653,19 +684,19 @@ idClipModel::idClipModel
 ////	savefile.ReadObject( reinterpret_cast<idClass *&>( owner ) );
 ////	savefile.ReadVec3( origin );
 ////	savefile.ReadMat3( axis );
-////	savefile.ReadBounds( bounds );
+////	savefile.ReadBounds( this.bounds );
 ////	savefile.ReadBounds( absBounds );
 ////	savefile.ReadMaterial( material );
-////	savefile.ReadInt( contents );
+////	savefile.ReadInt( this.contents );
 ////	savefile.ReadString( collisionModelName );
 ////	if ( collisionModelName.Length() ) {
-////		collisionModelHandle = collisionModelManager.LoadModel( collisionModelName, false );
+////		this.collisionModelHandle = collisionModelManager.LoadModel( collisionModelName, false );
 ////	} else {
-////		collisionModelHandle = -1;
+////		this.collisionModelHandle = -1;
 ////	}
-////	savefile.ReadInt( traceModelIndex );
-////	if ( traceModelIndex >= 0 ) {
-////		traceModelCache[traceModelIndex].refCount++;
+////	savefile.ReadInt( this.traceModelIndex );
+////	if ( this.traceModelIndex >= 0 ) {
+////		traceModelCache[this.traceModelIndex].refCount++;
 ////	}
 ////	savefile.ReadInt( renderModelHandle );
 ////	savefile.ReadBool( linked );
@@ -701,10 +732,10 @@ idClipModel::idClipModel
 ////*/
 ////cmHandle_t idClipModel::Handle( ) const {
 ////	assert( renderModelHandle == -1 );
-////	if ( collisionModelHandle ) {
-////		return collisionModelHandle;
-////	} else if ( traceModelIndex != -1 ) {
-////		return collisionModelManager.SetupTrmModel( *GetCachedTraceModel( traceModelIndex ), material );
+////	if ( this.collisionModelHandle ) {
+////		return this.collisionModelHandle;
+////	} else if ( this.traceModelIndex != -1 ) {
+////		return collisionModelManager.SetupTrmModel( *GetCachedTraceModel( this.traceModelIndex ), material );
 ////	} else {
 ////		// this happens in multiplayer on the combat models
 ////		gameLocal.Warning( "idClipModel::Handle: clip model %d on '%s' (%x) is not a collision or trace model", id, entity.name.c_str(), entity.entityNumber );
@@ -718,11 +749,11 @@ idClipModel::idClipModel
 ////================
 ////*/
 ////void idClipModel::GetMassProperties( const float density, float &mass, idVec3 &centerOfMass, idMat3 &inertiaTensor ) const {
-////	if ( traceModelIndex == -1 ) {
+////	if ( this.traceModelIndex == -1 ) {
 ////		gameLocal.Error( "idClipModel::GetMassProperties: clip model %d on '%s' is not a trace model\n", id, entity.name.c_str() );
 ////	}
 ////
-////	trmCache_t *entry = traceModelCache[traceModelIndex];
+////	trmCache_t *entry = traceModelCache[this.traceModelIndex];
 ////	mass = entry.volume * density;
 ////	centerOfMass = entry.centerOfMass;
 ////	inertiaTensor = density * entry.inertiaTensor;
@@ -798,18 +829,18 @@ idClipModel::idClipModel
 ////		Unlink();	// unlink from old position
 ////	}
 ////
-////	if ( bounds.IsCleared() ) {
+////	if ( this.bounds.IsCleared() ) {
 ////		return;
 ////	}
 ////
 ////	// set the abs box
 ////	if ( axis.IsRotated() ) {
 ////		// expand for rotation
-////		absBounds.FromTransformedBounds( bounds, origin, axis );
+////		absBounds.FromTransformedBounds( this.bounds, origin, axis );
 ////	} else {
 ////		// normal
-////		absBounds[0] = bounds[0] + origin;
-////		absBounds[1] = bounds[1] + origin;
+////		absBounds[0] = this.bounds[0] + origin;
+////		absBounds[1] = this.bounds[1] + origin;
 ////	}
 ////
 ////	// because movement is clipped an epsilon away from an actual edge,

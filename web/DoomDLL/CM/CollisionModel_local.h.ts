@@ -455,8 +455,8 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 ////	const char *	GetModelName( cmHandle_t model ) const;
 	// bounds of the model
 	GetModelBounds ( model: /*cmHandle_t*/number, bounds: idBounds ): boolean { throw "placeholder"; }
-////	// all contents flags of brushes and polygons ored together
-////	bool			GetModelContents( cmHandle_t model, int &contents ) const;
+	// all contents flags of brushes and polygons ored together
+	GetModelContents ( model: /*cmHandle_t */number, contents: R<number> /*int */ ): boolean { throw "placeholder"; }
 ////	// get the vertex of a model
 ////	bool			GetModelVertex( cmHandle_t model, int vertexNum, idVec3 &vertex ) const;
 ////	// get the edge of a model
