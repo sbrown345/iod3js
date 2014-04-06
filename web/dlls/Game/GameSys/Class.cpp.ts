@@ -239,15 +239,16 @@ class idTypeInfo {
 		return output;
 	}
 
-/////*
-////================
-////idTypeInfo::~idTypeInfo
-////================
-////*/
-////idTypeInfo::~idTypeInfo() {
-////	Shutdown();
-////}
-////
+/*
+================
+idTypeInfo::~idTypeInfo
+================
+*/
+	destructor(): void {
+		todoThrow ( );
+		//this.Shutdown ( );
+	}
+
 /*
 ================
 idTypeInfo::Init
@@ -807,33 +808,33 @@ once during the execution of the program or DLL.
 ////#ifdef ID_DEBUG_MEMORY
 ////#define new ID_DEBUG_NEW
 ////#endif
-////
-/////*
-////================
-////idClass::delete
-////================
-////*/
-////void idClass::operator delete( void *ptr ) {
-////	int *p;
-////
-////	if ( ptr ) {
-////		p = ( ( int * )ptr ) - 1;
-////		idClass.memused -= *p;
-////		this.numobjects--;
-////        Mem_Free( p );
-////	}
-////}
-////
-////void idClass::operator delete( void *ptr, int, int, char *, int ) {
-////	int *p;
-////
-////	if ( ptr ) {
-////		p = ( ( int * )ptr ) - 1;
-////		idClass.memused -= *p;
-////		this.numobjects--;
-////        Mem_Free( p );
-////	}
-////}
+
+///*
+//================
+//idClass::delete
+//================
+//*/
+//opDelete( /*void *ptr */):void {
+//	int *p;
+
+//	if ( ptr ) {
+//		p = ( ( int * )ptr ) - 1;
+//		idClass.memused -= *p;
+//		this.numobjects--;
+//        Mem_Free( p );
+//	}
+//}
+
+//void idClass::operator delete( void *ptr, int, int, char *, int ) {
+//	int *p;
+
+//	if ( ptr ) {
+//		p = ( ( int * )ptr ) - 1;
+//		idClass.memused -= *p;
+//		this.numobjects--;
+//        Mem_Free( p );
+//	}
+//}
 
 /*
 ================
@@ -1353,7 +1354,8 @@ idClass::Event_Remove
 ================
 */
 	Event_Remove ( ): void {
-		todoThrow( "erm?" );
+		todoThrow("erm?");
+		$delete( this );
 		delete this;
 	}
 

@@ -63,28 +63,56 @@ class aseMesh_t {
 	tvertexes: idVec2[];
 	cvertexes: idVec3[];
 	faces: aseFace_t[];
+
+
+	memset0 ( ): void {
+		this.timeValue = 0;
+		this.numVertexes = 0;
+		this.numTVertexes = 0;
+		this.numCVertexes = 0;
+		this.numFaces = 0;
+		this.numTVFaces = 0;
+		this.numCVFaces = 0;
+
+		clearStructArray( this.transform );
+
+		this.colorsParsed = false;
+		this.normalsParsed = false;
+
+		this.vertexes = null;
+		this.tvertexes = null;
+		this.cvertexes = null;
+		this.faces = null;
+	}
 }
 
 class aseMaterial_t {
-	name: string;//char					name[128];
+	name = new Uint8Array(128);
 	uOffset:number/*float*/; vOffset:number/*float*/;		// max lets you offset by material without changing texCoords
 	uTiling:number/*float*/; vTiling:number/*float*/;		// multiply tex coords by this
 	angle: number/*float*/;					// in clockwise radians
 
 	memset0(): void {
-		this.name = "";
+		memset( this.name, 0, sizeof( this.name ) );
 		this.uOffset = this.vOffset = this.uTiling = this.vTiling = this.angle = 0;
 	}
 }
 
 class aseObject_t {
-	name: string; //char					name[128];
+	name = new Uint8Array(128);
 	materialRef: number /*int*/;
 
 	mesh = new aseMesh_t;
 
 	// frames are only present with animations
-	frames = new idList<aseMesh_t>( aseMesh_t, true ); // aseMesh_t
+	frames = new idList<aseMesh_t>(aseMesh_t, true); // aseMesh_t
+
+	memset0(): void {
+		memset(this.name, 0, sizeof(this.name));
+		this.materialRef = 0;
+		this.mesh.memset0();
+		this.frames.Clear ( );
+	}
 }
 
 class aseModel_t {

@@ -81,11 +81,11 @@ class ase_t {
 var ase = new ase_t;
 
 
-////static aseMesh_t *ASE_GetCurrentMesh( )
-////{
-////	return ase.currentMesh;
-////}
-////
+function ASE_GetCurrentMesh( ):aseMesh_t
+{
+	return ase.currentMesh;
+}
+
 function CharIsTokenDelimiter ( /*int */ch: number ): number /*int*/ {
 	if ( ch <= 32 )
 		return 1;
@@ -94,7 +94,7 @@ function CharIsTokenDelimiter ( /*int */ch: number ): number /*int*/ {
 
 function ASE_GetToken ( restOfLine: boolean ): number /*int*/ {
 	var /*int */i = 0;
-	debugger
+	
 	if ( !ase.buffer /*== 0 */ )
 		return 0;
 
@@ -172,18 +172,18 @@ function ASE_KeyMAP_DIFFUSE ( token: string ): void {
 		var matname = new idStr;
 
 		ASE_GetToken( false );
-		todoThrow ( );
-		//// remove the quotes
-		//var s = strstr( ase.token + 1, "\"" );
-		////if ( s ) {
-		////	*s = 0;
-		////}
-		//matname = ase.token + 1;
+		debugger;
+		// remove the quotes
+		var s = strstr( ase.token.subarray( 1 ), "\"" );
+		if ( s ) {
+			s[0] = 0;
+		}
+		matname.equals( ase.token.subarray( 1 ).toString ( ) );
 
-		//// convert the 3DSMax material pathname to a qpath
-		//matname.BackSlashesToSlashes();
-		//qpath = fileSystem.OSPathToRelativePath( matname );
-		//idStr.Copynz( ase.currentMaterial.name, qpath, sizeof( ase.currentMaterial.name ) );
+		// convert the 3DSMax material pathname to a qpath
+		matname.BackSlashesToSlashes ( );
+		qpath.equals( fileSystem.OSPathToRelativePath( matname.data ) );
+		idStr.Copynz( ase.currentMaterial.name, qpath.data, sizeof( ase.currentMaterial.name ) );
 	} else if ( !strcmp( token, "*UVW_U_OFFSET" ) ) {
 		material = ase.model.materials[ase.model.materials.Num ( ) - 1];
 		ASE_GetToken( false );
@@ -235,521 +235,513 @@ function ASE_KeyMATERIAL_LIST( token:string ):void
 		ASE_ParseBracedBlock( ASE_KeyMATERIAL );
 	}
 }
-////
-////static void ASE_KeyNODE_TM( token:string )
-////{
-////	int		i;
-////
-////	if ( !strcmp( token, "*TM_ROW0" ) ) {
-////		for ( i = 0 ; i < 3 ; i++ ) {
-////			ASE_GetToken( false );
-////			ase.currentObject.mesh.transform[0][i] = atof( ase.token );
-////		}
-////	} else if ( !strcmp( token, "*TM_ROW1" ) ) {
-////		for ( i = 0 ; i < 3 ; i++ ) {
-////			ASE_GetToken( false );
-////			ase.currentObject.mesh.transform[1][i] = atof( ase.token );
-////		}
-////	} else if ( !strcmp( token, "*TM_ROW2" ) ) {
-////		for ( i = 0 ; i < 3 ; i++ ) {
-////			ASE_GetToken( false );
-////			ase.currentObject.mesh.transform[2][i] = atof( ase.token );
-////		}
-////	} else if ( !strcmp( token, "*TM_ROW3" ) ) {
-////		for ( i = 0 ; i < 3 ; i++ ) {
-////			ASE_GetToken( false );
-////			ase.currentObject.mesh.transform[3][i] = atof( ase.token );
-////		}
-////	}
-////}
-////
-////static void ASE_KeyMESH_VERTEX_LIST( token:string )
-////{
-////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
-////
-////	if ( !strcmp( token, "*MESH_VERTEX" ) )
-////	{
-////		ASE_GetToken( false );		// skip number
-////
-////		ASE_GetToken( false );
-////		pMesh.vertexes[ase.currentVertex].x = atof( ase.token );
-////
-////		ASE_GetToken( false );
-////		pMesh.vertexes[ase.currentVertex].y = atof( ase.token );
-////
-////		ASE_GetToken( false );
-////		pMesh.vertexes[ase.currentVertex].z = atof( ase.token );
-////
-////		ase.currentVertex++;
-////
-////		if ( ase.currentVertex > pMesh.numVertexes )
-////		{
-////			common.Error( "ase.currentVertex >= pMesh.numVertexes" );
-////		}
-////	}
-////	else
-////	{
-////		common.Error( "Unknown token '%s' while parsing MESH_VERTEX_LIST", token );
-////	}
-////}
-////
-////static void ASE_KeyMESH_FACE_LIST( token:string )
-////{
-////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
-////
-////	if ( !strcmp( token, "*MESH_FACE" ) )
-////	{
-////		ASE_GetToken( false );	// skip face number
-////
-////		// we are flipping the order here to change the front/back facing
-////		// from 3DS to our standard (clockwise facing out)
-////		ASE_GetToken( false );	// skip label
-////		ASE_GetToken( false );	// first vertex
-////		pMesh.faces[ase.currentFace].vertexNum[0] = atoi( ase.token );
-////                
-////		ASE_GetToken( false );	// skip label
-////		ASE_GetToken( false );	// second vertex
-////		pMesh.faces[ase.currentFace].vertexNum[2] = atoi( ase.token );
-////
-////		ASE_GetToken( false );	// skip label
-////		ASE_GetToken( false );	// third vertex
-////		pMesh.faces[ase.currentFace].vertexNum[1] = atoi( ase.token );
-////
-////		ASE_GetToken( true );
-////
-////		// we could parse material id and smoothing groups here
-/////*
-////		if ( ( p = strstr( ase.token, "*MESH_MTLID" ) ) != 0 )
-////		{
-////			p += strlen( "*MESH_MTLID" ) + 1;
-////			mtlID = atoi( p );
-////		}
-////		else
-////		{
-////			common.Error( "No *MESH_MTLID found for face!" );
-////		}
-////*/
-////
-////		ase.currentFace++;
-////	}
-////	else
-////	{
-////		common.Error( "Unknown token '%s' while parsing MESH_FACE_LIST", token );
-////	}
-////}
-////
-////static void ASE_KeyTFACE_LIST( token:string )
-////{
-////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
-////
-////	if ( !strcmp( token, "*MESH_TFACE" ) )
-////	{
-////		int a, b, c;
-////
-////		ASE_GetToken( false );
-////
-////		ASE_GetToken( false );
-////		a = atoi( ase.token );
-////		ASE_GetToken( false );
-////		c = atoi( ase.token );
-////		ASE_GetToken( false );
-////		b = atoi( ase.token );
-////
-////		pMesh.faces[ase.currentFace].tVertexNum[0] = a;
-////		pMesh.faces[ase.currentFace].tVertexNum[1] = b;
-////		pMesh.faces[ase.currentFace].tVertexNum[2] = c;
-////
-////		ase.currentFace++;
-////	}
-////	else
-////	{
-////		common.Error( "Unknown token '%s' in MESH_TFACE", token );
-////	}
-////}
-////
-////static void ASE_KeyCFACE_LIST( token:string )
-////{
-////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
-////
-////	if ( !strcmp( token, "*MESH_CFACE" ) )
-////	{
-////		ASE_GetToken( false );
-////
-////		for ( int i = 0 ; i < 3 ; i++ ) {
-////			ASE_GetToken( false );
-////			int a = atoi( ase.token );
-////
-////			// we flip the vertex order to change the face direction to our style
-////			static int remap[3] = { 0, 2, 1 };
-////			pMesh.faces[ase.currentFace].vertexColors[remap[i]][0] = pMesh.cvertexes[a][0] * 255;
-////			pMesh.faces[ase.currentFace].vertexColors[remap[i]][1] = pMesh.cvertexes[a][1] * 255;
-////			pMesh.faces[ase.currentFace].vertexColors[remap[i]][2] = pMesh.cvertexes[a][2] * 255;
-////		}
-////
-////		ase.currentFace++;
-////	}
-////	else
-////	{
-////		common.Error( "Unknown token '%s' in MESH_CFACE", token );
-////	}
-////}
-////
-////static void ASE_KeyMESH_TVERTLIST( token:string )
-////{
-////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
-////
-////	if ( !strcmp( token, "*MESH_TVERT" ) )
-////	{
-////		char u[80], v[80], w[80];
-////
-////		ASE_GetToken( false );
-////
-////		ASE_GetToken( false );
-////		strcpy( u, ase.token );
-////
-////		ASE_GetToken( false );
-////		strcpy( v, ase.token );
-////
-////		ASE_GetToken( false );
-////		strcpy( w, ase.token );
-////
-////		pMesh.tvertexes[ase.currentVertex].x = atof( u );
-////		// our OpenGL second texture axis is inverted from MAX's sense
-////		pMesh.tvertexes[ase.currentVertex].y = 1.0f - atof( v );
-////
-////		ase.currentVertex++;
-////
-////		if ( ase.currentVertex > pMesh.numTVertexes )
-////		{
-////			common.Error( "ase.currentVertex > pMesh.numTVertexes" );
-////		}
-////	}
-////	else
-////	{
-////		common.Error( "Unknown token '%s' while parsing MESH_TVERTLIST", token );
-////	}
-////}
-////
-////static void ASE_KeyMESH_CVERTLIST( token:string )
-////{
-////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
-////
-////	pMesh.colorsParsed = true;
-////
-////	if ( !strcmp( token, "*MESH_VERTCOL" ) )
-////	{
-////		ASE_GetToken( false );
-////
-////		ASE_GetToken( false );
-////		pMesh.cvertexes[ase.currentVertex][0] = atof( token );
-////
-////		ASE_GetToken( false );
-////		pMesh.cvertexes[ase.currentVertex][1] = atof( token );
-////
-////		ASE_GetToken( false );
-////		pMesh.cvertexes[ase.currentVertex][2] = atof( token );
-////
-////		ase.currentVertex++;
-////
-////		if ( ase.currentVertex > pMesh.numCVertexes )
-////		{
-////			common.Error( "ase.currentVertex > pMesh.numCVertexes" );
-////		}
-////	}
-////	else {
-////		common.Error( "Unknown token '%s' while parsing MESH_CVERTLIST", token );
-////	}
-////}
-////
-////static void ASE_KeyMESH_NORMALS( token:string )
-////{
-////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
-////	aseFace_t	*f;
-////	idVec3		n;
-////
-////	pMesh.normalsParsed = true;
-////	f = &pMesh.faces[ase.currentFace];
-////
-////	if ( !strcmp( token, "*MESH_FACENORMAL" ) )
-////	{
-////		int	num;
-////
-////		ASE_GetToken( false );
-////		num = atoi( ase.token );
-////
-////		if ( num >= pMesh.numFaces || num < 0 ) {
-////			common.Error( "MESH_NORMALS face index out of range: %i", num );
-////		}
-////
-////		if ( num != ase.currentFace ) {
-////			common.Error( "MESH_NORMALS face index != currentFace" );
-////		}
-////
-////		ASE_GetToken( false );
-////		n[0] = atof( ase.token );
-////		ASE_GetToken( false );
-////		n[1] = atof( ase.token );
-////		ASE_GetToken( false );
-////		n[2]= atof( ase.token );
-////
-////		f.faceNormal[0] = n[0] * pMesh.transform[0][0] + n[1] * pMesh.transform[1][0] + n[2] * pMesh.transform[2][0];
-////		f.faceNormal[1] = n[0] * pMesh.transform[0][1] + n[1] * pMesh.transform[1][1] + n[2] * pMesh.transform[2][1];
-////		f.faceNormal[2] = n[0] * pMesh.transform[0][2] + n[1] * pMesh.transform[1][2] + n[2] * pMesh.transform[2][2];
-////
-////		f.faceNormal.Normalize();
-////
-////		ase.currentFace++;
-////	}
-////	else if ( !strcmp( token, "*MESH_VERTEXNORMAL" ) )
-////	{
-////		int	num;
-////		int	v;
-////
-////		ASE_GetToken( false );
-////		num = atoi( ase.token );
-////
-////		if ( num >= pMesh.numVertexes || num < 0 ) {
-////			common.Error( "MESH_NORMALS vertex index out of range: %i", num );
-////		}
-////
-////		f = &pMesh.faces[ ase.currentFace - 1 ];
-////
-////		for ( v = 0 ; v < 3 ; v++ ) {
-////			if ( num == f.vertexNum[ v ] ) {
-////				break;
-////			}
-////		}
-////
-////		if ( v == 3 ) {
-////			common.Error( "MESH_NORMALS vertex index doesn't match face" );
-////		}
-////
-////		ASE_GetToken( false );
-////		n[0] = atof( ase.token );
-////		ASE_GetToken( false );
-////		n[1] = atof( ase.token );
-////		ASE_GetToken( false );
-////		n[2]= atof( ase.token );
-////
-////		f.vertexNormals[ v ][0] = n[0] * pMesh.transform[0][0] + n[1] * pMesh.transform[1][0] + n[2] * pMesh.transform[2][0];
-////		f.vertexNormals[ v ][1] = n[0] * pMesh.transform[0][1] + n[1] * pMesh.transform[1][1] + n[2] * pMesh.transform[2][1];
-////		f.vertexNormals[ v ][2] = n[0] * pMesh.transform[0][2] + n[1] * pMesh.transform[1][2] + n[2] * pMesh.transform[2][2];
-////
-////		f.vertexNormals[v].Normalize();
-////	}
-////}
-////
-////static void ASE_KeyMESH( token:string )
-////{
-////	aseMesh_t *pMesh = ASE_GetCurrentMesh();
-////
-////	if ( !strcmp( token, "*TIMEVALUE" ) )
-////	{
-////		ASE_GetToken( false );
-////
-////		pMesh.timeValue = atoi( ase.token );
-////		VERBOSE( ( ".....timevalue: %d\n", pMesh.timeValue ) );
-////	}
-////	else if ( !strcmp( token, "*MESH_NUMVERTEX" ) )
-////	{
-////		ASE_GetToken( false );
-////
-////		pMesh.numVertexes = atoi( ase.token );
-////		VERBOSE( ( ".....num vertexes: %d\n", pMesh.numVertexes ) );
-////	}
-////	else if ( !strcmp( token, "*MESH_NUMTVERTEX" ) )
-////	{
-////		ASE_GetToken( false );
-////
-////		pMesh.numTVertexes = atoi( ase.token );
-////		VERBOSE( ( ".....num tvertexes: %d\n", pMesh.numTVertexes ) );
-////	}
-////	else if ( !strcmp( token, "*MESH_NUMCVERTEX" ) )
-////	{
-////		ASE_GetToken( false );
-////
-////		pMesh.numCVertexes = atoi( ase.token );
-////		VERBOSE( ( ".....num cvertexes: %d\n", pMesh.numCVertexes ) );
-////	}
-////	else if ( !strcmp( token, "*MESH_NUMFACES" ) )
-////	{
-////		ASE_GetToken( false );
-////
-////		pMesh.numFaces = atoi( ase.token );
-////		VERBOSE( ( ".....num faces: %d\n", pMesh.numFaces ) );
-////	}
-////	else if ( !strcmp( token, "*MESH_NUMTVFACES" ) )
-////	{
-////		ASE_GetToken( false );
-////
-////		pMesh.numTVFaces = atoi( ase.token );
-////		VERBOSE( ( ".....num tvfaces: %d\n", pMesh.numTVFaces ) );
-////
-////		if ( pMesh.numTVFaces != pMesh.numFaces )
-////		{
-////			common.Error( "MESH_NUMTVFACES != MESH_NUMFACES" );
-////		}
-////	}
-////	else if ( !strcmp( token, "*MESH_NUMCVFACES" ) )
-////	{
-////		ASE_GetToken( false );
-////
-////		pMesh.numCVFaces = atoi( ase.token );
-////		VERBOSE( ( ".....num cvfaces: %d\n", pMesh.numCVFaces ) );
-////
-////		if ( pMesh.numTVFaces != pMesh.numFaces )
-////		{
-////			common.Error( "MESH_NUMCVFACES != MESH_NUMFACES" );
-////		}
-////	}
-////	else if ( !strcmp( token, "*MESH_VERTEX_LIST" ) )
-////	{
-////		pMesh.vertexes = (idVec3 *)Mem_Alloc( sizeof( idVec3 ) * pMesh.numVertexes );
-////		ase.currentVertex = 0;
-////		VERBOSE( ( ".....parsing MESH_VERTEX_LIST\n" ) );
-////		ASE_ParseBracedBlock( ASE_KeyMESH_VERTEX_LIST );
-////	}
-////	else if ( !strcmp( token, "*MESH_TVERTLIST" ) )
-////	{
-////		ase.currentVertex = 0;
-////		pMesh.tvertexes = (idVec2 *)Mem_Alloc( sizeof( idVec2 ) * pMesh.numTVertexes );
-////		VERBOSE( ( ".....parsing MESH_TVERTLIST\n" ) );
-////		ASE_ParseBracedBlock( ASE_KeyMESH_TVERTLIST );
-////	}
-////	else if ( !strcmp( token, "*MESH_CVERTLIST" ) )
-////	{
-////		ase.currentVertex = 0;
-////		pMesh.cvertexes = (idVec3 *)Mem_Alloc( sizeof( idVec3 ) * pMesh.numCVertexes );
-////		VERBOSE( ( ".....parsing MESH_CVERTLIST\n" ) );
-////		ASE_ParseBracedBlock( ASE_KeyMESH_CVERTLIST );
-////	}
-////	else if ( !strcmp( token, "*MESH_FACE_LIST" ) )
-////	{
-////		pMesh.faces = (aseFace_t *)Mem_Alloc( sizeof( aseFace_t ) * pMesh.numFaces );
-////		ase.currentFace = 0;
-////		VERBOSE( ( ".....parsing MESH_FACE_LIST\n" ) );
-////		ASE_ParseBracedBlock( ASE_KeyMESH_FACE_LIST );
-////	}
-////	else if ( !strcmp( token, "*MESH_TFACELIST" ) )
-////	{
-////		if ( !pMesh.faces ) {
-////			common.Error( "*MESH_TFACELIST before *MESH_FACE_LIST" );
-////		}
-////		ase.currentFace = 0;
-////		VERBOSE( ( ".....parsing MESH_TFACE_LIST\n" ) );
-////		ASE_ParseBracedBlock( ASE_KeyTFACE_LIST );
-////	}
-////	else if ( !strcmp( token, "*MESH_CFACELIST" ) )
-////	{
-////		if ( !pMesh.faces ) {
-////			common.Error( "*MESH_CFACELIST before *MESH_FACE_LIST" );
-////		}
-////		ase.currentFace = 0;
-////		VERBOSE( ( ".....parsing MESH_CFACE_LIST\n" ) );
-////		ASE_ParseBracedBlock( ASE_KeyCFACE_LIST );
-////	}
-////	else if ( !strcmp( token, "*MESH_NORMALS" ) )
-////	{
-////		if ( !pMesh.faces ) {
-////			common.Warning( "*MESH_NORMALS before *MESH_FACE_LIST" );
-////		}
-////		ase.currentFace = 0;
-////		VERBOSE( ( ".....parsing MESH_NORMALS\n" ) );
-////		ASE_ParseBracedBlock( ASE_KeyMESH_NORMALS );
-////	}
-////}
-////
-////static void ASE_KeyMESH_ANIMATION( token:string )
-////{
-////	aseMesh_t *mesh;
-////
-////	// loads a single animation frame
-////	if ( !strcmp( token, "*MESH" ) )
-////	{
-////		VERBOSE( ( "...found MESH\n" ) );
-////
-////		mesh = (aseMesh_t *)Mem_Alloc( sizeof( aseMesh_t ) );
-////		memset( mesh, 0, sizeof( aseMesh_t ) );
-////		ase.currentMesh = mesh;
-////
-////		ase.currentObject.frames.Append( mesh );
-////
-////		ASE_ParseBracedBlock( ASE_KeyMESH );
-////	}
-////	else
-////	{
-////		common.Error( "Unknown token '%s' while parsing MESH_ANIMATION", token );
-////	}
-////}
-////
-////static void ASE_KeyGEOMOBJECT( token:string )
-////{
-////	aseObject_t	*object;
-////
-////	object = ase.currentObject;
-////
-////	if ( !strcmp( token, "*NODE_NAME" ) )
-////	{
-////		ASE_GetToken( true );
-////		VERBOSE( ( " %s\n", ase.token ) );
-////		idStr.Copynz( object.name, ase.token, sizeof( object.name ) );
-////	}
-////	else if ( !strcmp( token, "*NODE_PARENT" ) )
-////	{
-////		ASE_SkipRestOfLine();
-////	}
-////	// ignore unused data blocks
-////	else if ( !strcmp( token, "*NODE_TM" ) ||
-////		      !strcmp( token, "*TM_ANIMATION" ) )
-////	{
-////		ASE_ParseBracedBlock( ASE_KeyNODE_TM );
-////	}
-////	// ignore regular meshes that aren't part of animation
-////	else if ( !strcmp( token, "*MESH" ) )
-////	{
-////		ase.currentMesh = &ase.currentObject.mesh;
-////		memset( ase.currentMesh, 0, sizeof( ase.currentMesh ) );
-////
-////		ASE_ParseBracedBlock( ASE_KeyMESH );
-////	}
-////	// according to spec these are obsolete
-////	else if ( !strcmp( token, "*MATERIAL_REF" ) )
-////	{
-////		ASE_GetToken( false );
-////
-////		object.materialRef = atoi( ase.token );
-////	}
-////	// loads a sequence of animation frames
-////	else if ( !strcmp( token, "*MESH_ANIMATION" ) )
-////	{
-////		VERBOSE( ( "..found MESH_ANIMATION\n" ) );
-////
-////		ASE_ParseBracedBlock( ASE_KeyMESH_ANIMATION );
-////	}
-////	// skip unused info
-////	else if ( !strcmp( token, "*PROP_MOTIONBLUR" ) ||
-////		      !strcmp( token, "*PROP_CASTSHADOW" ) ||
-////			  !strcmp( token, "*PROP_RECVSHADOW" ) )
-////	{
-////		ASE_SkipRestOfLine();
-////	}
-////
-////}
-////
+
+function ASE_KeyNODE_TM( token:string ):void
+{
+	var i:number;
+
+	if ( !strcmp( token, "*TM_ROW0" ) ) {
+		for ( i = 0 ; i < 3 ; i++ ) {
+			ASE_GetToken( false );
+			ase.currentObject.mesh.transform[0][i] = atof( ase.token );
+		}
+	} else if ( !strcmp( token, "*TM_ROW1" ) ) {
+		for ( i = 0 ; i < 3 ; i++ ) {
+			ASE_GetToken( false );
+			ase.currentObject.mesh.transform[1][i] = atof( ase.token );
+		}
+	} else if ( !strcmp( token, "*TM_ROW2" ) ) {
+		for ( i = 0 ; i < 3 ; i++ ) {
+			ASE_GetToken( false );
+			ase.currentObject.mesh.transform[2][i] = atof( ase.token );
+		}
+	} else if ( !strcmp( token, "*TM_ROW3" ) ) {
+		for ( i = 0 ; i < 3 ; i++ ) {
+			ASE_GetToken( false );
+			ase.currentObject.mesh.transform[3][i] = atof( ase.token );
+		}
+	}
+}
+
+function ASE_KeyMESH_VERTEX_LIST ( token: string ): void {
+	var pMesh: aseMesh_t = ASE_GetCurrentMesh ( );
+
+	if ( !strcmp( token, "*MESH_VERTEX" ) ) {
+		ASE_GetToken( false ); // skip number
+
+		ASE_GetToken( false );
+		pMesh.vertexes[ase.currentVertex].x = atof( ase.token );
+
+		ASE_GetToken( false );
+		pMesh.vertexes[ase.currentVertex].y = atof( ase.token );
+
+		ASE_GetToken( false );
+		pMesh.vertexes[ase.currentVertex].z = atof( ase.token );
+
+		ase.currentVertex++;
+
+		if ( ase.currentVertex > pMesh.numVertexes ) {
+			common.Error( "ase.currentVertex >= pMesh.numVertexes" );
+		}
+	} else {
+		common.Error( "Unknown token '%s' while parsing MESH_VERTEX_LIST", token );
+	}
+}
+
+function ASE_KeyMESH_FACE_LIST( token:string )
+{
+	var pMesh: aseMesh_t= ASE_GetCurrentMesh();
+
+	if ( !strcmp( token, "*MESH_FACE" ) )
+	{
+		ASE_GetToken( false );	// skip face number
+
+		// we are flipping the order here to change the front/back facing
+		// from 3DS to our standard (clockwise facing out)
+		ASE_GetToken( false );	// skip label
+		ASE_GetToken( false );	// first vertex
+		pMesh.faces[ase.currentFace].vertexNum[0] = atoi( ase.token );
+                
+		ASE_GetToken( false );	// skip label
+		ASE_GetToken( false );	// second vertex
+		pMesh.faces[ase.currentFace].vertexNum[2] = atoi( ase.token );
+
+		ASE_GetToken( false );	// skip label
+		ASE_GetToken( false );	// third vertex
+		pMesh.faces[ase.currentFace].vertexNum[1] = atoi( ase.token );
+
+		ASE_GetToken( true );
+
+		// we could parse material id and smoothing groups here
+/*
+		if ( ( p = strstr( ase.token, "*MESH_MTLID" ) ) != 0 )
+		{
+			p += strlen( "*MESH_MTLID" ) + 1;
+			mtlID = atoi( p );
+		}
+		else
+		{
+			common.Error( "No *MESH_MTLID found for face!" );
+		}
+*/
+
+		ase.currentFace++;
+	}
+	else
+	{
+		common.Error( "Unknown token '%s' while parsing MESH_FACE_LIST", token );
+	}
+}
+
+function ASE_KeyTFACE_LIST( token:string ):void
+{
+	var pMesh: aseMesh_t = ASE_GetCurrentMesh();
+
+	if ( !strcmp( token, "*MESH_TFACE" ) )
+	{
+		var a: number /*int*/, b: number /*int*/, c: number /*int*/;
+
+		ASE_GetToken( false );
+
+		ASE_GetToken( false );
+		a = atoi( ase.token );
+		ASE_GetToken( false );
+		c = atoi( ase.token );
+		ASE_GetToken( false );
+		b = atoi( ase.token );
+
+		pMesh.faces[ase.currentFace].tVertexNum[0] = a;
+		pMesh.faces[ase.currentFace].tVertexNum[1] = b;
+		pMesh.faces[ase.currentFace].tVertexNum[2] = c;
+
+		ase.currentFace++;
+	}
+	else
+	{
+		common.Error( "Unknown token '%s' in MESH_TFACE", token );
+	}
+}
+
+function ASE_KeyCFACE_LIST( token:string ):void
+{
+	var pMesh: aseMesh_t = ASE_GetCurrentMesh();
+
+	if ( !strcmp( token, "*MESH_CFACE" ) )
+	{
+		ASE_GetToken( false );
+
+		for ( var i = 0 ; i < 3 ; i++ ) {
+			ASE_GetToken( false );
+			var a = atoi( ase.token );
+
+			// we flip the vertex order to change the face direction to our style
+			var /*static int */remap/*[3]*/ = [ 0, 2, 1 ];
+			pMesh.faces[ase.currentFace].vertexColors[remap[i]][0] = pMesh.cvertexes[a][0] * 255;
+			pMesh.faces[ase.currentFace].vertexColors[remap[i]][1] = pMesh.cvertexes[a][1] * 255;
+			pMesh.faces[ase.currentFace].vertexColors[remap[i]][2] = pMesh.cvertexes[a][2] * 255;
+		}
+
+		ase.currentFace++;
+	}
+	else
+	{
+		common.Error( "Unknown token '%s' in MESH_CFACE", token );
+	}
+}
+
+function ASE_KeyMESH_TVERTLIST( token:string ):void
+{
+	var pMesh: aseMesh_t= ASE_GetCurrentMesh();
+
+	if ( !strcmp( token, "*MESH_TVERT" ) )
+	{
+		var u = new Uint8Array(80), v = new Uint8Array(80), w = new Uint8Array(80);
+
+		ASE_GetToken( false );
+
+		ASE_GetToken( false );
+		strcpy( u, ase.token );
+
+		ASE_GetToken( false );
+		strcpy( v, ase.token );
+
+		ASE_GetToken( false );
+		strcpy( w, ase.token );
+
+		pMesh.tvertexes[ase.currentVertex].x = atof( u );
+		// our OpenGL second texture axis is inverted from MAX's sense
+		pMesh.tvertexes[ase.currentVertex].y = 1.0 - atof( v );
+
+		ase.currentVertex++;
+
+		if ( ase.currentVertex > pMesh.numTVertexes )
+		{
+			common.Error( "ase.currentVertex > pMesh.numTVertexes" );
+		}
+	}
+	else
+	{
+		common.Error( "Unknown token '%s' while parsing MESH_TVERTLIST", token );
+	}
+}
+
+function ASE_KeyMESH_CVERTLIST( token:string ):void
+{
+	var pMesh: aseMesh_t= ASE_GetCurrentMesh();
+
+	pMesh.colorsParsed = true;
+
+	if ( !strcmp( token, "*MESH_VERTCOL" ) )
+	{
+		ASE_GetToken( false );
+
+		ASE_GetToken( false );
+		pMesh.cvertexes[ase.currentVertex][0] = atof( token );
+
+		ASE_GetToken( false );
+		pMesh.cvertexes[ase.currentVertex][1] = atof( token );
+
+		ASE_GetToken( false );
+		pMesh.cvertexes[ase.currentVertex][2] = atof( token );
+
+		ase.currentVertex++;
+
+		if ( ase.currentVertex > pMesh.numCVertexes )
+		{
+			common.Error( "ase.currentVertex > pMesh.numCVertexes" );
+		}
+	}
+	else {
+		common.Error( "Unknown token '%s' while parsing MESH_CVERTLIST", token );
+	}
+}
+
+function ASE_KeyMESH_NORMALS( token:string ):void
+{
+	var pMesh: aseMesh_t= ASE_GetCurrentMesh();
+	var f: aseFace_t;
+	var n = new idVec3;
+
+	pMesh.normalsParsed = true;
+	f = pMesh.faces[ase.currentFace];
+
+	if ( !strcmp( token, "*MESH_FACENORMAL" ) )
+	{
+		var	num: number /*int*/;
+
+		ASE_GetToken( false );
+		num = atoi( ase.token );
+
+		if ( num >= pMesh.numFaces || num < 0 ) {
+			common.Error( "MESH_NORMALS face index out of range: %i", num );
+		}
+
+		if ( num != ase.currentFace ) {
+			common.Error( "MESH_NORMALS face index != currentFace" );
+		}
+
+		ASE_GetToken( false );
+		n[0] = atof( ase.token );
+		ASE_GetToken( false );
+		n[1] = atof( ase.token );
+		ASE_GetToken( false );
+		n[2]= atof( ase.token );
+
+		f.faceNormal[0] = n[0] * pMesh.transform[0][0] + n[1] * pMesh.transform[1][0] + n[2] * pMesh.transform[2][0];
+		f.faceNormal[1] = n[0] * pMesh.transform[0][1] + n[1] * pMesh.transform[1][1] + n[2] * pMesh.transform[2][1];
+		f.faceNormal[2] = n[0] * pMesh.transform[0][2] + n[1] * pMesh.transform[1][2] + n[2] * pMesh.transform[2][2];
+
+		f.faceNormal.Normalize();
+
+		ase.currentFace++;
+	}
+	else if ( !strcmp( token, "*MESH_VERTEXNORMAL" ) )
+	{
+		var num:number /*int*/;
+		var v: number /*int*/;
+
+		ASE_GetToken( false );
+		num = atoi( ase.token );
+
+		if ( num >= pMesh.numVertexes || num < 0 ) {
+			common.Error( "MESH_NORMALS vertex index out of range: %i", num );
+		}
+
+		f = pMesh.faces[ ase.currentFace - 1 ];
+
+		for ( v = 0 ; v < 3 ; v++ ) {
+			if ( num == f.vertexNum[ v ] ) {
+				break;
+			}
+		}
+
+		if ( v == 3 ) {
+			common.Error( "MESH_NORMALS vertex index doesn't match face" );
+		}
+
+		ASE_GetToken( false );
+		n[0] = atof( ase.token );
+		ASE_GetToken( false );
+		n[1] = atof( ase.token );
+		ASE_GetToken( false );
+		n[2]= atof( ase.token );
+
+		f.vertexNormals[ v ][0] = n[0] * pMesh.transform[0][0] + n[1] * pMesh.transform[1][0] + n[2] * pMesh.transform[2][0];
+		f.vertexNormals[ v ][1] = n[0] * pMesh.transform[0][1] + n[1] * pMesh.transform[1][1] + n[2] * pMesh.transform[2][1];
+		f.vertexNormals[ v ][2] = n[0] * pMesh.transform[0][2] + n[1] * pMesh.transform[1][2] + n[2] * pMesh.transform[2][2];
+
+		f.vertexNormals[v].Normalize();
+	}
+}
+
+function ASE_KeyMESH( token:string ):void
+{
+	var pMesh: aseMesh_t  = ASE_GetCurrentMesh();
+
+	if ( !strcmp( token, "*TIMEVALUE" ) )
+	{
+		ASE_GetToken( false );
+
+		pMesh.timeValue = atoi( ase.token );
+		VERBOSE( ( ".....timevalue: %d\n", pMesh.timeValue ) );
+	}
+	else if ( !strcmp( token, "*MESH_NUMVERTEX" ) )
+	{
+		ASE_GetToken( false );
+
+		pMesh.numVertexes = atoi( ase.token );
+		VERBOSE( ( ".....num vertexes: %d\n", pMesh.numVertexes ) );
+	}
+	else if ( !strcmp( token, "*MESH_NUMTVERTEX" ) )
+	{
+		ASE_GetToken( false );
+
+		pMesh.numTVertexes = atoi( ase.token );
+		VERBOSE( ( ".....num tvertexes: %d\n", pMesh.numTVertexes ) );
+	}
+	else if ( !strcmp( token, "*MESH_NUMCVERTEX" ) )
+	{
+		ASE_GetToken( false );
+
+		pMesh.numCVertexes = atoi( ase.token );
+		VERBOSE( ( ".....num cvertexes: %d\n", pMesh.numCVertexes ) );
+	}
+	else if ( !strcmp( token, "*MESH_NUMFACES" ) )
+	{
+		ASE_GetToken( false );
+
+		pMesh.numFaces = atoi( ase.token );
+		VERBOSE( ( ".....num faces: %d\n", pMesh.numFaces ) );
+	}
+	else if ( !strcmp( token, "*MESH_NUMTVFACES" ) )
+	{
+		ASE_GetToken( false );
+
+		pMesh.numTVFaces = atoi( ase.token );
+		VERBOSE( ( ".....num tvfaces: %d\n", pMesh.numTVFaces ) );
+
+		if ( pMesh.numTVFaces != pMesh.numFaces )
+		{
+			common.Error( "MESH_NUMTVFACES != MESH_NUMFACES" );
+		}
+	}
+	else if ( !strcmp( token, "*MESH_NUMCVFACES" ) )
+	{
+		ASE_GetToken( false );
+
+		pMesh.numCVFaces = atoi( ase.token );
+		VERBOSE( ( ".....num cvfaces: %d\n", pMesh.numCVFaces ) );
+
+		if ( pMesh.numTVFaces != pMesh.numFaces )
+		{
+			common.Error( "MESH_NUMCVFACES != MESH_NUMFACES" );
+		}
+	}
+	else if ( !strcmp( token, "*MESH_VERTEX_LIST" ) ) {
+		pMesh.vertexes = newStructArray<idVec3>( idVec3, pMesh.numVertexes ); //(idVec3 *)Mem_Alloc( sizeof( idVec3 ) * pMesh.numVertexes );
+		ase.currentVertex = 0;
+		VERBOSE( ( ".....parsing MESH_VERTEX_LIST\n" ) );
+		ASE_ParseBracedBlock( ASE_KeyMESH_VERTEX_LIST );
+	}
+	else if ( !strcmp( token, "*MESH_TVERTLIST" ) )
+	{
+		ase.currentVertex = 0;
+		pMesh.tvertexes = newStructArray<idVec2>( idVec2, pMesh.numTVertexes );// (idVec2 *)Mem_Alloc( sizeof( idVec2 ) * pMesh.numTVertexes );
+		VERBOSE( ( ".....parsing MESH_TVERTLIST\n" ) );
+		ASE_ParseBracedBlock( ASE_KeyMESH_TVERTLIST );
+	}
+	else if ( !strcmp( token, "*MESH_CVERTLIST" ) )
+	{
+		ase.currentVertex = 0;
+		pMesh.cvertexes = newStructArray<idVec3>(idVec3, pMesh.numCVertexes );// (idVec3 *)Mem_Alloc( sizeof( idVec3 ) * pMesh.numCVertexes );
+		VERBOSE( ( ".....parsing MESH_CVERTLIST\n" ) );
+		ASE_ParseBracedBlock( ASE_KeyMESH_CVERTLIST );
+	}
+	else if ( !strcmp( token, "*MESH_FACE_LIST" ) ) {
+		pMesh.faces = newStructArray<aseFace_t>( aseFace_t, pMesh.numFaces );// (aseFace_t *)Mem_Alloc( sizeof( aseFace_t ) * pMesh.numFaces );
+		ase.currentFace = 0;
+		VERBOSE( ( ".....parsing MESH_FACE_LIST\n" ) );
+		ASE_ParseBracedBlock( ASE_KeyMESH_FACE_LIST );
+	}
+	else if ( !strcmp( token, "*MESH_TFACELIST" ) )
+	{
+		if ( !pMesh.faces ) {
+			common.Error( "*MESH_TFACELIST before *MESH_FACE_LIST" );
+		}
+		ase.currentFace = 0;
+		VERBOSE( ( ".....parsing MESH_TFACE_LIST\n" ) );
+		ASE_ParseBracedBlock( ASE_KeyTFACE_LIST );
+	}
+	else if ( !strcmp( token, "*MESH_CFACELIST" ) )
+	{
+		if ( !pMesh.faces ) {
+			common.Error( "*MESH_CFACELIST before *MESH_FACE_LIST" );
+		}
+		ase.currentFace = 0;
+		VERBOSE( ( ".....parsing MESH_CFACE_LIST\n" ) );
+		ASE_ParseBracedBlock( ASE_KeyCFACE_LIST );
+	}
+	else if ( !strcmp( token, "*MESH_NORMALS" ) )
+	{
+		if ( !pMesh.faces ) {
+			common.Warning( "*MESH_NORMALS before *MESH_FACE_LIST" );
+		}
+		ase.currentFace = 0;
+		VERBOSE( ( ".....parsing MESH_NORMALS\n" ) );
+		ASE_ParseBracedBlock( ASE_KeyMESH_NORMALS );
+	}
+}
+
+function ASE_KeyMESH_ANIMATION( token:string ):void
+{
+	var mesh: aseMesh_t;
+
+	// loads a single animation frame
+	if ( !strcmp( token, "*MESH" ) )
+	{
+		VERBOSE( ( "...found MESH\n" ) );
+
+		mesh = new aseMesh_t;//(aseMesh_t *)Mem_Alloc( sizeof( aseMesh_t ) );
+		mesh.memset0();
+		ase.currentMesh = mesh;
+
+		ase.currentObject.frames.Append( mesh );
+
+		ASE_ParseBracedBlock( ASE_KeyMESH );
+	}
+	else
+	{
+		common.Error( "Unknown token '%s' while parsing MESH_ANIMATION", token );
+	}
+}
+
+function ASE_KeyGEOMOBJECT( token:string ):void
+{
+	var object: aseObject_t;
+
+	object = ase.currentObject;
+
+	if ( !strcmp( token, "*NODE_NAME" ) )
+	{
+		ASE_GetToken( true );
+		VERBOSE( ( " %s\n", ase.token ) );
+		idStr.Copynz( object.name, ase.token.toString(), sizeof( object.name ) );
+	}
+	else if ( !strcmp( token, "*NODE_PARENT" ) )
+	{
+		ASE_SkipRestOfLine();
+	}
+	// ignore unused data blocks
+	else if ( !strcmp( token, "*NODE_TM" ) ||
+		      !strcmp( token, "*TM_ANIMATION" ) )
+	{
+		ASE_ParseBracedBlock( ASE_KeyNODE_TM );
+	}
+	// ignore regular meshes that aren't part of animation
+	else if ( !strcmp( token, "*MESH" ) )
+	{
+		ase.currentMesh = ase.currentObject.mesh;
+		ase.currentMesh.memset0();
+
+		ASE_ParseBracedBlock( ASE_KeyMESH );
+	}
+	// according to spec these are obsolete
+	else if ( !strcmp( token, "*MATERIAL_REF" ) )
+	{
+		ASE_GetToken( false );
+
+		object.materialRef = atoi( ase.token );
+	}
+	// loads a sequence of animation frames
+	else if ( !strcmp( token, "*MESH_ANIMATION" ) )
+	{
+		VERBOSE( ( "..found MESH_ANIMATION\n" ) );
+
+		ASE_ParseBracedBlock( ASE_KeyMESH_ANIMATION );
+	}
+	// skip unused info
+	else if ( !strcmp( token, "*PROP_MOTIONBLUR" ) ||
+		      !strcmp( token, "*PROP_CASTSHADOW" ) ||
+			  !strcmp( token, "*PROP_RECVSHADOW" ) )
+	{
+		ASE_SkipRestOfLine();
+	}
+
+}
+
 function ASE_ParseGeomObject(): void {
-	todoThrow ( );
-	//aseObject_t	*object;
+	var object: aseObject_t	;
 
-	//VERBOSE( ("GEOMOBJECT" ) );
+	VERBOSE( ("GEOMOBJECT" ) );
 
-	//object = (aseObject_t *)Mem_Alloc( sizeof( aseObject_t ) );
-	//memset( object, 0, sizeof( aseObject_t ) );
-	//ase.model.objects.Append( object );
-	//ase.currentObject = object;
+	object = new aseObject_t;// (aseObject_t *)Mem_Alloc( sizeof( aseObject_t ) );
+	object.memset0 ( );
+	ase.model.objects.Append( object );
+	ase.currentObject = object;
 
-	//object.frames.Resize(32, 32);
+	object.frames.Resize(32, 32);
 
-	//ASE_ParseBracedBlock( ASE_KeyGEOMOBJECT );
+	ASE_ParseBracedBlock( ASE_KeyGEOMOBJECT );
 }
 
 function ASE_KeyGROUP ( token: string ): void {

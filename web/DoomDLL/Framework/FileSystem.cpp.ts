@@ -838,101 +838,105 @@ class idFileSystemLocal extends idFileSystem {
 ////	return OSPath;
 ////}
 ////
-/////*
-////================
-////idFileSystemLocal::OSPathToRelativePath
-////
-////takes a full OS path, as might be found in data from a media creation
-////program, and converts it to a relativePath by stripping off directories
-////
-////Returns false if the osPath tree doesn't match any of the existing
-////search paths.
-////
-////================
-////*/
-////const char *idFileSystemLocal::OSPathToRelativePath( const char *OSPath ) {
-////	static char relativePath[MAX_STRING_CHARS];
-////	char *s, *base;
-////
-////	// skip a drive letter?
-////
-////	// search for anything with "base" in it
-////	// Ase files from max may have the form of:
-////	// "//Purgatory/purgatory/doom/base/models/mapobjects/bitch/hologirl.tga"
-////	// which won't match any of our drive letter based search paths
-////	bool ignoreWarning = false;
-////#ifdef ID_DEMO_BUILD
-////	base = (char *)strstr( OSPath, BASE_GAMEDIR );	
-////	idStr tempStr = OSPath;
-////	tempStr.ToLower();
-////	if ( ( strstr( tempStr, "//" ) || strstr( tempStr, "w:" ) ) && strstr( tempStr, "/doom/base/") ) {
-////		// will cause a warning but will load the file. ase models have
-////		// hard coded doom/base/ in the material names
-////		base = (char *)strstr( OSPath, "base" );
-////		ignoreWarning = true;
-////	}
-////#else
-////	// look for the first complete directory name
-////	base = (char *)strstr( OSPath, BASE_GAMEDIR );
-////	while ( base ) {
-////		char c1 = '\0', c2;
-////		if ( base > OSPath ) {
-////			c1 = *(base - 1);
-////		}
-////		c2 = *( base + strlen( BASE_GAMEDIR ) );
-////		if ( ( c1 == '/' || c1 == '\\' ) && ( c2 == '/' || c2 == '\\' ) ) {
-////			break;
-////		}
-////		base = strstr( base + 1, BASE_GAMEDIR );
-////	}
-////#endif
-////	// fs_game and fs_game_base support - look for first complete name with a mod path
-////	// ( fs_game searched before fs_game_base )
-////	const char *fsgame = NULL;
-////	int igame = 0;
-////	for ( igame = 0; igame < 2; igame++ ) {
-////		if ( igame == 0 ) {
-////			fsgame = fs_game.GetString();
-////		} else if ( igame == 1 ) {
-////			fsgame = fs_game_base.GetString();
-////		}
-////		if ( base == NULL && fsgame && strlen( fsgame ) ) {
-////			base = (char *)strstr( OSPath, fsgame );
-////			while ( base ) {
-////				char c1 = '\0', c2;
-////				if ( base > OSPath ) {
-////					c1 = *(base - 1);
-////				}
-////				c2 = *( base + strlen( fsgame ) );
-////				if ( ( c1 == '/' || c1 == '\\' ) && ( c2 == '/' || c2 == '\\' ) ) {
-////					break;
-////				}
-////				base = strstr( base + 1, fsgame );
-////			}
-////		}
-////	}
-////
-////	if ( base ) {
-////		s = strstr( base, "/" );
-////		if ( !s ) {
-////			s = strstr( base, "\\" );
-////		}
-////		if ( s ) {
-////			strcpy( relativePath, s + 1 );
-////			if ( fs_debug.GetInteger() > 1 ) {
-////				common.Printf( "idFileSystem::OSPathToRelativePath: %s becomes %s\n", OSPath, relativePath );
-////			}
-////			return relativePath;
-////		}
-////	}
-////
-////	if ( !ignoreWarning ) {
-////		common.Warning( "idFileSystem::OSPathToRelativePath failed on %s", OSPath );
-////	}
-////	strcpy( relativePath, "" );
-////	return relativePath;
-////}
-////
+/*
+================
+idFileSystemLocal::OSPathToRelativePath
+
+takes a full OS path, as might be found in data from a media creation
+program, and converts it to a relativePath by stripping off directories
+
+Returns false if the osPath tree doesn't match any of the existing
+search paths.
+
+================
+*/
+	static relativePath = new Uint8Array(MAX_STRING_CHARS);
+
+	OSPathToRelativePath ( OSPath: string ): string {
+		//static char relativePath[MAX_STRING_CHARS];
+		var s: Uint8Array, base: Uint8Array; //char *s, *base;
+
+		// skip a drive letter?
+
+		// search for anything with "base" in it
+		// Ase files from max may have the form of:
+		// "//Purgatory/purgatory/doom/base/models/mapobjects/bitch/hologirl.tga"
+		// which won't match any of our drive letter based search paths
+		var ignoreWarning = false;
+//#ifdef ID_DEMO_BUILD
+		base = /*(char *)*/strstr( OSPath.toUint8Array ( ), BASE_GAMEDIR );
+		var tempStr = new idStr( OSPath );
+		tempStr.ToLower ( );
+		if ( ( strstrContains( tempStr.data, "//" ) || strstrContains( tempStr.data, "w:" ) ) && strstrContains( tempStr.data, "/doom/base/" ) ) {
+			// will cause a warning but will load the file. ase models have
+			// hard coded doom/base/ in the material names
+			base = /*(char *)*/strstr( OSPath.toUint8Array ( ), "base" );
+			ignoreWarning = true;
+		}
+//#else
+//	// look for the first complete directory name
+//	base = (char *)strstr( OSPath, BASE_GAMEDIR );
+//	while ( base ) {
+//		char c1 = '\0', c2;
+//		if ( base > OSPath ) {
+//			c1 = *(base - 1);
+//		}
+//		c2 = *( base + strlen( BASE_GAMEDIR ) );
+//		if ( ( c1 == '/' || c1 == '\\' ) && ( c2 == '/' || c2 == '\\' ) ) {
+//			break;
+//		}
+//		base = strstr( base + 1, BASE_GAMEDIR );
+//	}
+//#endif
+		// fs_game and fs_game_base support - look for first complete name with a mod path
+		// ( fs_game searched before fs_game_base )
+		var /*const char **/fsgame: string = null;
+
+		todo( "fs_game, fs_game_base support" );
+		//int igame = 0;
+		//for ( igame = 0; igame < 2; igame++ ) {
+		//	if ( igame == 0 ) {
+		//		fsgame = fs_game.GetString();
+		//	} else if ( igame == 1 ) {
+		//		fsgame = fs_game_base.GetString();
+		//	}
+		//	if ( base == NULL && fsgame && strlen( fsgame ) ) {
+		//		base = (char *)strstr( OSPath, fsgame );
+		//		while ( base ) {
+		//			char c1 = '\0', c2;
+		//			if ( base > OSPath ) {
+		//				c1 = *(base - 1);
+		//			}
+		//			c2 = *( base + strlen( fsgame ) );
+		//			if ( ( c1 == '/' || c1 == '\\' ) && ( c2 == '/' || c2 == '\\' ) ) {
+		//				break;
+		//			}
+		//			base = strstr( base + 1, fsgame );
+		//		}
+		//	}
+		//}
+
+		if ( base ) {
+			s = strstr( base, "/" );
+			if ( !s ) {
+				s = strstr( base, "\\" );
+			}
+			if ( s ) {
+				strcpy( idFileSystemLocal.relativePath, s.subarray( 1 ).toString ( ) );
+				if ( idFileSystemLocal.fs_debug.GetInteger ( ) > 1 ) {
+					common.Printf( "idFileSystem::OSPathToRelativePath: %s becomes %s\n", OSPath, idFileSystemLocal.relativePath.toString ( ) );
+				}
+				return idFileSystemLocal.relativePath.toString ( );
+			}
+		}
+
+		if ( !ignoreWarning ) {
+			common.Warning( "idFileSystem::OSPathToRelativePath failed on %s", OSPath );
+		}
+		strcpy( idFileSystemLocal.relativePath, "" );
+		return idFileSystemLocal.relativePath.toString ( );
+	}
+
 /////*
 ////=====================
 ////idFileSystemLocal::RelativePathToOSPath

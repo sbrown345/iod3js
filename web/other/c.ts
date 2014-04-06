@@ -11,15 +11,23 @@ function strlen ( str: any ): number {
 	return str.length;
 }
 
-function strcpy(destination: Uint8Array, source: string): Uint8Array {
-	//assert.isType(Uint8Array, destination).isString(source);
-
+function strcpy ( destination: Uint8Array, source: string ): Uint8Array
+function strcpy ( destination: Uint8Array, source: Uint8Array ): Uint8Array
+function strcpy ( destination: Uint8Array, source: any ): Uint8Array {
 	var i: number;
-	for (i = 0; i < source.length && source.charCodeAt(i); i++) {
-		destination[i] = source.charCodeAt(i);
+	if ( typeof source === "string" ) {
+		for ( i = 0; i < source.length && source.charCodeAt( i ); i++ ) {
+			destination[i] = source.charCodeAt( i );
+		}
+	} else if ( source instanceof Uint8Array ) {
+		for ( i = 0; i < source.length && source[i]; i++ ) {
+			destination[i] = source[i];
+		}
+	} else {
+		todoThrow ( );
 	}
 
-	destination[i] = 0; // because the js string doesn't have a final 0
+	destination[i] = 0;
 
 	return destination;
 }
@@ -57,6 +65,18 @@ function strchr ( str: Uint8Array, character: number ): Uint8Array {
 	}
 
 	return null;
+}
+
+// todo: faster way
+function strstr ( str1: Uint8Array, str2: string ): Uint8Array {
+	var $string = str1.toString ( ); 
+	var i = $string.indexOf( str2 );
+
+	if ( i === -1 ) {
+		return null;
+	}
+
+	return str1.subarray( i );
 }
 
 function strchrContains ( str: string, character: string ): boolean {
@@ -334,9 +354,14 @@ function exit (code:number ): void {
 	throw "exit(" + code + ");";
 }
 
-function $delete(obj: any): void {
-	if (obj && obj.destructor) {
-		obj.destructor();
+function $delete ( obj: any ): void {
+	if ( obj ) {
+		if ( obj.destructor ) {
+			obj.destructor ( );
+		}
+		if ( obj.opDelete ) {
+			obj.opDelete ( );
+		}
 	}
 }
 

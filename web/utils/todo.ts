@@ -23,6 +23,7 @@ function todoThrow ( message: any = "" ): any {
 		console.log( idFileSystemLocal.tempFilesForWriting );
 		debugger;
 		console.error( "todoThrow \n", message );
+		console.error( "stack \n", ( new Error ( ) ).stack );
 		if ( !LOGGING_WITH_VISUAL_STUDIO ) {
 			throw "!";
 		}

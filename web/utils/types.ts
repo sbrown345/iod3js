@@ -97,11 +97,29 @@ function reinterpret_cast_float_to_int ( v: number ):number {
 	return reinterpret_cast_float_to_int_intArray[0];
 }
 
-function atoi ( s: string ): number {
-    return parseInt( s ) || 0;
+function atoi ( s: Uint8Array ): number
+function atoi ( s: string ): number
+function atoi ( s: idStr ): number
+function atoi ( s: any ): number {
+	if ( s instanceof idStr ) {
+		s = s.data;
+	}
+	if (s instanceof Uint8Array ) {
+		s = s.toString();
+	}
+	return parseInt( s ) || 0;
 }
 
-function atof ( s: string ): number {
+function atof(s: Uint8Array): number
+function atof(s: string): number
+function atof(s: idStr): number
+function atof(s: any): number {
+	if (s instanceof idStr) {
+		s = s.data;
+	}
+	if (s instanceof Uint8Array) {
+		s = s.toString();
+	}
     return parseFloat( s ) || 0;
 }
 
