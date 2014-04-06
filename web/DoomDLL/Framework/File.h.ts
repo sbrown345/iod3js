@@ -42,18 +42,18 @@ enum fsOrigin_t{
 	FS_SEEK_CUR,
 	FS_SEEK_END,
 	FS_SEEK_SET
-};
+}
 
 ////class idFileSystemLocal;
 ////
 ////
 class idFile {
 ////public:
-////	virtual					~idFile( void ) {};
+////	virtual					~idFile( ) {};
 ////							// Get the name of the file.
-////	virtual const char *	GetName( void );
+////	virtual const char *	GetName( );
 ////							// Get the full file path.
-////	virtual const char *	GetFullPath( void );
+////	virtual const char *	GetFullPath( );
 ////							// Read data from the file to the buffer.
     Read(buffer: ArrayBuffer, len: number): number { throw "placeholder"; }
 ////							// Write data from the buffer to the file.
@@ -63,15 +63,15 @@ class idFile {
 ////							// Return a time value for reload operations.
     Timestamp(): number { throw "placeholder"; }
 ////							// Returns offset in file.
-////	virtual int				Tell( void );
+	Tell( ):number { throw "placeholder"; }
 ////							// Forces flush on files being writting to.
-////	virtual void			ForceFlush( void );
+////	virtual void			ForceFlush( );
 ////							// Causes any buffered data to be written to the file.
-////	virtual void			Flush( void );
+////	virtual void			Flush( );
 ////							// Seek on a file.
-////	virtual int				Seek( long offset, fsOrigin_t origin );
+	Seek ( /*long*/ offset: number, origin: fsOrigin_t ): number { throw "placeholder"; }
 ////							// Go back to the beginning of the file.
-////	virtual void			Rewind( void );
+////	virtual void			Rewind( );
 ////							// Like fprintf.
 	Printf ( fmt: string, ...args: any[] ): number { throw "placeholder"; } //id_attribute((format(printf,2,3)));
 ////							// Like fprintf but with argument pointer
@@ -117,31 +117,31 @@ class idFile {
 ////	friend class			idFileSystemLocal;
 ////
 ////public:
-////							idFile_Memory( void );	// file for writing without name
+////							idFile_Memory( );	// file for writing without name
 ////							idFile_Memory( const char *name );	// file for writing
 ////							idFile_Memory( const char *name, char *data, int length );	// file for writing
 ////							idFile_Memory( const char *name, const char *data, int length );	// file for reading
-////	virtual					~idFile_Memory( void );
+////	virtual					~idFile_Memory( );
 ////
-////	virtual const char *	GetName( void ) { return name.c_str(); }
-////	virtual const char *	GetFullPath( void ) { return name.c_str(); }
+////	virtual const char *	GetName( ) { return name.c_str(); }
+////	virtual const char *	GetFullPath( ) { return name.c_str(); }
 ////	virtual int				Read( void *buffer, int len );
 ////	virtual int				Write( const void *buffer, int len );
-////	virtual int				Length( void );
-////	virtual ID_TIME_T			Timestamp( void );
-////	virtual int				Tell( void );
-////	virtual void			ForceFlush( void );
-////	virtual void			Flush( void );
+////	virtual int				Length( );
+////	virtual ID_TIME_T			Timestamp( );
+////	virtual int				Tell( );
+////	virtual void			ForceFlush( );
+////	virtual void			Flush( );
 ////	virtual int				Seek( long offset, fsOrigin_t origin );
 ////
 ////							// changes memory file to read only
-////	virtual void			MakeReadOnly( void );
+////	virtual void			MakeReadOnly( );
 ////							// clear the file
 ////	virtual void			Clear( bool freeMemory = true );
 ////							// set data for reading
 ////	void					SetData( const char *data, int length );
 ////							// returns const pointer to the memory buffer
-////	const char *			GetDataPtr( void ) const { return filePtr; }
+////	const char *			GetDataPtr( ) const { return filePtr; }
 ////							// set the file granularity
 ////	void					SetGranularity( int g ) { assert( g > 0 ); granularity = g; }
 ////
@@ -163,17 +163,17 @@ class idFile {
 ////public:
 ////							idFile_BitMsg( idBitMsg &msg );
 ////							idFile_BitMsg( const idBitMsg &msg );
-////	virtual					~idFile_BitMsg( void );
+////	virtual					~idFile_BitMsg( );
 ////
-////	virtual const char *	GetName( void ) { return name.c_str(); }
-////	virtual const char *	GetFullPath( void ) { return name.c_str(); }
+////	virtual const char *	GetName( ) { return name.c_str(); }
+////	virtual const char *	GetFullPath( ) { return name.c_str(); }
 ////	virtual int				Read( void *buffer, int len );
 ////	virtual int				Write( const void *buffer, int len );
-////	virtual int				Length( void );
-////	virtual ID_TIME_T			Timestamp( void );
-////	virtual int				Tell( void );
-////	virtual void			ForceFlush( void );
-////	virtual void			Flush( void );
+////	virtual int				Length( );
+////	virtual ID_TIME_T			Timestamp( );
+////	virtual int				Tell( );
+////	virtual void			ForceFlush( );
+////	virtual void			Flush( );
 ////	virtual int				Seek( long offset, fsOrigin_t origin );
 ////
 ////private:
@@ -187,24 +187,24 @@ class idFile_Permanent extends idFile {
 ////	friend class			idFileSystemLocal;
 ////
 ////public:
-////							idFile_Permanent( void );
-////	virtual					~idFile_Permanent( void );
+////							idFile_Permanent( );
+////	virtual					~idFile_Permanent( );
 ////
-////	virtual const char *	GetName( void ) { return name.c_str(); }
-////	virtual const char *	GetFullPath( void ) { return fullPath.c_str(); }
+////	virtual const char *	GetName( ) { return name.c_str(); }
+////	virtual const char *	GetFullPath( ) { return fullPath.c_str(); }
 ////	virtual int				Read( void *buffer, int len );
-	Write( buffer:Uint8Array, /*int */len:number ) { throw "placeholder"; }
+	//Write( buffer:Uint8Array, /*int */len:number ) { throw "placeholder"; }
     //Length ( ):number { throw "placeholder"; }
 
     //Timestamp ( ): number /*ID_TIME_T*/ { throw "placeholder"; }
 
-////	virtual int				Tell( void );
-////	virtual void			ForceFlush( void );
-////	virtual void			Flush( void );
+////	virtual int				Tell( );
+////	virtual void			ForceFlush( );
+////	virtual void			Flush( );
 ////	virtual int				Seek( long offset, fsOrigin_t origin );
 ////
 ////	// returns file pointer
-////	FILE *					GetFilePtr( void ) { return o; }
+////	FILE *					GetFilePtr( ) { return o; }
 ////
 //private:
 	name = new idStr;			// relative path of the file - relative path
@@ -212,26 +212,260 @@ class idFile_Permanent extends idFile {
 	/*int					*/	mode:number;			// open mode
 	/*int					*/	fileSize:number;		// size of the file
 	o:FILE;				// file handle
-	handleSync:boolean;		// true if written data is immediately flushed
-};
+	handleSync: boolean;		// true if written data is immediately flushed
+
+
+/////*
+////=================================================================================
 ////
+////idFile_Permanent
 ////
+////=================================================================================
+////*/
+////
+/////*
+////=================
+////idFile_Permanent::idFile_Permanent
+////=================
+////*/
+////idFile_Permanent::idFile_Permanent( ) {
+////	name = "invalid";
+////	o = NULL;
+////	mode = 0;
+////	fileSize = 0;
+////	handleSync = false;
+////}
+////
+/////*
+////=================
+////idFile_Permanent::~idFile_Permanent
+////=================
+////*/
+////idFile_Permanent::~idFile_Permanent( ) {
+////	if ( o ) {
+////		fclose( o );
+////	}
+////}
+
+/*
+=================
+idFile_Permanent::Read
+
+Properly handles partial reads
+=================
+*/
+	/*int */Read( /* void **/buffer: ArrayBuffer, /*int */len: number): number {
+		assert( buffer instanceof ArrayBuffer );
+		var /*int		*/block: number, remaining: number;
+		var /*int		*/read: number;
+		var /*byte *	*/buf: Uint8Array;
+		var /*int		*/tries: number;
+
+		if (!(this.mode & (1 << fsMode_t.FS_READ))) {
+			common.FatalError("idFile_Permanent::Read: %s not opened in read mode", this.name.c_str());
+			return 0;
+		}
+
+		if (!this.o) {
+			return 0;
+		}
+
+		//buf = /*(byte *)*/buffer;
+
+		//remaining = len;
+		//tries = 0;
+		//while ( remaining ) {
+		//    block = remaining;
+		//    read = fread( buf, 1, block, this.o );
+		//    if ( read == 0 ) {
+		//        // we might have been trying to read from a CD, which
+		//        // sometimes returns a 0 read on windows
+		//        if ( !tries ) {
+		//            tries = 1;
+		//        } else {
+		//            fileSystem.AddToReadCount( len - remaining );
+		//            return len - remaining;
+		//        }
+		//    }
+
+		//    if ( read == -1 ) {
+		//        common.FatalError( "idFile_Permanent::Read: -1 bytes read from %s", name.c_str ( ) );
+		//    }
+
+		//    remaining -= read;
+		//    buf += read;
+		//}
+
+		var source = new Uint8Array(this.o.arrayBuffer, this.o.ptr);
+		var dest = new Uint8Array(buffer);
+		for (var i = 0; i < len; i++) {
+			dest[i] = source[i];
+			this.o.ptr++;
+		}
+
+		fileSystem.AddToReadCount(len);
+		return len;
+	}
+
+/*
+=================
+idFile_Permanent::Write
+
+Properly handles partial writes
+=================
+*/
+	Write ( /*const void **/buffer: Uint8Array, /*int */len: number ): number {
+		if ( !SKIP_ALL_LOGGING ) {
+			idFileSystemLocal.tempFilesForWriting[this.name.data] += buffer.toString ( );
+		}
+		//int		block, remaining;
+		//int		written;
+		//byte *	buf;
+		//int		tries;
+
+		//if ( !( mode & ( 1 << fsMode_t.FS_WRITE ) ) ) {
+		//	common.FatalError( "idFile_Permanent::Write: %s not opened in write mode", name.c_str() );
+		//	return 0;
+		//}
+
+		//if ( !o ) {
+		//	return 0;
+		//}
+
+		//buf = (byte *)buffer;
+
+		//remaining = len;
+		//tries = 0;
+		//while( remaining ) {
+		//	block = remaining;
+		//	written = fwrite( buf, 1, block, o );
+		//	if ( written == 0 ) {
+		//		if ( !tries ) {
+		//			tries = 1;
+		//		}
+		//		else {
+		//			common.Printf( "idFile_Permanent::Write: 0 bytes written to %s\n", name.c_str() );
+		//			return 0;
+		//		}
+		//	}
+
+		//	if ( written == -1 ) {
+		//		common.Printf( "idFile_Permanent::Write: -1 bytes written to %s\n", name.c_str() );
+		//		return 0;
+		//	}
+
+		//	remaining -= written;
+		//	buf += written;
+		//	fileSize += written;
+		//}
+		//if ( handleSync ) {
+		//	fflush( o );
+		//}
+		return len;
+	}
+////
+/////*
+////=================
+////idFile_Permanent::ForceFlush
+////=================
+////*/
+////void idFile_Permanent::ForceFlush( ) {
+////	setvbuf( o, NULL, _IONBF, 0 );
+////}
+////
+/////*
+////=================
+////idFile_Permanent::Flush
+////=================
+////*/
+////void idFile_Permanent::Flush( ) {
+////	fflush( o );
+////}
+
+/*
+=================
+idFile_Permanent::Tell
+=================
+*/
+	Tell ( ): number/*int*/ {
+		return ftell( this.o );
+	}
+
+/*
+================
+idFile_Permanent::Length
+================
+*/
+/*int */Length (): number {
+		return this.fileSize;
+	}
+
+/*
+================
+idFile_Permanent::Timestamp
+================
+*/
+/*ID_TIME_T */
+Timestamp (): number {
+		return 0; //return Sys_FileTimeStamp( o );
+	}
+
+/*
+=================
+idFile_Permanent::Seek
+
+  returns zero on success and -1 on failure
+=================
+*/
+	Seek ( /*long */offset: number, origin: fsOrigin_t ): number {
+		var /*int */_origin: number;
+
+		switch ( origin ) {
+		case fsOrigin_t.FS_SEEK_CUR:
+		{
+			_origin = SEEK_CUR;
+			break;
+		}
+		case fsOrigin_t.FS_SEEK_END:
+		{
+			_origin = SEEK_END;
+			break;
+		}
+		case fsOrigin_t.FS_SEEK_SET:
+		{
+			_origin = SEEK_SET;
+			break;
+		}
+		default:
+		{
+			_origin = SEEK_CUR;
+			common.FatalError( "idFile_Permanent::Seek: bad origin for %s\n", this.name.c_str ( ) );
+			break;
+		}
+		}
+
+		return fseek( this.o, offset, _origin );
+	}
+
+}
+
+
 ////class idFile_InZip extends idFile {
 ////	friend class			idFileSystemLocal;
 ////
 ////public:
-////							idFile_InZip( void );
-////	virtual					~idFile_InZip( void );
+////							idFile_InZip( );
+////	virtual					~idFile_InZip( );
 ////
-////	virtual const char *	GetName( void ) { return name.c_str(); }
-////	virtual const char *	GetFullPath( void ) { return fullPath.c_str(); }
+////	virtual const char *	GetName( ) { return name.c_str(); }
+////	virtual const char *	GetFullPath( ) { return fullPath.c_str(); }
 ////	virtual int				Read( void *buffer, int len );
 ////	virtual int				Write( const void *buffer, int len );
-////	virtual int				Length( void );
-////	virtual ID_TIME_T			Timestamp( void );
-////	virtual int				Tell( void );
-////	virtual void			ForceFlush( void );
-////	virtual void			Flush( void );
+////	virtual int				Length( );
+////	virtual ID_TIME_T			Timestamp( );
+////	virtual int				Tell( );
+////	virtual void			ForceFlush( );
+////	virtual void			Flush( );
 ////	virtual int				Seek( long offset, fsOrigin_t origin );
 ////
 ////private:
@@ -240,6 +474,6 @@ class idFile_Permanent extends idFile {
 ////	int						zipFilePos;		// zip file info position in pak
 ////	int						fileSize;		// size of the file
 ////	void *					z;				// unzip info
-////};
+////}
 ////
 ////#endif /* !__FILE_H__ */

@@ -1123,7 +1123,7 @@ idInterpreter::CallSysEvent
 		evdef = func.eventdef;
 
 		start = this.localstackUsed - argsize;
-		debugger;
+		
 		format = evdef.GetArgFormat ( );
 		for ( j = 0, i = 0, pos = 0; ( pos < argsize ) || ( format[i] /*!= 0*/ ); i++ ) {
 			switch ( format[i] ) {

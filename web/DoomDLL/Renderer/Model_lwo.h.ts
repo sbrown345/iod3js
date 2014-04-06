@@ -190,7 +190,7 @@ var ID_DATA  = LWID_('D','A','T','A')
 /* generic linked list */
 
 class lwNode {
-	next:lwNode, prev: lwNode;
+	next:lwNode; prev: lwNode;
 ////   void *data;
 };
 

@@ -552,7 +552,9 @@ class idClass {
 	static memused:number = 0;
 	static numobjects:number = 0;
 
-
+	constructor ( ) {
+		this.opNew( 0 /*size?*/ );
+	}
 
 ////// alphabetical order
 ////idList<idTypeInfo *>	idClass::types;
@@ -761,14 +763,14 @@ once during the execution of the program or DLL.
 ////#undef new
 ////#endif
 ////
-////void * idClass::operator new( size_t s ) {
+	opNew ( /*size_t */s: number ): void {
 ////	int *p;
 ////
 ////	s += sizeof( int );
 ////	p = (int *)Mem_Alloc( s );
 ////	*p = s;
 ////	idClass.memused += s;
-////	this.numobjects++;
+		idClass.numobjects++;
 ////
 ////#ifdef ID_DEBUG_UNINITIALIZED_MEMORY
 ////	unsigned long *ptr = (unsigned long *)p;
@@ -781,7 +783,7 @@ once during the execution of the program or DLL.
 ////#endif
 ////
 ////	return p + 1;
-////}
+	}
 ////
 ////void * idClass::operator new( size_t s, int, int, char *, int ) {
 ////	int *p;

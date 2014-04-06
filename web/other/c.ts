@@ -308,13 +308,28 @@ function malloc ( size: number ): ArrayBuffer {
 	return new ArrayBuffer( size );
 }
 
+var SEEK_CUR = 1;
+var SEEK_END = 2;
+var SEEK_SET = 0;
+
 class FILE {
 
     constructor ( arrayBuffer: ArrayBuffer ) {
-        this.arrayBuffer = arrayBuffer;
+		this.arrayBuffer = arrayBuffer;
+	    this.ptr = 0;
     }
 
-    arrayBuffer: ArrayBuffer;
+	arrayBuffer: ArrayBuffer;
+	ptr:number;
+}
+
+function fseek ( stream: FILE, /*long int */offset: number, /*int */origin: number ): number {
+	if ( origin !== SEEK_SET ) todoThrow ( );
+	return stream.ptr = offset;
+}
+
+function ftell ( f: FILE ): number {
+	return f.ptr;
 }
 
 class P {

@@ -99,8 +99,8 @@ idLib::Init
 
 		//assert( sizeof( bool ) == 1 );
 
-		//// initialize little/big endian conversion
-		//Swap_Init();
+		// initialize little/big endian conversion
+		Swap_Init();
 
 		//// initialize memory manager
 		//Mem_Init();
@@ -131,7 +131,7 @@ idLib::Init
 ////idLib::ShutDown
 ////================
 ////*/
-////void idLib::ShutDown( void ) {
+////void idLib::ShutDown( ) {
 
 ////	// shut down the dictionary string pools
 ////	idDict::Shutdown();
@@ -317,19 +317,19 @@ idLib::Error
 ////static int		(*_LittleLong)( int l );
 ////static float	(*_BigFloat)( float l );
 ////static float	(*_LittleFloat)( float l );
-////static void		(*_BigRevBytes)( void *bp, int elsize, int elcount );
+var _BigRevBytes: ( /*void *bp*/ bp: ArrayBuffer, /*int */elsize: number, /*int */elcount: number ) => void;
 ////static void		(*_LittleRevBytes)( void *bp, int elsize, int elcount );
 ////static void     (*_LittleBitField)( void *bp, int elsize );
 ////static void		(*_SixtetsForInt)( byte *out, int src );
 ////static int		(*_IntForSixtets)( byte *in );
 
-function BigShort( /*short*/ l: number): number { return l/*_BigShort( l );*/ }											 //short
+//function BigShort( /*short*/ l: number): number { return l/*_BigShort( l );*/ }											 //short
 function LittleShort( /*short*/ l: number): number { return l/*_LittleShort( l );*/ }												 //short
-function BigLong( /*int*/ l: number): number { return l/*_BigLong( l );*/ }															 //int	
-function LittleLong( /*int*/ l: number): number { return l/*_LittleLong( l );*/ }													 //int	
-function BigFloat( /*float*/ l: number): number { return l/*_BigFloat( l );*/ }														 //float
-function LittleFloat( /*float*/ l: number): number { return l/*return _LittleFloat( l );*/ }												 //float
-function BigRevBytes( /*void *bp*/ bp: Uint8Array, /*int */elsize: number, /*int */elcount: number) {  /*bp_BigRevBytes( bp, elsize, elcount )*/; }			 //void
+//function BigLong( /*int*/ l: number): number { return l/*_BigLong( l );*/ }															 //int	
+//function LittleLong( /*int*/ l: number): number { return l/*_LittleLong( l );*/ }													 //int	
+//function BigFloat( /*float*/ l: number): number { return l/*_BigFloat( l );*/ }														 //float
+//function LittleFloat( /*float*/ l: number): number { return l/*return _LittleFloat( l );*/ }												 //float
+function BigRevBytes( /*void *bp*/ bp: ArrayBuffer, /*int */elsize: number, /*int */elcount: number) {  _BigRevBytes( bp, elsize, elcount ); }			 //void
 //function LittleRevBytes( void *bp, int elsize, int elcount ){ _LittleRevBytes( bp, elsize, elcount ); }		 //void
 //function LittleBitField( void *bp, int elsize ){ _LittleBitField( bp, elsize ); }							 //void
 
@@ -413,49 +413,51 @@ function BigRevBytes( /*void *bp*/ bp: Uint8Array, /*int */elsize: number, /*int
 ////	return f;
 ////}
 
-/////*
-////=====================================================================
-////RevBytesSwap
+/*
+=====================================================================
+RevBytesSwap
 
-////Reverses byte order in place.
+Reverses byte order in place.
 
-////INPUTS
-////   bp       bytes to reverse
-////   elsize   size of the underlying data type
-////   elcount  number of elements to swap
+INPUTS
+   bp       bytes to reverse
+   elsize   size of the underlying data type
+   elcount  number of elements to swap
 
-////RESULTS
-////   Reverses the byte order in each of elcount elements.
-////===================================================================== */
-////void RevBytesSwap( void *bp, int elsize, int elcount ) {
-////	register unsigned char *p, *q;
+RESULTS
+   Reverses the byte order in each of elcount elements.
+===================================================================== */
+function RevBytesSwap ( /*void **/bp: ArrayBuffer, /*int */elsize: number, /*int */elcount: number ): void {
+	if (bp["buffer"]) bp = bp["buffer"]; //todo: fix this work around properly (typescript confuses ArrayBuffer and typed arrays)
+	var /*register unsigned char **/p: number, q: number;
 
-////	p = ( unsigned char * ) bp;
+	var arr = new Uint8Array(bp);
+	p = 0;
 
-////	if ( elsize == 2 ) {
-////		q = p + 1;
-////		while ( elcount-- ) {
-////			*p ^= *q;
-////			*q ^= *p;
-////			*p ^= *q;
-////			p += 2;
-////			q += 2;
-////		}
-////		return;
-////	}
+	if ( elsize == 2 ) {
+		q = p + 1;
+		while ( elcount-- ) {
+			arr[p] ^= arr[q];
+			arr[q] ^= arr[p];
+			arr[p] ^= arr[q];
+			p += 2;
+			q += 2;
+		}
+		return;
+	}
 
-////	while ( elcount-- ) {
-////		q = p + elsize - 1;
-////		while ( p < q ) {
-////			*p ^= *q;
-////			*q ^= *p;
-////			*p ^= *q;
-////			++p;
-////			--q;
-////		}
-////		p += elsize >> 1;
-////	}
-////}
+	while ( elcount-- ) {
+		q = p + elsize - 1;
+		while ( p < q ) {
+			arr[p] ^= arr[q];
+			arr[q] ^= arr[p];
+			arr[p] ^= arr[q];
+			++p;
+			--q;
+		}
+		p += elsize >> 1;
+	}
+}
 
 /////*
 //// =====================================================================
@@ -565,50 +567,51 @@ function BigRevBytes( /*void *bp*/ bp: Uint8Array, /*int */elsize: number, /*int
 ////	return ret;
 ////}
 
-/////*
-////================
-////Swap_Init
-////================
-////*/
-////void Swap_Init( void ) {
-////	byte	swaptest[2] = {1,0};
+/*
+================
+Swap_Init
+================
+*/
+function Swap_Init ( ): void {
+	var swaptest = new Uint8Array( [1, 0] );
 
-////	// set the byte swapping variables in a portable manner	
-////	if ( *(short *)swaptest == 1) {
-////		// little endian ex: x86
-////		_BigShort = ShortSwap;
-////		_LittleShort = ShortNoSwap;
-////		_BigLong = LongSwap;
-////		_LittleLong = LongNoSwap;
-////		_BigFloat = FloatSwap;
-////		_LittleFloat = FloatNoSwap;
-////		_BigRevBytes = RevBytesSwap;
-////		_LittleRevBytes = RevBytesNoSwap;
-////		_LittleBitField = RevBitFieldNoSwap;
-////		_SixtetsForInt = SixtetsForIntLittle;
-////		_IntForSixtets = IntForSixtetsLittle;
-////	} else {
-////		// big endian ex: ppc
-////		_BigShort = ShortNoSwap;
-////		_LittleShort = ShortSwap;
-////		_BigLong = LongNoSwap;
-////		_LittleLong = LongSwap;
-////		_BigFloat = FloatNoSwap;
-////		_LittleFloat = FloatSwap;
-////		_BigRevBytes = RevBytesNoSwap;
-////		_LittleRevBytes = RevBytesSwap;
-////		_LittleBitField = RevBitFieldSwap;
-////		_SixtetsForInt = SixtetsForIntBig;
-////		_IntForSixtets = IntForSixtetsBig;
-////	}
-////}
+	// set the byte swapping variables in a portable manner	
+	if ( /**(short *)*/ new Int16Array( swaptest.buffer )[0] == 1 ) {
+		//// little endian ex: x86
+		//_BigShort = ShortSwap;
+		//_LittleShort = ShortNoSwap;
+		//_BigLong = LongSwap;
+		//_LittleLong = LongNoSwap;
+		//_BigFloat = FloatSwap;
+		//_LittleFloat = FloatNoSwap;
+		_BigRevBytes = RevBytesSwap;
+		//_LittleRevBytes = RevBytesNoSwap;
+		//_LittleBitField = RevBitFieldNoSwap;
+		//_SixtetsForInt = SixtetsForIntLittle;
+		//_IntForSixtets = IntForSixtetsLittle;
+	} else {
+		todoThrow ( );
+		//// big endian ex: ppc
+		//_BigShort = ShortNoSwap;
+		//_LittleShort = ShortSwap;
+		//_BigLong = LongNoSwap;
+		//_LittleLong = LongSwap;
+		//_BigFloat = FloatNoSwap;
+		//_LittleFloat = FloatSwap;
+		//_BigRevBytes = RevBytesNoSwap;
+		//_LittleRevBytes = RevBytesSwap;
+		//_LittleBitField = RevBitFieldSwap;
+		//_SixtetsForInt = SixtetsForIntBig;
+		//_IntForSixtets = IntForSixtetsBig;
+	}
+}
 
 /////*
 ////==========
 ////Swap_IsBigEndian
 ////==========
 ////*/
-////bool Swap_IsBigEndian( void ) {
+////bool Swap_IsBigEndian( ) {
 ////	byte	swaptest[2] = {1,0};
 ////	return *(short *)swaptest != 1;
 ////}
