@@ -42,7 +42,7 @@ class aseFace_t {
 	tVertexNum = new Int32Array(3);
 	faceNormal = new idVec3();
 	vertexNormals = newStructArray<idVec3>(idVec3,3);
-	vertexColors = multiDimTypedArray(Uint8Array,3, 4);
+	vertexColors = multiDimTypedArray < Uint8Array>(Uint8Array,3, 4);
 };
 
 class aseMesh_t {

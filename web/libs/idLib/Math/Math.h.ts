@@ -311,9 +311,9 @@ static Sqrt( /*float */x:number):number {
 ////	return x * InvSqrt64( x );
 ////}
 
-////ID_INLINE float idMath::Sin( float a ) {
-////	return sinf( a );
-////}
+	static Sin ( /*float*/ a: number ):number {
+		return sinf( a );
+	}
 
 ////ID_INLINE float idMath::Sin16( float a ) {
 ////	float s;
@@ -347,9 +347,9 @@ static Sqrt( /*float */x:number):number {
 ////	return sin( a );
 ////}
 
-////ID_INLINE float idMath::Cos( float a ) {
-////	return cosf( a );
-////}
+	static Cos ( /*float */a: number ): number {
+		return cosf( a );
+	}
 
 ////ID_INLINE float idMath::Cos16( float a ) {
 ////	float s, d;
@@ -712,9 +712,9 @@ static Sqrt( /*float */x:number):number {
 ////	return log( f );
 ////}
 
-////ID_INLINE int idMath::IPow( int x, int y ) {
-////	int r; for( r = x; y > 1; y-- ) { r *= x; } return r;
-////}
+	static IPow( /*int*/ x:number, /*int */y :number) {
+		return Math.pow( x, y );//	var /*int */r:number; for( r = x; y > 1; y-- ) { r *= x; } return r;
+	}
 
 	static ILog2_Float ( /*float */f: number ): number {
 		return ( ( reinterpret_cast_float_to_int( f ) >> IEEE_FLT_MANTISSA_BITS ) & ( ( 1 << IEEE_FLT_EXPONENT_BITS ) - 1 ) ) - IEEE_FLT_EXPONENT_BIAS;

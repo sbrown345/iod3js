@@ -698,7 +698,7 @@ R_BoundTriSurf
 =================
 */
 function R_BoundTriSurf(tri: srfTriangles_t): void {
-	SIMDProcessor.MinMax(tri.bounds.b[0], tri.bounds.b[1], tri.verts, tri.numVerts );
+	SIMDProcessor.MinMax_verts(tri.bounds.b[0], tri.bounds.b[1], tri.verts, tri.numVerts );
 }
 
 /*
@@ -2018,66 +2018,67 @@ function R_TestDegenerateTextureSpace ( tri: srfTriangles_t ): void {
 //
 //	R_StaticFree( mark );
 //}
-//
-///*
-//=================
-//R_MergeSurfaceList
-//
-//Only deals with vertexes and indexes, not silhouettes, planes, etc.
-//Does NOT perform a cleanup triangles, so there may be duplicated verts in the result.
-//=================
-//*/
-//srfTriangles_t	*R_MergeSurfaceList( const srfTriangles_t **surfaces, int numSurfaces ) {
-//	srfTriangles_t	*newTri;
-//	const srfTriangles_t	*tri;
-//	int				i, j;
-//	int				totalVerts;
-//	int				totalIndexes;
-//
-//	totalVerts = 0;
-//	totalIndexes = 0;
-//	for ( i = 0 ; i < numSurfaces ; i++ ) {
-//		totalVerts += surfaces[i].numVerts;
-//		totalIndexes += surfaces[i].numIndexes;
-//	}
-//
-//	newTri = R_AllocStaticTriSurf();
-//	newTri.numVerts = totalVerts;
-//	newTri.numIndexes = totalIndexes;
-//	R_AllocStaticTriSurfVerts( newTri, newTri.numVerts );
-//	R_AllocStaticTriSurfIndexes( newTri, newTri.numIndexes );
-//
-//	totalVerts = 0;
-//	totalIndexes = 0;
-//	for ( i = 0 ; i < numSurfaces ; i++ ) {
-//		tri = surfaces[i];
-//		memcpy( newTri.verts + totalVerts, tri.verts, tri.numVerts * sizeof( *tri.verts ) );
-//		for ( j = 0 ; j < tri.numIndexes ; j++ ) {
-//			newTri.indexes[ totalIndexes + j ] = totalVerts + tri.indexes[j];
-//		}
-//		totalVerts += tri.numVerts;
-//		totalIndexes += tri.numIndexes;
-//	}
-//
-//	return newTri;
-//}
-//
-///*
-//=================
-//R_MergeTriangles
-//
-//Only deals with vertexes and indexes, not silhouettes, planes, etc.
-//Does NOT perform a cleanup triangles, so there may be duplicated verts in the result.
-//=================
-//*/
-//srfTriangles_t	*R_MergeTriangles( const srfTriangles_t *tri1, const srfTriangles_t *tri2 ) {
-//	const srfTriangles_t	*tris[2];
-//
-//	tris[0] = tri1;
-//	tris[1] = tri2;
-//
-//	return R_MergeSurfaceList( tris, 2 );
-//}
+
+/*
+=================
+R_MergeSurfaceList
+
+Only deals with vertexes and indexes, not silhouettes, planes, etc.
+Does NOT perform a cleanup triangles, so there may be duplicated verts in the result.
+=================
+*/
+function R_MergeSurfaceList ( surfaces: Array<srfTriangles_t>, /*int*/ numSurfaces: number ): srfTriangles_t {
+	var newTri: srfTriangles_t;
+	todoThrow ( );
+	//const srfTriangles_t	*tri;
+	//int				i, j;
+	//int				totalVerts;
+	//int				totalIndexes;
+
+	//totalVerts = 0;
+	//totalIndexes = 0;
+	//for ( i = 0 ; i < numSurfaces ; i++ ) {
+	//	totalVerts += surfaces[i].numVerts;
+	//	totalIndexes += surfaces[i].numIndexes;
+	//}
+
+	//newTri = R_AllocStaticTriSurf();
+	//newTri.numVerts = totalVerts;
+	//newTri.numIndexes = totalIndexes;
+	//R_AllocStaticTriSurfVerts( newTri, newTri.numVerts );
+	//R_AllocStaticTriSurfIndexes( newTri, newTri.numIndexes );
+
+	//totalVerts = 0;
+	//totalIndexes = 0;
+	//for ( i = 0 ; i < numSurfaces ; i++ ) {
+	//	tri = surfaces[i];
+	//	memcpy( newTri.verts + totalVerts, tri.verts, tri.numVerts * sizeof( *tri.verts ) );
+	//	for ( j = 0 ; j < tri.numIndexes ; j++ ) {
+	//		newTri.indexes[ totalIndexes + j ] = totalVerts + tri.indexes[j];
+	//	}
+	//	totalVerts += tri.numVerts;
+	//	totalIndexes += tri.numIndexes;
+	//}
+
+	return newTri;
+}
+
+/*
+=================
+R_MergeTriangles
+
+Only deals with vertexes and indexes, not silhouettes, planes, etc.
+Does NOT perform a cleanup triangles, so there may be duplicated verts in the result.
+=================
+*/
+function R_MergeTriangles ( tri1: srfTriangles_t, tri2: srfTriangles_t ): srfTriangles_t {
+	var tris = new Array<srfTriangles_t>( 2 );
+
+	tris[0] = tri1;
+	tris[1] = tri2;
+
+	return R_MergeSurfaceList( tris, 2 );
+}
 
 /*
 =================

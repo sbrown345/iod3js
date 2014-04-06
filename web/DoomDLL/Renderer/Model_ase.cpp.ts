@@ -172,7 +172,7 @@ function ASE_KeyMAP_DIFFUSE ( token: string ): void {
 		var matname = new idStr;
 
 		ASE_GetToken( false );
-		debugger;
+		
 		// remove the quotes
 		var s = strstr( ase.token.subarray( 1 ), "\"" );
 		if ( s ) {
@@ -821,64 +821,64 @@ function ASE_Load ( fileName: string ): aseModel_t {
 	return ase;
 }
 
-/////*
-////=================
-////ASE_Free
-////=================
-////*/
-////void ASE_Free( aseModel_t *ase ) {
-////	int					i, j;
-////	aseObject_t			*obj;
-////	aseMesh_t			*mesh;
-////	aseMaterial_t		*material;
-////
-////	if ( !ase ) {
-////		return;
-////	}
-////	for ( i = 0; i < ase.objects.Num(); i++ ) {
-////		obj = ase.objects[i];
-////		for ( j = 0; j < obj.frames.Num(); j++ ) {
-////			mesh = obj.frames[j];
-////			if ( mesh.vertexes ) {
-////				Mem_Free( mesh.vertexes );
-////			}
-////			if ( mesh.tvertexes ) {
-////				Mem_Free( mesh.tvertexes );
-////			}
-////			if ( mesh.cvertexes ) {
-////				Mem_Free( mesh.cvertexes );
-////			}
-////			if ( mesh.faces ) {
-////				Mem_Free( mesh.faces );
-////			}
-////			Mem_Free( mesh );
-////		}
-////
-////		obj.frames.Clear();
-////
-////		// free the base nesh
-////		mesh = &obj.mesh;
-////		if ( mesh.vertexes ) {
-////			Mem_Free( mesh.vertexes );
-////		}
-////		if ( mesh.tvertexes ) {
-////			Mem_Free( mesh.tvertexes );
-////		}
-////		if ( mesh.cvertexes ) {
-////			Mem_Free( mesh.cvertexes );
-////		}
-////		if ( mesh.faces ) {
-////			Mem_Free( mesh.faces );
-////		}
-////		Mem_Free( obj );
-////	}
-////	ase.objects.Clear();
-////
-////	for ( i = 0; i < ase.materials.Num(); i++ ) {
-////		material = ase.materials[i];
-////		Mem_Free( material );
-////	}
-////	ase.materials.Clear();
-////
-////	delete ase;
-////}
+/*
+=================
+ASE_Free
+=================
+*/
+function ASE_Free ( ase: aseModel_t ): void {
+	var /*int					*/i: number, j: number;
+	var obj: aseObject_t;
+	var mesh: aseMesh_t;
+	var material: aseMaterial_t;
+
+	if ( !ase ) {
+		return;
+	}
+	for ( i = 0; i < ase.objects.Num ( ); i++ ) {
+		obj = ase.objects[i];
+		for ( j = 0; j < obj.frames.Num ( ); j++ ) {
+			mesh = obj.frames[j];
+			if ( mesh.vertexes ) {
+				Mem_Free( mesh.vertexes );
+			}
+			if ( mesh.tvertexes ) {
+				Mem_Free( mesh.tvertexes );
+			}
+			if ( mesh.cvertexes ) {
+				Mem_Free( mesh.cvertexes );
+			}
+			if ( mesh.faces ) {
+				Mem_Free( mesh.faces );
+			}
+			Mem_Free( mesh );
+		}
+
+		obj.frames.Clear ( );
+
+		// free the base nesh
+		mesh = obj.mesh;
+		if ( mesh.vertexes ) {
+			Mem_Free( mesh.vertexes );
+		}
+		if ( mesh.tvertexes ) {
+			Mem_Free( mesh.tvertexes );
+		}
+		if ( mesh.cvertexes ) {
+			Mem_Free( mesh.cvertexes );
+		}
+		if ( mesh.faces ) {
+			Mem_Free( mesh.faces );
+		}
+		Mem_Free( obj );
+	}
+	ase.objects.Clear ( );
+
+	for ( i = 0; i < ase.materials.Num ( ); i++ ) {
+		material = ase.materials[i];
+		Mem_Free( material );
+	}
+	ase.materials.Clear ( );
+
+	$delete( ase );
+}

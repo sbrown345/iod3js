@@ -2794,12 +2794,14 @@ idMaterial::SetDefaultText
 	// returns a idUserInterface if it has a global gui, or NULL if no gui
 	GlobalGui ( ): idUserInterface { return this.gui; }
 
-//						// a discrete surface will never be merged with other surfaces by dmap, which is
-//						// necessary to prevent mutliple gui surfaces, mirrors, autosprites, and some other
-//						// special effects from being combined into a single surface
-//						// guis, merging sprites or other effects, mirrors and remote views are always discrete
-//	bool				IsDiscrete(): boolean { return ( entityGui || gui || this.deform != deform_t.DFRM_NONE || this.sort == materialSort_t.SS_SUBVIEW ||
-//												( surfaceFlags & SURF_DISCRETE ) != 0 ); }
+	// a discrete surface will never be merged with other surfaces by dmap, which is
+	// necessary to prevent mutliple gui surfaces, mirrors, autosprites, and some other
+	// special effects from being combined into a single surface
+	// guis, merging sprites or other effects, mirrors and remote views are always discrete
+	IsDiscrete ( ): boolean {
+		return ( !!this.entityGui || !!this.gui || this.deform != deform_t.DFRM_NONE || this.sort == materialSort_t.SS_SUBVIEW ||
+		( this.surfaceFlags & surfaceFlags_t.SURF_DISCRETE ) != 0 );
+	}
 
 //						// Normally, dmap chops each surface by every BSP boundary, then reoptimizes.
 //						// For gigantic polygons like sky boxes, this can cause a huge number of planar

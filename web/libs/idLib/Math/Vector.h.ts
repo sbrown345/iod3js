@@ -232,7 +232,7 @@ class idVec2 {
 ////		}
 ////	}
 
-////	return *this;
+////	return this;
 ////}
 
 ////ID_INLINE void idVec2::Clamp( const idVec2 &min, const idVec2 &max ) {
@@ -287,18 +287,18 @@ class idVec2 {
 ////	return idVec2( x + a.x, y + a.y );
 ////}
 
-////ID_INLINE idVec2 &idVec2::operator+=( const idVec2 &a ) {
-////	x += a.x;
-////	y += a.y;
+	opAdditionAssignment ( a: idVec2 ): idVec2 {
+		this.x += a.x;
+		this.y += a.y;
 
-////	return *this;
-////}
+		return this;
+	}
 
 ////ID_INLINE idVec2 &idVec2::operator/=( const idVec2 &a ) {
 ////	x /= a.x;
 ////	y /= a.y;
 
-////	return *this;
+////	return this;
 ////}
 
 ////ID_INLINE idVec2 &idVec2::operator/=( /*const float */a :number ) {
@@ -306,21 +306,21 @@ class idVec2 {
 ////	x *= inva;
 ////	y *= inva;
 
-////	return *this;
+////	return this;
 ////}
 
-////ID_INLINE idVec2 &idVec2::operator-=( const idVec2 &a ) {
-////	x -= a.x;
-////	y -= a.y;
+	opSubtractionAssignment ( a: idVec2 ): idVec2 {
+		this.x -= a.x;
+		this.y -= a.y;
 
-////	return *this;
-////}
+		return this;
+	}
 
 ////ID_INLINE idVec2 &idVec2::operator*=( /*const float */a :number ) {
 ////	x *= a;
 ////	y *= a;
 
-////	return *this;
+////	return this
 ////}
 
 	GetDimension ( ): number {
@@ -577,7 +577,7 @@ class idVec3 {
 ////	x = a.x;
 ////	y = a.y;
 ////	 this.z = a.z;
-////	return *this;
+////	return this
 ////}
 
 	opSubtraction ( a: idVec3 ): idVec3 {
@@ -629,7 +629,7 @@ class idVec3 {
 ////	this.y /= a.y;
 ////	this.z /= a.z;
 
-////	return *this;
+////	return this
 ////}
 
 	opDivisionAssignment_float ( /*const float */a: number ) {
@@ -789,7 +789,7 @@ class idVec3 {
 ////	y = a.z * b.x - a.x * b.z;
 ////	z = a.x * b.y - a.y * b.x;
 
-////	return *this;
+////	return this
 ////}
 
 /*float */Length( ):number {
@@ -835,7 +835,7 @@ class idVec3 {
 ////		}
 ////	}
 
-////	return *this;
+////	return this
 ////}
 
 ////ID_INLINE void idVec3::Clamp( const idVec3 &min, const idVec3 &max ) {
@@ -1087,7 +1087,7 @@ class idVec3 {
 ////	idMat3	mat;
 ////	float	d;
 
-////	mat[0] = *this;
+////	mat[0] = this
 ////	d = x * x + y * y;
 ////	if ( !d ) {
 ////		mat[1][0] = 1.0f;
@@ -1422,7 +1422,7 @@ class idVec4 {
 ////	z += a.z;
 ////	w += a.w;
 
-////	return *this;
+////	return this
 ////}
 
 ////ID_INLINE idVec4 &idVec4::operator/=( const idVec4 &a ) {
@@ -1431,7 +1431,7 @@ class idVec4 {
 ////	z /= a.z;
 ////	w /= a.w;
 
-////	return *this;
+////	return this
 ////}
 
 ////ID_INLINE idVec4 &idVec4::operator/=( /*const float */a :number ) {
@@ -1441,7 +1441,7 @@ class idVec4 {
 ////	z *= inva;
 ////	w *= inva;
 
-////	return *this;
+////	return this
 ////}
 
 ////ID_INLINE idVec4 &idVec4::operator-=( const idVec4 &a ) {
@@ -1450,7 +1450,7 @@ class idVec4 {
 ////	z -= a.z;
 ////	w -= a.w;
 
-////	return *this;
+////	return this
 ////}
 
 ////ID_INLINE idVec4 &idVec4::operator*=( /*const float */a :number ) {
@@ -1459,7 +1459,7 @@ class idVec4 {
 ////	z *= a;
 ////	w *= a;
 
-////	return *this;
+////	return this
 ////}
 
 ////ID_INLINE bool idVec4::Compare( const idVec4 &a ) const {
@@ -1786,7 +1786,7 @@ class idVec5 {
 ////	y = a.y;
 ////	z = a.z;
 ////	s = t = 0;
-////	return *this;
+////	return this
 ////}
 
 ////ID_INLINE int idVec5::GetDimension( ) const {
@@ -1957,7 +1957,7 @@ class idVec6 {
 ////	p[3] *= a;
 ////	p[4] *= a;
 ////	p[5] *= a;
-////	return *this;
+////	return this
 ////}
 
 ////ID_INLINE idVec6 &idVec6::operator/=( /*const float */a :number ) {
@@ -1971,7 +1971,7 @@ class idVec6 {
 ////	p[3] *= inva;
 ////	p[4] *= inva;
 ////	p[5] *= inva;
-////	return *this;
+////	return this
 ////}
 
 ////ID_INLINE idVec6 &idVec6::operator+=( const idVec6 &a ) {
@@ -1981,7 +1981,7 @@ class idVec6 {
 ////	p[3] += a[3];
 ////	p[4] += a[4];
 ////	p[5] += a[5];
-////	return *this;
+////	return this
 ////}
 
 ////ID_INLINE idVec6 &idVec6::operator-=( const idVec6 &a ) {
@@ -1991,7 +1991,7 @@ class idVec6 {
 ////	p[3] -= a[3];
 ////	p[4] -= a[4];
 ////	p[5] -= a[5];
-////	return *this;
+////	return this
 ////}
 
 ////ID_INLINE idVec6 operator*( /*const float */a :number, const idVec6 b ) {
@@ -2265,7 +2265,7 @@ class idVec6 {
 ////	memcpy( p, a.p, a.size * sizeof( float ) );
 ////#endif
 ////	idVecX::tempIndex = 0;
-////	return *this;
+////	return this
 ////}
 
 ////ID_INLINE idVecX idVecX::operator+( const idVecX &a ) const {
@@ -2311,7 +2311,7 @@ class idVec6 {
 ////	}
 ////#endif
 ////	idVecX::tempIndex = 0;
-////	return *this;
+////	return this
 ////}
 
 ////ID_INLINE idVecX &idVecX::operator-=( const idVecX &a ) {
@@ -2325,7 +2325,7 @@ class idVec6 {
 ////	}
 ////#endif
 ////	idVecX::tempIndex = 0;
-////	return *this;
+////	return this;
 ////}
 
 ////ID_INLINE idVecX idVecX::operator*( /*const float */a :number ) const {
@@ -2352,7 +2352,7 @@ class idVec6 {
 ////		p[i] *= a;
 ////	}
 ////#endif
-////	return *this;
+////	return this;
 ////}
 
 ////ID_INLINE idVecX idVecX::operator/( /*const float */a :number ) const {
@@ -2363,7 +2363,7 @@ class idVec6 {
 ////ID_INLINE idVecX &idVecX::operator/=( /*const float */a :number ) {
 ////	assert( a != 0.0 );
 ////	(*this) *= ( 1.0 / a );
-////	return *this;
+////	return this;
 ////}
 
 ////ID_INLINE idVecX operator*( /*const float */a :number, const idVecX b ) {
@@ -2540,7 +2540,7 @@ class idVec6 {
 ////	tmp = p[e1];
 ////	p[e1] = p[e2];
 ////	p[e2] = tmp;
-////	return *this;
+////	return this;
 ////}
 
 ////ID_INLINE float idVecX::Length( ) const {
@@ -2692,7 +2692,7 @@ class idVec6 {
 ////	radius = a.radius;
 ////	theta = a.theta;
 ////	phi = a.phi;
-////	return *this;
+////	return this;
 ////}
 
 ////ID_INLINE idVec3 idPolar3::ToVec3( ) const {

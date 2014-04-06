@@ -40,10 +40,10 @@
 
 
 class matchVert_t {
-	//struct matchVert_s	*next;
-	//int		v, tv;
-	//byte	color[4];
-	//idVec3	normal;
+	next:matchVert_t;
+	v: number /*int*/; tv: number /*int*/;
+	color = new Uint8Array(4);
+	normal = new idVec3	;
 }
 
 class idRenderModelStatic extends idRenderModel {
@@ -470,7 +470,7 @@ idRenderModelStatic::Name
 ================
 */
 Name (): string {
-	return this.name;
+	return this.name.data;
 }
 
 /*
@@ -820,27 +820,27 @@ idRenderModelStatic::ConvertASEToModelSurfaces
 
 
 ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
-	aseObject_t * object;
-	aseMesh_t * mesh;
-	aseMaterial_t * material;
-	const idMaterial * im1, *im2;
-	srfTriangles_t * tri;
-	int				objectNum;
-	int				i, j, k;
-	int				v, tv;
-	int * vRemap;
-	int * tvRemap;
-	matchVert_t * mvTable;	// all of the match verts
-	matchVert_t * * mvHash;		// points inside mvTable for each xyz index
-	matchVert_t * lastmv;
-	matchVert_t * mv;
-	idVec3			normal;
-	float			uOffset, vOffset, textureSin, textureCos;
-	float			uTiling, vTiling;
-	int * mergeTo;
-	byte * color;
-	static byte	identityColor[4] = { 255, 255, 255, 255 };
-	modelSurface_t	surf, *modelSurf;
+	var object: aseObject_t;
+	var mesh: aseMesh_t ;
+	var material: aseMaterial_t ;
+	var im1: idMaterial, im2: idMaterial;
+	var tri: srfTriangles_t;
+	var objectNum: number /*int*/;
+	var /*int*/i: number, j: number, k: number;
+	var/*int*/v:number, tv:number;
+	var vRemap:Int32Array;
+	var tvRemap:Int32Array;
+	var mvTable: matchVert_t[];	// all of the match verts
+	var mvHash: matchVert_t[];		// points inside mvTable for each xyz index
+	var lastmv: matchVert_t;
+	var mv: matchVert_t;
+	var normal = new idVec3;
+	var uOffset: number/*float*/, vOffset: number/*float*/, textureSin: number/*float*/, textureCos: number/*float*/;
+	var uTiling: number/*float*/, vTiling: number/*float*/;
+	var mergeTo:Int32Array;
+	var color:Uint8Array;
+	var identityColor = new Uint8Array( [255, 255, 255, 255] );
+	var surf = new modelSurface_t, modelSurf: modelSurface_t;
 
 	if (!ase) {
 		return false;
@@ -849,13 +849,13 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 		return false;
 	}
 
-	timeStamp = ase.timeStamp;
+	this.timeStamp = ase.timeStamp;
 
 	// the modeling programs can save out multiple surfaces with a common
 	// material, but we would like to mege them together where possible
 	// meaning that this.NumSurfaces() <= ase.objects.currentElements
-	mergeTo = (int *) _alloca(ase.objects.Num() * sizeof( *mergeTo ));
-	surf.geometry = NULL;
+	mergeTo = new Int32Array( ase.objects.Num ( ) ); //(int *) _alloca(ase.objects.Num() * sizeof( *mergeTo ));
+	surf.geometry = null;
 	if (ase.materials.Num() == 0) {
 		// if we don't have any materials, dump everything into a single surface
 		surf.shader = tr.defaultMaterial;
@@ -864,13 +864,13 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 		for (i = 0; i < ase.objects.Num(); i++) {
 			mergeTo[i] = 0;
 		}
-	} else if (!r_mergeModelSurfaces.GetBool()) {
+	} else if (!idRenderModelStatic.r_mergeModelSurfaces.GetBool()) {
 		// don't merge any
 		for (i = 0; i < ase.objects.Num(); i++) {
 			mergeTo[i] = i;
 			object = ase.objects[i];
 			material = ase.materials[object.materialRef];
-			surf.shader = declManager.FindMaterial(material.name);
+			surf.shader = declManager.FindMaterial(material.name.toString());
 			surf.id = this.NumSurfaces();
 			this.AddSurface(surf);
 		}
@@ -879,13 +879,13 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 		for (i = 0; i < ase.objects.Num(); i++) {
 			object = ase.objects[i];
 			material = ase.materials[object.materialRef];
-			im1 = declManager.FindMaterial(material.name);
+			im1 = declManager.FindMaterial(material.name.toString());
 			if (im1.IsDiscrete()) {
 				// flares, autosprites, etc
 				j = this.NumSurfaces();
 			} else {
 				for (j = 0; j < this.NumSurfaces(); j++) {
-					modelSurf = & this.surfaces[j];
+					modelSurf =  this.surfaces[j];
 					im2 = modelSurf.shader;
 					if (im1 == im2) {
 						// merge this
@@ -904,22 +904,22 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 		}
 	}
 
-	idVectorSubset < idVec3, 3 > vertexSubset;
-	idVectorSubset < idVec2, 2 > texCoordSubset;
+	var vertexSubset = new idVectorSubset<idVec3>( idVec3, 3 );
+	var texCoordSubset = new idVectorSubset<idVec2>( idVec2, 2 ); 
 
 	// build the surfaces
 	for (objectNum = 0; objectNum < ase.objects.Num(); objectNum++) {
 		object = ase.objects[objectNum];
-		mesh = & object.mesh;
+		mesh = object.mesh;
 		material = ase.materials[object.materialRef];
-		im1 = declManager.FindMaterial(material.name);
+		im1 = declManager.FindMaterial(material.name.toString());
 
-		bool normalsParsed = mesh.normalsParsed;
+		var normalsParsed = mesh.normalsParsed;
 
 		// completely ignore any explict normals on surfaces with a renderbump command
 		// which will guarantee the best contours and least vertexes.
-		const char * rb = im1.GetRenderBump();
-		if (rb && rb[0]) {
+		var  rb = im1.GetRenderBump();
+		if (rb /*&& rb[0]*/) {
 			normalsParsed = false;
 		}
 
@@ -929,7 +929,7 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 		// before doing this operation, because we can miss a slop combination
 		// if they are in different surfaces
 
-		vRemap = (int *) R_StaticAlloc(mesh.numVertexes * sizeof(vRemap[0]));
+		vRemap = new Int32Array( mesh.numVertexes ); //(int *) R_StaticAlloc(mesh.numVertexes * sizeof(vRemap[0]));
 
 		if (this.fastLoad) {
 			// renderbump doesn't care about vertex count
@@ -937,20 +937,20 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 				vRemap[j] = j;
 			}
 		} else {
-			float vertexEpsilon = r_slopVertex.GetFloat();
-			float expand = 2 * 32 * vertexEpsilon;
-			idVec3 mins, maxs;
+			var /*float */vertexEpsilon = idRenderModelStatic.r_slopVertex.GetFloat ( );
+			var /*float */expand = 2 * 32 * vertexEpsilon;
+			var mins = new idVec3, maxs = new idVec3 ;
 
-			SIMDProcessor.MinMax(mins, maxs, mesh.vertexes, mesh.numVertexes);
-			mins -= idVec3(expand, expand, expand);
-			maxs += idVec3(expand, expand, expand);
+			SIMDProcessor.MinMax_vec3(mins, maxs, mesh.vertexes, mesh.numVertexes);
+			mins.opSubtractionAssignment( new idVec3( expand, expand, expand ) );
+			maxs.opAdditionAssignment( new idVec3( expand, expand, expand ) );
 			vertexSubset.Init(mins, maxs, 32, 1024);
 			for (j = 0; j < mesh.numVertexes; j++) {
 				vRemap[j] = vertexSubset.FindVector(mesh.vertexes, j, vertexEpsilon);
 			}
 		}
 
-		tvRemap = (int *) R_StaticAlloc(mesh.numTVertexes * sizeof(tvRemap[0]));
+		tvRemap = new Int32Array( mesh.numTVertexes );// (int *) R_StaticAlloc(mesh.numTVertexes * sizeof(tvRemap[0]));
 
 		if (this.fastLoad) {
 			// renderbump doesn't care about vertex count
@@ -958,14 +958,14 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 				tvRemap[j] = j;
 			}
 		} else {
-			float texCoordEpsilon = r_slopTexCoord.GetFloat();
-			float expand = 2 * 32 * texCoordEpsilon;
-			idVec2 mins, maxs;
-
-			SIMDProcessor.MinMax(mins, maxs, mesh.tvertexes, mesh.numTVertexes);
-			mins -= idVec2(expand, expand);
-			maxs += idVec2(expand, expand);
-			texCoordSubset.Init(mins, maxs, 32, 1024);
+			var/*float */texCoordEpsilon = idRenderModelStatic.r_slopTexCoord.GetFloat();
+			var /*float */expand = 2 * 32 * texCoordEpsilon;
+			var minsV2 = new idVec2, maxsV2 = new idVec2;
+			
+			SIMDProcessor.MinMax_vec2(minsV2, maxsV2, mesh.tvertexes, mesh.numTVertexes);
+			minsV2.opSubtractionAssignment( new idVec2( expand, expand ) );
+			maxsV2.opAdditionAssignment( new idVec2( expand, expand ) );
+			texCoordSubset.Init(minsV2, maxsV2, 32, 1024);
 			for (j = 0; j < mesh.numTVertexes; j++) {
 				tvRemap[j] = texCoordSubset.FindVector(mesh.tvertexes, j, texCoordEpsilon);
 			}
@@ -975,10 +975,10 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 		// there are, because ASE tracks them separately but we need them unified
 
 		// the maximum possible number of combined vertexes is the number of indexes
-		mvTable = (matchVert_t *) R_ClearedStaticAlloc(mesh.numFaces * 3 * sizeof(mvTable[0]));
+		mvTable = newStructArray<matchVert_t>( matchVert_t, mesh.numFaces * 3 );//(matchVert_t *) R_ClearedStaticAlloc(mesh.numFaces * 3 * sizeof(mvTable[0]));
 
 		// we will have a hash chain based on the xyz values
-		mvHash = (matchVert_t **) R_ClearedStaticAlloc(mesh.numVertexes * sizeof(mvHash[0]));
+		mvHash = newStructArray<matchVert_t>( matchVert_t, mesh.numVertexes );// (matchVert_t **) R_ClearedStaticAlloc(mesh.numVertexes * sizeof(mvHash[0]));
 
 		// allocate triangle surface
 		tri = R_AllocStaticTriSurf();
@@ -993,7 +993,7 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 		tv = 0;
 
 		// find all the unique combinations
-		float normalEpsilon = 1.0f - r_slopNormal.GetFloat();
+		var/*float */normalEpsilon = 1.0 - idRenderModelStatic.r_slopNormal.GetFloat();
 		for (j = 0; j < mesh.numFaces; j++) {
 			for (k = 0; k < 3; k++) {
 				v = mesh.faces[j].vertexNum[k];
@@ -1026,11 +1026,16 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 				}
 
 				// find a matching vert
-				for (lastmv = NULL, mv = mvHash[v]; mv != NULL; lastmv = mv, mv = mv.next) {
+				for (lastmv = null, mv = mvHash[v]; mv != null; lastmv = mv, mv = mv.next) {
 					if (mv.tv != tv) {
 						continue;
 					}
-					if ( * (unsigned *) mv.color != * (unsigned *)color ) {
+					//if ( * (unsigned *) mv.color != * (unsigned *)color ) {
+					if ( mv.color[0] != color[0]
+							|| mv.color[1] != color[1]
+							|| mv.color[2] != color[2]
+							|| mv.color[3] != color[3]
+					) {
 						continue;
 					}
 					if (!normalsParsed) {
@@ -1038,18 +1043,18 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 						// matching texcoords is enough
 						break;
 					}
-					if (mv.normal * normal > normalEpsilon) {
-						break;		// we already have this one
+					if ( mv.normal.timesVec( normal ) > normalEpsilon ) {
+						break; // we already have this one
 					}
 				}
 				if (!mv) {
 					// allocate a new match vert and link to hash chain
-					mv = & mvTable[tri.numVerts];
+					mv = mvTable[tri.numVerts];
 					mv.v = v;
 					mv.tv = tv;
 					mv.normal = normal;
-					*(unsigned *) mv.color = * (unsigned *) color;
-					mv.next = NULL;
+					mv.color.set(color); //*(unsigned *) mv.color = * (unsigned *) color;
+					mv.next = null;
 					if (lastmv) {
 						lastmv.next = mv;
 					} else {
@@ -1058,7 +1063,7 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 					tri.numVerts++;
 				}
 
-				tri.indexes[tri.numIndexes] = mv - mvTable;
+				tri.indexes[tri.numIndexes] = mvTable.indexOf( mv ); //mv - mvTable;
 				tri.numIndexes++;
 			}
 		}
@@ -1074,31 +1079,31 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 		// an ASE allows the texture coordinates to be scaled, translated, and rotated
 		if (ase.materials.Num() == 0) {
 			uOffset = vOffset = 0.0;
-			uTiling = vTiling = 1.0f;
+			uTiling = vTiling = 1.0;
 			textureSin = 0.0;
-			textureCos = 1.0f;
+			textureCos = 1.0;
 		} else {
 			material = ase.materials[object.materialRef];
 			uOffset = -material.uOffset;
 			vOffset = material.vOffset;
 			uTiling = material.uTiling;
 			vTiling = material.vTiling;
-			textureSin = idMath::Sin(material.angle);
-			textureCos = idMath::Cos(material.angle);
+			textureSin = idMath.Sin(material.angle);
+			textureCos = idMath.Cos(material.angle);
 		}
 
 		// now allocate and generate the combined vertexes
 		R_AllocStaticTriSurfVerts(tri, tri.numVerts);
 		for (j = 0; j < tri.numVerts; j++) {
-			mv = & mvTable[j];
+			mv = mvTable[j];
 			tri.verts[j].Clear();
 			tri.verts[j].xyz = mesh.vertexes[mv.v];
 			tri.verts[j].normal = mv.normal;
-			*(unsigned *) tri.verts[j].color = * (unsigned *) mv.color;
+			tri.verts[j].color.set(mv.color);//*(unsigned *) tri.verts[j].color = * (unsigned *) mv.color;
 			if (mesh.numTVFaces == mesh.numFaces && mesh.numTVertexes != 0) {
-				const idVec2 & tv = mesh.tvertexes[mv.tv];
-				float u = tv.x * uTiling + uOffset;
-				float v = tv.y * vTiling + vOffset;
+				var tv_ = mesh.tvertexes[mv.tv];
+				var/*float */u = tv_.x * uTiling + uOffset;
+				var/*float */v = tv_.y * vTiling + vOffset;
 				tri.verts[j].st[0] = u * textureCos + v * textureSin;
 				tri.verts[j].st[1] = u * -textureSin + v * textureCos;
 			}
@@ -1110,8 +1115,8 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 		R_StaticFree(vRemap);
 
 		// see if we need to merge with a previous surface of the same material
-		modelSurf = & this.surfaces[mergeTo[objectNum]];
-		srfTriangles_t * mergeTri = modelSurf.geometry;
+		modelSurf = this.surfaces[mergeTo[objectNum]];
+		var mergeTri = modelSurf.geometry;
 		if (!mergeTri) {
 			modelSurf.geometry = tri;
 		} else {
@@ -1243,7 +1248,7 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 ////	  			vm.offset = offset;
 ////		  		for ( k = 0; k < vm.nverts; k++ ) {
 ////		  		   	tvList[k + offset].x = vm.val[k][0];
-////					tvList[k + offset].y = 1.0f - vm.val[k][1];	// invert the t
+////					tvList[k + offset].y = 1.0 - vm.val[k][1];	// invert the t
 ////		  		}
 ////			  	offset += vm.nverts;
 ////			}
@@ -1268,7 +1273,7 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 ////			vRemap[j] = j;
 ////		}
 ////	} else {
-////		float vertexEpsilon = r_slopVertex.GetFloat();
+////		float vertexEpsilon = idRenderModelStatic.r_slopVertex.GetFloat();
 ////		float expand = 2 * 32 * vertexEpsilon;
 ////		idVec3 mins, maxs;
 
@@ -1289,7 +1294,7 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 ////			tvRemap[j] = j;
 ////		}
 ////	} else {
-////		float texCoordEpsilon = r_slopTexCoord.GetFloat();
+////		float texCoordEpsilon = idRenderModelStatic.r_slopTexCoord.GetFloat();
 ////		float expand = 2 * 32 * texCoordEpsilon;
 ////		idVec2 mins, maxs;
 
@@ -1333,9 +1338,9 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 ////		// find all the unique combinations
 ////		float	normalEpsilon;
 ////		if ( this.fastLoad ) {
-////			normalEpsilon = 1.0f;	// don't merge unless completely exact
+////			normalEpsilon = 1.0;	// don't merge unless completely exact
 ////		} else {
-////			normalEpsilon = 1.0f - r_slopNormal.GetFloat();
+////			normalEpsilon = 1.0 - idRenderModelStatic.r_slopNormal.GetFloat();
 ////		}
 ////		for ( j = 0; j < layer.polygon.count; j++ ) {
 ////			lwPolygon *poly = &layer.polygon.pol[j];
@@ -1550,7 +1555,7 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 ////	  				vm.offset = offset;
 ////		  			for ( k = 0; k < vm.nverts; k++ ) {
 ////		  		   		mesh.tvertexes[k + offset].x = vm.val[k][0];
-////						mesh.tvertexes[k + offset].y = 1.0f - vm.val[k][1];	// invert the t
+////						mesh.tvertexes[k + offset].y = 1.0 - vm.val[k][1];	// invert the t
 ////		  		   	}
 ////			  		offset += vm.nverts;
 ////				}
@@ -1782,7 +1787,7 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 ////				vRemap[j] = j;
 ////			}
 ////		} else {
-////			float vertexEpsilon = r_slopVertex.GetFloat();
+////			float vertexEpsilon = idRenderModelStatic.r_slopVertex.GetFloat();
 ////			float expand = 2 * 32 * vertexEpsilon;
 ////			idVec3 mins, maxs;
 
@@ -1803,7 +1808,7 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 ////				tvRemap[j] = j;
 ////			}
 ////		} else {
-////			float texCoordEpsilon = r_slopTexCoord.GetFloat();
+////			float texCoordEpsilon = idRenderModelStatic.r_slopTexCoord.GetFloat();
 ////			float expand = 2 * 32 * texCoordEpsilon;
 ////			idVec2 mins, maxs;
 
@@ -1838,7 +1843,7 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 ////		tv = 0;
 
 ////		// find all the unique combinations
-////		float normalEpsilon = 1.0f - r_slopNormal.GetFloat();
+////		float normalEpsilon = 1.0 - idRenderModelStatic.r_slopNormal.GetFloat();
 ////		for ( j = 0; j < mesh.numFaces; j++ ) {
 ////			for ( k = 0; k < 3; k++ ) {
 ////				v = mesh.faces[j].vertexNum[k];
@@ -1922,9 +1927,9 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 ////		//BSM: Todo: Does Maya support this and if so how
 ////		//if ( ase.materials.Num() == 0 ) {
 ////			uOffset = vOffset = 0.0;
-////			uTiling = vTiling = 1.0f;
+////			uTiling = vTiling = 1.0;
 ////			textureSin = 0.0;
-////			textureCos = 1.0f;
+////			textureCos = 1.0;
 ////		//} else {
 ////		//	material = ase.materials[object.materialRef];
 ////		//	uOffset = -material.uOffset;
@@ -1977,49 +1982,51 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 idRenderModelStatic::LoadASE
 =================
 */
-LoadASE  (fileName: string): boolean {
-	var ase: aseModel_t;
+	LoadASE ( fileName: string ): boolean {
+		var ase: aseModel_t;
 
-	ase = ASE_Load(fileName);
-	if (ase == null) {
-		return false;
+		ase = ASE_Load( fileName );
+		if ( ase == null ) {
+			return false;
+		}
+
+		this.ConvertASEToModelSurfaces( ase );
+
+		ASE_Free( ase );
+
+		return true;
 	}
 
-	this.ConvertASEToModelSurfaces(ase);
+/*
+=================
+idRenderModelStatic::LoadLWO
+=================
+*/
+	LoadLWO ( fileName: string ): boolean {
+		todoThrow ( );
+		//unsigned int failID;
+		//int failPos;
+		//lwObject *lwo;
 
-	this.ASE_Free(ase);
+		//lwo = lwGetObject( fileName, &failID, &failPos );
+		//if ( lwo == NULL ) {
+		//	return false;
+		//}
 
-	return true;
-}
+		//ConvertLWOToModelSurfaces( lwo );
 
-/////*
-////=================
-////idRenderModelStatic::LoadLWO
-////=================
-////*/
-////bool idRenderModelStatic::LoadLWO( fileName:string ) {
-////	unsigned int failID;
-////	int failPos;
-////	lwObject *lwo;
+		//lwFreeObject( lwo );
 
-////	lwo = lwGetObject( fileName, &failID, &failPos );
-////	if ( lwo == NULL ) {
-////		return false;
-////	}
+		return true;
+	}
 
-////	ConvertLWOToModelSurfaces( lwo );
-
-////	lwFreeObject( lwo );
-
-////	return true;
-////}
-
-/////*
-////=================
-////idRenderModelStatic::LoadMA
-////=================
-////*/
-////bool idRenderModelStatic::LoadMA( fileName:string ) {
+/*
+=================
+idRenderModelStatic::LoadMA
+=================
+*/
+	LoadMA ( fileName: string ): boolean {
+		todoThrow ( );
 ////	maModel_t *ma;
 
 ////	ma = MA_Load( fileName );
@@ -2031,17 +2038,18 @@ LoadASE  (fileName: string): boolean {
 
 ////	MA_Free( ma );
 
-////	return true;
-////}
+		return true;
+	}
 
-/////*
-////=================
-////idRenderModelStatic::LoadFLT
+/*
+=================
+idRenderModelStatic::LoadFLT
 
-////USGS height map data for megaTexture experiments
-////=================
-////*/
-////bool idRenderModelStatic::LoadFLT( fileName:string ) {
+USGS height map data for megaTexture experiments
+=================
+*/
+LoadFLT( fileName:string ):boolean {
+	todoThrow();
 ////	float	*data;
 ////	int		len;
 
@@ -2049,7 +2057,7 @@ LoadASE  (fileName: string): boolean {
 ////	if ( len <= 0 ) {
 ////		return false;
 ////	}
-////	int	size = sqrt( len / 4.0f );
+////	int	size = sqrt( len / 4.0 );
 
 ////	// bound the altitudes
 ////	float min = 9999999;
@@ -2193,8 +2201,8 @@ LoadASE  (fileName: string): boolean {
 
 ////	this.AddSurface( surface );
 
-////	return true;
-////}
+	return true;
+}
 
 
 //=============================================================================
