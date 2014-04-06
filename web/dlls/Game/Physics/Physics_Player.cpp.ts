@@ -32,84 +32,84 @@
 ////#include "../Game_local.h"
 ////
 
-////
-////// movement parameters
-////const float PM_STOPSPEED		= 100.0f;
-////const float PM_SWIMSCALE		= 0.5f;
-////const float PM_LADDERSPEED		= 100.0f;
-////const float PM_STEPSCALE		= 1.0f;
-////
-////const float PM_ACCELERATE		= 10.0f;
-////const float PM_AIRACCELERATE	= 1.0f;
-////const float PM_WATERACCELERATE	= 4.0f;
-////const float PM_FLYACCELERATE	= 8.0f;
-////
-////const float PM_FRICTION			= 6.0f;
-////const float PM_AIRFRICTION		= 0.0f;
-////const float PM_WATERFRICTION	= 1.0f;
-////const float PM_FLYFRICTION		= 3.0f;
-////const float PM_NOCLIPFRICTION	= 12.0f;
-////
-////const float MIN_WALK_NORMAL		= 0.7f;		// can't walk on very steep slopes
-////const float OVERCLIP			= 1.001f;
-////
-////// movementFlags
-////const int PMF_DUCKED			= 1;		// set when ducking
-////const int PMF_JUMPED			= 2;		// set when the player jumped this frame
-////const int PMF_STEPPED_UP		= 4;		// set when the player stepped up this frame
-////const int PMF_STEPPED_DOWN		= 8;		// set when the player stepped down this frame
-////const int PMF_JUMP_HELD			= 16;		// set when jump button is held down
-////const int PMF_TIME_LAND			= 32;		// movementTime is time before rejump
-////const int PMF_TIME_KNOCKBACK	= 64;		// movementTime is an air-accelerate only time
-////const int PMF_TIME_WATERJUMP	= 128;		// movementTime is waterjump
-////const int PMF_ALL_TIMES			= (PMF_TIME_WATERJUMP|PMF_TIME_LAND|PMF_TIME_KNOCKBACK);
-////
-////int c_pmove = 0;
-////
-////
+
+// movement parameters
+var PM_STOPSPEED		= 100.0;
+var PM_SWIMSCALE		= 0.5;
+var PM_LADDERSPEED		= 100.0;
+var PM_STEPSCALE		= 1.0;
+
+var PM_ACCELERATE		= 10.0;
+var PM_AIRACCELERATE	= 1.0;
+var PM_WATERACCELERATE	= 4.0;
+var PM_FLYACCELERATE	= 8.0;
+
+var PM_FRICTION			= 6.0;
+var PM_AIRFRICTION		= 0.0;
+var PM_WATERFRICTION	= 1.0;
+var PM_FLYFRICTION		= 3.0;
+var PM_NOCLIPFRICTION	= 12.0;
+
+var MIN_WALK_NORMAL		= 0.7;		// can't walk on very steep slopes
+var OVERCLIP			= 1.001;
+
+// movementFlags
+var PMF_DUCKED			= 1;		// set when ducking
+var PMF_JUMPED			= 2;		// set when the player jumped this frame
+var PMF_STEPPED_UP		= 4;		// set when the player stepped up this frame
+var PMF_STEPPED_DOWN		= 8;		// set when the player stepped down this frame
+var PMF_JUMP_HELD			= 16;		// set when jump button is held down
+var PMF_TIME_LAND			= 32;		// movementTime is time before rejump
+var PMF_TIME_KNOCKBACK	= 64;		// movementTime is an air-accelerate only time
+var PMF_TIME_WATERJUMP	= 128;		// movementTime is waterjump
+var PMF_ALL_TIMES			= (PMF_TIME_WATERJUMP|PMF_TIME_LAND|PMF_TIME_KNOCKBACK);
+
+var c_pmove = 0;
+
+
 ////#ifndef __PHYSICS_PLAYER_H__
 ////#define __PHYSICS_PLAYER_H__
-////
-/////*
-////===================================================================================
-////
-////Player physics
-////
-////Simulates the motion of a player through the environment. Input from the
-////player is used to allow a certain degree of control over the motion.
-////
-////===================================================================================
-////*/
-////
-////// movementType
-////typedef enum {
-////	PM_NORMAL,				// normal physics
-////	PM_DEAD,				// no acceleration or turning, but free falling
-////	PM_SPECTATOR,			// flying without gravity but with collision detection
-////	PM_FREEZE,				// stuck in place without control
-////	PM_NOCLIP				// flying without collision detection nor gravity
-////} pmtype_t;
-////
-////typedef enum {
-////	WATERLEVEL_NONE,
-////	WATERLEVEL_FEET,
-////	WATERLEVEL_WAIST,
-////	WATERLEVEL_HEAD
-////} waterLevel_t;
-////
-////#define	MAXTOUCH					32
-////
-////typedef struct playerPState_s {
-////	idVec3					origin;
-////	idVec3					velocity;
-////	idVec3					localOrigin;
-////	idVec3					pushVelocity;
-////	float					stepUp;
-////	int						movementType;
-////	int						movementFlags;
-////	int						movementTime;
-////} playerPState_t;
-////
+
+/*
+===================================================================================
+
+Player physics
+
+Simulates the motion of a player through the environment. Input from the
+player is used to allow a certain degree of control over the motion.
+
+===================================================================================
+*/
+
+// movementType
+enum pmtype_t{
+	PM_NORMAL,				// normal physics
+	PM_DEAD,				// no acceleration or turning, but free falling
+	PM_SPECTATOR,			// flying without gravity but with collision detection
+	PM_FREEZE,				// stuck in place without control
+	PM_NOCLIP				// flying without collision detection nor gravity
+} pmtype_t;
+
+enum waterLevel_t{
+	WATERLEVEL_NONE,
+	WATERLEVEL_FEET,
+	WATERLEVEL_WAIST,
+	WATERLEVEL_HEAD
+};
+
+var MAXTOUCH = 32;
+
+class playerPState_t {
+	origin = new idVec3;
+	velocity = new idVec3;
+	localOrigin = new idVec3;
+	pushVelocity = new idVec3;
+	stepUp :number/*float*/;
+	movementType :number/*int*/;
+	movementFlags :number/*int*/;
+	movementTime :number/*int*/;
+};
+
 class idPhysics_Player extends idPhysics_Actor {
 ////
 ////public:
@@ -144,26 +144,26 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	void					UpdateTime(int endTimeMSec);
 ////	int						GetTime(void) const;
 ////
-////	void					GetImpactInfo(const int id, const idVec3 &point, impactInfo_t *info) const;
-////	void					ApplyImpulse(const int id, const idVec3 &point, const idVec3 &impulse);
+////	void					GetImpactInfo(/*int*/ id:number, const idVec3 &point, impactInfo_t *info) const;
+////	void					ApplyImpulse(/*int*/ id:number, const idVec3 &point, const idVec3 &impulse);
 ////	bool					IsAtRest(void) const;
 ////	int						GetRestStartTime(void) const;
 ////
 ////	void					SaveState(void);
 ////	void					RestoreState(void);
 ////
-////	void					SetOrigin(const idVec3 &newOrigin, int id = -1);
-////	void					SetAxis(const idMat3 &newAxis, int id = -1);
+////	void					SetOrigin(const idVec3 &newOrigin, /*int*/ id:number = -1);
+////	void					SetAxis(const idMat3 &newAxis, /*int*/ id:number = -1);
 ////
-////	void					Translate(const idVec3 &translation, int id = -1);
-////	void					Rotate(const idRotation &rotation, int id = -1);
+////	void					Translate(const idVec3 &translation, /*int*/ id:number = -1);
+////	void					Rotate(const idRotation &rotation, /*int*/ id:number = -1);
 ////
-////	void					SetLinearVelocity(const idVec3 &newLinearVelocity, int id = 0);
+////	void					SetLinearVelocity(const idVec3 &newLinearVelocity, /*int*/ id:number = 0);
 ////
-////	const idVec3 &			GetLinearVelocity(int id = 0) const;
+////	const idVec3 &			GetLinearVelocity(/*int*/ id:number = 0) const;
 ////
 ////	void					SetPushed(int deltaTime);
-////	const idVec3 &			GetPushedLinearVelocity(const int id = 0) const;
+////	const idVec3 &			GetPushedLinearVelocity(/*int*/ id:number = 0) const;
 ////	void					ClearPushedVelocity(void);
 ////
 ////	void					SetMaster(idEntity *master, const bool orientated = true);
@@ -172,41 +172,41 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	void					ReadFromSnapshot(const idBitMsgDelta &msg);
 ////
 ////private:
-////	// player physics state
-////	playerPState_t			current;
-////	playerPState_t			saved;
-////
-////	// properties
-////	float					walkSpeed;
-////	float					crouchSpeed;
-////	float					maxStepHeight;
-////	float					maxJumpHeight;
-////	int						debugLevel;				// if set, diagnostic output will be printed
-////
-////	// player input
-////	usercmd_t				command;
-////	idAngles				viewAngles;
-////
-////	// run-time variables
-////	int						framemsec;
-////	float					frametime;
-////	float					playerSpeed;
-////	idVec3					viewForward;
-////	idVec3					viewRight;
-////
-////	// walk movement
-////	bool					walking;
-////	bool					groundPlane;
+	// player physics state
+	current = new playerPState_t;
+	saved = new playerPState_t;
+
+	// properties
+	walkSpeed :number/*float*/;
+	crouchSpeed :number/*float*/;
+	maxStepHeight :number/*float*/;
+	maxJumpHeight :number/*float*/;
+	debugLevel :number/*int*/;				// if set, diagnostic output will be printed
+
+	// player input
+	command = new usercmd_t;
+	viewAngles = new idAngles;
+
+	// run-time variables
+	framemsec :number/*int*/;
+	frametime :number/*float*/;
+	playerSpeed :number/*float*/;
+	viewForward = new idVec3;
+	viewRight = new idVec3;
+
+	// walk movement
+	walking:boolean;
+	groundPlane:boolean;
 ////	trace_t					groundTrace;
-////	const idMaterial *		groundMaterial;
-////
-////	// ladder movement
-////	bool					ladder;
-////	idVec3					ladderNormal;
-////
-////	// results of last evaluate
-////	waterLevel_t			waterLevel;
-////	int						waterType;
+	groundMaterial: idMaterial;
+
+	// ladder movement
+	ladder:boolean;
+	ladderNormal = new idVec3;
+
+	// results of last evaluate
+	waterLevel: waterLevel_t;
+	waterType :number/*int*/;
 ////
 ////private:
 ////	float					CmdScale(const usercmd_t &cmd) const;
@@ -273,11 +273,11 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	}
 ////
 ////	if ( !max ) {
-////		return 0.0f;
+////		return 0.0;
 ////	}
 ////
 ////	total = idMath::Sqrt( (float) forwardmove * forwardmove + rightmove * rightmove + upmove * upmove );
-////	scale = (float) playerSpeed * max / ( 127.0f * total );
+////	scale = (float) playerSpeed * max / ( 127.0 * total );
 ////
 ////	return scale;
 ////}
@@ -294,7 +294,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	// q2 style
 ////	float addspeed, accelspeed, currentspeed;
 ////
-////	currentspeed = current.velocity * wishdir;
+////	currentspeed = this.current.velocity * wishdir;
 ////	addspeed = wishspeed - currentspeed;
 ////	if (addspeed <= 0) {
 ////		return;
@@ -304,7 +304,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////		accelspeed = addspeed;
 ////	}
 ////	
-////	current.velocity += accelspeed * wishdir;
+////	this.current.velocity += accelspeed * wishdir;
 ////#else
 ////	// proper way (avoids strafe jump maxspeed bug), but feels bad
 ////	idVec3		wishVelocity;
@@ -313,7 +313,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	float		canPush;
 ////
 ////	wishVelocity = wishdir * wishspeed;
-////	pushDir = wishVelocity - current.velocity;
+////	pushDir = wishVelocity - this.current.velocity;
 ////	pushLen = pushDir.Normalize();
 ////
 ////	canPush = accel * frametime * wishspeed;
@@ -321,43 +321,43 @@ class idPhysics_Player extends idPhysics_Actor {
 ////		canPush = pushLen;
 ////	}
 ////
-////	current.velocity += canPush * pushDir;
+////	this.current.velocity += canPush * pushDir;
 ////#endif
 ////}
-////
-/////*
-////==================
-////idPhysics_Player::SlideMove
-////
-////Returns true if the velocity was clipped in some way
-////==================
-////*/
-////#define	MAX_CLIP_PLANES	5
-////
+
+/*
+==================
+idPhysics_Player::SlideMove
+
+Returns true if the velocity was clipped in some way
+==================
+*/
+	MAX_CLIP_PLANES	= 5;
+
 ////bool idPhysics_Player::SlideMove( bool gravity, bool stepUp, bool stepDown, bool push ) {
 ////	int			i, j, k, pushFlags;
 ////	int			bumpcount, numbumps, numplanes;
 ////	float		d, time_left, into, totalMass;
-////	idVec3		dir, planes[MAX_CLIP_PLANES];
+////	idVec3		dir, planes[this.MAX_CLIP_PLANES];
 ////	idVec3		end, stepEnd, primal_velocity, endVelocity, endClipVelocity, clipVelocity;
 ////	trace_t		trace, stepTrace, downTrace;
 ////	bool		nearGround, stepped, pushed;
 ////
 ////	numbumps = 4;
 ////
-////	primal_velocity = current.velocity;
+////	primal_velocity = this.current.velocity;
 ////
 ////	if ( gravity ) {
-////		endVelocity = current.velocity + gravityVector * frametime;
-////		current.velocity = ( current.velocity + endVelocity ) * 0.5f;
+////		endVelocity = this.current.velocity + gravityVector * frametime;
+////		this.current.velocity = ( this.current.velocity + endVelocity ) * 0.5;
 ////		primal_velocity = endVelocity;
 ////		if ( groundPlane ) {
 ////			// slide along the ground plane
-////			current.velocity.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
+////			this.current.velocity.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
 ////		}
 ////	}
 ////	else {
-////		endVelocity = current.velocity;
+////		endVelocity = this.current.velocity;
 ////	}
 ////
 ////	time_left = frametime;
@@ -371,23 +371,23 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	}
 ////
 ////	// never turn against original velocity
-////	planes[numplanes] = current.velocity;
+////	planes[numplanes] = this.current.velocity;
 ////	planes[numplanes].Normalize();
 ////	numplanes++;
 ////
 ////	for ( bumpcount = 0; bumpcount < numbumps; bumpcount++ ) {
 ////
 ////		// calculate position we are trying to move to
-////		end = current.origin + time_left * current.velocity;
+////		end = this.current.origin + time_left * this.current.velocity;
 ////
 ////		// see if we can make it there
-////		gameLocal.clip.Translation( trace, current.origin, end, clipModel, clipModel.GetAxis(), clipMask, self );
+////		gameLocal.clip.Translation( trace, this.current.origin, end, clipModel, clipModel.GetAxis(), clipMask, self );
 ////
 ////		time_left -= time_left * trace.fraction;
-////		current.origin = trace.endpos;
+////		this.current.origin = trace.endpos;
 ////
 ////		// if moved the entire distance
-////		if ( trace.fraction >= 1.0f ) {
+////		if ( trace.fraction >= 1.0 ) {
 ////			break;
 ////		}
 ////
@@ -401,45 +401,45 @@ class idPhysics_Player extends idPhysics_Actor {
 ////			if ( !nearGround ) {
 ////				// trace down to see if the player is near the ground
 ////				// step checking when near the ground allows the player to move up stairs smoothly while jumping
-////				stepEnd = current.origin + maxStepHeight * gravityNormal;
-////				gameLocal.clip.Translation( downTrace, current.origin, stepEnd, clipModel, clipModel.GetAxis(), clipMask, self );
-////				nearGround = ( downTrace.fraction < 1.0f && (downTrace.c.normal * -gravityNormal) > MIN_WALK_NORMAL );
+////				stepEnd = this.current.origin + maxStepHeight * gravityNormal;
+////				gameLocal.clip.Translation( downTrace, this.current.origin, stepEnd, clipModel, clipModel.GetAxis(), clipMask, self );
+////				nearGround = ( downTrace.fraction < 1.0 && (downTrace.c.normal * -gravityNormal) > MIN_WALK_NORMAL );
 ////			}
 ////
 ////			// may only step up if near the ground or on a ladder
 ////			if ( nearGround ) {
 ////
 ////				// step up
-////				stepEnd = current.origin - maxStepHeight * gravityNormal;
-////				gameLocal.clip.Translation( downTrace, current.origin, stepEnd, clipModel, clipModel.GetAxis(), clipMask, self );
+////				stepEnd = this.current.origin - maxStepHeight * gravityNormal;
+////				gameLocal.clip.Translation( downTrace, this.current.origin, stepEnd, clipModel, clipModel.GetAxis(), clipMask, self );
 ////
 ////				// trace along velocity
-////				stepEnd = downTrace.endpos + time_left * current.velocity;
+////				stepEnd = downTrace.endpos + time_left * this.current.velocity;
 ////				gameLocal.clip.Translation( stepTrace, downTrace.endpos, stepEnd, clipModel, clipModel.GetAxis(), clipMask, self );
 ////
 ////				// step down
 ////				stepEnd = stepTrace.endpos + maxStepHeight * gravityNormal;
 ////				gameLocal.clip.Translation( downTrace, stepTrace.endpos, stepEnd, clipModel, clipModel.GetAxis(), clipMask, self );
 ////
-////				if ( downTrace.fraction >= 1.0f || (downTrace.c.normal * -gravityNormal) > MIN_WALK_NORMAL ) {
+////				if ( downTrace.fraction >= 1.0 || (downTrace.c.normal * -gravityNormal) > MIN_WALK_NORMAL ) {
 ////
 ////					// if moved the entire distance
-////					if ( stepTrace.fraction >= 1.0f ) {
+////					if ( stepTrace.fraction >= 1.0 ) {
 ////						time_left = 0;
-////						current.stepUp -= ( downTrace.endpos - current.origin ) * gravityNormal;
-////						current.origin = downTrace.endpos;
-////						current.movementFlags |= PMF_STEPPED_UP;
-////						current.velocity *= PM_STEPSCALE;
+////						this.current.stepUp -= ( downTrace.endpos - this.current.origin ) * gravityNormal;
+////						this.current.origin = downTrace.endpos;
+////						this.current.movementFlags |= PMF_STEPPED_UP;
+////						this.current.velocity *= PM_STEPSCALE;
 ////						break;
 ////					}
 ////
 ////					// if the move is further when stepping up
 ////					if ( stepTrace.fraction > trace.fraction ) {
 ////						time_left -= time_left * stepTrace.fraction;
-////						current.stepUp -= ( downTrace.endpos - current.origin ) * gravityNormal;
-////						current.origin = downTrace.endpos;
-////						current.movementFlags |= PMF_STEPPED_UP;
-////						current.velocity *= PM_STEPSCALE;
+////						this.current.stepUp -= ( downTrace.endpos - this.current.origin ) * gravityNormal;
+////						this.current.origin = downTrace.endpos;
+////						this.current.movementFlags |= PMF_STEPPED_UP;
+////						this.current.velocity *= PM_STEPSCALE;
 ////						trace = stepTrace;
 ////						stepped = true;
 ////					}
@@ -450,39 +450,39 @@ class idPhysics_Player extends idPhysics_Actor {
 ////		// if we can push other entities and not blocked by the world
 ////		if ( push && trace.c.entityNum != ENTITYNUM_WORLD ) {
 ////
-////			clipModel.SetPosition( current.origin, clipModel.GetAxis() );
+////			clipModel.SetPosition( this.current.origin, clipModel.GetAxis() );
 ////
 ////			// clip movement, only push idMoveables, don't push entities the player is standing on
 ////			// apply impact to pushed objects
 ////			pushFlags = PUSHFL_CLIP|PUSHFL_ONLYMOVEABLE|PUSHFL_NOGROUNDENTITIES|PUSHFL_APPLYIMPULSE;
 ////
 ////			// clip & push
-////			totalMass = gameLocal.push.ClipTranslationalPush( trace, self, pushFlags, end, end - current.origin );
+////			totalMass = gameLocal.push.ClipTranslationalPush( trace, self, pushFlags, end, end - this.current.origin );
 ////
-////			if ( totalMass > 0.0f ) {
+////			if ( totalMass > 0.0 ) {
 ////				// decrease velocity based on the total mass of the objects being pushed ?
-////				current.velocity *= 1.0f - idMath::ClampFloat( 0.0f, 1000.0f, totalMass - 20.0f ) * ( 1.0f / 950.0f );
+////				this.current.velocity *= 1.0 - idMath::ClampFloat( 0.0, 1000.0, totalMass - 20.0 ) * ( 1.0 / 950.0 );
 ////				pushed = true;
 ////			}
 ////	
-////			current.origin = trace.endpos;
+////			this.current.origin = trace.endpos;
 ////			time_left -= time_left * trace.fraction;
 ////
 ////			// if moved the entire distance
-////			if ( trace.fraction >= 1.0f ) {
+////			if ( trace.fraction >= 1.0 ) {
 ////				break;
 ////			}
 ////		}
 ////
 ////		if ( !stepped ) {
 ////			// let the entity know about the collision
-////			self.Collide( trace, current.velocity );
+////			self.Collide( trace, this.current.velocity );
 ////		}
 ////
-////		if ( numplanes >= MAX_CLIP_PLANES ) {
+////		if ( numplanes >= this.MAX_CLIP_PLANES ) {
 ////			// MrElusive: I think we have some relatively high poly LWO models with a lot of slanted tris
 ////			// where it may hit the max clip planes
-////			current.velocity = vec3_origin;
+////			this.current.velocity = vec3_origin;
 ////			return true;
 ////		}
 ////
@@ -493,7 +493,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////		//
 ////		for ( i = 0; i < numplanes; i++ ) {
 ////			if ( ( trace.c.normal * planes[i] ) > 0.999f ) {
-////				current.velocity += trace.c.normal;
+////				this.current.velocity += trace.c.normal;
 ////				break;
 ////			}
 ////		}
@@ -509,13 +509,13 @@ class idPhysics_Player extends idPhysics_Actor {
 ////
 ////		// find a plane that it enters
 ////		for ( i = 0; i < numplanes; i++ ) {
-////			into = current.velocity * planes[i];
+////			into = this.current.velocity * planes[i];
 ////			if ( into >= 0.1f ) {
 ////				continue;		// move doesn't interact with the plane
 ////			}
 ////
 ////			// slide along the plane
-////			clipVelocity = current.velocity;
+////			clipVelocity = this.current.velocity;
 ////			clipVelocity.ProjectOntoPlane( planes[i], OVERCLIP );
 ////
 ////			// slide along the plane
@@ -543,7 +543,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////				// slide the original velocity along the crease
 ////				dir = planes[i].Cross( planes[j] );
 ////				dir.Normalize();
-////				d = dir * current.velocity;
+////				d = dir * this.current.velocity;
 ////				clipVelocity = d * dir;
 ////
 ////				dir = planes[i].Cross( planes[j] );
@@ -561,13 +561,13 @@ class idPhysics_Player extends idPhysics_Actor {
 ////					}
 ////
 ////					// stop dead at a tripple plane interaction
-////					current.velocity = vec3_origin;
+////					this.current.velocity = vec3_origin;
 ////					return true;
 ////				}
 ////			}
 ////
 ////			// if we have fixed all interactions, try another move
-////			current.velocity = clipVelocity;
+////			this.current.velocity = clipVelocity;
 ////			endVelocity = endClipVelocity;
 ////			break;
 ////		}
@@ -575,25 +575,25 @@ class idPhysics_Player extends idPhysics_Actor {
 ////
 ////	// step down
 ////	if ( stepDown && groundPlane ) {
-////		stepEnd = current.origin + gravityNormal * maxStepHeight;
-////		gameLocal.clip.Translation( downTrace, current.origin, stepEnd, clipModel, clipModel.GetAxis(), clipMask, self );
-////		if ( downTrace.fraction > 1e-4f && downTrace.fraction < 1.0f ) {
-////			current.stepUp -= ( downTrace.endpos - current.origin ) * gravityNormal;
-////			current.origin = downTrace.endpos;
-////			current.movementFlags |= PMF_STEPPED_DOWN;
-////			current.velocity *= PM_STEPSCALE;
+////		stepEnd = this.current.origin + gravityNormal * maxStepHeight;
+////		gameLocal.clip.Translation( downTrace, this.current.origin, stepEnd, clipModel, clipModel.GetAxis(), clipMask, self );
+////		if ( downTrace.fraction > 1e-4f && downTrace.fraction < 1.0 ) {
+////			this.current.stepUp -= ( downTrace.endpos - this.current.origin ) * gravityNormal;
+////			this.current.origin = downTrace.endpos;
+////			this.current.movementFlags |= PMF_STEPPED_DOWN;
+////			this.current.velocity *= PM_STEPSCALE;
 ////		}
 ////	}
 ////
 ////	if ( gravity ) {
-////		current.velocity = endVelocity;
+////		this.current.velocity = endVelocity;
 ////	}
 ////
 ////	// come to a dead stop when the velocity orthogonal to the gravity flipped
-////	clipVelocity = current.velocity - gravityNormal * current.velocity * gravityNormal;
+////	clipVelocity = this.current.velocity - gravityNormal * this.current.velocity * gravityNormal;
 ////	endClipVelocity = endVelocity - gravityNormal * endVelocity * gravityNormal;
-////	if ( clipVelocity * endClipVelocity < 0.0f ) {
-////		current.velocity = gravityNormal * current.velocity * gravityNormal;
+////	if ( clipVelocity * endClipVelocity < 0.0 ) {
+////		this.current.velocity = gravityNormal * this.current.velocity * gravityNormal;
 ////	}
 ////
 ////	return (bool)( bumpcount == 0 );
@@ -606,24 +606,24 @@ class idPhysics_Player extends idPhysics_Actor {
 ////Handles both ground friction and water friction
 ////==================
 ////*/
-////void idPhysics_Player::Friction( void ) {
+////void idPhysics_Player::Friction( ) {
 ////	idVec3	vel;
 ////	float	speed, newspeed, control;
 ////	float	drop;
 ////	
-////	vel = current.velocity;
+////	vel = this.current.velocity;
 ////	if ( walking ) {
 ////		// ignore slope movement, remove all velocity in gravity direction
 ////		vel += (vel * gravityNormal) * gravityNormal;
 ////	}
 ////
 ////	speed = vel.Length();
-////	if ( speed < 1.0f ) {
+////	if ( speed < 1.0 ) {
 ////		// remove all movement orthogonal to gravity, allows for sinking underwater
-////		if ( fabs( current.velocity * gravityNormal ) < 1e-5f ) {
-////			current.velocity.Zero();
+////		if ( fabs( this.current.velocity * gravityNormal ) < 1e-5f ) {
+////			this.current.velocity.Zero();
 ////		} else {
-////			current.velocity = (current.velocity * gravityNormal) * gravityNormal;
+////			this.current.velocity = (this.current.velocity * gravityNormal) * gravityNormal;
 ////		}
 ////		// FIXME: still have z friction underwater?
 ////		return;
@@ -632,7 +632,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	drop = 0;
 ////
 ////	// spectator friction
-////	if ( current.movementType == PM_SPECTATOR ) {
+////	if ( this.current.movementType == PM_SPECTATOR ) {
 ////		drop += speed * PM_FLYFRICTION * frametime;
 ////	}
 ////	// apply ground friction
@@ -640,7 +640,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////		// no friction on slick surfaces
 ////		if ( !(groundMaterial && groundMaterial.GetSurfaceFlags() & SURF_SLICK) ) {
 ////			// if getting knocked back, no friction
-////			if ( !(current.movementFlags & PMF_TIME_KNOCKBACK) ) {
+////			if ( !(this.current.movementFlags & PMF_TIME_KNOCKBACK) ) {
 ////				control = speed < PM_STOPSPEED ? PM_STOPSPEED : speed;
 ////				drop += control * PM_FRICTION * frametime;
 ////			}
@@ -660,7 +660,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	if (newspeed < 0) {
 ////		newspeed = 0;
 ////	}
-////	current.velocity *= ( newspeed / speed );
+////	this.current.velocity *= ( newspeed / speed );
 ////}
 ////
 /////*
@@ -670,18 +670,18 @@ class idPhysics_Player extends idPhysics_Actor {
 ////Flying out of the water
 ////===================
 ////*/
-////void idPhysics_Player::WaterJumpMove( void ) {
+////void idPhysics_Player::WaterJumpMove( ) {
 ////
 ////	// waterjump has no control, but falls
 ////	idPhysics_Player::SlideMove( true, true, false, false );
 ////
 ////	// add gravity
-////	current.velocity += gravityNormal * frametime;
+////	this.current.velocity += gravityNormal * frametime;
 ////	// if falling down
-////	if ( current.velocity * gravityNormal > 0.0f ) {
+////	if ( this.current.velocity * gravityNormal > 0.0 ) {
 ////		// cancel as soon as we are falling down again
-////		current.movementFlags &= ~PMF_ALL_TIMES;
-////		current.movementTime = 0;
+////		this.current.movementFlags &= ~PMF_ALL_TIMES;
+////		this.current.movementTime = 0;
 ////	}
 ////}
 ////
@@ -690,7 +690,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::WaterMove
 ////===================
 ////*/
-////void idPhysics_Player::WaterMove( void ) {
+////void idPhysics_Player::WaterMove( ) {
 ////	idVec3	wishvel;
 ////	float	wishspeed;
 ////	idVec3	wishdir;
@@ -724,13 +724,13 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	idPhysics_Player::Accelerate( wishdir, wishspeed, PM_WATERACCELERATE );
 ////
 ////	// make sure we can go up slopes easily under water
-////	if ( groundPlane && ( current.velocity * groundTrace.c.normal ) < 0.0f ) {
-////		vel = current.velocity.Length();
+////	if ( groundPlane && ( this.current.velocity * groundTrace.c.normal ) < 0.0 ) {
+////		vel = this.current.velocity.Length();
 ////		// slide along the ground plane
-////		current.velocity.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
+////		this.current.velocity.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
 ////
-////		current.velocity.Normalize();
-////		current.velocity *= vel;
+////		this.current.velocity.Normalize();
+////		this.current.velocity *= vel;
 ////	}
 ////
 ////	idPhysics_Player::SlideMove( false, true, false, false );
@@ -741,7 +741,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::FlyMove
 ////===================
 ////*/
-////void idPhysics_Player::FlyMove( void ) {
+////void idPhysics_Player::FlyMove( ) {
 ////	idVec3	wishvel;
 ////	float	wishspeed;
 ////	idVec3	wishdir;
@@ -772,7 +772,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::AirMove
 ////===================
 ////*/
-////void idPhysics_Player::AirMove( void ) {
+////void idPhysics_Player::AirMove( ) {
 ////	idVec3		wishvel;
 ////	idVec3		wishdir;
 ////	float		wishspeed;
@@ -801,7 +801,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	// though we don't have a groundentity
 ////	// slide along the steep plane
 ////	if ( groundPlane ) {
-////		current.velocity.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
+////		this.current.velocity.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
 ////	}
 ////
 ////	idPhysics_Player::SlideMove( true, false, false, false );
@@ -812,7 +812,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::WalkMove
 ////===================
 ////*/
-////void idPhysics_Player::WalkMove( void ) {
+////void idPhysics_Player::WalkMove( ) {
 ////	idVec3		wishvel;
 ////	idVec3		wishdir;
 ////	float		wishspeed;
@@ -821,7 +821,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	idVec3		oldVelocity, vel;
 ////	float		oldVel, newVel;
 ////
-////	if ( waterLevel > WATERLEVEL_WAIST && ( viewForward * groundTrace.c.normal ) > 0.0f ) {
+////	if ( waterLevel > WATERLEVEL_WAIST && ( viewForward * groundTrace.c.normal ) > 0.0 ) {
 ////		// begin swimming
 ////		idPhysics_Player::WaterMove();
 ////		return;
@@ -862,15 +862,15 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	if ( waterLevel ) {
 ////		float	waterScale;
 ////
-////		waterScale = waterLevel / 3.0f;
-////		waterScale = 1.0f - ( 1.0f - PM_SWIMSCALE ) * waterScale;
+////		waterScale = waterLevel / 3.0;
+////		waterScale = 1.0 - ( 1.0 - PM_SWIMSCALE ) * waterScale;
 ////		if ( wishspeed > playerSpeed * waterScale ) {
 ////			wishspeed = playerSpeed * waterScale;
 ////		}
 ////	}
 ////
 ////	// when a player gets hit, they temporarily lose full control, which allows them to be moved a bit
-////	if ( ( groundMaterial && groundMaterial.GetSurfaceFlags() & SURF_SLICK ) || current.movementFlags & PMF_TIME_KNOCKBACK ) {
+////	if ( ( groundMaterial && groundMaterial.GetSurfaceFlags() & SURF_SLICK ) || this.current.movementFlags & PMF_TIME_KNOCKBACK ) {
 ////		accelerate = PM_AIRACCELERATE;
 ////	}
 ////	else {
@@ -879,29 +879,29 @@ class idPhysics_Player extends idPhysics_Actor {
 ////
 ////	idPhysics_Player::Accelerate( wishdir, wishspeed, accelerate );
 ////
-////	if ( ( groundMaterial && groundMaterial.GetSurfaceFlags() & SURF_SLICK ) || current.movementFlags & PMF_TIME_KNOCKBACK ) {
-////		current.velocity += gravityVector * frametime;
+////	if ( ( groundMaterial && groundMaterial.GetSurfaceFlags() & SURF_SLICK ) || this.current.movementFlags & PMF_TIME_KNOCKBACK ) {
+////		this.current.velocity += gravityVector * frametime;
 ////	}
 ////
-////	oldVelocity = current.velocity;
+////	oldVelocity = this.current.velocity;
 ////
 ////	// slide along the ground plane
-////	current.velocity.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
+////	this.current.velocity.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
 ////
 ////	// if not clipped into the opposite direction
-////	if ( oldVelocity * current.velocity > 0.0f ) {
-////		newVel = current.velocity.LengthSqr();
-////		if ( newVel > 1.0f ) {
+////	if ( oldVelocity * this.current.velocity > 0.0 ) {
+////		newVel = this.current.velocity.LengthSqr();
+////		if ( newVel > 1.0 ) {
 ////			oldVel = oldVelocity.LengthSqr();
-////			if ( oldVel > 1.0f ) {
+////			if ( oldVel > 1.0 ) {
 ////				// don't decrease velocity when going up or down a slope
-////				current.velocity *= idMath::Sqrt( oldVel / newVel );
+////				this.current.velocity *= idMath::Sqrt( oldVel / newVel );
 ////			}
 ////		}
 ////	}
 ////
 ////	// don't do anything if standing still
-////	vel = current.velocity - (current.velocity * gravityNormal) * gravityNormal;
+////	vel = this.current.velocity - (this.current.velocity * gravityNormal) * gravityNormal;
 ////	if ( !vel.LengthSqr() ) {
 ////		return;
 ////	}
@@ -916,7 +916,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::DeadMove
 ////==============
 ////*/
-////void idPhysics_Player::DeadMove( void ) {
+////void idPhysics_Player::DeadMove( ) {
 ////	float	forward;
 ////
 ////	if ( !walking ) {
@@ -924,14 +924,14 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	}
 ////
 ////	// extra friction
-////	forward = current.velocity.Length();
+////	forward = this.current.velocity.Length();
 ////	forward -= 20;
 ////	if ( forward <= 0 ) {
-////		current.velocity = vec3_origin;
+////		this.current.velocity = vec3_origin;
 ////	}
 ////	else {
-////		current.velocity.Normalize();
-////		current.velocity *= forward;
+////		this.current.velocity.Normalize();
+////		this.current.velocity *= forward;
 ////	}
 ////}
 ////
@@ -940,18 +940,18 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::NoclipMove
 ////===============
 ////*/
-////void idPhysics_Player::NoclipMove( void ) {
+////void idPhysics_Player::NoclipMove( ) {
 ////	float		speed, drop, friction, newspeed, stopspeed;
 ////	float		scale, wishspeed;
 ////	idVec3		wishdir;
 ////
 ////	// friction
-////	speed = current.velocity.Length();
-////	if ( speed < 20.0f ) {
-////		current.velocity = vec3_origin;
+////	speed = this.current.velocity.Length();
+////	if ( speed < 20.0 ) {
+////		this.current.velocity = vec3_origin;
 ////	}
 ////	else {
-////		stopspeed = playerSpeed * 0.3f;
+////		stopspeed = playerSpeed * 0.3;
 ////		if ( speed < stopspeed ) {
 ////			speed = stopspeed;
 ////		}
@@ -964,7 +964,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////			newspeed = 0;
 ////		}
 ////
-////		current.velocity *= newspeed / speed;
+////		this.current.velocity *= newspeed / speed;
 ////	}
 ////
 ////	// accelerate
@@ -978,7 +978,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	idPhysics_Player::Accelerate( wishdir, wishspeed, PM_ACCELERATE );
 ////
 ////	// move
-////	current.origin += frametime * current.velocity;
+////	this.current.origin += frametime * this.current.velocity;
 ////}
 ////
 /////*
@@ -986,7 +986,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::SpectatorMove
 ////===============
 ////*/
-////void idPhysics_Player::SpectatorMove( void ) {
+////void idPhysics_Player::SpectatorMove( ) {
 ////	idVec3	wishvel;
 ////	float	wishspeed;
 ////	idVec3	wishdir;
@@ -1020,21 +1020,21 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::LadderMove
 ////============
 ////*/
-////void idPhysics_Player::LadderMove( void ) {
+////void idPhysics_Player::LadderMove( ) {
 ////	idVec3	wishdir, wishvel, right;
 ////	float	wishspeed, scale;
 ////	float	upscale;
 ////
 ////	// stick to the ladder
-////	wishvel = -100.0f * ladderNormal;
-////	current.velocity = (gravityNormal * current.velocity) * gravityNormal + wishvel;
+////	wishvel = -100.0 * ladderNormal;
+////	this.current.velocity = (gravityNormal * this.current.velocity) * gravityNormal + wishvel;
 ////
-////	upscale = (-gravityNormal * viewForward + 0.5f) * 2.5f;
-////	if ( upscale > 1.0f ) {
-////		upscale = 1.0f;
+////	upscale = (-gravityNormal * viewForward + 0.5) * 2.5;
+////	if ( upscale > 1.0 ) {
+////		upscale = 1.0;
 ////	}
-////	else if ( upscale < -1.0f ) {
-////		upscale = -1.0f;
+////	else if ( upscale < -1.0 ) {
+////		upscale = -1.0;
 ////	}
 ////
 ////	scale = idPhysics_Player::CmdScale( command );
@@ -1049,15 +1049,15 @@ class idPhysics_Player extends idPhysics_Actor {
 ////		right.Normalize();
 ////
 ////		// if we are looking away from the ladder, reverse the right vector
-////		if ( ladderNormal * viewForward > 0.0f ) {
+////		if ( ladderNormal * viewForward > 0.0 ) {
 ////			right = -right;
 ////		}
-////		wishvel += 2.0f * right * scale * (float) command.rightmove;
+////		wishvel += 2.0 * right * scale * (float) command.rightmove;
 ////	}
 ////
 ////	// up down movement
 ////	if ( command.upmove ) {
-////		wishvel += -0.5f * gravityNormal * scale * (float) command.upmove;
+////		wishvel += -0.5 * gravityNormal * scale * (float) command.upmove;
 ////	}
 ////
 ////	// do strafe friction
@@ -1068,25 +1068,25 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	idPhysics_Player::Accelerate( wishvel, wishspeed, PM_ACCELERATE );
 ////
 ////	// cap the vertical velocity
-////	upscale = current.velocity * -gravityNormal;
+////	upscale = this.current.velocity * -gravityNormal;
 ////	if ( upscale < -PM_LADDERSPEED ) {
-////		current.velocity += gravityNormal * (upscale + PM_LADDERSPEED);
+////		this.current.velocity += gravityNormal * (upscale + PM_LADDERSPEED);
 ////	}
 ////	else if ( upscale > PM_LADDERSPEED ) {
-////		current.velocity += gravityNormal * (upscale - PM_LADDERSPEED);
+////		this.current.velocity += gravityNormal * (upscale - PM_LADDERSPEED);
 ////	}
 ////
-////	if ( (wishvel * gravityNormal) == 0.0f ) {
-////		if ( current.velocity * gravityNormal < 0.0f ) {
-////			current.velocity += gravityVector * frametime;
-////			if ( current.velocity * gravityNormal > 0.0f ) {
-////				current.velocity -= (gravityNormal * current.velocity) * gravityNormal;
+////	if ( (wishvel * gravityNormal) == 0.0 ) {
+////		if ( this.current.velocity * gravityNormal < 0.0 ) {
+////			this.current.velocity += gravityVector * frametime;
+////			if ( this.current.velocity * gravityNormal > 0.0 ) {
+////				this.current.velocity -= (gravityNormal * this.current.velocity) * gravityNormal;
 ////			}
 ////		}
 ////		else {
-////			current.velocity -= gravityVector * frametime;
-////			if ( current.velocity * gravityNormal < 0.0f ) {
-////				current.velocity -= (gravityNormal * current.velocity) * gravityNormal;
+////			this.current.velocity -= gravityVector * frametime;
+////			if ( this.current.velocity * gravityNormal < 0.0 ) {
+////				this.current.velocity -= (gravityNormal * this.current.velocity) * gravityNormal;
 ////			}
 ////		}
 ////	}
@@ -1106,14 +1106,14 @@ class idPhysics_Player extends idPhysics_Actor {
 ////
 ////	// FIXME: jitter around to find a free spot ?
 ////
-////	if ( trace.fraction >= 1.0f ) {
+////	if ( trace.fraction >= 1.0 ) {
 ////		memset( &trace, 0, sizeof( trace ) );
-////		trace.endpos = current.origin;
+////		trace.endpos = this.current.origin;
 ////		trace.endAxis = clipModelAxis;
-////		trace.fraction = 0.0f;
-////		trace.c.dist = current.origin.z;
+////		trace.fraction = 0.0;
+////		trace.c.dist = this.current.origin.z;
 ////		trace.c.normal.Set( 0, 0, 1 );
-////		trace.c.point = current.origin;
+////		trace.c.point = this.current.origin;
 ////		trace.c.entityNum = ENTITYNUM_WORLD;
 ////		trace.c.id = 0;
 ////		trace.c.type = CONTACT_TRMVERTEX;
@@ -1127,7 +1127,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::CheckGround
 ////=============
 ////*/
-////void idPhysics_Player::CheckGround( void ) {
+////void idPhysics_Player::CheckGround( ) {
 ////	int i, contents;
 ////	idVec3 point;
 ////	bool hadGroundContacts;
@@ -1135,32 +1135,32 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	hadGroundContacts = HasGroundContacts();
 ////
 ////	// set the clip model origin before getting the contacts
-////	clipModel.SetPosition( current.origin, clipModel.GetAxis() );
+////	clipModel.SetPosition( this.current.origin, clipModel.GetAxis() );
 ////
 ////	EvaluateContacts();
 ////
 ////	// setup a ground trace from the contacts
-////	groundTrace.endpos = current.origin;
+////	groundTrace.endpos = this.current.origin;
 ////	groundTrace.endAxis = clipModel.GetAxis();
 ////	if ( contacts.Num() ) {
-////		groundTrace.fraction = 0.0f;
+////		groundTrace.fraction = 0.0;
 ////		groundTrace.c = contacts[0];
 ////		for ( i = 1; i < contacts.Num(); i++ ) {
 ////			groundTrace.c.normal += contacts[i].normal;
 ////		}
 ////		groundTrace.c.normal.Normalize();
 ////	} else {
-////		groundTrace.fraction = 1.0f;
+////		groundTrace.fraction = 1.0;
 ////	}
 ////
-////	contents = gameLocal.clip.Contents( current.origin, clipModel, clipModel.GetAxis(), -1, self );
+////	contents = gameLocal.clip.Contents( this.current.origin, clipModel, clipModel.GetAxis(), -1, self );
 ////	if ( contents & MASK_SOLID ) {
 ////		// do something corrective if stuck in solid
 ////		idPhysics_Player::CorrectAllSolid( groundTrace, contents );
 ////	}
 ////
 ////	// if the trace didn't hit anything, we are in free fall
-////	if ( groundTrace.fraction == 1.0f ) {
+////	if ( groundTrace.fraction == 1.0 ) {
 ////		groundPlane = false;
 ////		walking = false;
 ////		groundEntityPtr = NULL;
@@ -1171,7 +1171,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	groundEntityPtr = gameLocal.entities[ groundTrace.c.entityNum ];
 ////
 ////	// check if getting thrown off the ground
-////	if ( (current.velocity * -gravityNormal) > 0.0f && ( current.velocity * groundTrace.c.normal ) > 10.0f ) {
+////	if ( (this.current.velocity * -gravityNormal) > 0.0 && ( this.current.velocity * groundTrace.c.normal ) > 10.0 ) {
 ////		if ( debugLevel ) {
 ////			gameLocal.Printf( "%i:kickoff\n", c_pmove );
 ////		}
@@ -1190,8 +1190,8 @@ class idPhysics_Player extends idPhysics_Actor {
 ////		// FIXME: if they can't slide down the slope, let them walk (sharp crevices)
 ////
 ////		// make sure we don't die from sliding down a steep slope
-////		if ( current.velocity * gravityNormal > 150.0f ) {
-////			current.velocity -= ( current.velocity * gravityNormal - 150.0f ) * gravityNormal;
+////		if ( this.current.velocity * gravityNormal > 150.0 ) {
+////			this.current.velocity -= ( this.current.velocity * gravityNormal - 150.0 ) * gravityNormal;
 ////		}
 ////
 ////		groundPlane = true;
@@ -1203,30 +1203,30 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	walking = true;
 ////
 ////	// hitting solid ground will end a waterjump
-////	if ( current.movementFlags & PMF_TIME_WATERJUMP ) {
-////		current.movementFlags &= ~( PMF_TIME_WATERJUMP | PMF_TIME_LAND );
-////		current.movementTime = 0;
+////	if ( this.current.movementFlags & PMF_TIME_WATERJUMP ) {
+////		this.current.movementFlags &= ~( PMF_TIME_WATERJUMP | PMF_TIME_LAND );
+////		this.current.movementTime = 0;
 ////	}
 ////
 ////	// if the player didn't have ground contacts the previous frame
 ////	if ( !hadGroundContacts ) {
 ////
 ////		// don't do landing time if we were just going down a slope
-////		if ( (current.velocity * -gravityNormal) < -200.0f ) {
+////		if ( (this.current.velocity * -gravityNormal) < -200.0 ) {
 ////			// don't allow another jump for a little while
-////			current.movementFlags |= PMF_TIME_LAND;
-////			current.movementTime = 250;
+////			this.current.movementFlags |= PMF_TIME_LAND;
+////			this.current.movementTime = 250;
 ////		}
 ////	}
 ////
 ////	// let the entity know about the collision
-////	self.Collide( groundTrace, current.velocity );
+////	self.Collide( groundTrace, this.current.velocity );
 ////
 ////	if ( groundEntityPtr.GetEntity() ) {
 ////		impactInfo_t info;
 ////		groundEntityPtr.GetEntity().GetImpactInfo( self, groundTrace.c.id, groundTrace.c.point, &info );
-////		if ( info.invMass != 0.0f ) {
-////			groundEntityPtr.GetEntity().ApplyImpulse( self, groundTrace.c.id, groundTrace.c.point, current.velocity / ( info.invMass * 10.0f ) );
+////		if ( info.invMass != 0.0 ) {
+////			groundEntityPtr.GetEntity().ApplyImpulse( self, groundTrace.c.id, groundTrace.c.point, this.current.velocity / ( info.invMass * 10.0 ) );
 ////		}
 ////	}
 ////}
@@ -1238,32 +1238,32 @@ class idPhysics_Player extends idPhysics_Actor {
 ////Sets clip model size
 ////==============
 ////*/
-////void idPhysics_Player::CheckDuck( void ) {
+////void idPhysics_Player::CheckDuck( ) {
 ////	trace_t	trace;
 ////	idVec3 end;
 ////	idBounds bounds;
 ////	float maxZ;
 ////
-////	if ( current.movementType == PM_DEAD ) {
+////	if ( this.current.movementType == PM_DEAD ) {
 ////		maxZ = pm_deadheight.GetFloat();
 ////	} else {
 ////		// stand up when up against a ladder
 ////		if ( command.upmove < 0 && !ladder ) {
 ////			// duck
-////			current.movementFlags |= PMF_DUCKED;
+////			this.current.movementFlags |= PMF_DUCKED;
 ////		} else {
 ////			// stand up if possible
-////			if ( current.movementFlags & PMF_DUCKED ) {
+////			if ( this.current.movementFlags & PMF_DUCKED ) {
 ////				// try to stand up
-////				end = current.origin - ( pm_normalheight.GetFloat() - pm_crouchheight.GetFloat() ) * gravityNormal;
-////				gameLocal.clip.Translation( trace, current.origin, end, clipModel, clipModel.GetAxis(), clipMask, self );
-////				if ( trace.fraction >= 1.0f ) {
-////					current.movementFlags &= ~PMF_DUCKED;
+////				end = this.current.origin - ( pm_normalheight.GetFloat() - pm_crouchheight.GetFloat() ) * gravityNormal;
+////				gameLocal.clip.Translation( trace, this.current.origin, end, clipModel, clipModel.GetAxis(), clipMask, self );
+////				if ( trace.fraction >= 1.0 ) {
+////					this.current.movementFlags &= ~PMF_DUCKED;
 ////				}
 ////			}
 ////		}
 ////
-////		if ( current.movementFlags & PMF_DUCKED ) {
+////		if ( this.current.movementFlags & PMF_DUCKED ) {
 ////			playerSpeed = crouchSpeed;
 ////			maxZ = pm_crouchheight.GetFloat();
 ////		} else {
@@ -1288,12 +1288,12 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::CheckLadder
 ////================
 ////*/
-////void idPhysics_Player::CheckLadder( void ) {
+////void idPhysics_Player::CheckLadder( ) {
 ////	idVec3		forward, start, end;
 ////	trace_t		trace;
 ////	float		tracedist;
 ////	
-////	if ( current.movementTime ) {
+////	if ( this.current.movementTime ) {
 ////		return;
 ////	}
 ////
@@ -1308,29 +1308,29 @@ class idPhysics_Player extends idPhysics_Actor {
 ////
 ////	if ( walking ) {
 ////		// don't want to get sucked towards the ladder when still walking
-////		tracedist = 1.0f;
+////		tracedist = 1.0;
 ////	} else {
-////		tracedist = 48.0f;
+////		tracedist = 48.0;
 ////	}
 ////
-////	end = current.origin + tracedist * forward;
-////	gameLocal.clip.Translation( trace, current.origin, end, clipModel, clipModel.GetAxis(), clipMask, self );
+////	end = this.current.origin + tracedist * forward;
+////	gameLocal.clip.Translation( trace, this.current.origin, end, clipModel, clipModel.GetAxis(), clipMask, self );
 ////
 ////	// if near a surface
-////	if ( trace.fraction < 1.0f ) {
+////	if ( trace.fraction < 1.0 ) {
 ////
 ////		// if a ladder surface
 ////		if ( trace.c.material && ( trace.c.material.GetSurfaceFlags() & SURF_LADDER ) ) {
 ////
 ////			// check a step height higher
-////			end = current.origin - gravityNormal * ( maxStepHeight * 0.75f );
-////			gameLocal.clip.Translation( trace, current.origin, end, clipModel, clipModel.GetAxis(), clipMask, self );
+////			end = this.current.origin - gravityNormal * ( maxStepHeight * 0.75f );
+////			gameLocal.clip.Translation( trace, this.current.origin, end, clipModel, clipModel.GetAxis(), clipMask, self );
 ////			start = trace.endpos;
 ////			end = start + tracedist * forward;
 ////			gameLocal.clip.Translation( trace, start, end, clipModel, clipModel.GetAxis(), clipMask, self );
 ////
 ////			// if also near a surface a step height higher
-////			if ( trace.fraction < 1.0f ) {
+////			if ( trace.fraction < 1.0 ) {
 ////
 ////				// if it also is a ladder surface
 ////				if ( trace.c.material && trace.c.material.GetSurfaceFlags() & SURF_LADDER ) {
@@ -1347,7 +1347,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::CheckJump
 ////=============
 ////*/
-////bool idPhysics_Player::CheckJump( void ) {
+////bool idPhysics_Player::CheckJump( ) {
 ////	idVec3 addVelocity;
 ////
 ////	if ( command.upmove < 10 ) {
@@ -1356,22 +1356,22 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	}
 ////
 ////	// must wait for jump to be released
-////	if ( current.movementFlags & PMF_JUMP_HELD ) {
+////	if ( this.current.movementFlags & PMF_JUMP_HELD ) {
 ////		return false;
 ////	}
 ////
 ////	// don't jump if we can't stand up
-////	if ( current.movementFlags & PMF_DUCKED ) {
+////	if ( this.current.movementFlags & PMF_DUCKED ) {
 ////		return false;
 ////	}
 ////
 ////	groundPlane = false;		// jumping away
 ////	walking = false;
-////	current.movementFlags |= PMF_JUMP_HELD | PMF_JUMPED;
+////	this.current.movementFlags |= PMF_JUMP_HELD | PMF_JUMPED;
 ////
-////	addVelocity = 2.0f * maxJumpHeight * -gravityVector;
+////	addVelocity = 2.0 * maxJumpHeight * -gravityVector;
 ////	addVelocity *= idMath::Sqrt( addVelocity.Normalize() );
-////	current.velocity += addVelocity;
+////	this.current.velocity += addVelocity;
 ////
 ////	return true;
 ////}
@@ -1381,12 +1381,12 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::CheckWaterJump
 ////=============
 ////*/
-////bool idPhysics_Player::CheckWaterJump( void ) {
+////bool idPhysics_Player::CheckWaterJump( ) {
 ////	idVec3	spot;
 ////	int		cont;
 ////	idVec3	flatforward;
 ////
-////	if ( current.movementTime ) {
+////	if ( this.current.movementTime ) {
 ////		return false;
 ////	}
 ////
@@ -1398,23 +1398,23 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	flatforward = viewForward - (viewForward * gravityNormal) * gravityNormal;
 ////	flatforward.Normalize();
 ////
-////	spot = current.origin + 30.0f * flatforward;
-////	spot -= 4.0f * gravityNormal;
+////	spot = this.current.origin + 30.0 * flatforward;
+////	spot -= 4.0 * gravityNormal;
 ////	cont = gameLocal.clip.Contents( spot, NULL, mat3_identity, -1, self );
 ////	if ( !(cont & CONTENTS_SOLID) ) {
 ////		return false;
 ////	}
 ////
-////	spot -= 16.0f * gravityNormal;
+////	spot -= 16.0 * gravityNormal;
 ////	cont = gameLocal.clip.Contents( spot, NULL, mat3_identity, -1, self );
 ////	if ( cont ) {
 ////		return false;
 ////	}
 ////
 ////	// jump out of water
-////	current.velocity = 200.0f * viewForward - 350.0f * gravityNormal;
-////	current.movementFlags |= PMF_TIME_WATERJUMP;
-////	current.movementTime = 2000;
+////	this.current.velocity = 200.0 * viewForward - 350.0 * gravityNormal;
+////	this.current.movementFlags |= PMF_TIME_WATERJUMP;
+////	this.current.movementTime = 2000;
 ////
 ////	return true;
 ////}
@@ -1424,7 +1424,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::SetWaterLevel
 ////=============
 ////*/
-////void idPhysics_Player::SetWaterLevel( void ) {
+////void idPhysics_Player::SetWaterLevel( ) {
 ////	idVec3		point;
 ////	idBounds	bounds;
 ////	int			contents;
@@ -1438,7 +1438,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	bounds = clipModel.GetBounds();
 ////
 ////	// check at feet level
-////	point = current.origin - ( bounds[0][2] + 1.0f ) * gravityNormal;
+////	point = this.current.origin - ( bounds[0][2] + 1.0 ) * gravityNormal;
 ////	contents = gameLocal.clip.Contents( point, NULL, mat3_identity, -1, self );
 ////	if ( contents & MASK_WATER ) {
 ////
@@ -1446,14 +1446,14 @@ class idPhysics_Player extends idPhysics_Actor {
 ////		waterLevel = WATERLEVEL_FEET;
 ////
 ////		// check at waist level
-////		point = current.origin - ( bounds[1][2] - bounds[0][2] ) * 0.5f * gravityNormal;
+////		point = this.current.origin - ( bounds[1][2] - bounds[0][2] ) * 0.5 * gravityNormal;
 ////		contents = gameLocal.clip.Contents( point, NULL, mat3_identity, -1, self );
 ////		if ( contents & MASK_WATER ) {
 ////
 ////			waterLevel = WATERLEVEL_WAIST;
 ////
 ////			// check at head level
-////			point = current.origin - ( bounds[1][2] - 1.0f ) * gravityNormal;
+////			point = this.current.origin - ( bounds[1][2] - 1.0 ) * gravityNormal;
 ////			contents = gameLocal.clip.Contents( point, NULL, mat3_identity, -1, self );
 ////			if ( contents & MASK_WATER ) {
 ////				waterLevel = WATERLEVEL_HEAD;
@@ -1467,15 +1467,15 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::DropTimers
 ////================
 ////*/
-////void idPhysics_Player::DropTimers( void ) {
+////void idPhysics_Player::DropTimers( ) {
 ////	// drop misc timing counter
-////	if ( current.movementTime ) {
-////		if ( framemsec >= current.movementTime ) {
-////			current.movementFlags &= ~PMF_ALL_TIMES;
-////			current.movementTime = 0;
+////	if ( this.current.movementTime ) {
+////		if ( framemsec >= this.current.movementTime ) {
+////			this.current.movementFlags &= ~PMF_ALL_TIMES;
+////			this.current.movementTime = 0;
 ////		}
 ////		else {
-////			current.movementTime -= framemsec;
+////			this.current.movementTime -= framemsec;
 ////		}
 ////	}
 ////}
@@ -1497,27 +1497,27 @@ class idPhysics_Player extends idPhysics_Actor {
 ////
 ////	// determine the time
 ////	framemsec = msec;
-////	frametime = framemsec * 0.001f;
+////	frametime = framemsec * 0.001;
 ////
 ////	// default speed
 ////	playerSpeed = walkSpeed;
 ////
 ////	// remove jumped and stepped up flag
-////	current.movementFlags &= ~(PMF_JUMPED|PMF_STEPPED_UP|PMF_STEPPED_DOWN);
-////	current.stepUp = 0.0f;
+////	this.current.movementFlags &= ~(PMF_JUMPED|PMF_STEPPED_UP|PMF_STEPPED_DOWN);
+////	this.current.stepUp = 0.0;
 ////
 ////	if ( command.upmove < 10 ) {
 ////		// not holding jump
-////		current.movementFlags &= ~PMF_JUMP_HELD;
+////		this.current.movementFlags &= ~PMF_JUMP_HELD;
 ////	}
 ////
 ////	// if no movement at all
-////	if ( current.movementType == PM_FREEZE ) {
+////	if ( this.current.movementType == PM_FREEZE ) {
 ////		return;
 ////	}
 ////
 ////	// move the player velocity into the frame of a pusher
-////	current.velocity -= current.pushVelocity;
+////	this.current.velocity -= this.current.pushVelocity;
 ////
 ////	// view vectors
 ////	viewAngles.ToVectors( &viewForward, NULL, NULL );
@@ -1526,21 +1526,21 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	viewRight.Normalize();
 ////
 ////	// fly in spectator mode
-////	if ( current.movementType == PM_SPECTATOR ) {
+////	if ( this.current.movementType == PM_SPECTATOR ) {
 ////		SpectatorMove();
 ////		idPhysics_Player::DropTimers();
 ////		return;
 ////	}
 ////
 ////	// special no clip mode
-////	if ( current.movementType == PM_NOCLIP ) {
+////	if ( this.current.movementType == PM_NOCLIP ) {
 ////		idPhysics_Player::NoclipMove();
 ////		idPhysics_Player::DropTimers();
 ////		return;
 ////	}
 ////
 ////	// no control when dead
-////	if ( current.movementType == PM_DEAD ) {
+////	if ( this.current.movementType == PM_DEAD ) {
 ////		command.forwardmove = 0;
 ////		command.rightmove = 0;
 ////		command.upmove = 0;
@@ -1562,7 +1562,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	idPhysics_Player::DropTimers();
 ////
 ////	// move
-////	if ( current.movementType == PM_DEAD ) {
+////	if ( this.current.movementType == PM_DEAD ) {
 ////		// dead
 ////		idPhysics_Player::DeadMove();
 ////	}
@@ -1570,7 +1570,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////		// going up or down a ladder
 ////		idPhysics_Player::LadderMove();
 ////	}
-////	else if ( current.movementFlags & PMF_TIME_WATERJUMP ) {
+////	else if ( this.current.movementFlags & PMF_TIME_WATERJUMP ) {
 ////		// jumping out of water
 ////		idPhysics_Player::WaterJumpMove();
 ////	}
@@ -1592,8 +1592,8 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	idPhysics_Player::CheckGround();
 ////
 ////	// move the player velocity back into the world frame
-////	current.velocity += current.pushVelocity;
-////	current.pushVelocity.Zero();
+////	this.current.velocity += this.current.pushVelocity;
+////	this.current.pushVelocity.Zero();
 ////}
 ////
 /////*
@@ -1601,7 +1601,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::GetWaterLevel
 ////================
 ////*/
-////waterLevel_t idPhysics_Player::GetWaterLevel( void ) const {
+////waterLevel_t idPhysics_Player::GetWaterLevel( ) const {
 ////	return waterLevel;
 ////}
 ////
@@ -1610,7 +1610,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::GetWaterType
 ////================
 ////*/
-////int idPhysics_Player::GetWaterType( void ) const {
+////int idPhysics_Player::GetWaterType( ) const {
 ////	return waterType;
 ////}
 ////
@@ -1619,8 +1619,8 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::HasJumped
 ////================
 ////*/
-////bool idPhysics_Player::HasJumped( void ) const {
-////	return ( ( current.movementFlags & PMF_JUMPED ) != 0 );
+////bool idPhysics_Player::HasJumped( ) const {
+////	return ( ( this.current.movementFlags & PMF_JUMPED ) != 0 );
 ////}
 ////
 /////*
@@ -1628,8 +1628,8 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::HasSteppedUp
 ////================
 ////*/
-////bool idPhysics_Player::HasSteppedUp( void ) const {
-////	return ( ( current.movementFlags & ( PMF_STEPPED_UP | PMF_STEPPED_DOWN ) ) != 0 );
+////bool idPhysics_Player::HasSteppedUp( ) const {
+////	return ( ( this.current.movementFlags & ( PMF_STEPPED_UP | PMF_STEPPED_DOWN ) ) != 0 );
 ////}
 ////
 /////*
@@ -1637,8 +1637,8 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::GetStepUp
 ////================
 ////*/
-////float idPhysics_Player::GetStepUp( void ) const {
-////	return current.stepUp;
+////float idPhysics_Player::GetStepUp( ) const {
+////	return this.current.stepUp;
 ////}
 ////
 /////*
@@ -1646,8 +1646,8 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::IsCrouching
 ////================
 ////*/
-////bool idPhysics_Player::IsCrouching( void ) const {
-////	return ( ( current.movementFlags & PMF_DUCKED ) != 0 );
+////bool idPhysics_Player::IsCrouching( ) const {
+////	return ( ( this.current.movementFlags & PMF_DUCKED ) != 0 );
 ////}
 ////
 /////*
@@ -1655,7 +1655,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::OnLadder
 ////================
 ////*/
-////bool idPhysics_Player::OnLadder( void ) const {
+////bool idPhysics_Player::OnLadder( ) const {
 ////	return ladder;
 ////}
 ////
@@ -1664,12 +1664,12 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::idPhysics_Player
 ////================
 ////*/
-////idPhysics_Player::idPhysics_Player( void ) {
+////idPhysics_Player::idPhysics_Player( ) {
 ////	debugLevel = false;
 ////	clipModel = NULL;
 ////	clipMask = 0;
-////	memset( &current, 0, sizeof( current ) );
-////	saved = current;
+////	memset( &this.current, 0, sizeof( this.current ) );
+////	saved = this.current;
 ////	walkSpeed = 0;
 ////	crouchSpeed = 0;
 ////	maxStepHeight = 0;
@@ -1730,7 +1730,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////*/
 ////void idPhysics_Player::Save( idSaveGame *savefile ) const {
 ////
-////	idPhysics_Player_SavePState( savefile, current );
+////	idPhysics_Player_SavePState( savefile, this.current );
 ////	idPhysics_Player_SavePState( savefile, saved );
 ////
 ////	savefile.WriteFloat( walkSpeed );
@@ -1767,7 +1767,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////*/
 ////void idPhysics_Player::Restore( idRestoreGame *savefile ) {
 ////
-////	idPhysics_Player_RestorePState( savefile, current );
+////	idPhysics_Player_RestorePState( savefile, this.current );
 ////	idPhysics_Player_RestorePState( savefile, saved );
 ////
 ////	savefile.ReadFloat( walkSpeed );
@@ -1831,7 +1831,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::GetMaxStepHeight
 ////================
 ////*/
-////float idPhysics_Player::GetMaxStepHeight( void ) const {
+////float idPhysics_Player::GetMaxStepHeight( ) const {
 ////	return maxStepHeight;
 ////}
 ////
@@ -1850,7 +1850,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////================
 ////*/
 ////void idPhysics_Player::SetMovementType( const pmtype_t type ) {
-////	current.movementType = type;
+////	this.current.movementType = type;
 ////}
 ////
 /////*
@@ -1859,11 +1859,11 @@ class idPhysics_Player extends idPhysics_Actor {
 ////================
 ////*/
 ////void idPhysics_Player::SetKnockBack( const int knockBackTime ) {
-////	if ( current.movementTime ) {
+////	if ( this.current.movementTime ) {
 ////		return;
 ////	}
-////	current.movementFlags |= PMF_TIME_KNOCKBACK;
-////	current.movementTime = knockBackTime;
+////	this.current.movementFlags |= PMF_TIME_KNOCKBACK;
+////	this.current.movementTime = knockBackTime;
 ////}
 ////
 /////*
@@ -1886,16 +1886,16 @@ class idPhysics_Player extends idPhysics_Actor {
 ////
 ////	waterLevel = WATERLEVEL_NONE;
 ////	waterType = 0;
-////	oldOrigin = current.origin;
+////	oldOrigin = this.current.origin;
 ////
 ////	clipModel.Unlink();
 ////
 ////	// if bound to a master
 ////	if ( masterEntity ) {
 ////		self.GetMasterPosition( masterOrigin, masterAxis );
-////		current.origin = masterOrigin + current.localOrigin * masterAxis;
-////		clipModel.Link( gameLocal.clip, self, 0, current.origin, clipModel.GetAxis() );
-////		current.velocity = ( current.origin - oldOrigin ) / ( timeStepMSec * 0.001f );
+////		this.current.origin = masterOrigin + this.current.localOrigin * masterAxis;
+////		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() );
+////		this.current.velocity = ( this.current.origin - oldOrigin ) / ( timeStepMSec * 0.001f );
 ////		masterDeltaYaw = masterYaw;
 ////		masterYaw = masterAxis[0].ToYaw();
 ////		masterDeltaYaw = masterYaw - masterDeltaYaw;
@@ -1906,13 +1906,13 @@ class idPhysics_Player extends idPhysics_Actor {
 ////
 ////	idPhysics_Player::MovePlayer( timeStepMSec );
 ////
-////	clipModel.Link( gameLocal.clip, self, 0, current.origin, clipModel.GetAxis() );
+////	clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() );
 ////
 ////	if ( IsOutsideWorld() ) {
-////		gameLocal.Warning( "clip model outside world bounds for entity '%s' at (%s)", self.name.c_str(), current.origin.ToString(0) );
+////		gameLocal.Warning( "clip model outside world bounds for entity '%s' at (%s)", self.name.c_str(), this.current.origin.ToString(0) );
 ////	}
 ////
-////	return true; //( current.origin != oldOrigin );
+////	return true; //( this.current.origin != oldOrigin );
 ////}
 ////
 /////*
@@ -1928,7 +1928,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::GetTime
 ////================
 ////*/
-////int idPhysics_Player::GetTime( void ) const {
+////int idPhysics_Player::GetTime( ) const {
 ////	return gameLocal.time;
 ////}
 ////
@@ -1937,11 +1937,11 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::GetImpactInfo
 ////================
 ////*/
-////void idPhysics_Player::GetImpactInfo( const int id, const idVec3 &point, impactInfo_t *info ) const {
+////void idPhysics_Player::GetImpactInfo( /*int*/ id:number, const idVec3 &point, impactInfo_t *info ) const {
 ////	info.invMass = invMass;
 ////	info.invInertiaTensor.Zero();
 ////	info.position.Zero();
-////	info.velocity = current.velocity;
+////	info.velocity = this.current.velocity;
 ////}
 ////
 /////*
@@ -1949,9 +1949,9 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::ApplyImpulse
 ////================
 ////*/
-////void idPhysics_Player::ApplyImpulse( const int id, const idVec3 &point, const idVec3 &impulse ) {
-////	if ( current.movementType != PM_NOCLIP ) {
-////		current.velocity += impulse * invMass;
+////void idPhysics_Player::ApplyImpulse( /*int*/ id:number, const idVec3 &point, const idVec3 &impulse ) {
+////	if ( this.current.movementType != PM_NOCLIP ) {
+////		this.current.velocity += impulse * invMass;
 ////	}
 ////}
 ////
@@ -1960,7 +1960,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::IsAtRest
 ////================
 ////*/
-////bool idPhysics_Player::IsAtRest( void ) const {
+////bool idPhysics_Player::IsAtRest( ) const {
 ////	return false;
 ////}
 ////
@@ -1969,7 +1969,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::GetRestStartTime
 ////================
 ////*/
-////int idPhysics_Player::GetRestStartTime( void ) const {
+////int idPhysics_Player::GetRestStartTime( ) const {
 ////	return -1;
 ////}
 ////
@@ -1978,8 +1978,8 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::SaveState
 ////================
 ////*/
-////void idPhysics_Player::SaveState( void ) {
-////	saved = current;
+////void idPhysics_Player::SaveState( ) {
+////	saved = this.current;
 ////}
 ////
 /////*
@@ -1987,10 +1987,10 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::RestoreState
 ////================
 ////*/
-////void idPhysics_Player::RestoreState( void ) {
-////	current = saved;
+////void idPhysics_Player::RestoreState( ) {
+////	this.current = saved;
 ////
-////	clipModel.Link( gameLocal.clip, self, 0, current.origin, clipModel.GetAxis() );
+////	clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() );
 ////
 ////	EvaluateContacts();
 ////}
@@ -2000,37 +2000,37 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::SetOrigin
 ////================
 ////*/
-////void idPhysics_Player::SetOrigin( const idVec3 &newOrigin, int id ) {
+////void idPhysics_Player::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////
-////	current.localOrigin = newOrigin;
+////	this.current.localOrigin = newOrigin;
 ////	if ( masterEntity ) {
 ////		self.GetMasterPosition( masterOrigin, masterAxis );
-////		current.origin = masterOrigin + newOrigin * masterAxis;
+////		this.current.origin = masterOrigin + newOrigin * masterAxis;
 ////	}
 ////	else {
-////		current.origin = newOrigin;
+////		this.current.origin = newOrigin;
 ////	}
 ////
 ////	clipModel.Link( gameLocal.clip, self, 0, newOrigin, clipModel.GetAxis() );
 ////}
 ////
-/////*
-////================
-////idPhysics_Player::GetOrigin
-////================
-////*/
-////const idVec3 & idPhysics_Player::PlayerGetOrigin( void ) const {
-////	return current.origin;
-////}
-////
+/*
+================
+idPhysics_Player::GetOrigin
+================
+*/
+PlayerGetOrigin(): idVec3 {
+	return this.current.origin;
+}
+
 /////*
 ////================
 ////idPhysics_Player::SetAxis
 ////================
 ////*/
-////void idPhysics_Player::SetAxis( const idMat3 &newAxis, int id ) {
+////void idPhysics_Player::SetAxis( const idMat3 &newAxis, /*int*/ id:number ) {
 ////	clipModel.Link( gameLocal.clip, self, 0, clipModel.GetOrigin(), newAxis );
 ////}
 ////
@@ -2039,12 +2039,12 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::Translate
 ////================
 ////*/
-////void idPhysics_Player::Translate( const idVec3 &translation, int id ) {
+////void idPhysics_Player::Translate( const idVec3 &translation, /*int*/ id:number ) {
 ////
-////	current.localOrigin += translation;
-////	current.origin += translation;
+////	this.current.localOrigin += translation;
+////	this.current.origin += translation;
 ////
-////	clipModel.Link( gameLocal.clip, self, 0, current.origin, clipModel.GetAxis() );
+////	clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() );
 ////}
 ////
 /////*
@@ -2052,20 +2052,20 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::Rotate
 ////================
 ////*/
-////void idPhysics_Player::Rotate( const idRotation &rotation, int id ) {
+////void idPhysics_Player::Rotate( const idRotation &rotation, /*int*/ id:number ) {
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////
-////	current.origin *= rotation;
+////	this.current.origin *= rotation;
 ////	if ( masterEntity ) {
 ////		self.GetMasterPosition( masterOrigin, masterAxis );
-////		current.localOrigin = ( current.origin - masterOrigin ) * masterAxis.Transpose();
+////		this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
 ////	}
 ////	else {
-////		current.localOrigin = current.origin;
+////		this.current.localOrigin = this.current.origin;
 ////	}
 ////
-////	clipModel.Link( gameLocal.clip, self, 0, current.origin, clipModel.GetAxis() * rotation.ToMat3() );
+////	clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() * rotation.ToMat3() );
 ////}
 ////
 /////*
@@ -2073,8 +2073,8 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::SetLinearVelocity
 ////================
 ////*/
-////void idPhysics_Player::SetLinearVelocity( const idVec3 &newLinearVelocity, int id ) {
-////	current.velocity = newLinearVelocity;
+////void idPhysics_Player::SetLinearVelocity( const idVec3 &newLinearVelocity, /*int*/ id:number ) {
+////	this.current.velocity = newLinearVelocity;
 ////}
 ////
 /////*
@@ -2082,8 +2082,8 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::GetLinearVelocity
 ////================
 ////*/
-////const idVec3 &idPhysics_Player::GetLinearVelocity( int id ) const {
-////	return current.velocity;
+////const idVec3 &idPhysics_Player::GetLinearVelocity( /*int*/ id:number ) const {
+////	return this.current.velocity;
 ////}
 ////
 /////*
@@ -2096,15 +2096,15 @@ class idPhysics_Player extends idPhysics_Actor {
 ////	float d;
 ////
 ////	// velocity with which the player is pushed
-////	velocity = ( current.origin - saved.origin ) / ( deltaTime * idMath::M_MS2SEC );
+////	velocity = ( this.current.origin - saved.origin ) / ( deltaTime * idMath::M_MS2SEC );
 ////
 ////	// remove any downward push velocity
 ////	d = velocity * gravityNormal;
-////	if ( d > 0.0f ) {
+////	if ( d > 0.0 ) {
 ////		velocity -= d * gravityNormal;
 ////	}
 ////
-////	current.pushVelocity += velocity;
+////	this.current.pushVelocity += velocity;
 ////}
 ////
 /////*
@@ -2112,8 +2112,8 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::GetPushedLinearVelocity
 ////================
 ////*/
-////const idVec3 &idPhysics_Player::GetPushedLinearVelocity( const int id ) const {
-////	return current.pushVelocity;
+////const idVec3 &idPhysics_Player::GetPushedLinearVelocity( /*int*/ id:number ) const {
+////	return this.current.pushVelocity;
 ////}
 ////
 /////*
@@ -2121,8 +2121,8 @@ class idPhysics_Player extends idPhysics_Actor {
 ////idPhysics_Player::ClearPushedVelocity
 ////================
 ////*/
-////void idPhysics_Player::ClearPushedVelocity( void ) {
-////	current.pushVelocity.Zero();
+////void idPhysics_Player::ClearPushedVelocity( ) {
+////	this.current.pushVelocity.Zero();
 ////}
 ////
 /////*
@@ -2140,7 +2140,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////		if ( !masterEntity ) {
 ////			// transform from world space to master space
 ////			self.GetMasterPosition( masterOrigin, masterAxis );
-////			current.localOrigin = ( current.origin - masterOrigin ) * masterAxis.Transpose();
+////			this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
 ////			masterEntity = master;
 ////			masterYaw = masterAxis[0].ToYaw();
 ////		}
@@ -2166,22 +2166,22 @@ class idPhysics_Player extends idPhysics_Actor {
 ////================
 ////*/
 ////void idPhysics_Player::WriteToSnapshot( idBitMsgDelta &msg ) const {
-////	msg.WriteFloat( current.origin[0] );
-////	msg.WriteFloat( current.origin[1] );
-////	msg.WriteFloat( current.origin[2] );
-////	msg.WriteFloat( current.velocity[0], PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
-////	msg.WriteFloat( current.velocity[1], PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
-////	msg.WriteFloat( current.velocity[2], PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( current.origin[0], current.localOrigin[0] );
-////	msg.WriteDeltaFloat( current.origin[1], current.localOrigin[1] );
-////	msg.WriteDeltaFloat( current.origin[2], current.localOrigin[2] );
-////	msg.WriteDeltaFloat( 0.0f, current.pushVelocity[0], PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, current.pushVelocity[1], PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, current.pushVelocity[2], PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, current.stepUp );
-////	msg.WriteBits( current.movementType, PLAYER_MOVEMENT_TYPE_BITS );
-////	msg.WriteBits( current.movementFlags, PLAYER_MOVEMENT_FLAGS_BITS );
-////	msg.WriteDeltaLong( 0, current.movementTime );
+////	msg.WriteFloat( this.current.origin[0] );
+////	msg.WriteFloat( this.current.origin[1] );
+////	msg.WriteFloat( this.current.origin[2] );
+////	msg.WriteFloat( this.current.velocity[0], PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
+////	msg.WriteFloat( this.current.velocity[1], PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
+////	msg.WriteFloat( this.current.velocity[2], PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( this.current.origin[0], this.current.localOrigin[0] );
+////	msg.WriteDeltaFloat( this.current.origin[1], this.current.localOrigin[1] );
+////	msg.WriteDeltaFloat( this.current.origin[2], this.current.localOrigin[2] );
+////	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[0], PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[1], PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[2], PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.stepUp );
+////	msg.WriteBits( this.current.movementType, PLAYER_MOVEMENT_TYPE_BITS );
+////	msg.WriteBits( this.current.movementFlags, PLAYER_MOVEMENT_FLAGS_BITS );
+////	msg.WriteDeltaLong( 0, this.current.movementTime );
 ////}
 ////
 /////*
@@ -2190,25 +2190,25 @@ class idPhysics_Player extends idPhysics_Actor {
 ////================
 ////*/
 ////void idPhysics_Player::ReadFromSnapshot( const idBitMsgDelta &msg ) {
-////	current.origin[0] = msg.ReadFloat();
-////	current.origin[1] = msg.ReadFloat();
-////	current.origin[2] = msg.ReadFloat();
-////	current.velocity[0] = msg.ReadFloat( PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
-////	current.velocity[1] = msg.ReadFloat( PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
-////	current.velocity[2] = msg.ReadFloat( PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
-////	current.localOrigin[0] = msg.ReadDeltaFloat( current.origin[0] );
-////	current.localOrigin[1] = msg.ReadDeltaFloat( current.origin[1] );
-////	current.localOrigin[2] = msg.ReadDeltaFloat( current.origin[2] );
-////	current.pushVelocity[0] = msg.ReadDeltaFloat( 0.0f, PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
-////	current.pushVelocity[1] = msg.ReadDeltaFloat( 0.0f, PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
-////	current.pushVelocity[2] = msg.ReadDeltaFloat( 0.0f, PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
-////	current.stepUp = msg.ReadDeltaFloat( 0.0f );
-////	current.movementType = msg.ReadBits( PLAYER_MOVEMENT_TYPE_BITS );
-////	current.movementFlags = msg.ReadBits( PLAYER_MOVEMENT_FLAGS_BITS );
-////	current.movementTime = msg.ReadDeltaLong( 0 );
+////	this.current.origin[0] = msg.ReadFloat();
+////	this.current.origin[1] = msg.ReadFloat();
+////	this.current.origin[2] = msg.ReadFloat();
+////	this.current.velocity[0] = msg.ReadFloat( PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
+////	this.current.velocity[1] = msg.ReadFloat( PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
+////	this.current.velocity[2] = msg.ReadFloat( PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
+////	this.current.localOrigin[0] = msg.ReadDeltaFloat( this.current.origin[0] );
+////	this.current.localOrigin[1] = msg.ReadDeltaFloat( this.current.origin[1] );
+////	this.current.localOrigin[2] = msg.ReadDeltaFloat( this.current.origin[2] );
+////	this.current.pushVelocity[0] = msg.ReadDeltaFloat( 0.0, PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
+////	this.current.pushVelocity[1] = msg.ReadDeltaFloat( 0.0, PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
+////	this.current.pushVelocity[2] = msg.ReadDeltaFloat( 0.0, PLAYER_VELOCITY_EXPONENT_BITS, PLAYER_VELOCITY_MANTISSA_BITS );
+////	this.current.stepUp = msg.ReadDeltaFloat( 0.0 );
+////	this.current.movementType = msg.ReadBits( PLAYER_MOVEMENT_TYPE_BITS );
+////	this.current.movementFlags = msg.ReadBits( PLAYER_MOVEMENT_FLAGS_BITS );
+////	this.current.movementTime = msg.ReadDeltaLong( 0 );
 ////
 ////	if ( clipModel ) {
-////		clipModel.Link( gameLocal.clip, self, 0, current.origin, clipModel.GetAxis() );
+////		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() );
 ////	}
 ////}
 ////

@@ -94,7 +94,7 @@ idMultiModelAF.Type = new idTypeInfo( "idMultiModelAF", "idEntity",
 ////idMultiModelAF::SetModelForId
 ////================
 ////*/
-////void idMultiModelAF::SetModelForId( int id, const idStr &modelName ) {
+////void idMultiModelAF::SetModelForId( /*int*/ id:number, const idStr &modelName ) {
 ////	modelHandles.AssureSize( id+1, NULL );
 ////	modelDefHandles.AssureSize( id+1, -1 );
 ////	modelHandles[id] = renderModelManager.FindModel( modelName );
@@ -459,7 +459,7 @@ idAFAttachment.Type = new idTypeInfo("idAFAttachment", "idAnimatedEntity",
 ////idAFAttachment::GetImpactInfo
 ////================
 ////*/
-////void idAFAttachment::GetImpactInfo( ent:idEntity, int id, const idVec3 &point, impactInfo_t *info ) {
+////void idAFAttachment::GetImpactInfo( ent:idEntity, /*int*/ id:number, const idVec3 &point, impactInfo_t *info ) {
 ////	if ( body ) {
 ////		body.GetImpactInfo( ent, JOINT_HANDLE_TO_CLIPMODEL_ID( attachJoint ), point, info );
 ////	} else {
@@ -472,7 +472,7 @@ idAFAttachment.Type = new idTypeInfo("idAFAttachment", "idAnimatedEntity",
 ////idAFAttachment::ApplyImpulse
 ////================
 ////*/
-////void idAFAttachment::ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse ) {
+////void idAFAttachment::ApplyImpulse( ent:idEntity, /*int*/ id:number, const idVec3 &point, const idVec3 &impulse ) {
 ////	if ( body ) {
 ////		body.ApplyImpulse( ent, JOINT_HANDLE_TO_CLIPMODEL_ID( attachJoint ), point, impulse );
 ////	} else {
@@ -485,7 +485,7 @@ idAFAttachment.Type = new idTypeInfo("idAFAttachment", "idAnimatedEntity",
 ////idAFAttachment::AddForce
 ////================
 ////*/
-////void idAFAttachment::AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force ) {
+////void idAFAttachment::AddForce( ent:idEntity, /*int*/ id:number, const idVec3 &point, const idVec3 &force ) {
 ////	if ( body ) {
 ////		body.AddForce( ent, JOINT_HANDLE_TO_CLIPMODEL_ID( attachJoint ), point, force );
 ////	} else {
@@ -718,7 +718,7 @@ var BOUNCE_SOUND_MAX_VELOCITY	= 200.0;
 ////idAFEntity_Base::BodyForClipModelId
 ////================
 ////*/
-////int idAFEntity_Base::BodyForClipModelId( int id ) const {
+////int idAFEntity_Base::BodyForClipModelId( /*int*/ id:number ) const {
 ////	return af.BodyForClipModelId( id );
 ////}
 ////
@@ -787,7 +787,7 @@ var BOUNCE_SOUND_MAX_VELOCITY	= 200.0;
 ////idAFEntity_Base::GetImpactInfo
 ////================
 ////*/
-////void idAFEntity_Base::GetImpactInfo( ent:idEntity, int id, const idVec3 &point, impactInfo_t *info ) {
+////void idAFEntity_Base::GetImpactInfo( ent:idEntity, /*int*/ id:number, const idVec3 &point, impactInfo_t *info ) {
 ////	if ( af.IsActive() ) {
 ////		af.GetImpactInfo( ent, id, point, info );
 ////	} else {
@@ -800,7 +800,7 @@ var BOUNCE_SOUND_MAX_VELOCITY	= 200.0;
 ////idAFEntity_Base::ApplyImpulse
 ////================
 ////*/
-////void idAFEntity_Base::ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse ) {
+////void idAFEntity_Base::ApplyImpulse( ent:idEntity, /*int*/ id:number, const idVec3 &point, const idVec3 &impulse ) {
 ////	if ( af.IsLoaded() ) {
 ////		af.ApplyImpulse( ent, id, point, impulse );
 ////	}
@@ -814,7 +814,7 @@ var BOUNCE_SOUND_MAX_VELOCITY	= 200.0;
 ////idAFEntity_Base::AddForce
 ////================
 ////*/
-////void idAFEntity_Base::AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force ) {
+////void idAFEntity_Base::AddForce( ent:idEntity, /*int*/ id:number, const idVec3 &point, const idVec3 &force ) {
 ////	if ( af.IsLoaded() ) {
 ////		af.AddForce( ent, id, point, force );
 ////	}

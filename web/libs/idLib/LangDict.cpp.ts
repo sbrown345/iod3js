@@ -60,7 +60,7 @@ class idLangDict {
 ////	int						GetNumKeyVals( void ) const;
 ////	const idLangKeyValue *	GetKeyVal( int i ) const;
 
-////	void					SetBaseID(int id) { baseID = id; };
+////	void					SetBaseID(/*int*/ id:number) { baseID = id; };
 
 ////private:
         args:idList<idLangKeyValue>;
@@ -236,7 +236,7 @@ idLangDict::GetString
 ////		}
 ////	}
 
-////	int id = GetNextId();
+////	/*int*/ id:number = GetNextId();
 ////	idLangKeyValue kv;
 ////	// _D3XP
 ////	kv.key = va( "#str_%08i", id );

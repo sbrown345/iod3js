@@ -383,7 +383,7 @@
 ////idAF::BodyForClipModelId
 ////================
 ////*/
-////int idAF::BodyForClipModelId( int id ) const {
+////int idAF::BodyForClipModelId( /*int*/ id:number ) const {
 ////	if ( id >= 0 ) {
 ////		return id;
 ////	} else {
@@ -411,7 +411,7 @@
 ////idAF::GetImpactInfo
 ////================
 ////*/
-////void idAF::GetImpactInfo( ent:idEntity, int id, const idVec3 &point, impactInfo_t *info ) {
+////void idAF::GetImpactInfo( ent:idEntity, /*int*/ id:number, const idVec3 &point, impactInfo_t *info ) {
 ////	SetupPose( self, gameLocal.time );
 ////	physicsObj.GetImpactInfo( BodyForClipModelId( id ), point, info );
 ////}
@@ -421,7 +421,7 @@
 ////idAF::ApplyImpulse
 ////================
 ////*/
-////void idAF::ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse ) {
+////void idAF::ApplyImpulse( ent:idEntity, /*int*/ id:number, const idVec3 &point, const idVec3 &impulse ) {
 ////	SetupPose( self, gameLocal.time );
 ////	physicsObj.ApplyImpulse( BodyForClipModelId( id ), point, impulse );
 ////}
@@ -431,7 +431,7 @@
 ////idAF::AddForce
 ////================
 ////*/
-////void idAF::AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force ) {
+////void idAF::AddForce( ent:idEntity, /*int*/ id:number, const idVec3 &point, const idVec3 &force ) {
 ////	SetupPose( self, gameLocal.time );
 ////	physicsObj.AddForce( BodyForClipModelId( id ), point, force );
 ////}
@@ -487,7 +487,7 @@
 ////================
 ////*/
 ////bool idAF::LoadBody( const idDeclAF_Body *fb, const idJointMat *joints ) {
-////	int id, i;
+////	/*int*/ id:number, i;
 ////	float length, mass;
 ////	idTraceModel trm;
 ////	idClipModel *clip;

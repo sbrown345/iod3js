@@ -167,11 +167,11 @@ class idFrustum {
 //private:
 	origin = new idVec3;		// frustum origin
 	axis = new idMat3;		// frustum orientation
-	dNear:number/*float*/;		// distance of near plane, dNear >= 0.0f
+	dNear:number/*float*/;		// distance of near plane, dNear >= 0.0
 	dFar:number/*float*/;		// distance of far plane, dFar > dNear
 	dLeft:number/*float*/;		// half the width at the far plane
 	dUp:number/*float*/;		// half the height at the far plane
-	invFar:number/*float*/;		// 1.0f / dFar
+	invFar:number/*float*/;		// 1.0 / dFar
 
 //private:
 //	bool			CullLocalBox( const idVec3 & localOrigin, const idVec3 & extents, const idMat3 & localAxis ) const;
@@ -218,25 +218,25 @@ class idFrustum {
 //}
 
 //ID_INLINE void idFrustum::SetSize(float dNear, float dFar, float dLeft, float dUp) {
-//	assert(dNear >= 0.0f && dFar > dNear && dLeft > 0.0f && dUp > 0.0f);
+//	assert(dNear >= 0.0 && dFar > dNear && dLeft > 0.0 && dUp > 0.0);
 //	this. dNear = dNear;
 //	this. dFar = dFar;
 //	this. dLeft = dLeft;
 //	this. dUp = dUp;
-//	this. invFar = 1.0f / dFar;
+//	this. invFar = 1.0 / dFar;
 //}
 
 //ID_INLINE void idFrustum::SetPyramid(float dNear, float dFar) {
-//	assert(dNear >= 0.0f && dFar > dNear);
+//	assert(dNear >= 0.0 && dFar > dNear);
 //	this. dNear = dNear;
 //	this. dFar = dFar;
 //	this. dLeft = dFar;
 //	this. dUp = dFar;
-//	this. invFar = 1.0f / dFar;
+//	this. invFar = 1.0 / dFar;
 //}
 
 //ID_INLINE void idFrustum::MoveNearDistance(float dNear) {
-//	assert(dNear >= 0.0f);
+//	assert(dNear >= 0.0);
 //	this. dNear = dNear;
 //}
 
@@ -246,7 +246,7 @@ class idFrustum {
 //	this. dFar = dFar;
 //	this. dLeft *= scale;
 //	this. dUp *= scale;
-//	this. invFar = 1.0f / dFar;
+//	this. invFar = 1.0 / dFar;
 //}
 
 GetOrigin( ) :idVec3 {
@@ -284,19 +284,19 @@ GetAxis( ) :idMat3 {
 //ID_INLINE idFrustum idFrustum::Expand( const float d ) const {
 //	idFrustum f = *this;
 //	f.origin -= d * f.axis[0];
-//	f.dFar += 2.0f * d;
+//	f.dFar += 2.0 * d;
 //	f.dLeft = f.dFar * dLeft * invFar;
 //	f.dUp = f.dFar * dUp * invFar;
-//	f.invFar = 1.0f / dFar;
+//	f.invFar = 1.0 / dFar;
 //	return f;
 //}
 
 //ID_INLINE idFrustum &idFrustum::ExpandSelf( const float d ) {
 //	this.origin -= d * this.axis[0];
-//	dFar += 2.0f * d;
+//	dFar += 2.0 * d;
 //	dLeft = dFar * dLeft * invFar;
 //	dUp = dFar * dUp * invFar;
-//	invFar = 1.0f / dFar;
+//	invFar = 1.0 / dFar;
 //	return *this;
 //}
 
@@ -332,13 +332,13 @@ GetAxis( ) :idMat3 {
 //	float min, max;
 //
 //	AxisProjection( plane.Normal(), min, max );
-//	if ( min + plane[3] > 0.0f ) {
+//	if ( min + plane[3] > 0.0 ) {
 //		return min + plane[3];
 //	}
-//	if ( max + plane[3] < 0.0f ) {
+//	if ( max + plane[3] < 0.0 ) {
 //		return max + plane[3];
 //	}
-//	return 0.0f;
+//	return 0.0;
 //}
 //
 	///*
@@ -404,20 +404,20 @@ GetAxis( ) :idMat3 {
 //	d2 = idMath::Fabs( extents[0] * localAxis[0][0] ) +
 //				idMath::Fabs( extents[1] * localAxis[1][0] ) +
 //						idMath::Fabs( extents[2] * localAxis[2][0] );
-//	if ( d1 - d2 > 0.0f ) {
+//	if ( d1 - d2 > 0.0 ) {
 //		return true;
 //	}
 //
 //	// far plane
 //	d1 = localOrigin.x - dFar;
-//	if ( d1 - d2 > 0.0f ) {
+//	if ( d1 - d2 > 0.0 ) {
 //		return true;
 //	}
 //
 //	testOrigin = localOrigin;
 //	testAxis = localAxis;
 //
-//	if ( testOrigin.y < 0.0f ) {
+//	if ( testOrigin.y < 0.0 ) {
 //		testOrigin.y = -testOrigin.y;
 //		testAxis[0][1] = -testAxis[0][1];
 //		testAxis[1][1] = -testAxis[1][1];
@@ -429,11 +429,11 @@ GetAxis( ) :idMat3 {
 //	d2 = idMath::Fabs( extents[0] * ( dFar * testAxis[0][1] - dLeft * testAxis[0][0] ) ) +
 //				idMath::Fabs( extents[1] * ( dFar * testAxis[1][1] - dLeft * testAxis[1][0] ) ) +
 //					idMath::Fabs( extents[2] * ( dFar * testAxis[2][1] - dLeft * testAxis[2][0] ) );
-//	if ( d1 - d2 > 0.0f ) {
+//	if ( d1 - d2 > 0.0 ) {
 //		return true;
 //	}
 //
-//	if ( testOrigin.z < 0.0f ) {
+//	if ( testOrigin.z < 0.0 ) {
 //		testOrigin.z = -testOrigin.z;
 //		testAxis[0][2] = -testAxis[0][2];
 //		testAxis[1][2] = -testAxis[1][2];
@@ -445,7 +445,7 @@ GetAxis( ) :idMat3 {
 //	d2 = idMath::Fabs( extents[0] * ( dFar * testAxis[0][2] - dUp * testAxis[0][0] ) ) +
 //				idMath::Fabs( extents[1] * ( dFar * testAxis[1][2] - dUp * testAxis[1][0] ) ) +
 //					idMath::Fabs( extents[2] * ( dFar * testAxis[2][2] - dUp * testAxis[2][0] ) );
-//	if ( d1 - d2 > 0.0f ) {
+//	if ( d1 - d2 > 0.0 ) {
 //		return true;
 //	}
 //
@@ -802,7 +802,7 @@ GetAxis( ) :idMat3 {
 //	dir = end - start;
 //
 //	// test near plane
-//	if ( dNear > 0.0f ) {
+//	if ( dNear > 0.0 ) {
 //		d1 = dNear - start.x;
 //		startInside &= FLOATSIGNBITSET( d1 );
 //		if ( FLOATNOTZERO( d1 ) ) {
@@ -932,7 +932,7 @@ GetAxis( ) :idMat3 {
 //	scale2 = -idMath::INFINITY;
 //
 //	// test near plane
-//	if ( dNear > 0.0f ) {
+//	if ( dNear > 0.0 ) {
 //		d1 = dNear - start.x;
 //		startInside &= FLOATSIGNBITSET( d1 );
 //		d2 = dNear - end.x;
@@ -1087,7 +1087,7 @@ GetAxis( ) :idMat3 {
 //			return true;
 //		}
 //	}
-//	if ( dNear > 0.0f ) {
+//	if ( dNear > 0.0 ) {
 //		for ( i = 0; i < 4; i++ ) {
 //			if ( bounds.LineIntersection( points[i], points[(i+1)&3] ) ) {
 //				return true;
@@ -1227,10 +1227,10 @@ GetAxis( ) :idMat3 {
 //		dir.y = idMath::Fabs( p.y ) - dLeft * scale;
 //		dir.z = idMath::Fabs( p.z ) - dUp * scale;
 //	}
-//	if ( dir.y > 0.0f ) {
+//	if ( dir.y > 0.0 ) {
 //		y = ( 1 + FLOATSIGNBITNOTSET( p.y ) );
 //	}
-//	if ( dir.z > 0.0f ) {
+//	if ( dir.z > 0.0 ) {
 //		z = ( 1 + FLOATSIGNBITNOTSET( p.z ) );
 //	}
 //	if ( p.x < dNear ) {
@@ -1327,14 +1327,14 @@ GetAxis( ) :idMat3 {
 //	idSwap( indexPoints2[2], indexPoints2[3] );
 //	idSwap( indexPoints2[6], indexPoints2[7] );
 //
-//	if ( LocalFrustumIntersectsFrustum( indexPoints2, ( localFrustum2.dNear > 0.0f ) ) ) {
+//	if ( LocalFrustumIntersectsFrustum( indexPoints2, ( localFrustum2.dNear > 0.0 ) ) ) {
 //		return true;
 //	}
 //
 //	idSwap( indexPoints1[2], indexPoints1[3] );
 //	idSwap( indexPoints1[6], indexPoints1[7] );
 //
-//	if ( frustum.LocalFrustumIntersectsFrustum( indexPoints1, ( localFrustum1.dNear > 0.0f ) ) ) {
+//	if ( frustum.LocalFrustumIntersectsFrustum( indexPoints1, ( localFrustum1.dNear > 0.0 ) ) ) {
 //		return true;
 //	}
 //
@@ -1372,7 +1372,7 @@ GetAxis( ) :idMat3 {
 //	AxisProjection( indexPoints, cornerVecs, plane.Normal(), min, max );
 //
 //	// if the frustum does not cross the winding plane
-//	if ( min + plane[3] > 0.0f || max + plane[3] < 0.0f ) {
+//	if ( min + plane[3] > 0.0 || max + plane[3] < 0.0 ) {
 //		return false;
 //	}
 //
@@ -1395,7 +1395,7 @@ GetAxis( ) :idMat3 {
 //			return true;
 //		}
 //	}
-//	if ( dNear > 0.0f ) {
+//	if ( dNear > 0.0 ) {
 //		for ( i = 0; i < 4; i++ ) {
 //			if ( winding.LineIntersection( plane, indexPoints[i], indexPoints[(i+1)&3] ) ) {
 //				return true;
@@ -1464,12 +1464,12 @@ GetAxis( ) :idMat3 {
 //	float value, bestValue;
 //	idVec3 dir;
 //
-//	assert( dFar > 0.0f );
+//	assert( dFar > 0.0 );
 //
-//	this->dNear = this->dFar = this->invFar = 0.0f;
+//	this->dNear = this->dFar = this->invFar = 0.0;
 //
 //	dir = box.GetCenter() - projectionOrigin;
-//	if ( dir.Normalize() == 0.0f ) {
+//	if ( dir.Normalize() == 0.0 ) {
 //		return false;
 //	}
 //
@@ -1499,13 +1499,13 @@ GetAxis( ) :idMat3 {
 //
 //		BoxToPoints( ( box.GetCenter() - projectionOrigin ) * this.axis.Transpose(), box.GetExtents(), box.GetAxis() * this.axis.Transpose(), points );
 //
-//		if ( points[0].x <= 1.0f ) {
+//		if ( points[0].x <= 1.0 ) {
 //			return false;
 //		}
 //
 //		minX = minY = maxY = minZ = maxZ = 0;
 //		for ( i = 1; i < 8; i++ ) {
-//			if ( points[i].x <= 1.0f ) {
+//			if ( points[i].x <= 1.0 ) {
 //				return false;
 //			}
 //			if ( points[i].x < points[minX].x ) {
@@ -1535,7 +1535,7 @@ GetAxis( ) :idMat3 {
 //	this->dFar = dFar;
 //	this->dLeft = Max( idMath::Fabs( points[minY].y / points[minY].x ), idMath::Fabs( points[maxY].y / points[maxY].x ) ) * dFar;
 //	this->dUp = Max( idMath::Fabs( points[minZ].z / points[minZ].x ), idMath::Fabs( points[maxZ].z / points[maxZ].x ) ) * dFar;
-//	this->invFar = 1.0f / dFar;
+//	this->invFar = 1.0 / dFar;
 //
 //#elif 1
 //
@@ -1556,10 +1556,10 @@ GetAxis( ) :idMat3 {
 //		b.Clear();
 //		for ( i = 0; i < 8; i++ ) {
 //			x = points[i].x;
-//			if ( x <= 1.0f ) {
+//			if ( x <= 1.0 ) {
 //				return false;
 //			}
-//			f = 1.0f / x;
+//			f = 1.0 / x;
 //			points[i].y *= f;
 //			points[i].z *= f;
 //			b.AddPoint( points[i] );
@@ -1577,7 +1577,7 @@ GetAxis( ) :idMat3 {
 //	this->dFar = dFar;
 //	this->dLeft = Max( idMath::Fabs( b[0][1] ), idMath::Fabs( b[1][1] ) ) * dFar;
 //	this->dUp = Max( idMath::Fabs( b[0][2] ), idMath::Fabs( b[1][2] ) ) * dFar;
-//	this->invFar = 1.0f / dFar;
+//	this->invFar = 1.0 / dFar;
 //
 //#else
 //
@@ -1596,17 +1596,17 @@ GetAxis( ) :idMat3 {
 //	}
 //
 //	dist[0] = this.axis[0] * ( box.GetCenter() - projectionOrigin ) - dist[0];
-//	if ( dist[0] <= 1.0f ) {
+//	if ( dist[0] <= 1.0 ) {
 //		return false;
 //	}
-//	float invDist = 1.0f / dist[0];
+//	float invDist = 1.0 / dist[0];
 //
 //	this->origin = projectionOrigin;
 //	this->dNear = dist[0];
 //	this->dFar = dFar;
 //	this->dLeft = dist[1] * invDist * dFar;
 //	this->dUp = dist[2] * invDist * dFar;
-//	this->invFar = 1.0f / dFar;
+//	this->invFar = 1.0 / dFar;
 //
 //#endif
 //
@@ -1624,14 +1624,14 @@ GetAxis( ) :idMat3 {
 //	idVec3 dir;
 //	float d, r, s, x, y;
 //
-//	assert( dFar > 0.0f );
+//	assert( dFar > 0.0 );
 //
 //	dir = sphere.GetOrigin() - projectionOrigin;
 //	d = dir.Normalize();
 //	r = sphere.GetRadius();
 //
-//	if ( d <= r + 1.0f ) {
-//		this->dNear = this->dFar = this->invFar = 0.0f;
+//	if ( d <= r + 1.0 ) {
+//		this->dNear = this->dFar = this->invFar = 0.0;
 //		return false;
 //	}
 //
@@ -1646,7 +1646,7 @@ GetAxis( ) :idMat3 {
 //	this->dFar = dFar;
 //	this->dLeft = x / y * dFar;
 //	this->dUp = dLeft;
-//	this->invFar = 1.0f / dFar;
+//	this->invFar = 1.0 / dFar;
 //
 //	return true;
 //}
@@ -1664,7 +1664,7 @@ GetAxis( ) :idMat3 {
 //	bounds.AxisProjection( this.axis[0], min, max );
 //	newdFar = max - this.axis[0] * this.origin;
 //	if ( newdFar <= dNear ) {
-//		MoveFarDistance( dNear + 1.0f );
+//		MoveFarDistance( dNear + 1.0 );
 //		return false;
 //	}
 //	MoveFarDistance( newdFar );
@@ -1684,7 +1684,7 @@ GetAxis( ) :idMat3 {
 //	box.AxisProjection( this.axis[0], min, max );
 //	newdFar = max - this.axis[0] * this.origin;
 //	if ( newdFar <= dNear ) {
-//		MoveFarDistance( dNear + 1.0f );
+//		MoveFarDistance( dNear + 1.0 );
 //		return false;
 //	}
 //	MoveFarDistance( newdFar );
@@ -1704,7 +1704,7 @@ GetAxis( ) :idMat3 {
 //	sphere.AxisProjection( this.axis[0], min, max );
 //	newdFar = max - this.axis[0] * this.origin;
 //	if ( newdFar <= dNear ) {
-//		MoveFarDistance( dNear + 1.0f );
+//		MoveFarDistance( dNear + 1.0 );
 //		return false;
 //	}
 //	MoveFarDistance( newdFar );
@@ -1724,7 +1724,7 @@ GetAxis( ) :idMat3 {
 //	frustum.AxisProjection( this.axis[0], min, max );
 //	newdFar = max - this.axis[0] * this.origin;
 //	if ( newdFar <= dNear ) {
-//		MoveFarDistance( dNear + 1.0f );
+//		MoveFarDistance( dNear + 1.0 );
 //		return false;
 //	}
 //	MoveFarDistance( newdFar );
@@ -1987,10 +1987,10 @@ GetAxis( ) :idMat3 {
 //		if ( FLOATSIGNBITSET( d1 ) ^ FLOATSIGNBITSET( d2 ) ) {
 //			f = d1 / ( d1 - d2 );
 //			p.x = start.x + f * dir.x;
-//			if ( p.x > 0.0f ) {
+//			if ( p.x > 0.0 ) {
 //				p.z = start.z + f * dir.z;
 //				if ( idMath::Fabs( p.z ) <= p.x * upScale ) {
-//					p.y = 1.0f;
+//					p.y = 1.0;
 //					p.z = p.z * dFar / ( p.x * dUp );
 //					bounds.AddPoint( p );
 //				}
@@ -2007,10 +2007,10 @@ GetAxis( ) :idMat3 {
 //		if ( FLOATSIGNBITSET( d1 ) ^ FLOATSIGNBITSET( d2 ) ) {
 //			f = d1 / ( d1 - d2 );
 //			p.x = start.x + f * dir.x;
-//			if ( p.x > 0.0f ) {
+//			if ( p.x > 0.0 ) {
 //				p.z = start.z + f * dir.z;
 //				if ( idMath::Fabs( p.z  ) <= p.x * upScale ) {
-//					p.y = -1.0f;
+//					p.y = -1.0;
 //					p.z = p.z * dFar / ( p.x * dUp );
 //					bounds.AddPoint( p );
 //				}
@@ -2032,11 +2032,11 @@ GetAxis( ) :idMat3 {
 //		if ( FLOATSIGNBITSET( d1 ) ^ FLOATSIGNBITSET( d2 ) ) {
 //			f = d1 / ( d1 - d2 );
 //			p.x = start.x + f * dir.x;
-//			if ( p.x > 0.0f ) {
+//			if ( p.x > 0.0 ) {
 //				p.y = start.y + f * dir.y;
 //				if ( idMath::Fabs( p.y ) <= p.x * leftScale ) {
 //					p.y = p.y * dFar / ( p.x * dLeft );
-//					p.z = 1.0f;
+//					p.z = 1.0;
 //					bounds.AddPoint( p );
 //				}
 //			}
@@ -2052,18 +2052,18 @@ GetAxis( ) :idMat3 {
 //		if ( FLOATSIGNBITSET( d1 ) ^ FLOATSIGNBITSET( d2 ) ) {
 //			f = d1 / ( d1 - d2 );
 //			p.x = start.x + f * dir.x;
-//			if ( p.x > 0.0f ) {
+//			if ( p.x > 0.0 ) {
 //				p.y = start.y + f * dir.y;
 //				if ( idMath::Fabs( p.y ) <= p.x * leftScale ) {
 //					p.y = p.y * dFar / ( p.x * dLeft );
-//					p.z = -1.0f;
+//					p.z = -1.0;
 //					bounds.AddPoint( p );
 //				}
 //			}
 //		}
 //	}
 //
-//	if ( cull1 == 0 && start.x > 0.0f ) {
+//	if ( cull1 == 0 && start.x > 0.0 ) {
 //		// add start point to projection bounds
 //		p.x = start.x;
 //		p.y = start.y * dFar / ( start.x * dLeft );
@@ -2071,7 +2071,7 @@ GetAxis( ) :idMat3 {
 //		bounds.AddPoint( p );
 //	}
 //
-//	if ( cull2 == 0 && end.x > 0.0f ) {
+//	if ( cull2 == 0 && end.x > 0.0 ) {
 //		// add end point to projection bounds
 //		p.x = end.x;
 //		p.y = end.y * dFar / ( end.x * dLeft );
@@ -2080,10 +2080,10 @@ GetAxis( ) :idMat3 {
 //	}
 //
 //	if ( start.x < bounds[0].x ) {
-//		bounds[0].x = start.x < 0.0f ? 0.0f : start.x;
+//		bounds[0].x = start.x < 0.0 ? 0.0 : start.x;
 //	}
 //	if ( end.x < bounds[0].x ) {
-//		bounds[0].x = end.x < 0.0f ? 0.0f : end.x;
+//		bounds[0].x = end.x < 0.0 ? 0.0 : end.x;
 //	}
 //
 //	startCull = cull1;
@@ -2132,10 +2132,10 @@ GetAxis( ) :idMat3 {
 //				if ( FLOATSIGNBITSET( d1 ) ^ FLOATSIGNBITSET( d2 ) ) {
 //					f = d1 / ( d1 - d2 );
 //					p.x = start.x + f * dir.x;
-//					if ( p.x > 0.0f ) {
+//					if ( p.x > 0.0 ) {
 //						p.z = start.z + f * dir.z;
 //						if ( idMath::Fabs( p.z ) <= p.x * upScale ) {
-//							p.y = 1.0f;
+//							p.y = 1.0;
 //							p.z = p.z * dFar / ( p.x * dUp );
 //							bounds.AddPoint( p );
 //						}
@@ -2152,10 +2152,10 @@ GetAxis( ) :idMat3 {
 //				if ( FLOATSIGNBITSET( d1 ) ^ FLOATSIGNBITSET( d2 ) ) {
 //					f = d1 / ( d1 - d2 );
 //					p.x = start.x + f * dir.x;
-//					if ( p.x > 0.0f ) {
+//					if ( p.x > 0.0 ) {
 //						p.z = start.z + f * dir.z;
 //						if ( idMath::Fabs( p.z  ) <= p.x * upScale ) {
-//							p.y = -1.0f;
+//							p.y = -1.0;
 //							p.z = p.z * dFar / ( p.x * dUp );
 //							bounds.AddPoint( p );
 //						}
@@ -2180,11 +2180,11 @@ GetAxis( ) :idMat3 {
 //				if ( FLOATSIGNBITSET( d1 ) ^ FLOATSIGNBITSET( d2 ) ) {
 //					f = d1 / ( d1 - d2 );
 //					p.x = start.x + f * dir.x;
-//					if ( p.x > 0.0f ) {
+//					if ( p.x > 0.0 ) {
 //						p.y = start.y + f * dir.y;
 //						if ( idMath::Fabs( p.y ) <= p.x * leftScale ) {
 //							p.y = p.y * dFar / ( p.x * dLeft );
-//							p.z = 1.0f;
+//							p.z = 1.0;
 //							bounds.AddPoint( p );
 //						}
 //					}
@@ -2200,11 +2200,11 @@ GetAxis( ) :idMat3 {
 //				if ( FLOATSIGNBITSET( d1 ) ^ FLOATSIGNBITSET( d2 ) ) {
 //					f = d1 / ( d1 - d2 );
 //					p.x = start.x + f * dir.x;
-//					if ( p.x > 0.0f ) {
+//					if ( p.x > 0.0 ) {
 //						p.y = start.y + f * dir.y;
 //						if ( idMath::Fabs( p.y ) <= p.x * leftScale ) {
 //							p.y = p.y * dFar / ( p.x * dLeft );
-//							p.z = -1.0f;
+//							p.z = -1.0;
 //							bounds.AddPoint( p );
 //						}
 //					}
@@ -2316,8 +2316,8 @@ GetAxis( ) :idMat3 {
 //
 //		projectionBounds[0].x = boxMin - base;
 //		projectionBounds[1].x = boxMax - base;
-//		projectionBounds[0].y = projectionBounds[0].z = -1.0f;
-//		projectionBounds[1].y = projectionBounds[1].z = 1.0f;
+//		projectionBounds[0].y = projectionBounds[0].z = -1.0;
+//		projectionBounds[1].y = projectionBounds[1].z = 1.0;
 //
 //		return true;
 //	}
@@ -2375,30 +2375,30 @@ GetAxis( ) :idMat3 {
 //		// test the outer edges of this frustum for intersection with the bounds
 //		if ( (outside & 2) && (outside & 8) ) {
 //			BoundsRayIntersection( bounds, localOrigin, localScaled[0] - localScaled[1] - localScaled[2], scale1, scale2 );
-//			if ( scale1 <= scale2 && scale1 >= 0.0f ) {
-//				projectionBounds.AddPoint( idVec3( scale1 * dFar, -1.0f, -1.0f ) );
-//				projectionBounds.AddPoint( idVec3( scale2 * dFar, -1.0f, -1.0f ) );
+//			if ( scale1 <= scale2 && scale1 >= 0.0 ) {
+//				projectionBounds.AddPoint( idVec3( scale1 * dFar, -1.0, -1.0 ) );
+//				projectionBounds.AddPoint( idVec3( scale2 * dFar, -1.0, -1.0 ) );
 //			}
 //		}
 //		if ( (outside & 2) && (outside & 4) ) {
 //			BoundsRayIntersection( bounds, localOrigin, localScaled[0] - localScaled[1] + localScaled[2], scale1, scale2 );
-//			if ( scale1 <= scale2 && scale1 >= 0.0f  ) {
-//				projectionBounds.AddPoint( idVec3( scale1 * dFar, -1.0f, 1.0f ) );
-//				projectionBounds.AddPoint( idVec3( scale2 * dFar, -1.0f, 1.0f ) );
+//			if ( scale1 <= scale2 && scale1 >= 0.0  ) {
+//				projectionBounds.AddPoint( idVec3( scale1 * dFar, -1.0, 1.0 ) );
+//				projectionBounds.AddPoint( idVec3( scale2 * dFar, -1.0, 1.0 ) );
 //			}
 //		}
 //		if ( (outside & 1) && (outside & 8) ) {
 //			BoundsRayIntersection( bounds, localOrigin, localScaled[0] + localScaled[1] - localScaled[2], scale1, scale2 );
-//			if ( scale1 <= scale2 && scale1 >= 0.0f  ) {
-//				projectionBounds.AddPoint( idVec3( scale1 * dFar, 1.0f, -1.0f ) );
-//				projectionBounds.AddPoint( idVec3( scale2 * dFar, 1.0f, -1.0f ) );
+//			if ( scale1 <= scale2 && scale1 >= 0.0  ) {
+//				projectionBounds.AddPoint( idVec3( scale1 * dFar, 1.0, -1.0 ) );
+//				projectionBounds.AddPoint( idVec3( scale2 * dFar, 1.0, -1.0 ) );
 //			}
 //		}
 //		if ( (outside & 1) && (outside & 2) ) {
 //			BoundsRayIntersection( bounds, localOrigin, localScaled[0] + localScaled[1] + localScaled[2], scale1, scale2 );
-//			if ( scale1 <= scale2 && scale1 >= 0.0f  ) {
-//				projectionBounds.AddPoint( idVec3( scale1 * dFar, 1.0f, 1.0f ) );
-//				projectionBounds.AddPoint( idVec3( scale2 * dFar, 1.0f, 1.0f ) );
+//			if ( scale1 <= scale2 && scale1 >= 0.0  ) {
+//				projectionBounds.AddPoint( idVec3( scale1 * dFar, 1.0, 1.0 ) );
+//				projectionBounds.AddPoint( idVec3( scale2 * dFar, 1.0, 1.0 ) );
 //			}
 //		}
 //	}
@@ -2437,10 +2437,10 @@ GetAxis( ) :idMat3 {
 //	}
 //
 //	// bounds that cover the whole frustum
-//	projectionBounds[0].x = 0.0f;
+//	projectionBounds[0].x = 0.0;
 //	projectionBounds[1].x = dFar;
-//	projectionBounds[0].y = projectionBounds[0].z = -1.0f;
-//	projectionBounds[1].y = projectionBounds[1].z = 1.0f;
+//	projectionBounds[0].y = projectionBounds[0].z = -1.0;
+//	projectionBounds[1].y = projectionBounds[1].z = 1.0;
 //	return true;
 //}
 //
@@ -2466,8 +2466,8 @@ GetAxis( ) :idMat3 {
 //
 //		projectionBounds[0].x = frustumMin - base;
 //		projectionBounds[1].x = frustumMax - base;
-//		projectionBounds[0].y = projectionBounds[0].z = -1.0f;
-//		projectionBounds[1].y = projectionBounds[1].z = 1.0f;
+//		projectionBounds[0].y = projectionBounds[0].z = -1.0;
+//		projectionBounds[1].y = projectionBounds[1].z = 1.0;
 //		return true;
 //	}
 //
@@ -2501,7 +2501,7 @@ GetAxis( ) :idMat3 {
 //	}
 //
 //	// test the remaining edges of the other frustum
-//	if ( localFrustum.dNear > 0.0f ) {
+//	if ( localFrustum.dNear > 0.0 ) {
 //		for ( i = 0; i < 4; i++ ) {
 //			p1 = i;
 //			p2 = (i+1)&3;
@@ -2527,30 +2527,30 @@ GetAxis( ) :idMat3 {
 //		// test the outer edges of this frustum for intersection with the other frustum
 //		if ( (outside & 2) && (outside & 8) ) {
 //			frustum.LocalRayIntersection( localOrigin, localScaled[0] - localScaled[1] - localScaled[2], scale1, scale2 );
-//			if ( scale1 <= scale2 && scale1 >= 0.0f ) {
-//				projectionBounds.AddPoint( idVec3( scale1 * dFar, -1.0f, -1.0f ) );
-//				projectionBounds.AddPoint( idVec3( scale2 * dFar, -1.0f, -1.0f ) );
+//			if ( scale1 <= scale2 && scale1 >= 0.0 ) {
+//				projectionBounds.AddPoint( idVec3( scale1 * dFar, -1.0, -1.0 ) );
+//				projectionBounds.AddPoint( idVec3( scale2 * dFar, -1.0, -1.0 ) );
 //			}
 //		}
 //		if ( (outside & 2) && (outside & 4) ) {
 //			frustum.LocalRayIntersection( localOrigin, localScaled[0] - localScaled[1] + localScaled[2], scale1, scale2 );
-//			if ( scale1 <= scale2 && scale1 >= 0.0f  ) {
-//				projectionBounds.AddPoint( idVec3( scale1 * dFar, -1.0f, 1.0f ) );
-//				projectionBounds.AddPoint( idVec3( scale2 * dFar, -1.0f, 1.0f ) );
+//			if ( scale1 <= scale2 && scale1 >= 0.0  ) {
+//				projectionBounds.AddPoint( idVec3( scale1 * dFar, -1.0, 1.0 ) );
+//				projectionBounds.AddPoint( idVec3( scale2 * dFar, -1.0, 1.0 ) );
 //			}
 //		}
 //		if ( (outside & 1) && (outside & 8) ) {
 //			frustum.LocalRayIntersection( localOrigin, localScaled[0] + localScaled[1] - localScaled[2], scale1, scale2 );
-//			if ( scale1 <= scale2 && scale1 >= 0.0f  ) {
-//				projectionBounds.AddPoint( idVec3( scale1 * dFar, 1.0f, -1.0f ) );
-//				projectionBounds.AddPoint( idVec3( scale2 * dFar, 1.0f, -1.0f ) );
+//			if ( scale1 <= scale2 && scale1 >= 0.0  ) {
+//				projectionBounds.AddPoint( idVec3( scale1 * dFar, 1.0, -1.0 ) );
+//				projectionBounds.AddPoint( idVec3( scale2 * dFar, 1.0, -1.0 ) );
 //			}
 //		}
 //		if ( (outside & 1) && (outside & 2) ) {
 //			frustum.LocalRayIntersection( localOrigin, localScaled[0] + localScaled[1] + localScaled[2], scale1, scale2 );
-//			if ( scale1 <= scale2 && scale1 >= 0.0f  ) {
-//				projectionBounds.AddPoint( idVec3( scale1 * dFar, 1.0f, 1.0f ) );
-//				projectionBounds.AddPoint( idVec3( scale2 * dFar, 1.0f, 1.0f ) );
+//			if ( scale1 <= scale2 && scale1 >= 0.0  ) {
+//				projectionBounds.AddPoint( idVec3( scale1 * dFar, 1.0, 1.0 ) );
+//				projectionBounds.AddPoint( idVec3( scale2 * dFar, 1.0, 1.0 ) );
 //			}
 //		}
 //	}
@@ -2619,22 +2619,22 @@ GetAxis( ) :idMat3 {
 //		// test the outer edges of this frustum for intersection with the winding
 //		if ( (outside & 2) && (outside & 8) ) {
 //			if ( winding.RayIntersection( plane, this.origin, scaled[0] - scaled[1] - scaled[2], scale ) ) {
-//				projectionBounds.AddPoint( idVec3( scale * dFar, -1.0f, -1.0f ) );
+//				projectionBounds.AddPoint( idVec3( scale * dFar, -1.0, -1.0 ) );
 //			}
 //		}
 //		if ( (outside & 2) && (outside & 4) ) {
 //			if ( winding.RayIntersection( plane, this.origin, scaled[0] - scaled[1] + scaled[2], scale ) ) {
-//				projectionBounds.AddPoint( idVec3( scale * dFar, -1.0f, 1.0f ) );
+//				projectionBounds.AddPoint( idVec3( scale * dFar, -1.0, 1.0 ) );
 //			}
 //		}
 //		if ( (outside & 1) && (outside & 8) ) {
 //			if ( winding.RayIntersection( plane, this.origin, scaled[0] + scaled[1] - scaled[2], scale ) ) {
-//				projectionBounds.AddPoint( idVec3( scale * dFar, 1.0f, -1.0f ) );
+//				projectionBounds.AddPoint( idVec3( scale * dFar, 1.0, -1.0 ) );
 //			}
 //		}
 //		if ( (outside & 1) && (outside & 2) ) {
 //			if ( winding.RayIntersection( plane, this.origin, scaled[0] + scaled[1] + scaled[2], scale ) ) {
-//				projectionBounds.AddPoint( idVec3( scale * dFar, 1.0f, 1.0f ) );
+//				projectionBounds.AddPoint( idVec3( scale * dFar, 1.0, 1.0 ) );
 //			}
 //		}
 //	}
@@ -2674,7 +2674,7 @@ GetAxis( ) :idMat3 {
 //	bounds[0] = -box.GetExtents();
 //	bounds[1] = box.GetExtents();
 //
-//	minf = ( dNear + 1.0f ) * invFar;
+//	minf = ( dNear + 1.0 ) * invFar;
 //
 //	for ( i = 0; i < 4; i++ ) {
 //
@@ -2744,7 +2744,7 @@ GetAxis( ) :idMat3 {
 //		if ( FLOATSIGNBITSET( d1 ) ^ FLOATSIGNBITSET( d2 ) ) {
 //			f = d1 / ( d1 - d2 );
 //			x = localStart.x + f * localDir.x;
-//			if ( x >= 0.0f ) {
+//			if ( x >= 0.0 ) {
 //				if ( idMath::Fabs( localStart.z + f * localDir.z ) <= x * upScale ) {
 //					if ( f < scale1 ) { scale1 = f; startClip = 0; }
 //					if ( f > scale2 ) { scale2 = f; endClip = 0; }
@@ -2762,7 +2762,7 @@ GetAxis( ) :idMat3 {
 //		if ( FLOATSIGNBITSET( d1 ) ^ FLOATSIGNBITSET( d2 ) ) {
 //			f = d1 / ( d1 - d2 );
 //			x = localStart.x + f * localDir.x;
-//			if ( x >= 0.0f ) {
+//			if ( x >= 0.0 ) {
 //				if ( idMath::Fabs( localStart.z + f * localDir.z ) <= x * upScale ) {
 //					if ( f < scale1 ) { scale1 = f; startClip = 1; }
 //					if ( f > scale2 ) { scale2 = f; endClip = 1; }
@@ -2785,7 +2785,7 @@ GetAxis( ) :idMat3 {
 //		if ( FLOATSIGNBITSET( d1 ) ^ FLOATSIGNBITSET( d2 ) ) {
 //			f = d1 / ( d1 - d2 );
 //			x = localStart.x + f * localDir.x;
-//			if ( x >= 0.0f ) {
+//			if ( x >= 0.0 ) {
 //				if ( idMath::Fabs( localStart.y + f * localDir.y ) <= x * leftScale ) {
 //					if ( f < scale1 ) { scale1 = f; startClip = 2; }
 //					if ( f > scale2 ) { scale2 = f; endClip = 2; }
@@ -2803,7 +2803,7 @@ GetAxis( ) :idMat3 {
 //		if ( FLOATSIGNBITSET( d1 ) ^ FLOATSIGNBITSET( d2 ) ) {
 //			f = d1 / ( d1 - d2 );
 //			x = localStart.x + f * localDir.x;
-//			if ( x >= 0.0f ) {
+//			if ( x >= 0.0 ) {
 //				if ( idMath::Fabs( localStart.y + f * localDir.y ) <= x * leftScale ) {
 //					if ( f < scale1 ) { scale1 = f; startClip = 3; }
 //					if ( f > scale2 ) { scale2 = f; endClip = 3; }
@@ -2887,8 +2887,8 @@ GetAxis( ) :idMat3 {
 //
 //		projectionBounds[0].x = Max( clipBoxMin, frustumMin ) - base;
 //		projectionBounds[1].x = Min( clipBoxMax, frustumMax ) - base;
-//		projectionBounds[0].y = projectionBounds[0].z = -1.0f;
-//		projectionBounds[1].y = projectionBounds[1].z = 1.0f;
+//		projectionBounds[0].y = projectionBounds[0].z = -1.0;
+//		projectionBounds[1].y = projectionBounds[1].z = 1.0;
 //		return true;
 //	}
 //
@@ -2923,7 +2923,7 @@ GetAxis( ) :idMat3 {
 //	if ( outside ) {
 //
 //		// test the remaining edges of the clipped frustum
-//		if ( !nearCull && localFrustum.dNear > 0.0f ) {
+//		if ( !nearCull && localFrustum.dNear > 0.0 ) {
 //			for ( i = 0; i < 4; i++ ) {
 //				p1 = i;
 //				p2 = (i+1)&3;
@@ -2957,7 +2957,7 @@ GetAxis( ) :idMat3 {
 //		upScale = frustum.dUp * frustum.invFar;
 //		for ( i = 0; i < 8; i++ ) {
 //			idVec3 &p = localPoints1[i];
-//			if ( !( boxVertPlanes[i] & usedClipPlanes ) || p.x <= 0.0f ) {
+//			if ( !( boxVertPlanes[i] & usedClipPlanes ) || p.x <= 0.0 ) {
 //				boxPointCull[i] = 1|2|4|8;
 //			}
 //			else {
@@ -3046,41 +3046,41 @@ GetAxis( ) :idMat3 {
 //		// test the outer edges of this frustum for intersection with both the other frustum and the clip bounds
 //		if ( (outside & 2) && (outside & 8) ) {
 //			frustum.LocalRayIntersection( localOrigin1, localAxis1[0] - localAxis1[1] - localAxis1[2], s1, s2 );
-//			if ( s1 <= s2 && s1 >= 0.0f ) {
+//			if ( s1 <= s2 && s1 >= 0.0 ) {
 //				BoundsRayIntersection( clipBounds, localOrigin2, localAxis2[0] - localAxis2[1] - localAxis2[2], t1, t2 );
 //				if ( t1 <= t2 && t2 > s1 && t1 < s2 ) {
-//					projectionBounds.AddPoint( idVec3( s1 * dFar, -1.0f, -1.0f ) );
-//					projectionBounds.AddPoint( idVec3( s2 * dFar, -1.0f, -1.0f ) );
+//					projectionBounds.AddPoint( idVec3( s1 * dFar, -1.0, -1.0 ) );
+//					projectionBounds.AddPoint( idVec3( s2 * dFar, -1.0, -1.0 ) );
 //				}
 //			}
 //		}
 //		if ( (outside & 2) && (outside & 4) ) {
 //			frustum.LocalRayIntersection( localOrigin1, localAxis1[0] - localAxis1[1] + localAxis1[2], s1, s2 );
-//			if ( s1 <= s2 && s1 >= 0.0f ) {
+//			if ( s1 <= s2 && s1 >= 0.0 ) {
 //				BoundsRayIntersection( clipBounds, localOrigin2, localAxis2[0] - localAxis2[1] + localAxis2[2], t1, t2 );
 //				if ( t1 <= t2 && t2 > s1 && t1 < s2 ) {
-//					projectionBounds.AddPoint( idVec3( s1 * dFar, -1.0f, 1.0f ) );
-//					projectionBounds.AddPoint( idVec3( s2 * dFar, -1.0f, 1.0f ) );
+//					projectionBounds.AddPoint( idVec3( s1 * dFar, -1.0, 1.0 ) );
+//					projectionBounds.AddPoint( idVec3( s2 * dFar, -1.0, 1.0 ) );
 //				}
 //			}
 //		}
 //		if ( (outside & 1) && (outside & 8) ) {
 //			frustum.LocalRayIntersection( localOrigin1, localAxis1[0] + localAxis1[1] - localAxis1[2], s1, s2 );
-//			if ( s1 <= s2 && s1 >= 0.0f ) {
+//			if ( s1 <= s2 && s1 >= 0.0 ) {
 //				BoundsRayIntersection( clipBounds, localOrigin2, localAxis2[0] + localAxis2[1] - localAxis2[2], t1, t2 );
 //				if ( t1 <= t2 && t2 > s1 && t1 < s2 ) {
-//					projectionBounds.AddPoint( idVec3( s1 * dFar, 1.0f, -1.0f ) );
-//					projectionBounds.AddPoint( idVec3( s2 * dFar, 1.0f, -1.0f ) );
+//					projectionBounds.AddPoint( idVec3( s1 * dFar, 1.0, -1.0 ) );
+//					projectionBounds.AddPoint( idVec3( s2 * dFar, 1.0, -1.0 ) );
 //				}
 //			}
 //		}
 //		if ( (outside & 1) && (outside & 2) ) {
 //			frustum.LocalRayIntersection( localOrigin1, localAxis1[0] + localAxis1[1] + localAxis1[2], s1, s2 );
-//			if ( s1 <= s2 && s1 >= 0.0f ) {
+//			if ( s1 <= s2 && s1 >= 0.0 ) {
 //				BoundsRayIntersection( clipBounds, localOrigin2, localAxis2[0] + localAxis2[1] + localAxis2[2], t1, t2 );
 //				if ( t1 <= t2 && t2 > s1 && t1 < s2 ) {
-//					projectionBounds.AddPoint( idVec3( s1 * dFar, 1.0f, 1.0f ) );
-//					projectionBounds.AddPoint( idVec3( s2 * dFar, 1.0f, 1.0f ) );
+//					projectionBounds.AddPoint( idVec3( s1 * dFar, 1.0, 1.0 ) );
+//					projectionBounds.AddPoint( idVec3( s2 * dFar, 1.0, 1.0 ) );
 //				}
 //			}
 //		}

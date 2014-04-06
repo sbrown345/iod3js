@@ -233,7 +233,7 @@ class idEntityPtr<type> {
 
 ////	// synchronize entity pointers over the network
 ////	int						GetSpawnId( ) const { return spawnId; }
-////	bool					SetSpawnId( int id );
+////	bool					SetSpawnId( /*int*/ id:number );
 ////	bool					UpdateSpawnId( );
 
 ////	bool					IsValid( ) const;
@@ -266,7 +266,7 @@ constructor() {
 		return this;
 	}
 
-////ID_INLINE bool idEntityPtr<type>::SetSpawnId( int id ) {
+////ID_INLINE bool idEntityPtr<type>::SetSpawnId( /*int*/ id:number ) {
 ////	// the reason for this first check is unclear:
 ////	// the function returning false may mean the spawnId is already set right, or the entity is missing
 ////	if ( id == this.spawnId ) {
@@ -1121,10 +1121,11 @@ SetPersistentPlayerInfo ( /*int */clientNum: number, playerInfo: idDict): void {
 idGameLocal::Printf
 ============
 */
-Printf ( /*const char **/ fmt: string, ...args: any[]): void {
-		var argArr = args.slice(0);
-		argArr.unshift(fmt.trim());
-		console.log.apply(console, argArr);
+	Printf ( /*const char **/ fmt: string, ...args: any[] ): void {
+		var argArr = args.slice( 0 );
+		argArr.unshift( fmt.trim ( ) );
+		console.log.apply( console, argArr );
+		todo();
 	}
 
 /*
@@ -1132,13 +1133,14 @@ Printf ( /*const char **/ fmt: string, ...args: any[]): void {
 idGameLocal::DPrintf
 ============
 */
-DPrintf ( /*const char **/ fmt: string, ...args: any[]): void {
-		if (!developer.GetBool()) {
+	DPrintf ( /*const char **/ fmt: string, ...args: any[] ): void {
+		if ( !developer.GetBool ( ) ) {
 			return;
 		}
-		var argArr = args.slice(0);
-		argArr.unshift(fmt.trim());
-		console.log.apply(console, argArr);
+		var argArr = args.slice( 0 );
+		argArr.unshift( fmt.trim ( ) );
+		console.log.apply( console, argArr );
+		todo ( );
 	}
 
 /*
@@ -1146,22 +1148,20 @@ DPrintf ( /*const char **/ fmt: string, ...args: any[]): void {
 idGameLocal::Warning
 ============
 */
-Warning (fmt: string, ...args: any[]): void {
-		todoThrow();
+	Warning ( fmt: string, ...args: any[] ): void {
 		//va_list		argptr;
-		//char		text[MAX_STRING_CHARS];
-		//idThread *	thread;
-
+		var text = new Uint8Array( MAX_STRING_CHARS );
+		var thread: idThread;
 		//va_start( argptr, fmt );
-		//idStr::vsnPrintf( text, sizeof( text ), fmt, argptr );
+		idStr.vsnPrintf( text, sizeof( text ), fmt, args );
 		//va_end( argptr );
 
-		//thread = idThread::CurrentThread();
-		//if ( thread ) {
-		//	thread.Warning( "%s", text );
-		//} else {
-		//	common.Warning( "%s", text );
-		//}
+		thread = idThread.CurrentThread ( );
+		if ( thread ) {
+			thread.Warning( "%s", text );
+		} else {
+			common.Warning( "%s", text );
+		}
 	}
 
 /////*

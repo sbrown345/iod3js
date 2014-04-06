@@ -681,44 +681,44 @@ Aborts the currently executing function
 		this.StackTrace ( );
 		todoThrow ( );
 		//va_list argptr;
-		//char	text[ 1024 ];
+		var text: string; //char	text[ 1024 ];
 
 		//va_start( argptr, fmt );
-		//vsprintf( text, fmt, argptr );
+		text = vsprintf( fmt, args );
 		//va_end( argptr );
 
-		//StackTrace();
+		this.StackTrace ( );
 
-		//if ( ( this.instructionPointer >= 0 ) && ( this.instructionPointer < gameLocal.program.NumStatements() ) ) {
-		//	statement_t &line = gameLocal.program.GetStatement( this.instructionPointer );
-		//	common.Error( "%s(%d): Thread '%s': %s\n", gameLocal.program.GetFilename( line.file ), line.linenumber, this.thread.GetThreadName(), text );
-		//} else {
-		//	common.Error( "Thread '%s': %s\n", this.thread.GetThreadName(), text );
-		//}
+		if ( ( this.instructionPointer >= 0 ) && ( this.instructionPointer < gameLocal.program.NumStatements ( ) ) ) {
+			var line = gameLocal.program.GetStatement( this.instructionPointer );
+			common.Error( "%s(%d): Thread '%s': %s\n", gameLocal.program.GetFilename( line.file ), line.linenumber, this.thread.GetThreadName ( ), text );
+		} else {
+			common.Error( "Thread '%s': %s\n", this.thread.GetThreadName ( ), text );
+		}
 	}
 
-///*
-//============
-//idInterpreter::Warning
-//
-//Prints file and line number information with warning.
-//============
-//*/
-//void idInterpreter::Warning( char *fmt, ... ) const {
-//	va_list argptr;
-//	char	text[ 1024 ];
-//
-//	va_start( argptr, fmt );
-//	vsprintf( text, fmt, argptr );
-//	va_end( argptr );
-//
-//	if ( ( this.instructionPointer >= 0 ) && ( this.instructionPointer < gameLocal.program.NumStatements() ) ) {
-//		statement_t &line = gameLocal.program.GetStatement( this.instructionPointer );
-//		common.Warning( "%s(%d): Thread '%s': %s", gameLocal.program.GetFilename( line.file ), line.linenumber, this.thread.GetThreadName(), text );
-//	} else {
-//		common.Warning( "Thread '%s' : %s", this.thread.GetThreadName(), text );
-//	}
-//}
+/*
+============
+idInterpreter::Warning
+
+Prints file and line number information with warning.
+============
+*/
+	Warning ( fmt: string, ...args: any[] ): void {
+		//va_list argptr;
+		var text: string; //char	text[ 1024 ];
+
+		//va_start( argptr, fmt );
+		text = vsprintf( fmt, args );
+		//va_end( argptr );
+
+		if ( ( this.instructionPointer >= 0 ) && ( this.instructionPointer < gameLocal.program.NumStatements ( ) ) ) {
+			var line = gameLocal.program.GetStatement( this.instructionPointer );
+			common.Warning( "%s(%d): Thread '%s': %s", gameLocal.program.GetFilename( line.file ), line.linenumber, this.thread.GetThreadName ( ), text );
+		} else {
+			common.Warning( "Thread '%s' : %s", this.thread.GetThreadName ( ), text );
+		}
+	}
 //
 ///*
 //================

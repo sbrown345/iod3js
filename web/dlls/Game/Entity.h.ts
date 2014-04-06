@@ -300,11 +300,11 @@ class idEntity extends idClass {
 ////							// called from the physics object when colliding, should return true if the physics simulation should stop
 ////	virtual bool			Collide( const trace_t &collision, const idVec3 &velocity );
 ////							// retrieves impact information, 'ent' is the entity retrieving the info
-////	virtual void			GetImpactInfo( ent:idEntity, int id, const idVec3 &point, impactInfo_t *info );
+////	virtual void			GetImpactInfo( ent:idEntity, /*int*/ id:number, const idVec3 &point, impactInfo_t *info );
 ////							// apply an impulse to the physics object, 'ent' is the entity applying the impulse
-////	virtual void			ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse );
+////	virtual void			ApplyImpulse( ent:idEntity, /*int*/ id:number, const idVec3 &point, const idVec3 &impulse );
 ////							// add a force to the physics object, 'ent' is the entity adding the force
-////	virtual void			AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force );
+////	virtual void			AddForce( ent:idEntity, /*int*/ id:number, const idVec3 &point, const idVec3 &force );
 ////							// activate the physics object, 'ent' is the entity activating this entity
 ////	virtual void			ActivatePhysics( ent:idEntity );
 ////							// returns true if the physics object is at rest
@@ -2844,14 +2844,13 @@ idEntity::SetAxis
 ================
 */
 	SetAxis ( axis: idMat3 ) {
-		todoThrow ( );
-		//if ( this.GetPhysics().IsType( idPhysics_Actor.Type ) ) {
-		//	static_cast<idActor *>(this).viewAxis = axis;
-		//} else {
-		//	this.GetPhysics().SetAxis( axis );
-		//}
+		if ( this.GetPhysics().IsType( idPhysics_Actor.Type ) ) {
+			static_cast<idActor >(this).viewAxis = axis;
+		} else {
+			this.GetPhysics().SetAxis( axis );
+		}
 
-		//this.UpdateVisuals();
+		this.UpdateVisuals();
 	}
 ////
 /////*
@@ -2925,7 +2924,7 @@ idEntity::GetPhysicsToSoundTransform
 ////idEntity::GetImpactInfo
 ////================
 ////*/
-////GetImpactInfo( ent:idEntity, int id, const idVec3 &point, impactInfo_t *info ) {
+////GetImpactInfo( ent:idEntity, /*int*/ id:number, const idVec3 &point, impactInfo_t *info ) {
 ////	this.GetPhysics().GetImpactInfo( id, point, info );
 ////}
 ////
@@ -2934,7 +2933,7 @@ idEntity::GetPhysicsToSoundTransform
 ////idEntity::ApplyImpulse
 ////================
 ////*/
-////ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse ) {
+////ApplyImpulse( ent:idEntity, /*int*/ id:number, const idVec3 &point, const idVec3 &impulse ) {
 ////	this.GetPhysics().ApplyImpulse( id, point, impulse );
 ////}
 ////
@@ -2943,7 +2942,7 @@ idEntity::GetPhysicsToSoundTransform
 ////idEntity::AddForce
 ////================
 ////*/
-////AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force ) {
+////AddForce( ent:idEntity, /*int*/ id:number, const idVec3 &point, const idVec3 &force ) {
 ////	this.GetPhysics().AddForce( id, point, force );
 ////}
 ////

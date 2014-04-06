@@ -584,22 +584,22 @@ idPhysics_Static::idPhysics_Static
 	////		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
 	////	}
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::GetOrigin
-	////================
-	////*/
-	////const idVec3 &idPhysics_Static::GetOrigin( /*int*/ id:number  = 0) const {
-	////	return this.current.origin;
-	////}
+	
+	/*
+	================
+	idPhysics_Static::GetOrigin
+	================
+	*/
+GetOrigin( /*int*/ id:number  = 0) :idVec3 {
+		return this.current.origin;
+	}
 	
 	/*
 	================
 	idPhysics_Static::GetAxis
 	================
 	*/
-	const idMat3 &idPhysics_Static::GetAxis( /*int*/ id:number  = 0) const {
+	GetAxis( /*int*/ id: number  = 0): idMat3 {
 		return this.current.axis;
 	}
 	

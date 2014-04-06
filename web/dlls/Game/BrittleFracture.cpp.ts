@@ -651,7 +651,7 @@ var SHARD_FADE_START	= 2000;
 ////idBrittleFracture::ApplyImpulse
 ////================
 ////*/
-////void idBrittleFracture::ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse ) {
+////void idBrittleFracture::ApplyImpulse( ent:idEntity, /*int*/ id:number, const idVec3 &point, const idVec3 &impulse ) {
 
 ////	if ( id < 0 || id >= shards.Num() ) {
 ////		return;
@@ -669,7 +669,7 @@ var SHARD_FADE_START	= 2000;
 ////idBrittleFracture::AddForce
 ////================
 ////*/
-////void idBrittleFracture::AddForce( ent:idEntity, int id, const idVec3 &point, const idVec3 &force ) {
+////void idBrittleFracture::AddForce( ent:idEntity, /*int*/ id:number, const idVec3 &point, const idVec3 &force ) {
 
 ////	if ( id < 0 || id >= shards.Num() ) {
 ////		return;

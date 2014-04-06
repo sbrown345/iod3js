@@ -108,8 +108,8 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	void					UpdateTime(int endTimeMSec);
 	//	int						GetTime(void) const;
 	//
-	//	void					GetImpactInfo(const int id, const idVec3 &point, impactInfo_t *info) const;
-	//	void					ApplyImpulse(const int id, const idVec3 &point, const idVec3 &impulse);
+	//	void					GetImpactInfo(/*int*/ id:number, const idVec3 &point, impactInfo_t *info) const;
+	//	void					ApplyImpulse(/*int*/ id:number, const idVec3 &point, const idVec3 &impulse);
 	//	void					Activate(void);
 	//	void					PutToRest(void);
 	//	bool					IsAtRest(void) const;
@@ -118,18 +118,18 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	void					SaveState(void);
 	//	void					RestoreState(void);
 	//
-	//	void					SetOrigin(const idVec3 &newOrigin, int id = -1);
-	//	void					SetAxis(const idMat3 &newAxis, int id = -1);
+	//	void					SetOrigin(const idVec3 &newOrigin, /*int*/ id:number = -1);
+	//	void					SetAxis(const idMat3 &newAxis, /*int*/ id:number = -1);
 	//
-	//	void					Translate(const idVec3 &translation, int id = -1);
-	//	void					Rotate(const idRotation &rotation, int id = -1);
+	//	void					Translate(const idVec3 &translation, /*int*/ id:number = -1);
+	//	void					Rotate(const idRotation &rotation, /*int*/ id:number = -1);
 	//
-	//	void					SetLinearVelocity(const idVec3 &newLinearVelocity, int id = 0);
+	//	void					SetLinearVelocity(const idVec3 &newLinearVelocity, /*int*/ id:number = 0);
 	//
-	//	const idVec3 &			GetLinearVelocity(int id = 0) const;
+	//	const idVec3 &			GetLinearVelocity(/*int*/ id:number = 0) const;
 	//
 	//	void					SetPushed(int deltaTime);
-	//	const idVec3 &			GetPushedLinearVelocity(const int id = 0) const;
+	//	const idVec3 &			GetPushedLinearVelocity(/*int*/ id:number = 0) const;
 	//
 	//	void					SetMaster(idEntity *master, const bool orientated = true);
 	//
@@ -693,7 +693,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//idPhysics_Monster::GetImpactInfo
 	//================
 	//*/
-	//void idPhysics_Monster::GetImpactInfo( const int id, const idVec3 &point, impactInfo_t *info ) const {
+	//void idPhysics_Monster::GetImpactInfo( /*int*/ id:number, const idVec3 &point, impactInfo_t *info ) const {
 	//	info->invMass = invMass;
 	//	info->invInertiaTensor.Zero();
 	//	info->position.Zero();
@@ -705,7 +705,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//idPhysics_Monster::ApplyImpulse
 	//================
 	//*/
-	//void idPhysics_Monster::ApplyImpulse( const int id, const idVec3 &point, const idVec3 &impulse ) {
+	//void idPhysics_Monster::ApplyImpulse( /*int*/ id:number, const idVec3 &point, const idVec3 &impulse ) {
 	//	if ( noImpact ) {
 	//		return;
 	//	}
@@ -758,7 +758,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//idPhysics_Player::SetOrigin
 	//================
 	//*/
-	//void idPhysics_Monster::SetOrigin( const idVec3 &newOrigin, int id ) {
+	//void idPhysics_Monster::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
 	//	idVec3 masterOrigin;
 	//	idMat3 masterAxis;
 	//
@@ -779,7 +779,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//idPhysics_Player::SetAxis
 	//================
 	//*/
-	//void idPhysics_Monster::SetAxis( const idMat3 &newAxis, int id ) {
+	//void idPhysics_Monster::SetAxis( const idMat3 &newAxis, /*int*/ id:number ) {
 	//	clipModel->Link( gameLocal.clip, self, 0, clipModel->GetOrigin(), newAxis );
 	//	Activate();
 	//}
@@ -789,7 +789,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//idPhysics_Monster::Translate
 	//================
 	//*/
-	//void idPhysics_Monster::Translate( const idVec3 &translation, int id ) {
+	//void idPhysics_Monster::Translate( const idVec3 &translation, /*int*/ id:number ) {
 	//
 	//	current.localOrigin += translation;
 	//	current.origin += translation;
@@ -802,7 +802,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//idPhysics_Monster::Rotate
 	//================
 	//*/
-	//void idPhysics_Monster::Rotate( const idRotation &rotation, int id ) {
+	//void idPhysics_Monster::Rotate( const idRotation &rotation, /*int*/ id:number ) {
 	//	idVec3 masterOrigin;
 	//	idMat3 masterAxis;
 	//
@@ -823,7 +823,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//idPhysics_Monster::SetLinearVelocity
 	//================
 	//*/
-	//void idPhysics_Monster::SetLinearVelocity( const idVec3 &newLinearVelocity, int id ) {
+	//void idPhysics_Monster::SetLinearVelocity( const idVec3 &newLinearVelocity, /*int*/ id:number ) {
 	//	current.velocity = newLinearVelocity;
 	//	Activate();
 	//}
@@ -833,7 +833,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//idPhysics_Monster::GetLinearVelocity
 	//================
 	//*/
-	//const idVec3 &idPhysics_Monster::GetLinearVelocity( int id ) const {
+	//const idVec3 &idPhysics_Monster::GetLinearVelocity( /*int*/ id:number ) const {
 	//	return current.velocity;
 	//}
 	//
@@ -852,7 +852,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//idPhysics_Monster::GetPushedLinearVelocity
 	//================
 	//*/
-	//const idVec3 &idPhysics_Monster::GetPushedLinearVelocity( const int id ) const {
+	//const idVec3 &idPhysics_Monster::GetPushedLinearVelocity( /*int*/ id:number ) const {
 	//	return current.pushVelocity;
 	//}
 	//

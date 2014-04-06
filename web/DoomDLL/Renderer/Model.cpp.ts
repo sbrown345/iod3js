@@ -2266,7 +2266,7 @@ idRenderModelStatic.prototype.TouchData = function ( ) {
 ////idRenderModelStatic::DeleteSurfaceWithId
 ////=================
 ////*/
-////bool idRenderModelStatic::DeleteSurfaceWithId( int id ) {
+////bool idRenderModelStatic::DeleteSurfaceWithId( /*int*/ id:number ) {
 ////	var/*int*/i:number;
 
 ////	for ( i = 0; i < this.surfaces.Num(); i++ ) {
@@ -2301,7 +2301,7 @@ idRenderModelStatic.prototype.TouchData = function ( ) {
 ////idRenderModelStatic::FindSurfaceWithId
 ////=================
 ////*/
-////bool idRenderModelStatic::FindSurfaceWithId( int id, int &surfaceNum ) {
+////bool idRenderModelStatic::FindSurfaceWithId( /*int*/ id:number, int &surfaceNum ) {
 ////	var/*int*/i:number;
 
 ////	for ( i = 0; i < this.surfaces.Num(); i++ ) {

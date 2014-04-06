@@ -28,6 +28,14 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Shortcut/@EntryValue">END_CLASS</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Text/@EntryValue">new idEventFunc&lt;idTarget_LockDoor&gt;( null, null) };</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/Shortcut/@EntryValue">nf</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/Text/@EntryValue">:number/*float*/</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=8D9F2BF90A1B9C4EAE2704E584FB9FF9/Description/@EntryValue">This macro must be included in the code to properly initialize variables used in type checking.  It also defines the list of events that the class responds to.  Take special care to ensure that the proper superclass is indicated or the run-time tyep information will be incorrect.  Use this on abstract classes only.</s:String>

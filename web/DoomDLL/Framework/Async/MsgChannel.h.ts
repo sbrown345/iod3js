@@ -89,7 +89,7 @@
 //public:
 //					idMsgChannel();
 //
-//	void			Init( const netadr_t adr, const int id );
+//	void			Init( const netadr_t adr, /*int*/ id:number );
 //	void			Shutdown( void );
 //	void			ResetRate( void );
 //

@@ -320,14 +320,14 @@ idThread::WaitingOnThread
 		return this.waitingForThread;
 	}
 
-///*
-//================
-//idThread::SetThreadNum
-//================
-//*/
-//ID_INLINE void idThread::SetThreadNum( /*int*/num:number ) {
-//	this.threadNum = num;
-//}
+/*
+================
+idThread::SetThreadNum
+================
+*/
+SetThreadNum( /*int*/num:number ):void {
+	this.threadNum = num;
+}
 
 /*
 ================
@@ -338,71 +338,71 @@ idThread::GetThreadNum
 		return this.threadNum;
 	}
 
-///*
-//================
-//idThread::GetThreadName
-//================
-//*/
-//ID_INLINE const char *idThread::GetThreadName( ) {
-//	return this.threadName.c_str();
-//}
-//
-///*
-//================
-//idThread::GetThreads
-//================
-//*/
-//ID_INLINE idList<idThread*>& idThread::GetThreads ( ) {
-//	return idThread.threadList;
-//}	
-//
-///*
-//================
-//idThread::IsDoneProcessing
-//================
-//*/
-//ID_INLINE bool idThread::IsDoneProcessing ( ) {
-//	return this.interpreter.doneProcessing;
-//}
-//
-///*
-//================
-//idThread::IsDying
-//================
-//*/
-//ID_INLINE bool idThread::IsDying ( ) {
-//	return this.interpreter.threadDying;
-//}
-//
+/*
+================
+idThread::GetThreadName
+================
+*/
+GetThreadName( ) :string{
+	return this.threadName.c_str();
+}
+
+/*
+================
+idThread::GetThreads
+================
+*/
+GetThreads(): idList<idThread>{
+	return idThread.threadList;
+}	
+
+/*
+================
+idThread::IsDoneProcessing
+================
+*/
+IsDoneProcessing ( ):boolean {
+	return this.interpreter.doneProcessing;
+}
+
+/*
+================
+idThread::IsDying
+================
+*/
+IsDying ( ):boolean {
+	return this.interpreter.threadDying;
+}
+
 //#endif /* !__SCRIPT_THREAD_H__ */
-///*
-//================
-//idThread::CurrentThread
-//================
-//*/
-//idThread *idThread::CurrentThread( ) {
-//	return idThread.currentThread;
-//}
-//
-///*
-//================
-//idThread::CurrentThreadNum
-//================
-//*/
-//int idThread::CurrentThreadNum( ) {
-//	if ( idThread.currentThread ) {
-//		return idThread.currentThread.GetThreadNum();
-//	} else {
-//		return 0;
-//	}
-//}
-//
+/*
+================
+idThread::CurrentThread
+================
+*/
+	static CurrentThread ( ): idThread {
+		return idThread.currentThread;
+	}
+
+/*
+================
+idThread::CurrentThreadNum
+================
+*/
+	static CurrentThreadNum ( ): number {
+		if ( idThread.currentThread ) {
+			return idThread.currentThread.GetThreadNum ( );
+		} else {
+			return 0;
+		}
+	}
+
 ///*
 //================
 //idThread::BeginMultiFrameEvent
 //================
 //*/
-//bool idThread::BeginMultiFrameEvent( ent:idEntity, const idEventDef *event ) {
+//static bool idThread::BeginMultiFrameEvent( ent:idEntity, const idEventDef *event ) {
 //	if ( !idThread.currentThread ) {
 //		gameLocal.Error( "idThread::BeginMultiFrameEvent called without a current thread" );
 //	}
@@ -414,7 +414,7 @@ idThread::GetThreadNum
 //idThread::EndMultiFrameEvent
 //================
 //*/
-//EndMultiFrameEvent( ent:idEntity, const idEventDef *event ):void {
+//static EndMultiFrameEvent( ent:idEntity, const idEventDef *event ):void {
 //	if ( !idThread.currentThread ) {
 //		gameLocal.Error( "idThread::EndMultiFrameEvent called without a current thread" );
 //	}
@@ -992,23 +992,23 @@ idThread::Event_SetThreadName
 //
 //	this.interpreter.Error( text );
 //}
-//
-///*
-//================
-//idThread::Warning
-//================
-//*/
-//Warning( const char *fmt, ... ) :void {
-//	va_list	argptr;
-//	char	text[ 1024 ];
-//
-//	va_start( argptr, fmt );
-//	vsprintf( text, fmt, argptr );
-//	va_end( argptr );
-//
-//	this.interpreter.Warning( text );
-//}
-//
+
+/*
+================
+idThread::Warning
+================
+*/
+	Warning ( fmt: string, ...args: any[] ): void {
+		//va_list	argptr;
+		var text: string; //char	text[ 1024 ];
+
+		//va_start( argptr, fmt );
+		text = vsprintf( fmt, args );
+		//va_end( argptr );
+
+		this.interpreter.Warning( text );
+	}
+
 /*
 ================
 idThread::ReturnString

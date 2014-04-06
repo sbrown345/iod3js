@@ -2495,7 +2495,7 @@
 ////idAI::ApplyImpulse
 ////================
 ////*/
-////void idAI::ApplyImpulse( ent:idEntity, int id, const idVec3 &point, const idVec3 &impulse ) {
+////void idAI::ApplyImpulse( ent:idEntity, /*int*/ id:number, const idVec3 &point, const idVec3 &impulse ) {
 ////	// FIXME: Jim take a look at this and see if this is a reasonable thing to do
 ////	// instead of a spawnArg flag.. Sabaoth is the only slide monster ( and should be the only one for D3 )
 ////	// and we don't want him taking physics impulses as it can knock him off the path

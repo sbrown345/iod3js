@@ -51,14 +51,14 @@ rotating fans etc.
 ===================================================================================
 */
 //
-//typedef struct parametricPState_s {
-//	int										time;					// physics time
-//	int										atRest;					// set when simulation is suspended
-//	idVec3									origin;					// world origin
-//	idAngles								angles;					// world angles
-//	idMat3									axis;					// world axis
-//	idVec3									localOrigin;			// local origin
-//	idAngles								localAngles;			// local angles
+class parametricPState_t{
+	time :number/*int*/;					// physics time
+	atRest :number/*int*/;					// set when simulation is suspended
+	origin = new idVec3;					// world origin
+	angles = new idAngles;					// world angles
+	axis = new idMat3;					// world axis
+	localOrigin = new idVec3;			// local origin
+	localAngles = new idAngles;			// local angles
 //	idExtrapolate<idVec3>					linearExtrapolation;	// extrapolation based description of the position over time
 //	idExtrapolate<idAngles>					angularExtrapolation;	// extrapolation based description of the orientation over time
 //	idInterpolateAccelDecelLinear<idVec3>	linearInterpolation;	// interpolation based description of the position over time
@@ -66,7 +66,7 @@ rotating fans etc.
 //	idCurve_Spline<idVec3> *				spline;					// spline based description of the position over time
 //	idInterpolateAccelDecelLinear<float>	splineInterpolate;		// position along the spline over time
 //	bool									useSplineAngles;		// set the orientation using the spline
-//} parametricPState_t;
+}
 
 class idPhysics_Parametric extends idPhysics_Base {
 //
@@ -106,18 +106,18 @@ class idPhysics_Parametric extends idPhysics_Base {
 //	void					GetAngles(idAngles &curAngles) const;
 //
 //public:	// common physics interface
-//	void					SetClipModel(idClipModel *model, float density, int id = 0, bool freeOld = true);
-//	idClipModel *			GetClipModel(int id = 0) const;
+//	void					SetClipModel(idClipModel *model, float density, /*int*/ id:number = 0, bool freeOld = true);
+//	idClipModel *			GetClipModel(/*int*/ id:number = 0) const;
 //	int						GetNumClipModels(void) const;
 //
-//	void					SetMass(float mass, int id = -1);
-//	float					GetMass(int id = -1) const;
+//	void					SetMass(float mass, /*int*/ id:number = -1);
+//	float					GetMass(/*int*/ id:number = -1) const;
 //
-//	void					SetContents(int contents, int id = -1);
-//	int						GetContents(int id = -1) const;
+//	void					SetContents(int contents, /*int*/ id:number = -1);
+//	int						GetContents(/*int*/ id:number = -1) const;
 //
-//	const idBounds &		GetBounds(int id = -1) const;
-//	const idBounds &		GetAbsBounds(int id = -1) const;
+//	const idBounds &		GetBounds(/*int*/ id:number = -1) const;
+//	const idBounds &		GetAbsBounds(/*int*/ id:number = -1) const;
 //
 //	bool					Evaluate(int timeStepMSec, int endTimeMSec);
 //	void					UpdateTime(int endTimeMSec);
@@ -131,20 +131,20 @@ class idPhysics_Parametric extends idPhysics_Base {
 //	void					SaveState(void);
 //	void					RestoreState(void);
 //
-//	void					SetOrigin(const idVec3 &newOrigin, int id = -1);
-//	void					SetAxis(const idMat3 &newAxis, int id = -1);
+//	void					SetOrigin(const idVec3 &newOrigin, /*int*/ id:number = -1);
+//	void					SetAxis(const idMat3 &newAxis, /*int*/ id:number = -1);
 //
-//	void					Translate(const idVec3 &translation, int id = -1);
-//	void					Rotate(const idRotation &rotation, int id = -1);
+//	void					Translate(const idVec3 &translation, /*int*/ id:number = -1);
+//	void					Rotate(const idRotation &rotation, /*int*/ id:number = -1);
 //
-//	const idVec3 &			GetOrigin(int id = 0) const;
-//	const idMat3 &			GetAxis(int id = 0) const;
+//	const idVec3 &			GetOrigin(/*int*/ id:number = 0) const;
+//	const idMat3 &			GetAxis(/*int*/ id:number = 0) const;
 //
-//	void					SetLinearVelocity(const idVec3 &newLinearVelocity, int id = 0);
-//	void					SetAngularVelocity(const idVec3 &newAngularVelocity, int id = 0);
+//	void					SetLinearVelocity(const idVec3 &newLinearVelocity, /*int*/ id:number = 0);
+//	void					SetAngularVelocity(const idVec3 &newAngularVelocity, /*int*/ id:number = 0);
 //
-//	const idVec3 &			GetLinearVelocity(int id = 0) const;
-//	const idVec3 &			GetAngularVelocity(int id = 0) const;
+//	const idVec3 &			GetLinearVelocity(/*int*/ id:number = 0) const;
+//	const idVec3 &			GetAngularVelocity(/*int*/ id:number = 0) const;
 //
 //	void					DisableClip(void);
 //	void					EnableClip(void);
@@ -164,9 +164,9 @@ class idPhysics_Parametric extends idPhysics_Base {
 //	void					ReadFromSnapshot(const idBitMsgDelta &msg);
 //
 //private:
-//	// parametric physics state
-//	parametricPState_t		current;
-//	parametricPState_t		saved;
+	// parametric physics state
+	current = new parametricPState_t;
+	saved = new parametricPState_t;
 //
 //	// pusher
 //	bool					isPusher;
@@ -195,7 +195,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //void idPhysics_Parametric::Activate( void ) {
-//	current.atRest = -1;
+//	this.current.atRest = -1;
 //	self.BecomeActive( TH_PHYSICS );
 //}
 //
@@ -206,31 +206,31 @@ class idPhysics_Parametric extends idPhysics_Base {
 //*/
 //bool idPhysics_Parametric::TestIfAtRest( void ) const {
 //
-//	if ( ( current.linearExtrapolation.GetExtrapolationType() & ~EXTRAPOLATION_NOSTOP ) == EXTRAPOLATION_NONE &&
-//			( current.angularExtrapolation.GetExtrapolationType() & ~EXTRAPOLATION_NOSTOP ) == EXTRAPOLATION_NONE &&
-//				current.linearInterpolation.GetDuration() == 0 &&
-//					current.angularInterpolation.GetDuration() == 0 &&
-//						current.spline == NULL ) {
+//	if ( ( this.current.linearExtrapolation.GetExtrapolationType() & ~EXTRAPOLATION_NOSTOP ) == EXTRAPOLATION_NONE &&
+//			( this.current.angularExtrapolation.GetExtrapolationType() & ~EXTRAPOLATION_NOSTOP ) == EXTRAPOLATION_NONE &&
+//				this.current.linearInterpolation.GetDuration() == 0 &&
+//					this.current.angularInterpolation.GetDuration() == 0 &&
+//						this.current.spline == NULL ) {
 //		return true;
 //	}
 //
-//	if ( !current.linearExtrapolation.IsDone( current.time ) ) {
+//	if ( !this.current.linearExtrapolation.IsDone( this.current.time ) ) {
 //		return false;
 //	}
 //
-//	if ( !current.angularExtrapolation.IsDone( current.time ) ) {
+//	if ( !this.current.angularExtrapolation.IsDone( this.current.time ) ) {
 //		return false;
 //	}
 //
-//	if ( !current.linearInterpolation.IsDone( current.time ) ) {
+//	if ( !this.current.linearInterpolation.IsDone( this.current.time ) ) {
 //		return false;
 //	}
 //
-//	if ( !current.angularInterpolation.IsDone( current.time ) ) {
+//	if ( !this.current.angularInterpolation.IsDone( this.current.time ) ) {
 //		return false;
 //	}
 //
-//	if ( current.spline != NULL && !current.spline.IsDone( current.time ) ) {
+//	if ( this.current.spline != NULL && !this.current.spline.IsDone( this.current.time ) ) {
 //		return false;
 //	}
 //
@@ -243,7 +243,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //void idPhysics_Parametric::Rest( void ) {
-//	current.atRest = gameLocal.time;
+//	this.current.atRest = gameLocal.time;
 //	self.BecomeInactive( TH_PHYSICS );
 //}
 //
@@ -254,22 +254,22 @@ class idPhysics_Parametric extends idPhysics_Base {
 //*/
 //idPhysics_Parametric::idPhysics_Parametric( void ) {
 //
-//	current.time = gameLocal.time;
-//	current.atRest = -1;
-//	current.useSplineAngles = false;
-//	current.origin.Zero();
-//	current.angles.Zero();
-//	current.axis.Identity();
-//	current.localOrigin.Zero();
-//	current.localAngles.Zero();
-//	current.linearExtrapolation.Init( 0, 0, vec3_zero, vec3_zero, vec3_zero, EXTRAPOLATION_NONE );
-//	current.angularExtrapolation.Init( 0, 0, ang_zero, ang_zero, ang_zero, EXTRAPOLATION_NONE );
-//	current.linearInterpolation.Init( 0, 0, 0, 0, vec3_zero, vec3_zero );
-//	current.angularInterpolation.Init( 0, 0, 0, 0, ang_zero, ang_zero );
-//	current.spline = NULL;
-//	current.splineInterpolate.Init( 0, 1, 1, 2, 0, 0 );
+//	this.current.time = gameLocal.time;
+//	this.current.atRest = -1;
+//	this.current.useSplineAngles = false;
+//	this.current.origin.Zero();
+//	this.current.angles.Zero();
+//	this.current.axis.Identity();
+//	this.current.localOrigin.Zero();
+//	this.current.localAngles.Zero();
+//	this.current.linearExtrapolation.Init( 0, 0, vec3_zero, vec3_zero, vec3_zero, EXTRAPOLATION_NONE );
+//	this.current.angularExtrapolation.Init( 0, 0, ang_zero, ang_zero, ang_zero, EXTRAPOLATION_NONE );
+//	this.current.linearInterpolation.Init( 0, 0, 0, 0, vec3_zero, vec3_zero );
+//	this.current.angularInterpolation.Init( 0, 0, 0, 0, ang_zero, ang_zero );
+//	this.current.spline = NULL;
+//	this.current.splineInterpolate.Init( 0, 1, 1, 2, 0, 0 );
 //
-//	saved = current;
+//	saved = this.current;
 //
 //	isPusher = false;
 //	pushFlags = 0;
@@ -291,9 +291,9 @@ class idPhysics_Parametric extends idPhysics_Base {
 //		delete clipModel;
 //		clipModel = NULL;
 //	}
-//	if ( current.spline != NULL ) {
-//		delete current.spline;
-//		current.spline = NULL;
+//	if ( this.current.spline != NULL ) {
+//		delete this.current.spline;
+//		this.current.spline = NULL;
 //	}
 //}
 //
@@ -425,7 +425,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //*/
 //void idPhysics_Parametric::Save( idSaveGame *savefile ) const {
 //
-//	idPhysics_Parametric_SavePState( savefile, current );
+//	idPhysics_Parametric_SavePState( savefile, this.current );
 //	idPhysics_Parametric_SavePState( savefile, saved );
 //
 //	savefile.WriteBool( isPusher );
@@ -446,7 +446,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //*/
 //void idPhysics_Parametric::Restore( idRestoreGame *savefile ) {
 //
-//	idPhysics_Parametric_RestorePState( savefile, current );
+//	idPhysics_Parametric_RestorePState( savefile, this.current );
 //	idPhysics_Parametric_RestorePState( savefile, saved );
 //
 //	savefile.ReadBool( isPusher );
@@ -486,9 +486,9 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //void idPhysics_Parametric::SetLinearExtrapolation( extrapolation_t type, int time, int duration, const idVec3 &base, const idVec3 &speed, const idVec3 &baseSpeed ) {
-//	current.time = gameLocal.time;
-//	current.linearExtrapolation.Init( time, duration, base, baseSpeed, speed, type );
-//	current.localOrigin = base;
+//	this.current.time = gameLocal.time;
+//	this.current.linearExtrapolation.Init( time, duration, base, baseSpeed, speed, type );
+//	this.current.localOrigin = base;
 //	Activate();
 //}
 //
@@ -498,9 +498,9 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //void idPhysics_Parametric::SetAngularExtrapolation( extrapolation_t type, int time, int duration, const idAngles &base, const idAngles &speed, const idAngles &baseSpeed ) {
-//	current.time = gameLocal.time;
-//	current.angularExtrapolation.Init( time, duration, base, baseSpeed, speed, type );
-//	current.localAngles = base;
+//	this.current.time = gameLocal.time;
+//	this.current.angularExtrapolation.Init( time, duration, base, baseSpeed, speed, type );
+//	this.current.localAngles = base;
 //	Activate();
 //}
 //
@@ -510,7 +510,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //extrapolation_t idPhysics_Parametric::GetLinearExtrapolationType( void ) const {
-//	return current.linearExtrapolation.GetExtrapolationType();
+//	return this.current.linearExtrapolation.GetExtrapolationType();
 //}
 //
 ///*
@@ -519,7 +519,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //extrapolation_t idPhysics_Parametric::GetAngularExtrapolationType( void ) const {
-//	return current.angularExtrapolation.GetExtrapolationType();
+//	return this.current.angularExtrapolation.GetExtrapolationType();
 //}
 //
 ///*
@@ -528,9 +528,9 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //void idPhysics_Parametric::SetLinearInterpolation( int time, int accelTime, int decelTime, int duration, const idVec3 &startPos, const idVec3 &endPos ) {
-//	current.time = gameLocal.time;
-//	current.linearInterpolation.Init( time, accelTime, decelTime, duration, startPos, endPos );
-//	current.localOrigin = startPos;
+//	this.current.time = gameLocal.time;
+//	this.current.linearInterpolation.Init( time, accelTime, decelTime, duration, startPos, endPos );
+//	this.current.localOrigin = startPos;
 //	Activate();
 //}
 //
@@ -540,9 +540,9 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //void idPhysics_Parametric::SetAngularInterpolation( int time, int accelTime, int decelTime, int duration, const idAngles &startAng, const idAngles &endAng ) {
-//	current.time = gameLocal.time;
-//	current.angularInterpolation.Init( time, accelTime, decelTime, duration, startAng, endAng );
-//	current.localAngles = startAng;
+//	this.current.time = gameLocal.time;
+//	this.current.angularInterpolation.Init( time, accelTime, decelTime, duration, startAng, endAng );
+//	this.current.localAngles = startAng;
 //	Activate();
 //}
 //
@@ -552,18 +552,18 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //void idPhysics_Parametric::SetSpline( idCurve_Spline<idVec3> *spline, int accelTime, int decelTime, bool useSplineAngles ) {
-//	if ( current.spline != NULL ) {
-//		delete current.spline;
-//		current.spline = NULL;
+//	if ( this.current.spline != NULL ) {
+//		delete this.current.spline;
+//		this.current.spline = NULL;
 //	}
-//	current.spline = spline;
-//	if ( current.spline != NULL ) {
-//		float startTime = current.spline.GetTime( 0 );
-//		float endTime = current.spline.GetTime( current.spline.GetNumValues() - 1 );
-//		float length = current.spline.GetLengthForTime( endTime );
-//		current.splineInterpolate.Init( startTime, accelTime, decelTime, endTime - startTime, 0.0f, length );
+//	this.current.spline = spline;
+//	if ( this.current.spline != NULL ) {
+//		float startTime = this.current.spline.GetTime( 0 );
+//		float endTime = this.current.spline.GetTime( this.current.spline.GetNumValues() - 1 );
+//		float length = this.current.spline.GetLengthForTime( endTime );
+//		this.current.splineInterpolate.Init( startTime, accelTime, decelTime, endTime - startTime, 0.0f, length );
 //	}
-//	current.useSplineAngles = useSplineAngles;
+//	this.current.useSplineAngles = useSplineAngles;
 //	Activate();
 //}
 //
@@ -573,7 +573,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //idCurve_Spline<idVec3> *idPhysics_Parametric::GetSpline( void ) const {
-//	return current.spline;
+//	return this.current.spline;
 //}
 //
 ///*
@@ -582,7 +582,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //int idPhysics_Parametric::GetSplineAcceleration( void ) const {
-//	return current.splineInterpolate.GetAcceleration();
+//	return this.current.splineInterpolate.GetAcceleration();
 //}
 //
 ///*
@@ -591,7 +591,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //int idPhysics_Parametric::GetSplineDeceleration( void ) const {
-//	return current.splineInterpolate.GetDeceleration();
+//	return this.current.splineInterpolate.GetDeceleration();
 //}
 //
 ///*
@@ -600,7 +600,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //bool idPhysics_Parametric::UsingSplineAngles( void ) const {
-//	return current.useSplineAngles;
+//	return this.current.useSplineAngles;
 //}
 //
 ///*
@@ -609,7 +609,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //void idPhysics_Parametric::GetLocalOrigin( idVec3 &curOrigin ) const {
-//	curOrigin = current.localOrigin;
+//	curOrigin = this.current.localOrigin;
 //}
 //
 ///*
@@ -618,7 +618,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //void idPhysics_Parametric::GetLocalAngles( idAngles &curAngles ) const {
-//	curAngles = current.localAngles;
+//	curAngles = this.current.localAngles;
 //}
 //
 ///*
@@ -626,7 +626,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::SetClipModel
 //================
 //*/
-//void idPhysics_Parametric::SetClipModel( idClipModel *model, float density, int id, bool freeOld ) {
+//void idPhysics_Parametric::SetClipModel( idClipModel *model, float density, /*int*/ id:number, bool freeOld ) {
 //
 //	assert( self );
 //	assert( model );
@@ -635,7 +635,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //		delete clipModel;
 //	}
 //	clipModel = model;
-//	clipModel.Link( gameLocal.clip, self, 0, current.origin, current.axis );
+//	clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
 //}
 //
 ///*
@@ -643,7 +643,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::GetClipModel
 //================
 //*/
-//idClipModel *idPhysics_Parametric::GetClipModel( int id ) const {
+//idClipModel *idPhysics_Parametric::GetClipModel( /*int*/ id:number ) const {
 //	return clipModel;
 //}
 //
@@ -661,7 +661,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::SetMass
 //================
 //*/
-//void idPhysics_Parametric::SetMass( float mass, int id ) {
+//void idPhysics_Parametric::SetMass( float mass, /*int*/ id:number ) {
 //}
 //
 ///*
@@ -669,7 +669,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::GetMass
 //================
 //*/
-//float idPhysics_Parametric::GetMass( int id ) const {
+//float idPhysics_Parametric::GetMass( /*int*/ id:number ) const {
 //	return 0.0f;
 //}
 //
@@ -678,7 +678,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::SetClipMask
 //================
 //*/
-//void idPhysics_Parametric::SetContents( int contents, int id ) {
+//void idPhysics_Parametric::SetContents( int contents, /*int*/ id:number ) {
 //	if ( clipModel ) {
 //		clipModel.SetContents( contents );
 //	}
@@ -689,7 +689,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::SetClipMask
 //================
 //*/
-//int idPhysics_Parametric::GetContents( int id ) const {
+//int idPhysics_Parametric::GetContents( /*int*/ id:number ) const {
 //	if ( clipModel ) {
 //		return clipModel.GetContents();
 //	}
@@ -701,7 +701,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::GetBounds
 //================
 //*/
-//const idBounds &idPhysics_Parametric::GetBounds( int id ) const {
+//const idBounds &idPhysics_Parametric::GetBounds( /*int*/ id:number ) const {
 //	if ( clipModel ) {
 //		return clipModel.GetBounds();
 //	}
@@ -713,7 +713,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::GetAbsBounds
 //================
 //*/
-//const idBounds &idPhysics_Parametric::GetAbsBounds( int id ) const {
+//const idBounds &idPhysics_Parametric::GetAbsBounds( /*int*/ id:number ) const {
 //	if ( clipModel ) {
 //		return clipModel.GetAbsBounds();
 //	}
@@ -731,81 +731,81 @@ class idPhysics_Parametric extends idPhysics_Base {
 //	idMat3 oldAxis, masterAxis;
 //
 //	isBlocked = false;
-//	oldLocalOrigin = current.localOrigin;
-//	oldOrigin = current.origin;
-//	oldLocalAngles = current.localAngles;
-//	oldAngles = current.angles;
-//	oldAxis = current.axis;
+//	oldLocalOrigin = this.current.localOrigin;
+//	oldOrigin = this.current.origin;
+//	oldLocalAngles = this.current.localAngles;
+//	oldAngles = this.current.angles;
+//	oldAxis = this.current.axis;
 //
-//	current.localOrigin.Zero();
-//	current.localAngles.Zero();
+//	this.current.localOrigin.Zero();
+//	this.current.localAngles.Zero();
 //
-//	if ( current.spline != NULL ) {
-//		float length = current.splineInterpolate.GetCurrentValue( endTimeMSec );
-//		float t = current.spline.GetTimeForLength( length, 0.01f );
-//		current.localOrigin = current.spline.GetCurrentValue( t );
-//		if ( current.useSplineAngles ) {
-//			current.localAngles = current.spline.GetCurrentFirstDerivative( t ).ToAngles();
+//	if ( this.current.spline != NULL ) {
+//		float length = this.current.splineInterpolate.GetCurrentValue( endTimeMSec );
+//		float t = this.current.spline.GetTimeForLength( length, 0.01f );
+//		this.current.localOrigin = this.current.spline.GetCurrentValue( t );
+//		if ( this.current.useSplineAngles ) {
+//			this.current.localAngles = this.current.spline.GetCurrentFirstDerivative( t ).ToAngles();
 //		}
-//	} else if ( current.linearInterpolation.GetDuration() != 0 ) {
-//		current.localOrigin += current.linearInterpolation.GetCurrentValue( endTimeMSec );
+//	} else if ( this.current.linearInterpolation.GetDuration() != 0 ) {
+//		this.current.localOrigin += this.current.linearInterpolation.GetCurrentValue( endTimeMSec );
 //	} else {
-//		current.localOrigin += current.linearExtrapolation.GetCurrentValue( endTimeMSec );
+//		this.current.localOrigin += this.current.linearExtrapolation.GetCurrentValue( endTimeMSec );
 //	}
 //
-//	if ( current.angularInterpolation.GetDuration() != 0 ) {
-//		current.localAngles += current.angularInterpolation.GetCurrentValue( endTimeMSec );
+//	if ( this.current.angularInterpolation.GetDuration() != 0 ) {
+//		this.current.localAngles += this.current.angularInterpolation.GetCurrentValue( endTimeMSec );
 //	} else {
-//		current.localAngles += current.angularExtrapolation.GetCurrentValue( endTimeMSec );
+//		this.current.localAngles += this.current.angularExtrapolation.GetCurrentValue( endTimeMSec );
 //	}
 //
-//	current.localAngles.Normalize360();
-//	current.origin = current.localOrigin;
-//	current.angles = current.localAngles;
-//	current.axis = current.localAngles.ToMat3();
+//	this.current.localAngles.Normalize360();
+//	this.current.origin = this.current.localOrigin;
+//	this.current.angles = this.current.localAngles;
+//	this.current.axis = this.current.localAngles.ToMat3();
 //
 //	if ( hasMaster ) {
 //		self.GetMasterPosition( masterOrigin, masterAxis );
 //		if ( masterAxis.IsRotated() ) {
-//			current.origin = current.origin * masterAxis + masterOrigin;
+//			this.current.origin = this.current.origin * masterAxis + masterOrigin;
 //			if ( isOrientated ) {
-//				current.axis *= masterAxis;
-//				current.angles = current.axis.ToAngles();
+//				this.current.axis *= masterAxis;
+//				this.current.angles = this.current.axis.ToAngles();
 //			}
 //		}
 //		else {
-//			current.origin += masterOrigin;
+//			this.current.origin += masterOrigin;
 //		}
 //	}
 //
 //	if ( isPusher ) {
 //
-//		gameLocal.push.ClipPush( pushResults, self, pushFlags, oldOrigin, oldAxis, current.origin, current.axis );
+//		gameLocal.push.ClipPush( pushResults, self, pushFlags, oldOrigin, oldAxis, this.current.origin, this.current.axis );
 //		if ( pushResults.fraction < 1.0f ) {
 //			clipModel.Link( gameLocal.clip, self, 0, oldOrigin, oldAxis );
-//			current.localOrigin = oldLocalOrigin;
-//			current.origin = oldOrigin;
-//			current.localAngles = oldLocalAngles;
-//			current.angles = oldAngles;
-//			current.axis = oldAxis;
+//			this.current.localOrigin = oldLocalOrigin;
+//			this.current.origin = oldOrigin;
+//			this.current.localAngles = oldLocalAngles;
+//			this.current.angles = oldAngles;
+//			this.current.axis = oldAxis;
 //			isBlocked = true;
 //			return false;
 //		}
 //
-//		current.angles = current.axis.ToAngles();
+//		this.current.angles = this.current.axis.ToAngles();
 //	}
 //
 //	if ( clipModel ) {
-//		clipModel.Link( gameLocal.clip, self, 0, current.origin, current.axis );
+//		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
 //	}
 //
-//	current.time = endTimeMSec;
+//	this.current.time = endTimeMSec;
 //
 //	if ( TestIfAtRest() ) {
 //		Rest();
 //	}
 //
-//	return ( current.origin != oldOrigin || current.axis != oldAxis );
+//	return ( this.current.origin != oldOrigin || this.current.axis != oldAxis );
 //}
 //
 ///*
@@ -814,17 +814,17 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //void idPhysics_Parametric::UpdateTime( int endTimeMSec ) {
-//	int timeLeap = endTimeMSec - current.time;
+//	int timeLeap = endTimeMSec - this.current.time;
 //
-//	current.time = endTimeMSec;
-//	// move the trajectory start times to sync the trajectory with the current endTime
-//	current.linearExtrapolation.SetStartTime( current.linearExtrapolation.GetStartTime() + timeLeap );
-//	current.angularExtrapolation.SetStartTime( current.angularExtrapolation.GetStartTime() + timeLeap );
-//	current.linearInterpolation.SetStartTime( current.linearInterpolation.GetStartTime() + timeLeap );
-//	current.angularInterpolation.SetStartTime( current.angularInterpolation.GetStartTime() + timeLeap );
-//	if ( current.spline != NULL ) {
-//		current.spline.ShiftTime( timeLeap );
-//		current.splineInterpolate.SetStartTime( current.splineInterpolate.GetStartTime() + timeLeap );
+//	this.current.time = endTimeMSec;
+//	// move the trajectory start times to sync the trajectory with the this.current endTime
+//	this.current.linearExtrapolation.SetStartTime( this.current.linearExtrapolation.GetStartTime() + timeLeap );
+//	this.current.angularExtrapolation.SetStartTime( this.current.angularExtrapolation.GetStartTime() + timeLeap );
+//	this.current.linearInterpolation.SetStartTime( this.current.linearInterpolation.GetStartTime() + timeLeap );
+//	this.current.angularInterpolation.SetStartTime( this.current.angularInterpolation.GetStartTime() + timeLeap );
+//	if ( this.current.spline != NULL ) {
+//		this.current.spline.ShiftTime( timeLeap );
+//		this.current.splineInterpolate.SetStartTime( this.current.splineInterpolate.GetStartTime() + timeLeap );
 //	}
 //}
 //
@@ -834,7 +834,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //int idPhysics_Parametric::GetTime( void ) const {
-//	return current.time;
+//	return this.current.time;
 //}
 //
 ///*
@@ -843,7 +843,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //bool idPhysics_Parametric::IsAtRest( void ) const {
-//	return current.atRest >= 0;
+//	return this.current.atRest >= 0;
 //}
 //
 ///*
@@ -852,7 +852,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //int idPhysics_Parametric::GetRestStartTime( void ) const {
-//	return current.atRest;
+//	return this.current.atRest;
 //}
 //
 ///*
@@ -870,7 +870,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //void idPhysics_Parametric::SaveState( void ) {
-//	saved = current;
+//	saved = this.current;
 //}
 //
 ///*
@@ -880,10 +880,10 @@ class idPhysics_Parametric extends idPhysics_Base {
 //*/
 //void idPhysics_Parametric::RestoreState( void ) {
 //
-//	current = saved;
+//	this.current = saved;
 //
 //	if ( clipModel ) {
-//		clipModel.Link( gameLocal.clip, self, 0, current.origin, current.axis );
+//		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
 //	}
 //}
 //
@@ -892,23 +892,23 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::SetOrigin
 //================
 //*/
-//void idPhysics_Parametric::SetOrigin( const idVec3 &newOrigin, int id ) {
+//void idPhysics_Parametric::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
 //	idVec3 masterOrigin;
 //	idMat3 masterAxis;
 //
-//	current.linearExtrapolation.SetStartValue( newOrigin );
-//	current.linearInterpolation.SetStartValue( newOrigin );
+//	this.current.linearExtrapolation.SetStartValue( newOrigin );
+//	this.current.linearInterpolation.SetStartValue( newOrigin );
 //
-//	current.localOrigin = current.linearExtrapolation.GetCurrentValue( current.time );
+//	this.current.localOrigin = this.current.linearExtrapolation.GetCurrentValue( this.current.time );
 //	if ( hasMaster ) {
 //		self.GetMasterPosition( masterOrigin, masterAxis );
-//		current.origin = masterOrigin + current.localOrigin * masterAxis;
+//		this.current.origin = masterOrigin + this.current.localOrigin * masterAxis;
 //	}
 //	else {
-//		current.origin = current.localOrigin;
+//		this.current.origin = this.current.localOrigin;
 //	}
 //	if ( clipModel ) {
-//		clipModel.Link( gameLocal.clip, self, 0, current.origin, current.axis );
+//		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
 //	}
 //	Activate();
 //}
@@ -918,27 +918,27 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::SetAxis
 //================
 //*/
-//void idPhysics_Parametric::SetAxis( const idMat3 &newAxis, int id ) {
+//void idPhysics_Parametric::SetAxis( const idMat3 &newAxis, /*int*/ id:number ) {
 //	idVec3 masterOrigin;
 //	idMat3 masterAxis;
 //
-//	current.localAngles = newAxis.ToAngles();
+//	this.current.localAngles = newAxis.ToAngles();
 //
-//	current.angularExtrapolation.SetStartValue( current.localAngles );
-//	current.angularInterpolation.SetStartValue( current.localAngles );
+//	this.current.angularExtrapolation.SetStartValue( this.current.localAngles );
+//	this.current.angularInterpolation.SetStartValue( this.current.localAngles );
 //
-//	current.localAngles = current.angularExtrapolation.GetCurrentValue( current.time );
+//	this.current.localAngles = this.current.angularExtrapolation.GetCurrentValue( this.current.time );
 //	if ( hasMaster && isOrientated ) {
 //		self.GetMasterPosition( masterOrigin, masterAxis );
-//		current.axis = current.localAngles.ToMat3() * masterAxis;
-//		current.angles = current.axis.ToAngles();
+//		this.current.axis = this.current.localAngles.ToMat3() * masterAxis;
+//		this.current.angles = this.current.axis.ToAngles();
 //	}
 //	else {
-//		current.axis = current.localAngles.ToMat3();
-//		current.angles = current.localAngles;
+//		this.current.axis = this.current.localAngles.ToMat3();
+//		this.current.angles = this.current.localAngles;
 //	}
 //	if ( clipModel ) {
-//		clipModel.Link( gameLocal.clip, self, 0, current.origin, current.axis );
+//		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
 //	}
 //	Activate();
 //}
@@ -948,7 +948,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::Move
 //================
 //*/
-//void idPhysics_Parametric::Translate( const idVec3 &translation, int id ) {
+//void idPhysics_Parametric::Translate( const idVec3 &translation, /*int*/ id:number ) {
 //}
 //
 ///*
@@ -956,26 +956,26 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::Rotate
 //================
 //*/
-//void idPhysics_Parametric::Rotate( const idRotation &rotation, int id ) {
+//void idPhysics_Parametric::Rotate( const idRotation &rotation, /*int*/ id:number ) {
 //}
 //
-///*
-//================
-//idPhysics_Parametric::GetOrigin
-//================
-//*/
-//const idVec3 &idPhysics_Parametric::GetOrigin( int id ) const {
-//	return current.origin;
-//}
+/*
+================
+idPhysics_Parametric::GetOrigin
+================
+*/
+GetOrigin( /*int*/ id: number = 0): idVec3 {
+	return this.current.origin;
+}
 
 /*
 ================
 idPhysics_Parametric::GetAxis
 ================
 */
-const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
-	return current.axis;
-}
+	GetAxis ( /*int*/ id: number = 0 ): idMat3 {
+		return this.current.axis;
+	}
 
 ///*
 //================
@@ -983,7 +983,7 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //================
 //*/
 //void idPhysics_Parametric::GetAngles( idAngles &curAngles ) const {
-//	curAngles = current.angles;
+//	curAngles = this.current.angles;
 //}
 //
 ///*
@@ -991,9 +991,9 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //idPhysics_Parametric::SetLinearVelocity
 //================
 //*/
-//void idPhysics_Parametric::SetLinearVelocity( const idVec3 &newLinearVelocity, int id ) {
-//	SetLinearExtrapolation( extrapolation_t(EXTRAPOLATION_LINEAR|EXTRAPOLATION_NOSTOP), gameLocal.time, 0, current.origin, newLinearVelocity, vec3_origin );
-//	current.linearInterpolation.Init( 0, 0, 0, 0, vec3_zero, vec3_zero );
+//void idPhysics_Parametric::SetLinearVelocity( const idVec3 &newLinearVelocity, /*int*/ id:number ) {
+//	SetLinearExtrapolation( extrapolation_t(EXTRAPOLATION_LINEAR|EXTRAPOLATION_NOSTOP), gameLocal.time, 0, this.current.origin, newLinearVelocity, vec3_origin );
+//	this.current.linearInterpolation.Init( 0, 0, 0, 0, vec3_zero, vec3_zero );
 //	Activate();
 //}
 //
@@ -1002,7 +1002,7 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //idPhysics_Parametric::SetAngularVelocity
 //================
 //*/
-//void idPhysics_Parametric::SetAngularVelocity( const idVec3 &newAngularVelocity, int id ) {
+//void idPhysics_Parametric::SetAngularVelocity( const idVec3 &newAngularVelocity, /*int*/ id:number ) {
 //	idRotation rotation;
 //	idVec3 vec;
 //	float angle;
@@ -1011,8 +1011,8 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //	angle = vec.Normalize();
 //	rotation.Set( vec3_origin, vec, (float) RAD2DEG( angle ) );
 //
-//	SetAngularExtrapolation( extrapolation_t(EXTRAPOLATION_LINEAR|EXTRAPOLATION_NOSTOP), gameLocal.time, 0, current.angles, rotation.ToAngles(), ang_zero );
-//	current.angularInterpolation.Init( 0, 0, 0, 0, ang_zero, ang_zero );
+//	SetAngularExtrapolation( extrapolation_t(EXTRAPOLATION_LINEAR|EXTRAPOLATION_NOSTOP), gameLocal.time, 0, this.current.angles, rotation.ToAngles(), ang_zero );
+//	this.current.angularInterpolation.Init( 0, 0, 0, 0, ang_zero, ang_zero );
 //	Activate();
 //}
 //
@@ -1021,10 +1021,10 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //idPhysics_Parametric::GetLinearVelocity
 //================
 //*/
-//const idVec3 &idPhysics_Parametric::GetLinearVelocity( int id ) const {
+//const idVec3 &idPhysics_Parametric::GetLinearVelocity( /*int*/ id:number ) const {
 //	static idVec3 curLinearVelocity;
 //
-//	curLinearVelocity = current.linearExtrapolation.GetCurrentSpeed( gameLocal.time );
+//	curLinearVelocity = this.current.linearExtrapolation.GetCurrentSpeed( gameLocal.time );
 //	return curLinearVelocity;
 //}
 //
@@ -1033,11 +1033,11 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //idPhysics_Parametric::GetAngularVelocity
 //================
 //*/
-//const idVec3 &idPhysics_Parametric::GetAngularVelocity( int id ) const {
+//const idVec3 &idPhysics_Parametric::GetAngularVelocity( /*int*/ id:number ) const {
 //	static idVec3 curAngularVelocity;
 //	idAngles angles;
 //
-//	angles = current.angularExtrapolation.GetCurrentSpeed( gameLocal.time );
+//	angles = this.current.angularExtrapolation.GetCurrentSpeed( gameLocal.time );
 //	curAngularVelocity = angles.ToAngularVelocity();
 //	return curAngularVelocity;
 //}
@@ -1082,7 +1082,7 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //*/
 //void idPhysics_Parametric::LinkClip( void ) {
 //	if ( clipModel ) {
-//		clipModel.Link( gameLocal.clip, self, 0, current.origin, current.axis );
+//		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
 //	}
 //}
 //
@@ -1121,16 +1121,16 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //
 //			// transform from world space to master space
 //			self.GetMasterPosition( masterOrigin, masterAxis );
-//			current.localOrigin = ( current.origin - masterOrigin ) * masterAxis.Transpose();
+//			this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
 //			if ( orientated ) {
-//				current.localAngles = ( current.axis * masterAxis.Transpose() ).ToAngles();
+//				this.current.localAngles = ( this.current.axis * masterAxis.Transpose() ).ToAngles();
 //			}
 //			else {
-//				current.localAngles = current.axis.ToAngles();
+//				this.current.localAngles = this.current.axis.ToAngles();
 //			}
 //
-//			current.linearExtrapolation.SetStartValue( current.localOrigin );
-//			current.angularExtrapolation.SetStartValue( current.localAngles );
+//			this.current.linearExtrapolation.SetStartValue( this.current.localOrigin );
+//			this.current.angularExtrapolation.SetStartValue( this.current.localAngles );
 //			hasMaster = true;
 //			isOrientated = orientated;
 //		}
@@ -1138,10 +1138,10 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //	else {
 //		if ( hasMaster ) {
 //			// transform from master space to world space
-//			current.localOrigin = current.origin;
-//			current.localAngles = current.angles;
-//			SetLinearExtrapolation( EXTRAPOLATION_NONE, 0, 0, current.origin, vec3_origin, vec3_origin );
-//			SetAngularExtrapolation( EXTRAPOLATION_NONE, 0, 0, current.angles, ang_zero, ang_zero );
+//			this.current.localOrigin = this.current.origin;
+//			this.current.localAngles = this.current.angles;
+//			SetLinearExtrapolation( EXTRAPOLATION_NONE, 0, 0, this.current.origin, vec3_origin, vec3_origin );
+//			SetAngularExtrapolation( EXTRAPOLATION_NONE, 0, 0, this.current.angles, ang_zero, ang_zero );
 //			hasMaster = false;
 //		}
 //	}
@@ -1153,16 +1153,16 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //================
 //*/
 //int idPhysics_Parametric::GetLinearEndTime( void ) const {
-//	if ( current.spline != NULL ) {
-//		if ( current.spline.GetBoundaryType() != idCurve_Spline<idVec3>::BT_CLOSED ) {
-//			return current.spline.GetTime( current.spline.GetNumValues() - 1 );
+//	if ( this.current.spline != NULL ) {
+//		if ( this.current.spline.GetBoundaryType() != idCurve_Spline<idVec3>::BT_CLOSED ) {
+//			return this.current.spline.GetTime( this.current.spline.GetNumValues() - 1 );
 //		} else {
 //			return 0;
 //		}
-//	} else if ( current.linearInterpolation.GetDuration() != 0 ) {
-//		return current.linearInterpolation.GetEndTime();
+//	} else if ( this.current.linearInterpolation.GetDuration() != 0 ) {
+//		return this.current.linearInterpolation.GetEndTime();
 //	} else {
-//		return current.linearExtrapolation.GetEndTime();
+//		return this.current.linearExtrapolation.GetEndTime();
 //	}
 //}
 //
@@ -1172,10 +1172,10 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //================
 //*/
 //int idPhysics_Parametric::GetAngularEndTime( void ) const {
-//	if ( current.angularInterpolation.GetDuration() != 0 ) {
-//		return current.angularInterpolation.GetEndTime();
+//	if ( this.current.angularInterpolation.GetDuration() != 0 ) {
+//		return this.current.angularInterpolation.GetEndTime();
 //	} else {
-//		return current.angularExtrapolation.GetEndTime();
+//		return this.current.angularExtrapolation.GetEndTime();
 //	}
 //}
 //
@@ -1185,68 +1185,68 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //================
 //*/
 //void idPhysics_Parametric::WriteToSnapshot( idBitMsgDelta &msg ) const {
-//	msg.WriteLong( current.time );
-//	msg.WriteLong( current.atRest );
-//	msg.WriteFloat( current.origin[0] );
-//	msg.WriteFloat( current.origin[1] );
-//	msg.WriteFloat( current.origin[2] );
-//	msg.WriteFloat( current.angles[0] );
-//	msg.WriteFloat( current.angles[1] );
-//	msg.WriteFloat( current.angles[2] );
-//	msg.WriteDeltaFloat( current.origin[0], current.localOrigin[0] );
-//	msg.WriteDeltaFloat( current.origin[1], current.localOrigin[1] );
-//	msg.WriteDeltaFloat( current.origin[2], current.localOrigin[2] );
-//	msg.WriteDeltaFloat( current.angles[0], current.localAngles[0] );
-//	msg.WriteDeltaFloat( current.angles[1], current.localAngles[1] );
-//	msg.WriteDeltaFloat( current.angles[2], current.localAngles[2] );
+//	msg.WriteLong( this.current.time );
+//	msg.WriteLong( this.current.atRest );
+//	msg.WriteFloat( this.current.origin[0] );
+//	msg.WriteFloat( this.current.origin[1] );
+//	msg.WriteFloat( this.current.origin[2] );
+//	msg.WriteFloat( this.current.angles[0] );
+//	msg.WriteFloat( this.current.angles[1] );
+//	msg.WriteFloat( this.current.angles[2] );
+//	msg.WriteDeltaFloat( this.current.origin[0], this.current.localOrigin[0] );
+//	msg.WriteDeltaFloat( this.current.origin[1], this.current.localOrigin[1] );
+//	msg.WriteDeltaFloat( this.current.origin[2], this.current.localOrigin[2] );
+//	msg.WriteDeltaFloat( this.current.angles[0], this.current.localAngles[0] );
+//	msg.WriteDeltaFloat( this.current.angles[1], this.current.localAngles[1] );
+//	msg.WriteDeltaFloat( this.current.angles[2], this.current.localAngles[2] );
 //
-//	msg.WriteBits( current.linearExtrapolation.GetExtrapolationType(), 8 );
-//	msg.WriteDeltaFloat( 0.0f, current.linearExtrapolation.GetStartTime() );
-//	msg.WriteDeltaFloat( 0.0f, current.linearExtrapolation.GetDuration() );
-//	msg.WriteDeltaFloat( 0.0f, current.linearExtrapolation.GetStartValue()[0] );
-//	msg.WriteDeltaFloat( 0.0f, current.linearExtrapolation.GetStartValue()[1] );
-//	msg.WriteDeltaFloat( 0.0f, current.linearExtrapolation.GetStartValue()[2] );
-//	msg.WriteDeltaFloat( 0.0f, current.linearExtrapolation.GetSpeed()[0] );
-//	msg.WriteDeltaFloat( 0.0f, current.linearExtrapolation.GetSpeed()[1] );
-//	msg.WriteDeltaFloat( 0.0f, current.linearExtrapolation.GetSpeed()[2] );
-//	msg.WriteDeltaFloat( 0.0f, current.linearExtrapolation.GetBaseSpeed()[0] );
-//	msg.WriteDeltaFloat( 0.0f, current.linearExtrapolation.GetBaseSpeed()[1] );
-//	msg.WriteDeltaFloat( 0.0f, current.linearExtrapolation.GetBaseSpeed()[2] );
+//	msg.WriteBits( this.current.linearExtrapolation.GetExtrapolationType(), 8 );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetStartTime() );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetDuration() );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetStartValue()[0] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetStartValue()[1] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetStartValue()[2] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetSpeed()[0] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetSpeed()[1] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetSpeed()[2] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetBaseSpeed()[0] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetBaseSpeed()[1] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetBaseSpeed()[2] );
 //
-//	msg.WriteBits( current.angularExtrapolation.GetExtrapolationType(), 8 );
-//	msg.WriteDeltaFloat( 0.0f, current.angularExtrapolation.GetStartTime() );
-//	msg.WriteDeltaFloat( 0.0f, current.angularExtrapolation.GetDuration() );
-//	msg.WriteDeltaFloat( 0.0f, current.angularExtrapolation.GetStartValue()[0] );
-//	msg.WriteDeltaFloat( 0.0f, current.angularExtrapolation.GetStartValue()[1] );
-//	msg.WriteDeltaFloat( 0.0f, current.angularExtrapolation.GetStartValue()[2] );
-//	msg.WriteDeltaFloat( 0.0f, current.angularExtrapolation.GetSpeed()[0] );
-//	msg.WriteDeltaFloat( 0.0f, current.angularExtrapolation.GetSpeed()[1] );
-//	msg.WriteDeltaFloat( 0.0f, current.angularExtrapolation.GetSpeed()[2] );
-//	msg.WriteDeltaFloat( 0.0f, current.angularExtrapolation.GetBaseSpeed()[0] );
-//	msg.WriteDeltaFloat( 0.0f, current.angularExtrapolation.GetBaseSpeed()[1] );
-//	msg.WriteDeltaFloat( 0.0f, current.angularExtrapolation.GetBaseSpeed()[2] );
+//	msg.WriteBits( this.current.angularExtrapolation.GetExtrapolationType(), 8 );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetStartTime() );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetDuration() );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetStartValue()[0] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetStartValue()[1] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetStartValue()[2] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetSpeed()[0] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetSpeed()[1] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetSpeed()[2] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetBaseSpeed()[0] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetBaseSpeed()[1] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetBaseSpeed()[2] );
 //
-//	msg.WriteDeltaFloat( 0.0f, current.linearInterpolation.GetStartTime() );
-//	msg.WriteDeltaFloat( 0.0f, current.linearInterpolation.GetAcceleration() );
-//	msg.WriteDeltaFloat( 0.0f, current.linearInterpolation.GetDeceleration() );
-//	msg.WriteDeltaFloat( 0.0f, current.linearInterpolation.GetDuration() );
-//	msg.WriteDeltaFloat( 0.0f, current.linearInterpolation.GetStartValue()[0] );
-//	msg.WriteDeltaFloat( 0.0f, current.linearInterpolation.GetStartValue()[1] );
-//	msg.WriteDeltaFloat( 0.0f, current.linearInterpolation.GetStartValue()[2] );
-//	msg.WriteDeltaFloat( 0.0f, current.linearInterpolation.GetEndValue()[0] );
-//	msg.WriteDeltaFloat( 0.0f, current.linearInterpolation.GetEndValue()[1] );
-//	msg.WriteDeltaFloat( 0.0f, current.linearInterpolation.GetEndValue()[2] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetStartTime() );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetAcceleration() );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetDeceleration() );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetDuration() );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetStartValue()[0] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetStartValue()[1] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetStartValue()[2] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetEndValue()[0] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetEndValue()[1] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetEndValue()[2] );
 //
-//	msg.WriteDeltaFloat( 0.0f, current.angularInterpolation.GetStartTime() );
-//	msg.WriteDeltaFloat( 0.0f, current.angularInterpolation.GetAcceleration() );
-//	msg.WriteDeltaFloat( 0.0f, current.angularInterpolation.GetDeceleration() );
-//	msg.WriteDeltaFloat( 0.0f, current.angularInterpolation.GetDuration() );
-//	msg.WriteDeltaFloat( 0.0f, current.angularInterpolation.GetStartValue()[0] );
-//	msg.WriteDeltaFloat( 0.0f, current.angularInterpolation.GetStartValue()[1] );
-//	msg.WriteDeltaFloat( 0.0f, current.angularInterpolation.GetStartValue()[2] );
-//	msg.WriteDeltaFloat( 0.0f, current.angularInterpolation.GetEndValue()[0] );
-//	msg.WriteDeltaFloat( 0.0f, current.angularInterpolation.GetEndValue()[1] );
-//	msg.WriteDeltaFloat( 0.0f, current.angularInterpolation.GetEndValue()[2] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetStartTime() );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetAcceleration() );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetDeceleration() );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetDuration() );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetStartValue()[0] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetStartValue()[1] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetStartValue()[2] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetEndValue()[0] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetEndValue()[1] );
+//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetEndValue()[2] );
 //}
 //
 ///*
@@ -1260,20 +1260,20 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //	idVec3 linearStartValue, linearSpeed, linearBaseSpeed, startPos, endPos;
 //	idAngles angularStartValue, angularSpeed, angularBaseSpeed, startAng, endAng;
 //
-//	current.time = msg.ReadLong();
-//	current.atRest = msg.ReadLong();
-//	current.origin[0] = msg.ReadFloat();
-//	current.origin[1] = msg.ReadFloat();
-//	current.origin[2] = msg.ReadFloat();
-//	current.angles[0] = msg.ReadFloat();
-//	current.angles[1] = msg.ReadFloat();
-//	current.angles[2] = msg.ReadFloat();
-//	current.localOrigin[0] = msg.ReadDeltaFloat( current.origin[0] );
-//	current.localOrigin[1] = msg.ReadDeltaFloat( current.origin[1] );
-//	current.localOrigin[2] = msg.ReadDeltaFloat( current.origin[2] );
-//	current.localAngles[0] = msg.ReadDeltaFloat( current.angles[0] );
-//	current.localAngles[1] = msg.ReadDeltaFloat( current.angles[1] );
-//	current.localAngles[2] = msg.ReadDeltaFloat( current.angles[2] );
+//	this.current.time = msg.ReadLong();
+//	this.current.atRest = msg.ReadLong();
+//	this.current.origin[0] = msg.ReadFloat();
+//	this.current.origin[1] = msg.ReadFloat();
+//	this.current.origin[2] = msg.ReadFloat();
+//	this.current.angles[0] = msg.ReadFloat();
+//	this.current.angles[1] = msg.ReadFloat();
+//	this.current.angles[2] = msg.ReadFloat();
+//	this.current.localOrigin[0] = msg.ReadDeltaFloat( this.current.origin[0] );
+//	this.current.localOrigin[1] = msg.ReadDeltaFloat( this.current.origin[1] );
+//	this.current.localOrigin[2] = msg.ReadDeltaFloat( this.current.origin[2] );
+//	this.current.localAngles[0] = msg.ReadDeltaFloat( this.current.angles[0] );
+//	this.current.localAngles[1] = msg.ReadDeltaFloat( this.current.angles[1] );
+//	this.current.localAngles[2] = msg.ReadDeltaFloat( this.current.angles[2] );
 //
 //	linearType = (extrapolation_t) msg.ReadBits( 8 );
 //	startTime = msg.ReadDeltaFloat( 0.0f );
@@ -1287,7 +1287,7 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //	linearBaseSpeed[0] = msg.ReadDeltaFloat( 0.0f );
 //	linearBaseSpeed[1] = msg.ReadDeltaFloat( 0.0f );
 //	linearBaseSpeed[2] = msg.ReadDeltaFloat( 0.0f );
-//	current.linearExtrapolation.Init( startTime, duration, linearStartValue, linearBaseSpeed, linearSpeed, linearType );
+//	this.current.linearExtrapolation.Init( startTime, duration, linearStartValue, linearBaseSpeed, linearSpeed, linearType );
 //
 //	angularType = (extrapolation_t) msg.ReadBits( 8 );
 //	startTime = msg.ReadDeltaFloat( 0.0f );
@@ -1301,7 +1301,7 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //	angularBaseSpeed[0] = msg.ReadDeltaFloat( 0.0f );
 //	angularBaseSpeed[1] = msg.ReadDeltaFloat( 0.0f );
 //	angularBaseSpeed[2] = msg.ReadDeltaFloat( 0.0f );
-//	current.angularExtrapolation.Init( startTime, duration, angularStartValue, angularBaseSpeed, angularSpeed, angularType );
+//	this.current.angularExtrapolation.Init( startTime, duration, angularStartValue, angularBaseSpeed, angularSpeed, angularType );
 //
 //	startTime = msg.ReadDeltaFloat( 0.0f );
 //	accelTime = msg.ReadDeltaFloat( 0.0f );
@@ -1313,7 +1313,7 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //	endPos[0] = msg.ReadDeltaFloat( 0.0f );
 //	endPos[1] = msg.ReadDeltaFloat( 0.0f );
 //	endPos[2] = msg.ReadDeltaFloat( 0.0f );
-//	current.linearInterpolation.Init( startTime, accelTime, decelTime, duration, startPos, endPos );
+//	this.current.linearInterpolation.Init( startTime, accelTime, decelTime, duration, startPos, endPos );
 //
 //	startTime = msg.ReadDeltaFloat( 0.0f );
 //	accelTime = msg.ReadDeltaFloat( 0.0f );
@@ -1325,12 +1325,12 @@ const idMat3 &idPhysics_Parametric::GetAxis( int id ) const {
 //	endAng[0] = msg.ReadDeltaFloat( 0.0f );
 //	endAng[1] = msg.ReadDeltaFloat( 0.0f );
 //	endAng[2] = msg.ReadDeltaFloat( 0.0f );
-//	current.angularInterpolation.Init( startTime, accelTime, decelTime, duration, startAng, endAng );
+//	this.current.angularInterpolation.Init( startTime, accelTime, decelTime, duration, startAng, endAng );
 //
-//	current.axis = current.angles.ToMat3();
+//	this.current.axis = this.current.angles.ToMat3();
 //
 //	if ( clipModel ) {
-//		clipModel.Link( gameLocal.clip, self, 0, current.origin, current.axis );
+//		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
 //	}
 //}
 }

@@ -256,7 +256,7 @@ var net_channelShowDrop = new idCVar (  "net_channelShowDrop", "0", CVAR_SYSTEM 
 //  Opens a channel to a remote system.
 //==============
 //*/
-//void idMsgChannel::Init( const netadr_t adr, const int id ) {
+//void idMsgChannel::Init( const netadr_t adr, /*int*/ id:number ) {
 //	this->remoteAddress = adr;
 //	this->id = id;
 //	this->maxRate = 50000;

@@ -111,13 +111,13 @@ class idActor extends idAFEntity_Gibbable {
 	static CreateInstance ( ): idClass { throw "placeholder"; }
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idActor>[];
-////
-////	int						team;
-////	int						rank;				// monsters don't fight back if the attacker's rank is higher
-////	idMat3					viewAxis;			// view axis of the actor
-////
-////	idLinkList<idActor>		enemyNode;			// node linked into an entity's enemy list for quick lookups of who is attacking him
-////	idLinkList<idActor>		enemyList;			// list of characters that have targeted the player as their enemy
+	
+	team :number/*int*/;
+	rank :number/*int*/;				// monsters don't fight back if the attacker's rank is higher
+	viewAxis = new idMat3;			// view axis of the actor
+	
+	enemyNode = new idLinkList<idActor>();			// node linked into an entity's enemy list for quick lookups of who is attacking him
+	enemyList = new idLinkList<idActor>();			// list of characters that have targeted the player as their enemy
 ////
 ////public:
 ////							idActor( void );

@@ -136,7 +136,7 @@ class idListGUI extends idList<idStr> /*, public idListGUI */ {
 ////idListGUILocal::Add
 ////====================
 ////*/
-////void idListGUILocal::Add( int id, const idStr &s ) {
+////void idListGUILocal::Add( /*int*/ id:number, const idStr &s ) {
 ////	int i = m_ids.FindIndex( id );
 ////	if ( i == -1 ) {
 ////		Append( s );
@@ -163,7 +163,7 @@ class idListGUI extends idList<idStr> /*, public idListGUI */ {
 ////idListGUILocal::Del
 ////====================
 ////*/
-////bool idListGUILocal::Del(int id) {
+////bool idListGUILocal::Del(/*int*/ id:number) {
 ////	int i = m_ids.FindIndex(id);
 ////	if ( i == -1 ) {
 ////		return false;

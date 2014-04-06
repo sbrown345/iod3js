@@ -108,22 +108,22 @@ class idPhysics extends idClass {
 	   //	// set pointer to entity using physics
 	   //	virtual void				SetSelf(idEntity *e) = 0;
 	   //	// clip models
-	   //	virtual void				SetClipModel(idClipModel *model, float density, int id = 0, bool freeOld = true) = 0;
+	   //	virtual void				SetClipModel(idClipModel *model, float density, /*int*/ id:number = 0, bool freeOld = true) = 0;
 	   //	virtual void				SetClipBox(const idBounds &bounds, float density);
-	   //	virtual idClipModel *		GetClipModel(int id = 0) const = 0;
+	   //	virtual idClipModel *		GetClipModel(/*int*/ id:number = 0) const = 0;
 	GetNumClipModels ( ): number { throw "placeholder"; }
 	//	// get/set the mass of a specific clip model or the whole physics object
-	   //	virtual void				SetMass(float mass, int id = -1) = 0;
-	   //	virtual float				GetMass(int id = -1) const = 0;
+	   //	virtual void				SetMass(float mass, /*int*/ id:number = -1) = 0;
+	   //	virtual float				GetMass(/*int*/ id:number = -1) const = 0;
 	   //	// get/set the contents of a specific clip model or the whole physics object
-	   //	virtual void				SetContents(int contents, int id = -1) = 0;
-	   //	virtual int					GetContents(int id = -1) const = 0;
+	   //	virtual void				SetContents(int contents, /*int*/ id:number = -1) = 0;
+	   //	virtual int					GetContents(/*int*/ id:number = -1) const = 0;
 	   //	// get/set the contents a specific clip model or the whole physics object collides with
-	   //	virtual void				SetClipMask(int mask, int id = -1) = 0;
-	   //	virtual int					GetClipMask(int id = -1) const = 0;
+	   //	virtual void				SetClipMask(int mask, /*int*/ id:number = -1) = 0;
+	   //	virtual int					GetClipMask(/*int*/ id:number = -1) const = 0;
 	   //	// get the bounds of a specific clip model or the whole physics object
 	   GetBounds(/*int */id = -1):idBounds { throw "placeholder"; }
-	   //	virtual const idBounds &	GetAbsBounds(int id = -1) const = 0;
+	   //	virtual const idBounds &	GetAbsBounds(/*int*/ id:number = -1) const = 0;
 	   //	// evaluate the physics with the given time step, returns true if the object moved
 	   //	virtual bool				Evaluate(int timeStepMSec, int endTimeMSec) = 0;
 	   //	// update the time without moving
@@ -131,9 +131,9 @@ class idPhysics extends idClass {
 	   //	// get the last physics update time
 	   //	virtual int					GetTime() const = 0;
 	   //	// collision interaction between different physics objects
-	   //	virtual void				GetImpactInfo(const int id, const idVec3 &point, impactInfo_t *info) const = 0;
-	   //	virtual void				ApplyImpulse(const int id, const idVec3 &point, const idVec3 &impulse) = 0;
-	   //	virtual void				AddForce(const int id, const idVec3 &point, const idVec3 &force) = 0;
+	   //	virtual void				GetImpactInfo(/*int*/ id:number, const idVec3 &point, impactInfo_t *info) const = 0;
+	   //	virtual void				ApplyImpulse(/*int*/ id:number, const idVec3 &point, const idVec3 &impulse) = 0;
+	   //	virtual void				AddForce(/*int*/ id:number, const idVec3 &point, const idVec3 &force) = 0;
 	   //	virtual void				Activate() = 0;
 	   //	virtual void				PutToRest() = 0;
 	IsAtRest ( ): boolean { throw "placeholder"; }
@@ -144,19 +144,19 @@ class idPhysics extends idClass {
 	   //	virtual void				RestoreState() = 0;
 	   //	// set the position and orientation in master space or world space if no master set
 	SetOrigin ( newOrigin: idVec3, /*int */id = -1 ) { throw "placeholder"; }
-	//	virtual void				SetAxis(const idMat3 &newAxis, int id = -1) = 0;
+	SetAxis(newAxis: idMat3 , /*int*/ id:number = -1) { throw "placeholder"; }
 	   //	// translate or rotate the physics object in world space
-	   //	virtual void				Translate(const idVec3 &translation, int id = -1) = 0;
-	   //	virtual void				Rotate(const idRotation &rotation, int id = -1) = 0;
+	   //	virtual void				Translate(const idVec3 &translation, /*int*/ id:number = -1) = 0;
+	   //	virtual void				Rotate(const idRotation &rotation, /*int*/ id:number = -1) = 0;
 	   //	// get the position and orientation in world space
 	GetOrigin ( /*int */id = 0 ): idVec3 { throw "placeholder"; }
 	GetAxis ( /*int */id = 0 ): idMat3 { throw "placeholder"; }
 	//	// set linear and angular velocity
-	   //	virtual void				SetLinearVelocity(const idVec3 &newLinearVelocity, int id = 0) = 0;
-	   //	virtual void				SetAngularVelocity(const idVec3 &newAngularVelocity, int id = 0) = 0;
+	   //	virtual void				SetLinearVelocity(const idVec3 &newLinearVelocity, /*int*/ id:number = 0) = 0;
+	   //	virtual void				SetAngularVelocity(const idVec3 &newAngularVelocity, /*int*/ id:number = 0) = 0;
 	   //	// get linear and angular velocity
-	   //	virtual const idVec3 &		GetLinearVelocity(int id = 0) const = 0;
-	   //	virtual const idVec3 &		GetAngularVelocity(int id = 0) const = 0;
+	   //	virtual const idVec3 &		GetLinearVelocity(/*int*/ id:number = 0) const = 0;
+	   //	virtual const idVec3 &		GetAngularVelocity(/*int*/ id:number = 0) const = 0;
 	   //	// gravity
 	   //	virtual void				SetGravity(const idVec3 &newGravity) = 0;
 	   //	virtual const idVec3 &		GetGravity() const = 0;
@@ -181,13 +181,13 @@ class idPhysics extends idClass {
 	   //	// ground contacts
 	   //	virtual bool				HasGroundContacts() const = 0;
 	   //	virtual bool				IsGroundEntity(int entityNum) const = 0;
-	   //	virtual bool				IsGroundClipModel(int entityNum, int id) const = 0;
+	   //	virtual bool				IsGroundClipModel(int entityNum, /*int*/ id:number) const = 0;
 	   //	// set the master entity for objects bound to a master
 	   //	virtual void				SetMaster(idEntity *master, const bool orientated = true) = 0;
 	   //	// set pushed state
 	   //	virtual void				SetPushed(int deltaTime) = 0;
-	   //	virtual const idVec3 &		GetPushedLinearVelocity(const int id = 0) const = 0;
-	   //	virtual const idVec3 &		GetPushedAngularVelocity(const int id = 0) const = 0;
+	   //	virtual const idVec3 &		GetPushedLinearVelocity(/*int*/ id:number = 0) const = 0;
+	   //	virtual const idVec3 &		GetPushedAngularVelocity(/*int*/ id:number = 0) const = 0;
 	   //	// get blocking info, returns NULL if the object is not blocked
 	   //	virtual const trace_t *		GetBlockingInfo() const = 0;
 	   //	virtual idEntity *			GetBlockingEntity() const = 0;

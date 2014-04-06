@@ -67,29 +67,29 @@ class idPhysics_Base extends idPhysics {
 	//
 	//	void					SetSelf(idEntity *e);
 	//
-	//	void					SetClipModel(idClipModel *model, float density, int id = 0, bool freeOld = true);
-	//	idClipModel *			GetClipModel(int id = 0) const;
+	//	void					SetClipModel(idClipModel *model, float density, /*int*/ id:number = 0, bool freeOld = true);
+	//	idClipModel *			GetClipModel(/*int*/ id:number = 0) const;
 	//	int						GetNumClipModels(void) const;
 	//
-	//	void					SetMass(float mass, int id = -1);
-	//	float					GetMass(int id = -1) const;
+	//	void					SetMass(float mass, /*int*/ id:number = -1);
+	//	float					GetMass(/*int*/ id:number = -1) const;
 	//
-	//	void					SetContents(int contents, int id = -1);
-	//	int						GetContents(int id = -1) const;
+	//	void					SetContents(int contents, /*int*/ id:number = -1);
+	//	int						GetContents(/*int*/ id:number = -1) const;
 	//
-	//	void					SetClipMask(int mask, int id = -1);
-	//	int						GetClipMask(int id = -1) const;
+	//	void					SetClipMask(int mask, /*int*/ id:number = -1);
+	//	int						GetClipMask(/*int*/ id:number = -1) const;
 	//
-	//	const idBounds &		GetBounds(int id = -1) const;
-	//	const idBounds &		GetAbsBounds(int id = -1) const;
+	//	const idBounds &		GetBounds(/*int*/ id:number = -1) const;
+	//	const idBounds &		GetAbsBounds(/*int*/ id:number = -1) const;
 	//
 	//	bool					Evaluate(int timeStepMSec, int endTimeMSec);
 	//	void					UpdateTime(int endTimeMSec);
 	//	int						GetTime(void) const;
 	//
-	//	void					GetImpactInfo(const int id, const idVec3 &point, impactInfo_t *info) const;
-	//	void					ApplyImpulse(const int id, const idVec3 &point, const idVec3 &impulse);
-	//	void					AddForce(const int id, const idVec3 &point, const idVec3 &force);
+	//	void					GetImpactInfo(const /*int*/ id:number, const idVec3 &point, impactInfo_t *info) const;
+	//	void					ApplyImpulse(const /*int*/ id:number, const idVec3 &point, const idVec3 &impulse);
+	//	void					AddForce(const /*int*/ id:number, const idVec3 &point, const idVec3 &force);
 	//	void					Activate(void);
 	//	void					PutToRest(void);
 	//	bool					IsAtRest(void) const;
@@ -99,20 +99,20 @@ class idPhysics_Base extends idPhysics {
 	//	void					SaveState(void);
 	//	void					RestoreState(void);
 	//
-	//	void					SetOrigin(const idVec3 &newOrigin, int id = -1);
-	//	void					SetAxis(const idMat3 &newAxis, int id = -1);
+	//	void					SetOrigin(const idVec3 &newOrigin, /*int*/ id:number = -1);
+	//	void					SetAxis(const idMat3 &newAxis, /*int*/ id:number = -1);
 	//
-	//	void					Translate(const idVec3 &translation, int id = -1);
-	//	void					Rotate(const idRotation &rotation, int id = -1);
+	//	void					Translate(const idVec3 &translation, /*int*/ id:number = -1);
+	//	void					Rotate(const idRotation &rotation, /*int*/ id:number = -1);
 	//
-	//	const idVec3 &			GetOrigin(int id = 0) const;
-	//	const idMat3 &			GetAxis(int id = 0) const;
+	//	const idVec3 &			GetOrigin(/*int*/ id:number = 0) const;
+	//	const idMat3 &			GetAxis(/*int*/ id:number = 0) const;
 	//
-	//	void					SetLinearVelocity(const idVec3 &newLinearVelocity, int id = 0);
-	//	void					SetAngularVelocity(const idVec3 &newAngularVelocity, int id = 0);
+	//	void					SetLinearVelocity(const idVec3 &newLinearVelocity, /*int*/ id:number = 0);
+	//	void					SetAngularVelocity(const idVec3 &newAngularVelocity, /*int*/ id:number = 0);
 	//
-	//	const idVec3 &			GetLinearVelocity(int id = 0) const;
-	//	const idVec3 &			GetAngularVelocity(int id = 0) const;
+	//	const idVec3 &			GetLinearVelocity(/*int*/ id:number = 0) const;
+	//	const idVec3 &			GetAngularVelocity(/*int*/ id:number = 0) const;
 	//
 	//	void					SetGravity(const idVec3 &newGravity);
 	//	const idVec3 &			GetGravity(void) const;
@@ -137,11 +137,11 @@ class idPhysics_Base extends idPhysics {
 	//
 	//	bool					HasGroundContacts(void) const;
 	//	bool					IsGroundEntity(int entityNum) const;
-	//	bool					IsGroundClipModel(int entityNum, int id) const;
+	//	bool					IsGroundClipModel(int entityNum, /*int*/ id:number) const;
 	//
 	//	void					SetPushed(int deltaTime);
-	//	const idVec3 &			GetPushedLinearVelocity(const int id = 0) const;
-	//	const idVec3 &			GetPushedAngularVelocity(const int id = 0) const;
+	//	const idVec3 &			GetPushedLinearVelocity(const /*int*/ id:number = 0) const;
+	//	const idVec3 &			GetPushedAngularVelocity(const /*int*/ id:number = 0) const;
 	//
 	//	void					SetMaster(idEntity *master, const bool orientated = true);
 	//
@@ -172,7 +172,7 @@ class idPhysics_Base extends idPhysics {
 	//	// returns true if the whole physics object is outside the world bounds
 	//	bool					IsOutsideWorld(void) const;
 	//	// draw linear and angular velocity
-	//	void					DrawVelocity(int id, float linearScale, float angularScale) const;
+	//	void					DrawVelocity(/*int*/ id:number, float linearScale, float angularScale) const;
 	//};
 	//
 	//#endif /* !__PHYSICS_BASE_H__ */
@@ -268,7 +268,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::SetClipModel
 	//================
 	//*/
-	//void idPhysics_Base::SetClipModel( idClipModel *model, float density, int id, bool freeOld ) {
+	//void idPhysics_Base::SetClipModel( idClipModel *model, float density, /*int*/ id:number, bool freeOld ) {
 	//}
 	//
 	///*
@@ -276,7 +276,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetClipModel
 	//================
 	//*/
-	//idClipModel *idPhysics_Base::GetClipModel( int id ) const {
+	//idClipModel *idPhysics_Base::GetClipModel( /*int*/ id:number ) const {
 	//	return NULL;
 	//}
 	//
@@ -294,7 +294,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::SetMass
 	//================
 	//*/
-	//void idPhysics_Base::SetMass( float mass, int id ) {
+	//void idPhysics_Base::SetMass( float mass, /*int*/ id:number ) {
 	//}
 	//
 	///*
@@ -302,7 +302,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetMass
 	//================
 	//*/
-	//float idPhysics_Base::GetMass( int id ) const {
+	//float idPhysics_Base::GetMass( /*int*/ id:number ) const {
 	//	return 0.0f;
 	//}
 	//
@@ -311,7 +311,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::SetContents
 	//================
 	//*/
-	//void idPhysics_Base::SetContents( int contents, int id ) {
+	//void idPhysics_Base::SetContents( int contents, /*int*/ id:number ) {
 	//}
 	//
 	///*
@@ -319,7 +319,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::SetClipMask
 	//================
 	//*/
-	//int idPhysics_Base::GetContents( int id ) const {
+	//int idPhysics_Base::GetContents( /*int*/ id:number ) const {
 	//	return 0;
 	//}
 	//
@@ -328,7 +328,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::SetClipMask
 	//================
 	//*/
-	//void idPhysics_Base::SetClipMask( int mask, int id ) {
+	//void idPhysics_Base::SetClipMask( int mask, /*int*/ id:number ) {
 	//	clipMask = mask;
 	//}
 	//
@@ -337,7 +337,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetClipMask
 	//================
 	//*/
-	//int idPhysics_Base::GetClipMask( int id ) const {
+	//int idPhysics_Base::GetClipMask( /*int*/ id:number ) const {
 	//	return clipMask;
 	//}
 	//
@@ -346,7 +346,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetBounds
 	//================
 	//*/
-	//const idBounds &idPhysics_Base::GetBounds( int id ) const {
+	//const idBounds &idPhysics_Base::GetBounds( /*int*/ id:number ) const {
 	//	return bounds_zero;
 	//}
 	//
@@ -355,7 +355,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetAbsBounds
 	//================
 	//*/
-	//const idBounds &idPhysics_Base::GetAbsBounds( int id ) const {
+	//const idBounds &idPhysics_Base::GetAbsBounds( /*int*/ id:number ) const {
 	//	return bounds_zero;
 	//}
 	//
@@ -390,7 +390,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetImpactInfo
 	//================
 	//*/
-	//void idPhysics_Base::GetImpactInfo( const int id, const idVec3 &point, impactInfo_t *info ) const {
+	//void idPhysics_Base::GetImpactInfo( /*int*/ id:number, const idVec3 &point, impactInfo_t *info ) const {
 	//	memset( info, 0, sizeof( *info ) );
 	//}
 	//
@@ -399,7 +399,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::ApplyImpulse
 	//================
 	//*/
-	//void idPhysics_Base::ApplyImpulse( const int id, const idVec3 &point, const idVec3 &impulse ) {
+	//void idPhysics_Base::ApplyImpulse( /*int*/ id:number, const idVec3 &point, const idVec3 &impulse ) {
 	//}
 	//
 	///*
@@ -407,7 +407,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::AddForce
 	//================
 	//*/
-	//void idPhysics_Base::AddForce( const int id, const idVec3 &point, const idVec3 &force ) {
+	//void idPhysics_Base::AddForce( /*int*/ id:number, const idVec3 &point, const idVec3 &force ) {
 	//}
 	//
 	///*
@@ -474,7 +474,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::SetOrigin
 	//================
 	//*/
-	//void idPhysics_Base::SetOrigin( const idVec3 &newOrigin, int id ) {
+	//void idPhysics_Base::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
 	//}
 	//
 	///*
@@ -482,7 +482,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::SetAxis
 	//================
 	//*/
-	//void idPhysics_Base::SetAxis( const idMat3 &newAxis, int id ) {
+	//void idPhysics_Base::SetAxis( const idMat3 &newAxis, /*int*/ id:number ) {
 	//}
 	//
 	///*
@@ -490,7 +490,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::Translate
 	//================
 	//*/
-	//void idPhysics_Base::Translate( const idVec3 &translation, int id ) {
+	//void idPhysics_Base::Translate( const idVec3 &translation, /*int*/ id:number ) {
 	//}
 	//
 	///*
@@ -498,24 +498,24 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::Rotate
 	//================
 	//*/
-	//void idPhysics_Base::Rotate( const idRotation &rotation, int id ) {
+	//void idPhysics_Base::Rotate( const idRotation &rotation, /*int*/ id:number ) {
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::GetOrigin
-	//================
-	//*/
-	//const idVec3 &idPhysics_Base::GetOrigin( int id ) const {
-	//	return vec3_origin;
-	//}
-	//
+	
+	/*
+	================
+	idPhysics_Base::GetOrigin
+	================
+	*/
+	GetOrigin( /*int*/ id: number = 0): idVec3 {
+		return vec3_origin;
+	}
+	
 	/*
 	================
 	idPhysics_Base::GetAxis
 	================
 	*/
-	const idMat3 &idPhysics_Base::GetAxis( int id ) const {
+	GetAxis( /*int*/ id: number = 0): idMat3 {
 		return mat3_identity;
 	}
 	//
@@ -524,7 +524,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::SetLinearVelocity
 	//================
 	//*/
-	//void idPhysics_Base::SetLinearVelocity( const idVec3 &newLinearVelocity, int id ) {
+	//void idPhysics_Base::SetLinearVelocity( const idVec3 &newLinearVelocity, /*int*/ id:number ) {
 	//}
 	//
 	///*
@@ -532,7 +532,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::SetAngularVelocity
 	//================
 	//*/
-	//void idPhysics_Base::SetAngularVelocity( const idVec3 &newAngularVelocity, int id ) {
+	//void idPhysics_Base::SetAngularVelocity( const idVec3 &newAngularVelocity, /*int*/ id:number ) {
 	//}
 	//
 	///*
@@ -540,7 +540,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetLinearVelocity
 	//================
 	//*/
-	//const idVec3 &idPhysics_Base::GetLinearVelocity( int id ) const {
+	//const idVec3 &idPhysics_Base::GetLinearVelocity( /*int*/ id:number ) const {
 	//	return vec3_origin;
 	//}
 	//
@@ -549,7 +549,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetAngularVelocity
 	//================
 	//*/
-	//const idVec3 &idPhysics_Base::GetAngularVelocity( int id ) const {
+	//const idVec3 &idPhysics_Base::GetAngularVelocity( /*int*/ id:number ) const {
 	//	return vec3_origin;
 	//}
 	//
@@ -769,7 +769,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::IsGroundClipModel
 	//================
 	//*/
-	//bool idPhysics_Base::IsGroundClipModel( int entityNum, int id ) const {
+	//bool idPhysics_Base::IsGroundClipModel( int entityNum, /*int*/ id:number ) const {
 	//	var/*int*/i:number;
 	//
 	//	for ( i = 0; i < contacts.Num(); i++ ) {
@@ -793,7 +793,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetPushedLinearVelocity
 	//================
 	//*/
-	//const idVec3 &idPhysics_Base::GetPushedLinearVelocity( const int id ) const {
+	//const idVec3 &idPhysics_Base::GetPushedLinearVelocity( const /*int*/ id:number ) const {
 	//	return vec3_origin;
 	//}
 	//
@@ -802,7 +802,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetPushedAngularVelocity
 	//================
 	//*/
-	//const idVec3 &idPhysics_Base::GetPushedAngularVelocity( const int id ) const {
+	//const idVec3 &idPhysics_Base::GetPushedAngularVelocity( const /*int*/ id:number ) const {
 	//	return vec3_origin;
 	//}
 	//
@@ -922,7 +922,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::DrawVelocity
 	//================
 	//*/
-	//void idPhysics_Base::DrawVelocity( int id, float linearScale, float angularScale ) const {
+	//void idPhysics_Base::DrawVelocity( /*int*/ id:number, float linearScale, float angularScale ) const {
 	//	idVec3 dir, org, vec, start, end;
 	//	idMat3 axis;
 	//	float length, a;
