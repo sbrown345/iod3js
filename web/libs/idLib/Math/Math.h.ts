@@ -65,6 +65,13 @@ function RAD2DEG ( a: number ) { return a * idMath.M_RAD2DEG; }
 ////#define	ANGLE2BYTE(x)			( idMath::FtoiFast( (x) * 256.0 / 360.0 ) & 255 )
 ////#define	BYTE2ANGLE(x)			( (x) * ( 360.0 / 256.0 ) )
 
+
+var float2uintArray = new Int32Array(reinterpret_cast_float_to_int_floatArray.buffer);
+function float2uint(v: number): number {
+	float2uintArray[0] = v;
+	return float2uintArray[0];
+}
+
 ////#define FLOATSIGNBITSET(f)		((*(const unsigned long *)&(f)) >> 31)
 ////#define FLOATSIGNBITNOTSET(f)	((~(*(const unsigned long *)&(f))) >> 31)
 ////#define FLOATNOTZERO(f)			((*(const unsigned long *)&(f)) & ~(1<<31) )
@@ -74,8 +81,8 @@ function INTSIGNBITNOTSET(i:number):number	{throw "convert this";}
 ////#define	FLOAT_IS_NAN(x)			(((*(const unsigned long *)&x) & 0x7f800000) == 0x7f800000)
 ////#define FLOAT_IS_INF(x)			(((*(const unsigned long *)&x) & 0x7fffffff) == 0x7f800000)
 ////#define FLOAT_IS_IND(x)			((*(const unsigned long *)&x) == 0xffc00000)
-////#define	FLOAT_IS_DENORMAL(x)	(((*(const unsigned long *)&x) & 0x7f800000) == 0x00000000 && \
-////								 ((*(const unsigned long *)&x) & 0x007fffff) != 0x00000000 )
+function FLOAT_IS_DENORMAL(x:number):boolean {return ((float2uint(x) & 0x7f800000) == 0x00000000 && 
+								 (float2uint(x) & 0x007fffff) != 0x00000000 )};
 
 var IEEE_FLT_MANTISSA_BITS	=23
 var IEEE_FLT_EXPONENT_BITS	=8

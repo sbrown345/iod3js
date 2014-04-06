@@ -28,22 +28,22 @@
 ////
 ////#ifndef __FILE_H__
 ////#define __FILE_H__
-////
-/////*
-////==============================================================
-////
-////  File Streams.
-////
-////==============================================================
-////*/
-////
-////// mode parm for Seek
-////typedef enum {
-////	FS_SEEK_CUR,
-////	FS_SEEK_END,
-////	FS_SEEK_SET
-////} fsOrigin_t;
-////
+
+/*
+==============================================================
+
+  File Streams.
+
+==============================================================
+*/
+
+// mode parm for Seek
+enum fsOrigin_t{
+	FS_SEEK_CUR,
+	FS_SEEK_END,
+	FS_SEEK_SET
+};
+
 ////class idFileSystemLocal;
 ////
 ////
@@ -55,7 +55,7 @@ class idFile {
 ////							// Get the full file path.
 ////	virtual const char *	GetFullPath( void );
 ////							// Read data from the file to the buffer.
-    Read(buffer: Uint8Array, len: number): number { throw "placeholder"; }
+    Read(buffer: ArrayBuffer, len: number): number { throw "placeholder"; }
 ////							// Write data from the buffer to the file.
 ////	virtual int				Write( const void *buffer, int len );
 ////							// Returns the length of the file.

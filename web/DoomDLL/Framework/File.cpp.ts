@@ -158,7 +158,7 @@
 ////idFile::GetName
 ////=================
 ////*/
-////const char *idFile::GetName( void ) {
+////const char *idFile::GetName( ) {
 ////	return "";
 ////}
 ////
@@ -167,7 +167,7 @@
 ////idFile::GetFullPath
 ////=================
 ////*/
-////const char *idFile::GetFullPath( void ) {
+////const char *idFile::GetFullPath( ) {
 ////	return "";
 ////}
 ////
@@ -196,7 +196,7 @@
 ////idFile::Length
 ////=================
 ////*/
-////int idFile::Length( void ) {
+////int idFile::Length( ) {
 ////	return 0;
 ////}
 ////
@@ -205,7 +205,7 @@
 ////idFile::Timestamp
 ////=================
 ////*/
-////ID_TIME_T idFile::Timestamp( void ) {
+////ID_TIME_T idFile::Timestamp( ) {
 ////	return 0;
 ////}
 ////
@@ -214,7 +214,7 @@
 ////idFile::Tell
 ////=================
 ////*/
-////int idFile::Tell( void ) {
+////int idFile::Tell( ) {
 ////	return 0;
 ////}
 ////
@@ -223,7 +223,7 @@
 ////idFile::ForceFlush
 ////=================
 ////*/
-////void idFile::ForceFlush( void ) {
+////void idFile::ForceFlush( ) {
 ////}
 ////
 /////*
@@ -231,7 +231,7 @@
 ////idFile::Flush
 ////=================
 ////*/
-////void idFile::Flush( void ) {
+////void idFile::Flush( ) {
 ////}
 ////
 /////*
@@ -248,7 +248,7 @@
 ////idFile::Rewind
 ////=================
 ////*/
-////void idFile::Rewind( void ) {
+////void idFile::Rewind( ) {
 ////	Seek( 0, FS_SEEK_SET );
 ////}
 ////
@@ -622,7 +622,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_Memory::idFile_Memory
 ////=================
 ////*/
-////idFile_Memory::idFile_Memory( void ) {
+////idFile_Memory::idFile_Memory( ) {
 ////	name = "*unknown*";
 ////	maxSize = 0;
 ////	fileSize = 0;
@@ -690,7 +690,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_Memory::~idFile_Memory
 ////=================
 ////*/
-////idFile_Memory::~idFile_Memory( void ) {
+////idFile_Memory::~idFile_Memory( ) {
 ////	if ( filePtr && allocated > 0 && maxSize == 0 ) {
 ////		Mem_Free( filePtr );
 ////	}
@@ -758,7 +758,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_Memory::Length
 ////=================
 ////*/
-////int idFile_Memory::Length( void ) {
+////int idFile_Memory::Length( ) {
 ////	return fileSize;
 ////}
 ////
@@ -767,7 +767,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_Memory::Timestamp
 ////=================
 ////*/
-////ID_TIME_T idFile_Memory::Timestamp( void ) {
+////ID_TIME_T idFile_Memory::Timestamp( ) {
 ////	return 0;
 ////}
 ////
@@ -776,7 +776,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_Memory::Tell
 ////=================
 ////*/
-////int idFile_Memory::Tell( void ) {
+////int idFile_Memory::Tell( ) {
 ////	return ( curPtr - filePtr );
 ////}
 ////
@@ -785,7 +785,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_Memory::ForceFlush
 ////=================
 ////*/
-////void idFile_Memory::ForceFlush( void ) {
+////void idFile_Memory::ForceFlush( ) {
 ////}
 ////
 /////*
@@ -793,7 +793,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_Memory::Flush
 ////=================
 ////*/
-////void idFile_Memory::Flush( void ) {
+////void idFile_Memory::Flush( ) {
 ////}
 ////
 /////*
@@ -839,7 +839,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_Memory::MakeReadOnly
 ////=================
 ////*/
-////void idFile_Memory::MakeReadOnly( void ) {
+////void idFile_Memory::MakeReadOnly( ) {
 ////	mode = ( 1 << fsMode_t.FS_READ );
 ////	Rewind();
 ////}
@@ -914,7 +914,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_BitMsg::~idFile_BitMsg
 ////=================
 ////*/
-////idFile_BitMsg::~idFile_BitMsg( void ) {
+////idFile_BitMsg::~idFile_BitMsg( ) {
 ////}
 ////
 /////*
@@ -953,7 +953,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_BitMsg::Length
 ////=================
 ////*/
-////int idFile_BitMsg::Length( void ) {
+////int idFile_BitMsg::Length( ) {
 ////	return msg.GetSize();
 ////}
 ////
@@ -962,7 +962,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_BitMsg::Timestamp
 ////=================
 ////*/
-////ID_TIME_T idFile_BitMsg::Timestamp( void ) {
+////ID_TIME_T idFile_BitMsg::Timestamp( ) {
 ////	return 0;
 ////}
 ////
@@ -971,7 +971,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_BitMsg::Tell
 ////=================
 ////*/
-////int idFile_BitMsg::Tell( void ) {
+////int idFile_BitMsg::Tell( ) {
 ////	if ( mode & fsMode_t.FS_READ ) {
 ////		return msg.GetReadCount();
 ////	} else {
@@ -984,7 +984,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_BitMsg::ForceFlush
 ////=================
 ////*/
-////void idFile_BitMsg::ForceFlush( void ) {
+////void idFile_BitMsg::ForceFlush( ) {
 ////}
 ////
 /////*
@@ -992,7 +992,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_BitMsg::Flush
 ////=================
 ////*/
-////void idFile_BitMsg::Flush( void ) {
+////void idFile_BitMsg::Flush( ) {
 ////}
 ////
 /////*
@@ -1020,7 +1020,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_Permanent::idFile_Permanent
 ////=================
 ////*/
-////idFile_Permanent::idFile_Permanent( void ) {
+////idFile_Permanent::idFile_Permanent( ) {
 ////	name = "invalid";
 ////	o = NULL;
 ////	mode = 0;
@@ -1033,7 +1033,7 @@ idFile.prototype.Printf = function (fmt: string, ...args: any[]): number {
 ////idFile_Permanent::~idFile_Permanent
 ////=================
 ////*/
-////idFile_Permanent::~idFile_Permanent( void ) {
+////idFile_Permanent::~idFile_Permanent( ) {
 ////	if ( o ) {
 ////		fclose( o );
 ////	}
@@ -1046,7 +1046,7 @@ idFile_Permanent::Read
 Properly handles partial reads
 =================
 */
-/*int */idFile_Permanent.prototype.Read = function ( /* void **/buffer: Uint8Array, /*int */len: number): number {
+/*int */idFile_Permanent.prototype.Read = function ( /* void **/buffer: ArrayBuffer, /*int */len: number): number {
     var /*int		*/block: number, remaining: number;
     var /*int		*/read: number;
     var /*byte *	*/buf: Uint8Array;
@@ -1087,12 +1087,13 @@ Properly handles partial reads
     //    buf += read;
     //}
 
-    var source = new Uint8Array(this.o.arrayBuffer);
-    for (var i = 0; i < len; i++) {
-        buffer[i] = source[i];
-    }
+	var source = new Uint8Array(this.o.arrayBuffer);
+	var dest = new Uint8Array( buffer );
+	for ( var i = 0; i < len; i++ ) {
+		dest[i] = source[i];
+	}
 
-    fileSystem.AddToReadCount(len);
+	fileSystem.AddToReadCount(len);
     return len;
 };
 
@@ -1158,7 +1159,7 @@ idFile_Permanent.prototype.Write = function ( /*const void **/buffer: Uint8Array
 ////idFile_Permanent::ForceFlush
 ////=================
 ////*/
-////void idFile_Permanent::ForceFlush( void ) {
+////void idFile_Permanent::ForceFlush( ) {
 ////	setvbuf( o, NULL, _IONBF, 0 );
 ////}
 ////
@@ -1167,19 +1168,19 @@ idFile_Permanent.prototype.Write = function ( /*const void **/buffer: Uint8Array
 ////idFile_Permanent::Flush
 ////=================
 ////*/
-////void idFile_Permanent::Flush( void ) {
+////void idFile_Permanent::Flush( ) {
 ////	fflush( o );
 ////}
-////
-/////*
-////=================
-////idFile_Permanent::Tell
-////=================
-////*/
-////int idFile_Permanent::Tell( void ) {
-////	return ftell( o );
-////}
-////
+
+/*
+=================
+idFile_Permanent::Tell
+=================
+*/
+/*int */idFile_Permanent.prototype.Tell = function( ):number {
+	return ftell( this.o );
+}
+
 /*
 ================
 idFile_Permanent::Length
@@ -1246,7 +1247,7 @@ idFile_Permanent.prototype.Timestamp = function ( ): number {
 ////idFile_InZip::idFile_InZip
 ////=================
 ////*/
-////idFile_InZip::idFile_InZip( void ) {
+////idFile_InZip::idFile_InZip( ) {
 ////	name = "invalid";
 ////	zipFilePos = 0;
 ////	fileSize = 0;
@@ -1258,7 +1259,7 @@ idFile_Permanent.prototype.Timestamp = function ( ): number {
 ////idFile_InZip::~idFile_InZip
 ////=================
 ////*/
-////idFile_InZip::~idFile_InZip( void ) {
+////idFile_InZip::~idFile_InZip( ) {
 ////	unzCloseCurrentFile( z );
 ////	unzClose( z );
 ////}
@@ -1291,7 +1292,7 @@ idFile_Permanent.prototype.Timestamp = function ( ): number {
 ////idFile_InZip::ForceFlush
 ////=================
 ////*/
-////void idFile_InZip::ForceFlush( void ) {
+////void idFile_InZip::ForceFlush( ) {
 ////	common.FatalError( "idFile_InZip::ForceFlush: cannot flush the zipped file %s", name.c_str() );
 ////}
 ////
@@ -1300,7 +1301,7 @@ idFile_Permanent.prototype.Timestamp = function ( ): number {
 ////idFile_InZip::Flush
 ////=================
 ////*/
-////void idFile_InZip::Flush( void ) {
+////void idFile_InZip::Flush( ) {
 ////	common.FatalError( "idFile_InZip::Flush: cannot flush the zipped file %s", name.c_str() );
 ////}
 ////
@@ -1309,7 +1310,7 @@ idFile_Permanent.prototype.Timestamp = function ( ): number {
 ////idFile_InZip::Tell
 ////=================
 ////*/
-////int idFile_InZip::Tell( void ) {
+////int idFile_InZip::Tell( ) {
 ////	return unztell( z );
 ////}
 ////
@@ -1318,7 +1319,7 @@ idFile_Permanent.prototype.Timestamp = function ( ): number {
 ////idFile_InZip::Length
 ////================
 ////*/
-////int idFile_InZip::Length( void ) {
+////int idFile_InZip::Length( ) {
 ////	return fileSize;
 ////}
 ////
@@ -1327,7 +1328,7 @@ idFile_Permanent.prototype.Timestamp = function ( ): number {
 ////idFile_InZip::Timestamp
 ////================
 ////*/
-////ID_TIME_T idFile_InZip::Timestamp( void ) {
+////ID_TIME_T idFile_InZip::Timestamp( ) {
 ////	return 0;
 ////}
 ////

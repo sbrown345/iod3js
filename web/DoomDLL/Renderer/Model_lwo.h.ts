@@ -41,174 +41,174 @@
 
 /////* chunk and subchunk IDs */
 
-////#define LWID_(a,b,c,d) (((a)<<24)|((b)<<16)|((c)<<8)|(d))
+function LWID_ ( a: string, b: string, c: string, d: string ): number { return ( ( a.charCodeAt( 0 ) ) << 24 ) | ( ( b.charCodeAt( 0 ) ) << 16 ) | ( ( c.charCodeAt( 0 ) ) << 8 ) | ( d.charCodeAt( 0 ) ); }
 
-////#define ID_FORM  LWID_('F','O','R','M')
-////#define ID_LWO2  LWID_('L','W','O','2')
-////#define ID_LWOB  LWID_('L','W','O','B')
+var ID_FORM = LWID_('F','O','R','M')
+var ID_LWO2 = LWID_('L','W','O','2')
+var ID_LWOB = LWID_('L','W','O','B')
 
-/////* top-level chunks */
-////#define ID_LAYR  LWID_('L','A','Y','R')
-////#define ID_TAGS  LWID_('T','A','G','S')
-////#define ID_PNTS  LWID_('P','N','T','S')
-////#define ID_BBOX  LWID_('B','B','O','X')
-////#define ID_VMAP  LWID_('V','M','A','P')
-////#define ID_VMAD  LWID_('V','M','A','D')
-////#define ID_POLS  LWID_('P','O','L','S')
-////#define ID_PTAG  LWID_('P','T','A','G')
-////#define ID_ENVL  LWID_('E','N','V','L')
-////#define ID_CLIP  LWID_('C','L','I','P')
-////#define ID_SURF  LWID_('S','U','R','F')
-////#define ID_DESC  LWID_('D','E','S','C')
-////#define ID_TEXT  LWID_('T','E','X','T')
-////#define ID_ICON  LWID_('I','C','O','N')
+/* top-level chunks */
+var ID_LAYR  = LWID_('L','A','Y','R')
+var ID_TAGS  = LWID_('T','A','G','S')
+var ID_PNTS  = LWID_('P','N','T','S')
+var ID_BBOX  = LWID_('B','B','O','X')
+var ID_VMAP  = LWID_('V','M','A','P')
+var ID_VMAD  = LWID_('V','M','A','D')
+var ID_POLS  = LWID_('P','O','L','S')
+var ID_PTAG  = LWID_('P','T','A','G')
+var ID_ENVL  = LWID_('E','N','V','L')
+var ID_CLIP  = LWID_('C','L','I','P')
+var ID_SURF  = LWID_('S','U','R','F')
+var ID_DESC  = LWID_('D','E','S','C')
+var ID_TEXT  = LWID_('T','E','X','T')
+var ID_ICON  = LWID_('I','C','O','N')
 
-/////* polygon types */
-////#define ID_FACE  LWID_('F','A','C','E')
-////#define ID_CURV  LWID_('C','U','R','V')
-////#define ID_PTCH  LWID_('P','T','C','H')
-////#define ID_MBAL  LWID_('M','B','A','L')
-////#define ID_BONE  LWID_('B','O','N','E')
+/* polygon types */
+var ID_FACE  = LWID_('F','A','C','E')
+var ID_CURV  = LWID_('C','U','R','V')
+var ID_PTCH  = LWID_('P','T','C','H')
+var ID_MBAL  = LWID_('M','B','A','L')
+var ID_BONE  = LWID_('B','O','N','E')
 
-/////* polygon tags */
-////#define ID_SURF  LWID_('S','U','R','F')
-////#define ID_PART  LWID_('P','A','R','T')
-////#define ID_SMGP  LWID_('S','M','G','P')
+/* polygon tags */
+var ID_SURF  = LWID_('S','U','R','F')
+var ID_PART  = LWID_('P','A','R','T')
+var ID_SMGP  = LWID_('S','M','G','P')
 
-/////* envelopes */
-////#define ID_PRE   LWID_('P','R','E',' ')
-////#define ID_POST  LWID_('P','O','S','T')
-////#define ID_KEY   LWID_('K','E','Y',' ')
-////#define ID_SPAN  LWID_('S','P','A','N')
-////#define ID_TCB   LWID_('T','C','B',' ')
-////#define ID_HERM  LWID_('H','E','R','M')
-////#define ID_BEZI  LWID_('B','E','Z','I')
-////#define ID_BEZ2  LWID_('B','E','Z','2')
-////#define ID_LINE  LWID_('L','I','N','E')
-////#define ID_STEP  LWID_('S','T','E','P')
+/* envelopes */
+var ID_PRE   = LWID_('P','R','E',' ')
+var ID_POST  = LWID_('P','O','S','T')
+var ID_KEY   = LWID_('K','E','Y',' ')
+var ID_SPAN  = LWID_('S','P','A','N')
+var ID_TCB   = LWID_('T','C','B',' ')
+var ID_HERM  = LWID_('H','E','R','M')
+var ID_BEZI  = LWID_('B','E','Z','I')
+var ID_BEZ2  = LWID_('B','E','Z','2')
+var ID_LINE  = LWID_('L','I','N','E')
+var ID_STEP  = LWID_('S','T','E','P')
 
-/////* clips */
-////#define ID_STIL  LWID_('S','T','I','L')
-////#define ID_ISEQ  LWID_('I','S','E','Q')
-////#define ID_ANIM  LWID_('A','N','I','M')
-////#define ID_XREF  LWID_('X','R','E','F')
-////#define ID_STCC  LWID_('S','T','C','C')
-////#define ID_TIME  LWID_('T','I','M','E')
-////#define ID_CONT  LWID_('C','O','N','T')
-////#define ID_BRIT  LWID_('B','R','I','T')
-////#define ID_SATR  LWID_('S','A','T','R')
-////#define ID_HUE   LWID_('H','U','E',' ')
-////#define ID_GAMM  LWID_('G','A','M','M')
-////#define ID_NEGA  LWID_('N','E','G','A')
-////#define ID_IFLT  LWID_('I','F','L','T')
-////#define ID_PFLT  LWID_('P','F','L','T')
+/* clips */
+var ID_STIL  = LWID_('S','T','I','L')
+var ID_ISEQ  = LWID_('I','S','E','Q')
+var ID_ANIM  = LWID_('A','N','I','M')
+var ID_XREF  = LWID_('X','R','E','F')
+var ID_STCC  = LWID_('S','T','C','C')
+var ID_TIME  = LWID_('T','I','M','E')
+var ID_CONT  = LWID_('C','O','N','T')
+var ID_BRIT  = LWID_('B','R','I','T')
+var ID_SATR  = LWID_('S','A','T','R')
+var ID_HUE   = LWID_('H','U','E',' ')
+var ID_GAMM  = LWID_('G','A','M','M')
+var ID_NEGA  = LWID_('N','E','G','A')
+var ID_IFLT  = LWID_('I','F','L','T')
+var ID_PFLT  = LWID_('P','F','L','T')
 
-/////* surfaces */
-////#define ID_COLR  LWID_('C','O','L','R')
-////#define ID_LUMI  LWID_('L','U','M','I')
-////#define ID_DIFF  LWID_('D','I','F','F')
-////#define ID_SPEC  LWID_('S','P','E','C')
-////#define ID_GLOS  LWID_('G','L','O','S')
-////#define ID_REFL  LWID_('R','E','F','L')
-////#define ID_RFOP  LWID_('R','F','O','P')
-////#define ID_RIMG  LWID_('R','I','M','G')
-////#define ID_RSAN  LWID_('R','S','A','N')
-////#define ID_TRAN  LWID_('T','R','A','N')
-////#define ID_TROP  LWID_('T','R','O','P')
-////#define ID_TIMG  LWID_('T','I','M','G')
-////#define ID_RIND  LWID_('R','I','N','D')
-////#define ID_TRNL  LWID_('T','R','N','L')
-////#define ID_BUMP  LWID_('B','U','M','P')
-////#define ID_SMAN  LWID_('S','M','A','N')
-////#define ID_SIDE  LWID_('S','I','D','E')
-////#define ID_CLRH  LWID_('C','L','R','H')
-////#define ID_CLRF  LWID_('C','L','R','F')
-////#define ID_ADTR  LWID_('A','D','T','R')
-////#define ID_SHRP  LWID_('S','H','R','P')
-////#define ID_LINE  LWID_('L','I','N','E')
-////#define ID_LSIZ  LWID_('L','S','I','Z')
-////#define ID_ALPH  LWID_('A','L','P','H')
-////#define ID_AVAL  LWID_('A','V','A','L')
-////#define ID_GVAL  LWID_('G','V','A','L')
-////#define ID_BLOK  LWID_('B','L','O','K')
+/* surfaces */
+var ID_COLR  = LWID_('C','O','L','R')
+var ID_LUMI  = LWID_('L','U','M','I')
+var ID_DIFF  = LWID_('D','I','F','F')
+var ID_SPEC  = LWID_('S','P','E','C')
+var ID_GLOS  = LWID_('G','L','O','S')
+var ID_REFL  = LWID_('R','E','F','L')
+var ID_RFOP  = LWID_('R','F','O','P')
+var ID_RIMG  = LWID_('R','I','M','G')
+var ID_RSAN  = LWID_('R','S','A','N')
+var ID_TRAN  = LWID_('T','R','A','N')
+var ID_TROP  = LWID_('T','R','O','P')
+var ID_TIMG  = LWID_('T','I','M','G')
+var ID_RIND  = LWID_('R','I','N','D')
+var ID_TRNL  = LWID_('T','R','N','L')
+var ID_BUMP  = LWID_('B','U','M','P')
+var ID_SMAN  = LWID_('S','M','A','N')
+var ID_SIDE  = LWID_('S','I','D','E')
+var ID_CLRH  = LWID_('C','L','R','H')
+var ID_CLRF  = LWID_('C','L','R','F')
+var ID_ADTR  = LWID_('A','D','T','R')
+var ID_SHRP  = LWID_('S','H','R','P')
+var ID_LINE  = LWID_('L','I','N','E')
+var ID_LSIZ  = LWID_('L','S','I','Z')
+var ID_ALPH  = LWID_('A','L','P','H')
+var ID_AVAL  = LWID_('A','V','A','L')
+var ID_GVAL  = LWID_('G','V','A','L')
+var ID_BLOK  = LWID_('B','L','O','K')
 
-/////* texture layer */
-////#define ID_TYPE  LWID_('T','Y','P','E')
-////#define ID_CHAN  LWID_('C','H','A','N')
-////#define ID_NAME  LWID_('N','A','M','E')
-////#define ID_ENAB  LWID_('E','N','A','B')
-////#define ID_OPAC  LWID_('O','P','A','C')
-////#define ID_FLAG  LWID_('F','L','A','G')
-////#define ID_PROJ  LWID_('P','R','O','J')
-////#define ID_STCK  LWID_('S','T','C','K')
-////#define ID_TAMP  LWID_('T','A','M','P')
+/* texture layer */
+var ID_TYPE  = LWID_('T','Y','P','E')
+var ID_CHAN  = LWID_('C','H','A','N')
+var ID_NAME  = LWID_('N','A','M','E')
+var ID_ENAB  = LWID_('E','N','A','B')
+var ID_OPAC  = LWID_('O','P','A','C')
+var ID_FLAG  = LWID_('F','L','A','G')
+var ID_PROJ  = LWID_('P','R','O','J')
+var ID_STCK  = LWID_('S','T','C','K')
+var ID_TAMP  = LWID_('T','A','M','P')
 
-/////* texture coordinates */
-////#define ID_TMAP  LWID_('T','M','A','P')
-////#define ID_AXIS  LWID_('A','X','I','S')
-////#define ID_CNTR  LWID_('C','N','T','R')
-////#define ID_SIZE  LWID_('S','I','Z','E')
-////#define ID_ROTA  LWID_('R','O','T','A')
-////#define ID_OREF  LWID_('O','R','E','F')
-////#define ID_FALL  LWID_('F','A','L','L')
-////#define ID_CSYS  LWID_('C','S','Y','S')
+/* texture coordinates */
+var ID_TMAP  = LWID_('T','M','A','P')
+var ID_AXIS  = LWID_('A','X','I','S')
+var ID_CNTR  = LWID_('C','N','T','R')
+var ID_SIZE  = LWID_('S','I','Z','E')
+var ID_ROTA  = LWID_('R','O','T','A')
+var ID_OREF  = LWID_('O','R','E','F')
+var ID_FALL  = LWID_('F','A','L','L')
+var ID_CSYS  = LWID_('C','S','Y','S')
 
-/////* image map */
-////#define ID_IMAP  LWID_('I','M','A','P')
-////#define ID_IMAG  LWID_('I','M','A','G')
-////#define ID_WRAP  LWID_('W','R','A','P')
-////#define ID_WRPW  LWID_('W','R','P','W')
-////#define ID_WRPH  LWID_('W','R','P','H')
-////#define ID_VMAP  LWID_('V','M','A','P')
-////#define ID_AAST  LWID_('A','A','S','T')
-////#define ID_PIXB  LWID_('P','I','X','B')
+/* image map */
+var ID_IMAP  = LWID_('I','M','A','P')
+var ID_IMAG  = LWID_('I','M','A','G')
+var ID_WRAP  = LWID_('W','R','A','P')
+var ID_WRPW  = LWID_('W','R','P','W')
+var ID_WRPH  = LWID_('W','R','P','H')
+var ID_VMAP  = LWID_('V','M','A','P')
+var ID_AAST  = LWID_('A','A','S','T')
+var ID_PIXB  = LWID_('P','I','X','B')
 
-/////* procedural */
-////#define ID_PROC  LWID_('P','R','O','C')
-////#define ID_COLR  LWID_('C','O','L','R')
-////#define ID_VALU  LWID_('V','A','L','U')
-////#define ID_FUNC  LWID_('F','U','N','C')
-////#define ID_FTPS  LWID_('F','T','P','S')
-////#define ID_ITPS  LWID_('I','T','P','S')
-////#define ID_ETPS  LWID_('E','T','P','S')
+/* procedural */
+var ID_PROC  = LWID_('P','R','O','C')
+var ID_COLR  = LWID_('C','O','L','R')
+var ID_VALU  = LWID_('V','A','L','U')
+var ID_FUNC  = LWID_('F','U','N','C')
+var ID_FTPS  = LWID_('F','T','P','S')
+var ID_ITPS  = LWID_('I','T','P','S')
+var ID_ETPS  = LWID_('E','T','P','S')
 
-/////* gradient */
-////#define ID_GRAD  LWID_('G','R','A','D')
-////#define ID_GRST  LWID_('G','R','S','T')
-////#define ID_GREN  LWID_('G','R','E','N')
-////#define ID_PNAM  LWID_('P','N','A','M')
-////#define ID_INAM  LWID_('I','N','A','M')
-////#define ID_GRPT  LWID_('G','R','P','T')
-////#define ID_FKEY  LWID_('F','K','E','Y')
-////#define ID_IKEY  LWID_('I','K','E','Y')
+/* gradient */
+var ID_GRAD  = LWID_('G','R','A','D')
+var ID_GRST  = LWID_('G','R','S','T')
+var ID_GREN  = LWID_('G','R','E','N')
+var ID_PNAM  = LWID_('P','N','A','M')
+var ID_INAM  = LWID_('I','N','A','M')
+var ID_GRPT  = LWID_('G','R','P','T')
+var ID_FKEY  = LWID_('F','K','E','Y')
+var ID_IKEY  = LWID_('I','K','E','Y')
 
-/////* shader */
-////#define ID_SHDR  LWID_('S','H','D','R')
-////#define ID_DATA  LWID_('D','A','T','A')
+/* shader */
+var ID_SHDR  = LWID_('S','H','D','R')
+var ID_DATA  = LWID_('D','A','T','A')
 
 
-/////* generic linked list */
+/* generic linked list */
 
-////typedef struct st_lwNode {
-////   struct st_lwNode *next, *prev;
+class lwNode {
+	next:lwNode, prev: lwNode;
 ////   void *data;
-////} lwNode;
+};
 
 
 /////* plug-in reference */
 
-////typedef struct st_lwPlugin {
+////class lwPlugin {
 ////   struct st_lwPlugin *next, *prev;
 ////   char          *ord;
 ////   char          *name;
 ////   int            flags;
 ////   void          *data;
-////} lwPlugin;
+////};
 
 
 /////* envelopes */
 
-////typedef struct st_lwKey {
+////class lwKey {
 ////   struct st_lwKey *next, *prev;
 ////   float          value;
 ////   float          time;
@@ -219,7 +219,7 @@
 ////   float          param[ 4 ];
 ////} lwKey;
 
-////typedef struct st_lwEnvelope {
+class lwEnvelope {
 ////   struct st_lwEnvelope *next, *prev;
 ////   int            index;
 ////   int            type;
@@ -229,36 +229,36 @@
 ////   int            behavior[ 2 ];       /* pre and post (extrapolation) */
 ////   lwPlugin      *cfilter;             /* linked list of channel filters */
 ////   int            ncfilters;
-////} lwEnvelope;
+} ;
 
-////#define BEH_RESET      0
-////#define BEH_CONSTANT   1
-////#define BEH_REPEAT     2
-////#define BEH_OSCILLATE  3
-////#define BEH_OFFSET     4
-////#define BEH_LINEAR     5
+var BEH_RESET     =0
+var BEH_CONSTANT  =1
+var BEH_REPEAT    =2
+var BEH_OSCILLATE =3
+var BEH_OFFSET    =4
+var BEH_LINEAR    =5
 
 
 /////* values that can be enveloped */
 
-////typedef struct st_lwEParam {
+////class lwEParam{
 ////   float          val;
 ////   int            eindex;
-////} lwEParam;
+////} ;
 
-////typedef struct st_lwVParam {
+////class lwVParam {
 ////   float          val[ 3 ];
 ////   int            eindex;
-////} lwVParam;
+////} ;
 
 
 /////* clips */
 
-////typedef struct st_lwClipStill {
+////class lwClipStill {
 ////   char          *name;
-////} lwClipStill;
+////} ;
 
-////typedef struct st_lwClipSeq {
+////class lwClipSeq {
 ////   char          *prefix;              /* filename before sequence digits */
 ////   char          *suffix;              /* after digits, e.g. extensions */
 ////   int            digits;
@@ -268,25 +268,25 @@
 ////   int            end;
 ////} lwClipSeq;
 
-////typedef struct st_lwClipAnim {
+////class lwClipAnim {
 ////   char          *name;
 ////   char          *server;              /* anim loader plug-in */
 ////   void          *data;
-////} lwClipAnim;
+////} ;
 
-////typedef struct st_lwClipXRef {
+////class lwClipXRef {
 ////   char          *string;
 ////   int            index;
 ////   struct st_lwClip *clip;
-////} lwClipXRef;
+////} ;
 
-////typedef struct st_lwClipCycle {
+////class lwClipCycle {
 ////   char          *name;
 ////   int            lo;
 ////   int            hi;
-////} lwClipCycle;
+////} ;
 
-////typedef struct st_lwClip {
+class lwClip {
 ////   struct st_lwClip *next, *prev;
 ////   int            index;
 ////   unsigned int   type;                /* ID_STIL, ID_ISEQ, etc. */
@@ -310,12 +310,12 @@
 ////   int            nifilters;
 ////   lwPlugin      *pfilter;             /* linked list of pixel filters */
 ////   int            npfilters;
-////} lwClip;
+}
 
 
 /////* textures */
 
-////typedef struct st_lwTMap {
+////class lwTMap {
 ////   lwVParam       size;
 ////   lwVParam       center;
 ////   lwVParam       rotate;
@@ -325,7 +325,7 @@
 ////   int            coord_sys;
 ////} lwTMap;
 
-////typedef struct st_lwImageMap {
+////class lwImageMap {
 ////   int            cindex;
 ////   int            projection;
 ////   char          *vmap_name;
@@ -341,25 +341,25 @@
 ////   lwEParam       amplitude;
 ////} lwImageMap;
 
-////#define PROJ_PLANAR       0
-////#define PROJ_CYLINDRICAL  1
-////#define PROJ_SPHERICAL    2
-////#define PROJ_CUBIC        3
-////#define PROJ_FRONT        4
+var PROJ_PLANAR      = 0
+var PROJ_CYLINDRICAL = 1
+var PROJ_SPHERICAL   = 2
+var PROJ_CUBIC       = 3
+var PROJ_FRONT       = 4
 
-////#define WRAP_NONE    0
-////#define WRAP_EDGE    1
-////#define WRAP_REPEAT  2
-////#define WRAP_MIRROR  3
+var WRAP_NONE    =0
+var WRAP_EDGE    =1
+var WRAP_REPEAT  =2
+var WRAP_MIRROR  =3
 
-////typedef struct st_lwProcedural {
+////class lwProcedural {
 ////   int            axis;
 ////   float          value[ 3 ];
 ////   char          *name;
 ////   void          *data;
 ////} lwProcedural;
 
-////typedef struct st_lwGradKey {
+////class lwGradKey {
 ////   struct st_lwGradKey *next, *prev;
 ////   float          value;
 ////   float          rgba[ 4 ];
@@ -375,7 +375,7 @@
 ////   short         *ikey;                /* array of interpolation codes */
 ////} lwGradient;
 
-////typedef struct st_lwTexture {
+////class lwTexture {
 ////   struct st_lwTexture *next, *prev;
 ////   char          *ord;
 ////   unsigned int   type;
@@ -396,7 +396,7 @@
 
 /////* values that can be textured */
 
-////typedef struct st_lwTParam {
+////class lwTParam{
 ////   float          val;
 ////   int            eindex;
 ////   lwTexture     *tex;                 /* linked list of texture layers */
@@ -411,27 +411,27 @@
 
 /////* surfaces */
 
-////typedef struct st_lwGlow {
+////class Glow {
 ////   short          enabled;
 ////   short          type;
 ////   lwEParam       intensity;
 ////   lwEParam       size;
 ////} Glow;
 
-////typedef struct st_lwRMap {
+///class lwRMap {
 ////   lwTParam       val;
-////   int            options;
-////   int            cindex;
+////   int            options: number /*int*/;
+////   int            cindex: number /*int*/;
 ////   float          seam_angle;
 ////} lwRMap;
 
-////typedef struct st_lwLine {
+////class lwLine {
 ////   short          enabled;
 ////   unsigned short flags;
 ////   lwEParam       size;
 ////} lwLine;
 
-////typedef struct st_lwSurface {
+class lwSurface {
 ////   struct st_lwSurface *next, *prev;
 ////   char          *name;
 ////   char          *srcname;
@@ -446,9 +446,9 @@
 ////   lwTParam       translucency;
 ////   lwTParam       bump;
 ////   float          smooth;
-////   int            sideflags;
+////   int            sideflags: number /*int*/;
 ////   float          alpha;
-////   int            alpha_mode;
+////   int            alpha_mode: number /*int*/;
 ////   lwEParam       color_hilite;
 ////   lwEParam       color_filter;
 ////   lwEParam       add_trans;
@@ -456,116 +456,117 @@
 ////   lwEParam       glow;
 ////   lwLine         line;
 ////   lwPlugin      *shader;              /* linked list of shaders */
-////   int            nshaders;
-////} lwSurface;
+////   int            nshaders: number /*int*/;
+}
 
 
 /////* vertex maps */
 
-////typedef struct st_lwVMap {
+class lwVMap {
 ////   struct st_lwVMap *next, *prev;
 ////   char          *name;
-////   unsigned int   type;
-////   int            dim;
-////   int            nverts;
-////   int            perpoly;
+////   unsigned int   type: number /*unsigned int*/;
+////   int            dim: number /*int*/;
+////   int            nverts: number /*int*/;
+////   int            perpoly: number /*int*/;
 ////   int           *vindex;              /* array of point indexes */
 ////   int           *pindex;              /* array of polygon indexes */
 ////   float        **val;
 
 ////   // added by duffy
-////   int			offset;
-////} lwVMap;
+////   int			offset: number /*int*/;
+}
 
-////typedef struct st_lwVMapPt {
+////class lwVMapPt{
 ////   lwVMap        *vmap;
-////   int            index;               /* vindex or pindex element */
+////   int            index: number /*int*/;               /* vindex or pindex element */
 ////} lwVMapPt;
 
 
-/////* points and polygons */
+/* points and polygons */
 
-////typedef struct st_lwPoint {
+class lwPoint {
 ////   float          pos[ 3 ];
-////   int            npols;               /* number of polygons sharing the point */
+////   int            npols: number /*int*/;               /* number of polygons sharing the point */
 ////   int           *pol;                 /* array of polygon indexes */
-////   int            nvmaps;
+////   int            nvmaps: number /*int*/;
 ////   lwVMapPt      *vm;                  /* array of vmap references */
-////} lwPoint;
+}
 
 ////typedef struct st_lwPolVert {
-////   int            index;               /* index into the point array */
+////   int            index: number /*int*/;               /* index into the point array */
 ////   float          norm[ 3 ];
-////   int            nvmaps;
+////   int            nvmaps: number /*int*/;
 ////   lwVMapPt      *vm;                  /* array of vmap references */
 ////} lwPolVert;
 
-////typedef struct st_lwPolygon {
+////class lwPolygon {
 ////   lwSurface     *surf;
-////   int            part;                /* part index */
-////   int            smoothgrp;           /* smoothing group */
-////   int            flags;
+////   int            part: number /*int*/;                /* part index */
+////   int            smoothgrp: number /*int*/;           /* smoothing group */
+////   int            flags: number /*int*/;
 ////   unsigned int   type;
 ////   float          norm[ 3 ];
-////   int            nverts;
+////   int            nverts: number /*int*/;
 ////   lwPolVert     *v;                   /* array of vertex records */
 ////} lwPolygon;
 
-////typedef struct st_lwPointList {
-////   int            count;
-////   int            offset;              /* only used during reading */
-////   lwPoint       *pt;                  /* array of points */
-////} lwPointList;
+class lwPointList {
+	count: number /*int*/;
+	offset: number /*int*/; /* only used during reading */
+	pt: lwPoint; /* array of points */
+}
 
-////typedef struct st_lwPolygonList {
-////   int            count;
-////   int            offset;              /* only used during reading */
-////   int            vcount;              /* total number of vertices */
-////   int            voffset;             /* only used during reading */
+class lwPolygonList {
+////   int            count: number /*int*/;
+////   int            offset: number /*int*/;              /* only used during reading */
+////   int            vcount: number /*int*/;              /* total number of vertices */
+////   int            voffset: number /*int*/;             /* only used during reading */
 ////   lwPolygon     *pol;                 /* array of polygons */
-////} lwPolygonList;
+}
 
 
-/////* geometry layers */
+/* geometry layers */
 
-////typedef struct st_lwLayer {
-////   struct st_lwLayer *next, *prev;
-////   char          *name;
-////   int            index;
-////   int            parent;
-////   int            flags;
-////   float          pivot[ 3 ];
-////   float          bbox[ 6 ];
-////   lwPointList    point;
-////   lwPolygonList  polygon;
-////   int            nvmaps;
-////   lwVMap        *vmap;                /* linked list of vmaps */
-////} lwLayer;
-
-
-/////* tag strings */
-
-////typedef struct st_lwTagList {
-////   int            count;
-////   int            offset;              /* only used during reading */
-////   char         **tag;                 /* array of strings */
-////} lwTagList;
+class lwLayer {
+	next: lwLayer;
+	prev: lwLayer;
+	name: string;
+	index: number /*int*/;
+	parent: number /*int*/;
+	flags: number /*int*/;
+	pivot = new Float32Array( 3 );
+	bbox = new Float32Array( 6 );
+	point = new lwPointList;
+	polygon = new lwPolygonList;
+	nvmaps: number /*int*/;
+	vmap: lwVMap; /* linked list of vmaps */
+};
 
 
-/////* an object */
+/* tag strings */
 
-////typedef struct st_lwObject {
-////	ID_TIME_T			timeStamp;
-////	lwLayer *		layer;               /* linked list of layers */
-////	lwEnvelope *	env;                 /* linked list of envelopes */
-////	lwClip *		clip;                /* linked list of clips */
-////	lwSurface *		surf;                /* linked list of surfaces */
-////	lwTagList		taglist;
-////	int				nlayers;
-////	int				nenvs;
-////	int				nclips;
-////	int				nsurfs;
-////} lwObject;
+class lwTagList {
+	count: number /*int*/;
+	offset: number /*int*/;              /* only used during reading */
+   tag:string[]//char         **tag;                 /* array of strings */
+} ;
+
+
+/* an object */
+
+class lwObject {
+	timeStamp: number /*ID_TIME_T*/;
+	layer: lwLayer;               /* linked list of layers */
+	env: lwEnvelope;                 /* linked list of envelopes */
+	clip: lwClip;                /* linked list of clips */
+	surf: lwSurface;                /* linked list of surfaces */
+	taglist = new lwTagList;
+	nlayers: number /*int*/;
+	nenvs: number /*int*/;
+	nclips: number /*int*/;
+	nsurfs: number /*int*/;
+};
 
 
 /////* lwo2.c */

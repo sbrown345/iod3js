@@ -360,7 +360,7 @@ function $delete ( obj: any ): void {
 			obj.destructor ( );
 		}
 		if ( obj.opDelete ) {
-			obj.opDelete ( );
+			obj.opDelete( obj );
 		}
 	}
 }

@@ -809,21 +809,21 @@ once during the execution of the program or DLL.
 ////#define new ID_DEBUG_NEW
 ////#endif
 
-///*
-//================
-//idClass::delete
-//================
-//*/
-//opDelete( /*void *ptr */):void {
-//	int *p;
+/*
+================
+idClass::delete
+================
+*/
+	opDelete ( ptr: any /*void *ptr */ ): void {
+		//int *p;
 
-//	if ( ptr ) {
-//		p = ( ( int * )ptr ) - 1;
-//		idClass.memused -= *p;
-//		this.numobjects--;
-//        Mem_Free( p );
-//	}
-//}
+		if ( ptr ) {
+			//p = ( ( int * )ptr ) - 1;
+			//idClass.memused -= *p;
+			idClass.numobjects--;
+			//Mem_Free( p );
+		}
+	}
 
 //void idClass::operator delete( void *ptr, int, int, char *, int ) {
 //	int *p;

@@ -329,7 +329,7 @@ function BigLong( /*int*/ l: number): number { return l/*_BigLong( l );*/ }					
 function LittleLong( /*int*/ l: number): number { return l/*_LittleLong( l );*/ }													 //int	
 function BigFloat( /*float*/ l: number): number { return l/*_BigFloat( l );*/ }														 //float
 function LittleFloat( /*float*/ l: number): number { return l/*return _LittleFloat( l );*/ }												 //float
-//function BigRevBytes( void *bp, int elsize, int elcount ) { _BigRevBytes( bp, elsize, elcount ); }			 //void
+function BigRevBytes( /*void *bp*/ bp: Uint8Array, /*int */elsize: number, /*int */elcount: number) {  /*bp_BigRevBytes( bp, elsize, elcount )*/; }			 //void
 //function LittleRevBytes( void *bp, int elsize, int elcount ){ _LittleRevBytes( bp, elsize, elcount ); }		 //void
 //function LittleBitField( void *bp, int elsize ){ _LittleBitField( bp, elsize ); }							 //void
 

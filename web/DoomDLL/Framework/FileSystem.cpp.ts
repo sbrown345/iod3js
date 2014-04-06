@@ -1130,7 +1130,7 @@ timestamp can be NULL if not required
         buf = new Uint8Array( len + 1 );
         buffer.$ = buf;
 
-        f.Read( buf, len );
+        f.Read( buf.buffer, len );
 
         // guarantee that it will have a trailing 0 for string operations
         buf[len] = 0;
