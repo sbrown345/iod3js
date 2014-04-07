@@ -8,6 +8,15 @@ var __TIME__ = "00:00:00";
 function strlen ( str: string ): number;
 function strlen ( str: Uint8Array ): number;
 function strlen ( str: any ): number {
+	if ( str instanceof Uint8Array ) {
+		var i: number;
+		for ( i = 0; i < str.length; i++ ) {
+			if ( !str[i] ) {
+				break;
+			}
+		}
+		return i;
+	}
 	return str.length;
 }
 
@@ -111,6 +120,7 @@ function memcpy2d ( destination: Int32Array[], source: Int32Array[] ): void {
 	}
 }
 
+// don't use subarray!
 function memcpy(destination: ArrayBufferView, source: ArrayBufferView, count: number): void {
 	if ( !destination ) {
 		return;
@@ -347,6 +357,14 @@ class P {
 
 	incr(): void {
 		this.idx++;
+	}
+
+	incrBy(c:number): void {
+		this.idx += c;
+	}
+
+	subarray(): Uint8Array {
+		return this.arr.subarray( this.idx );
 	}
 
 	constructor(buffer: ArrayBuffer, indexOffset: number = 0) {

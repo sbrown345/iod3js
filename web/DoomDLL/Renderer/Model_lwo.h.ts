@@ -515,14 +515,28 @@ class lwPointList {
 	count: number /*int*/;
 	offset: number /*int*/; /* only used during reading */
 	pt: lwPoint; /* array of points */
+
+	memset0 ( ): void {
+		this.count = 0;
+		this.offset = 0;
+		this.pt = null;
+	}
 }
 
 class lwPolygonList {
-////   int            count: number /*int*/;
-////   int            offset: number /*int*/;              /* only used during reading */
-////   int            vcount: number /*int*/;              /* total number of vertices */
-////   int            voffset: number /*int*/;             /* only used during reading */
-////   lwPolygon     *pol;                 /* array of polygons */
+	count: number /*int*/;
+	offset: number /*int*/;              /* only used during reading */
+	vcount: number /*int*/;              /* total number of vertices */
+	voffset: number /*int*/;             /* only used during reading */
+	//pol:lwPolygon;                 /* array of polygons */
+
+	memset0 ( ): void {
+		this.count = 0;
+		this.offset = 0;
+		this.vcount = 0;
+		this.voffset = 0;
+		//this.pol = null;
+	}
 }
 
 
@@ -541,6 +555,22 @@ class lwLayer {
 	polygon = new lwPolygonList;
 	nvmaps: number /*int*/;
 	vmap: lwVMap; /* linked list of vmaps */
+
+
+	memset0(): void {
+		this.next = null;
+		this.prev = null;
+		this.name = null;
+		this.index= 0;
+		this.parent= 0;
+		this.flags = 0;
+		memset( this.pivot, 0, sizeof( this.pivot ) );
+		memset(this.bbox, 0, sizeof(this.bbox ) );
+		this.point.memset0 ( );
+		this.polygon.memset0 ( );
+		this.nvmaps= 0;
+		this.vmap = null;
+	}
 };
 
 
@@ -548,9 +578,15 @@ class lwLayer {
 
 class lwTagList {
 	count: number /*int*/;
-	offset: number /*int*/;              /* only used during reading */
-   tag:string[]//char         **tag;                 /* array of strings */
-} ;
+	offset: number /*int*/; /* only used during reading */
+	tag: Uint8Array[] //char         **tag;                 /* array of strings */	
+
+	memset0 ( ): void {
+		this.count = 0;
+		this.offset = 0;
+		this.tag = null;
+	}
+}
 
 
 /* an object */
@@ -566,6 +602,16 @@ class lwObject {
 	nenvs: number /*int*/;
 	nclips: number /*int*/;
 	nsurfs: number /*int*/;
+
+	memset0 ( ): void {
+		this.timeStamp = 0;
+		this.layer = null;
+		this.env = null;
+		this.clip = null;
+		this.surf = null;
+		this.taglist.memset0();
+		this.nlayers = this.nenvs = this.nclips = this.nsurfs = 0;
+	}
 };
 
 

@@ -87,7 +87,7 @@
 ////Read image references from a CLIP chunk in an LWO2 file.
 ////====================================================================== */
 
-////lwClip *lwGetClip( fp:idFile, int cksize )
+////lwClip *lwGetClip( fp:idFile, /*int */cksize:number )
 ////{
 ////   lwClip *clip;
 ////   lwPlugin *filt;
@@ -335,7 +335,7 @@
 ////Read an ENVL chunk from an LWO2 file.
 ////====================================================================== */
 
-////lwEnvelope *lwGetEnvelope( fp:idFile, int cksize )
+////lwEnvelope *lwGetEnvelope( fp:idFile, /*int */cksize:number )
 ////{
 ////   lwEnvelope *env;
 ////   lwKey *key;
@@ -1002,29 +1002,28 @@ function set_flen ( /*int */i: number ): void { flen = i; }
 
 function get_flen ( ): number { return flen; }
 
-////void *getbytes( fp:idFile, int size )
-////{
-////   void *data;
+function getbytes ( fp: idFile, /*int*/ size: number ): ArrayBuffer {
+	var data: ArrayBuffer;
 
-////   if ( flen == FLEN_ERROR ) return NULL;
-////   if ( size < 0 ) {
-////      flen = FLEN_ERROR;
-////      return NULL;
-////   }
-////   data = Mem_ClearedAlloc( size );
-////   if ( !data ) {
-////      flen = FLEN_ERROR;
-////      return NULL;
-////   }
-////   if ( size != fp.Read( data, size ) ) {
-////      flen = FLEN_ERROR;
-////      Mem_Free( data );
-////      return NULL;
-////   }
+	if ( flen == FLEN_ERROR ) return null;
+	if ( size < 0 ) {
+		flen = FLEN_ERROR;
+		return null;
+	}
+	data = Mem_ClearedAlloc( size );
+	if ( !data ) {
+		flen = FLEN_ERROR;
+		return null;
+	}
+	if ( size != fp.Read( data, size ) ) {
+		flen = FLEN_ERROR;
+		Mem_Free( data );
+		return null;
+	}
 
-////   flen += size;
-////   return data;
-////}
+	flen += size;
+	return data;
+}
 
 
 ////void skipbytes( fp:idFile, int n )
@@ -1350,39 +1349,38 @@ function getS0( fp:idFile ):string
 ////}
 
 
-////char *sgetS0( unsigned char **bp )
-////{
-////   char *s;
-////   unsigned char *buf = *bp;
-////   int len;
+function sgetS0 ( /*unsigned char ***/bp: P ): Uint8Array {
+	var s: Uint8Array; //char *s;
+	var buf = new P( bp.buf, bp.idx ); //unsigned char *buf = *bp;
+	var /*int */len: number;
 
-////   if ( flen == FLEN_ERROR ) return null;
+	if ( flen == FLEN_ERROR ) return null;
 
-////   len = strlen( (const char*)buf ) + 1;
-////   if ( len == 1 ) {
-////      flen += 2;
-////      *bp += 2;
-////      return null;
-////   }
-////   len += len & 1;
-////   s = (char*)Mem_ClearedAlloc( len );
-////   if ( !s ) {
-////      flen = FLEN_ERROR;
-////      return null;
-////   }
+	len = strlen( /*(const char*)*/buf.subarray ( ) ) + 1;
+	if ( len == 1 ) {
+		flen += 2;
+		bp.incrBy( 2 ); //*bp += 2;
+		return null;
+	}
+	len += len & 1;
+	s = new Uint8Array( Mem_ClearedAlloc( len ) );
+	if ( !s ) {
+		flen = FLEN_ERROR;
+		return null;
+	}
 
-////   memcpy( s, buf, len );
-////   flen += len;
-////   *bp += len;
-////   return s;
-////}
+	memcpyUint8Array( s, buf.subarray ( ), len );
+	flen += len;
+	bp.incrBy( len );
+	return s;
+}
 
-/////*
-////======================================================================
-////lwFreeLayer()
+/*
+======================================================================
+lwFreeLayer()
 
-////Free memory used by an lwLayer.
-////====================================================================== */
+Free memory used by an lwLayer.
+====================================================================== */
 
 ////void lwFreeLayer( lwLayer *layer )
 ////{
@@ -1437,227 +1435,222 @@ can be used to diagnose the cause.
 If you don't need this information, failID and failpos can be NULL.
 ====================================================================== */
 
-function lwGetObject(filename: string, /*unsigned int */ failID: R<number>, /*int **/failpos: R<number>): lwObject 
-{
+function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*int **/failpos: R<number> ): lwObject {
 	var fp: idFile = null;
 	var object: lwObject;
-	var layer: lwLayer ;
-    var node: lwNode ;
+	var layer: lwLayer;
+	var node: lwNode;
 	var /*int */id: number, formsize: number, type: number, cksize: number;
 	var /*int */i: number, rlen: number;
 
-   fp = fileSystem.OpenFileRead( filename );
-   if ( !fp ) {
-	   return null;
-   }
+	fp = fileSystem.OpenFileRead( filename );
+	if ( !fp ) {
+		return null;
+	}
 
-   /* read the first 12 bytes */
+	/* read the first 12 bytes */
 	debugger;
-   set_flen( 0 );
-   id       = int(getU4( fp ));
-   formsize = int(getU4( fp ));
-   type     = int(getU4( fp ));
-   if ( 12 != get_flen() ) {
-      fileSystem.CloseFile( fp );
-      return null;
-   }
+	set_flen( 0 );
+	id = int( getU4( fp ) );
+	formsize = int( getU4( fp ) );
+	type = int( getU4( fp ) );
+	if ( 12 != get_flen ( ) ) {
+		fileSystem.CloseFile( fp );
+		return null;
+	}
 
-   /* is this a LW object? */
+	/* is this a LW object? */
 
-   if ( id != ID_FORM ) {
-      fileSystem.CloseFile( fp );
-      if ( failpos ) failpos.$ = 12;
-	   return null;
-   }
+	if ( id != ID_FORM ) {
+		fileSystem.CloseFile( fp );
+		if ( failpos ) failpos.$ = 12;
+		return null;
+	}
 
-   if ( type != ID_LWO2 ) {
-	  fileSystem.CloseFile( fp );
-      if ( type == ID_LWOB )
-         return lwGetObject5( filename, failID, failpos );
-      else {
-         if ( failpos ) failpos.$ = 12;
-		  return null;
-      }
-   }
+	if ( type != ID_LWO2 ) {
+		fileSystem.CloseFile( fp );
+		if ( type == ID_LWOB )
+			return lwGetObject5( filename, failID, failpos );
+		else {
+			if ( failpos ) failpos.$ = 12;
+			return null;
+		}
+	}
 
-   /* allocate an object and a default layer */
+	/* allocate an object and a default layer */
 
-	object = new lwObject;//(lwObject*)Mem_ClearedAlloc( sizeof( lwObject ) );
-   if ( !object ) return Fail ( );
+	object = new lwObject; //(lwObject*)Mem_ClearedAlloc( sizeof( lwObject ) );
+	object.memset0 ( );
+	if ( !object ) return Fail ( );
 
-	layer = new lwLayer;//(lwLayer*)Mem_ClearedAlloc( sizeof( lwLayer ) );
-   if ( !layer ) return Fail ( );
-   object.layer = layer;
+	layer = new lwLayer;
+	layer.memset0(); //(lwLayer*)Mem_ClearedAlloc( sizeof( lwLayer ) );
+	if ( !layer ) return Fail ( );
+	object.layer = layer;
 
-   object.timeStamp = fp.Timestamp();
+	object.timeStamp = fp.Timestamp ( );
 
-   /* get the first chunk header */
+	/* get the first chunk header */
 
 	id = int( getU4( fp ) );
 	cksize = int( getU4( fp ) );
-   if ( 0 > get_flen() ) return Fail ( );
+	if ( 0 > get_flen ( ) ) return Fail ( );
 
-   /* process chunks as they're encountered */
+	/* process chunks as they're encountered */
 
-	todoThrow();
-   //while ( 1 ) {
-   //   cksize += cksize & 1;
+	while ( 1 ) {
+		cksize += cksize & 1;
 
-   //   switch ( id )
-   //   {
-   //      case ID_LAYR:
-   //         if ( object.nlayers > 0 ) {
-   // 			layer = new lwLayer;//(lwLayer*)Mem_ClearedAlloc( sizeof( lwLayer ) );
-   // 			if (!layer) return Fail();
-   // 			var $layer = new R(object.layer );
-   // 			lwListAdd( /*(void**)&*/$layer, layer);
-   // 			object.layer = $layer.$;
-   //         }
-   //         object.nlayers++;
+		switch ( id ) {
+		case ID_LAYR:
+			if ( object.nlayers > 0 ) {
+				layer = new lwLayer;
+				layer.memset0 ( ); //(lwLayer*)Mem_ClearedAlloc( sizeof( lwLayer ) );
+				if ( !layer ) return Fail ( );
+				var $layer = new R( object.layer );
+				lwListAdd( /*(void**)&*/$layer, layer );
+				object.layer = $layer.$;
+			}
+			object.nlayers++;
 
-   //         set_flen( 0 );
-   //         layer.index = getU2( fp );
-   //         layer.flags = getU2( fp );
-   //         layer.pivot[ 0 ] = getF4( fp );
-   //         layer.pivot[ 1 ] = getF4( fp );
-   //         layer.pivot[ 2 ] = getF4( fp );
-   //         layer.name = getS0( fp );
+			set_flen( 0 );
+			layer.index = getU2( fp );
+			layer.flags = getU2( fp );
+			layer.pivot[0] = getF4( fp );
+			layer.pivot[1] = getF4( fp );
+			layer.pivot[2] = getF4( fp );
+			layer.name = getS0( fp );
 
-   //         rlen = get_flen();
-   //         if ( rlen < 0 || rlen > cksize ) return Fail ( );
-   //         if ( rlen <= cksize - 2 )
-   //            layer.parent = getU2( fp );
-   //         rlen = get_flen();
-   //         if ( rlen < cksize )
-   // 			fp.Seek(cksize - rlen, fsOrigin_t.FS_SEEK_CUR );
-   //         break;
+			rlen = get_flen ( );
+			if ( rlen < 0 || rlen > cksize ) return Fail ( );
+			if ( rlen <= cksize - 2 )
+				layer.parent = getU2( fp );
+			rlen = get_flen ( );
+			if ( rlen < cksize )
+				fp.Seek( cksize - rlen, fsOrigin_t.FS_SEEK_CUR );
+			break;
 
-   //      case ID_PNTS:
-   // 		 todoThrow();
-   //         //if ( !lwGetPoints( fp, cksize, layer.point ))
-   //         //   return Fail ( );
-   //         break;
+		case ID_PNTS:
+			if ( !lwGetPoints( fp, cksize, layer.point ))
+			   return Fail ( );
+			break;
 
-   // 	  case ID_POLS:
-   // 		  todoThrow ( );
-   //         //if ( !lwGetPolygons( fp, cksize, layer.polygon,
-   //         //   layer.point.offset ))
-   //         //   return Fail ( );
-   //         break;
+		case ID_POLS:
+			todoThrow ( );
+			//if ( !lwGetPolygons( fp, cksize, layer.polygon,
+			//   layer.point.offset ))
+			//   return Fail ( );
+			break;
 
-   //      case ID_VMAP:
-   //      case ID_VMAD:
-   // 		 todoThrow();
-   // 		 node = <lwNode> lwGetVMap( fp, cksize, layer.point.offset,
-   //         //   layer.polygon.offset, id == ID_VMAD );
-   //         //if ( !node ) return Fail ( );
-   //         //lwListAdd( /*(void**)&*/layer.vmap, node );
-   //         //layer.nvmaps++;
-   //         break;
+		case ID_VMAP:
+		case ID_VMAD:
+			todoThrow ( );
+			//node = <lwNode> lwGetVMap( fp, cksize, layer.point.offset,
+			//   layer.polygon.offset, id == ID_VMAD );
+			//if ( !node ) return Fail ( );
+			//lwListAdd( /*(void**)&*/layer.vmap, node );
+			//layer.nvmaps++;
+			break;
 
-   //      case ID_PTAG:
-   // 		 todoThrow();
-   //         if ( !lwGetPolygonTags( fp, cksize, object.taglist,
-   //            //layer.polygon ))
-   //            //return Fail ( );
-   //         break;
+		case ID_PTAG:
+			todoThrow ( );
+			//if ( !lwGetPolygonTags( fp, cksize, object.taglist,
+			//layer.polygon ))
+			//return Fail ( );
+			break;
 
-   //      case ID_BBOX:
-   // 		 todoThrow();
-   //         //set_flen( 0 );
-   //         //for ( i = 0; i < 6; i++ )
-   //         //   layer.bbox[ i ] = getF4( fp );
-   //         //rlen = get_flen();
-   //         //if ( rlen < 0 || rlen > cksize ) return Fail ( );
-   //         //if ( rlen < cksize )
-   // 		//	fp.Seek(cksize - rlen, fsOrigin_t.FS_SEEK_CUR );
-   //         break;
+		case ID_BBOX:
+			todoThrow ( );
+			//set_flen( 0 );
+			//for ( i = 0; i < 6; i++ )
+			//   layer.bbox[ i ] = getF4( fp );
+			//rlen = get_flen();
+			//if ( rlen < 0 || rlen > cksize ) return Fail ( );
+			//if ( rlen < cksize )
+			//	fp.Seek(cksize - rlen, fsOrigin_t.FS_SEEK_CUR );
+			break;
 
-   //      case ID_TAGS:
-   // 		 todoThrow();
-   //         //if ( !lwGetTags( fp, cksize, object.taglist ))
-   //         //   return Fail ( );
-   //         break;
+		case ID_TAGS:
+			if ( !lwGetTags( fp, cksize, object.taglist ) )
+				return Fail ( );
+			break;
 
-   //      case ID_ENVL:
-   // 		 todoThrow();
-   // 		 //node = <lwNode>lwGetEnvelope( fp, cksize );
-   //         //if ( !node ) return Fail ( );
-   //         //lwListAdd( /*(void**)&*/object.env, node );
-   //         //object.nenvs++;
-   //         break;
+		case ID_ENVL:
+			todoThrow ( );
+			//node = <lwNode>lwGetEnvelope( fp, cksize );
+			//if ( !node ) return Fail ( );
+			//lwListAdd( /*(void**)&*/object.env, node );
+			//object.nenvs++;
+			break;
 
-   //      case ID_CLIP:
-   // 		 todoThrow();
-   // 		// node = <lwNode> lwGetClip( fp, cksize );
-   //         //if ( !node ) return Fail ( );
-   //         //lwListAdd( /*(void**)&*/object.clip, node );
-   //         //object.nclips++;
-   //         break;
+		case ID_CLIP:
+			todoThrow ( );
+			// node = <lwNode> lwGetClip( fp, cksize );
+			//if ( !node ) return Fail ( );
+			//lwListAdd( /*(void**)&*/object.clip, node );
+			//object.nclips++;
+			break;
 
-   //      case ID_SURF:
-   // 		 todoThrow();
-   // 		 //node = <lwNode> lwGetSurface( fp, cksize );
-   //         //if ( !node ) return Fail ( );
-   //         //lwListAdd( /*(void**)&*/object.surf, node );
-   //         //object.nsurfs++;
-   //         break;
+		case ID_SURF:
+			todoThrow ( );
+			//node = <lwNode> lwGetSurface( fp, cksize );
+			//if ( !node ) return Fail ( );
+			//lwListAdd( /*(void**)&*/object.surf, node );
+			//object.nsurfs++;
+			break;
 
-   //      case ID_DESC:
-   //      case ID_TEXT:
-   //      case ID_ICON:
-   //      default:
-   // 		 fp.Seek(cksize, fsOrigin_t.FS_SEEK_CUR );
-   //         break;
-   //   }
+		case ID_DESC:
+		case ID_TEXT:
+		case ID_ICON:
+		default:
+			fp.Seek( cksize, fsOrigin_t.FS_SEEK_CUR );
+			break;
+		}
+		/* end of the file? */
 
-   //   /* end of the file? */
+		if ( formsize <= fp.Tell ( ) - 8 ) break;
 
-   //   if ( formsize <= fp.Tell() - 8 ) break;
+		/* get the next chunk header */
 
-   //   /* get the next chunk header */
+		set_flen( 0 );
+		id = int( getU4( fp ) );
+		cksize = int( getU4( fp ) );
+		if ( 8 != get_flen ( ) ) return Fail ( );
+	}
 
-   //   set_flen( 0 );
-   //   id = int(getU4( fp ));
-   //   cksize = int(getU4( fp ));
-   //   if ( 8 != get_flen() ) return Fail ( );
-   //}
+	//fileSystem.CloseFile( fp );
+	//fp = null;
 
-   //fileSystem.CloseFile( fp );
-   //fp = null;
+	//if ( object.nlayers == 0 )
+	//   object.nlayers = 1;
 
-   //if ( object.nlayers == 0 )
-   //   object.nlayers = 1;
+	//layer = object.layer;
+	// while (layer) {
+	// 	todoThrow ( );
+	//   //lwGetBoundingBox( layer.point, layer.bbox );
+	//   //lwGetPolyNormals( layer.point, layer.polygon );
+	//   //if ( !lwGetPointPolygons(layer.point, layer.polygon )) return Fail ( );
+	//   //if ( !lwResolvePolySurfaces( layer.polygon, object.taglist,
+	//   //   object.surf, object.nsurfs )) return Fail ( );
+	//   //lwGetVertNormals( layer.point, layer.polygon );
+	//   //if ( !lwGetPointVMaps( layer.point, layer.vmap )) return Fail ( );
+	//   //if ( !lwGetPolyVMaps(layer.polygon, layer.vmap )) return Fail ( );
+	//   //layer = layer.next;
+	//}
 
-   //layer = object.layer;
-   // while (layer) {
-   // 	todoThrow ( );
-   //   //lwGetBoundingBox( layer.point, layer.bbox );
-   //   //lwGetPolyNormals( layer.point, layer.polygon );
-   //   //if ( !lwGetPointPolygons(layer.point, layer.polygon )) return Fail ( );
-   //   //if ( !lwResolvePolySurfaces( layer.polygon, object.taglist,
-   //   //   object.surf, object.nsurfs )) return Fail ( );
-   //   //lwGetVertNormals( layer.point, layer.polygon );
-   //   //if ( !lwGetPointVMaps( layer.point, layer.vmap )) return Fail ( );
-   //   //if ( !lwGetPolyVMaps(layer.polygon, layer.vmap )) return Fail ( );
-   //   //layer = layer.next;
-   //}
-
-   return object;
+	return object;
 
 	//Fail:
-	function Fail(): lwObject{
-	   //if ( failID ) *failID = id;
-	   //if ( fp ) {
-	   //   if ( failpos ) failpos.$ = fp.Tell();
-	   //   fileSystem.CloseFile( fp );
-	   //}
-	   // lwFreeObject(object);
+	function Fail ( ): lwObject {
+		//if ( failID ) *failID = id;
+		//if ( fp ) {
+		//   if ( failpos ) failpos.$ = fp.Tell();
+		//   fileSystem.CloseFile( fp );
+		//}
+		// lwFreeObject(object);
 		return null;
 	}
 }
-
-
 
 
 /////* IDs specific to LWOB */
@@ -1828,7 +1821,7 @@ function lwGetObject(filename: string, /*unsigned int */ failID: R<number>, /*in
 ////Read an lwSurface from an LWOB file.
 ////====================================================================== */
 
-////lwSurface *lwGetSurface5( fp:idFile, int cksize, lwObject *obj )
+////lwSurface *lwGetSurface5( fp:idFile, /*int */cksize:number, lwObject *obj )
 ////{
 ////   lwSurface *surf;
 ////   lwTexture *tex;
@@ -2135,7 +2128,7 @@ function lwGetObject(filename: string, /*unsigned int */ failID: R<number>, /*in
 ////are added to the array in the lwPolygonList.
 ////====================================================================== */
 
-////int lwGetPolygons5( fp:idFile, int cksize, lwPolygonList *plist, int ptoffset ):number
+////int lwGetPolygons5( fp:idFile, /*int */cksize:number, lwPolygonList *plist, int ptoffset ):number
 ////{
 ////   lwPolygon *pp;
 ////   lwPolVert *pv;
@@ -2409,7 +2402,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////added to the array in the lwPointList.
 ////====================================================================== */
 
-////int lwGetPoints( fp:idFile, int cksize, lwPointList *point ):number
+////int lwGetPoints( fp:idFile, /*int */cksize:number, lwPointList *point ):number
 ////{
 ////	float *f;
 ////	int np, i, j;
@@ -2529,7 +2522,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////are added to the array in the lwPolygonList.
 ////====================================================================== */
 
-////int lwGetPolygons( fp:idFile, int cksize, lwPolygonList *plist, int ptoffset ):number
+////int lwGetPolygons( fp:idFile, /*int */cksize:number, lwPolygonList *plist, int ptoffset ):number
 ////{
 ////   lwPolygon *pp;
 ////   lwPolVert *pv;
@@ -2683,7 +2676,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////default surface is created.
 ////====================================================================== */
 
-////int lwResolvePolySurfaces( lwPolygonList *polygon, lwTagList *tlist,
+////int lwResolvePolySurfaces( lwPolygonList *polygon, tlist: lwTagList,
 ////   lwSurface **surf, int *nsurfs ):number
 ////{
 ////   lwSurface **s, *st;
@@ -2780,7 +2773,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////Free memory used by an lwTagList.
 ////====================================================================== */
 
-////void lwFreeTags( lwTagList *tlist )
+////void lwFreeTags( tlist: lwTagList )
 ////{
 ////	var/*int*/i:number;
 
@@ -2797,64 +2790,65 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////}
 
 
-/////*
-////======================================================================
-////lwGetTags()
+/*
+======================================================================
+lwGetTags()
 
-////Read tag strings from a TAGS chunk in an LWO2 file.  The tags are
-////added to the lwTagList array.
-////====================================================================== */
+Read tag strings from a TAGS chunk in an LWO2 file.  The tags are
+added to the lwTagList array.
+====================================================================== */
 
-////int lwGetTags( fp:idFile, int cksize, lwTagList *tlist ):number
-////{
-////	char *buf, *bp;
-////	int i, len, ntags;
+function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): number {
+	var buf: Uint8Array, bp: P;
+	var /*int */i: number, len: number, ntags: number;
+	debugger;
+	if ( cksize == 0 ) return 1;
 
-////	if ( cksize == 0 ) return 1;
+	/* read the whole chunk */
 
-////	/* read the whole chunk */
+	set_flen( 0 );
+	buf = new Uint8Array( getbytes( fp, cksize ) );
+	if ( !buf ) return 0;
 
-////	set_flen( 0 );
-////	buf = (char*)getbytes( fp, cksize );
-////	if ( !buf ) return 0;
+	/* count the strings */
 
-////	/* count the strings */
+	ntags = 0;
+	bp = new P( buf );
+	while ( bp.idx < /*buf +*/ cksize ) {
+		len = strlen( bp.subarray ( ) ) + 1;
+		len += len & 1;
+		bp.incrBy( len ); //bp += len;
+		++ntags;
+	}
 
-////	ntags = 0;
-////	bp = buf;
-////	while ( bp < buf + cksize ) {
-////		len = strlen( bp ) + 1;
-////		len += len & 1;
-////		bp += len;
-////		++ntags;
-////	}
+	/* expand the string array to hold the new tags */
 
-////	/* expand the string array to hold the new tags */
+	tlist.offset = tlist.count;
+	tlist.count += ntags;
+	var /* ** */oldtag = tlist.tag;
+	tlist.tag = new Array<Uint8Array>( tlist.count ); // [](char**)Mem_Alloc( tlist.count * sizeof( char * ) );
+	if ( !tlist.tag ) return Fail ( );
+	if ( oldtag ) {
+		todoThrow ( );
+		//memcpy( tlist.tag, oldtag, tlist.offset * sizeof( char * ) );
+		//Mem_Free( oldtag );
+	}
+	//memset( &tlist.tag[ tlist.offset ], 0, ntags * sizeof( char * ) );
 
-////	tlist.offset = tlist.count;
-////	tlist.count += ntags;
-////	char **oldtag = tlist.tag;
-////	tlist.tag = (char**)Mem_Alloc( tlist.count * sizeof( char * ) );
-////	if ( !tlist.tag ) goto Fail;
-////	if ( oldtag ) {
-////		memcpy( tlist.tag, oldtag, tlist.offset * sizeof( char * ) );
-////		Mem_Free( oldtag );
-////	}
-////	memset( &tlist.tag[ tlist.offset ], 0, ntags * sizeof( char * ) );
+	/* copy the new tags to the tag array */
 
-////	/* copy the new tags to the tag array */
+	bp = new P( buf );
+	for ( i = 0; i < ntags; i++ )
+		tlist.tag[i + tlist.offset] = sgetS0( /*(unsigned char**)&bp*/ bp );
 
-////	bp = buf;
-////	for ( i = 0; i < ntags; i++ )
-////		tlist.tag[ i + tlist.offset ] = sgetS0( (unsigned char**)&bp );
+	Mem_Free( buf );
+	return 1;
 
-////	Mem_Free( buf );
-////	return 1;
-
-////Fail:
-////	if ( buf ) Mem_Free( buf );
-////	return 0;
-////}
+	function Fail ( ): number {
+		if ( buf ) Mem_Free( buf );
+		return 0;
+	}
+}
 
 
 /////*
@@ -2864,7 +2858,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////Read polygon tags from a PTAG chunk in an LWO2 file.
 ////====================================================================== */
 
-////int lwGetPolygonTags( fp:idFile, int cksize, lwTagList *tlist, lwPolygonList *plist ):number
+////int lwGetPolygonTags( fp:idFile, /*int */cksize:number, tlist: lwTagList, lwPolygonList *plist ):number
 ////{
 ////	unsigned int type;
 ////	int rlen = 0, i, j;
@@ -3662,7 +3656,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////Read an lwSurface from an LWO2 file.
 ////====================================================================== */
 
-////lwSurface *lwGetSurface( fp:idFile, int cksize )
+////lwSurface *lwGetSurface( fp:idFile, /*int */cksize:number )
 ////{
 ////   lwSurface *surf;
 ////   lwTexture *tex;
@@ -3945,7 +3939,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////Read an lwVMap from a VMAP or VMAD chunk in an LWO2.
 ////====================================================================== */
 
-////lwVMap *lwGetVMap( fp:idFile, int cksize, int ptoffset, int poloffset,
+////lwVMap *lwGetVMap( fp:idFile, /*int */cksize:number, int ptoffset, int poloffset,
 ////   int perpoly )
 ////{
 ////   unsigned char *buf, *bp;
