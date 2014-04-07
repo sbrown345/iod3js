@@ -1102,7 +1102,7 @@ function getU2 ( fp: idFile ): number /*unsigned int */ {
 	var /*unsigned short*/i = new Uint16Array( 1 );
 
 	if ( flen == FLEN_ERROR ) return 0;
-	if ( 2 != fp.Read( i, 2 ) ) {
+	if ( 2 != fp.Read( i.buffer, 2 ) ) {
 		flen = FLEN_ERROR;
 		return 0;
 	}
@@ -1513,6 +1513,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 			}
 			object.nlayers++;
 
+			debugger;
 			set_flen( 0 );
 			layer.index = getU2( fp );
 			layer.flags = getU2( fp );
@@ -2348,7 +2349,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////Free the memory used by an lwPointList.
 ////====================================================================== */
 
-////void lwFreePoints( lwPointList *point )
+////void lwFreePoints( point:lwPointList )
 ////{
 ////   var/*int*/i:number;
 
@@ -2394,52 +2395,55 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////}
 
 
-/////*
-////======================================================================
-////lwGetPoints()
+/*
+======================================================================
+lwGetPoints()
 
-////Read point records from a PNTS chunk in an LWO2 file.  The points are
-////added to the array in the lwPointList.
-////====================================================================== */
+Read point records from a PNTS chunk in an LWO2 file.  The points are
+added to the array in the lwPointList.
+====================================================================== */
 
-////int lwGetPoints( fp:idFile, /*int */cksize:number, lwPointList *point ):number
-////{
-////	float *f;
-////	int np, i, j;
+function lwGetPoints ( fp: idFile, /*int */cksize: number, point: lwPointList ): number {
+	var f: Float32Array;
+	var /*int */np: number, i: number, j: number;
 
-////	if ( cksize == 1 ) return 1;
+	if ( cksize == 1 ) return 1;
+	debugger;
+	/* extend the point array to hold the new points */
 
-////	/* extend the point array to hold the new points */
+	np = cksize / 12;
+	point.offset = point.count;
+	point.count += np;
+	var oldpt = point.pt;
+	point.pt = newStructArray<lwPoint>( lwPoint, point.count ); // //(lwPoint*)Mem_Alloc( point.count * sizeof( lwPoint ) );
+	if ( !point.pt ) return 0;
+	if ( oldpt ) {
+		todoThrow ( );
+		//memcpy( point.pt, oldpt, point.offset * sizeof( lwPoint ) );
+		//Mem_Free( oldpt );
+	}
+	//memset( &point.pt[ point.offset ], 0, np * sizeof( lwPoint ) );
+	for ( var k = 0; k < point.pt.length; k++ ) {
+		point.pt[k].memset0 ( );
+	}
 
-////	np = cksize / 12;
-////	point.offset = point.count;
-////	point.count += np;
-////	lwPoint *oldpt = point.pt;
-////	point.pt = (lwPoint*)Mem_Alloc( point.count * sizeof( lwPoint ) );
-////	if ( !point.pt ) return 0;
-////	if ( oldpt ) {
-////		memcpy( point.pt, oldpt, point.offset * sizeof( lwPoint ) );
-////		Mem_Free( oldpt );
-////	}
-////	memset( &point.pt[ point.offset ], 0, np * sizeof( lwPoint ) );
+	/* read the whole chunk */
 
-////	/* read the whole chunk */
+	f = new Float32Array( getbytes( fp, cksize ) );
+	if ( !f ) return 0;
+	BigRevBytes( f, 4, np * 3 );
 
-////	f = ( float * ) getbytes( fp, cksize );
-////	if ( !f ) return 0;
-////	BigRevBytes( f, 4, np * 3 );
+	/* assign position values */
 
-////	/* assign position values */
+	for ( i = 0, j = 0; i < np; i++, j += 3 ) {
+		point.pt[i].pos[0] = f[j];
+		point.pt[i].pos[1] = f[j + 1];
+		point.pt[i].pos[2] = f[j + 2];
+	}
 
-////	for ( i = 0, j = 0; i < np; i++, j += 3 ) {
-////		point.pt[ i ].pos[ 0 ] = f[ j ];
-////		point.pt[ i ].pos[ 1 ] = f[ j + 1 ];
-////		point.pt[ i ].pos[ 2 ] = f[ j + 2 ];
-////	}
-
-////	Mem_Free( f );
-////	return 1;
-////}
+	Mem_Free( f );
+	return 1;
+}
 
 
 /////*
@@ -2450,7 +2454,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////box hasn't already been initialized.
 ////====================================================================== */
 
-////void lwGetBoundingBox( lwPointList *point, float bbox[] )
+////void lwGetBoundingBox( point:lwPointList, float bbox[] )
 ////{
 ////	int i, j;
 
@@ -2599,7 +2603,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////undefined for one- and two-point polygons.
 ////====================================================================== */
 
-////void lwGetPolyNormals( lwPointList *point, lwPolygonList *polygon )
+////void lwGetPolyNormals( point:lwPointList, lwPolygonList *polygon )
 ////{
 ////   int i, j;
 ////   float p1[ 3 ], p2[ 3 ], pn[ 3 ], v1[ 3 ], v2[ 3 ];
@@ -2634,7 +2638,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////returns 1.
 ////====================================================================== */
 
-////int lwGetPointPolygons( lwPointList *point, lwPolygonList *polygon ):number
+////int lwGetPointPolygons( point:lwPointList, lwPolygonList *polygon ):number
 ////{
 ////   int i, j, k;
 
@@ -2733,7 +2737,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////lwResolvePolySurfaces() have already been called.
 ////====================================================================== */
 
-////void lwGetVertNormals( lwPointList *point, lwPolygonList *polygon )
+////void lwGetVertNormals( point:lwPointList, lwPolygonList *polygon )
 ////{
 ////   int j, k, n, g, h, p;
 ////   float a;
@@ -2801,7 +2805,7 @@ added to the lwTagList array.
 function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): number {
 	var buf: Uint8Array, bp: P;
 	var /*int */i: number, len: number, ntags: number;
-	debugger;
+	
 	if ( cksize == 0 ) return 1;
 
 	/* read the whole chunk */
@@ -4029,7 +4033,7 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 ////Fill in the lwVMapPt structure for each point.
 ////====================================================================== */
 
-////int lwGetPointVMaps( lwPointList *point, lwVMap *vmap ):number
+////int lwGetPointVMaps( point:lwPointList, lwVMap *vmap ):number
 ////{
 ////   lwVMap *vm;
 ////   int i, j, n;

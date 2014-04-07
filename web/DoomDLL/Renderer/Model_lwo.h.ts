@@ -477,20 +477,28 @@ class lwVMap {
 ////   int			offset: number /*int*/;
 }
 
-////class lwVMapPt{
-////   lwVMap        *vmap;
-////   int            index: number /*int*/;               /* vindex or pindex element */
-////} lwVMapPt;
+class lwVMapPt {
+	vmap: lwVMap;
+	index: number /*int*/; /* vindex or pindex element */
+}
 
 
 /* points and polygons */
 
 class lwPoint {
-////   float          pos[ 3 ];
-////   int            npols: number /*int*/;               /* number of polygons sharing the point */
-////   int           *pol;                 /* array of polygon indexes */
-////   int            nvmaps: number /*int*/;
-////   lwVMapPt      *vm;                  /* array of vmap references */
+	pos = new Float32Array( 3 )
+	npols: number /*int*/; /* number of polygons sharing the point */
+	pol: number[] /*int*/; /* array of polygon indexes */
+	nvmaps: number /*int*/;
+	vm: lwVMapPt[]; /* array of vmap references */
+
+	memset0 ( ): void {
+		this.pos[0] = this.pos[1] = this.pos[2] = 0;
+		this.npols = 0;
+		this.pol = null;
+		this.nvmaps = 0;
+		this.vm = null;
+	}
 }
 
 ////typedef struct st_lwPolVert {
@@ -514,7 +522,7 @@ class lwPoint {
 class lwPointList {
 	count: number /*int*/;
 	offset: number /*int*/; /* only used during reading */
-	pt: lwPoint; /* array of points */
+	pt: lwPoint[]; /* array of points */
 
 	memset0 ( ): void {
 		this.count = 0;
