@@ -3936,62 +3936,61 @@ lwGetVMap()
 Read an lwVMap from a VMAP or VMAD chunk in an LWO2.
 ====================================================================== */
 
-function lwGetVMap( fp:idFile, /*int */cksize:number, /*int*/ ptoffset:number, /*int */poloffset:number,
-	/*int */perpoly: number): lwVMap
-{
+function lwGetVMap ( fp: idFile, /*int */cksize: number, /*int*/ ptoffset: number, /*int */poloffset: number,
+	/*int */perpoly: number ): lwVMap {
 	var /*unsigned char **/buf: Uint8Array, bp: P;
-	var vmap: lwVMap ;
-   //float *f;
+	var vmap: lwVMap;
+	//float *f;
 	var /*int */i: number, j: number, npts: number, rlen: number;
 
 
-   /* read the whole chunk */
+	/* read the whole chunk */
 
-   set_flen( 0 );
+	set_flen( 0 );
 	buf = new Uint8Array( getbytes( fp, cksize ) );
-   if ( !buf ) return null;
+	if ( !buf ) return null;
 
-	vmap = new lwVMap;// (lwVMap*)Mem_ClearedAlloc( sizeof( lwVMap ) );
+	vmap = new lwVMap; // (lwVMap*)Mem_ClearedAlloc( sizeof( lwVMap ) );
 	vmap.memset0 ( );
-   if ( !vmap ) {
-      Mem_Free( buf );
-	   return null;
-   }
+	if ( !vmap ) {
+		Mem_Free( buf );
+		return null;
+	}
 
-   /* initialize the vmap */
+	/* initialize the vmap */
 
-   vmap.perpoly = perpoly;
+	vmap.perpoly = perpoly;
 
-   bp = new P(buf);
-   set_flen( 0 );
-   vmap.type = sgetU4( bp );
-   vmap.dim  = sgetU2( bp );
-   vmap.name = sgetS0( bp );
-   rlen = get_flen();
+	bp = new P( buf );
+	set_flen( 0 );
+	vmap.type = sgetU4( bp );
+	vmap.dim = sgetU2( bp );
+	vmap.name = sgetS0( bp );
+	rlen = get_flen ( );
 
-   /* count the vmap records */
+	/* count the vmap records */
 
-   npts = 0;
-   while ( bp.idx < /*buf + */cksize ) {
-      i = sgetVX( bp );
-      if ( perpoly )
-         i = sgetVX( bp );
-	   bp.incrBy( vmap.dim * sizeof( float ) );
-      ++npts;
-   }
+	npts = 0;
+	while ( bp.idx < /*buf + */cksize ) {
+		i = sgetVX( bp );
+		if ( perpoly )
+			i = sgetVX( bp );
+		bp.incrBy( vmap.dim * sizeof( float ) );
+		++npts;
+	}
 
-   /* allocate the vmap */
+	/* allocate the vmap */
 
-   vmap.nverts = npts;
+	vmap.nverts = npts;
 	vmap.vindex = new Int32Array( npts ); //(int*)Mem_ClearedAlloc( npts * sizeof( int ) );
-   if ( !vmap.vindex ) return Fail();
-   if ( perpoly ) {
-	   vmap.pindex = new Int32Array( npts );//(int*)Mem_ClearedAlloc( npts * sizeof( int ) );
-      if ( !vmap.pindex ) return Fail();
-   }
+	if ( !vmap.vindex ) return Fail ( );
+	if ( perpoly ) {
+		vmap.pindex = new Int32Array( npts ); //(int*)Mem_ClearedAlloc( npts * sizeof( int ) );
+		if ( !vmap.pindex ) return Fail ( );
+	}
 
 	if ( vmap.dim > 0 ) {
-		vmap.val = multiDimTypedArray<Float32Array>( Float32Array, npts / vmap.dim, vmap.dim ); //(float**)Mem_ClearedAlloc( npts * sizeof( float * ) );
+		vmap.val = multiDimTypedArray<Float32Array>( Float32Array, npts, vmap.dim ); //(float**)Mem_ClearedAlloc( npts * sizeof( float * ) );
 		if ( !vmap.val ) return Fail ( );
 		// js: skip, already created
 		//f = (float*)Mem_ClearedAlloc( npts * vmap.dim * sizeof( float ) );
@@ -4003,18 +4002,18 @@ function lwGetVMap( fp:idFile, /*int */cksize:number, /*int*/ ptoffset:number, /
 	/* fill in the vmap values */
 
 	bp = new P( buf, rlen );
-   for ( i = 0; i < npts; i++ ) {
-      vmap.vindex[ i ] = sgetVX( bp );
-      if ( perpoly )
-         vmap.pindex[ i ] = sgetVX( bp );
-      for ( j = 0; j < vmap.dim; j++ )
-         vmap.val[ i ][ j ] = sgetF4( bp );
-   }
+	for ( i = 0; i < npts; i++ ) {
+		vmap.vindex[i] = sgetVX( bp );
+		if ( perpoly )
+			vmap.pindex[i] = sgetVX( bp );
+		for ( j = 0; j < vmap.dim; j++ )
+			vmap.val[i][j] = sgetF4( bp );
+	}
 
-   Mem_Free( buf );
-   return vmap;
+	Mem_Free( buf );
+	return vmap;
 
-	function Fail(): lwVMap {
+	function Fail ( ): lwVMap {
 		if ( buf ) Mem_Free( buf );
 		lwFreeVMap( vmap );
 		return null;
