@@ -99,7 +99,7 @@
 ////   /* allocate the Clip structure */
 
 ////   clip = (lwClip*)Mem_ClearedAlloc( sizeof( lwClip ) );
-////   if ( !clip ) goto Fail;
+////   if ( !clip ) return Fail();
 
 ////   clip.contrast.val = 1.0f;
 ////   clip.brightness.val = 1.0f;
@@ -119,7 +119,7 @@
 
 ////   clip.type = getU4( fp );
 ////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) goto Fail;
+////   if ( 0 > get_flen() ) return Fail();
 
 ////   sz += sz & 1;
 ////   set_flen( 0 );
@@ -164,7 +164,7 @@
 ////   /* error while reading current subchunk? */
 
 ////   rlen = get_flen();
-////   if ( rlen < 0 || rlen > sz ) goto Fail;
+////   if ( rlen < 0 || rlen > sz ) return Fail();
 
 ////   /* skip unread parts of the current subchunk */
 
@@ -174,7 +174,7 @@
 ////   /* end of the CLIP chunk? */
 
 ////   rlen = fp.Tell() - pos;
-////   if ( cksize < rlen ) goto Fail;
+////   if ( cksize < rlen ) return Fail();
 ////   if ( cksize == rlen )
 ////      return clip;
 
@@ -182,7 +182,7 @@
 
 ////   id = getU4( fp );
 ////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) goto Fail;
+////   if ( 0 > get_flen() ) return Fail();
 
 ////   while ( 1 ) {
 ////      sz += sz & 1;
@@ -227,7 +227,7 @@
 ////         case ID_IFLT:
 ////         case ID_PFLT:
 ////            filt = (lwPlugin*)Mem_ClearedAlloc( sizeof( lwPlugin ) );
-////            if ( !filt ) goto Fail;
+////            if ( !filt ) return Fail();
 
 ////            filt.name = getS0( fp );
 ////            filt.flags = getU2( fp );
@@ -251,7 +251,7 @@
 ////      /* error while reading current subchunk? */
 
 ////      rlen = get_flen();
-////      if ( rlen < 0 || rlen > sz ) goto Fail;
+////      if ( rlen < 0 || rlen > sz ) return Fail();
 
 ////      /* skip unread parts of the current subchunk */
 
@@ -261,7 +261,7 @@
 ////      /* end of the CLIP chunk? */
 
 ////      rlen = fp.Tell() - pos;
-////      if ( cksize < rlen ) goto Fail;
+////      if ( cksize < rlen ) return Fail();
 ////      if ( cksize == rlen ) break;
 
 ////      /* get the next chunk header */
@@ -269,12 +269,12 @@
 ////      set_flen( 0 );
 ////      id = getU4( fp );
 ////      sz = getU2( fp );
-////      if ( 6 != get_flen() ) goto Fail;
+////      if ( 6 != get_flen() ) return Fail();
 ////   }
 
 ////   return clip;
 
-////Fail:
+////function Fail():? {
 ////   lwFreeClip( clip );
 ////   return NULL;
 ////}
@@ -349,7 +349,7 @@
 ////   /* allocate the Envelope structure */
 
 ////   env = (lwEnvelope*)Mem_ClearedAlloc( sizeof( lwEnvelope ) );
-////   if ( !env ) goto Fail;
+////   if ( !env ) return Fail();
 
 ////   /* remember where we started */
 
@@ -364,7 +364,7 @@
 
 ////   id = getU4( fp );
 ////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) goto Fail;
+////   if ( 0 > get_flen() ) return Fail();
 
 ////   /* process subchunks as they're encountered */
 
@@ -391,7 +391,7 @@
 
 ////         case ID_KEY:
 ////            key = (lwKey*)Mem_ClearedAlloc( sizeof( lwKey ) );
-////            if ( !key ) goto Fail;
+////            if ( !key ) return Fail();
 ////            key.time = getF4( fp );
 ////            key.value = getF4( fp );
 ////            lwListInsert( (void**)&env.key, key, (int (__cdecl *)(void *,void *))compare_keys );
@@ -399,10 +399,10 @@
 ////            break;
 
 ////         case ID_SPAN:
-////            if ( !key ) goto Fail;
+////            if ( !key ) return Fail();
 ////            key.shape = getU4( fp );
 
-////            nparams = ( sz - 4 ) / 4;
+////            nparams = int(( sz - 4 ) / 4);
 ////            if ( nparams > 4 ) nparams = 4;
 ////            for ( i = 0; i < nparams; i++ )
 ////               f[ i ] = getF4( fp );
@@ -425,7 +425,7 @@
 
 ////         case ID_CHAN:
 ////            plug = (lwPlugin*)Mem_ClearedAlloc( sizeof( lwPlugin ) );
-////            if ( !plug ) goto Fail;
+////            if ( !plug ) return Fail();
 
 ////            plug.name = getS0( fp );
 ////            plug.flags = getU2( fp );
@@ -442,7 +442,7 @@
 ////      /* error while reading current subchunk? */
 
 ////      rlen = get_flen();
-////      if ( rlen < 0 || rlen > sz ) goto Fail;
+////      if ( rlen < 0 || rlen > sz ) return Fail();
 
 ////      /* skip unread parts of the current subchunk */
 
@@ -452,7 +452,7 @@
 ////      /* end of the ENVL chunk? */
 
 ////      rlen = fp.Tell() - pos;
-////      if ( cksize < rlen ) goto Fail;
+////      if ( cksize < rlen ) return Fail();
 ////      if ( cksize == rlen ) break;
 
 ////      /* get the next subchunk header */
@@ -460,12 +460,12 @@
 ////      set_flen( 0 );
 ////      id = getU4( fp );
 ////      sz = getU2( fp );
-////      if ( 6 != get_flen() ) goto Fail;
+////      if ( 6 != get_flen() ) return Fail();
 ////   }
 
 ////   return env;
 
-////Fail:
+////function Fail():? {
 ////   lwFreeEnvelope( env );
 ////   return NULL;
 ////}
@@ -1285,68 +1285,63 @@ function getS0( fp:idFile ):string
 ////}
 
 
-////unsigned short sgetU2( unsigned char **bp )
-////{
-////   unsigned char *buf = *bp;
-////   unsigned short i;
+function /*unsigned short */sgetU2 ( /*unsigned char ***/bp: P ): number {
+	var /*unsigned char **/buf = bp.subarray ( );
+	var /*unsigned short */i: number;
 
-////   if ( flen == FLEN_ERROR ) return 0;
-////   i = ( buf[ 0 ] << 8 ) | buf[ 1 ];
-////   flen += 2;
-////   *bp += 2;
-////   return i;
-////}
-
-
-////unsigned int sgetU4( unsigned char **bp )
-////{
-////   unsigned var/*int*/i:number;
-
-////   if ( flen == FLEN_ERROR ) return 0;
-////   memcpy( &i, *bp, 4 );
-////   BigRevBytes( &i, 4, 1 );
-////   flen += 4;
-////   *bp += 4;
-////   return i;
-////}
+	if ( flen == FLEN_ERROR ) return 0;
+	i = ( buf[0] << 8 ) | buf[1];
+	flen += 2;
+	bp.incrBy( 2 );
+	return i;
+}
 
 
-////int sgetVX( unsigned char **bp ):number
-////{
-////   unsigned char *buf = *bp;
-////   var/*int*/i:number;
+function /*unsigned int */sgetU4 ( /*unsigned char **bp */bp: P ): number {
+	var /*unsigned  int*/i = new Uint32Array( 1 );
 
-////   if ( flen == FLEN_ERROR ) return 0;
-
-////   if ( buf[ 0 ] != 0xFF ) {
-////      i = buf[ 0 ] << 8 | buf[ 1 ];
-////      flen += 2;
-////      *bp += 2;
-////   }
-////   else {
-////      i = ( buf[ 1 ] << 16 ) | ( buf[ 2 ] << 8 ) | buf[ 3 ];
-////      flen += 4;
-////      *bp += 4;
-////   }
-////   return i;
-////}
+	if ( flen == FLEN_ERROR ) return 0;
+	memcpyUint8Array( new Uint8Array( i ), bp.subarray ( ), 4 );
+	BigRevBytes( i, 4, 1 );
+	flen += 4;
+	bp.incrBy( 4 );
+	return i[0];
+}
 
 
-////float sgetF4( unsigned char **bp )
-////{
-////   float f;
+function /*int */sgetVX ( /*unsigned char ***/bp: P ): number {
+	var /*unsigned char **/buf = bp.subarray ( );
+	var /*int*/i: number;
 
-////   if ( flen == FLEN_ERROR ) return 0.0;
-////   memcpy( &f, *bp, 4 );
-////   BigRevBytes( &f, 4, 1 );
-////   flen += 4;
-////   *bp += 4;
+	if ( flen == FLEN_ERROR ) return 0;
 
-////   if ( FLOAT_IS_DENORMAL( f ) ) {
-////	   f = 0.0;
-////   }
-////   return f;
-////}
+	if ( buf[0] != 0xFF ) {
+		i = buf[0] << 8 | buf[1];
+		flen += 2;
+		bp.incrBy( 2 );
+	} else {
+		i = ( buf[1] << 16 ) | ( buf[2] << 8 ) | buf[3];
+		flen += 4;
+		bp.incrBy( 4 );
+	}
+	return i;
+}
+
+
+function /*float */sgetF4 ( /*unsigned char ***/bp: P ): number {
+	var f = new Float32Array( 1 );
+
+	if ( flen == FLEN_ERROR ) return 0.0;
+	memcpyUint8Array( new Uint8Array( f.buffer ), bp.subarray ( ), 4 );
+	BigRevBytes( f, 4, 1 );
+	flen += 4;
+	bp.incrBy( 4 );
+
+	if ( FLOAT_IS_DENORMAL( f[0] ) ) {
+		f[0] = 0.0;
+	}
+	return f[0];
+}
 
 
 function sgetS0 ( /*unsigned char ***/bp: P ): Uint8Array {
@@ -1449,7 +1444,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 	}
 
 	/* read the first 12 bytes */
-	debugger;
+	
 	set_flen( 0 );
 	id = int( getU4( fp ) );
 	formsize = int( getU4( fp ) );
@@ -1513,7 +1508,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 			}
 			object.nlayers++;
 
-			debugger;
+			
 			set_flen( 0 );
 			layer.index = getU2( fp );
 			layer.flags = getU2( fp );
@@ -1537,20 +1532,20 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 			break;
 
 		case ID_POLS:
-			todoThrow ( );
-			//if ( !lwGetPolygons( fp, cksize, layer.polygon,
-			//   layer.point.offset ))
-			//   return Fail ( );
+			if ( !lwGetPolygons( fp, cksize, layer.polygon,
+			   layer.point.offset ))
+			   return Fail ( );
 			break;
 
 		case ID_VMAP:
 		case ID_VMAD:
-			todoThrow ( );
-			//node = <lwNode> lwGetVMap( fp, cksize, layer.point.offset,
-			//   layer.polygon.offset, id == ID_VMAD );
-			//if ( !node ) return Fail ( );
-			//lwListAdd( /*(void**)&*/layer.vmap, node );
-			//layer.nvmaps++;
+			node = <lwNode> lwGetVMap( fp, cksize, layer.point.offset,
+				layer.polygon.offset, id == ID_VMAD ? 1 : 0 );
+			if (!node) return Fail();
+			var $vmap = new R(layer.vmap );
+			lwListAdd( /*(void**)&*/$vmap, node);
+			layer.vmap = $vmap.$;
+			layer.nvmaps++;
 			break;
 
 		case ID_PTAG:
@@ -1561,14 +1556,13 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 			break;
 
 		case ID_BBOX:
-			todoThrow ( );
-			//set_flen( 0 );
-			//for ( i = 0; i < 6; i++ )
-			//   layer.bbox[ i ] = getF4( fp );
-			//rlen = get_flen();
-			//if ( rlen < 0 || rlen > cksize ) return Fail ( );
-			//if ( rlen < cksize )
-			//	fp.Seek(cksize - rlen, fsOrigin_t.FS_SEEK_CUR );
+			set_flen( 0 );
+			for ( i = 0; i < 6; i++ )
+			   layer.bbox[ i ] = getF4( fp );
+			rlen = get_flen();
+			if ( rlen < 0 || rlen > cksize ) return Fail ( );
+			if ( rlen < cksize )
+				fp.Seek(cksize - rlen, fsOrigin_t.FS_SEEK_CUR );
 			break;
 
 		case ID_TAGS:
@@ -1641,7 +1635,6 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 
 	return object;
 
-	//Fail:
 	function Fail ( ): lwObject {
 		//if ( failID ) *failID = id;
 		//if ( fp ) {
@@ -1837,7 +1830,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////   /* allocate the Surface structure */
 
 ////   surf = (lwSurface*)Mem_ClearedAlloc( sizeof( lwSurface ) );
-////   if ( !surf ) goto Fail;
+////   if ( !surf ) return Fail();
 
 ////   /* non-zero defaults */
 
@@ -1863,7 +1856,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 
 ////   id = getU4( fp );
 ////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) goto Fail;
+////   if ( 0 > get_flen() ) return Fail();
 
 ////   /* process subchunks as they're encountered */
 
@@ -2076,7 +2069,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 
 ////         case ID_SHDR:
 ////            shdr = (lwPlugin*)Mem_ClearedAlloc( sizeof( lwPlugin ) );
-////            if ( !shdr ) goto Fail;
+////            if ( !shdr ) return Fail();
 ////            shdr.name = (char*)getbytes( fp, sz );
 ////            lwListAdd( (void**)&surf.shader, shdr );
 ////            surf.nshaders++;
@@ -2093,7 +2086,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////      /* error while reading current subchunk? */
 
 ////      rlen = get_flen();
-////      if ( rlen < 0 || rlen > sz ) goto Fail;
+////      if ( rlen < 0 || rlen > sz ) return Fail();
 
 ////      /* skip unread parts of the current subchunk */
 
@@ -2110,12 +2103,12 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////      set_flen( 0 );
 ////      id = getU4( fp );
 ////      sz = getU2( fp );
-////      if ( 6 != get_flen() ) goto Fail;
+////      if ( 6 != get_flen() ) return Fail();
 ////   }
 
 ////   return surf;
 
-////Fail:
+////function Fail():? {
 ////   if ( surf ) lwFreeSurface( surf );
 ////   return NULL;
 ////}
@@ -2129,7 +2122,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////are added to the array in the lwPolygonList.
 ////====================================================================== */
 
-////int lwGetPolygons5( fp:idFile, /*int */cksize:number, lwPolygonList *plist, int ptoffset ):number
+////int lwGetPolygons5( fp:idFile, /*int */cksize:number, plist:lwPolygonList, /*int*/ ptoffset:number ):number
 ////{
 ////   lwPolygon *pp;
 ////   lwPolVert *pv;
@@ -2143,7 +2136,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 
 ////   set_flen( 0 );
 ////   buf = (unsigned char*)getbytes( fp, cksize );
-////   if ( !buf ) goto Fail;
+////   if ( !buf ) return Fail();
 
 ////   /* count the polygons and vertices */
 
@@ -2161,7 +2154,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////   }
 
 ////   if ( !lwAllocPolygons( plist, npols, nverts ))
-////      goto Fail;
+////      return Fail();
 
 ////   /* fill in the new polygons */
 
@@ -2192,7 +2185,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////   Mem_Free( buf );
 ////   return 1;
 
-////Fail:
+////function Fail():? {
 ////   if ( buf ) Mem_Free( buf );
 ////   lwFreePolygons( plist );
 ////   return 0;
@@ -2373,7 +2366,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////Free the memory used by an lwPolygonList.
 ////====================================================================== */
 
-////void lwFreePolygons( lwPolygonList *plist )
+////void lwFreePolygons( plist:lwPolygonList )
 ////{
 ////   int i, j;
 
@@ -2408,10 +2401,10 @@ function lwGetPoints ( fp: idFile, /*int */cksize: number, point: lwPointList ):
 	var /*int */np: number, i: number, j: number;
 
 	if ( cksize == 1 ) return 1;
-	debugger;
+	
 	/* extend the point array to hold the new points */
 
-	np = cksize / 12;
+	np = int(cksize / 12);
 	point.offset = point.count;
 	point.count += np;
 	var oldpt = point.pt;
@@ -2483,7 +2476,7 @@ function lwGetPoints ( fp: idFile, /*int */cksize: number, point: lwPointList ):
 ////Allocate or extend the polygon arrays to hold new records.
 ////====================================================================== */
 
-////int lwAllocPolygons( lwPolygonList *plist, int npols, int nverts ):number
+////int lwAllocPolygons( plist:lwPolygonList, int npols, int nverts ):number
 ////{
 ////	var/*int*/i:number;
 
@@ -2518,80 +2511,81 @@ function lwGetPoints ( fp: idFile, /*int */cksize: number, point: lwPointList ):
 ////}
 
 
-/////*
-////======================================================================
-////lwGetPolygons()
+/*
+======================================================================
+lwGetPolygons()
 
-////Read polygon records from a POLS chunk in an LWO2 file.  The polygons
-////are added to the array in the lwPolygonList.
-////====================================================================== */
+Read polygon records from a POLS chunk in an LWO2 file.  The polygons
+are added to the array in the lwPolygonList.
+====================================================================== */
 
-////int lwGetPolygons( fp:idFile, /*int */cksize:number, lwPolygonList *plist, int ptoffset ):number
-////{
-////   lwPolygon *pp;
-////   lwPolVert *pv;
-////   unsigned char *buf, *bp;
-////   int i, j, flags, nv, nverts, npols;
-////   unsigned int type;
+function/*int */lwGetPolygons( fp:idFile, /*int */cksize:number, plist:lwPolygonList, /*int*/ ptoffset:number ):number {
+	todoThrow ( );
+   // var pp: lwPolygon ;
+   // var pv: lwPolVert ;
+   // var /*unsigned char **/buf: Uint8Array, bp: Uint8Array;
+   // var /*int */i: number, j: number, flags: number, nv: number, nverts: number, npols: number;
+   // var /*unsigned int */type: number;
 
 
-////   if ( cksize == 0 ) return 1;
+   //if ( cksize == 0 ) return 1;
 
-////   /* read the whole chunk */
+   ///* read the whole chunk */
 
-////   set_flen( 0 );
-////   type = getU4( fp );
-////   buf = (unsigned char*)getbytes( fp, cksize - 4 );
-////   if ( cksize != get_flen() ) goto Fail;
+   //set_flen( 0 );
+   //type = getU4( fp );
+   //buf = (unsigned char*)getbytes( fp, cksize - 4 );
+   // if (cksize != get_flen()) return Fail();
 
-////   /* count the polygons and vertices */
+   ///* count the polygons and vertices */
 
-////   nverts = 0;
-////   npols = 0;
-////   bp = buf;
+   //nverts = 0;
+   //npols = 0;
+   //bp = buf;
 
-////   while ( bp < buf + cksize - 4 ) {
-////      nv = sgetU2( &bp );
-////      nv &= 0x03FF;
-////      nverts += nv;
-////      npols++;
-////      for ( i = 0; i < nv; i++ )
-////         j = sgetVX( &bp );
-////   }
+   //while ( bp < buf + cksize - 4 ) {
+   //   nv = sgetU2( &bp );
+   //   nv &= 0x03FF;
+   //   nverts += nv;
+   //   npols++;
+   //   for ( i = 0; i < nv; i++ )
+   //      j = sgetVX( &bp );
+   //}
 
-////   if ( !lwAllocPolygons( plist, npols, nverts ))
-////      goto Fail;
+   // if ( !lwAllocPolygons( plist, npols, nverts ) )
+   // 	return Fail ( );
 
-////   /* fill in the new polygons */
+   ///* fill in the new polygons */
 
-////   bp = buf;
-////   pp = plist.pol + plist.offset;
-////   pv = plist.pol[ 0 ].v + plist.voffset;
+   //bp = buf;
+   //pp = plist.pol + plist.offset;
+   //pv = plist.pol[ 0 ].v + plist.voffset;
 
-////   for ( i = 0; i < npols; i++ ) {
-////      nv = sgetU2( &bp );
-////      flags = nv & 0xFC00;
-////      nv &= 0x03FF;
+   //for ( i = 0; i < npols; i++ ) {
+   //   nv = sgetU2( &bp );
+   //   flags = nv & 0xFC00;
+   //   nv &= 0x03FF;
 
-////      pp.nverts = nv;
-////      pp.flags = flags;
-////      pp.type = type;
-////      if ( !pp.v ) pp.v = pv;
-////      for ( j = 0; j < nv; j++ )
-////         pp.v[ j ].index = sgetVX( &bp ) + ptoffset;
+   //   pp.nverts = nv;
+   //   pp.flags = flags;
+   //   pp.type = type;
+   //   if ( !pp.v ) pp.v = pv;
+   //   for ( j = 0; j < nv; j++ )
+   //      pp.v[ j ].index = sgetVX( &bp ) + ptoffset;
 
-////      pp++;
-////      pv += nv;
-////   }
+   //   pp++;
+   //   pv += nv;
+   //}
 
-////   Mem_Free( buf );
-////   return 1;
+   //Mem_Free( buf );
+   return 1;
 
-////Fail:
-////   if ( buf ) Mem_Free( buf );
-////   lwFreePolygons( plist );
-////   return 0;
-////}
+	//function Fail ( ):number {
+	//	if ( buf ) Mem_Free( buf );
+	//	lwFreePolygons( plist );
+	//	return 0;
+	//}
+}
 
 
 /////*
@@ -2862,7 +2856,7 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 ////Read polygon tags from a PTAG chunk in an LWO2 file.
 ////====================================================================== */
 
-////int lwGetPolygonTags( fp:idFile, /*int */cksize:number, tlist: lwTagList, lwPolygonList *plist ):number
+////int lwGetPolygonTags( fp:idFile, /*int */cksize:number, tlist: lwTagList, plist:lwPolygonList ):number
 ////{
 ////	unsigned int type;
 ////	int rlen = 0, i, j;
@@ -3386,7 +3380,7 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 ////            break;
 
 ////         case ID_FKEY:
-////            nkeys = sz / sizeof( lwGradKey );
+////            nkeys = int(sz / sizeof( lwGradKey ));
 ////            tex.param.grad.key = (lwGradKey*)Mem_ClearedAlloc( nkeys * sizeof( lwGradKey ) );
 ////            if ( !tex.param.grad.key ) return 0;
 ////            for ( i = 0; i < nkeys; i++ ) {
@@ -3397,7 +3391,7 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 ////            break;
 
 ////         case ID_IKEY:
-////            nkeys = sz / 2;
+////            nkeys = int(sz / 2);
 ////            tex.param.grad.ikey = (short*)Mem_ClearedAlloc( nkeys * sizeof( short ) );
 ////            if ( !tex.param.grad.ikey ) return 0;
 ////            for ( i = 0; i < nkeys; i++ )
@@ -3507,7 +3501,7 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 ////   shdr.ord = getS0( fp );
 ////   id = getU4( fp );
 ////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) goto Fail;
+////   if ( 0 > get_flen() ) return Fail();
 
 ////   while ( hsz > 0 ) {
 ////      sz += sz & 1;
@@ -3525,7 +3519,7 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 
 ////   id = getU4( fp );
 ////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) goto Fail;
+////   if ( 0 > get_flen() ) return Fail();
 
 ////   while ( 1 ) {
 ////      sz += sz & 1;
@@ -3545,7 +3539,7 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 ////      /* error while reading the current subchunk? */
 
 ////      rlen = get_flen();
-////      if ( rlen < 0 || rlen > sz ) goto Fail;
+////      if ( rlen < 0 || rlen > sz ) return Fail();
 
 ////      /* skip unread parts of the current subchunk */
 
@@ -3562,13 +3556,13 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 ////      set_flen( 0 );
 ////      id = getU4( fp );
 ////      sz = getU2( fp );
-////      if ( 6 != get_flen() ) goto Fail;
+////      if ( 6 != get_flen() ) return Fail();
 ////   }
 
 ////   set_flen( fp.Tell() - pos );
 ////   return shdr;
 
-////Fail:
+////function Fail():? {
 ////   lwFreePlugin( shdr );
 ////   return NULL;
 ////}
@@ -3673,7 +3667,7 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 ////   /* allocate the Surface structure */
 
 ////   surf = (lwSurface*)Mem_ClearedAlloc( sizeof( lwSurface ) );
-////   if ( !surf ) goto Fail;
+////   if ( !surf ) return Fail();
 
 ////   /* non-zero defaults */
 
@@ -3700,7 +3694,7 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 
 ////   id = getU4( fp );
 ////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) goto Fail;
+////   if ( 0 > get_flen() ) return Fail();
 
 ////   /* process subchunks as they're encountered */
 
@@ -3838,14 +3832,14 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 ////               case ID_PROC:
 ////               case ID_GRAD:
 ////                  tex = lwGetTexture( fp, sz - 4, type );
-////                  if ( !tex ) goto Fail;
+////                  if ( !tex ) return Fail();
 ////                  if ( !add_texture( surf, tex ))
 ////                     lwFreeTexture( tex );
 ////                  set_flen( 4 + get_flen() );
 ////                  break;
 ////               case ID_SHDR:
 ////                  shdr = lwGetShader( fp, sz - 4 );
-////                  if ( !shdr ) goto Fail;
+////                  if ( !shdr ) return Fail();
 ////                  lwListInsert( (void**)&surf.shader, shdr, (int (__cdecl *)(void *,void *))compare_shaders );
 ////                  ++surf.nshaders;
 ////                  set_flen( 4 + get_flen() );
@@ -3860,7 +3854,7 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 ////      /* error while reading current subchunk? */
 
 ////      rlen = get_flen();
-////      if ( rlen < 0 || rlen > sz ) goto Fail;
+////      if ( rlen < 0 || rlen > sz ) return Fail();
 
 ////      /* skip unread parts of the current subchunk */
 
@@ -3877,12 +3871,12 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 ////      set_flen( 0 );
 ////      id = getU4( fp );
 ////      sz = getU2( fp );
-////      if ( 6 != get_flen() ) goto Fail;
+////      if ( 6 != get_flen() ) return Fail();
 ////   }
 
 ////   return surf;
 
-////Fail:
+////function Fail():? {
 ////   if ( surf ) lwFreeSurface( surf );
 ////   return NULL;
 ////}
@@ -3914,116 +3908,118 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 ////   }
 ////}
 
-/////*
-////======================================================================
-////lwFreeVMap()
+/*
+======================================================================
+lwFreeVMap()
 
-////Free memory used by an lwVMap.
-////====================================================================== */
+Free memory used by an lwVMap.
+====================================================================== */
 
-////void lwFreeVMap( lwVMap *vmap )
-////{
-////   if ( vmap ) {
-////      if ( vmap.name ) Mem_Free( vmap.name );
-////      if ( vmap.vindex ) Mem_Free( vmap.vindex );
-////      if ( vmap.pindex ) Mem_Free( vmap.pindex );
-////      if ( vmap.val ) {
-////         if ( vmap.val[ 0 ] ) Mem_Free( vmap.val[ 0 ] );
-////         Mem_Free( vmap.val );
-////      }
-////      Mem_Free( vmap );
-////   }
-////}
-
-
-/////*
-////======================================================================
-////lwGetVMap()
-
-////Read an lwVMap from a VMAP or VMAD chunk in an LWO2.
-////====================================================================== */
-
-////lwVMap *lwGetVMap( fp:idFile, /*int */cksize:number, int ptoffset, int poloffset,
-////   int perpoly )
-////{
-////   unsigned char *buf, *bp;
-////   lwVMap *vmap;
-////   float *f;
-////   int i, j, npts, rlen;
+function lwFreeVMap ( vmap: lwVMap ): void {
+	if ( vmap ) {
+		if ( vmap.name ) Mem_Free( vmap.name );
+		if ( vmap.vindex ) Mem_Free( vmap.vindex );
+		if ( vmap.pindex ) Mem_Free( vmap.pindex );
+		if ( vmap.val ) {
+			if ( vmap.val[0] ) Mem_Free( vmap.val[0] );
+			Mem_Free( vmap.val );
+		}
+		Mem_Free( vmap );
+	}
+}
 
 
-////   /* read the whole chunk */
+/*
+======================================================================
+lwGetVMap()
 
-////   set_flen( 0 );
-////   buf = (unsigned char*)getbytes( fp, cksize );
-////   if ( !buf ) return NULL;
+Read an lwVMap from a VMAP or VMAD chunk in an LWO2.
+====================================================================== */
 
-////   vmap = (lwVMap*)Mem_ClearedAlloc( sizeof( lwVMap ) );
-////   if ( !vmap ) {
-////      Mem_Free( buf );
-////      return NULL;
-////   }
+function lwGetVMap( fp:idFile, /*int */cksize:number, /*int*/ ptoffset:number, /*int */poloffset:number,
+	/*int */perpoly: number): lwVMap
+{
+	var /*unsigned char **/buf: Uint8Array, bp: P;
+	var vmap: lwVMap ;
+   //float *f;
+	var /*int */i: number, j: number, npts: number, rlen: number;
 
-////   /* initialize the vmap */
 
-////   vmap.perpoly = perpoly;
+   /* read the whole chunk */
 
-////   bp = buf;
-////   set_flen( 0 );
-////   vmap.type = sgetU4( &bp );
-////   vmap.dim  = sgetU2( &bp );
-////   vmap.name = sgetS0( &bp );
-////   rlen = get_flen();
+   set_flen( 0 );
+	buf = new Uint8Array( getbytes( fp, cksize ) );
+   if ( !buf ) return null;
 
-////   /* count the vmap records */
+	vmap = new lwVMap;// (lwVMap*)Mem_ClearedAlloc( sizeof( lwVMap ) );
+	vmap.memset0 ( );
+   if ( !vmap ) {
+      Mem_Free( buf );
+	   return null;
+   }
 
-////   npts = 0;
-////   while ( bp < buf + cksize ) {
-////      i = sgetVX( &bp );
-////      if ( perpoly )
-////         i = sgetVX( &bp );
-////      bp += vmap.dim * sizeof( float );
-////      ++npts;
-////   }
+   /* initialize the vmap */
 
-////   /* allocate the vmap */
+   vmap.perpoly = perpoly;
 
-////   vmap.nverts = npts;
-////   vmap.vindex = (int*)Mem_ClearedAlloc( npts * sizeof( int ) );
-////   if ( !vmap.vindex ) goto Fail;
-////   if ( perpoly ) {
-////      vmap.pindex = (int*)Mem_ClearedAlloc( npts * sizeof( int ) );
-////      if ( !vmap.pindex ) goto Fail;
-////   }
+   bp = new P(buf);
+   set_flen( 0 );
+   vmap.type = sgetU4( bp );
+   vmap.dim  = sgetU2( bp );
+   vmap.name = sgetS0( bp );
+   rlen = get_flen();
 
-////   if ( vmap.dim > 0 ) {
-////      vmap.val = (float**)Mem_ClearedAlloc( npts * sizeof( float * ) );
-////      if ( !vmap.val ) goto Fail;
-////      f = (float*)Mem_ClearedAlloc( npts * vmap.dim * sizeof( float ) );
-////      if ( !f ) goto Fail;
-////      for ( i = 0; i < npts; i++ )
-////         vmap.val[ i ] = f + i * vmap.dim;
-////   }
+   /* count the vmap records */
 
-////   /* fill in the vmap values */
+   npts = 0;
+   while ( bp.idx < /*buf + */cksize ) {
+      i = sgetVX( bp );
+      if ( perpoly )
+         i = sgetVX( bp );
+	   bp.incrBy( vmap.dim * sizeof( float ) );
+      ++npts;
+   }
 
-////   bp = buf + rlen;
-////   for ( i = 0; i < npts; i++ ) {
-////      vmap.vindex[ i ] = sgetVX( &bp );
-////      if ( perpoly )
-////         vmap.pindex[ i ] = sgetVX( &bp );
-////      for ( j = 0; j < vmap.dim; j++ )
-////         vmap.val[ i ][ j ] = sgetF4( &bp );
-////   }
+   /* allocate the vmap */
 
-////   Mem_Free( buf );
-////   return vmap;
+   vmap.nverts = npts;
+	vmap.vindex = new Int32Array( npts ); //(int*)Mem_ClearedAlloc( npts * sizeof( int ) );
+   if ( !vmap.vindex ) return Fail();
+   if ( perpoly ) {
+	   vmap.pindex = new Int32Array( npts );//(int*)Mem_ClearedAlloc( npts * sizeof( int ) );
+      if ( !vmap.pindex ) return Fail();
+   }
 
-////Fail:
-////   if ( buf ) Mem_Free( buf );
-////   lwFreeVMap( vmap );
-////   return NULL;
-////}
+	if ( vmap.dim > 0 ) {
+		vmap.val = multiDimTypedArray<Float32Array>( Float32Array, npts / vmap.dim, vmap.dim ); //(float**)Mem_ClearedAlloc( npts * sizeof( float * ) );
+		if ( !vmap.val ) return Fail ( );
+		// js: skip, already created
+		//f = (float*)Mem_ClearedAlloc( npts * vmap.dim * sizeof( float ) );
+		//if ( !f ) return Fail();
+		//for ( i = 0; i < npts; i++ )
+		//   vmap.val[ i ] = f + i * vmap.dim;
+	}
+
+	/* fill in the vmap values */
+
+	bp = new P( buf, rlen );
+   for ( i = 0; i < npts; i++ ) {
+      vmap.vindex[ i ] = sgetVX( bp );
+      if ( perpoly )
+         vmap.pindex[ i ] = sgetVX( bp );
+      for ( j = 0; j < vmap.dim; j++ )
+         vmap.val[ i ][ j ] = sgetF4( bp );
+   }
+
+   Mem_Free( buf );
+   return vmap;
+
+	function Fail(): lwVMap {
+		if ( buf ) Mem_Free( buf );
+		lwFreeVMap( vmap );
+		return null;
+	}
+}
 
 
 /////*

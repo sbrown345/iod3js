@@ -463,18 +463,30 @@ class lwSurface {
 /////* vertex maps */
 
 class lwVMap {
-////   struct st_lwVMap *next, *prev;
-////   char          *name;
-////   unsigned int   type: number /*unsigned int*/;
-////   int            dim: number /*int*/;
-////   int            nverts: number /*int*/;
-////   int            perpoly: number /*int*/;
-////   int           *vindex;              /* array of point indexes */
-////   int           *pindex;              /* array of polygon indexes */
-////   float        **val;
+	next: lwVMap;
+	prev: lwVMap;
+	name: Uint8Array;
+	type: number /*unsigned int*/;
+	dim: number /*int*/;
+	nverts: number /*int*/;
+	perpoly: number /*int*/;
+	vindex: Int32Array; /* array of point indexes */
+	pindex: Int32Array; /* array of polygon indexes */
+	val: Float32Array[];
 
-////   // added by duffy
-////   int			offset: number /*int*/;
+	// added by duffy
+	offset: number /*int*/;
+	memset0 ( ): void {
+		this.next = null;
+		this.prev = null;
+		this.name = null;
+		this.dim = 0;
+		this.nverts = 0;
+		this.perpoly = 0;
+		this.vindex = null;
+		this.pindex = null;
+		this.val = null;
+	}
 }
 
 class lwVMapPt {

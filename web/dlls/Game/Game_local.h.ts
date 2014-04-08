@@ -1684,7 +1684,7 @@ idGameLocal::InitFromNewMap
 		gameSoundWorld = soundWorld;
 		//debugger; //todo: test LoadMap outcome
 		this.LoadMap( mapName, randseed );
-		debugger;
+		 debugger;
 		this.InitScriptForMap ( );
 
 		this.MapPopulate ( );

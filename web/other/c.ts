@@ -335,7 +335,19 @@ class FILE {
 
 function fseek ( stream: FILE, /*long int */offset: number, /*int */origin: number ): number {
 	if ( origin !== SEEK_SET ) todoThrow ( );
-	return stream.ptr = offset;
+
+	if ( stream.ptr > stream.arrayBuffer.byteLength ) {
+		console.error( "tried to seek to a offset (%i) out of the bounds of the ArrayBuffer (byteLength :%i)", offset, stream.arrayBuffer.byteLength );
+		return 1;
+	}
+	if ( stream.ptr < 0 ) {
+		console.error( "tried to seek to a offset (%i) less than 0", offset );
+		return 2;
+	}
+
+	stream.ptr = offset;
+
+	return 0;
 }
 
 function ftell ( f: FILE ): number {
