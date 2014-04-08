@@ -66,10 +66,11 @@ function RAD2DEG ( a: number ) { return a * idMath.M_RAD2DEG; }
 ////#define	BYTE2ANGLE(x)			( (x) * ( 360.0 / 256.0 ) )
 
 
-var float2uintArray = new Int32Array(reinterpret_cast_float_to_int_floatArray.buffer);
+var float2uint_float_Array = new Float32Array(1);
+var float2uint_uint_Array = new Uint32Array(float2uint_float_Array.buffer);
 function float2uint(v: number): number {
-	float2uintArray[0] = v;
-	return float2uintArray[0];
+	float2uint_float_Array[0] = v;
+	return float2uint_uint_Array[0];
 }
 
 ////#define FLOATSIGNBITSET(f)		((*(const unsigned long *)&(f)) >> 31)
