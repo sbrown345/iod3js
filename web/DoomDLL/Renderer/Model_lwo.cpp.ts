@@ -1549,10 +1549,9 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 			break;
 
 		case ID_PTAG:
-			todoThrow ( );
-			//if ( !lwGetPolygonTags( fp, cksize, object.taglist,
-			//layer.polygon ))
-			//return Fail ( );
+			if ( !lwGetPolygonTags( fp, cksize, object.taglist,
+			layer.polygon ))
+			return Fail ( );
 			break;
 
 		case ID_BBOX:
@@ -2359,33 +2358,32 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////}
 
 
-/////*
-////======================================================================
-////lwFreePolygons()
+/*
+======================================================================
+lwFreePolygons()
 
-////Free the memory used by an lwPolygonList.
-////====================================================================== */
+Free the memory used by an lwPolygonList.
+====================================================================== */
 
-////void lwFreePolygons( plist:lwPolygonList )
-////{
-////   int i, j;
+function lwFreePolygons ( plist: lwPolygonList ): void {
+	var /*int */i: number, j: number;
 
-////   if ( plist ) {
-////      if ( plist.pol ) {
-////         for ( i = 0; i < plist.count; i++ ) {
-////            if ( plist.pol[ i ].v ) {
-////               for ( j = 0; j < plist.pol[ i ].nverts; j++ )
-////                  if ( plist.pol[ i ].v[ j ].vm )
-////                     Mem_Free( plist.pol[ i ].v[ j ].vm );
-////            }
-////         }
-////         if ( plist.pol[ 0 ].v )
-////            Mem_Free( plist.pol[ 0 ].v );
-////         Mem_Free( plist.pol );
-////      }
-////      memset( plist, 0, sizeof( lwPolygonList ));
-////   }
-////}
+	if ( plist ) {
+		if ( plist.pol ) {
+			for ( i = 0; i < plist.count; i++ ) {
+				if ( plist.pol[i].v ) {
+					for ( j = 0; j < plist.pol[i].nverts; j++ )
+						if ( plist.pol[i].v[j].vm )
+							Mem_Free( plist.pol[i].v[j].vm );
+				}
+			}
+			if ( plist.pol[0].v )
+				Mem_Free( plist.pol[0].v );
+			Mem_Free( plist.pol );
+		}
+		plist.memset0 ( );
+	}
+}
 
 
 /*
@@ -2469,46 +2467,47 @@ function lwGetPoints ( fp: idFile, /*int */cksize: number, point: lwPointList ):
 ////}
 
 
-/////*
-////======================================================================
-////lwAllocPolygons()
+/*
+======================================================================
+lwAllocPolygons()
 
-////Allocate or extend the polygon arrays to hold new records.
-////====================================================================== */
+Allocate or extend the polygon arrays to hold new records.
+====================================================================== */
 
-////int lwAllocPolygons( plist:lwPolygonList, int npols, int nverts ):number
-////{
-////	var/*int*/i:number;
+function /*int */lwAllocPolygons ( plist: lwPolygonList, /*int */npols: number, /*int */nverts: number ): number {
+	var /*int*/i: number;
 
-////	plist.offset = plist.count;
-////	plist.count += npols;
-////	lwPolygon *oldpol = plist.pol;
-////	plist.pol = (lwPolygon*)Mem_Alloc( plist.count * sizeof( lwPolygon ) );
-////	if ( !plist.pol ) return 0;
-////	if ( oldpol ) {
-////		memcpy( plist.pol, oldpol, plist.offset * sizeof( lwPolygon ) );
-////		Mem_Free( oldpol );
-////	}
-////	memset( plist.pol + plist.offset, 0, npols * sizeof( lwPolygon ) );
+	plist.offset = plist.count;
+	plist.count += npols;
+	var oldpol = plist.pol;
+	plist.pol = newStructArray<lwPolygon>( lwPolygon, plist.count ); // (lwPolygon*)Mem_Alloc( plist.count * sizeof( lwPolygon ) );
+	if ( !plist.pol ) return 0;
+	if ( oldpol ) {
+		todoThrow ( );
+		//memcpy( plist.pol, oldpol, plist.offset * sizeof( lwPolygon ) );
+		//Mem_Free( oldpol );
+	}
+	clearStructArray( plist.pol.slice( plist.offset ) ); //memset( plist.pol + plist.offset, 0, npols * sizeof( lwPolygon ) );
 
-////	plist.voffset = plist.vcount;
-////	plist.vcount += nverts;
-////	lwPolVert *oldpolv = plist.pol[0].v;
-////	plist.pol[0].v = (lwPolVert*)Mem_Alloc( plist.vcount * sizeof( lwPolVert ) );
-////	if ( !plist.pol[ 0 ].v ) return 0;
-////	if ( oldpolv ) {
-////		memcpy( plist.pol[0].v, oldpolv, plist.voffset * sizeof( lwPolVert ) );
-////		Mem_Free( oldpolv );
-////	}
-////	memset( plist.pol[ 0 ].v + plist.voffset, 0, nverts * sizeof( lwPolVert ) );
+	plist.voffset = plist.vcount;
+	plist.vcount += nverts;
+	var oldpolv = plist.pol[0].v;
+	plist.pol[0].v = newStructArray<lwPolVert>( lwPolVert, plist.vcount ); //(lwPolVert*)Mem_Alloc( plist.vcount * sizeof( lwPolVert ) );
+	if ( !plist.pol[0].v ) return 0;
+	if ( oldpolv ) {
+		todoThrow ( );
+		//memcpy( plist.pol[0].v, oldpolv, plist.voffset * sizeof( lwPolVert ) );
+		//Mem_Free( oldpolv );
+	}
+	clearStructArray( plist.pol[0].v.slice( plist.voffset ) );
 
-////	/* fix up the old vertex pointers */
+	/* fix up the old vertex pointers */
 
-////	for ( i = 1; i < plist.offset; i++ )
-////		plist.pol[ i ].v = plist.pol[ i - 1 ].v + plist.pol[ i - 1 ].nverts;
+	for ( i = 1; i < plist.offset; i++ )
+		plist.pol[i].v = plist.pol[i - 1].v.slice( plist.pol[i - 1].nverts ); //plist.pol[ i - 1 ].v + plist.pol[ i - 1 ].nverts;
 
-////	return 1;
-////}
+	return 1;
+}
 
 
 /*
@@ -2519,72 +2518,71 @@ Read polygon records from a POLS chunk in an LWO2 file.  The polygons
 are added to the array in the lwPolygonList.
 ====================================================================== */
 
-function/*int */lwGetPolygons( fp:idFile, /*int */cksize:number, plist:lwPolygonList, /*int*/ ptoffset:number ):number {
-	todoThrow ( );
-   // var pp: lwPolygon ;
-   // var pv: lwPolVert ;
-   // var /*unsigned char **/buf: Uint8Array, bp: Uint8Array;
-   // var /*int */i: number, j: number, flags: number, nv: number, nverts: number, npols: number;
-   // var /*unsigned int */type: number;
+function /*int */lwGetPolygons ( fp: idFile, /*int */cksize: number, plist: lwPolygonList, /*int*/ ptoffset: number ): number {
+	var pp: /*lwPolygon*/number;
+	var pv: /*lwPolVert*/number;
+	var /*unsigned char **/buf: Uint8Array, bp: P;
+	var /*int */i: number, j: number, flags: number, nv: number, nverts: number, npols: number;
+	var /*unsigned int */type: number;
 
 
-   //if ( cksize == 0 ) return 1;
+	if ( cksize == 0 ) return 1;
 
-   ///* read the whole chunk */
+	/* read the whole chunk */
 
-   //set_flen( 0 );
-   //type = getU4( fp );
-   //buf = (unsigned char*)getbytes( fp, cksize - 4 );
-   // if (cksize != get_flen()) return Fail();
+	set_flen( 0 );
+	type = getU4( fp );
+	buf = /*(unsigned char*)*/ new Uint8Array( getbytes( fp, cksize - 4 ) );
+	if ( cksize != get_flen ( ) ) return Fail ( );
 
-   ///* count the polygons and vertices */
+	/* count the polygons and vertices */
 
-   //nverts = 0;
-   //npols = 0;
-   //bp = buf;
+	nverts = 0;
+	npols = 0;
+	bp = new P( buf );
 
-   //while ( bp < buf + cksize - 4 ) {
-   //   nv = sgetU2( &bp );
-   //   nv &= 0x03FF;
-   //   nverts += nv;
-   //   npols++;
-   //   for ( i = 0; i < nv; i++ )
-   //      j = sgetVX( &bp );
-   //}
+	while ( bp.idx < /*buf + */cksize - 4 ) {
+		nv = sgetU2( bp );
+		nv &= 0x03FF;
+		nverts += nv;
+		npols++;
+		for ( i = 0; i < nv; i++ )
+			j = sgetVX( bp );
+	}
 
-   // if ( !lwAllocPolygons( plist, npols, nverts ) )
-   // 	return Fail ( );
+	if ( !lwAllocPolygons( plist, npols, nverts ) )
+		return Fail ( );
 
-   ///* fill in the new polygons */
+	/* fill in the new polygons */
 
-   //bp = buf;
-   //pp = plist.pol + plist.offset;
-   //pv = plist.pol[ 0 ].v + plist.voffset;
+	bp = new P( buf );
+	pp = /*plist.pol + */plist.offset;
+	pv = /*plist.pol[ 0 ].v +*/ plist.voffset;
 
-   //for ( i = 0; i < npols; i++ ) {
-   //   nv = sgetU2( &bp );
-   //   flags = nv & 0xFC00;
-   //   nv &= 0x03FF;
+	for ( i = 0; i < npols; i++ ) {
+		nv = sgetU2( bp );
+		flags = nv & 0xFC00;
+		nv &= 0x03FF;
 
-   //   pp.nverts = nv;
-   //   pp.flags = flags;
-   //   pp.type = type;
-   //   if ( !pp.v ) pp.v = pv;
-   //   for ( j = 0; j < nv; j++ )
-   //      pp.v[ j ].index = sgetVX( &bp ) + ptoffset;
+		plist.pol[pp].nverts = nv;
+		plist.pol[pp].flags = flags;
+		plist.pol[pp].type = type;
+		if ( !plist.pol[pp].v ) plist.pol[pp].v = plist.pol[0].v.slice( pv ); //pp.v = pv;
+		for ( j = 0; j < nv; j++ )
+			plist.pol[pp].v[j].index = sgetVX( bp ) + ptoffset;
 
-   //   pp++;
-   //   pv += nv;
-   //}
+		pp++;
+		pv += nv;
+	}
 
-   //Mem_Free( buf );
-   return 1;
+	Mem_Free( buf );
+	return 1;
 
-	//function Fail ( ):number {
-	//	if ( buf ) Mem_Free( buf );
-	//	lwFreePolygons( plist );
-	//	return 0;
-	//}
+	function Fail ( ): number {
+		if ( buf ) Mem_Free( buf );
+		lwFreePolygons( plist );
+		return 0;
+	}
 }
 
 

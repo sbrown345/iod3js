@@ -513,23 +513,41 @@ class lwPoint {
 	}
 }
 
-////typedef struct st_lwPolVert {
-////   int            index: number /*int*/;               /* index into the point array */
-////   float          norm[ 3 ];
-////   int            nvmaps: number /*int*/;
-////   lwVMapPt      *vm;                  /* array of vmap references */
-////} lwPolVert;
+class lwPolVert {
+	index: number /*int*/; /* index into the point array */
+	norm = new Float32Array( 3 );
+	nvmaps: number /*int*/;
+	vm: lwVMapPt; /* array of vmap references */
 
-////class lwPolygon {
-////   lwSurface     *surf;
-////   int            part: number /*int*/;                /* part index */
-////   int            smoothgrp: number /*int*/;           /* smoothing group */
-////   int            flags: number /*int*/;
-////   unsigned int   type;
-////   float          norm[ 3 ];
-////   int            nverts: number /*int*/;
-////   lwPolVert     *v;                   /* array of vertex records */
-////} lwPolygon;
+	memset0 ( ): void {
+		this.index = null;
+		this.norm[0] = this.norm[1] = this.norm[2] = 0;
+		this.nvmaps = 0;
+		this.vm = null;
+	}
+}
+
+class lwPolygon {
+	surf:lwSurface;
+	part: number /*int*/;                /* part index */
+	smoothgrp: number /*int*/;           /* smoothing group */
+	flags: number /*int*/;
+	type:number/* unsigned int*/;
+	norm = new Float32Array(3);
+	nverts: number /*int*/;
+	v: lwPolVert[];                   /* array of vertex records */
+
+	memset0 ( ): void {
+		this.surf = null;
+		this.part = 0;
+		this.smoothgrp = 0;
+		this.flags = 0;
+		this.type = 0;
+		this.norm[0] = this.norm[1] = this.norm[2] = 0;
+		this.nverts = 0;
+		this.v = null;
+	}
+};
 
 class lwPointList {
 	count: number /*int*/;
@@ -548,14 +566,14 @@ class lwPolygonList {
 	offset: number /*int*/;              /* only used during reading */
 	vcount: number /*int*/;              /* total number of vertices */
 	voffset: number /*int*/;             /* only used during reading */
-	//pol:lwPolygon;                 /* array of polygons */
+	pol:lwPolygon[];                 /* array of polygons */
 
 	memset0 ( ): void {
 		this.count = 0;
 		this.offset = 0;
 		this.vcount = 0;
 		this.voffset = 0;
-		//this.pol = null;
+		this.pol = null;
 	}
 }
 
