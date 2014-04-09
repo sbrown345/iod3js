@@ -649,7 +649,7 @@ class lwSurface {
 class lwVMap {
 	next: lwVMap;
 	prev: lwVMap;
-	name: Uint8Array;
+	name: string;
 	type: number /*unsigned int*/;
 	dim: number /*int*/;
 	nverts: number /*int*/;
@@ -684,7 +684,7 @@ class lwVMapPt {
 class lwPoint {
 	pos = new Float32Array( 3 )
 	npols: number /*int*/; /* number of polygons sharing the point */
-	pol: number[] /*int*/; /* array of polygon indexes */
+	pol: Int32Array; /* array of polygon indexes */
 	nvmaps: number /*int*/;
 	vm: lwVMapPt[]; /* array of vmap references */
 
@@ -801,7 +801,7 @@ class lwLayer {
 class lwTagList {
 	count: number /*int*/;
 	offset: number /*int*/; /* only used during reading */
-	tag: Uint8Array[] //char         **tag;                 /* array of strings */	
+	tag: string[] //char         **tag;                 /* array of strings */	
 
 	memset0 ( ): void {
 		this.count = 0;
@@ -915,7 +915,7 @@ class lwObject {
 ////float dot( float a[], float b[] );
 ////void cross( float a[], float b[], float c[] );
 ////void normalize( float v[] );
-////#define vecangle( a, b ) ( float ) idMath::ACos( dot( a, b ) )
+function vecangle ( a: number, b: number ): number { return /*( float ) */idMath.ACos( dot( a, b ) );}
 
 /////* lwio.c */
 

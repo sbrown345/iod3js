@@ -1343,7 +1343,7 @@ function /*float */sgetF4 ( /*unsigned char ***/bp: P ): number {
 }
 
 
-function sgetS0 ( /*unsigned char ***/bp: P ): Uint8Array {
+function sgetS0 ( /*unsigned char ***/bp: P ): string {
 	var s: Uint8Array; //char *s;
 	var buf = new P( bp.buf, bp.idx ); //unsigned char *buf = *bp;
 	var /*int */len: number;
@@ -1366,7 +1366,7 @@ function sgetS0 ( /*unsigned char ***/bp: P ): Uint8Array {
 	memcpyUint8Array( s, buf.subarray ( ), len );
 	flen += len;
 	bp.incrBy( len );
-	return s;
+	return s.toString();
 }
 
 /*
@@ -1621,16 +1621,20 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 
 	layer = object.layer;
 	while ( layer ) {
-		todoThrow ( );
-		//   //lwGetBoundingBox( layer.point, layer.bbox );
-		//   //lwGetPolyNormals( layer.point, layer.polygon );
-		//   //if ( !lwGetPointPolygons(layer.point, layer.polygon )) return Fail ( );
-		//   //if ( !lwResolvePolySurfaces( layer.polygon, object.taglist,
-		//   //   object.surf, object.nsurfs )) return Fail ( );
-		//   //lwGetVertNormals( layer.point, layer.polygon );
-		//   //if ( !lwGetPointVMaps( layer.point, layer.vmap )) return Fail ( );
-		//   //if ( !lwGetPolyVMaps(layer.polygon, layer.vmap )) return Fail ( );
-		//   //layer = layer.next;
+		lwGetBoundingBox( layer.point, layer.bbox );
+		lwGetPolyNormals( layer.point, layer.polygon );
+		if ( !lwGetPointPolygons( layer.point, layer.polygon ) ) return Fail ( );
+		var $objSurf = new R( object.surf );
+		var $objNsurf = new R( object.nsurfs );
+		if ( !lwResolvePolySurfaces( layer.polygon, object.taglist,
+			$objSurf, $objNsurf ) ) return Fail ( );
+		object.surf = $objSurf.$;
+		object.nsurfs = $objNsurf.$;
+
+		lwGetVertNormals( layer.point, layer.polygon );
+		if ( !lwGetPointVMaps( layer.point, layer.vmap ) ) return Fail ( );
+		if ( !lwGetPolyVMaps( layer.polygon, layer.vmap ) ) return Fail ( );
+		layer = layer.next;
 	}
 
 	return object;
@@ -2438,34 +2442,34 @@ function lwGetPoints ( fp: idFile, /*int */cksize: number, point: lwPointList ):
 }
 
 
-/////*
-////======================================================================
-////lwGetBoundingBox()
+/*
+======================================================================
+lwGetBoundingBox()
 
-////Calculate the bounding box for a point list, but only if the bounding
-////box hasn't already been initialized.
-////====================================================================== */
+Calculate the bounding box for a point list, but only if the bounding
+box hasn't already been initialized.
+====================================================================== */
 
-////void lwGetBoundingBox( point:lwPointList, float bbox[] )
-////{
-////	int i, j;
+function lwGetBoundingBox( point:lwPointList, /*float*/ bbox:Float32Array ):void
+{
+	var/*int */i:number, j:number;
 
-////	if ( point.count == 0 ) return;
+	if ( point.count == 0 ) return;
 
-////	for ( i = 0; i < 6; i++ )
-////		if ( bbox[ i ] != 0.0 ) return;
+	for ( i = 0; i < 6; i++ )
+		if ( bbox[ i ] != 0.0 ) return;
 
-////	bbox[ 0 ] = bbox[ 1 ] = bbox[ 2 ] = 1e20f;
-////	bbox[ 3 ] = bbox[ 4 ] = bbox[ 5 ] = -1e20f;
-////	for ( i = 0; i < point.count; i++ ) {
-////		for ( j = 0; j < 3; j++ ) {
-////			if ( bbox[ j ] > point.pt[ i ].pos[ j ] )
-////			bbox[ j ] = point.pt[ i ].pos[ j ];
-////			if ( bbox[ j + 3 ] < point.pt[ i ].pos[ j ] )
-////			bbox[ j + 3 ] = point.pt[ i ].pos[ j ];
-////		}
-////	}
-////}
+	bbox[ 0 ] = bbox[ 1 ] = bbox[ 2 ] = 1e20;
+	bbox[ 3 ] = bbox[ 4 ] = bbox[ 5 ] = -1e20;
+	for ( i = 0; i < point.count; i++ ) {
+		for ( j = 0; j < 3; j++ ) {
+			if ( bbox[ j ] > point.pt[ i ].pos[ j ] )
+			bbox[ j ] = point.pt[ i ].pos[ j ];
+			if ( bbox[ j + 3 ] < point.pt[ i ].pos[ j ] )
+			bbox[ j + 3 ] = point.pt[ i ].pos[ j ];
+		}
+	}
+}
 
 
 /*
@@ -2587,180 +2591,181 @@ function /*int */lwGetPolygons ( fp: idFile, /*int */cksize: number, plist: lwPo
 }
 
 
-/////*
-////======================================================================
-////lwGetPolyNormals()
+/*
+======================================================================
+lwGetPolyNormals()
 
-////Calculate the polygon normals.  By convention, LW's polygon normals
-////are found as the cross product of the first and last edges.  It's
-////undefined for one- and two-point polygons.
-////====================================================================== */
+Calculate the polygon normals.  By convention, LW's polygon normals
+are found as the cross product of the first and last edges.  It's
+undefined for one- and two-point polygons.
+====================================================================== */
 
-////void lwGetPolyNormals( point:lwPointList, lwPolygonList *polygon )
-////{
-////   int i, j;
-////   float p1[ 3 ], p2[ 3 ], pn[ 3 ], v1[ 3 ], v2[ 3 ];
+function lwGetPolyNormals ( point: lwPointList, polygon: lwPolygonList ): void {
+	var /*int */i: number, j: number;
+	var p1 = new Float32Array( 3 ), p2 = new Float32Array( 3 ), pn = new Float32Array( 3 ), v1 = new Float32Array( 3 ), v2 = new Float32Array( 3 );
 
-////   for ( i = 0; i < polygon.count; i++ ) {
-////      if ( polygon.pol[ i ].nverts < 3 ) continue;
-////      for ( j = 0; j < 3; j++ ) {
+	for ( i = 0; i < polygon.count; i++ ) {
+		if ( polygon.pol[i].nverts < 3 ) continue;
+		for ( j = 0; j < 3; j++ ) {
 
-////		  // FIXME: track down why indexes are way out of range
-////         p1[ j ] = point.pt[ polygon.pol[ i ].v[ 0 ].index ].pos[ j ];
-////         p2[ j ] = point.pt[ polygon.pol[ i ].v[ 1 ].index ].pos[ j ];
-////         pn[ j ] = point.pt[ polygon.pol[ i ].v[ polygon.pol[ i ].nverts - 1 ].index ].pos[ j ];
-////      }
+			// FIXME: track down why indexes are way out of range
+			p1[j] = point.pt[polygon.pol[i].v[0].index].pos[j];
+			p2[j] = point.pt[polygon.pol[i].v[1].index].pos[j];
+			pn[j] = point.pt[polygon.pol[i].v[polygon.pol[i].nverts - 1].index].pos[j];
+		}
 
-////      for ( j = 0; j < 3; j++ ) {
-////         v1[ j ] = p2[ j ] - p1[ j ];
-////         v2[ j ] = pn[ j ] - p1[ j ];
-////      }
+		for ( j = 0; j < 3; j++ ) {
+			v1[j] = p2[j] - p1[j];
+			v2[j] = pn[j] - p1[j];
+		}
 
-////      cross( v1, v2, polygon.pol[ i ].norm );
-////      normalize( polygon.pol[ i ].norm );
-////   }
-////}
-
-
-/////*
-////======================================================================
-////lwGetPointPolygons()
-
-////For each point, fill in the indexes of the polygons that share the
-////point.  Returns 0 if any of the memory allocations fail, otherwise
-////returns 1.
-////====================================================================== */
-
-////int lwGetPointPolygons( point:lwPointList, lwPolygonList *polygon ):number
-////{
-////   int i, j, k;
-
-////   /* count the number of polygons per point */
-
-////   for ( i = 0; i < polygon.count; i++ )
-////      for ( j = 0; j < polygon.pol[ i ].nverts; j++ )
-////         ++point.pt[ polygon.pol[ i ].v[ j ].index ].npols;
-
-////   /* alloc per-point polygon arrays */
-
-////   for ( i = 0; i < point.count; i++ ) {
-////      if ( point.pt[ i ].npols == 0 ) continue;
-////      point.pt[ i ].pol = (int*)Mem_ClearedAlloc( point.pt[ i ].npols * sizeof( int ) );
-////      if ( !point.pt[ i ].pol ) return 0;
-////      point.pt[ i ].npols = 0;
-////   }
-
-////   /* fill in polygon array for each point */
-
-////   for ( i = 0; i < polygon.count; i++ ) {
-////      for ( j = 0; j < polygon.pol[ i ].nverts; j++ ) {
-////         k = polygon.pol[ i ].v[ j ].index;
-////         point.pt[ k ].pol[ point.pt[ k ].npols ] = i;
-////         ++point.pt[ k ].npols;
-////      }
-////   }
-
-////   return 1;
-////}
+		cross( v1, v2, polygon.pol[i].norm );
+		normalize( polygon.pol[i].norm );
+	}
+}
 
 
-/////*
-////======================================================================
-////lwResolvePolySurfaces()
+/*
+======================================================================
+lwGetPointPolygons()
 
-////Convert tag indexes into actual lwSurface pointers.  If any polygons
-////point to tags for which no corresponding surface can be found, a
-////default surface is created.
-////====================================================================== */
+For each point, fill in the indexes of the polygons that share the
+point.  Returns 0 if any of the memory allocations fail, otherwise
+returns 1.
+====================================================================== */
 
-////int lwResolvePolySurfaces( lwPolygonList *polygon, tlist: lwTagList,
-////   lwSurface **surf, int *nsurfs ):number
-////{
-////   lwSurface **s, *st;
-////   int i, index;
+function/*int */lwGetPointPolygons( point:lwPointList, polygon:lwPolygonList ):number
+{
+	var/*int */i: number, j: number, k: number;
 
-////   if ( tlist.count == 0 ) return 1;
+   /* count the number of polygons per point */
 
-////   s = (lwSurface**)Mem_ClearedAlloc( tlist.count * sizeof( lwSurface * ) );
-////   if ( !s ) return 0;
+   for ( i = 0; i < polygon.count; i++ )
+      for ( j = 0; j < polygon.pol[ i ].nverts; j++ )
+         ++point.pt[ polygon.pol[ i ].v[ j ].index ].npols;
 
-////   for ( i = 0; i < tlist.count; i++ ) {
-////      st = *surf;
-////      while ( st ) {
-////         if ( !strcmp( st.name, tlist.tag[ i ] )) {
-////            s[ i ] = st;
-////            break;
-////         }
-////         st = st.next;
-////      }
-////   }
+   /* alloc per-point polygon arrays */
 
-////   for ( i = 0; i < polygon.count; i++ ) {
-////      index = ( int ) polygon.pol[ i ].surf;
-////      if ( index < 0 || index > tlist.count ) return 0;
-////      if ( !s[ index ] ) {
-////         s[ index ] = lwDefaultSurface();
-////         if ( !s[ index ] ) return 0;
-////         s[ index ].name = (char*)Mem_ClearedAlloc( strlen( tlist.tag[ index ] ) + 1 );
-////         if ( !s[ index ].name ) return 0;
-////         strcpy( s[ index ].name, tlist.tag[ index ] );
-////         lwListAdd( (void**)surf, s[ index ] );
-////         *nsurfs = *nsurfs + 1;
-////      }
-////      polygon.pol[ i ].surf = s[ index ];
-////   }
+   for ( i = 0; i < point.count; i++ ) {
+      if ( point.pt[ i ].npols == 0 ) continue;
+	   point.pt[i].pol = new Int32Array( point.pt[i].npols );// (int*)Mem_ClearedAlloc( point.pt[ i ].npols * sizeof( int ) );
+      if ( !point.pt[ i ].pol ) return 0;
+      point.pt[ i ].npols = 0;
+   }
 
-////   Mem_Free( s );
-////   return 1;
-////}
+   /* fill in polygon array for each point */
+
+   for ( i = 0; i < polygon.count; i++ ) {
+      for ( j = 0; j < polygon.pol[ i ].nverts; j++ ) {
+         k = polygon.pol[ i ].v[ j ].index;
+         point.pt[ k ].pol[ point.pt[ k ].npols ] = i;
+         ++point.pt[ k ].npols;
+      }
+   }
+
+   return 1;
+}
 
 
-/////*
-////======================================================================
-////lwGetVertNormals()
+/*
+======================================================================
+lwResolvePolySurfaces()
 
-////Calculate the vertex normals.  For each polygon vertex, sum the
-////normals of the polygons that share the point.  If the normals of the
-////current and adjacent polygons form an angle greater than the max
-////smoothing angle for the current polygon's surface, the normal of the
-////adjacent polygon is excluded from the sum.  It's also excluded if the
-////polygons aren't in the same smoothing group.
+Convert tag indexes into actual lwSurface pointers.  If any polygons
+point to tags for which no corresponding surface can be found, a
+default surface is created.
+====================================================================== */
 
-////Assumes that lwGetPointPolygons(), lwGetPolyNormals() and
-////lwResolvePolySurfaces() have already been called.
-////====================================================================== */
+function lwResolvePolySurfaces ( polygon: lwPolygonList, tlist: lwTagList,
+	surf: R<lwSurface>, /*int **/nsurfs: R<number> ): number {
+	var s: lwSurface[], st: lwSurface;
+	var /*int */i: number, index: number;
 
-////void lwGetVertNormals( point:lwPointList, lwPolygonList *polygon )
-////{
-////   int j, k, n, g, h, p;
-////   float a;
+	if ( tlist.count == 0 ) return 1;
 
-////   for ( j = 0; j < polygon.count; j++ ) {
-////      for ( n = 0; n < polygon.pol[ j ].nverts; n++ ) {
-////         for ( k = 0; k < 3; k++ )
-////            polygon.pol[ j ].v[ n ].norm[ k ] = polygon.pol[ j ].norm[ k ];
+	s = newStructArray<lwSurface>( lwSurface, tlist.count ); // (lwSurface**)Mem_ClearedAlloc( tlist.count * sizeof( lwSurface * ) );
+	clearStructArray( s );
+	if ( !s ) return 0;
 
-////         if ( polygon.pol[ j ].surf.smooth <= 0 ) continue;
+	for ( i = 0; i < tlist.count; i++ ) {
+		st = surf.$;
+		while ( st ) {
+			if ( !strcmp( st.name, tlist.tag[i] ) ) {
+				s[i] = st;
+				break;
+			}
+			st = st.next;
+		}
+	}
 
-////         p = polygon.pol[ j ].v[ n ].index;
+	for ( i = 0; i < polygon.count; i++ ) {
+		index = /*( int )*/<number><any> polygon.pol[i].surf;
+		if ( index < 0 || index > tlist.count ) return 0;
+		if ( !s[index] ) {
+			s[index] = lwDefaultSurface ( );
+			if ( !s[index] ) return 0;
+			s[index].name = ""; //(char*)Mem_ClearedAlloc( strlen( tlist.tag[ index ] ) + 1 );
+			if ( !s[index].name ) return 0;
+			s[index].name = tlist.tag[index]; //strcpy(s[index].name, tlist.tag[index]);
+			var $surf = new R( surf );
+			lwListAdd( $surf, s[index] );
+			surf = $surf.$;
+			nsurfs.$ = nsurfs.$ + 1;
+		}
+		polygon.pol[i].surf = s[index];
+	}
 
-////         for ( g = 0; g < point.pt[ p ].npols; g++ ) {
-////            h = point.pt[ p ].pol[ g ];
-////            if ( h == j ) continue;
+	Mem_Free( s );
+	return 1;
+}
 
-////            if ( polygon.pol[ j ].smoothgrp != polygon.pol[ h ].smoothgrp )
-////               continue;
-////            a = vecangle( polygon.pol[ j ].norm, polygon.pol[ h ].norm );
-////            if ( a > polygon.pol[ j ].surf.smooth ) continue;
 
-////            for ( k = 0; k < 3; k++ )
-////               polygon.pol[ j ].v[ n ].norm[ k ] += polygon.pol[ h ].norm[ k ];
-////         }
+/*
+======================================================================
+lwGetVertNormals()
 
-////         normalize( polygon.pol[ j ].v[ n ].norm );
-////      }
-////   }
-////}
+Calculate the vertex normals.  For each polygon vertex, sum the
+normals of the polygons that share the point.  If the normals of the
+current and adjacent polygons form an angle greater than the max
+smoothing angle for the current polygon's surface, the normal of the
+adjacent polygon is excluded from the sum.  It's also excluded if the
+polygons aren't in the same smoothing group.
+
+Assumes that lwGetPointPolygons(), lwGetPolyNormals() and
+lwResolvePolySurfaces() have already been called.
+====================================================================== */
+
+function lwGetVertNormals( point:lwPointList, polygon:lwPolygonList ):void
+{
+	var/*int */j: number, k: number, n: number, g: number, h: number, p: number;
+	var /*float */a: number;
+
+   for ( j = 0; j < polygon.count; j++ ) {
+      for ( n = 0; n < polygon.pol[ j ].nverts; n++ ) {
+         for ( k = 0; k < 3; k++ )
+            polygon.pol[ j ].v[ n ].norm[ k ] = polygon.pol[ j ].norm[ k ];
+
+         if ( polygon.pol[ j ].surf.smooth <= 0 ) continue;
+
+         p = polygon.pol[ j ].v[ n ].index;
+
+         for ( g = 0; g < point.pt[ p ].npols; g++ ) {
+            h = point.pt[ p ].pol[ g ];
+            if ( h == j ) continue;
+
+            if ( polygon.pol[ j ].smoothgrp != polygon.pol[ h ].smoothgrp )
+               continue;
+            a = vecangle( polygon.pol[ j ].norm, polygon.pol[ h ].norm );
+            if ( a > polygon.pol[ j ].surf.smooth ) continue;
+
+            for ( k = 0; k < 3; k++ )
+               polygon.pol[ j ].v[ n ].norm[ k ] += polygon.pol[ h ].norm[ k ];
+         }
+
+         normalize( polygon.pol[ j ].v[ n ].norm );
+      }
+   }
+}
 
 
 /////*
@@ -2823,7 +2828,7 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 	tlist.offset = tlist.count;
 	tlist.count += ntags;
 	var /* ** */oldtag = tlist.tag;
-	tlist.tag = new Array<Uint8Array>( tlist.count ); // [](char**)Mem_Alloc( tlist.count * sizeof( char * ) );
+	tlist.tag = new Array<string>(tlist.count);//new Array<Uint8Array>( tlist.count ); // [](char**)Mem_Alloc( tlist.count * sizeof( char * ) );
 	if ( !tlist.tag ) return Fail ( );
 	if ( oldtag ) {
 		todoThrow ( );
@@ -3487,88 +3492,86 @@ lwGetShader()
 Read a shader record from a SURF.BLOK in an LWO2 file.
 ====================================================================== */
 
-function lwGetShader( fp:idFile, /*int */bloksz :number):lwPlugin
-{
-	var shdr: lwPlugin ;
-   var /*unsigned int */id:number;
-   var/*unsigned short */sz:number;
+function lwGetShader ( fp: idFile, /*int */bloksz: number ): lwPlugin {
+	var shdr: lwPlugin;
+	var /*unsigned int */id: number;
+	var /*unsigned short */sz: number;
 	var /*int */hsz: number, rlen: number, pos: number;
 
-	shdr = new lwPlugin;// (lwPlugin*)Mem_ClearedAlloc( sizeof( lwPlugin ) );
+	shdr = new lwPlugin; // (lwPlugin*)Mem_ClearedAlloc( sizeof( lwPlugin ) );
 	shdr.memset0 ( );
-	if (!shdr) return null;
+	if ( !shdr ) return null;
 
-   pos = fp.Tell();
-   set_flen( 0 );
-   hsz = getU2( fp );
-   shdr.ord = getS0( fp );
-   id = getU4( fp );
-   sz = getU2( fp );
-   if ( 0 > get_flen() ) return Fail();
+	pos = fp.Tell ( );
+	set_flen( 0 );
+	hsz = getU2( fp );
+	shdr.ord = getS0( fp );
+	id = getU4( fp );
+	sz = getU2( fp );
+	if ( 0 > get_flen ( ) ) return Fail ( );
 
-   while ( hsz > 0 ) {
-      sz += sz & 1;
-      hsz -= sz;
-      if ( id == ID_ENAB ) {
-         shdr.flags = getU2( fp );
-         break;
-      }
-      else {
-		  fp.Seek(sz, fsOrigin_t.FS_SEEK_CUR );
-         id = getU4( fp );
-         sz = getU2( fp );
-      }
-   }
+	while ( hsz > 0 ) {
+		sz += sz & 1;
+		hsz -= sz;
+		if ( id == ID_ENAB ) {
+			shdr.flags = getU2( fp );
+			break;
+		} else {
+			fp.Seek( sz, fsOrigin_t.FS_SEEK_CUR );
+			id = getU4( fp );
+			sz = getU2( fp );
+		}
+	}
 
-   id = getU4( fp );
-   sz = getU2( fp );
-   if ( 0 > get_flen() ) return Fail();
+	id = getU4( fp );
+	sz = getU2( fp );
+	if ( 0 > get_flen ( ) ) return Fail ( );
 
-   while ( 1 ) {
-      sz += sz & 1;
-      set_flen( 0 );
+	while ( 1 ) {
+		sz += sz & 1;
+		set_flen( 0 );
 
-      switch ( id ) {
-         case ID_FUNC:
-            shdr.name = getS0( fp );
-            rlen = get_flen();
-            shdr.data = getbytes( fp, sz - rlen );
-            break;
+		switch ( id ) {
+		case ID_FUNC:
+			shdr.name = getS0( fp );
+			rlen = get_flen ( );
+			shdr.data = getbytes( fp, sz - rlen );
+			break;
 
-         default:
-            break;
-      }
+		default:
+			break;
+		}
 
-      /* error while reading the current subchunk? */
+		/* error while reading the current subchunk? */
 
-      rlen = get_flen();
-      if ( rlen < 0 || rlen > sz ) return Fail();
+		rlen = get_flen ( );
+		if ( rlen < 0 || rlen > sz ) return Fail ( );
 
-      /* skip unread parts of the current subchunk */
+		/* skip unread parts of the current subchunk */
 
-      if ( rlen < sz )
-		  fp.Seek(sz - rlen, fsOrigin_t.FS_SEEK_CUR );
+		if ( rlen < sz )
+			fp.Seek( sz - rlen, fsOrigin_t.FS_SEEK_CUR );
 
-      /* end of the shader block? */
+		/* end of the shader block? */
 
-      if ( bloksz <= fp.Tell() - pos )
-         break;
+		if ( bloksz <= fp.Tell ( ) - pos )
+			break;
 
-      /* get the next subchunk header */
+		/* get the next subchunk header */
 
-      set_flen( 0 );
-      id = getU4( fp );
-      sz = getU2( fp );
-      if ( 6 != get_flen() ) return Fail();
-   }
+		set_flen( 0 );
+		id = getU4( fp );
+		sz = getU2( fp );
+		if ( 6 != get_flen ( ) ) return Fail ( );
+	}
 
-   set_flen( fp.Tell() - pos );
-   return shdr;
+	set_flen( fp.Tell ( ) - pos );
+	return shdr;
 
-	function Fail(): lwPlugin {
-   lwFreePlugin( shdr );
-   return null;
-}
+	function Fail ( ): lwPlugin {
+		lwFreePlugin( shdr );
+		return null;
+	}
 }
 
 
@@ -3622,31 +3625,31 @@ function /*int */add_texture(surf:lwSurface, tex :lwTexture ):number {
 }
 
 
-/////*
-////======================================================================
-////lwDefaultSurface()
+/*
+======================================================================
+lwDefaultSurface()
 
-////Allocate and initialize a surface.
-////====================================================================== */
+Allocate and initialize a surface.
+====================================================================== */
 
-////lwSurface *lwDefaultSurface( )
-////{
-////   lwSurface *surf;
+function lwDefaultSurface ( ): lwSurface {
+	var surf: lwSurface;
 
-////   surf = (lwSurface*)Mem_ClearedAlloc( sizeof( lwSurface ) );
-////   if ( !surf ) return NULL;
+	surf = new lwSurface; // (lwSurface*)Mem_ClearedAlloc( sizeof( lwSurface ) );
+	surf.memset0 ( );
+	if ( !surf ) return null;
 
-////   surf.color.rgb[ 0 ] = 0.78431f;
-////   surf.color.rgb[ 1 ] = 0.78431f;
-////   surf.color.rgb[ 2 ] = 0.78431f;
-////   surf.diffuse.val    = 1.0;
-////   surf.glossiness.val = 0.4f;
-////   surf.bump.val       = 1.0;
-////   surf.eta.val        = 1.0;
-////   surf.sideflags      = 1;
+	surf.color.rgb[0] = 0.78431;
+	surf.color.rgb[1] = 0.78431;
+	surf.color.rgb[2] = 0.78431;
+	surf.diffuse.val = 1.0;
+	surf.glossiness.val = 0.4;
+	surf.bump.val = 1.0;
+	surf.eta.val = 1.0;
+	surf.sideflags = 1;
 
-////   return surf;
-////}
+	return surf;
+}
 
 
 /*
@@ -3888,31 +3891,29 @@ function lwGetSurface(fp: idFile, /*int */cksize: number): lwSurface
 }
 
 
-////float dot( float a[], float b[] )
-////{
-////   return a[ 0 ] * b[ 0 ] + a[ 1 ] * b[ 1 ] + a[ 2 ] * b[ 2 ];
-////}
+function /*float */dot ( a: Float32Array, b: Float32Array ): number {
+	return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+}
 
 
-////void cross( float a[], float b[], float c[] )
-////{
-////   c[ 0 ] = a[ 1 ] * b[ 2 ] - a[ 2 ] * b[ 1 ];
-////   c[ 1 ] = a[ 2 ] * b[ 0 ] - a[ 0 ] * b[ 2 ];
-////   c[ 2 ] = a[ 0 ] * b[ 1 ] - a[ 1 ] * b[ 0 ];
-////}
+function cross(a:Float32Array, b:Float32Array, c:Float32Array ):void
+{
+   c[ 0 ] = a[ 1 ] * b[ 2 ] - a[ 2 ] * b[ 1 ];
+   c[ 1 ] = a[ 2 ] * b[ 0 ] - a[ 0 ] * b[ 2 ];
+   c[ 2 ] = a[ 0 ] * b[ 1 ] - a[ 1 ] * b[ 0 ];
+}
 
 
-////void normalize( float v[] )
-////{
-////   float r;
+function normalize ( v: Float32Array ): void {
+	var /*float */r: number;
 
-////   r = ( float ) idMath::Sqrt( dot( v, v ));
-////   if ( r > 0 ) {
-////      v[ 0 ] /= r;
-////      v[ 1 ] /= r;
-////      v[ 2 ] /= r;
-////   }
-////}
+	r = /*( float ) */idMath.Sqrt( dot( v, v ) );
+	if ( r > 0 ) {
+		v[0] /= r;
+		v[1] /= r;
+		v[2] /= r;
+	}
+}
 
 /*
 ======================================================================
@@ -4086,7 +4087,7 @@ function lwGetVMap ( fp: idFile, /*int */cksize: number, /*int*/ ptoffset: numbe
 ////Fill in the lwVMapPt structure for each polygon vertex.
 ////====================================================================== */
 
-////int lwGetPolyVMaps( lwPolygonList *polygon, lwVMap *vmap ):number
+////int lwGetPolyVMaps( polygon:lwPolygonList, lwVMap *vmap ):number
 ////{
 ////   lwVMap *vm;
 ////   lwPolVert *pv;

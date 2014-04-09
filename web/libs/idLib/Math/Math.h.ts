@@ -323,7 +323,7 @@ static Sqrt( /*float */x:number):number {
 		return sinf( a );
 	}
 
-////ID_INLINE float idMath::Sin16( float a ) {
+////ID_INLINE float idMath::Sin16( /*float*/ a: number ) {
 ////	float s;
 
 ////	if ( ( a < 0.0 ) || ( a >= TWO_PI ) ) {
@@ -351,7 +351,7 @@ static Sqrt( /*float */x:number):number {
 ////	return a * ( ( ( ( ( -2.39e-08f * s + 2.7526e-06f ) * s - 1.98409e-04f ) * s + 8.3333315e-03f ) * s - 1.666666664e-01f ) * s + 1.0 );
 ////}
 
-////ID_INLINE double idMath::Sin64( float a ) {
+////ID_INLINE double idMath::Sin64( /*float*/ a: number ) {
 ////	return sin( a );
 ////}
 
@@ -359,7 +359,7 @@ static Sqrt( /*float */x:number):number {
 		return cosf( a );
 	}
 
-////ID_INLINE float idMath::Cos16( float a ) {
+////ID_INLINE float idMath::Cos16( /*float*/ a: number ) {
 ////	float s, d;
 
 ////	if ( ( a < 0.0 ) || ( a >= TWO_PI ) ) {
@@ -395,7 +395,7 @@ static Sqrt( /*float */x:number):number {
 ////	return d * ( ( ( ( ( -2.605e-07f * s + 2.47609e-05f ) * s - 1.3888397e-03f ) * s + 4.16666418e-02f ) * s - 4.999999963e-01f ) * s + 1.0 );
 ////}
 
-////ID_INLINE double idMath::Cos64( float a ) {
+////ID_INLINE double idMath::Cos64( /*float*/ a: number ) {
 ////	return cos( a );
 ////}
 
@@ -468,11 +468,11 @@ static Sqrt( /*float */x:number):number {
 ////#endif
 ////}
 
-////ID_INLINE float idMath::Tan( float a ) {
+////ID_INLINE float idMath::Tan( /*float*/ a: number ) {
 ////	return tanf( a );
 ////}
 
-////ID_INLINE float idMath::Tan16( float a ) {
+////ID_INLINE float idMath::Tan16( /*float*/ a: number ) {
 ////	float s;
 ////	bool reciprocal;
 
@@ -514,11 +514,11 @@ static Sqrt( /*float */x:number):number {
 ////	}
 ////}
 
-////ID_INLINE double idMath::Tan64( float a ) {
+////ID_INLINE double idMath::Tan64( /*float*/ a: number ) {
 ////	return tan( a );
 ////}
 
-////ID_INLINE float idMath::ASin( float a ) {
+////ID_INLINE float idMath::ASin( /*float*/ a: number ) {
 ////	if ( a <= -1.0 ) {
 ////		return -HALF_PI;
 ////	}
@@ -528,7 +528,7 @@ static Sqrt( /*float */x:number):number {
 ////	return asinf( a );
 ////}
 
-////ID_INLINE float idMath::ASin16( float a ) {
+////ID_INLINE float idMath::ASin16( /*float*/ a: number ) {
 ////	if ( FLOATSIGNBITSET( a ) ) {
 ////		if ( a <= -1.0 ) {
 ////			return -HALF_PI;
@@ -543,7 +543,7 @@ static Sqrt( /*float */x:number):number {
 ////	}
 ////}
 
-////ID_INLINE double idMath::ASin64( float a ) {
+////ID_INLINE double idMath::ASin64( /*float*/ a: number ) {
 ////	if ( a <= -1.0 ) {
 ////		return -HALF_PI;
 ////	}
@@ -553,17 +553,17 @@ static Sqrt( /*float */x:number):number {
 ////	return asin( a );
 ////}
 
-////ID_INLINE float idMath::ACos( float a ) {
-////	if ( a <= -1.0 ) {
-////		return PI;
-////	}
-////	if ( a >= 1.0 ) {
-////		return 0.0;
-////	}
-////	return acosf( a );
-////}
+	static ACos ( /*float*/ a: number ): number {
+		if ( a <= -1.0 ) {
+			return PI;
+		}
+		if ( a >= 1.0 ) {
+			return 0.0;
+		}
+		return acosf( a );
+	}
 
-////ID_INLINE float idMath::ACos16( float a ) {
+////ID_INLINE float idMath::ACos16( /*float*/ a: number ) {
 ////	if ( FLOATSIGNBITSET( a ) ) {
 ////		if ( a <= -1.0 ) {
 ////			return PI;
@@ -578,7 +578,7 @@ static Sqrt( /*float */x:number):number {
 ////	}
 ////}
 
-////ID_INLINE double idMath::ACos64( float a ) {
+////ID_INLINE double idMath::ACos64( /*float*/ a: number ) {
 ////	if ( a <= -1.0 ) {
 ////		return PI;
 ////	}
@@ -588,11 +588,11 @@ static Sqrt( /*float */x:number):number {
 ////	return acos( a );
 ////}
 
-////ID_INLINE float idMath::ATan( float a ) {
+////ID_INLINE float idMath::ATan( /*float*/ a: number ) {
 ////	return atanf( a );
 ////}
 
-////ID_INLINE float idMath::ATan16( float a ) {
+////ID_INLINE float idMath::ATan16( /*float*/ a: number ) {
 ////	float s;
 
 ////	if ( fabs( a ) > 1.0 ) {
@@ -612,7 +612,7 @@ static Sqrt( /*float */x:number):number {
 ////	}
 ////}
 
-////ID_INLINE double idMath::ATan64( float a ) {
+////ID_INLINE double idMath::ATan64( /*float*/ a: number ) {
 ////	return atan( a );
 ////}
 
