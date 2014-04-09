@@ -80,204 +80,211 @@
 ////}
 
 
-/////*
-////======================================================================
-////lwGetClip()
+/*
+======================================================================
+lwGetClip()
 
-////Read image references from a CLIP chunk in an LWO2 file.
-////====================================================================== */
+Read image references from a CLIP chunk in an LWO2 file.
+====================================================================== */
 
-////lwClip *lwGetClip( fp:idFile, /*int */cksize:number )
-////{
-////   lwClip *clip;
-////   lwPlugin *filt;
-////   unsigned int id;
-////   unsigned short sz;
-////   int pos, rlen;
+function lwGetClip(fp: idFile, /*int */cksize: number): lwClip
+{
+	var clip: lwClip ;
+	var filt: lwPlugin;
+	var /*unsigned int*/ id: number;
+	var /*unsigned short */sz: number;
+	var /*int*/ pos: number, rlen: number;
 
 
-////   /* allocate the Clip structure */
+   /* allocate the Clip structure */
 
-////   clip = (lwClip*)Mem_ClearedAlloc( sizeof( lwClip ) );
-////   if ( !clip ) return Fail();
+	clip = new lwClip;// (lwClip*)Mem_ClearedAlloc( sizeof( lwClip ) );
+	clip.memset0 ( );
+   if ( !clip ) return Fail();
 
-////   clip.contrast.val = 1.0f;
-////   clip.brightness.val = 1.0f;
-////   clip.saturation.val = 1.0f;
-////   clip.gamma.val = 1.0f;
+   clip.contrast.val = 1.0;
+   clip.brightness.val = 1.0;
+   clip.saturation.val = 1.0;
+   clip.gamma.val = 1.0;
 
-////   /* remember where we started */
+   /* remember where we started */
 
-////   set_flen( 0 );
-////   pos = fp.Tell();
+   set_flen( 0 );
+   pos = fp.Tell();
 
-////   /* index */
+   /* index */
 
-////   clip.index = getI4( fp );
+   clip.index = getI4( fp );
 
-////   /* first subchunk header */
+   /* first subchunk header */
 
-////   clip.type = getU4( fp );
-////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) return Fail();
+   clip.type = getU4( fp );
+   sz = getU2( fp );
+   if ( 0 > get_flen() ) return Fail();
 
-////   sz += sz & 1;
-////   set_flen( 0 );
+   sz += sz & 1;
+   set_flen( 0 );
 
-////   switch ( clip.type ) {
-////      case ID_STIL:
-////         clip.source.still.name = getS0( fp );
-////         break;
+   switch ( clip.type ) {
+      case ID_STIL:
+         clip.source.still.name = getS0( fp );
+         break;
 
-////      case ID_ISEQ:
-////         clip.source.seq.digits  = getU1( fp );
-////         clip.source.seq.flags   = getU1( fp );
-////         clip.source.seq.offset  = getI2( fp );
-////         clip.source.seq.start   = getI2( fp );
-////         clip.source.seq.end     = getI2( fp );
-////         clip.source.seq.prefix  = getS0( fp );
-////         clip.source.seq.suffix  = getS0( fp );
-////         break;
+      case ID_ISEQ:
+         clip.source.seq.digits  = getU1( fp );
+         clip.source.seq.flags   = getU1( fp );
+         clip.source.seq.offset  = getI2( fp );
+         clip.source.seq.start   = getI2( fp );
+         clip.source.seq.end     = getI2( fp );
+         clip.source.seq.prefix  = getS0( fp );
+         clip.source.seq.suffix  = getS0( fp );
+         break;
 
-////      case ID_ANIM:
-////         clip.source.anim.name   = getS0( fp );
-////         clip.source.anim.server = getS0( fp );
-////         rlen = get_flen();
-////         clip.source.anim.data   = getbytes( fp, sz - rlen );
-////         break;
+      case ID_ANIM:
+         clip.source.anim.name   = getS0( fp );
+         clip.source.anim.server = getS0( fp );
+         rlen = get_flen();
+         clip.source.anim.data   = getbytes( fp, sz - rlen );
+         break;
 
-////      case ID_XREF:
-////         clip.source.xref.index  = getI4( fp );
-////         clip.source.xref.string = getS0( fp );
-////         break;
+      case ID_XREF:
+         clip.source.xref.index  = getI4( fp );
+         clip.source.xref.$string = getS0( fp );
+         break;
 
-////      case ID_STCC:
-////         clip.source.cycle.lo   = getI2( fp );
-////         clip.source.cycle.hi   = getI2( fp );
-////         clip.source.cycle.name = getS0( fp );
-////         break;
+      case ID_STCC:
+         clip.source.cycle.lo   = getI2( fp );
+         clip.source.cycle.hi   = getI2( fp );
+         clip.source.cycle.name = getS0( fp );
+         break;
 
-////      default:
-////         break;
-////   }
+      default:
+         break;
+   }
 
-////   /* error while reading current subchunk? */
+   /* error while reading current subchunk? */
 
-////   rlen = get_flen();
-////   if ( rlen < 0 || rlen > sz ) return Fail();
+   rlen = get_flen();
+   if ( rlen < 0 || rlen > sz ) return Fail();
 
-////   /* skip unread parts of the current subchunk */
+   /* skip unread parts of the current subchunk */
 
-////   if ( rlen < sz )
-////      fp.Seek( sz - rlen, FS_SEEK_CUR );
+   if ( rlen < sz )
+      fp.Seek( sz - rlen, fsOrigin_t.FS_SEEK_CUR );
 
-////   /* end of the CLIP chunk? */
+   /* end of the CLIP chunk? */
 
-////   rlen = fp.Tell() - pos;
-////   if ( cksize < rlen ) return Fail();
-////   if ( cksize == rlen )
-////      return clip;
+   rlen = fp.Tell() - pos;
+   if ( cksize < rlen ) return Fail();
+   if ( cksize == rlen )
+      return clip;
 
-////   /* process subchunks as they're encountered */
+   /* process subchunks as they're encountered */
 
-////   id = getU4( fp );
-////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) return Fail();
+   id = getU4( fp );
+   sz = getU2( fp );
+   if ( 0 > get_flen() ) return Fail();
 
-////   while ( 1 ) {
-////      sz += sz & 1;
-////      set_flen( 0 );
+   while ( 1 ) {
+      sz += sz & 1;
+      set_flen( 0 );
 
-////      switch ( id ) {
-////         case ID_TIME:
-////            clip.start_time = getF4( fp );
-////            clip.duration = getF4( fp );
-////            clip.frame_rate = getF4( fp );
-////            break;
+      switch ( id ) {
+         case ID_TIME:
+            clip.start_time = getF4( fp );
+            clip.duration = getF4( fp );
+            clip.frame_rate = getF4( fp );
+            break;
 
-////         case ID_CONT:
-////            clip.contrast.val = getF4( fp );
-////            clip.contrast.eindex = getVX( fp );
-////            break;
+         case ID_CONT:
+            clip.contrast.val = getF4( fp );
+            clip.contrast.eindex = getVX( fp );
+            break;
 
-////         case ID_BRIT:
-////            clip.brightness.val = getF4( fp );
-////            clip.brightness.eindex = getVX( fp );
-////            break;
+         case ID_BRIT:
+            clip.brightness.val = getF4( fp );
+            clip.brightness.eindex = getVX( fp );
+            break;
 
-////         case ID_SATR:
-////            clip.saturation.val = getF4( fp );
-////            clip.saturation.eindex = getVX( fp );
-////            break;
+         case ID_SATR:
+            clip.saturation.val = getF4( fp );
+            clip.saturation.eindex = getVX( fp );
+            break;
 
-////         case ID_HUE:
-////            clip.hue.val = getF4( fp );
-////            clip.hue.eindex = getVX( fp );
-////            break;
+         case ID_HUE:
+            clip.hue.val = getF4( fp );
+            clip.hue.eindex = getVX( fp );
+            break;
 
-////         case ID_GAMM:
-////            clip.gamma.val = getF4( fp );
-////            clip.gamma.eindex = getVX( fp );
-////            break;
+         case ID_GAMM:
+            clip.gamma.val = getF4( fp );
+            clip.gamma.eindex = getVX( fp );
+            break;
 
-////         case ID_NEGA:
-////            clip.negative = getU2( fp );
-////            break;
+         case ID_NEGA:
+            clip.negative = getU2( fp );
+            break;
 
-////         case ID_IFLT:
-////         case ID_PFLT:
-////            filt = (lwPlugin*)Mem_ClearedAlloc( sizeof( lwPlugin ) );
-////            if ( !filt ) return Fail();
+         case ID_IFLT:
+         case ID_PFLT:
+			 filt = new lwPlugin;//(lwPlugin*)Mem_ClearedAlloc( sizeof( lwPlugin ) );
+	         filt.memset0 ( );
+            if ( !filt ) return Fail();
 
-////            filt.name = getS0( fp );
-////            filt.flags = getU2( fp );
-////            rlen = get_flen();
-////            filt.data = getbytes( fp, sz - rlen );
+            filt.name = getS0( fp );
+            filt.flags = getU2( fp );
+            rlen = get_flen();
+            filt.data = getbytes( fp, sz - rlen );
 
-////            if ( id == ID_IFLT ) {
-////               lwListAdd( (void**)&clip.ifilter, filt );
-////               clip.nifilters++;
-////            }
-////            else {
-////               lwListAdd( (void**)&clip.pfilter, filt );
-////               clip.npfilters++;
-////            }
-////            break;
+	         if ( id == ID_IFLT ) {
+		         var $ifilter = new R( clip.ifilter );
+				 lwListAdd( /*(void**) & */$ifilter, filt );
+		         clip.ifilter = $ifilter.$;
+		         clip.nifilters++;
+	         } else {
+		         var $pfilter = new R( clip.pfilter );
+		         lwListAdd( $pfilter, filt );
+		         clip.pfilter = $pfilter.$;
+		         clip.npfilters++;
+	         }
+	         break;
 
-////         default:
-////            break;
-////      }
+         default:
+            break;
+      }
 
-////      /* error while reading current subchunk? */
+      /* error while reading current subchunk? */
 
-////      rlen = get_flen();
-////      if ( rlen < 0 || rlen > sz ) return Fail();
+      rlen = get_flen();
+      if ( rlen < 0 || rlen > sz ) return Fail();
 
-////      /* skip unread parts of the current subchunk */
+      /* skip unread parts of the current subchunk */
 
-////      if ( rlen < sz )
-////         fp.Seek( sz - rlen, FS_SEEK_CUR );
+      if ( rlen < sz )
+         fp.Seek( sz - rlen, fsOrigin_t.FS_SEEK_CUR );
 
-////      /* end of the CLIP chunk? */
+      /* end of the CLIP chunk? */
 
-////      rlen = fp.Tell() - pos;
-////      if ( cksize < rlen ) return Fail();
-////      if ( cksize == rlen ) break;
+      rlen = fp.Tell() - pos;
+      if ( cksize < rlen ) return Fail();
+      if ( cksize == rlen ) break;
 
-////      /* get the next chunk header */
+      /* get the next chunk header */
 
-////      set_flen( 0 );
-////      id = getU4( fp );
-////      sz = getU2( fp );
-////      if ( 6 != get_flen() ) return Fail();
-////   }
+      set_flen( 0 );
+      id = getU4( fp );
+      sz = getU2( fp );
+      if ( 6 != get_flen() ) return Fail();
+   }
 
-////   return clip;
+   return clip;
 
-////function Fail():? {
-////   lwFreeClip( clip );
-////   return NULL;
-////}
+	function Fail(): lwClip {
+		todoThrow ( );
+   //lwFreeClip( clip );
+   return null;
+}
+}
 
 
 /////*
@@ -340,8 +347,8 @@
 ////   lwEnvelope *env;
 ////   lwKey *key;
 ////   lwPlugin *plug;
-////   unsigned int id;
-////   unsigned short sz;
+////   var /*unsigned int */id:number;
+////   var /*unsigned short */sz:number;
 ////   float f[ 4 ];
 ////   int i, nparams, pos, rlen;
 
@@ -447,7 +454,7 @@
 ////      /* skip unread parts of the current subchunk */
 
 ////      if ( rlen < sz )
-////         fp.Seek( sz - rlen, FS_SEEK_CUR );
+////         fp.Seek( sz - rlen, fsOrigin_t.FS_SEEK_CUR );
 
 ////      /* end of the ENVL chunk? */
 
@@ -534,8 +541,8 @@
 ////   t2 = t * t;
 ////   t3 = t * t2;
 
-////   *h2 = 3.0f * t2 - t3 - t3;
-////   *h1 = 1.0f - *h2;
+////   *h2 = 3.0 * t2 - t3 - t3;
+////   *h1 = 1.0 - *h2;
 ////   *h4 = t3 - t2;
 ////   *h3 = *h4 - t2 + t;
 ////}
@@ -555,8 +562,8 @@
 ////   t2 = t * t;
 ////   t3 = t2 * t;
 
-////   c = 3.0f * ( x1 - x0 );
-////   b = 3.0f * ( x2 - x1 ) - c;
+////   c = 3.0 * ( x1 - x0 );
+////   b = 3.0 * ( x2 - x1 ) - c;
 ////   a = x3 - x0 - c - b;
 
 ////   return a * t3 + b * t2 + c * t + x0;
@@ -578,7 +585,7 @@
 ////{
 ////   float v, t;
 
-////   t = *t0 + ( *t1 - *t0 ) * 0.5f;
+////   t = *t0 + ( *t1 - *t0 ) * 0.5;
 ////   v = bezier( x0, x1, x2, x3, t );
 ////   if ( idMath::Fabs( time - v ) > .0001f ) {
 ////      if ( v > time )
@@ -601,12 +608,12 @@
 
 ////static float bez2( lwKey *key0, lwKey *key1, /*float*/time:number )
 ////{
-////   float x, y, t, t0 = 0.0, t1 = 1.0f;
+////   float x, y, t, t0 = 0.0, t1 = 1.0;
 
 ////   if ( key0.shape == ID_BEZ2 )
 ////      x = key0.time + key0.param[ 2 ];
 ////   else
-////      x = key0.time + ( key1.time - key0.time ) / 3.0f;
+////      x = key0.time + ( key1.time - key0.time ) / 3.0;
 
 ////   t = bez2_time( key0.time, x, key1.time + key1.param[ 0 ], key1.time,
 ////      time, &t0, &t1 );
@@ -614,7 +621,7 @@
 ////   if ( key0.shape == ID_BEZ2 )
 ////      y = key0.value + key0.param[ 3 ];
 ////   else
-////      y = key0.value + key0.param[ 1 ] / 3.0f;
+////      y = key0.value + key0.param[ 1 ] / 3.0;
 
 ////   return bezier( key0.value, y, key1.param[ 1 ] + key1.value, key1.value, t );
 ////}
@@ -636,12 +643,12 @@
 ////   switch ( key0.shape )
 ////   {
 ////      case ID_TCB:
-////         a = ( 1.0f - key0.tension )
-////           * ( 1.0f + key0.continuity )
-////           * ( 1.0f + key0.bias );
-////         b = ( 1.0f - key0.tension )
-////           * ( 1.0f - key0.continuity )
-////           * ( 1.0f - key0.bias );
+////         a = ( 1.0 - key0.tension )
+////           * ( 1.0 + key0.continuity )
+////           * ( 1.0 + key0.bias );
+////         b = ( 1.0 - key0.tension )
+////           * ( 1.0 - key0.continuity )
+////           * ( 1.0 - key0.bias );
 ////         d = key1.value - key0.value;
 
 ////         if ( key0.prev ) {
@@ -712,12 +719,12 @@
 ////         break;
 
 ////      case ID_TCB:
-////         a = ( 1.0f - key1.tension )
-////           * ( 1.0f - key1.continuity )
-////           * ( 1.0f + key1.bias );
-////         b = ( 1.0f - key1.tension )
-////           * ( 1.0f + key1.continuity )
-////           * ( 1.0f - key1.bias );
+////         a = ( 1.0 - key1.tension )
+////           * ( 1.0 - key1.continuity )
+////           * ( 1.0 + key1.bias );
+////         b = ( 1.0 - key1.tension )
+////           * ( 1.0 + key1.continuity )
+////           * ( 1.0 - key1.bias );
 ////         d = key1.value - key0.value;
 
 ////         if ( key1.next ) {
@@ -939,49 +946,46 @@ function lwListAdd ( /* void ***/list: R<any>, /*void **/node: any ): void {
 }
 
 
-/////*
-////======================================================================
-////lwListInsert()
+/*
+======================================================================
+lwListInsert()
 
-////Insert a node into a list in sorted order.
-////====================================================================== */
+Insert a node into a list in sorted order.
+====================================================================== */
 
-////void lwListInsert( void **vlist, void *vitem, int ( *compare )( void *, void * ))
-////{
-////   lwNode **list, *item, *node, *prev;
+function lwListInsert ( /*void ***/vlist: R<any>, /*void **/vitem: any, compare: ( a: any, b: any ) => number ): void {
+	var /*lwNode ***/list: R<lwNode>, item: lwNode, node: lwNode, prev: lwNode;
 
-////   if ( !*vlist ) {
-////      *vlist = vitem;
-////      return;
-////   }
+	if ( !vlist.$ ) {
+		vlist.$ = vitem;
+		return;
+	}
 
-////   list = ( lwNode ** ) vlist;
-////   item = ( lwNode * ) vitem;
-////   node = *list;
-////   prev = NULL;
+	list = /*( lwNode ** )*/ vlist;
+	item = /* ( lwNode * ) */vitem;
+	node = list.$;
+	prev = null;
 
-////   while ( node ) {
-////      if ( 0 < compare( node, item )) break;
-////      prev = node;
-////      node = node.next;
-////   }
+	while ( node ) {
+		if ( 0 < compare( node, item ) ) break;
+		prev = node;
+		node = node.next;
+	}
 
-////   if ( !prev ) {
-////      *list = item;
-////      node.prev = item;
-////      item.next = node;
-////   }
-////   else if ( !node ) {
-////      prev.next = item;
-////      item.prev = prev;
-////   }
-////   else {
-////      item.next = node;
-////      item.prev = prev;
-////      prev.next = item;
-////      node.prev = item;
-////   }
-////}
+	if ( !prev ) {
+		list.$ = item;
+		node.prev = item;
+		item.next = node;
+	} else if ( !node ) {
+		prev.next = item;
+		item.prev = prev;
+	} else {
+		item.next = node;
+		item.prev = prev;
+		prev.next = item;
+		node.prev = item;
+	}
+}
 
 /*
 ======================================================================
@@ -1029,7 +1033,7 @@ function getbytes ( fp: idFile, /*int*/ size: number ): ArrayBuffer {
 ////void skipbytes( fp:idFile, int n )
 ////{
 ////   if ( flen == FLEN_ERROR ) return;
-////   if ( fp.Seek( n, FS_SEEK_CUR ))
+////   if ( fp.Seek( n, fsOrigin_t.FS_SEEK_CUR ))
 ////      flen = FLEN_ERROR;
 ////   else
 ////      flen += n;
@@ -1053,50 +1057,47 @@ function getbytes ( fp: idFile, /*int*/ size: number ): ArrayBuffer {
 ////}
 
 
-////short getI2( fp:idFile )
-////{
-////   short i;
+function /*short */getI2( fp:idFile ):number {
+	var /*short */i = new Int16Array( 1 );
 
-////   if ( flen == FLEN_ERROR ) return 0;
-////   if ( 2 != fp.Read( &i, 2 )) {
-////      flen = FLEN_ERROR;
-////      return 0;
-////   }
-////   BigRevBytes( &i, 2, 1 );
-////   flen += 2;
-////   return i;
-////}
-
-
-////int getI4( fp:idFile ):number
-////{
-////   var/*int*/i:number;
-
-////   if ( flen == FLEN_ERROR ) return 0;
-////   if ( 4 != fp.Read( &i, 4 )) {
-////      flen = FLEN_ERROR;
-////      return 0;
-////   }
-////   BigRevBytes( &i, 4, 1 );
-////   flen += 4;
-////   return i;
-////}
+   if ( flen == FLEN_ERROR ) return 0;
+   if ( 2 != fp.Read( i.buffer, 2 )) {
+      flen = FLEN_ERROR;
+      return 0;
+   }
+   BigRevBytes( i, 2, 1 );
+   flen += 2;
+   return i[0];
+}
 
 
-////unsigned char getU1( fp:idFile )
-////{
-////   int i, c;
+function getI4 ( fp: idFile ): number {
+	var /*int*/i = new Int32Array( 1 );
 
-////   if ( flen == FLEN_ERROR ) return 0;
-////	  c = 0;
-////   i = fp.Read(&c, 1);
-////   if ( i < 0 ) {
-////      flen = FLEN_ERROR;
-////      return 0;
-////   }
-////   flen += 1;
-////   return c;
-////}
+	if ( flen == FLEN_ERROR ) return 0;
+	if ( 4 != fp.Read( i.buffer, 4 ) ) {
+		flen = FLEN_ERROR;
+		return 0;
+	}
+	BigRevBytes( i, 4, 1 );
+	flen += 4;
+	return i[0];
+}
+
+
+function /*unsigned char */getU1 ( fp: idFile ): number {
+	var /*int */i: number, c = new Uint8Array( 1 );
+
+	if ( flen == FLEN_ERROR ) return 0;
+	c[0] = 0;
+	i = fp.Read( c.buffer, 1 );
+	if ( i < 0 ) {
+		flen = FLEN_ERROR;
+		return 0;
+	}
+	flen += 1;
+	return c[0];
+}
 
 function getU2 ( fp: idFile ): number /*unsigned int */ {
 	var /*unsigned short*/i = new Uint16Array( 1 );
@@ -1126,48 +1127,46 @@ function getU4 ( fp: idFile ): number /*unsigned int */ {
 }
 
 
-////int getVX( fp:idFile ):number
-////{
-////    byte c;
-////   var/*int*/i:number;
+function /*int */getVX ( fp: idFile ): number {
+	var /*byte */c = new Uint8Array( 1 );
+	var /*int*/i: number;
 
-////   if ( flen == FLEN_ERROR ) return 0;
+	if ( flen == FLEN_ERROR ) return 0;
 
-////	c = 0;
-////   if (fp.Read(&c, 1) == -1) {
-////	   return 0;
-////   }
+	c[0] = 0;
+	if ( fp.Read( c.buffer, 1 ) == -1 ) {
+		return 0;
+	}
 
-////   if ( c != 0xFF ) {
-////      i = c << 8;
-////	  c = 0;
-////	  if (fp.Read(&c, 1) == -1) {
-////		  return 0;
-////	  }
-////      i |= c;
-////      flen += 2;
-////   }
-////   else {
-////	  c = 0;
-////	  if (fp.Read(&c, 1) == -1) {
-////		  return 0;
-////	  }
-////      i = c << 16;
-////	  c = 0;
-////	  if (fp.Read(&c, 1) == -1) {
-////		  return 0;
-////	  }
-////      i |= c << 8;
-////	  c = 0;
-////	  if (fp.Read(&c, 1) == -1) {
-////		  return 0;
-////	  }
-////      i |= c;
-////      flen += 4;
-////   }
+	if ( c[0] != 0xFF ) {
+		i = c[0] << 8;
+		c[0] = 0;
+		if ( fp.Read( c.buffer, 1 ) == -1 ) {
+			return 0;
+		}
+		i |= c[0];
+		flen += 2;
+	} else {
+		c[0] = 0;
+		if ( fp.Read( c.buffer, 1 ) == -1 ) {
+			return 0;
+		}
+		i = c[0] << 16;
+		c[0] = 0;
+		if ( fp.Read( c.buffer, 1 ) == -1 ) {
+			return 0;
+		}
+		i |= c[0] << 8;
+		c[0] = 0;
+		if ( fp.Read( c.buffer, 1 ) == -1 ) {
+			return 0;
+		}
+		i |= c[0];
+		flen += 4;
+	}
 
-////   return i;
-////}
+	return i;
+}
 
 
 function /*float */getF4 ( fp: idFile ): number {
@@ -1224,7 +1223,7 @@ function getS0( fp:idFile ):string
       flen = FLEN_ERROR;
       return null;
    }
-   if ( len != fp.Read( s, len )) {
+   if ( len != fp.Read( s.buffer, len )) {
       flen = FLEN_ERROR;
       return null;
    }
@@ -1578,19 +1577,21 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 			break;
 
 		case ID_CLIP:
-			todoThrow ( );
-			// node = <lwNode> lwGetClip( fp, cksize );
-			//if ( !node ) return Fail ( );
-			//lwListAdd( /*(void**)&*/object.clip, node );
-			//object.nclips++;
+			 node = <lwNode> lwGetClip( fp, cksize );
+			if (!node) return Fail();
+			var $clip = new R(object.clip );
+			lwListAdd( /*(void**)&*/$clip, node);
+			object.clip = $clip.$;
+			object.nclips++;
 			break;
 
 		case ID_SURF:
-			todoThrow ( );
-			//node = <lwNode> lwGetSurface( fp, cksize );
-			//if ( !node ) return Fail ( );
-			//lwListAdd( /*(void**)&*/object.surf, node );
-			//object.nsurfs++;
+			node = <lwNode> lwGetSurface( fp, cksize );
+			if (!node) return Fail();
+			var $surf = new R(object.surf );
+			lwListAdd( /*(void**)&*/$surf, node);
+			object.surf = $surf.$;
+			object.nsurfs++;
 			break;
 
 		case ID_DESC:
@@ -1612,25 +1613,25 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 		if ( 8 != get_flen ( ) ) return Fail ( );
 	}
 
-	//fileSystem.CloseFile( fp );
-	//fp = null;
+	fileSystem.CloseFile( fp );
+	fp = null;
 
-	//if ( object.nlayers == 0 )
-	//   object.nlayers = 1;
+	if ( object.nlayers == 0 )
+	   object.nlayers = 1;
 
-	//layer = object.layer;
-	// while (layer) {
-	// 	todoThrow ( );
-	//   //lwGetBoundingBox( layer.point, layer.bbox );
-	//   //lwGetPolyNormals( layer.point, layer.polygon );
-	//   //if ( !lwGetPointPolygons(layer.point, layer.polygon )) return Fail ( );
-	//   //if ( !lwResolvePolySurfaces( layer.polygon, object.taglist,
-	//   //   object.surf, object.nsurfs )) return Fail ( );
-	//   //lwGetVertNormals( layer.point, layer.polygon );
-	//   //if ( !lwGetPointVMaps( layer.point, layer.vmap )) return Fail ( );
-	//   //if ( !lwGetPolyVMaps(layer.polygon, layer.vmap )) return Fail ( );
-	//   //layer = layer.next;
-	//}
+	layer = object.layer;
+	while ( layer ) {
+		todoThrow ( );
+		//   //lwGetBoundingBox( layer.point, layer.bbox );
+		//   //lwGetPolyNormals( layer.point, layer.polygon );
+		//   //if ( !lwGetPointPolygons(layer.point, layer.polygon )) return Fail ( );
+		//   //if ( !lwResolvePolySurfaces( layer.polygon, object.taglist,
+		//   //   object.surf, object.nsurfs )) return Fail ( );
+		//   //lwGetVertNormals( layer.point, layer.polygon );
+		//   //if ( !lwGetPointVMaps( layer.point, layer.vmap )) return Fail ( );
+		//   //if ( !lwGetPolyVMaps(layer.polygon, layer.vmap )) return Fail ( );
+		//   //layer = layer.next;
+	}
 
 	return object;
 
@@ -1694,10 +1695,10 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////   clip = (lwClip*)Mem_ClearedAlloc( sizeof( lwClip ) );
 ////   if ( !clip ) return 0;
 
-////   clip.contrast.val = 1.0f;
-////   clip.brightness.val = 1.0f;
-////   clip.saturation.val = 1.0f;
-////   clip.gamma.val = 1.0f;
+////   clip.contrast.val = 1.0;
+////   clip.brightness.val = 1.0;
+////   clip.saturation.val = 1.0;
+////   clip.gamma.val = 1.0;
 
 ////   if ( p = strstr( s, "(sequence)" )) {
 ////      p[ -1 ] = 0;
@@ -1743,8 +1744,8 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////      key0.value = pos[ i ];
 ////      key0.time = 0.0;
 ////      key1.prev = key0;
-////      key1.value = pos[ i ] + vel[ i ] * 30.0f;
-////      key1.time = 1.0f;
+////      key1.value = pos[ i ] + vel[ i ] * 30.0;
+////      key1.time = 1.0;
 ////      key0.shape = key1.shape = ID_LINE;
 
 ////      env.index = *nenvs + i + 1;
@@ -1783,8 +1784,8 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 
 ////   tex.tmap.size.val[ 0 ] =
 ////   tex.tmap.size.val[ 1 ] =
-////   tex.tmap.size.val[ 2 ] = 1.0f;
-////   tex.opacity.val = 1.0f;
+////   tex.tmap.size.val[ 2 ] = 1.0;
+////   tex.opacity.val = 1.0;
 ////   tex.enabled = 1;
 
 ////   if ( strstr( s, "Image Map" )) {
@@ -1794,8 +1795,8 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////      else if ( strstr( s, "Spherical" ))   tex.param.imap.projection = 2;
 ////      else if ( strstr( s, "Cubic" ))       tex.param.imap.projection = 3;
 ////      else if ( strstr( s, "Front" ))       tex.param.imap.projection = 4;
-////      tex.param.imap.aa_strength = 1.0f;
-////      tex.param.imap.amplitude.val = 1.0f;
+////      tex.param.imap.aa_strength = 1.0;
+////      tex.param.imap.amplitude.val = 1.0;
 ////      Mem_Free( s );
 ////   }
 ////   else {
@@ -1822,7 +1823,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////   char *s;
 ////   float v[ 3 ];
 ////   unsigned int id, flags;
-////   unsigned short sz;
+////   var /*unsigned short */sz:number;
 ////   int pos, rlen, i;
 
 
@@ -1836,10 +1837,10 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////   surf.color.rgb[ 0 ] = 0.78431f;
 ////   surf.color.rgb[ 1 ] = 0.78431f;
 ////   surf.color.rgb[ 2 ] = 0.78431f;
-////   surf.diffuse.val    = 1.0f;
+////   surf.diffuse.val    = 1.0;
 ////   surf.glossiness.val = 0.4f;
-////   surf.bump.val       = 1.0f;
-////   surf.eta.val        = 1.0f;
+////   surf.bump.val       = 1.0;
+////   surf.eta.val        = 1.0;
 ////   surf.sideflags      = 1;
 
 ////   /* remember where we started */
@@ -1865,23 +1866,23 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 
 ////      switch ( id ) {
 ////         case ID_COLR:
-////            surf.color.rgb[ 0 ] = getU1( fp ) / 255.0f;
-////            surf.color.rgb[ 1 ] = getU1( fp ) / 255.0f;
-////            surf.color.rgb[ 2 ] = getU1( fp ) / 255.0f;
+////            surf.color.rgb[ 0 ] = getU1( fp ) / 255.0;
+////            surf.color.rgb[ 1 ] = getU1( fp ) / 255.0;
+////            surf.color.rgb[ 2 ] = getU1( fp ) / 255.0;
 ////            break;
 
 ////         case ID_FLAG:
 ////            flags = getU2( fp );
 ////            if ( flags &   4 ) surf.smooth = 1.56207f;
-////            if ( flags &   8 ) surf.color_hilite.val = 1.0f;
-////            if ( flags &  16 ) surf.color_filter.val = 1.0f;
-////            if ( flags & 128 ) surf.dif_sharp.val = 0.5f;
+////            if ( flags &   8 ) surf.color_hilite.val = 1.0;
+////            if ( flags &  16 ) surf.color_filter.val = 1.0;
+////            if ( flags & 128 ) surf.dif_sharp.val = 0.5;
 ////            if ( flags & 256 ) surf.sideflags = 3;
-////            if ( flags & 512 ) surf.add_trans.val = 1.0f;
+////            if ( flags & 512 ) surf.add_trans.val = 1.0;
 ////            break;
 
 ////         case ID_LUMI:
-////            surf.luminosity.val = getI2( fp ) / 256.0f;
+////            surf.luminosity.val = getI2( fp ) / 256.0;
 ////            break;
 
 ////         case ID_VLUM:
@@ -1889,7 +1890,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////            break;
 
 ////         case ID_DIFF:
-////            surf.diffuse.val = getI2( fp ) / 256.0f;
+////            surf.diffuse.val = getI2( fp ) / 256.0;
 ////            break;
 
 ////         case ID_VDIF:
@@ -1897,7 +1898,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////            break;
 
 ////         case ID_SPEC:
-////            surf.specularity.val = getI2( fp ) / 256.0f;
+////            surf.specularity.val = getI2( fp ) / 256.0;
 ////            break;
 
 ////         case ID_VSPC:
@@ -1913,7 +1914,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////            break;
 
 ////         case ID_REFL:
-////            surf.reflection.val.val = getI2( fp ) / 256.0f;
+////            surf.reflection.val.val = getI2( fp ) / 256.0;
 ////            break;
 
 ////         case ID_RFLT:
@@ -1931,7 +1932,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////            break;
 
 ////         case ID_TRAN:
-////            surf.transparency.val.val = getI2( fp ) / 256.0f;
+////            surf.transparency.val.val = getI2( fp ) / 256.0;
 ////            break;
 
 ////         case ID_RIND:
@@ -1996,7 +1997,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////            if ( flags & 16 ) tex.negative = 1;
 ////            if ( flags & 32 ) tex.param.imap.pblend = 1;
 ////            if ( flags & 64 ) {
-////               tex.param.imap.aa_strength = 1.0f;
+////               tex.param.imap.aa_strength = 1.0;
 ////               tex.param.imap.aas_flags = 1;
 ////            }
 ////            break;
@@ -2026,11 +2027,11 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////         case ID_TCLR:
 ////            if ( tex.type == ID_PROC )
 ////               for ( i = 0; i < 3; i++ )
-////                  tex.param.proc.value[ i ] = getU1( fp ) / 255.0f;
+////                  tex.param.proc.value[ i ] = getU1( fp ) / 255.0;
 ////            break;
 
 ////         case ID_TVAL:
-////            tex.param.proc.value[ 0 ] = getI2( fp ) / 256.0f;
+////            tex.param.proc.value[ 0 ] = getI2( fp ) / 256.0;
 ////            break;
 
 ////         case ID_TAMP:
@@ -2090,7 +2091,7 @@ function lwGetObject ( filename: string, /*unsigned int */ failID: R<number>, /*
 ////      /* skip unread parts of the current subchunk */
 
 ////      if ( rlen < sz )
-////         fp.Seek( sz - rlen, FS_SEEK_CUR );
+////         fp.Seek( sz - rlen, fsOrigin_t.FS_SEEK_CUR );
 
 ////      /* end of the SURF chunk? */
 
@@ -2296,7 +2297,7 @@ function lwGetObject5( filename:string, /*unsigned int * */failID:R < number>, /
 ////            break;
 
 ////         default:
-////            fp.Seek( cksize, FS_SEEK_CUR );
+////            fp.Seek( cksize, fsOrigin_t.FS_SEEK_CUR );
 ////            break;
 ////      }
 
@@ -2847,775 +2848,778 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 }
 
 
-/////*
-////======================================================================
-////lwGetPolygonTags()
-
-////Read polygon tags from a PTAG chunk in an LWO2 file.
-////====================================================================== */
-
-////int lwGetPolygonTags( fp:idFile, /*int */cksize:number, tlist: lwTagList, plist:lwPolygonList ):number
-////{
-////	unsigned int type;
-////	int rlen = 0, i, j;
-
-////	set_flen( 0 );
-////	type = getU4( fp );
-////	rlen = get_flen();
-////	if ( rlen < 0 ) return 0;
-
-////	if ( type != ID_SURF && type != ID_PART && type != ID_SMGP ) {
-////		fp.Seek( cksize - 4, FS_SEEK_CUR );
-////		return 1;
-////	}
-
-////	while ( rlen < cksize ) {
-////		i = getVX( fp ) + plist.offset;
-////		j = getVX( fp ) + tlist.offset;
-////		rlen = get_flen();
-////		if ( rlen < 0 || rlen > cksize ) return 0;
-
-////		switch ( type ) {
-////			case ID_SURF:  plist.pol[ i ].surf = ( lwSurface * ) j;  break;
-////			case ID_PART:  plist.pol[ i ].part = j;  break;
-////			case ID_SMGP:  plist.pol[ i ].smoothgrp = j;  break;
-////		}
-////	}
-
-////	return 1;
-////}
-
-
-/////*
-////======================================================================
-////lwFreePlugin()
-
-////Free the memory used by an lwPlugin.
-////====================================================================== */
-
-////void lwFreePlugin( lwPlugin *p )
-////{
-////	if ( p ) {
-////		if ( p.ord ) Mem_Free( p.ord );
-////		if ( p.name ) Mem_Free( p.name );
-////		if ( p.data ) Mem_Free( p.data );
-////		Mem_Free( p );
-////	}
-////}
-
-
-/////*
-////======================================================================
-////lwFreeTexture()
-
-////Free the memory used by an lwTexture.
-////====================================================================== */
-
-////void lwFreeTexture( lwTexture *t )
-////{
-////	if ( t ) {
-////		if ( t.ord ) Mem_Free( t.ord );
-////		switch ( t.type ) {
-////			case ID_IMAP:
-////			if ( t.param.imap.vmap_name ) Mem_Free( t.param.imap.vmap_name );
-////			break;
-////			case ID_PROC:
-////			if ( t.param.proc.name ) Mem_Free( t.param.proc.name );
-////			if ( t.param.proc.data ) Mem_Free( t.param.proc.data );
-////			break;
-////			case ID_GRAD:
-////			if ( t.param.grad.key ) Mem_Free( t.param.grad.key );
-////			if ( t.param.grad.ikey ) Mem_Free( t.param.grad.ikey );
-////			break;
-////		}
-////		if ( t.tmap.ref_object ) Mem_Free( t.tmap.ref_object );
-////		Mem_Free( t );
-////	}
-////}
-
-
-/////*
-////======================================================================
-////lwFreeSurface()
-
-////Free the memory used by an lwSurface.
-////====================================================================== */
-
-////void lwFreeSurface( lwSurface *surf )
-////{
-////	if ( surf ) {
-////		if ( surf.name ) Mem_Free( surf.name );
-////		if ( surf.srcname ) Mem_Free( surf.srcname );
-
-////		lwListFree( surf.shader, (void (__cdecl *)(void *))lwFreePlugin );
+/*
+======================================================================
+lwGetPolygonTags()
+
+Read polygon tags from a PTAG chunk in an LWO2 file.
+====================================================================== */
+
+function /*int */lwGetPolygonTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList, plist: lwPolygonList ): number {
+	var /*unsigned int */type: number;
+	var /*int */rlen = 0, i: number, j: number;
+
+	set_flen( 0 );
+	type = getU4( fp );
+	rlen = get_flen ( );
+	if ( rlen < 0 ) return 0;
+
+	if ( type != ID_SURF && type != ID_PART && type != ID_SMGP ) {
+		fp.Seek( cksize - 4, fsOrigin_t.FS_SEEK_CUR );
+		return 1;
+	}
+
+	while ( rlen < cksize ) {
+		i = getVX( fp ) + plist.offset;
+		j = getVX( fp ) + tlist.offset;
+		rlen = get_flen ( );
+		if ( rlen < 0 || rlen > cksize ) return 0;
+
+		switch ( type ) {
+		case ID_SURF:
+			plist.pol[i].surf = /*( lwSurface * )*/<lwSurface> <any>j;
+			break;
+		case ID_PART:
+			plist.pol[i].part = j;
+			break;
+		case ID_SMGP:
+			plist.pol[i].smoothgrp = j;
+			break;
+		}
+	}
+
+	return 1;
+}
+
+
+/*
+======================================================================
+lwFreePlugin()
+
+Free the memory used by an lwPlugin.
+====================================================================== */
+
+function lwFreePlugin ( p: lwPlugin ): void {
+	if ( p ) {
+		if ( p.ord ) Mem_Free( p.ord );
+		if ( p.name ) Mem_Free( p.name );
+		if ( p.data ) Mem_Free( p.data );
+		Mem_Free( p );
+	}
+}
+
+
+/*
+======================================================================
+lwFreeTexture()
+
+Free the memory used by an lwTexture.
+====================================================================== */
+
+function lwFreeTexture ( t: lwTexture ): void {
+	if ( t ) {
+		if ( t.ord ) Mem_Free( t.ord );
+		switch ( t.type ) {
+		case ID_IMAP:
+			if ( t.param.imap.vmap_name ) Mem_Free( t.param.imap.vmap_name );
+			break;
+		case ID_PROC:
+			if ( t.param.proc.name ) Mem_Free( t.param.proc.name );
+			if ( t.param.proc.data ) Mem_Free( t.param.proc.data );
+			break;
+		case ID_GRAD:
+			if ( t.param.grad.key ) Mem_Free( t.param.grad.key );
+			if ( t.param.grad.ikey ) Mem_Free( t.param.grad.ikey );
+			break;
+		}
+		if ( t.tmap.ref_object ) Mem_Free( t.tmap.ref_object );
+		Mem_Free( t );
+	}
+}
+
+
+/*
+======================================================================
+lwFreeSurface()
+
+Free the memory used by an lwSurface.
+====================================================================== */
+
+function lwFreeSurface(surf :lwSurface):void {
+	todoThrow ( );
+	//if ( surf ) {
+	//	if ( surf.name ) Mem_Free( surf.name );
+	//	if ( surf.srcname ) Mem_Free( surf.srcname );
 
-////		lwListFree( surf.color.tex, (void (__cdecl *)(void *))lwFreeTexture );
-////		lwListFree( surf.luminosity.tex, (void (__cdecl *)(void *))lwFreeTexture );
-////		lwListFree( surf.diffuse.tex, (void (__cdecl *)(void *))lwFreeTexture );
-////		lwListFree( surf.specularity.tex, (void (__cdecl *)(void *))lwFreeTexture );
-////		lwListFree( surf.glossiness.tex, (void (__cdecl *)(void *))lwFreeTexture );
-////		lwListFree( surf.reflection.val.tex, (void (__cdecl *)(void *))lwFreeTexture );
-////		lwListFree( surf.transparency.val.tex, (void (__cdecl *)(void *))lwFreeTexture );
-////		lwListFree( surf.eta.tex, (void (__cdecl *)(void *))lwFreeTexture );
-////		lwListFree( surf.translucency.tex, (void (__cdecl *)(void *))lwFreeTexture );
-////		lwListFree( surf.bump.tex, (void (__cdecl *)(void *))lwFreeTexture );
+	//	lwListFree( surf.shader, (void (__cdecl *)(void *))lwFreePlugin );
 
-////		Mem_Free( surf );
-////	}
-////}
+	//	lwListFree( surf.color.tex, (void (__cdecl *)(void *))lwFreeTexture );
+	//	lwListFree( surf.luminosity.tex, (void (__cdecl *)(void *))lwFreeTexture );
+	//	lwListFree( surf.diffuse.tex, (void (__cdecl *)(void *))lwFreeTexture );
+	//	lwListFree( surf.specularity.tex, (void (__cdecl *)(void *))lwFreeTexture );
+	//	lwListFree( surf.glossiness.tex, (void (__cdecl *)(void *))lwFreeTexture );
+	//	lwListFree( surf.reflection.val.tex, (void (__cdecl *)(void *))lwFreeTexture );
+	//	lwListFree( surf.transparency.val.tex, (void (__cdecl *)(void *))lwFreeTexture );
+	//	lwListFree( surf.eta.tex, (void (__cdecl *)(void *))lwFreeTexture );
+	//	lwListFree( surf.translucency.tex, (void (__cdecl *)(void *))lwFreeTexture );
+	//	lwListFree( surf.bump.tex, (void (__cdecl *)(void *))lwFreeTexture );
 
+	//	Mem_Free( surf );
+	//}
+}
 
-/////*
-////======================================================================
-////lwGetTHeader()
 
-////Read a texture map header from a SURF.BLOK in an LWO2 file.  This is
-////the first subchunk in a BLOK, and its contents are common to all three
-////texture types.
-////====================================================================== */
+/*
+======================================================================
+lwGetTHeader()
 
-////int lwGetTHeader( fp:idFile, int hsz, lwTexture *tex ):number
-////{
-////	unsigned int id;
-////	unsigned short sz;
-////	int pos, rlen;
+Read a texture map header from a SURF.BLOK in an LWO2 file.  This is
+the first subchunk in a BLOK, and its contents are common to all three
+texture types.
+====================================================================== */
 
+function/* int*/ lwGetTHeader( fp:idFile, /*int */hsz:number, tex :lwTexture ):number
+{
+	var/*unsigned int */id:number;
+	var/*unsigned short */sz: number;
+	var /*int */pos:number, rlen:number;
 
-////	/* remember where we started */
 
-////	set_flen( 0 );
-////	pos = fp.Tell();
+	/* remember where we started */
 
-////	/* ordinal string */
+	set_flen( 0 );
+	pos = fp.Tell();
 
-////	tex.ord = getS0( fp );
+	/* ordinal string */
 
-////	/* first subchunk header */
+	tex.ord = getS0( fp );
 
-////	id = getU4( fp );
-////	sz = getU2( fp );
-////	if ( 0 > get_flen() ) return 0;
+	/* first subchunk header */
 
-////	/* process subchunks as they're encountered */
+	id = getU4( fp );
+	sz = getU2( fp );
+	if ( 0 > get_flen() ) return 0;
 
-////	while ( 1 ) {
-////		sz += sz & 1;
-////		set_flen( 0 );
+	/* process subchunks as they're encountered */
 
-////		switch ( id ) {
-////			case ID_CHAN:
-////				tex.chan = getU4( fp );
-////				break;
+	while ( 1 ) {
+		sz += sz & 1;
+		set_flen( 0 );
 
-////			case ID_OPAC:
-////				tex.opac_type = getU2( fp );
-////				tex.opacity.val = getF4( fp );
-////				tex.opacity.eindex = getVX( fp );
-////				break;
+		switch ( id ) {
+			case ID_CHAN:
+				tex.chan = getU4( fp );
+				break;
 
-////			case ID_ENAB:
-////				tex.enabled = getU2( fp );
-////				break;
+			case ID_OPAC:
+				tex.opac_type = getU2( fp );
+				tex.opacity.val = getF4( fp );
+				tex.opacity.eindex = getVX( fp );
+				break;
 
-////			case ID_NEGA:
-////				tex.negative = getU2( fp );
-////				break;
+			case ID_ENAB:
+				tex.enabled = getU2( fp );
+				break;
 
-////			case ID_AXIS:
-////				tex.axis = getU2( fp );
-////				break;
+			case ID_NEGA:
+				tex.negative = getU2( fp );
+				break;
 
-////			default:
-////				break;
-////		}
+			case ID_AXIS:
+				tex.axis = getU2( fp );
+				break;
 
-////		/* error while reading current subchunk? */
+			default:
+				break;
+		}
 
-////		rlen = get_flen();
-////		if ( rlen < 0 || rlen > sz ) return 0;
+		/* error while reading current subchunk? */
 
-////		/* skip unread parts of the current subchunk */
+		rlen = get_flen();
+		if ( rlen < 0 || rlen > sz ) return 0;
 
-////		if ( rlen < sz )
-////			fp.Seek( sz - rlen, FS_SEEK_CUR );
+		/* skip unread parts of the current subchunk */
 
-////		/* end of the texture header subchunk? */
+		if ( rlen < sz )
+			fp.Seek(sz - rlen, fsOrigin_t.FS_SEEK_CUR );
 
-////		if ( hsz <= fp.Tell() - pos )
-////			break;
+		/* end of the texture header subchunk? */
 
-////		/* get the next subchunk header */
+		if ( hsz <= fp.Tell() - pos )
+			break;
 
-////		set_flen( 0 );
-////		id = getU4( fp );
-////		sz = getU2( fp );
-////		if ( 6 != get_flen() ) return 0;
-////	}
+		/* get the next subchunk header */
 
-////	set_flen( fp.Tell() - pos );
-////	return 1;
-////}
+		set_flen( 0 );
+		id = getU4( fp );
+		sz = getU2( fp );
+		if ( 6 != get_flen() ) return 0;
+	}
 
+	set_flen( fp.Tell() - pos );
+	return 1;
+}
 
-/////*
-////======================================================================
-////lwGetTMap()
 
-////Read a texture map from a SURF.BLOK in an LWO2 file.  The TMAP
-////defines the mapping from texture to world or object coordinates.
-////====================================================================== */
+/*
+======================================================================
+lwGetTMap()
 
-////int lwGetTMap( fp:idFile, int tmapsz, lwTMap *tmap ):number
-////{
-////	unsigned int id;
-////	unsigned short sz;
-////	int rlen, pos, i;
+Read a texture map from a SURF.BLOK in an LWO2 file.  The TMAP
+defines the mapping from texture to world or object coordinates.
+====================================================================== */
 
-////	pos = fp.Tell();
-////	id = getU4( fp );
-////	sz = getU2( fp );
-////	if ( 0 > get_flen() ) return 0;
+function /*int */lwGetTMap(fp: idFile, /*int */tmapsz: number, tmap: lwTMap ):number
+{
+	var /*unsigned int */id:number;
+	var /*unsigned short */sz:number;
+	var/*int */rlen: number, pos: number, i: number;
 
-////	while ( 1 ) {
-////		sz += sz & 1;
-////		set_flen( 0 );
+	pos = fp.Tell();
+	id = getU4( fp );
+	sz = getU2( fp );
+	if ( 0 > get_flen() ) return 0;
 
-////		switch ( id ) {
-////			case ID_SIZE:
-////				for ( i = 0; i < 3; i++ )
-////				tmap.size.val[ i ] = getF4( fp );
-////				tmap.size.eindex = getVX( fp );
-////				break;
+	while ( 1 ) {
+		sz += sz & 1;
+		set_flen( 0 );
 
-////			case ID_CNTR:
-////				for ( i = 0; i < 3; i++ )
-////				tmap.center.val[ i ] = getF4( fp );
-////				tmap.center.eindex = getVX( fp );
-////				break;
+		switch ( id ) {
+			case ID_SIZE:
+				for ( i = 0; i < 3; i++ )
+				tmap.size.val[ i ] = getF4( fp );
+				tmap.size.eindex = getVX( fp );
+				break;
 
-////			case ID_ROTA:
-////				for ( i = 0; i < 3; i++ )
-////				tmap.rotate.val[ i ] = getF4( fp );
-////				tmap.rotate.eindex = getVX( fp );
-////				break;
+			case ID_CNTR:
+				for ( i = 0; i < 3; i++ )
+				tmap.center.val[ i ] = getF4( fp );
+				tmap.center.eindex = getVX( fp );
+				break;
 
-////			case ID_FALL:
-////				tmap.fall_type = getU2( fp );
-////				for ( i = 0; i < 3; i++ )
-////				tmap.falloff.val[ i ] = getF4( fp );
-////				tmap.falloff.eindex = getVX( fp );
-////				break;
+			case ID_ROTA:
+				for ( i = 0; i < 3; i++ )
+				tmap.rotate.val[ i ] = getF4( fp );
+				tmap.rotate.eindex = getVX( fp );
+				break;
 
-////			case ID_OREF:
-////				tmap.ref_object = getS0( fp );
-////				break;
+			case ID_FALL:
+				tmap.fall_type = getU2( fp );
+				for ( i = 0; i < 3; i++ )
+				tmap.falloff.val[ i ] = getF4( fp );
+				tmap.falloff.eindex = getVX( fp );
+				break;
 
-////			case ID_CSYS:
-////				tmap.coord_sys = getU2( fp );
-////				break;
+			case ID_OREF:
+				tmap.ref_object = getS0( fp );
+				break;
 
-////			default:
-////				break;
-////		}
+			case ID_CSYS:
+				tmap.coord_sys = getU2( fp );
+				break;
 
-////		/* error while reading the current subchunk? */
+			default:
+				break;
+		}
 
-////		rlen = get_flen();
-////		if ( rlen < 0 || rlen > sz ) return 0;
+		/* error while reading the current subchunk? */
 
-////		/* skip unread parts of the current subchunk */
+		rlen = get_flen();
+		if ( rlen < 0 || rlen > sz ) return 0;
 
-////		if ( rlen < sz )
-////			fp.Seek( sz - rlen, FS_SEEK_CUR );
+		/* skip unread parts of the current subchunk */
 
-////		/* end of the TMAP subchunk? */
+		if ( rlen < sz )
+			fp.Seek( sz - rlen, fsOrigin_t.FS_SEEK_CUR );
 
-////		if ( tmapsz <= fp.Tell() - pos )
-////			break;
+		/* end of the TMAP subchunk? */
 
-////		/* get the next subchunk header */
+		if ( tmapsz <= fp.Tell() - pos )
+			break;
 
-////		set_flen( 0 );
-////		id = getU4( fp );
-////		sz = getU2( fp );
-////		if ( 6 != get_flen() ) return 0;
-////	}
+		/* get the next subchunk header */
 
-////	set_flen( fp.Tell() - pos );
-////	return 1;
-////}
+		set_flen( 0 );
+		id = getU4( fp );
+		sz = getU2( fp );
+		if ( 6 != get_flen() ) return 0;
+	}
 
+	set_flen( fp.Tell() - pos );
+	return 1;
+}
 
-/////*
-////======================================================================
-////lwGetImageMap()
 
-////Read an lwImageMap from a SURF.BLOK in an LWO2 file.
-////====================================================================== */
+/*
+======================================================================
+lwGetImageMap()
 
-////int lwGetImageMap( fp:idFile, int rsz, lwTexture *tex ):number
-////{
-////	unsigned int id;
-////	unsigned short sz;
-////	int rlen, pos;
+Read an lwImageMap from a SURF.BLOK in an LWO2 file.
+====================================================================== */
 
-////	pos = fp.Tell();
-////	id = getU4( fp );
-////	sz = getU2( fp );
-////	if ( 0 > get_flen() ) return 0;
+function /*int */lwGetImageMap(fp: idFile, /*int*/ rsz: number, tex: lwTexture ):number
+{
+	var /*unsigned int */id:number;
+	var /*unsigned short */sz:number;
+	var /*int */rlen:number, pos:number;
 
-////	while ( 1 ) {
-////		sz += sz & 1;
-////		set_flen( 0 );
+	pos = fp.Tell();
+	id = getU4( fp );
+	sz = getU2( fp );
+	if ( 0 > get_flen() ) return 0;
 
-////		switch ( id ) {
-////			case ID_TMAP:
-////				if ( !lwGetTMap( fp, sz, &tex.tmap )) return 0;
-////				break;
+	while ( 1 ) {
+		sz += sz & 1;
+		set_flen( 0 );
 
-////			case ID_PROJ:
-////				tex.param.imap.projection = getU2( fp );
-////				break;
+		switch ( id ) {
+			case ID_TMAP:
+				if ( !lwGetTMap( fp, sz, tex.tmap )) return 0;
+				break;
 
-////			case ID_VMAP:
-////				tex.param.imap.vmap_name = getS0( fp );
-////				break;
+			case ID_PROJ:
+				tex.param.imap.projection = getU2( fp );
+				break;
 
-////			case ID_AXIS:
-////				tex.param.imap.axis = getU2( fp );
-////				break;
+			case ID_VMAP:
+				tex.param.imap.vmap_name = getS0( fp );
+				break;
 
-////			case ID_IMAG:
-////				tex.param.imap.cindex = getVX( fp );
-////				break;
+			case ID_AXIS:
+				tex.param.imap.axis = getU2( fp );
+				break;
 
-////			case ID_WRAP:
-////				tex.param.imap.wrapw_type = getU2( fp );
-////				tex.param.imap.wraph_type = getU2( fp );
-////				break;
+			case ID_IMAG:
+				tex.param.imap.cindex = getVX( fp );
+				break;
 
-////			case ID_WRPW:
-////				tex.param.imap.wrapw.val = getF4( fp );
-////				tex.param.imap.wrapw.eindex = getVX( fp );
-////				break;
+			case ID_WRAP:
+				tex.param.imap.wrapw_type = getU2( fp );
+				tex.param.imap.wraph_type = getU2( fp );
+				break;
 
-////			case ID_WRPH:
-////				tex.param.imap.wraph.val = getF4( fp );
-////				tex.param.imap.wraph.eindex = getVX( fp );
-////				break;
+			case ID_WRPW:
+				tex.param.imap.wrapw.val = getF4( fp );
+				tex.param.imap.wrapw.eindex = getVX( fp );
+				break;
 
-////			case ID_AAST:
-////				tex.param.imap.aas_flags = getU2( fp );
-////				tex.param.imap.aa_strength = getF4( fp );
-////				break;
+			case ID_WRPH:
+				tex.param.imap.wraph.val = getF4( fp );
+				tex.param.imap.wraph.eindex = getVX( fp );
+				break;
 
-////			case ID_PIXB:
-////				tex.param.imap.pblend = getU2( fp );
-////				break;
+			case ID_AAST:
+				tex.param.imap.aas_flags = getU2( fp );
+				tex.param.imap.aa_strength = getF4( fp );
+				break;
 
-////			case ID_STCK:
-////				tex.param.imap.stck.val = getF4( fp );
-////				tex.param.imap.stck.eindex = getVX( fp );
-////				break;
+			case ID_PIXB:
+				tex.param.imap.pblend = getU2( fp );
+				break;
 
-////			case ID_TAMP:
-////				tex.param.imap.amplitude.val = getF4( fp );
-////				tex.param.imap.amplitude.eindex = getVX( fp );
-////				break;
+			case ID_STCK:
+				tex.param.imap.stck.val = getF4( fp );
+				tex.param.imap.stck.eindex = getVX( fp );
+				break;
 
-////			default:
-////				break;
-////		}
+			case ID_TAMP:
+				tex.param.imap.amplitude.val = getF4( fp );
+				tex.param.imap.amplitude.eindex = getVX( fp );
+				break;
 
-////		/* error while reading the current subchunk? */
+			default:
+				break;
+		}
 
-////		rlen = get_flen();
-////		if ( rlen < 0 || rlen > sz ) return 0;
+		/* error while reading the current subchunk? */
 
-////		/* skip unread parts of the current subchunk */
+		rlen = get_flen();
+		if ( rlen < 0 || rlen > sz ) return 0;
 
-////		if ( rlen < sz )
-////			fp.Seek( sz - rlen, FS_SEEK_CUR );
+		/* skip unread parts of the current subchunk */
 
-////		/* end of the image map? */
+		if ( rlen < sz )
+			fp.Seek( sz - rlen, fsOrigin_t.FS_SEEK_CUR );
 
-////		if ( rsz <= fp.Tell() - pos )
-////			break;
+		/* end of the image map? */
 
-////		/* get the next subchunk header */
+		if ( rsz <= fp.Tell() - pos )
+			break;
 
-////		set_flen( 0 );
-////		id = getU4( fp );
-////		sz = getU2( fp );
-////		if ( 6 != get_flen() ) return 0;
-////	}
+		/* get the next subchunk header */
 
-////	set_flen( fp.Tell() - pos );
-////	return 1;
-////}
+		set_flen( 0 );
+		id = getU4( fp );
+		sz = getU2( fp );
+		if ( 6 != get_flen() ) return 0;
+	}
 
+	set_flen( fp.Tell() - pos );
+	return 1;
+}
 
-/////*
-////======================================================================
-////lwGetProcedural()
 
-////Read an lwProcedural from a SURF.BLOK in an LWO2 file.
-////====================================================================== */
+/*
+======================================================================
+lwGetProcedural()
 
-////int lwGetProcedural( fp:idFile, int rsz, lwTexture *tex ):number
-////{
-////   unsigned int id;
-////   unsigned short sz;
-////   int rlen, pos;
+Read an lwProcedural from a SURF.BLOK in an LWO2 file.
+====================================================================== */
 
-////   pos = fp.Tell();
-////   id = getU4( fp );
-////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) return 0;
+function /*int */lwGetProcedural ( fp: idFile, /*int */rsz: number, tex: lwTexture ): number {
+	var /*unsigned int */id: number;
+	var /*unsigned short */sz: number;
+	var /*int */rlen: number, pos: number;
 
-////   while ( 1 ) {
-////      sz += sz & 1;
-////      set_flen( 0 );
+	pos = fp.Tell ( );
+	id = getU4( fp );
+	sz = getU2( fp );
+	if ( 0 > get_flen ( ) ) return 0;
 
-////      switch ( id ) {
-////         case ID_TMAP:
-////            if ( !lwGetTMap( fp, sz, &tex.tmap )) return 0;
-////            break;
+	while ( 1 ) {
+		sz += sz & 1;
+		set_flen( 0 );
 
-////         case ID_AXIS:
-////            tex.param.proc.axis = getU2( fp );
-////            break;
+		switch ( id ) {
+		case ID_TMAP:
+			if ( !lwGetTMap( fp, sz, tex.tmap ) ) return 0;
+			break;
 
-////         case ID_VALU:
-////            tex.param.proc.value[ 0 ] = getF4( fp );
-////            if ( sz >= 8 ) tex.param.proc.value[ 1 ] = getF4( fp );
-////            if ( sz >= 12 ) tex.param.proc.value[ 2 ] = getF4( fp );
-////            break;
+		case ID_AXIS:
+			tex.param.proc.axis = getU2( fp );
+			break;
 
-////         case ID_FUNC:
-////            tex.param.proc.name = getS0( fp );
-////            rlen = get_flen();
-////            tex.param.proc.data = getbytes( fp, sz - rlen );
-////            break;
+		case ID_VALU:
+			tex.param.proc.value[0] = getF4( fp );
+			if ( sz >= 8 ) tex.param.proc.value[1] = getF4( fp );
+			if ( sz >= 12 ) tex.param.proc.value[2] = getF4( fp );
+			break;
 
-////         default:
-////            break;
-////      }
+		case ID_FUNC:
+			tex.param.proc.name = getS0( fp );
+			rlen = get_flen ( );
+			tex.param.proc.data = getbytes( fp, sz - rlen );
+			break;
 
-////      /* error while reading the current subchunk? */
+		default:
+			break;
+		}
 
-////      rlen = get_flen();
-////      if ( rlen < 0 || rlen > sz ) return 0;
+		/* error while reading the current subchunk? */
 
-////      /* skip unread parts of the current subchunk */
+		rlen = get_flen ( );
+		if ( rlen < 0 || rlen > sz ) return 0;
 
-////      if ( rlen < sz )
-////         fp.Seek( sz - rlen, FS_SEEK_CUR );
+		/* skip unread parts of the current subchunk */
 
-////      /* end of the procedural block? */
+		if ( rlen < sz )
+			fp.Seek( sz - rlen, fsOrigin_t.FS_SEEK_CUR );
 
-////      if ( rsz <= fp.Tell() - pos )
-////         break;
+		/* end of the procedural block? */
 
-////      /* get the next subchunk header */
+		if ( rsz <= fp.Tell ( ) - pos )
+			break;
 
-////      set_flen( 0 );
-////      id = getU4( fp );
-////      sz = getU2( fp );
-////      if ( 6 != get_flen() ) return 0;
-////   }
+		/* get the next subchunk header */
 
-////   set_flen( fp.Tell() - pos );
-////   return 1;
-////}
+		set_flen( 0 );
+		id = getU4( fp );
+		sz = getU2( fp );
+		if ( 6 != get_flen ( ) ) return 0;
+	}
 
+	set_flen( fp.Tell ( ) - pos );
+	return 1;
+}
 
-/////*
-////======================================================================
-////lwGetGradient()
 
-////Read an lwGradient from a SURF.BLOK in an LWO2 file.
-////====================================================================== */
+/*
+======================================================================
+lwGetGradient()
 
-////int lwGetGradient( fp:idFile, int rsz, lwTexture *tex ):number
-////{
-////   unsigned int id;
-////   unsigned short sz;
-////   int rlen, pos, i, j, nkeys;
+Read an lwGradient from a SURF.BLOK in an LWO2 file.
+====================================================================== */
 
-////   pos = fp.Tell();
-////   id = getU4( fp );
-////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) return 0;
+function /*int */lwGetGradient ( fp: idFile, /*int*/ rsz: number, tex: lwTexture ): number {
+	var /*unsigned int */id: number;
+	var /*unsigned short */sz: number;
+	var /*int */rlen: number, pos: number, i: number, j: number, nkeys: number;
 
-////   while ( 1 ) {
-////      sz += sz & 1;
-////      set_flen( 0 );
+	pos = fp.Tell ( );
+	id = getU4( fp );
+	sz = getU2( fp );
+	if ( 0 > get_flen ( ) ) return 0;
 
-////      switch ( id ) {
-////         case ID_TMAP:
-////            if ( !lwGetTMap( fp, sz, &tex.tmap )) return 0;
-////            break;
+	while ( 1 ) {
+		sz += sz & 1;
+		set_flen( 0 );
 
-////         case ID_PNAM:
-////            tex.param.grad.paramname = getS0( fp );
-////            break;
+		switch ( id ) {
+		case ID_TMAP:
+			if ( !lwGetTMap( fp, sz, tex.tmap ) ) return 0;
+			break;
 
-////         case ID_INAM:
-////            tex.param.grad.itemname = getS0( fp );
-////            break;
+		case ID_PNAM:
+			tex.param.grad.paramname = getS0( fp );
+			break;
 
-////         case ID_GRST:
-////            tex.param.grad.start = getF4( fp );
-////            break;
+		case ID_INAM:
+			tex.param.grad.itemname = getS0( fp );
+			break;
 
-////         case ID_GREN:
-////            tex.param.grad.end = getF4( fp );
-////            break;
+		case ID_GRST:
+			tex.param.grad.start = getF4( fp );
+			break;
 
-////         case ID_GRPT:
-////            tex.param.grad.repeat = getU2( fp );
-////            break;
+		case ID_GREN:
+			tex.param.grad.end = getF4( fp );
+			break;
 
-////         case ID_FKEY:
-////            nkeys = int(sz / sizeof( lwGradKey ));
-////            tex.param.grad.key = (lwGradKey*)Mem_ClearedAlloc( nkeys * sizeof( lwGradKey ) );
-////            if ( !tex.param.grad.key ) return 0;
-////            for ( i = 0; i < nkeys; i++ ) {
-////               tex.param.grad.key[ i ].value = getF4( fp );
-////               for ( j = 0; j < 4; j++ )
-////                  tex.param.grad.key[ i ].rgba[ j ] = getF4( fp );
-////            }
-////            break;
+		case ID_GRPT:
+			tex.param.grad.repeat = getU2( fp );
+			break;
 
-////         case ID_IKEY:
-////            nkeys = int(sz / 2);
-////            tex.param.grad.ikey = (short*)Mem_ClearedAlloc( nkeys * sizeof( short ) );
-////            if ( !tex.param.grad.ikey ) return 0;
-////            for ( i = 0; i < nkeys; i++ )
-////               tex.param.grad.ikey[ i ] = getU2( fp );
-////            break;
+		case ID_FKEY:
+			nkeys = int( sz / sizeof( lwGradKey ) );
+			tex.param.grad.key = newStructArray<lwGradKey>( lwGradKey, nkeys ); //(lwGradKey*)Mem_ClearedAlloc( nkeys * sizeof( lwGradKey ) );
+			clearStructArray( tex.param.grad.key );
+			if ( !tex.param.grad.key ) return 0;
+			for ( i = 0; i < nkeys; i++ ) {
+				tex.param.grad.key[i].value = getF4( fp );
+				for ( j = 0; j < 4; j++ )
+					tex.param.grad.key[i].rgba[j] = getF4( fp );
+			}
+			break;
 
-////         default:
-////            break;
-////      }
+		case ID_IKEY:
+			nkeys = int( sz / 2 );
+			tex.param.grad.ikey = new Int16Array( nkeys ); //(short*)Mem_ClearedAlloc( nkeys * sizeof( short ) );
+			if ( !tex.param.grad.ikey ) return 0;
+			for ( i = 0; i < nkeys; i++ )
+				tex.param.grad.ikey[i] = getU2( fp );
+			break;
 
-////      /* error while reading the current subchunk? */
+		default:
+			break;
+		}
 
-////      rlen = get_flen();
-////      if ( rlen < 0 || rlen > sz ) return 0;
+		/* error while reading the current subchunk? */
 
-////      /* skip unread parts of the current subchunk */
+		rlen = get_flen ( );
+		if ( rlen < 0 || rlen > sz ) return 0;
 
-////      if ( rlen < sz )
-////         fp.Seek( sz - rlen, FS_SEEK_CUR );
+		/* skip unread parts of the current subchunk */
 
-////      /* end of the gradient? */
+		if ( rlen < sz )
+			fp.Seek( sz - rlen, fsOrigin_t.FS_SEEK_CUR );
 
-////      if ( rsz <= fp.Tell() - pos )
-////         break;
-
-////      /* get the next subchunk header */
-
-////      set_flen( 0 );
-////      id = getU4( fp );
-////      sz = getU2( fp );
-////      if ( 6 != get_flen() ) return 0;
-////   }
-
-////   set_flen( fp.Tell() - pos );
-////   return 1;
-////}
-
-
-/////*
-////======================================================================
-////lwGetTexture()
-
-////Read an lwTexture from a SURF.BLOK in an LWO2 file.
-////====================================================================== */
-
-////lwTexture *lwGetTexture( fp:idFile, int bloksz, unsigned int type )
-////{
-////   lwTexture *tex;
-////   unsigned short sz;
-////   int ok;
-
-////   tex = (lwTexture*)Mem_ClearedAlloc( sizeof( lwTexture ) );
-////   if ( !tex ) return NULL;
+		/* end of the gradient? */
 
-////   tex.type = type;
-////   tex.tmap.size.val[ 0 ] =
-////   tex.tmap.size.val[ 1 ] =
-////   tex.tmap.size.val[ 2 ] = 1.0f;
-////   tex.opacity.val = 1.0f;
-////   tex.enabled = 1;
+		if ( rsz <= fp.Tell ( ) - pos )
+			break;
+
+		/* get the next subchunk header */
+
+		set_flen( 0 );
+		id = getU4( fp );
+		sz = getU2( fp );
+		if ( 6 != get_flen ( ) ) return 0;
+	}
+
+	set_flen( fp.Tell ( ) - pos );
+	return 1;
+}
+
+
+/*
+======================================================================
+lwGetTexture()
+
+Read an lwTexture from a SURF.BLOK in an LWO2 file.
+====================================================================== */
+
+function lwGetTexture(fp: idFile, /*int */bloksz:number, /*unsigned int */type:number): lwTexture
+{
+	var tex: lwTexture;
+   var /*unsigned short */sz:number;
+   var/*int */ok:number;
+
+	tex = new lwTexture;// (lwTexture*) Mem_ClearedAlloc(sizeof(lwTexture));
+	tex.memset0 ( );
+   if ( !tex ) return null;
 
-////   sz = getU2( fp );
-////   if ( !lwGetTHeader( fp, sz, tex )) {
-////      Mem_Free( tex );
-////      return NULL;
-////   }
+   tex.type = type;
+   tex.tmap.size.val[ 0 ] =
+   tex.tmap.size.val[ 1 ] =
+   tex.tmap.size.val[ 2 ] = 1.0;
+   tex.opacity.val = 1.0;
+   tex.enabled = 1;
 
-////   sz = bloksz - sz - 6;
-////   switch ( type ) {
-////      case ID_IMAP:  ok = lwGetImageMap( fp, sz, tex );  break;
-////      case ID_PROC:  ok = lwGetProcedural( fp, sz, tex );  break;
-////      case ID_GRAD:  ok = lwGetGradient( fp, sz, tex );  break;
-////      default:
-////         ok = !fp.Seek( sz, FS_SEEK_CUR );
-////   }
+   sz = getU2( fp );
+   if ( !lwGetTHeader( fp, sz, tex )) {
+      Mem_Free( tex );
+      return null;
+   }
 
-////   if ( !ok ) {
-////      lwFreeTexture( tex );
-////      return NULL;
-////   }
+   sz = bloksz - sz - 6;
+   switch ( type ) {
+      case ID_IMAP:  ok = lwGetImageMap( fp, sz, tex );  break;
+      case ID_PROC:  ok = lwGetProcedural( fp, sz, tex );  break;
+      case ID_GRAD:  ok = lwGetGradient( fp, sz, tex );  break;
+      default:
+		  ok = (!fp.Seek(sz, fsOrigin_t.FS_SEEK_CUR ))?1:0;
+   }
 
-////   set_flen( bloksz );
-////   return tex;
-////}
+   if ( !ok ) {
+      lwFreeTexture( tex );
+	   return null;
+   }
 
+   set_flen( bloksz );
+   return tex;
+}
 
-/////*
-////======================================================================
-////lwGetShader()
 
-////Read a shader record from a SURF.BLOK in an LWO2 file.
-////====================================================================== */
+/*
+======================================================================
+lwGetShader()
 
-////lwPlugin *lwGetShader( fp:idFile, int bloksz )
-////{
-////   lwPlugin *shdr;
-////   unsigned int id;
-////   unsigned short sz;
-////   int hsz, rlen, pos;
+Read a shader record from a SURF.BLOK in an LWO2 file.
+====================================================================== */
 
-////   shdr = (lwPlugin*)Mem_ClearedAlloc( sizeof( lwPlugin ) );
-////   if ( !shdr ) return NULL;
+function lwGetShader( fp:idFile, /*int */bloksz :number):lwPlugin
+{
+	var shdr: lwPlugin ;
+   var /*unsigned int */id:number;
+   var/*unsigned short */sz:number;
+	var /*int */hsz: number, rlen: number, pos: number;
 
-////   pos = fp.Tell();
-////   set_flen( 0 );
-////   hsz = getU2( fp );
-////   shdr.ord = getS0( fp );
-////   id = getU4( fp );
-////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) return Fail();
+	shdr = new lwPlugin;// (lwPlugin*)Mem_ClearedAlloc( sizeof( lwPlugin ) );
+	shdr.memset0 ( );
+	if (!shdr) return null;
 
-////   while ( hsz > 0 ) {
-////      sz += sz & 1;
-////      hsz -= sz;
-////      if ( id == ID_ENAB ) {
-////         shdr.flags = getU2( fp );
-////         break;
-////      }
-////      else {
-////         fp.Seek( sz, FS_SEEK_CUR );
-////         id = getU4( fp );
-////         sz = getU2( fp );
-////      }
-////   }
+   pos = fp.Tell();
+   set_flen( 0 );
+   hsz = getU2( fp );
+   shdr.ord = getS0( fp );
+   id = getU4( fp );
+   sz = getU2( fp );
+   if ( 0 > get_flen() ) return Fail();
 
-////   id = getU4( fp );
-////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) return Fail();
-
-////   while ( 1 ) {
-////      sz += sz & 1;
-////      set_flen( 0 );
-
-////      switch ( id ) {
-////         case ID_FUNC:
-////            shdr.name = getS0( fp );
-////            rlen = get_flen();
-////            shdr.data = getbytes( fp, sz - rlen );
-////            break;
-
-////         default:
-////            break;
-////      }
-
-////      /* error while reading the current subchunk? */
-
-////      rlen = get_flen();
-////      if ( rlen < 0 || rlen > sz ) return Fail();
-
-////      /* skip unread parts of the current subchunk */
-
-////      if ( rlen < sz )
-////         fp.Seek( sz - rlen, FS_SEEK_CUR );
-
-////      /* end of the shader block? */
-
-////      if ( bloksz <= fp.Tell() - pos )
-////         break;
-
-////      /* get the next subchunk header */
-
-////      set_flen( 0 );
-////      id = getU4( fp );
-////      sz = getU2( fp );
-////      if ( 6 != get_flen() ) return Fail();
-////   }
-
-////   set_flen( fp.Tell() - pos );
-////   return shdr;
-
-////function Fail():? {
-////   lwFreePlugin( shdr );
-////   return NULL;
-////}
-
-
-/////*
-////======================================================================
-////compare_textures()
-////compare_shaders()
-
-////Callbacks for the lwListInsert() function, which is called to add
-////textures to surface channels and shaders to surfaces.
-////====================================================================== */
-
-////static int compare_textures( lwTexture *a, lwTexture *b )
-////{
-////   return strcmp( a.ord, b.ord );
-////}
-
-
-////static int compare_shaders( lwPlugin *a, lwPlugin *b )
-////{
-////   return strcmp( a.ord, b.ord );
-////}
-
-
-/////*
-////======================================================================
-////add_texture()
-
-////Finds the surface channel (lwTParam or lwCParam) to which a texture is
-////applied, then calls lwListInsert().
-////====================================================================== */
-
-////static int add_texture( lwSurface *surf, lwTexture *tex )
-////{
-////   lwTexture **list;
-
-////   switch ( tex.chan ) {
-////      case ID_COLR:  list = &surf.color.tex;             break;
-////      case ID_LUMI:  list = &surf.luminosity.tex;        break;
-////      case ID_DIFF:  list = &surf.diffuse.tex;           break;
-////      case ID_SPEC:  list = &surf.specularity.tex;       break;
-////      case ID_GLOS:  list = &surf.glossiness.tex;        break;
-////      case ID_REFL:  list = &surf.reflection.val.tex;    break;
-////      case ID_TRAN:  list = &surf.transparency.val.tex;  break;
-////      case ID_RIND:  list = &surf.eta.tex;               break;
-////      case ID_TRNL:  list = &surf.translucency.tex;      break;
-////      case ID_BUMP:  list = &surf.bump.tex;              break;
-////      default:  return 0;
-////   }
-
-////   lwListInsert( (void**)list, tex, (int (__cdecl *)(void *,void *))compare_textures );
-////   return 1;
-////}
+   while ( hsz > 0 ) {
+      sz += sz & 1;
+      hsz -= sz;
+      if ( id == ID_ENAB ) {
+         shdr.flags = getU2( fp );
+         break;
+      }
+      else {
+		  fp.Seek(sz, fsOrigin_t.FS_SEEK_CUR );
+         id = getU4( fp );
+         sz = getU2( fp );
+      }
+   }
+
+   id = getU4( fp );
+   sz = getU2( fp );
+   if ( 0 > get_flen() ) return Fail();
+
+   while ( 1 ) {
+      sz += sz & 1;
+      set_flen( 0 );
+
+      switch ( id ) {
+         case ID_FUNC:
+            shdr.name = getS0( fp );
+            rlen = get_flen();
+            shdr.data = getbytes( fp, sz - rlen );
+            break;
+
+         default:
+            break;
+      }
+
+      /* error while reading the current subchunk? */
+
+      rlen = get_flen();
+      if ( rlen < 0 || rlen > sz ) return Fail();
+
+      /* skip unread parts of the current subchunk */
+
+      if ( rlen < sz )
+		  fp.Seek(sz - rlen, fsOrigin_t.FS_SEEK_CUR );
+
+      /* end of the shader block? */
+
+      if ( bloksz <= fp.Tell() - pos )
+         break;
+
+      /* get the next subchunk header */
+
+      set_flen( 0 );
+      id = getU4( fp );
+      sz = getU2( fp );
+      if ( 6 != get_flen() ) return Fail();
+   }
+
+   set_flen( fp.Tell() - pos );
+   return shdr;
+
+	function Fail(): lwPlugin {
+   lwFreePlugin( shdr );
+   return null;
+}
+}
+
+
+/*
+======================================================================
+compare_textures()
+compare_shaders()
+
+Callbacks for the lwListInsert() function, which is called to add
+textures to surface channels and shaders to surfaces.
+====================================================================== */
+
+function /*static int */compare_textures ( a: lwTexture, b: lwTexture ): number {
+	return strcmp( a.ord, b.ord );
+}
+
+
+function /*static int */compare_shaders ( a: lwPlugin, b: lwPlugin ): number {
+	return strcmp( a.ord, b.ord );
+}
+
+
+/*
+======================================================================
+add_texture()
+
+Finds the surface channel (lwTParam or lwCParam) to which a texture is
+applied, then calls lwListInsert().
+====================================================================== */
+
+function /*int */add_texture(surf:lwSurface, tex :lwTexture ):number {
+	var list: lwTexture;
+
+   switch ( tex.chan ) {
+      case ID_COLR:  list = surf.color.tex;             break;
+      case ID_LUMI:  list = surf.luminosity.tex;        break;
+      case ID_DIFF:  list = surf.diffuse.tex;           break;
+      case ID_SPEC:  list = surf.specularity.tex;       break;
+      case ID_GLOS:  list = surf.glossiness.tex;        break;
+      case ID_REFL:  list = surf.reflection.val.tex;    break;
+      case ID_TRAN:  list = surf.transparency.val.tex;  break;
+      case ID_RIND:  list = surf.eta.tex;               break;
+      case ID_TRNL:  list = surf.translucency.tex;      break;
+      case ID_BUMP:  list = surf.bump.tex;              break;
+      default:  return 0;
+   }
+	var $list = new R( list );
+	lwListInsert(/*(void**)*/ $list, tex,  compare_textures);
+	list = $list.$;
+	return 1;
+}
 
 
 /////*
@@ -3635,249 +3639,253 @@ function lwGetTags ( fp: idFile, /*int */cksize: number, tlist: lwTagList ): num
 ////   surf.color.rgb[ 0 ] = 0.78431f;
 ////   surf.color.rgb[ 1 ] = 0.78431f;
 ////   surf.color.rgb[ 2 ] = 0.78431f;
-////   surf.diffuse.val    = 1.0f;
+////   surf.diffuse.val    = 1.0;
 ////   surf.glossiness.val = 0.4f;
-////   surf.bump.val       = 1.0f;
-////   surf.eta.val        = 1.0f;
+////   surf.bump.val       = 1.0;
+////   surf.eta.val        = 1.0;
 ////   surf.sideflags      = 1;
 
 ////   return surf;
 ////}
 
 
-/////*
-////======================================================================
-////lwGetSurface()
+/*
+======================================================================
+lwGetSurface()
 
-////Read an lwSurface from an LWO2 file.
-////====================================================================== */
+Read an lwSurface from an LWO2 file.
+====================================================================== */
 
-////lwSurface *lwGetSurface( fp:idFile, /*int */cksize:number )
-////{
-////   lwSurface *surf;
-////   lwTexture *tex;
-////   lwPlugin *shdr;
-////   unsigned int id, type;
-////   unsigned short sz;
-////   int pos, rlen;
+function lwGetSurface(fp: idFile, /*int */cksize: number): lwSurface
+{
+	var surf: lwSurface;
+	var tex: lwTexture ;
+	var shdr: lwPlugin ;
+	var /*unsigned int */id: number, type: number;
+   var /*unsigned short */sz:number;
+	var /*int */pos: number, rlen: number;
 
 
-////   /* allocate the Surface structure */
+   /* allocate the Surface structure */
 
-////   surf = (lwSurface*)Mem_ClearedAlloc( sizeof( lwSurface ) );
-////   if ( !surf ) return Fail();
+	surf = new lwSurface;//(lwSurface*)Mem_ClearedAlloc( sizeof( lwSurface ) );
+	surf.memset0 ( );
+   if ( !surf ) return Fail();
 
-////   /* non-zero defaults */
+   /* non-zero defaults */
 
-////   surf.color.rgb[ 0 ] = 0.78431f;
-////   surf.color.rgb[ 1 ] = 0.78431f;
-////   surf.color.rgb[ 2 ] = 0.78431f;
-////   surf.diffuse.val    = 1.0f;
-////   surf.glossiness.val = 0.4f;
-////   surf.bump.val       = 1.0f;
-////   surf.eta.val        = 1.0f;
-////   surf.sideflags      = 1;
+   surf.color.rgb[ 0 ] = 0.78431;
+   surf.color.rgb[ 1 ] = 0.78431;
+   surf.color.rgb[ 2 ] = 0.78431;
+   surf.diffuse.val    = 1.0;
+   surf.glossiness.val = 0.4;
+   surf.bump.val       = 1.0;
+   surf.eta.val        = 1.0;
+   surf.sideflags      = 1;
 
-////   /* remember where we started */
+   /* remember where we started */
 
-////   set_flen( 0 );
-////   pos = fp.Tell();
+   set_flen( 0 );
+   pos = fp.Tell();
 
-////   /* names */
+   /* names */
 
-////   surf.name = getS0( fp );
-////   surf.srcname = getS0( fp );
+   surf.name = getS0( fp );
+   surf.srcname = getS0( fp );
 
-////   /* first subchunk header */
+   /* first subchunk header */
 
-////   id = getU4( fp );
-////   sz = getU2( fp );
-////   if ( 0 > get_flen() ) return Fail();
+   id = getU4( fp );
+   sz = getU2( fp );
+   if ( 0 > get_flen() ) return Fail();
 
-////   /* process subchunks as they're encountered */
+   /* process subchunks as they're encountered */
 
-////   while ( 1 ) {
-////      sz += sz & 1;
-////      set_flen( 0 );
+   while ( 1 ) {
+      sz += sz & 1;
+      set_flen( 0 );
 
-////      switch ( id ) {
-////         case ID_COLR:
-////            surf.color.rgb[ 0 ] = getF4( fp );
-////            surf.color.rgb[ 1 ] = getF4( fp );
-////            surf.color.rgb[ 2 ] = getF4( fp );
-////            surf.color.eindex = getVX( fp );
-////            break;
+      switch ( id ) {
+         case ID_COLR:
+            surf.color.rgb[ 0 ] = getF4( fp );
+            surf.color.rgb[ 1 ] = getF4( fp );
+            surf.color.rgb[ 2 ] = getF4( fp );
+            surf.color.eindex = getVX( fp );
+            break;
 
-////         case ID_LUMI:
-////            surf.luminosity.val = getF4( fp );
-////            surf.luminosity.eindex = getVX( fp );
-////            break;
+         case ID_LUMI:
+            surf.luminosity.val = getF4( fp );
+            surf.luminosity.eindex = getVX( fp );
+            break;
 
-////         case ID_DIFF:
-////            surf.diffuse.val = getF4( fp );
-////            surf.diffuse.eindex = getVX( fp );
-////            break;
+         case ID_DIFF:
+            surf.diffuse.val = getF4( fp );
+            surf.diffuse.eindex = getVX( fp );
+            break;
 
-////         case ID_SPEC:
-////            surf.specularity.val = getF4( fp );
-////            surf.specularity.eindex = getVX( fp );
-////            break;
+         case ID_SPEC:
+            surf.specularity.val = getF4( fp );
+            surf.specularity.eindex = getVX( fp );
+            break;
 
-////         case ID_GLOS:
-////            surf.glossiness.val = getF4( fp );
-////            surf.glossiness.eindex = getVX( fp );
-////            break;
+         case ID_GLOS:
+            surf.glossiness.val = getF4( fp );
+            surf.glossiness.eindex = getVX( fp );
+            break;
 
-////         case ID_REFL:
-////            surf.reflection.val.val = getF4( fp );
-////            surf.reflection.val.eindex = getVX( fp );
-////            break;
+         case ID_REFL:
+            surf.reflection.val.val = getF4( fp );
+            surf.reflection.val.eindex = getVX( fp );
+            break;
 
-////         case ID_RFOP:
-////            surf.reflection.options = getU2( fp );
-////            break;
+         case ID_RFOP:
+            surf.reflection.options = getU2( fp );
+            break;
 
-////         case ID_RIMG:
-////            surf.reflection.cindex = getVX( fp );
-////            break;
+         case ID_RIMG:
+            surf.reflection.cindex = getVX( fp );
+            break;
 
-////         case ID_RSAN:
-////            surf.reflection.seam_angle = getF4( fp );
-////            break;
+         case ID_RSAN:
+            surf.reflection.seam_angle = getF4( fp );
+            break;
 
-////         case ID_TRAN:
-////            surf.transparency.val.val = getF4( fp );
-////            surf.transparency.val.eindex = getVX( fp );
-////            break;
+         case ID_TRAN:
+            surf.transparency.val.val = getF4( fp );
+            surf.transparency.val.eindex = getVX( fp );
+            break;
 
-////         case ID_TROP:
-////            surf.transparency.options = getU2( fp );
-////            break;
+         case ID_TROP:
+            surf.transparency.options = getU2( fp );
+            break;
 
-////         case ID_TIMG:
-////            surf.transparency.cindex = getVX( fp );
-////            break;
+         case ID_TIMG:
+            surf.transparency.cindex = getVX( fp );
+            break;
 
-////         case ID_RIND:
-////            surf.eta.val = getF4( fp );
-////            surf.eta.eindex = getVX( fp );
-////            break;
+         case ID_RIND:
+            surf.eta.val = getF4( fp );
+            surf.eta.eindex = getVX( fp );
+            break;
 
-////         case ID_TRNL:
-////            surf.translucency.val = getF4( fp );
-////            surf.translucency.eindex = getVX( fp );
-////            break;
+         case ID_TRNL:
+            surf.translucency.val = getF4( fp );
+            surf.translucency.eindex = getVX( fp );
+            break;
 
-////         case ID_BUMP:
-////            surf.bump.val = getF4( fp );
-////            surf.bump.eindex = getVX( fp );
-////            break;
+         case ID_BUMP:
+            surf.bump.val = getF4( fp );
+            surf.bump.eindex = getVX( fp );
+            break;
 
-////         case ID_SMAN:
-////            surf.smooth = getF4( fp );
-////            break;
+         case ID_SMAN:
+            surf.smooth = getF4( fp );
+            break;
 
-////         case ID_SIDE:
-////            surf.sideflags = getU2( fp );
-////            break;
+         case ID_SIDE:
+            surf.sideflags = getU2( fp );
+            break;
 
-////         case ID_CLRH:
-////            surf.color_hilite.val = getF4( fp );
-////            surf.color_hilite.eindex = getVX( fp );
-////            break;
+         case ID_CLRH:
+            surf.color_hilite.val = getF4( fp );
+            surf.color_hilite.eindex = getVX( fp );
+            break;
 
-////         case ID_CLRF:
-////            surf.color_filter.val = getF4( fp );
-////            surf.color_filter.eindex = getVX( fp );
-////            break;
+         case ID_CLRF:
+            surf.color_filter.val = getF4( fp );
+            surf.color_filter.eindex = getVX( fp );
+            break;
 
-////         case ID_ADTR:
-////            surf.add_trans.val = getF4( fp );
-////            surf.add_trans.eindex = getVX( fp );
-////            break;
+         case ID_ADTR:
+            surf.add_trans.val = getF4( fp );
+            surf.add_trans.eindex = getVX( fp );
+            break;
 
-////         case ID_SHRP:
-////            surf.dif_sharp.val = getF4( fp );
-////            surf.dif_sharp.eindex = getVX( fp );
-////            break;
+         case ID_SHRP:
+            surf.dif_sharp.val = getF4( fp );
+            surf.dif_sharp.eindex = getVX( fp );
+            break;
 
-////         case ID_GVAL:
-////            surf.glow.val = getF4( fp );
-////            surf.glow.eindex = getVX( fp );
-////            break;
+         case ID_GVAL:
+            surf.glow.val = getF4( fp );
+            surf.glow.eindex = getVX( fp );
+            break;
 
-////         case ID_LINE:
-////            surf.line.enabled = 1;
-////            if ( sz >= 2 ) surf.line.flags = getU2( fp );
-////            if ( sz >= 6 ) surf.line.size.val = getF4( fp );
-////            if ( sz >= 8 ) surf.line.size.eindex = getVX( fp );
-////            break;
+         case ID_LINE:
+            surf.line.enabled = 1;
+            if ( sz >= 2 ) surf.line.flags = getU2( fp );
+            if ( sz >= 6 ) surf.line.size.val = getF4( fp );
+            if ( sz >= 8 ) surf.line.size.eindex = getVX( fp );
+            break;
 
-////         case ID_ALPH:
-////            surf.alpha_mode = getU2( fp );
-////            surf.alpha = getF4( fp );
-////            break;
+         case ID_ALPH:
+            surf.alpha_mode = getU2( fp );
+            surf.alpha = getF4( fp );
+            break;
 
-////         case ID_AVAL:
-////            surf.alpha = getF4( fp );
-////            break;
+         case ID_AVAL:
+            surf.alpha = getF4( fp );
+            break;
 
-////         case ID_BLOK:
-////            type = getU4( fp );
+         case ID_BLOK:
+            type = getU4( fp );
 
-////            switch ( type ) {
-////               case ID_IMAP:
-////               case ID_PROC:
-////               case ID_GRAD:
-////                  tex = lwGetTexture( fp, sz - 4, type );
-////                  if ( !tex ) return Fail();
-////                  if ( !add_texture( surf, tex ))
-////                     lwFreeTexture( tex );
-////                  set_flen( 4 + get_flen() );
-////                  break;
-////               case ID_SHDR:
-////                  shdr = lwGetShader( fp, sz - 4 );
-////                  if ( !shdr ) return Fail();
-////                  lwListInsert( (void**)&surf.shader, shdr, (int (__cdecl *)(void *,void *))compare_shaders );
-////                  ++surf.nshaders;
-////                  set_flen( 4 + get_flen() );
-////                  break;
-////            }
-////            break;
+            switch ( type ) {
+               case ID_IMAP:
+               case ID_PROC:
+               case ID_GRAD:
+                  tex = lwGetTexture( fp, sz - 4, type );
+                  if ( !tex ) return Fail();
+                  if ( !add_texture( surf, tex ))
+                     lwFreeTexture( tex );
+                  set_flen( 4 + get_flen() );
+                  break;
+               case ID_SHDR:
+                  shdr = lwGetShader( fp, sz - 4 );
+				   if (!shdr) return Fail();
+				   var $shader = new R(surf.shader );
+				   lwListInsert($shader, shdr, /*(int(__cdecl *)(void *,void *)) */compare_shaders);
+				   surf.shader = $shader.$;
+                  ++surf.nshaders;
+                  set_flen( 4 + get_flen() );
+                  break;
+            }
+            break;
 
-////         default:
-////            break;
-////      }
+         default:
+            break;
+      }
 
-////      /* error while reading current subchunk? */
+      /* error while reading current subchunk? */
 
-////      rlen = get_flen();
-////      if ( rlen < 0 || rlen > sz ) return Fail();
+      rlen = get_flen();
+      if ( rlen < 0 || rlen > sz ) return Fail();
 
-////      /* skip unread parts of the current subchunk */
+      /* skip unread parts of the current subchunk */
 
-////      if ( rlen < sz )
-////         fp.Seek( sz - rlen, FS_SEEK_CUR );
+      if ( rlen < sz )
+		  fp.Seek(sz - rlen, fsOrigin_t.FS_SEEK_CUR );
 
-////      /* end of the SURF chunk? */
+      /* end of the SURF chunk? */
 
-////      if ( cksize <= fp.Tell() - pos )
-////         break;
+      if ( cksize <= fp.Tell() - pos )
+         break;
 
-////      /* get the next subchunk header */
+      /* get the next subchunk header */
 
-////      set_flen( 0 );
-////      id = getU4( fp );
-////      sz = getU2( fp );
-////      if ( 6 != get_flen() ) return Fail();
-////   }
+      set_flen( 0 );
+      id = getU4( fp );
+      sz = getU2( fp );
+      if ( 6 != get_flen() ) return Fail();
+   }
 
-////   return surf;
+   return surf;
 
-////function Fail():? {
-////   if ( surf ) lwFreeSurface( surf );
-////   return NULL;
-////}
+	function Fail ( ): lwSurface {
+		if ( surf ) lwFreeSurface( surf );
+		return null;
+	}
+}
 
 
 ////float dot( float a[], float b[] )

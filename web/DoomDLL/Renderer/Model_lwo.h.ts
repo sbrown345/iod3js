@@ -190,46 +190,58 @@ var ID_DATA  = LWID_('D','A','T','A')
 /* generic linked list */
 
 class lwNode {
-	next:lwNode; prev: lwNode;
-////   void *data;
-};
+	next: lwNode; prev: lwNode;
+	//data:ArrayBuffer;////   void *data;
+}
 
 
-/////* plug-in reference */
+/* plug-in reference */
 
-////class lwPlugin {
-////   struct st_lwPlugin *next, *prev;
-////   char          *ord;
-////   char          *name;
-////   int            flags;
-////   void          *data;
-////};
+class lwPlugin {
+	next: lwPlugin;
+	prev: lwPlugin;
+	ord: string;
+	name: string;
+	flags: number /*int*/;
+	data: ArrayBuffer; //void          *data;
+
+	memset0 ( ): void {
+		this.next = null;
+		this.prev = null;
+		this.ord = null;
+		this.name = null;
+		this.flags = 0;
+		this.data = null;
+	}
+}
 
 
-/////* envelopes */
+/* envelopes */
 
-////class lwKey {
-////   struct st_lwKey *next, *prev;
-////   float          value;
-////   float          time;
-////   unsigned int   shape;               /* ID_TCB, ID_BEZ2, etc. */
-////   float          tension;
-////   float          continuity;
-////   float          bias;
-////   float          param[ 4 ];
-////} lwKey;
+class lwKey {
+	next: lwKey;
+	prev: lwKey;
+	value: number /*float*/;
+	time: number /*float*/;
+	shape: number /*unsigned int*/; /* ID_TCB, ID_BEZ2, etc. */
+	tension: number /*float*/;
+	continuity: number /*float*/;
+	bias: number /*float*/;
+	param = new Float32Array( 4 );
+}
 
 class lwEnvelope {
-////   struct st_lwEnvelope *next, *prev;
-////   int            index;
-////   int            type;
-////   char          *name;
-////   lwKey         *key;                 /* linked list of keys */
-////   int            nkeys;
-////   int            behavior[ 2 ];       /* pre and post (extrapolation) */
-////   lwPlugin      *cfilter;             /* linked list of channel filters */
-////   int            ncfilters;
-} ;
+	next: lwEnvelope;
+	prev: lwEnvelope;
+	index: number /*int*/;
+	type: number /*int*/;
+	name: Uint8Array /*char*/;
+	key: lwKey; /* linked list of keys */
+	nkeys: number /*int*/;
+	behavior = new Int32Array( 2 ); /* pre and post (extrapolation) */
+	cfilter: lwPlugin; /* linked list of channel filters */
+	ncfilters: number /*int*/;
+}
 
 var BEH_RESET     =0
 var BEH_CONSTANT  =1
@@ -239,107 +251,190 @@ var BEH_OFFSET    =4
 var BEH_LINEAR    =5
 
 
-/////* values that can be enveloped */
+/* values that can be enveloped */
 
-////class lwEParam{
-////   float          val;
-////   int            eindex;
-////} ;
+class lwEParam{
+	val :number/*float*/;
+	eindex :number/*int*/;
+	memset0(): void {
+		this.val = 0;
+		this.eindex = 0;
+	}
+}
 
-////class lwVParam {
-////   float          val[ 3 ];
-////   int            eindex;
-////} ;
-
-
-/////* clips */
-
-////class lwClipStill {
-////   char          *name;
-////} ;
-
-////class lwClipSeq {
-////   char          *prefix;              /* filename before sequence digits */
-////   char          *suffix;              /* after digits, e.g. extensions */
-////   int            digits;
-////   int            flags;
-////   int            offset;
-////   int            start;
-////   int            end;
-////} lwClipSeq;
-
-////class lwClipAnim {
-////   char          *name;
-////   char          *server;              /* anim loader plug-in */
-////   void          *data;
-////} ;
-
-////class lwClipXRef {
-////   char          *string;
-////   int            index;
-////   struct st_lwClip *clip;
-////} ;
-
-////class lwClipCycle {
-////   char          *name;
-////   int            lo;
-////   int            hi;
-////} ;
-
-class lwClip {
-////   struct st_lwClip *next, *prev;
-////   int            index;
-////   unsigned int   type;                /* ID_STIL, ID_ISEQ, etc. */
-////   union {
-////      lwClipStill    still;
-////      lwClipSeq      seq;
-////      lwClipAnim     anim;
-////      lwClipXRef     xref;
-////      lwClipCycle    cycle;
-////   }              source;
-////   float          start_time;
-////   float          duration;
-////   float          frame_rate;
-////   lwEParam       contrast;
-////   lwEParam       brightness;
-////   lwEParam       saturation;
-////   lwEParam       hue;
-////   lwEParam       gamma;
-////   int            negative;
-////   lwPlugin      *ifilter;             /* linked list of image filters */
-////   int            nifilters;
-////   lwPlugin      *pfilter;             /* linked list of pixel filters */
-////   int            npfilters;
+class lwVParam {
+	val = new Float32Array( 3 );
+	eindex: number /*int*/;
+	memset0 ( ): void {
+		this.val[0] = this.val[1] = this.val[2] = 0;
+		this.eindex = 0;
+	}
 }
 
 
-/////* textures */
+/* clips */
 
-////class lwTMap {
-////   lwVParam       size;
-////   lwVParam       center;
-////   lwVParam       rotate;
-////   lwVParam       falloff;
-////   int            fall_type;
-////   char          *ref_object;
-////   int            coord_sys;
-////} lwTMap;
+class lwClipStill {
+	name: string;
+	memset0 ( ): void {
+		this.name = null;
+	}
+}
 
-////class lwImageMap {
-////   int            cindex;
-////   int            projection;
-////   char          *vmap_name;
-////   int            axis;
-////   int            wrapw_type;
-////   int            wraph_type;
-////   lwEParam       wrapw;
-////   lwEParam       wraph;
-////   float          aa_strength;
-////   int            aas_flags;
-////   int            pblend;
-////   lwEParam       stck;
-////   lwEParam       amplitude;
-////} lwImageMap;
+class lwClipSeq {
+	prefix: string /*char*/ ;              /* filename before sequence digits */
+	suffix: string/*char*/ ;              /* after digits, e.g. extensions */
+	digits :number/*int*/;
+	flags :number/*int*/;
+	offset :number/*int*/;
+	start :number/*int*/;
+	end: number/*int*/;
+
+	memset0(): void {
+		this.prefix = null;
+		this.suffix = null;
+		this.digits = 0;
+		this.flags = 0;
+		this.offset = 0;
+		this.start = 0;
+		this.end = 0;
+	}
+};
+
+class lwClipAnim {
+	name: string;
+	server: string; /* anim loader plug-in */
+	data: ArrayBuffer; //void          *
+
+	memset0 ( ): void {
+		this.name = null;
+		this.server = null;
+		this.data = null;
+	}
+}
+
+class lwClipXRef {
+	$string: string;
+	index: number /*int*/;
+	clip: lwClip;
+
+	memset0(): void {
+		this.$string = null;
+		this.index = 0;
+		this.clip = null;
+	}
+}
+
+class lwClipCycle {
+	name: string;
+	lo: number /*int*/;
+	hi: number /*int*/;
+	memset0 ( ): void {
+		this.name = null;
+		this.lo = 0;
+		this.hi = 0;
+	}
+}
+
+class lwClip {
+	next:lwClip; prev:lwClip;
+	index :number/*int*/;
+	type: number/*unsigned int*/;                /* ID_STIL, ID_ISEQ, etc. */
+	source = new lwClipUnion;
+	start_time :number/*float*/;
+	duration:number/*float*/;
+	frame_rate:number/*float*/;
+	contrast = new lwEParam;
+	brightness = new lwEParam;
+	saturation = new lwEParam;
+	hue = new lwEParam;
+	gamma = new lwEParam;
+	negative :number/*int*/;
+	ifilter:lwPlugin;             /* linked list of image filters */
+	nifilters :number/*int*/;
+	pfilter:lwPlugin;             /* linked list of pixel filters */
+	npfilters: number/*int*/;
+
+	memset0 ( ): void {
+		this.next = this.prev = null;
+		this.index = 0;
+		this.type = 0;
+		this.source.memset0();
+		this.start_time = 0.0;
+		this.duration = 0.0;
+		this.frame_rate = 0.0;
+		this.contrast.memset0 ( );
+		this.brightness.memset0 ( );
+		this.saturation.memset0 ( );
+		this.hue.memset0 ( );
+		this.gamma.memset0 ( );
+		this.negative = 0;
+		this.ifilter = null;
+		this.nifilters = 0;
+		this.pfilter = null;
+		this.npfilters = 0;
+	}
+}
+
+class lwClipUnion {
+	still = new lwClipStill;
+	seq = new lwClipSeq;
+	anim = new lwClipAnim;
+	xref = new lwClipXRef;
+	cycle = new lwClipCycle;
+
+	memset0 ( ): void {
+		this.still.memset0 ( );
+		this.seq.memset0 ( );
+		this.anim.memset0 ( );
+		this.xref.memset0 ( );
+		this.cycle.memset0 ( );
+	}
+}
+
+/* textures */
+
+class lwTMap {
+	size = new lwVParam;
+	center = new lwVParam;
+	rotate = new lwVParam;
+	falloff = new lwVParam;
+	fall_type: number /*int*/;
+	ref_object: string /*char*/;
+	coord_sys: number /*int*/;
+}
+
+class lwImageMap {
+	cindex: number /*int*/;
+	projection: number /*int*/;
+	vmap_name: string /*char*/;
+	axis: number /*int*/;
+	wrapw_type: number /*int*/;
+	wraph_type: number /*int*/;
+	wrapw = new lwEParam;
+	wraph = new lwEParam;
+	aa_strength: number /*float*/;
+	aas_flags: number /*int*/;
+	pblend: number /*int*/;
+	stck = new lwEParam;
+	amplitude = new lwEParam;
+
+	memset0 ( ): void {
+		this.cindex = 0;
+		this.projection = 0;
+		this.vmap_name = null;
+		this.axis = 0;
+		this.wrapw_type = 0;
+		this.wraph_type = 0;
+		this.wrapw.memset0 ( );
+		this.wraph.memset0 ( );
+		this.aa_strength = 0.0;
+		this.aas_flags = 0;
+		this.pblend = 0;
+		this.stck.memset0 ( );
+		this.amplitude.memset0 ( );
+	}
+}
 
 var PROJ_PLANAR      = 0
 var PROJ_CYLINDRICAL = 1
@@ -352,115 +447,204 @@ var WRAP_EDGE    =1
 var WRAP_REPEAT  =2
 var WRAP_MIRROR  =3
 
-////class lwProcedural {
-////   int            axis;
-////   float          value[ 3 ];
-////   char          *name;
-////   void          *data;
-////} lwProcedural;
+class lwProcedural {
+	axis: number /*int*/;
+	value = new Float32Array( 3 );
+	name: string/*char*/;
+	data:ArrayBuffer;//void          *data;
 
-////class lwGradKey {
-////   struct st_lwGradKey *next, *prev;
-////   float          value;
-////   float          rgba[ 4 ];
-////} lwGradKey;
+	memset0 ( ): void {
+		this.axis = 0;
+		this.value[0] = this.value[1] = this.value[2];
+	}
+}
 
-////typedef struct st_lwGradient {
-////   char          *paramname;
-////   char          *itemname;
-////   float          start;
-////   float          end;
-////   int            repeat;
-////   lwGradKey     *key;                 /* array of gradient keys */
-////   short         *ikey;                /* array of interpolation codes */
-////} lwGradient;
+class lwGradKey {
+	next:lwGradKey; prev: lwGradKey;
+   value: number /*float*/;
+   rgba = new Float32Array( 4 );
+}
 
-////class lwTexture {
-////   struct st_lwTexture *next, *prev;
-////   char          *ord;
-////   unsigned int   type;
-////   unsigned int   chan;
-////   lwEParam       opacity;
-////   short          opac_type;
-////   short          enabled;
-////   short          negative;
-////   short          axis;
-////   union {
-////      lwImageMap     imap;
-////      lwProcedural   proc;
-////      lwGradient     grad;
-////   }              param;
-////   lwTMap         tmap;
-////} lwTexture;
+class lwGradient {
+	paramname: string /*char*/;
+	itemname: string /*char*/;
+	start: number /*float*/;
+	end: number /*float*/;
+	repeat: number /*int*/;
+	key: lwGradKey[]; /* array of gradient keys */
+	ikey: Int16Array; /* array of interpolation codes */
+	memset0 ( ): void {
+		this.paramname = null;
+		this.itemname = null;
+		this.start = 0.0;
+		this.end = 0.0;
+		this.repeat = 0;
+		this.key = null;
+		this.ikey = null;
+	}
+}
 
+class lwTexture {
+	next: lwTexture;
+	prev: lwTexture;
+	ord: string /*char*/;
+	type: number /*unsigned int*/;
+	chan: number /*unsigned int*/;
+	opacity = new lwEParam;
+	opac_type: number /*short*/;
+	enabled: number /*short*/;
+	negative: number /*short*/;
+	axis: number /*short*/;
+	param = new lwTextureUnionProp
+	tmap = new lwTMap;
 
-/////* values that can be textured */
+	memset0 ( ): void {
+		this.next = this.prev = null;
+		this.ord = null;
+		this.type = 0;
+		this.chan = 0;
+		this.opacity.memset0 ( );
+		this.opac_type = 0;
+		this.enabled = 0;
+		this.negative = 0;
+		this.axis = 0;
+		this.param.memset0 ( );
+		this.tmap = new lwTMap;
+	}
+}
 
-////class lwTParam{
-////   float          val;
-////   int            eindex;
-////   lwTexture     *tex;                 /* linked list of texture layers */
-////} lwTParam;
+class lwTextureUnionProp {
+	imap = new lwImageMap;
+	proc = new lwProcedural;
+	grad = new lwGradient;
 
-////typedef struct st_lwCParam {
-////   float          rgb[ 3 ];
-////   int            eindex;
-////   lwTexture     *tex;                 /* linked list of texture layers */
-////} lwCParam;
-
-
-/////* surfaces */
-
-////class Glow {
-////   short          enabled;
-////   short          type;
-////   lwEParam       intensity;
-////   lwEParam       size;
-////} Glow;
-
-///class lwRMap {
-////   lwTParam       val;
-////   int            options: number /*int*/;
-////   int            cindex: number /*int*/;
-////   float          seam_angle;
-////} lwRMap;
-
-////class lwLine {
-////   short          enabled;
-////   unsigned short flags;
-////   lwEParam       size;
-////} lwLine;
-
-class lwSurface {
-////   struct st_lwSurface *next, *prev;
-////   char          *name;
-////   char          *srcname;
-////   lwCParam       color;
-////   lwTParam       luminosity;
-////   lwTParam       diffuse;
-////   lwTParam       specularity;
-////   lwTParam       glossiness;
-////   lwRMap         reflection;
-////   lwRMap         transparency;
-////   lwTParam       eta;
-////   lwTParam       translucency;
-////   lwTParam       bump;
-////   float          smooth;
-////   int            sideflags: number /*int*/;
-////   float          alpha;
-////   int            alpha_mode: number /*int*/;
-////   lwEParam       color_hilite;
-////   lwEParam       color_filter;
-////   lwEParam       add_trans;
-////   lwEParam       dif_sharp;
-////   lwEParam       glow;
-////   lwLine         line;
-////   lwPlugin      *shader;              /* linked list of shaders */
-////   int            nshaders: number /*int*/;
+	memset0 ( ): void {
+		this.imap.memset0 ( );
+		this.proc.memset0 ( );
+		this.grad.memset0 ( );
+	}
 }
 
 
-/////* vertex maps */
+/* values that can be textured */
+
+class lwTParam {
+	val: number /*float*/;
+	eindex: number /*int*/;
+	tex: lwTexture; /* linked list of texture layers */
+
+	memset0(): void {
+		this.val = 0;
+		this.eindex = 0;
+		this.tex = null;
+	}
+}
+
+class lwCParam {
+	rgb = new Float32Array( 3 );
+	eindex: number /*int*/;
+	tex: lwTexture; /* linked list of texture layers */
+	memset0 ( ): void {
+		this.rgb[0] = this.rgb[1] = this.rgb[2] = 0;
+		this.eindex = 0;
+		this.tex = null;
+	}
+}
+
+
+/* surfaces */
+
+class Glow {
+	enabled: number /*short*/;
+	type: number /*short*/;
+	intensity = new lwEParam;
+	size = new lwEParam;
+}
+
+class lwRMap {
+	val = new lwTParam;
+	options: number /*int*/;
+	cindex: number /*int*/;
+	seam_angle: number /*float*/;
+
+	memset0 ( ): void {
+		this.val.memset0 ( );
+		this.options = 0;
+		this.cindex = 0;
+		this.seam_angle = 0.0;
+	}
+}
+
+class lwLine {
+	enabled: number /*short*/;
+	flags: number /*unsigned short*/;
+	size = new lwEParam;
+	memset0 ( ): void {
+		this.enabled = 0;
+		this.flags = 0;
+		this.size.memset0 ( );
+	}
+}
+
+class lwSurface {
+	next: lwSurface;
+	prev: lwSurface;
+	name: string /*char*/;
+	srcname: string /*char*/;
+	color = new lwCParam;
+	luminosity = new lwTParam;
+	diffuse = new lwTParam;
+	specularity = new lwTParam;
+	glossiness = new lwTParam;
+	reflection = new lwRMap;
+	transparency = new lwRMap;
+	eta = new lwTParam;
+	translucency = new lwTParam;
+	bump = new lwTParam;
+	smooth: number /*float*/;
+	sideflags: number /*int*/;
+	alpha: number /*float*/;
+	alpha_mode: number /*int*/;
+	color_hilite = new lwTParam;
+	color_filter = new lwTParam;
+	add_trans = new lwTParam;
+	dif_sharp = new lwTParam;
+	glow = new lwTParam;
+	line = new lwLine;
+	shader: lwPlugin; /* linked list of shaders */
+	nshaders: number /*int*/;
+	memset0 ( ): void {
+		this.next = null;
+		this.prev = null;
+		this.name = null;
+		this.srcname = null;
+		this.color.memset0 ( );
+		this.luminosity.memset0 ( );
+		this.diffuse.memset0 ( );
+		this.specularity.memset0 ( );
+		this.glossiness.memset0 ( );
+		this.reflection.memset0 ( );
+		this.transparency.memset0 ( );
+		this.eta.memset0 ( );
+		this.translucency.memset0 ( );
+		this.bump.memset0 ( );
+		this.smooth = 0.0;
+		this.sideflags = 0;
+		this.alpha = 0.0;
+		this.alpha_mode = 0;
+		this.color_hilite.memset0 ( );
+		this.color_filter.memset0 ( );
+		this.add_trans.memset0 ( );
+		this.dif_sharp.memset0 ( );
+		this.glow.memset0 ( );
+		this.line.memset0 ( );
+		this.shader = null;
+		this.nshaders = 0;
+	}
+}
+
+
+/* vertex maps */
 
 class lwVMap {
 	next: lwVMap;
