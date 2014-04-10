@@ -402,6 +402,16 @@ class lwTMap {
 	fall_type: number /*int*/;
 	ref_object: string /*char*/;
 	coord_sys: number /*int*/;
+
+	memset0 ( ): void {
+		this.size.memset0 ( );
+		this.center.memset0 ( );
+		this.rotate.memset0 ( );
+		this.falloff.memset0 ( );
+		this.fall_type = 0;
+		this.ref_object = null;
+		this.coord_sys = 0;
+	}
 }
 
 class lwImageMap {
@@ -456,13 +466,16 @@ class lwProcedural {
 	memset0 ( ): void {
 		this.axis = 0;
 		this.value[0] = this.value[1] = this.value[2];
+		this.name = null;
+		this.data = null;
 	}
 }
 
 class lwGradKey {
-	next:lwGradKey; prev: lwGradKey;
-   value: number /*float*/;
-   rgba = new Float32Array( 4 );
+	next: lwGradKey;
+	prev: lwGradKey;
+	value: number /*float*/;
+	rgba = new Float32Array( 4 );
 }
 
 class lwGradient {
@@ -509,7 +522,7 @@ class lwTexture {
 		this.negative = 0;
 		this.axis = 0;
 		this.param.memset0 ( );
-		this.tmap = new lwTMap;
+		this.tmap.memset0();
 	}
 }
 
@@ -664,6 +677,7 @@ class lwVMap {
 		this.next = null;
 		this.prev = null;
 		this.name = null;
+		this.type = 0;
 		this.dim = 0;
 		this.nverts = 0;
 		this.perpoly = 0;
@@ -676,6 +690,11 @@ class lwVMap {
 class lwVMapPt {
 	vmap: lwVMap;
 	index: number /*int*/; /* vindex or pindex element */
+
+	memset0 ( ): void {
+		this.vmap = null;
+		this.index = 0;
+	}
 }
 
 
@@ -701,7 +720,7 @@ class lwPolVert {
 	index: number /*int*/; /* index into the point array */
 	norm = new Float32Array( 3 );
 	nvmaps: number /*int*/;
-	vm: lwVMapPt; /* array of vmap references */
+	vm: lwVMapPt[]; /* array of vmap references */
 
 	memset0 ( ): void {
 		this.index = null;
@@ -915,7 +934,7 @@ class lwObject {
 ////float dot( float a[], float b[] );
 ////void cross( float a[], float b[], float c[] );
 ////void normalize( float v[] );
-function vecangle ( a: number, b: number ): number { return /*( float ) */idMath.ACos( dot( a, b ) );}
+function vecangle ( a: Float32Array, b: Float32Array ): number { return /*( float ) */idMath.ACos( dot( a, b ) ); }
 
 /////* lwio.c */
 

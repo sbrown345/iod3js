@@ -271,6 +271,7 @@ var sin = Math.sin;
 var sinf = Math.sin;
 var cos = Math.cos;
 var cosf = Math.cos;
+var acosf = Math.acos;
 var atan = Math.atan;
 var atanf = Math.atan;
 var floor = Math.floor;

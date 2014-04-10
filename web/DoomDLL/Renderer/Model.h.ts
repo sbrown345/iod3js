@@ -217,6 +217,13 @@ class modelSurface_t {
 		["shader", ""],
 		["geometry", ""]
 	]);
+
+
+	memset0 ( ): void {
+		this.id = 0;
+		this.shader = null;
+		this.geometry = null;
+	}
 };
 
 enum dynamicModel_t{

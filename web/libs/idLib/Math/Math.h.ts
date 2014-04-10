@@ -330,21 +330,21 @@ static Sqrt( /*float */x:number):number {
 ////		a -= floorf( a / TWO_PI ) * TWO_PI;
 ////	}
 ////#if 1
-////	if ( a < PI ) {
+////	if ( a < idMath.PI ) {
 ////		if ( a > HALF_PI ) {
-////			a = PI - a;
+////			a = idMath.PI - a;
 ////		}
 ////	} else {
-////		if ( a > PI + HALF_PI ) {
+////		if ( a > idMath.PI + HALF_PI ) {
 ////			a = a - TWO_PI;
 ////		} else {
-////			a = PI - a;
+////			a = idMath.PI - a;
 ////		}
 ////	}
 ////#else
-////	a = PI - a;
+////	a = idMath.PI - a;
 ////	if ( fabs( a ) >= HALF_PI ) {
-////		a = ( ( a < 0.0 ) ? -PI : PI ) - a;
+////		a = ( ( a < 0.0 ) ? -idMath.PI : idMath.PI ) - a;
 ////	}
 ////#endif
 ////	s = a * a;
@@ -366,26 +366,26 @@ static Sqrt( /*float */x:number):number {
 ////		a -= floorf( a / TWO_PI ) * TWO_PI;
 ////	}
 ////#if 1
-////	if ( a < PI ) {
+////	if ( a < idMath.PI ) {
 ////		if ( a > HALF_PI ) {
-////			a = PI - a;
+////			a = idMath.PI - a;
 ////			d = -1.0;
 ////		} else {
 ////			d = 1.0;
 ////		}
 ////	} else {
-////		if ( a > PI + HALF_PI ) {
+////		if ( a > idMath.PI + HALF_PI ) {
 ////			a = a - TWO_PI;
 ////			d = 1.0;
 ////		} else {
-////			a = PI - a;
+////			a = idMath.PI - a;
 ////			d = -1.0;
 ////		}
 ////	}
 ////#else
-////	a = PI - a;
+////	a = idMath.PI - a;
 ////	if ( fabs( a ) >= HALF_PI ) {
-////		a = ( ( a < 0.0 ) ? -PI : PI ) - a;
+////		a = ( ( a < 0.0 ) ? -idMath.PI : idMath.PI ) - a;
 ////		d = 1.0;
 ////	} else {
 ////		d = -1.0;
@@ -422,26 +422,26 @@ static Sqrt( /*float */x:number):number {
 ////		a -= floorf( a / idMath::TWO_PI ) * idMath::TWO_PI;
 ////	}
 ////#if 1
-////	if ( a < PI ) {
+////	if ( a < idMath.PI ) {
 ////		if ( a > HALF_PI ) {
-////			a = PI - a;
+////			a = idMath.PI - a;
 ////			d = -1.0;
 ////		} else {
 ////			d = 1.0;
 ////		}
 ////	} else {
-////		if ( a > PI + HALF_PI ) {
+////		if ( a > idMath.PI + HALF_PI ) {
 ////			a = a - TWO_PI;
 ////			d = 1.0;
 ////		} else {
-////			a = PI - a;
+////			a = idMath.PI - a;
 ////			d = -1.0;
 ////		}
 ////	}
 ////#else
-////	a = PI - a;
+////	a = idMath.PI - a;
 ////	if ( fabs( a ) >= HALF_PI ) {
-////		a = ( ( a < 0.0 ) ? -PI : PI ) - a;
+////		a = ( ( a < 0.0 ) ? -idMath.PI : idMath.PI ) - a;
 ////		d = 1.0;
 ////	} else {
 ////		d = -1.0;
@@ -476,8 +476,8 @@ static Sqrt( /*float */x:number):number {
 ////	float s;
 ////	bool reciprocal;
 
-////	if ( ( a < 0.0 ) || ( a >= PI ) ) {
-////		a -= floorf( a / PI ) * PI;
+////	if ( ( a < 0.0 ) || ( a >= idMath.PI ) ) {
+////		a -= floorf( a / idMath.PI ) * idMath.PI;
 ////	}
 ////#if 1
 ////	if ( a < HALF_PI ) {
@@ -489,7 +489,7 @@ static Sqrt( /*float */x:number):number {
 ////		}
 ////	} else {
 ////		if ( a > HALF_PI + ONEFOURTH_PI ) {
-////			a = a - PI;
+////			a = a - idMath.PI;
 ////			reciprocal = false;
 ////		} else {
 ////			a = HALF_PI - a;
@@ -555,7 +555,7 @@ static Sqrt( /*float */x:number):number {
 
 	static ACos ( /*float*/ a: number ): number {
 		if ( a <= -1.0 ) {
-			return PI;
+			return idMath.PI;
 		}
 		if ( a >= 1.0 ) {
 			return 0.0;
@@ -566,10 +566,10 @@ static Sqrt( /*float */x:number):number {
 ////ID_INLINE float idMath::ACos16( /*float*/ a: number ) {
 ////	if ( FLOATSIGNBITSET( a ) ) {
 ////		if ( a <= -1.0 ) {
-////			return PI;
+////			return idMath.PI;
 ////		}
 ////		a = fabs( a );
-////		return PI - ( ( ( -0.0187293f * a + 0.0742610f ) * a - 0.2121144f ) * a + 1.5707288f ) * sqrt( 1.0 - a );
+////		return idMath.PI - ( ( ( -0.0187293f * a + 0.0742610f ) * a - 0.2121144f ) * a + 1.5707288f ) * sqrt( 1.0 - a );
 ////	} else {
 ////		if ( a >= 1.0 ) {
 ////			return 0.0;
@@ -580,7 +580,7 @@ static Sqrt( /*float */x:number):number {
 
 ////ID_INLINE double idMath::ACos64( /*float*/ a: number ) {
 ////	if ( a <= -1.0 ) {
-////		return PI;
+////		return idMath.PI;
 ////	}
 ////	if ( a >= 1.0 ) {
 ////		return 0.0;

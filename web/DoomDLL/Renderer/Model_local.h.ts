@@ -1134,354 +1134,353 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 idRenderModelStatic::ConvertLWOToModelSurfaces
 =================
 */
-	ConvertLWOToModelSurfaces(lwo: lwObject): boolean {
-		todoThrow ( );
-	//const idMaterial *im1, *im2;
-	//srfTriangles_t	*tri;
-	//lwSurface *		lwoSurf;
-	//int				numTVertexes;
-	//int				i, j, k;
-	//int				v, tv;
-	//idVec3 *		vList;
-	//int *			vRemap;
-	//idVec2 *		tvList;
-	//int *			tvRemap;
-	//matchVert_t *	mvTable;	// all of the match verts
-	//matchVert_t **	mvHash;		// points inside mvTable for each xyz index
-	//matchVert_t *	lastmv;
-	//matchVert_t *	mv;
-	//idVec3			normal;
-	//int *			mergeTo;
-	//byte			color[4];
-	//modelSurface_t	surf, *modelSurf;
+	ConvertLWOToModelSurfaces ( lwo: lwObject ): boolean {
+		var im1: idMaterial, im2: idMaterial;
+		var tri: srfTriangles_t;
+		var lwoSurf: lwSurface;
+		var numTVertexes: number;
+		var i: number, j: number, k: number;
+		var v: number, tv: number;
+		var vList: idVec3[];
+		var vRemap: Int32Array;
+		var tvList: idVec2[];
+		var tvRemap: Int32Array;
+		var mvTable: matchVert_t[]; // all of the match verts
+		var mvHash: matchVert_t[]; //matchVert_t **	// points inside mvTable for each xyz index
+		var lastmv: matchVert_t;
+		var mv: matchVert_t;
+		var normal = new idVec3;
+		var mergeTo: Int32Array;
+		var color = new Uint8Array( 4 );
+		var surf = new modelSurface_t, modelSurf: modelSurface_t;
 
-	//if ( !lwo ) {
-	//	return false;
-	//}
-	//if ( lwo.surf == NULL ) {
-	//	return false;
-	//}
+		if ( !lwo ) {
+			return false;
+		}
+		if ( lwo.surf == null ) {
+			return false;
+		}
 
-	//timeStamp = lwo.timeStamp;
+		this.timeStamp = lwo.timeStamp;
 
-	//// count the number of surfaces
-	//i = 0;
-	//for ( lwoSurf = lwo.surf; lwoSurf; lwoSurf = lwoSurf.next ) {
-	//	i++;
-	//}
+		// count the number of surfaces
+		i = 0;
+		for ( lwoSurf = lwo.surf; lwoSurf; lwoSurf = lwoSurf.next ) {
+			i++;
+		}
 
-	//// the modeling programs can save out multiple surfaces with a common
-	//// material, but we would like to merge them together where possible
-	//mergeTo = (int *)_alloca( i * sizeof( mergeTo[0] ) ); 
-	//memset( &surf, 0, sizeof( surf ) );
+		// the modeling programs can save out multiple surfaces with a common
+		// material, but we would like to merge them together where possible
+		mergeTo = new Int32Array( i ); // (int *)_alloca( i * sizeof( mergeTo[0] ) ); 
+		surf.memset0 ( ); //memset( &surf, 0, sizeof( surf ) );
 
-	//if ( !r_mergeModelSurfaces.GetBool() ) {
-	//	// don't merge any
-	//	for ( lwoSurf = lwo.surf, i = 0; lwoSurf; lwoSurf = lwoSurf.next, i++ ) {
-	//		mergeTo[i] = i;
-	//		surf.shader = declManager.FindMaterial( lwoSurf.name );
-	//		surf.id = this.NumSurfaces();
-	//		this.AddSurface( surf );
-	//	}
-	//} else {
-	//	// search for material matches
-	//	for ( lwoSurf = lwo.surf, i = 0; lwoSurf; lwoSurf = lwoSurf.next, i++ ) {
-	//		im1 = declManager.FindMaterial( lwoSurf.name );
-	//		if ( im1.IsDiscrete() ) {
-	//			// flares, autosprites, etc
-	//			j = this.NumSurfaces();
-	//		} else {
-	//			for ( j = 0 ; j < this.NumSurfaces() ; j++ ) {
-	//				modelSurf = &this.surfaces[j];
-	//				im2 = modelSurf.shader;
-	//				if ( im1 == im2 ) {
-	//					// merge this
-	//					mergeTo[i] = j;
-	//					break;
-	//				}
-	//			}
-	//		}
-	//		if ( j == this.NumSurfaces() ) {
-	//			// didn't merge
-	//			mergeTo[i] = j;
-	//			surf.shader = im1;
-	//			surf.id = this.NumSurfaces();
-	//			this.AddSurface( surf );
-	//		}
-	//	}
-	//}
+		if ( !idRenderModelStatic.r_mergeModelSurfaces.GetBool ( ) ) {
+			// don't merge any
+			for ( lwoSurf = lwo.surf, i = 0; lwoSurf; lwoSurf = lwoSurf.next, i++ ) {
+				mergeTo[i] = i;
+				surf.shader = declManager.FindMaterial( lwoSurf.name );
+				surf.id = this.NumSurfaces ( );
+				this.AddSurface( surf );
+			}
+		} else {
+			// search for material matches
+			for ( lwoSurf = lwo.surf, i = 0; lwoSurf; lwoSurf = lwoSurf.next, i++ ) {
+				im1 = declManager.FindMaterial( lwoSurf.name );
+				if ( im1.IsDiscrete ( ) ) {
+					// flares, autosprites, etc
+					j = this.NumSurfaces ( );
+				} else {
+					for ( j = 0; j < this.NumSurfaces ( ); j++ ) {
+						modelSurf = this.surfaces[j];
+						im2 = modelSurf.shader;
+						if ( im1 == im2 ) {
+							// merge this
+							mergeTo[i] = j;
+							break;
+						}
+					}
+				}
+				if ( j == this.NumSurfaces ( ) ) {
+					// didn't merge
+					mergeTo[i] = j;
+					surf.shader = im1;
+					surf.id = this.NumSurfaces ( );
+					this.AddSurface( surf );
+				}
+			}
+		}
 
-	//idVectorSubset<idVec3, 3> vertexSubset;
-	//idVectorSubset<idVec2, 2> texCoordSubset;
+		var vertexSubset = new idVectorSubset<idVec3>( idVec3, 3 );
+		var texCoordSubset = new idVectorSubset<idVec2>( idVec2, 2 );
 
-	//// we only ever use the first layer
-	//lwLayer *layer = lwo.layer;
+		// we only ever use the first layer
+		var layer: lwLayer = lwo.layer;
 
-	//// vertex positions
-	//if ( layer.point.count <= 0 ) {
-	//	common.Warning( "ConvertLWOToModelSurfaces: model \'%s\' has bad or missing vertex data", this.name.c_str() );
-	//	return false;
-	//}
+		// vertex positions
+		if ( layer.point.count <= 0 ) {
+			common.Warning( "ConvertLWOToModelSurfaces: model \'%s\' has bad or missing vertex data", this.name.c_str ( ) );
+			return false;
+		}
 
-	//vList = (idVec3 *)R_StaticAlloc( layer.point.count * sizeof( vList[0] ) );
-	//for ( j = 0; j < layer.point.count; j++ ) {
-	//	vList[j].x = layer.point.pt[j].pos[0];
-	//	vList[j].y = layer.point.pt[j].pos[2];
-	//	vList[j].z = layer.point.pt[j].pos[1];
-	//}
+		vList = newStructArray<idVec3>( idVec3, layer.point.count ); // (idVec3 *)R_StaticAlloc( layer.point.count * sizeof( vList[0] ) );
+		for ( j = 0; j < layer.point.count; j++ ) {
+			vList[j].x = layer.point.pt[j].pos[0];
+			vList[j].y = layer.point.pt[j].pos[2];
+			vList[j].z = layer.point.pt[j].pos[1];
+		}
 
-	//// vertex texture coords
-	//numTVertexes = 0;
+		// vertex texture coords
+		numTVertexes = 0;
 
-	//if ( layer.nvmaps ) {
-	//	for( lwVMap *vm = layer.vmap; vm; vm = vm.next ) {
-	//		if ( vm.type == LWID_('T','X','U','V') ) {
-	//			numTVertexes += vm.nverts;
-	//		}
-	//	}
-	//}
+		if ( layer.nvmaps ) {
+			for ( var vm = layer.vmap; vm; vm = vm.next ) {
+				if ( vm.type == LWID_( 'T', 'X', 'U', 'V' ) ) {
+					numTVertexes += vm.nverts;
+				}
+			}
+		}
 
-	//if ( numTVertexes ) {
-	//	tvList = (idVec2 *)Mem_Alloc( numTVertexes * sizeof( tvList[0] ) );
-	//	int offset = 0;
-	//	for( lwVMap *vm = layer.vmap; vm; vm = vm.next ) {
-	//		if ( vm.type == LWID_('T','X','U','V') ) {
-	//  			vm.offset = offset;
-	//	  		for ( k = 0; k < vm.nverts; k++ ) {
-	//	  		   	tvList[k + offset].x = vm.val[k][0];
-	//				tvList[k + offset].y = 1.0 - vm.val[k][1];	// invert the t
-	//	  		}
-	//		  	offset += vm.nverts;
-	//		}
-	//	}
-	//} else {
-	//	common.Warning( "ConvertLWOToModelSurfaces: model \'%s\' has bad or missing uv data", this.name.c_str() );
-	//  	numTVertexes = 1;
-	//	tvList = (idVec2 *)Mem_ClearedAlloc( numTVertexes * sizeof( tvList[0] ) );
-	//}
+		if ( numTVertexes ) {
+			tvList = newStructArray<idVec2>( idVec2, numTVertexes ); // (idVec2 *)Mem_Alloc( numTVertexes * sizeof( tvList[0] ) );
+			var /*int */offset = 0;
+			for ( var vm = layer.vmap; vm; vm = vm.next ) {
+				if ( vm.type == LWID_( 'T', 'X', 'U', 'V' ) ) {
+					vm.offset = offset;
+					for ( k = 0; k < vm.nverts; k++ ) {
+						tvList[k + offset].x = vm.val[k][0];
+						tvList[k + offset].y = 1.0 - vm.val[k][1]; // invert the t
+					}
+					offset += vm.nverts;
+				}
+			}
+		} else {
+			common.Warning( "ConvertLWOToModelSurfaces: model \'%s\' has bad or missing uv data", this.name.c_str ( ) );
+			numTVertexes = 1;
+			tvList = newStructArray<idVec2>( idVec2, numTVertexes ); //(idVec2 *)Mem_ClearedAlloc( numTVertexes * sizeof( tvList[0] ) );
+		}
 
-	//// It seems like the tools our artists are using often generate
-	//// verts and texcoords slightly separated that should be merged
-	//// note that we really should combine the surfaces with common materials
-	//// before doing this operation, because we can miss a slop combination
-	//// if they are in different surfaces
+		// It seems like the tools our artists are using often generate
+		// verts and texcoords slightly separated that should be merged
+		// note that we really should combine the surfaces with common materials
+		// before doing this operation, because we can miss a slop combination
+		// if they are in different surfaces
 
-	//vRemap = (int *)R_StaticAlloc( layer.point.count * sizeof( vRemap[0] ) );
+		vRemap = new Int32Array( layer.point.count ); // (int *)R_StaticAlloc( layer.point.count * sizeof( vRemap[0] ) );
 
-	//if ( this.fastLoad ) {
-	//	// renderbump doesn't care about vertex count
-	//	for ( j = 0; j < layer.point.count; j++ ) {
-	//		vRemap[j] = j;
-	//	}
-	//} else {
-	//	float vertexEpsilon = idRenderModelStatic.r_slopVertex.GetFloat();
-	//	float expand = 2 * 32 * vertexEpsilon;
-	//	idVec3 mins, maxs;
+		if ( this.fastLoad ) {
+			// renderbump doesn't care about vertex count
+			for ( j = 0; j < layer.point.count; j++ ) {
+				vRemap[j] = j;
+			}
+		} else {
+			var /*float */vertexEpsilon = idRenderModelStatic.r_slopVertex.GetFloat ( );
+			var /*float */ expand = 2 * 32 * vertexEpsilon;
+			var mins = new idVec3, maxs = new idVec3;
 
-	//	SIMDProcessor.MinMax( mins, maxs, vList, layer.point.count );
-	//	mins -= idVec3( expand, expand, expand );
-	//	maxs += idVec3( expand, expand, expand );
-	//	vertexSubset.Init( mins, maxs, 32, 1024 );
-	//	for ( j = 0; j < layer.point.count; j++ ) {
-	//		vRemap[j] = vertexSubset.FindVector( vList, j, vertexEpsilon );
-	//	}
-	//}
+			SIMDProcessor.MinMax_vec3( mins, maxs, vList, layer.point.count );
+			mins.opSubtractionAssignment( new idVec3( expand, expand, expand ) );
+			maxs.opAdditionAssignment( new idVec3( expand, expand, expand ) );
+			vertexSubset.Init( mins, maxs, 32, 1024 );
+			for ( j = 0; j < layer.point.count; j++ ) {
+				vRemap[j] = vertexSubset.FindVector( vList, j, vertexEpsilon );
+			}
+		}
 
-	//tvRemap = (int *)R_StaticAlloc( numTVertexes * sizeof( tvRemap[0] ) );
+		tvRemap = new Int32Array( numTVertexes ); // (int *)R_StaticAlloc( numTVertexes * sizeof( tvRemap[0] ) );
 
-	//if ( this.fastLoad ) {
-	//	// renderbump doesn't care about vertex count
-	//	for ( j = 0; j < numTVertexes; j++ ) {
-	//		tvRemap[j] = j;
-	//	}
-	//} else {
-	//	float texCoordEpsilon = idRenderModelStatic.r_slopTexCoord.GetFloat();
-	//	float expand = 2 * 32 * texCoordEpsilon;
-	//	idVec2 mins, maxs;
+		if ( this.fastLoad ) {
+			// renderbump doesn't care about vertex count
+			for ( j = 0; j < numTVertexes; j++ ) {
+				tvRemap[j] = j;
+			}
+		} else {
+			var /*float */texCoordEpsilon = idRenderModelStatic.r_slopTexCoord.GetFloat ( );
+			var /*float */expand = 2 * 32 * texCoordEpsilon;
+			var mins_ = new idVec2, maxs_ = new idVec2;
 
-	//	SIMDProcessor.MinMax( mins, maxs, tvList, numTVertexes );
-	//	mins -= idVec2( expand, expand );
-	//	maxs += idVec2( expand, expand );
-	//	texCoordSubset.Init( mins, maxs, 32, 1024 );
-	//	for ( j = 0; j < numTVertexes; j++ ) {
-	//		tvRemap[j] = texCoordSubset.FindVector( tvList, j, texCoordEpsilon );
-	//	}
-	//}
+			SIMDProcessor.MinMax_vec2( mins_, maxs_, tvList, numTVertexes );
+			mins_.opSubtractionAssignment( new idVec2( expand, expand ) );
+			maxs_.opAdditionAssignment( new idVec2( expand, expand ) );
+			texCoordSubset.Init( mins_, maxs_, 32, 1024 );
+			for ( j = 0; j < numTVertexes; j++ ) {
+				tvRemap[j] = texCoordSubset.FindVector( tvList, j, texCoordEpsilon );
+			}
+		}
 
-	//// build the surfaces
-	//for ( lwoSurf = lwo.surf, i = 0; lwoSurf; lwoSurf = lwoSurf.next, i++ ) {
-	//	im1 = declManager.FindMaterial( lwoSurf.name );
+		// build the surfaces
+		for ( lwoSurf = lwo.surf, i = 0; lwoSurf; lwoSurf = lwoSurf.next, i++ ) {
+			im1 = declManager.FindMaterial( lwoSurf.name );
 
-	//	bool normalsParsed = true;
+			var normalsParsed = true;
 
-	//	// completely ignore any explict normals on surfaces with a renderbump command
-	//	// which will guarantee the best contours and least vertexes.
-	//	const char *rb = im1.GetRenderBump();
-	//	if ( rb && rb[0] ) {
-	//		normalsParsed = false;
-	//	}
+			// completely ignore any explict normals on surfaces with a renderbump command
+			// which will guarantee the best contours and least vertexes.
+			var rb = im1.GetRenderBump ( );
+			if ( rb /*&& rb[0]*/ ) {
+				normalsParsed = false;
+			}
 
-	//	// we need to find out how many unique vertex / texcoord combinations there are
+			// we need to find out how many unique vertex / texcoord combinations there are
 
-	//	// the maximum possible number of combined vertexes is the number of indexes
-	//	mvTable = (matchVert_t *)R_ClearedStaticAlloc( layer.polygon.count * 3 * sizeof( mvTable[0] ) );
+			// the maximum possible number of combined vertexes is the number of indexes
+			mvTable = newStructArray<matchVert_t>( matchVert_t, layer.polygon.count * 3 ); // (matchVert_t *)R_ClearedStaticAlloc( layer.polygon.count * 3 * sizeof( mvTable[0] ) );
 
-	//	// we will have a hash chain based on the xyz values
-	//	mvHash = (matchVert_t **)R_ClearedStaticAlloc( layer.point.count * sizeof( mvHash[0] ) );
+			// we will have a hash chain based on the xyz values
+			mvHash = newStructArray<matchVert_t>( matchVert_t, layer.point.count ); //(matchVert_t **)R_ClearedStaticAlloc( layer.point.count * sizeof( mvHash[0] ) );
 
-	//	// allocate triangle surface
-	//	tri = R_AllocStaticTriSurf();
-	//	tri.numVerts = 0;
-	//	tri.numIndexes = 0;
-	//	R_AllocStaticTriSurfIndexes( tri, layer.polygon.count * 3 );
-	//	tri.generateNormals = !normalsParsed;
+			// allocate triangle surface
+			tri = R_AllocStaticTriSurf ( );
+			tri.numVerts = 0;
+			tri.numIndexes = 0;
+			R_AllocStaticTriSurfIndexes( tri, layer.polygon.count * 3 );
+			tri.generateNormals = !normalsParsed;
 
-	//	// find all the unique combinations
-	//	float	normalEpsilon;
-	//	if ( this.fastLoad ) {
-	//		normalEpsilon = 1.0;	// don't merge unless completely exact
-	//	} else {
-	//		normalEpsilon = 1.0 - idRenderModelStatic.r_slopNormal.GetFloat();
-	//	}
-	//	for ( j = 0; j < layer.polygon.count; j++ ) {
-	//		lwPolygon *poly = &layer.polygon.pol[j];
+			// find all the unique combinations
+			var /*float	*/normalEpsilon: number;
+			if ( this.fastLoad ) {
+				normalEpsilon = 1.0; // don't merge unless completely exact
+			} else {
+				normalEpsilon = 1.0 - idRenderModelStatic.r_slopNormal.GetFloat ( );
+			}
+			for ( j = 0; j < layer.polygon.count; j++ ) {
+				var poly: lwPolygon = layer.polygon.pol[j];
 
-	//		if ( poly.surf != lwoSurf ) {
-	//			continue;
-	//		}
+				if ( poly.surf != lwoSurf ) {
+					continue;
+				}
 
-	//		if ( poly.nverts != 3 ) {
-	//			common.Warning( "ConvertLWOToModelSurfaces: model %s has too many verts for a poly! Make sure you triplet it down", this.name.c_str() );
-	//			continue;
-	//		}
+				if ( poly.nverts != 3 ) {
+					common.Warning( "ConvertLWOToModelSurfaces: model %s has too many verts for a poly! Make sure you triplet it down", this.name.c_str ( ) );
+					continue;
+				}
 
-	//		for ( k = 0; k < 3; k++ ) {
+				for ( k = 0; k < 3; k++ ) {
 
-	//			v = vRemap[poly.v[k].index];
+					v = vRemap[poly.v[k].index];
 
-	//			normal.x = poly.v[k].norm[0];
-	//			normal.y = poly.v[k].norm[2];
-	//			normal.z = poly.v[k].norm[1];
+					normal.x = poly.v[k].norm[0];
+					normal.y = poly.v[k].norm[2];
+					normal.z = poly.v[k].norm[1];
 
-	//			// LWO models aren't all that pretty when it comes down to the floating point values they store
-	//			normal.FixDegenerateNormal();
+					// LWO models aren't all that pretty when it comes down to the floating point values they store
+					normal.FixDegenerateNormal ( );
 
-	//			tv = 0;
+					tv = 0;
 
-	//			color[0] = lwoSurf.color.rgb[0] * 255;
-	//			color[1] = lwoSurf.color.rgb[1] * 255;
-	//			color[2] = lwoSurf.color.rgb[2] * 255;
-	//			color[3] = 255;
+					color[0] = lwoSurf.color.rgb[0] * 255;
+					color[1] = lwoSurf.color.rgb[1] * 255;
+					color[2] = lwoSurf.color.rgb[2] * 255;
+					color[3] = 255;
 
-	//			// first set attributes from the vertex
-	//			lwPoint	*pt = &layer.point.pt[poly.v[k].index];
-	//			int nvm;
-	//			for ( nvm = 0; nvm < pt.nvmaps; nvm++ ) {
-	//				lwVMapPt *vm = &pt.vm[nvm];
+					// first set attributes from the vertex
+					var pt: lwPoint = layer.point.pt[poly.v[k].index];
+					var /*int */nvm: number;
+					for ( nvm = 0; nvm < pt.nvmaps; nvm++ ) {
+						var vm_: lwVMapPt = pt.vm[nvm];
 
-	//				if ( vm.vmap.type == LWID_('T','X','U','V') ) {
-	//					tv = tvRemap[vm.index + vm.vmap.offset];
-	//				}
-	//				if ( vm.vmap.type == LWID_('R','G','B','A') ) {
-	//					for ( int chan = 0; chan < 4; chan++ ) {
-	//						color[chan] = 255 * vm.vmap.val[vm.index][chan];
-	//					}
-	//				}
-	//			}
+						if ( vm_.vmap.type == LWID_( 'T', 'X', 'U', 'V' ) ) {
+							tv = tvRemap[vm_.index + vm_.vmap.offset];
+						}
+						if ( vm_.vmap.type == LWID_( 'R', 'G', 'B', 'A' ) ) {
+							for ( var chan = 0; chan < 4; chan++ ) {
+								color[chan] = 255 * vm_.vmap.val[vm_.index][chan];
+							}
+						}
+					}
 
-	//			// then override with polygon attributes
-	//			for ( nvm = 0; nvm < poly.v[k].nvmaps; nvm++ ) {
-	//				lwVMapPt *vm = &poly.v[k].vm[nvm];
+					// then override with polygon attributes
+					for ( nvm = 0; nvm < poly.v[k].nvmaps; nvm++ ) {
+						var vm__: lwVMapPt = poly.v[k].vm[nvm];
 
-	//				if ( vm.vmap.type == LWID_('T','X','U','V') ) {
-	//					tv = tvRemap[vm.index + vm.vmap.offset];
-	//				}
-	//				if ( vm.vmap.type == LWID_('R','G','B','A') ) {
-	//					for ( int chan = 0; chan < 4; chan++ ) {
-	//						color[chan] = 255 * vm.vmap.val[vm.index][chan];
-	//					}
-	//				}
-	//			}
+						if ( vm__.vmap.type == LWID_( 'T', 'X', 'U', 'V' ) ) {
+							tv = tvRemap[vm__.index + vm__.vmap.offset];
+						}
+						if ( vm__.vmap.type == LWID_( 'R', 'G', 'B', 'A' ) ) {
+							for ( var chan = 0; chan < 4; chan++ ) {
+								color[chan] = 255 * vm__.vmap.val[vm__.index][chan];
+							}
+						}
+					}
 
-	//			// find a matching vert
-	//			for ( lastmv = NULL, mv = mvHash[v]; mv != NULL; lastmv = mv, mv = mv.next ) {
-	//				if ( mv.tv != tv ) {
-	//					continue;
-	//				}
-	//				if ( *(unsigned *)mv.color != *(unsigned *)color ) {
-	//					continue;
-	//				}
-	//				if ( !normalsParsed ) {
-	//					// if we are going to create the normals, just
-	//					// matching texcoords is enough
-	//					break;
-	//				}
-	//				if ( mv.normal * normal > normalEpsilon ) {
-	//					break;		// we already have this one
-	//				}
-	//			}
-	//			if ( !mv ) {
-	//				// allocate a new match vert and link to hash chain
-	//				mv = &mvTable[ tri.numVerts ];
-	//				mv.v = v;
-	//				mv.tv = tv;
-	//				mv.normal = normal;
-	//				*(unsigned *)mv.color = *(unsigned *)color;
-	//				mv.next = NULL;
-	//				if ( lastmv ) {
-	//					lastmv.next = mv;
-	//				} else {
-	//					mvHash[v] = mv;
-	//				}
-	//				tri.numVerts++;
-	//			}
+					// find a matching vert
+					for ( lastmv = null, mv = mvHash[v]; mv != null; lastmv = mv, mv = mv.next ) {
+						if ( mv.tv != tv ) {
+							continue;
+						}
+						if ( /**(unsigned *)*/ new Uint32Array( mv.color.buffer )[0] != /**(unsigned *)*/new Uint32Array( color.buffer )[0] ) {
+							continue;
+						}
+						if ( !normalsParsed ) {
+							// if we are going to create the normals, just
+							// matching texcoords is enough
+							break;
+						}
+						if ( mv.normal.timesVec( normal ) > normalEpsilon ) {
+							break; // we already have this one
+						}
+					}
+					if ( !mv ) {
+						// allocate a new match vert and link to hash chain
+						mv = mvTable[tri.numVerts];
+						mv.v = v;
+						mv.tv = tv;
+						mv.normal.equals( normal );
+						mv.color.set(color);//*(unsigned *)mv.color = *(unsigned *)color;
+						mv.next = null;
+						if ( lastmv ) {
+							lastmv.next = mv;
+						} else {
+							mvHash[v] = mv;
+						}
+						tri.numVerts++;
+					}
 
-	//			tri.indexes[tri.numIndexes] = mv - mvTable;
-	//			tri.numIndexes++;
-	//		}
-	//	}
+					tri.indexes[tri.numIndexes] = mvTable.indexOf( mv ); // mv - mvTable;
+					tri.numIndexes++;
+				}
+			}
 
-	//	// allocate space for the indexes and copy them
-	//	if ( tri.numIndexes > layer.polygon.count * 3 ) {
-	//		common.FatalError( "ConvertLWOToModelSurfaces: index miscount in LWO file %s", this.name.c_str() );
-	//	}
-	//	if ( tri.numVerts > layer.polygon.count * 3 ) {
-	//		common.FatalError( "ConvertLWOToModelSurfaces: vertex miscount in LWO file %s", this.name.c_str() );
-	//	}
+			// allocate space for the indexes and copy them
+			if ( tri.numIndexes > layer.polygon.count * 3 ) {
+				common.FatalError( "ConvertLWOToModelSurfaces: index miscount in LWO file %s", this.name.c_str ( ) );
+			}
+			if ( tri.numVerts > layer.polygon.count * 3 ) {
+				common.FatalError( "ConvertLWOToModelSurfaces: vertex miscount in LWO file %s", this.name.c_str ( ) );
+			}
 
-	//	// now allocate and generate the combined vertexes
-	//	R_AllocStaticTriSurfVerts( tri, tri.numVerts );
-	//	for ( j = 0; j < tri.numVerts; j++ ) {
-	//		mv = &mvTable[j];
-	//		tri.verts[ j ].Clear();
-	//		tri.verts[ j ].xyz = vList[ mv.v ];
-	//		tri.verts[ j ].st = tvList[ mv.tv ];
-	//		tri.verts[ j ].normal = mv.normal;
-	//		*(unsigned *)tri.verts[j].color = *(unsigned *)mv.color;
-	//	}
+			// now allocate and generate the combined vertexes
+			R_AllocStaticTriSurfVerts( tri, tri.numVerts );
+			for ( j = 0; j < tri.numVerts; j++ ) {
+				mv = mvTable[j];
+				tri.verts[j].Clear ( );
+				tri.verts[j].xyz.equals( vList[mv.v] );
+				tri.verts[j].st.equals( tvList[mv.tv] );
+				tri.verts[j].normal.equals( mv.normal );
+				tri.verts[j].color.set( mv.color );
+			}
 
-	//	R_StaticFree( mvTable );
-	//	R_StaticFree( mvHash );
+			R_StaticFree( mvTable );
+			R_StaticFree( mvHash );
 
-	//	// see if we need to merge with a previous surface of the same material
-	//	modelSurf = &this.surfaces[mergeTo[ i ]];
-	//	srfTriangles_t	*mergeTri = modelSurf.geometry;
-	//	if ( !mergeTri ) {
-	//		modelSurf.geometry = tri;
-	//	} else {
-	//		modelSurf.geometry = R_MergeTriangles( mergeTri, tri );
-	//		R_FreeStaticTriSurf( tri );
-	//		R_FreeStaticTriSurf( mergeTri );
-	//	}
-	//}
+			// see if we need to merge with a previous surface of the same material
+			modelSurf = this.surfaces[mergeTo[i]];
+			var mergeTri: srfTriangles_t = modelSurf.geometry;
+			if ( !mergeTri ) {
+				modelSurf.geometry = tri;
+			} else {
+				modelSurf.geometry = R_MergeTriangles( mergeTri, tri );
+				R_FreeStaticTriSurf( tri );
+				R_FreeStaticTriSurf( mergeTri );
+			}
+		}
 
-	//R_StaticFree( tvRemap );
-	//R_StaticFree( vRemap );
-	//R_StaticFree( tvList );
-	//R_StaticFree( vList );
+		R_StaticFree( tvRemap );
+		R_StaticFree( vRemap );
+		R_StaticFree( tvList );
+		R_StaticFree( vList );
 
-	return true;
-}
+		return true;
+	}
 
 /////*
 ////=================

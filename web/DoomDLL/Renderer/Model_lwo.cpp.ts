@@ -31,20 +31,20 @@
 
 ////#include "Model_lwo.h"
 
-/////*
-////======================================================================
+/*
+======================================================================
 
-////	Converted from lwobject sample prog from LW 6.5 SDK.
+	Converted from lwobject sample prog from LW 6.5 SDK.
 
-////======================================================================
-////*/
+======================================================================
+*/
 
-/////*
-////======================================================================
-////lwFreeClip()
+/*
+======================================================================
+lwFreeClip()
 
-////Free memory used by an lwClip.
-////====================================================================== */
+Free memory used by an lwClip.
+====================================================================== */
 
 ////void lwFreeClip( lwClip *clip )
 ////{
@@ -1300,7 +1300,7 @@ function /*unsigned int */sgetU4 ( /*unsigned char **bp */bp: P ): number {
 	var /*unsigned  int*/i = new Uint32Array( 1 );
 
 	if ( flen == FLEN_ERROR ) return 0;
-	memcpyUint8Array( new Uint8Array( i ), bp.subarray ( ), 4 );
+	memcpyUint8Array( new Uint8Array( i.buffer ), bp.subarray ( ), 4 );
 	BigRevBytes( i, 4, 1 );
 	flen += 4;
 	bp.incrBy( 4 );
@@ -4028,121 +4028,122 @@ function lwGetVMap ( fp: idFile, /*int */cksize: number, /*int*/ ptoffset: numbe
 }
 
 
-/////*
-////======================================================================
-////lwGetPointVMaps()
+/*
+======================================================================
+lwGetPointVMaps()
 
-////Fill in the lwVMapPt structure for each point.
-////====================================================================== */
+Fill in the lwVMapPt structure for each point.
+====================================================================== */
 
-////int lwGetPointVMaps( point:lwPointList, lwVMap *vmap ):number
-////{
-////   lwVMap *vm;
-////   int i, j, n;
+function/*int */lwGetPointVMaps(point: lwPointList, vmap: lwVMap):number
+{
+	var vm: lwVMap;
+	var/*int */i: number, j: number, n: number;
 
-////   /* count the number of vmap values for each point */
+   /* count the number of vmap values for each point */
 
-////   vm = vmap;
-////   while ( vm ) {
-////      if ( !vm.perpoly )
-////         for ( i = 0; i < vm.nverts; i++ )
-////            ++point.pt[ vm.vindex[ i ]].nvmaps;
-////      vm = vm.next;
-////   }
+   vm = vmap;
+   while ( vm ) {
+      if ( !vm.perpoly )
+         for ( i = 0; i < vm.nverts; i++ )
+            ++point.pt[ vm.vindex[ i ]].nvmaps;
+      vm = vm.next;
+   }
 
-////   /* allocate vmap references for each mapped point */
+   /* allocate vmap references for each mapped point */
 
-////   for ( i = 0; i < point.count; i++ ) {
-////      if ( point.pt[ i ].nvmaps ) {
-////         point.pt[ i ].vm = (lwVMapPt*)Mem_ClearedAlloc( point.pt[ i ].nvmaps * sizeof( lwVMapPt ) );
-////         if ( !point.pt[ i ].vm ) return 0;
-////         point.pt[ i ].nvmaps = 0;
-////      }
-////   }
+   for ( i = 0; i < point.count; i++ ) {
+      if ( point.pt[ i ].nvmaps ) {
+	      point.pt[i].vm = newStructArray<lwVMapPt>( lwVMapPt, point.pt[i].nvmaps ); //(lwVMapPt*)Mem_ClearedAlloc( point.pt[ i ].nvmaps * sizeof( lwVMapPt ) );
+	      clearStructArray( point.pt[i].vm );
+         if ( !point.pt[ i ].vm ) return 0;
+         point.pt[ i ].nvmaps = 0;
+      }
+   }
 
-////   /* fill in vmap references for each mapped point */
+   /* fill in vmap references for each mapped point */
 
-////   vm = vmap;
-////   while ( vm ) {
-////      if ( !vm.perpoly ) {
-////         for ( i = 0; i < vm.nverts; i++ ) {
-////            j = vm.vindex[ i ];
-////            n = point.pt[ j ].nvmaps;
-////            point.pt[ j ].vm[ n ].vmap = vm;
-////            point.pt[ j ].vm[ n ].index = i;
-////            ++point.pt[ j ].nvmaps;
-////         }
-////      }
-////      vm = vm.next;
-////   }
+   vm = vmap;
+   while ( vm ) {
+      if ( !vm.perpoly ) {
+         for ( i = 0; i < vm.nverts; i++ ) {
+            j = vm.vindex[ i ];
+            n = point.pt[ j ].nvmaps;
+            point.pt[ j ].vm[ n ].vmap = vm;
+            point.pt[ j ].vm[ n ].index = i;
+            ++point.pt[ j ].nvmaps;
+         }
+      }
+      vm = vm.next;
+   }
 
-////   return 1;
-////}
+   return 1;
+}
 
 
-/////*
-////======================================================================
-////lwGetPolyVMaps()
+/*
+======================================================================
+lwGetPolyVMaps()
 
-////Fill in the lwVMapPt structure for each polygon vertex.
-////====================================================================== */
+Fill in the lwVMapPt structure for each polygon vertex.
+====================================================================== */
 
-////int lwGetPolyVMaps( polygon:lwPolygonList, lwVMap *vmap ):number
-////{
-////   lwVMap *vm;
-////   lwPolVert *pv;
-////   int i, j;
+function /*int */lwGetPolyVMaps ( polygon: lwPolygonList, vmap: lwVMap ): number {
+	var vm: lwVMap;
+	var pv: lwPolVert;
+	var /*int */i: number, j: number;
 
-////   /* count the number of vmap values for each polygon vertex */
+	/* count the number of vmap values for each polygon vertex */
 
-////   vm = vmap;
-////   while ( vm ) {
-////      if ( vm.perpoly ) {
-////         for ( i = 0; i < vm.nverts; i++ ) {
-////            for ( j = 0; j < polygon.pol[ vm.pindex[ i ]].nverts; j++ ) {
-////               pv = &polygon.pol[ vm.pindex[ i ]].v[ j ];
-////               if ( vm.vindex[ i ] == pv.index ) {
-////                  ++pv.nvmaps;
-////                  break;
-////               }
-////            }
-////         }
-////      }
-////      vm = vm.next;
-////   }
+	vm = vmap;
+	while ( vm ) {
+		if ( vm.perpoly ) {
+			for ( i = 0; i < vm.nverts; i++ ) {
+				for ( j = 0; j < polygon.pol[vm.pindex[i]].nverts; j++ ) {
+					pv = polygon.pol[vm.pindex[i]].v[j];
+					if ( vm.vindex[i] == pv.index ) {
+						++pv.nvmaps;
+						break;
+					}
+				}
+			}
+		}
+		vm = vm.next;
+	}
 
-////   /* allocate vmap references for each mapped vertex */
+	/* allocate vmap references for each mapped vertex */
 
-////   for ( i = 0; i < polygon.count; i++ ) {
-////      for ( j = 0; j < polygon.pol[ i ].nverts; j++ ) {
-////         pv = &polygon.pol[ i ].v[ j ];
-////         if ( pv.nvmaps ) {
-////            pv.vm = (lwVMapPt*)Mem_ClearedAlloc( pv.nvmaps * sizeof( lwVMapPt ) );
-////            if ( !pv.vm ) return 0;
-////            pv.nvmaps = 0;
-////         }
-////      }
-////   }
+	for ( i = 0; i < polygon.count; i++ ) {
+		for ( j = 0; j < polygon.pol[i].nverts; j++ ) {
+			pv = polygon.pol[i].v[j];
+			if ( pv.nvmaps ) {
+				pv.vm = newStructArray<lwVMapPt>(lwVMapPt, pv.nvmaps);//(lwVMapPt*)Mem_ClearedAlloc( pv.nvmaps * sizeof( lwVMapPt ) );
+				clearStructArray( pv.vm );
+				if ( !pv.vm ) return 0;
+				pv.nvmaps = 0;
+			}
+		}
+	}
 
-////   /* fill in vmap references for each mapped point */
+	/* fill in vmap references for each mapped point */
 
-////   vm = vmap;
-////   while ( vm ) {
-////      if ( vm.perpoly ) {
-////         for ( i = 0; i < vm.nverts; i++ ) {
-////            for ( j = 0; j < polygon.pol[ vm.pindex[ i ]].nverts; j++ ) {
-////               pv = &polygon.pol[ vm.pindex[ i ]].v[ j ];
-////               if ( vm.vindex[ i ] == pv.index ) {
-////                  pv.vm[ pv.nvmaps ].vmap = vm;
-////                  pv.vm[ pv.nvmaps ].index = i;
-////                  ++pv.nvmaps;
-////                  break;
-////               }
-////            }
-////         }
-////      }
-////      vm = vm.next;
-////   }
+	vm = vmap;
+	while ( vm ) {
+		if ( vm.perpoly ) {
+			for ( i = 0; i < vm.nverts; i++ ) {
+				for ( j = 0; j < polygon.pol[vm.pindex[i]].nverts; j++ ) {
+					pv = polygon.pol[vm.pindex[i]].v[j];
+					if ( vm.vindex[i] == pv.index ) {
+						pv.vm[pv.nvmaps].vmap = vm;
+						pv.vm[pv.nvmaps].index = i;
+						++pv.nvmaps;
+						break;
+					}
+				}
+			}
+		}
+		vm = vm.next;
+	}
 
-////   return 1;
-////}
+	return 1;
+}
