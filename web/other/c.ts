@@ -211,7 +211,6 @@ function short ( buf: Uint8Array, ptr: number ): number {
 	return buf[ptr] + ( buf[ptr + 1] << 8 );
 }
 
-
 var unsigned_short_arr = new Uint16Array( 1 );
 function unsigned_short ( val: number ): number {
 	unsigned_short_arr[0] = val;
@@ -285,6 +284,11 @@ var ceilf = Math.ceil;
 function rand() {
     todo("rand");
     return 10;
+}
+
+// https://stackoverflow.com/questions/10281115/is-there-a-better-way-to-simulate-pointers-in-javascript
+function createPointer ( read: any, write: any ): any {
+	return { get value ( ): any { return read ( ); }, set value ( v: any ) { write( v ); } };
 }
 
 function qsort ( base: any[], num: number, size: number, compar: ( a: any, b: any ) => number ): void {

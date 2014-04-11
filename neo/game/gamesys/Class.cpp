@@ -90,7 +90,9 @@ idTypeInfo::idTypeInfo( const char *classname, const char *superclass, idEventFu
 	}
 
 	// Insert sorted
-	for ( insert = &typelist; *insert; insert = &(*insert)->next ) {
+	for ( insert = &typelist; 
+		*insert; 
+		insert = &(*insert)->next ) {
 		assert( idStr::Cmp( classname, (*insert)->classname ) );
 		if ( idStr::Cmp( classname, (*insert)->classname ) < 0 ) {
 			next = *insert;

@@ -98,7 +98,7 @@ class idEventArg {
 ***********************************************************************/
 
 // this is the head of a singly linked list of all the idTypes
-var typelist: idTypeInfo; // todo: CLASS_DECLARATION maros set these up, but if this is only for debugging leave this for now
+var typelist: idTypeInfo;
 var classHierarchy = new idHierarchy<idTypeInfo> ( );
 var/*int*/ eventCallbackMemory	= 0;
 
@@ -177,7 +177,8 @@ class idTypeInfo {
 ////	void ( idClass::*Spawn )( ), void ( idClass::*Save )( idSaveGame *savefile ) const, void ( idClass::*Restore )( idRestoreGame *savefile ) ) {
 
 		var type: idTypeInfo;
-		var insert: idTypeInfo;
+		var insert: any; //**insert
+		var oldInsert: any; // capture correct reference on second use of createPointer (todo: rewrite nicely)
 
 		this.classname = classname;
 		this.superclass = superclass;
@@ -200,26 +201,21 @@ class idTypeInfo {
 			}
 		}
 
-		//// Insert sorted
-		//for ( insert = &typelist; *insert; insert = &(*insert).next ) {
-		//	assert( idStr::Cmp( classname, (*insert).classname ) );
-		//	if ( idStr::Cmp( classname, (*insert).classname ) < 0 ) {
-		//		next = *insert;
-		//		*insert = this;
-		//		break;
-		//	}
-		//}
-		//if ( !*insert ) {
-		//	*insert = this;
-		//	next = NULL;
-		//}
-
-		todo( "do sorting code above instead of this hack below" );
-		if ( typelist == null ) {
-			typelist = this;
-		} else {
-			var lastNode = idTypeInfo.LastTypeListNode ( );
-			lastNode.next = this;
+		// Insert sorted
+		for ( insert = createPointer( ( ) => typelist, ( v: any ) => { typelist = v; } ) /* &typelist*/;
+			insert.value;
+			oldInsert = insert.value, insert = createPointer( ( ) => ( oldInsert ).next, ( v: any ) => { ( oldInsert ).next = v; } ) ) /*insert = &(*insert)->next*/
+		{
+			assert( idStr.Cmp( classname, ( insert.value ).classname ) );
+			if ( idStr.Cmp( classname, ( insert.value ).classname ) < 0 ) {
+				this.next = insert.value;
+				insert.value = this;
+				break;
+			}
+		}
+		if ( !insert.value ) {
+			insert.value = this;
+			this.next = null;
 		}
 	}
 
