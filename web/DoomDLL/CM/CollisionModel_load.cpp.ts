@@ -3437,22 +3437,22 @@ idCollisionModelManagerLocal.prototype.GetModelBounds = function ( model: /*cmHa
 	return true;
 };
 
-/////*
-////===================
-////idCollisionModelManagerLocal::GetModelContents
-////===================
-////*/
-////bool idCollisionModelManagerLocal::GetModelContents( cmHandle_t model, int &contents ) const {
-////	if ( model < 0 || model > MAX_SUBMODELS || model >= this.numModels || !this.models[model] ) {
-////		common.Printf( "idCollisionModelManagerLocal::GetModelContents: invalid model handle\n" );
-////		return false;
-////	}
-////
-////	contents = this.models[model].contents;
-////
-////	return true;
-////}
-////
+/*
+===================
+idCollisionModelManagerLocal::GetModelContents
+===================
+*/
+idCollisionModelManagerLocal.prototype.GetModelContents = function ( model: /*cmHandle_t*/number, /*int &*/contents: R<number> ): boolean {
+	if ( model < 0 || model > MAX_SUBMODELS || model >= this.numModels || !this.models[model] ) {
+		common.Printf( "idCollisionModelManagerLocal::GetModelContents: invalid model handle\n" );
+		return false;
+	}
+
+	contents.$ = this.models[model].contents;
+
+	return true;
+};
+
 /////*
 ////===================
 ////idCollisionModelManagerLocal::GetModelVertex
