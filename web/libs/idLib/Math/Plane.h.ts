@@ -616,6 +616,11 @@ class idPlane {
 	ToString ( /*int */precision = 2 ): string {
 		return idStr.FloatArrayToString( this.ToFloatPtr ( ), this.GetDimension ( ), precision );
 	}
+
+	valueOf(): number {
+		todoThrow("error: implicity idPlane valueOf called");
+		return NaN;
+	}
 }
 
 Object.defineProperty(idPlane.prototype, "0", {

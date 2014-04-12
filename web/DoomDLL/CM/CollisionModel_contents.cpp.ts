@@ -59,35 +59,35 @@
 ////	float d, bestd;
 ////	idVec3 *p;
 ////
-////	if ( b->checkcount == idCollisionModelManagerLocal::checkCount ) {
+////	if ( b.checkcount == idCollisionModelManagerLocal::checkCount ) {
 ////		return false;
 ////	}
-////	b->checkcount = idCollisionModelManagerLocal::checkCount;
+////	b.checkcount = idCollisionModelManagerLocal::checkCount;
 ////
-////	if ( !(b->contents & tw->contents) ) {
+////	if ( !(b.contents & tw.contents) ) {
 ////		return false;
 ////	}
 ////
 ////	// if the brush bounds don't intersect the trace bounds
-////	if ( !b->bounds.IntersectsBounds( tw->bounds ) ) {
+////	if ( !b.bounds.IntersectsBounds( tw.bounds ) ) {
 ////		return false;
 ////	}
 ////
-////	if ( tw->pointTrace ) {
+////	if ( tw.pointTrace ) {
 ////		numVerts = 1;
 ////	}
 ////	else {
-////		numVerts = tw->numVerts;
+////		numVerts = tw.numVerts;
 ////	}
 ////
 ////	for ( j = 0; j < numVerts; j++ ) {
-////		p = &tw->vertices[j].p;
+////		p = &tw.vertices[j].p;
 ////
 ////		// see if the point is inside the brush
 ////		bestPlane = 0;
 ////		bestd = -idMath::INFINITY;
-////		for ( i = 0; i < b->numPlanes; i++ ) {
-////			d = b->planes[i].Distance( *p );
+////		for ( i = 0; i < b.numPlanes; i++ ) {
+////			d = b.planes[i].Distance( *p );
 ////			if ( d >= 0.0f ) {
 ////				break;
 ////			}
@@ -96,16 +96,16 @@
 ////				bestPlane = i;
 ////			}
 ////		}
-////		if ( i >= b->numPlanes ) {
-////			tw->trace.fraction = 0.0f;
-////			tw->trace.c.type = CONTACT_TRMVERTEX;
-////			tw->trace.c.normal = b->planes[bestPlane].Normal();
-////			tw->trace.c.dist = b->planes[bestPlane].Dist();
-////			tw->trace.c.contents = b->contents;
-////			tw->trace.c.material = b->material;
-////			tw->trace.c.point = *p;
-////			tw->trace.c.modelFeature = 0;
-////			tw->trace.c.trmFeature = j;
+////		if ( i >= b.numPlanes ) {
+////			tw.trace.fraction = 0.0f;
+////			tw.trace.c.type = CONTACT_TRMVERTEX;
+////			tw.trace.c.normal = b.planes[bestPlane].Normal();
+////			tw.trace.c.dist = b.planes[bestPlane].Dist();
+////			tw.trace.c.contents = b.contents;
+////			tw.trace.c.material = b.material;
+////			tw.trace.c.point = *p;
+////			tw.trace.c.modelFeature = 0;
+////			tw.trace.c.trmFeature = j;
 ////			return true;
 ////		}
 ////	}
@@ -118,11 +118,11 @@
 ////================
 ////*/
 ////#define CM_SetTrmEdgeSidedness( edge, bpl, epl, bitNum ) {							\
-////	if ( !(edge->sideSet & (1<<bitNum)) ) {											\
+////	if ( !(edge.sideSet & (1<<bitNum)) ) {											\
 ////		float fl;																	\
 ////		fl = (bpl).PermutedInnerProduct( epl );										\
-////		edge->side = (edge->side & ~(1<<bitNum)) | (FLOATSIGNBITSET(fl) << bitNum);	\
-////		edge->sideSet |= (1 << bitNum);												\
+////		edge.side = (edge.side & ~(1<<bitNum)) | (FLOATSIGNBITSET(fl) << bitNum);	\
+////		edge.sideSet |= (1 << bitNum);												\
 ////	}																				\
 ////}
 ////
@@ -132,17 +132,17 @@
 ////================
 ////*/
 ////#define CM_SetTrmPolygonSidedness( v, plane, bitNum ) {								\
-////	if ( !((v)->sideSet & (1<<bitNum)) ) {											\
+////	if ( !((v).sideSet & (1<<bitNum)) ) {											\
 ////		float fl;																	\
-////		fl = plane.Distance( (v)->p );												\
+////		fl = plane.Distance( (v).p );												\
 ////		/* cannot use float sign bit because it is undetermined when fl == 0.0f */	\
 ////		if ( fl < 0.0f ) {															\
-////			(v)->side |= (1 << bitNum);												\
+////			(v).side |= (1 << bitNum);												\
 ////		}																			\
 ////		else {																		\
-////			(v)->side &= ~(1 << bitNum);											\
+////			(v).side &= ~(1 << bitNum);											\
 ////		}																			\
-////		(v)->sideSet |= (1 << bitNum);												\
+////		(v).sideSet |= (1 << bitNum);												\
 ////	}																				\
 ////}
 ////
@@ -162,28 +162,28 @@
 ////	cm_vertex_t *v, *v1, *v2;
 ////
 ////	// if already checked this polygon
-////	if ( p->checkcount == idCollisionModelManagerLocal::checkCount ) {
+////	if ( p.checkcount == idCollisionModelManagerLocal::checkCount ) {
 ////		return false;
 ////	}
-////	p->checkcount = idCollisionModelManagerLocal::checkCount;
+////	p.checkcount = idCollisionModelManagerLocal::checkCount;
 ////
 ////	// if this polygon does not have the right contents behind it
-////	if ( !(p->contents & tw->contents) ) {
+////	if ( !(p.contents & tw.contents) ) {
 ////		return false;
 ////	}
 ////
 ////	// if the polygon bounds don't intersect the trace bounds
-////	if ( !p->bounds.IntersectsBounds( tw->bounds ) ) {
+////	if ( !p.bounds.IntersectsBounds( tw.bounds ) ) {
 ////		return false;
 ////	}
 ////
 ////	// bounds should cross polygon plane
-////	switch( tw->bounds.PlaneSide( p->plane ) ) {
+////	switch( tw.bounds.PlaneSide( p.plane ) ) {
 ////		case PLANESIDE_CROSS:
 ////			break;
 ////		case PLANESIDE_FRONT:
-////			if ( tw->model->isConvex ) {
-////				tw->quickExit = true;
+////			if ( tw.model.isConvex ) {
+////				tw.quickExit = true;
 ////				return true;
 ////			}
 ////		default:
@@ -191,27 +191,27 @@
 ////	}
 ////
 ////	// if the trace model is convex
-////	if ( tw->isConvex ) {
+////	if ( tw.isConvex ) {
 ////		// test if any polygon vertices are inside the trm
-////		for ( i = 0; i < p->numEdges; i++ ) {
-////			edgeNum = p->edges[i];
-////			edge = tw->model->edges + abs(edgeNum);
+////		for ( i = 0; i < p.numEdges; i++ ) {
+////			edgeNum = p.edges[i];
+////			edge = tw.model.edges + abs(edgeNum);
 ////			// if this edge is already tested
-////			if ( edge->checkcount == idCollisionModelManagerLocal::checkCount ) {
+////			if ( edge.checkcount == idCollisionModelManagerLocal::checkCount ) {
 ////				continue;
 ////			}
 ////
 ////			for ( j = 0; j < 2; j++ ) {
-////				v = &tw->model->vertices[edge->vertexNum[j]];
+////				v = &tw.model.vertices[edge.vertexNum[j]];
 ////				// if this vertex is already tested
-////				if ( v->checkcount == idCollisionModelManagerLocal::checkCount ) {
+////				if ( v.checkcount == idCollisionModelManagerLocal::checkCount ) {
 ////					continue;
 ////				}
 ////
 ////				bestPlane = 0;
 ////				bestd = -idMath::INFINITY;
-////				for ( k = 0; k < tw->numPolys; k++ ) {
-////					d = tw->polys[k].plane.Distance( v->p );
+////				for ( k = 0; k < tw.numPolys; k++ ) {
+////					d = tw.polys[k].plane.Distance( v.p );
 ////					if ( d >= 0.0f ) {
 ////						break;
 ////					}
@@ -220,65 +220,65 @@
 ////						bestPlane = k;
 ////					}
 ////				}
-////				if ( k >= tw->numPolys ) {
-////					tw->trace.fraction = 0.0f;
-////					tw->trace.c.type = CONTACT_MODELVERTEX;
-////					tw->trace.c.normal = -tw->polys[bestPlane].plane.Normal();
-////					tw->trace.c.dist = -tw->polys[bestPlane].plane.Dist();
-////					tw->trace.c.contents = p->contents;
-////					tw->trace.c.material = p->material;
-////					tw->trace.c.point = v->p;
-////					tw->trace.c.modelFeature = edge->vertexNum[j];
-////					tw->trace.c.trmFeature = 0;
+////				if ( k >= tw.numPolys ) {
+////					tw.trace.fraction = 0.0f;
+////					tw.trace.c.type = CONTACT_MODELVERTEX;
+////					tw.trace.c.normal = -tw.polys[bestPlane].plane.Normal();
+////					tw.trace.c.dist = -tw.polys[bestPlane].plane.Dist();
+////					tw.trace.c.contents = p.contents;
+////					tw.trace.c.material = p.material;
+////					tw.trace.c.point = v.p;
+////					tw.trace.c.modelFeature = edge.vertexNum[j];
+////					tw.trace.c.trmFeature = 0;
 ////					return true;
 ////				}
 ////			}
 ////		}
 ////	}
 ////
-////	for ( i = 0; i < p->numEdges; i++ ) {
-////		edgeNum = p->edges[i];
-////		edge = tw->model->edges + abs(edgeNum);
+////	for ( i = 0; i < p.numEdges; i++ ) {
+////		edgeNum = p.edges[i];
+////		edge = tw.model.edges + abs(edgeNum);
 ////		// reset sidedness cache if this is the first time we encounter this edge
-////		if ( edge->checkcount != idCollisionModelManagerLocal::checkCount ) {
-////			edge->sideSet = 0;
+////		if ( edge.checkcount != idCollisionModelManagerLocal::checkCount ) {
+////			edge.sideSet = 0;
 ////		}
 ////		// pluecker coordinate for edge
-////		tw->polygonEdgePlueckerCache[i].FromLine( tw->model->vertices[edge->vertexNum[0]].p,
-////													tw->model->vertices[edge->vertexNum[1]].p );
-////		v = &tw->model->vertices[edge->vertexNum[INTSIGNBITSET(edgeNum)]];
+////		tw.polygonEdgePlueckerCache[i].FromLine( tw.model.vertices[edge.vertexNum[0]].p,
+////													tw.model.vertices[edge.vertexNum[1]].p );
+////		v = &tw.model.vertices[edge.vertexNum[INTSIGNBITSET(edgeNum)]];
 ////		// reset sidedness cache if this is the first time we encounter this vertex
-////		if ( v->checkcount != idCollisionModelManagerLocal::checkCount ) {
-////			v->sideSet = 0;
+////		if ( v.checkcount != idCollisionModelManagerLocal::checkCount ) {
+////			v.sideSet = 0;
 ////		}
-////		v->checkcount = idCollisionModelManagerLocal::checkCount;
+////		v.checkcount = idCollisionModelManagerLocal::checkCount;
 ////	}
 ////
 ////	// get side of polygon for each trm vertex
-////	for ( i = 0; i < tw->numVerts; i++ ) {
-////		d = p->plane.Distance( tw->vertices[i].p );
+////	for ( i = 0; i < tw.numVerts; i++ ) {
+////		d = p.plane.Distance( tw.vertices[i].p );
 ////		sides[i] = d < 0.0f ? -1 : 1;
 ////	}
 ////
 ////	// test if any trm edges go through the polygon
-////	for ( i = 1; i <= tw->numEdges; i++ ) {
+////	for ( i = 1; i <= tw.numEdges; i++ ) {
 ////		// if the trm edge does not cross the polygon plane
-////		if ( sides[tw->edges[i].vertexNum[0]] == sides[tw->edges[i].vertexNum[1]] ) {
+////		if ( sides[tw.edges[i].vertexNum[0]] == sides[tw.edges[i].vertexNum[1]] ) {
 ////			continue;
 ////		}
 ////		// check from which side to which side the trm edge goes
-////		flip = INTSIGNBITSET( sides[tw->edges[i].vertexNum[0]] );
+////		flip = INTSIGNBITSET( sides[tw.edges[i].vertexNum[0]] );
 ////		// test if trm edge goes through the polygon between the polygon edges
-////		for ( j = 0; j < p->numEdges; j++ ) {
-////			edgeNum = p->edges[j];
-////			edge = tw->model->edges + abs(edgeNum);
+////		for ( j = 0; j < p.numEdges; j++ ) {
+////			edgeNum = p.edges[j];
+////			edge = tw.model.edges + abs(edgeNum);
 ////#if 1
-////			CM_SetTrmEdgeSidedness( edge, tw->edges[i].pl, tw->polygonEdgePlueckerCache[j], i );
-////			if ( INTSIGNBITSET(edgeNum) ^ ((edge->side >> i) & 1) ^ flip ) {
+////			CM_SetTrmEdgeSidedness( edge, tw.edges[i].pl, tw.polygonEdgePlueckerCache[j], i );
+////			if ( INTSIGNBITSET(edgeNum) ^ ((edge.side >> i) & 1) ^ flip ) {
 ////				break;
 ////			}
 ////#else
-////			d = tw->edges[i].pl.PermutedInnerProduct( tw->polygonEdgePlueckerCache[j] );
+////			d = tw.edges[i].pl.PermutedInnerProduct( tw.polygonEdgePlueckerCache[j] );
 ////			if ( flip ) {
 ////				d = -d;
 ////			}
@@ -294,47 +294,47 @@
 ////			}
 ////#endif
 ////		}
-////		if ( j >= p->numEdges ) {
-////			tw->trace.fraction = 0.0f;
-////			tw->trace.c.type = CONTACT_EDGE;
-////			tw->trace.c.normal = p->plane.Normal();
-////			tw->trace.c.dist = p->plane.Dist();
-////			tw->trace.c.contents = p->contents;
-////			tw->trace.c.material = p->material;
-////			tw->trace.c.point = tw->vertices[tw->edges[i].vertexNum[ !flip ]].p;
-////			tw->trace.c.modelFeature = *reinterpret_cast<int *>(&p);
-////			tw->trace.c.trmFeature = i;
+////		if ( j >= p.numEdges ) {
+////			tw.trace.fraction = 0.0f;
+////			tw.trace.c.type = CONTACT_EDGE;
+////			tw.trace.c.normal = p.plane.Normal();
+////			tw.trace.c.dist = p.plane.Dist();
+////			tw.trace.c.contents = p.contents;
+////			tw.trace.c.material = p.material;
+////			tw.trace.c.point = tw.vertices[tw.edges[i].vertexNum[ !flip ]].p;
+////			tw.trace.c.modelFeature = *reinterpret_cast<int *>(&p);
+////			tw.trace.c.trmFeature = i;
 ////			return true;
 ////		}
 ////	}
 ////
 ////	// test if any polygon edges go through the trm polygons
-////	for ( i = 0; i < p->numEdges; i++ ) {
-////		edgeNum = p->edges[i];
-////		edge = tw->model->edges + abs(edgeNum);
-////		if ( edge->checkcount == idCollisionModelManagerLocal::checkCount ) {
+////	for ( i = 0; i < p.numEdges; i++ ) {
+////		edgeNum = p.edges[i];
+////		edge = tw.model.edges + abs(edgeNum);
+////		if ( edge.checkcount == idCollisionModelManagerLocal::checkCount ) {
 ////			continue;
 ////		}
-////		edge->checkcount = idCollisionModelManagerLocal::checkCount;
+////		edge.checkcount = idCollisionModelManagerLocal::checkCount;
 ////
-////		for ( j = 0; j < tw->numPolys; j++ ) {
+////		for ( j = 0; j < tw.numPolys; j++ ) {
 ////#if 1
-////			v1 = tw->model->vertices + edge->vertexNum[0];
-////			CM_SetTrmPolygonSidedness( v1, tw->polys[j].plane, j );
-////			v2 = tw->model->vertices + edge->vertexNum[1];
-////			CM_SetTrmPolygonSidedness( v2, tw->polys[j].plane, j );
+////			v1 = tw.model.vertices + edge.vertexNum[0];
+////			CM_SetTrmPolygonSidedness( v1, tw.polys[j].plane, j );
+////			v2 = tw.model.vertices + edge.vertexNum[1];
+////			CM_SetTrmPolygonSidedness( v2, tw.polys[j].plane, j );
 ////			// if the polygon edge does not cross the trm polygon plane
-////			if ( !(((v1->side ^ v2->side) >> j) & 1) ) {
+////			if ( !(((v1.side ^ v2.side) >> j) & 1) ) {
 ////				continue;
 ////			}
-////			flip = (v1->side >> j) & 1;
+////			flip = (v1.side >> j) & 1;
 ////#else
 ////			float d1, d2;
 ////
-////			v1 = tw->model->vertices + edge->vertexNum[0];
-////			d1 = tw->polys[j].plane.Distance( v1->p );
-////			v2 = tw->model->vertices + edge->vertexNum[1];
-////			d2 = tw->polys[j].plane.Distance( v2->p );
+////			v1 = tw.model.vertices + edge.vertexNum[0];
+////			d1 = tw.polys[j].plane.Distance( v1.p );
+////			v2 = tw.model.vertices + edge.vertexNum[1];
+////			d2 = tw.polys[j].plane.Distance( v2.p );
 ////			// if the polygon edge does not cross the trm polygon plane
 ////			if ( (d1 >= 0.0f && d2 >= 0.0f) || (d1 <= 0.0f && d2 <= 0.0f) ) {
 ////				continue;
@@ -345,17 +345,17 @@
 ////			}
 ////#endif
 ////			// test if polygon edge goes through the trm polygon between the trm polygon edges
-////			for ( k = 0; k < tw->polys[j].numEdges; k++ ) {
-////				trmEdgeNum = tw->polys[j].edges[k];
-////				trmEdge = tw->edges + abs(trmEdgeNum);
+////			for ( k = 0; k < tw.polys[j].numEdges; k++ ) {
+////				trmEdgeNum = tw.polys[j].edges[k];
+////				trmEdge = tw.edges + abs(trmEdgeNum);
 ////#if 1
 ////				bitNum = abs(trmEdgeNum);
-////				CM_SetTrmEdgeSidedness( edge, trmEdge->pl, tw->polygonEdgePlueckerCache[i], bitNum );
-////				if ( INTSIGNBITSET(trmEdgeNum) ^ ((edge->side >> bitNum) & 1) ^ flip ) {
+////				CM_SetTrmEdgeSidedness( edge, trmEdge.pl, tw.polygonEdgePlueckerCache[i], bitNum );
+////				if ( INTSIGNBITSET(trmEdgeNum) ^ ((edge.side >> bitNum) & 1) ^ flip ) {
 ////					break;
 ////				}
 ////#else
-////				d = trmEdge->pl.PermutedInnerProduct( tw->polygonEdgePlueckerCache[i] );
+////				d = trmEdge.pl.PermutedInnerProduct( tw.polygonEdgePlueckerCache[i] );
 ////				if ( flip ) {
 ////					d = -d;
 ////				}
@@ -371,16 +371,16 @@
 ////				}
 ////#endif
 ////			}
-////			if ( k >= tw->polys[j].numEdges ) {
-////				tw->trace.fraction = 0.0f;
-////				tw->trace.c.type = CONTACT_EDGE;
-////				tw->trace.c.normal = -tw->polys[j].plane.Normal();
-////				tw->trace.c.dist = -tw->polys[j].plane.Dist();
-////				tw->trace.c.contents = p->contents;
-////				tw->trace.c.material = p->material;
-////				tw->trace.c.point = tw->model->vertices[edge->vertexNum[ !flip ]].p;
-////				tw->trace.c.modelFeature = edgeNum;
-////				tw->trace.c.trmFeature = j;
+////			if ( k >= tw.polys[j].numEdges ) {
+////				tw.trace.fraction = 0.0f;
+////				tw.trace.c.type = CONTACT_EDGE;
+////				tw.trace.c.normal = -tw.polys[j].plane.Normal();
+////				tw.trace.c.dist = -tw.polys[j].plane.Dist();
+////				tw.trace.c.contents = p.contents;
+////				tw.trace.c.material = p.material;
+////				tw.trace.c.point = tw.model.vertices[edge.vertexNum[ !flip ]].p;
+////				tw.trace.c.modelFeature = edgeNum;
+////				tw.trace.c.trmFeature = j;
 ////				return true;
 ////			}
 ////		}
@@ -396,13 +396,13 @@
 ////cm_node_t *idCollisionModelManagerLocal::PointNode( const idVec3 &p, cm_model_t *model ) {
 ////	cm_node_t *node;
 ////
-////	node = model->node;
-////	while ( node->planeType != -1 ) {
-////		if (p[node->planeType] > node->planeDist) {
-////			node = node->children[0];
+////	node = model.node;
+////	while ( node.planeType != -1 ) {
+////		if (p[node.planeType] > node.planeDist) {
+////			node = node.children[0];
 ////		}
 ////		else {
-////			node = node->children[1];
+////			node = node.children[1];
 ////		}
 ////
 ////		assert( node != NULL );
@@ -424,14 +424,14 @@
 ////	idPlane *plane;
 ////
 ////	node = idCollisionModelManagerLocal::PointNode( p, idCollisionModelManagerLocal::models[model] );
-////	for ( bref = node->brushes; bref; bref = bref->next ) {
-////		b = bref->b;
+////	for ( bref = node.brushes; bref; bref = bref.next ) {
+////		b = bref.b;
 ////		// test if the point is within the brush bounds
 ////		for ( i = 0; i < 3; i++ ) {
-////			if ( p[i] < b->bounds[0][i] ) {
+////			if ( p[i] < b.bounds[0][i] ) {
 ////				break;
 ////			}
-////			if ( p[i] > b->bounds[1][i] ) {
+////			if ( p[i] > b.bounds[1][i] ) {
 ////				break;
 ////			}
 ////		}
@@ -439,15 +439,15 @@
 ////			continue;
 ////		}
 ////		// test if the point is inside the brush
-////		plane = b->planes;
-////		for ( i = 0; i < b->numPlanes; i++, plane++ ) {
-////			d = plane->Distance( p );
+////		plane = b.planes;
+////		for ( i = 0; i < b.numPlanes; i++, plane++ ) {
+////			d = plane.Distance( p );
 ////			if ( d >= 0 ) {
 ////				break;
 ////			}
 ////		}
-////		if ( i >= b->numPlanes ) {
-////			return b->contents;
+////		if ( i >= b.numPlanes ) {
+////			return b.contents;
 ////		}
 ////	}
 ////	return 0;
@@ -485,16 +485,16 @@
 ////	ALIGN16( cm_traceWork_t tw );
 ////
 ////	// fast point case
-////	if ( !trm || ( trm->bounds[1][0] - trm->bounds[0][0] <= 0.0f &&
-////					trm->bounds[1][1] - trm->bounds[0][1] <= 0.0f &&
-////					trm->bounds[1][2] - trm->bounds[0][2] <= 0.0f ) ) {
+////	if ( !trm || ( trm.bounds[1][0] - trm.bounds[0][0] <= 0.0f &&
+////					trm.bounds[1][1] - trm.bounds[0][1] <= 0.0f &&
+////					trm.bounds[1][2] - trm.bounds[0][2] <= 0.0f ) ) {
 ////
-////		results->c.contents = idCollisionModelManagerLocal::TransformedPointContents( start, model, modelOrigin, modelAxis );
-////		results->fraction = ( results->c.contents == 0 );
-////		results->endpos = start;
-////		results->endAxis = trmAxis;
+////		results.c.contents = idCollisionModelManagerLocal::TransformedPointContents( start, model, modelOrigin, modelAxis );
+////		results.fraction = ( results.c.contents == 0 );
+////		results.endpos = start;
+////		results.endAxis = trmAxis;
 ////
-////		return results->c.contents;
+////		return results.c.contents;
 ////	}
 ////
 ////	idCollisionModelManagerLocal::checkCount++;
@@ -543,12 +543,12 @@
 ////
 ////	// add offset to start point
 ////	if ( trm_rotated ) {
-////		dir = trm->offset * trmAxis;
+////		dir = trm.offset * trmAxis;
 ////		tw.start += dir;
 ////		tw.end += dir;
 ////	} else {
-////		tw.start += trm->offset;
-////		tw.end += trm->offset;
+////		tw.start += trm.offset;
+////		tw.end += trm.offset;
 ////	}
 ////	if ( model_rotated ) {
 ////		// rotate trace instead of model
@@ -611,11 +611,11 @@
 ////	idCollisionModelManagerLocal::TraceThroughModel( &tw );
 ////
 ////	*results = tw.trace;
-////	results->fraction = ( results->c.contents == 0 );
-////	results->endpos = start;
-////	results->endAxis = trmAxis;
+////	results.fraction = ( results.c.contents == 0 );
+////	results.endpos = start;
+////	results.endAxis = trmAxis;
 ////
-////	return results->c.contents;
+////	return results.c.contents;
 ////}
 ////
 /////*
@@ -629,11 +629,11 @@
 ////	trace_t results;
 ////
 ////	if ( model < 0 || model > idCollisionModelManagerLocal::maxModels || model > MAX_SUBMODELS ) {
-////		common->Printf("idCollisionModelManagerLocal::Contents: invalid model handle\n");
+////		common.Printf("idCollisionModelManagerLocal::Contents: invalid model handle\n");
 ////		return 0;
 ////	}
 ////	if ( !idCollisionModelManagerLocal::models || !idCollisionModelManagerLocal::models[model] ) {
-////		common->Printf("idCollisionModelManagerLocal::Contents: invalid model\n");
+////		common.Printf("idCollisionModelManagerLocal::Contents: invalid model\n");
 ////		return 0;
 ////	}
 ////

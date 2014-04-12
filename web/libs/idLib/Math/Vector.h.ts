@@ -344,6 +344,11 @@ idVec2::ToString
 		return idStr.FloatArrayToString( this.ToFloatPtr ( ), this.GetDimension ( ), precision );
 	}
 
+	valueOf(): number {
+		todoThrow("error: implicity idPVec2 valueOf called");
+		return NaN;
+	}
+
 /////*
 ////=============
 ////Lerp
@@ -1181,6 +1186,11 @@ class idVec3 {
 ////		z = rsqr / ( 2.0 * sqrt( len ) );
 ////	}
 ////}
+
+	valueOf(): number {
+		todoThrow("error: implicity idVec3 valueOf called");
+		return NaN;
+	}
 };
 
 // todo: maybe it should extend Float32Array. underlying values can be changed by swapping the buffer?
