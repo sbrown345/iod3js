@@ -167,11 +167,11 @@ class idPhysics_Parametric extends idPhysics_Base {
 	// parametric physics state
 	current = new parametricPState_t;
 	saved = new parametricPState_t;
-//
-//	// pusher
-//	bool					isPusher;
-//	idClipModel *			clipModel;
-//	int						pushFlags;
+
+	// pusher
+	isPusher:boolean;
+	clipModel:idClipModel;
+	pushFlags :number/*int*/;
 //
 //	// results of last evaluate
 //	trace_t					pushResults;
@@ -673,16 +673,16 @@ class idPhysics_Parametric extends idPhysics_Base {
 //	return 0.0f;
 //}
 //
-///*
-//================
-//idPhysics_Parametric::SetClipMask
-//================
-//*/
-//void idPhysics_Parametric::SetContents( int contents, /*int*/ id:number ) {
-//	if ( clipModel ) {
-//		clipModel.SetContents( contents );
-//	}
-//}
+/*
+================
+idPhysics_Parametric::SetClipMask
+================
+*/
+	SetContents( /*int*/ contents: number, /*int*/ id: number  = -1) :void{
+	if ( this.clipModel ) {
+		this.clipModel.SetContents( contents );
+	}
+}
 //
 ///*
 //================
@@ -690,8 +690,8 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //int idPhysics_Parametric::GetContents( /*int*/ id:number ) const {
-//	if ( clipModel ) {
-//		return clipModel.GetContents();
+//	if ( this.clipModel ) {
+//		return this.clipModel.GetContents();
 //	}
 //	return 0;
 //}
@@ -702,8 +702,8 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //const idBounds &idPhysics_Parametric::GetBounds( /*int*/ id:number ) const {
-//	if ( clipModel ) {
-//		return clipModel.GetBounds();
+//	if ( this.clipModel ) {
+//		return this.clipModel.GetBounds();
 //	}
 //	return idPhysics_Base::GetBounds();
 //}
@@ -714,8 +714,8 @@ class idPhysics_Parametric extends idPhysics_Base {
 //================
 //*/
 //const idBounds &idPhysics_Parametric::GetAbsBounds( /*int*/ id:number ) const {
-//	if ( clipModel ) {
-//		return clipModel.GetAbsBounds();
+//	if ( this.clipModel ) {
+//		return this.clipModel.GetAbsBounds();
 //	}
 //	return idPhysics_Base::GetAbsBounds();
 //}
@@ -782,7 +782,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //
 //		gameLocal.push.ClipPush( pushResults, self, pushFlags, oldOrigin, oldAxis, this.current.origin, this.current.axis );
 //		if ( pushResults.fraction < 1.0f ) {
-//			clipModel.Link( gameLocal.clip, self, 0, oldOrigin, oldAxis );
+//			this.clipModel.Link( gameLocal.clip, self, 0, oldOrigin, oldAxis );
 //			this.current.localOrigin = oldLocalOrigin;
 //			this.current.origin = oldOrigin;
 //			this.current.localAngles = oldLocalAngles;
@@ -795,8 +795,8 @@ class idPhysics_Parametric extends idPhysics_Base {
 //		this.current.angles = this.current.axis.ToAngles();
 //	}
 //
-//	if ( clipModel ) {
-//		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
+//	if ( this.clipModel ) {
+//		this.clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
 //	}
 //
 //	this.current.time = endTimeMSec;
@@ -882,8 +882,8 @@ class idPhysics_Parametric extends idPhysics_Base {
 //
 //	this.current = saved;
 //
-//	if ( clipModel ) {
-//		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
+//	if ( this.clipModel ) {
+//		this.clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
 //	}
 //}
 //
@@ -907,8 +907,8 @@ class idPhysics_Parametric extends idPhysics_Base {
 //	else {
 //		this.current.origin = this.current.localOrigin;
 //	}
-//	if ( clipModel ) {
-//		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
+//	if ( this.clipModel ) {
+//		this.clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
 //	}
 //	Activate();
 //}
@@ -937,8 +937,8 @@ class idPhysics_Parametric extends idPhysics_Base {
 //		this.current.axis = this.current.localAngles.ToMat3();
 //		this.current.angles = this.current.localAngles;
 //	}
-//	if ( clipModel ) {
-//		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
+//	if ( this.clipModel ) {
+//		this.clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
 //	}
 //	Activate();
 //}
@@ -1048,8 +1048,8 @@ idPhysics_Parametric::GetAxis
 //================
 //*/
 //void idPhysics_Parametric::DisableClip( void ) {
-//	if ( clipModel ) {
-//		clipModel.Disable();
+//	if ( this.clipModel ) {
+//		this.clipModel.Disable();
 //	}
 //}
 //
@@ -1059,8 +1059,8 @@ idPhysics_Parametric::GetAxis
 //================
 //*/
 //void idPhysics_Parametric::EnableClip( void ) {
-//	if ( clipModel ) {
-//		clipModel.Enable();
+//	if ( this.clipModel ) {
+//		this.clipModel.Enable();
 //	}
 //}
 //
@@ -1070,8 +1070,8 @@ idPhysics_Parametric::GetAxis
 //================
 //*/
 //void idPhysics_Parametric::UnlinkClip( void ) {
-//	if ( clipModel ) {
-//		clipModel.Unlink();
+//	if ( this.clipModel ) {
+//		this.clipModel.Unlink();
 //	}
 //}
 //
@@ -1081,8 +1081,8 @@ idPhysics_Parametric::GetAxis
 //================
 //*/
 //void idPhysics_Parametric::LinkClip( void ) {
-//	if ( clipModel ) {
-//		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
+//	if ( this.clipModel ) {
+//		this.clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
 //	}
 //}
 //
@@ -1329,8 +1329,8 @@ idPhysics_Parametric::GetAxis
 //
 //	this.current.axis = this.current.angles.ToMat3();
 //
-//	if ( clipModel ) {
-//		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
+//	if ( this.clipModel ) {
+//		this.clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
 //	}
 //}
 }

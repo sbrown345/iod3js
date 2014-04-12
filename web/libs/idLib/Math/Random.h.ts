@@ -42,15 +42,15 @@ class idRandom {
 	////						idRandom( int seed = 0 );
 	////
 	////	void				SetSeed( int seed );
-	////	int					GetSeed( void ) const;
+	////	int					GetSeed( ) const;
 	////
-	////	int					RandomInt( void );			// random integer in the range [0, MAX_RAND]
+	////	int					RandomInt( );			// random integer in the range [0, MAX_RAND]
 	////	int					RandomInt( int max );		// random integer in the range [0, max[
-	////	float				RandomFloat( void );		// random number in the range [0.0f, 1.0f]
-	////	float				CRandomFloat( void );		// random number in the range [-1.0f, 1.0f]
-	////
-	////	static const int	MAX_RAND = 0x7fff;
-	////
+	////	float				RandomFloat( );		// random number in the range [0.0f, 1.0f]
+	////	float				CRandomFloat( );		// random number in the range [-1.0f, 1.0f]
+	
+	static MAX_RAND = 0x7fff;
+	
 	////private:
 		seed:number /*int*/;
 	////};
@@ -62,28 +62,28 @@ class idRandom {
 	SetSeed ( /*int */seed: number ): void {
 		this.seed = seed;
 	}
-	////
-	////ID_INLINE int idRandom::GetSeed( void ) const {
-	////	return seed;
-	////}
-	////
-	////ID_INLINE int idRandom::RandomInt( void ) {
-	////	seed = 69069 * seed + 1;
-	////	return ( seed & idRandom::MAX_RAND );
-	////}
-	////
-	////ID_INLINE int idRandom::RandomInt( int max ) {
-	////	if ( max == 0 ) {
-	////		return 0;			// avoid divide by zero error
-	////	}
-	////	return RandomInt() % max;
-	////}
-	////
-	////ID_INLINE float idRandom::RandomFloat( void ) {
+	
+	GetSeed(): number/*int */ {
+		return this.seed;
+	}
+
+	RandomInt ( ): number /*int */ {
+		this.seed = 69069 * this.seed + 1;
+		return ( this.seed & idRandom.MAX_RAND );
+	}
+
+	RandomInt_max ( /*int*/ max: number ): number {
+		if ( max == 0 ) {
+			return 0; // avoid divide by zero error
+		}
+		return this.RandomInt ( ) % max;
+	}
+	
+	////ID_INLINE float idRandom::RandomFloat( ) {
 	////	return ( RandomInt() / ( float )( idRandom::MAX_RAND + 1 ) );
 	////}
 	////
-	////ID_INLINE float idRandom::CRandomFloat( void ) {
+	////ID_INLINE float idRandom::CRandomFloat( ) {
 	////	return ( 2.0f * ( RandomFloat() - 0.5f ) );
 	////}
 	////
@@ -101,12 +101,12 @@ class idRandom {
 ////							idRandom2( unsigned long seed = 0 );
 ////
 ////	void					SetSeed( unsigned long seed );
-////	unsigned long			GetSeed( void ) const;
+////	unsigned long			GetSeed( ) const;
 ////
-////	int						RandomInt( void );			// random integer in the range [0, MAX_RAND]
+////	int						RandomInt( );			// random integer in the range [0, MAX_RAND]
 ////	int						RandomInt( int max );		// random integer in the range [0, max]
-////	float					RandomFloat( void );		// random number in the range [0.0f, 1.0f]
-////	float					CRandomFloat( void );		// random number in the range [-1.0f, 1.0f]
+////	float					RandomFloat( );		// random number in the range [0.0f, 1.0f]
+////	float					CRandomFloat( );		// random number in the range [-1.0f, 1.0f]
 ////
 ////	static const int		MAX_RAND = 0x7fff;
 ////
@@ -125,11 +125,11 @@ class idRandom {
 ////	this.seed = seed;
 ////}
 ////
-////ID_INLINE unsigned long idRandom2::GetSeed( void ) const {
+////ID_INLINE unsigned long idRandom2::GetSeed( ) const {
 ////	return seed;
 ////}
 ////
-////ID_INLINE int idRandom2::RandomInt( void ) {
+////ID_INLINE int idRandom2::RandomInt( ) {
 ////	seed = 1664525L * seed + 1013904223L;
 ////	return ( (int) seed & idRandom2::MAX_RAND );
 ////}
@@ -141,14 +141,14 @@ class idRandom {
 ////	return ( RandomInt() >> ( 16 - idMath::BitsForInteger( max ) ) ) % max;
 ////}
 ////
-////ID_INLINE float idRandom2::RandomFloat( void ) {
+////ID_INLINE float idRandom2::RandomFloat( ) {
 ////	unsigned long i;
 ////	seed = 1664525L * seed + 1013904223L;
 ////	i = idRandom2::IEEE_ONE | ( seed & idRandom2::IEEE_MASK );
 ////	return ( ( *(float *)&i ) - 1.0f );
 ////}
 ////
-////ID_INLINE float idRandom2::CRandomFloat( void ) {
+////ID_INLINE float idRandom2::CRandomFloat( ) {
 ////	unsigned long i;
 ////	seed = 1664525L * seed + 1013904223L;
 ////	i = idRandom2::IEEE_ONE | ( seed & idRandom2::IEEE_MASK );

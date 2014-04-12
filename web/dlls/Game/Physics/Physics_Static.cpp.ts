@@ -298,18 +298,18 @@ idPhysics_Static::idPhysics_Static
 	////float idPhysics_Static::GetMass( /*int*/ id:number ) const {
 	////	return 0.0f;
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::SetContents
-	////================
-	////*/
-	////void idPhysics_Static::SetContents( int contents, /*int*/ id:number = -1  ) {
-	////	if ( this.clipModel ) {
-	////		this.clipModel.SetContents( contents );
-	////	}
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_Static::SetContents
+	================
+	*/
+	SetContents( /*int*/ contents: number, /*int*/ id:number = -1  ) :void{
+		if ( this.clipModel ) {
+			this.clipModel.SetContents( contents );
+		}
+	}
+	
 	/////*
 	////================
 	////idPhysics_Static::GetContents

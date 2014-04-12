@@ -106,7 +106,7 @@ class idPhysics extends idClass {
 	   //
 	   //public:	// common physics interface
 	   //	// set pointer to entity using physics
-	   //	virtual void				SetSelf(idEntity *e) = 0;
+	   //	virtual void				SetSelf(e:idEntity) = 0;
 	   //	// clip models
 	   //	virtual void				SetClipModel(idClipModel *model, float density, /*int*/ id:number = 0, bool freeOld = true) = 0;
 	   //	virtual void				SetClipBox(const idBounds &bounds, float density);
@@ -116,8 +116,8 @@ class idPhysics extends idClass {
 	   //	virtual void				SetMass(float mass, /*int*/ id:number = -1) = 0;
 	   //	virtual float				GetMass(/*int*/ id:number = -1) const = 0;
 	   //	// get/set the contents of a specific clip model or the whole physics object
-	   //	virtual void				SetContents(int contents, /*int*/ id:number = -1) = 0;
-	   //	virtual int					GetContents(/*int*/ id:number = -1) const = 0;
+	SetContents ( /*int */contents: number, /*int*/ id: number = -1 ): void { throw "placeholder"; }
+	//	virtual int					GetContents(/*int*/ id:number = -1) const = 0;
 	   //	// get/set the contents a specific clip model or the whole physics object collides with
 	   //	virtual void				SetClipMask(int mask, /*int*/ id:number = -1) = 0;
 	   //	virtual int					GetClipMask(/*int*/ id:number = -1) const = 0;
@@ -176,9 +176,9 @@ class idPhysics extends idClass {
 	   //	virtual int					GetNumContacts() const = 0;
 	   //	virtual const contactInfo_t &GetContact(int num) const = 0;
 	   //	virtual void				ClearContacts() = 0;
-	   //	virtual void				AddContactEntity(idEntity *e) = 0;
-	   //	virtual void 				RemoveContactEntity(idEntity *e) = 0;
-	   //	// ground contacts
+	   //	virtual void				AddContactEntity(e:idEntity) = 0;
+	RemoveContactEntity ( e: idEntity ): void { throw "placeholder"; }
+	//	// ground contacts
 	   //	virtual bool				HasGroundContacts() const = 0;
 	   //	virtual bool				IsGroundEntity(int entityNum) const = 0;
 	   //	virtual bool				IsGroundClipModel(int entityNum, /*int*/ id:number) const = 0;

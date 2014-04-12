@@ -122,7 +122,7 @@ idPlayerStart.Type = new idTypeInfo( "idPlayerStart", "idEntity",
 ////idPlayerStart::idPlayerStart
 ////================
 ////*/
-////idPlayerStart::idPlayerStart( void ) {
+////idPlayerStart::idPlayerStart( ) {
 ////	teleportStage = 0;
 ////}
 ////
@@ -131,7 +131,7 @@ idPlayerStart.Type = new idTypeInfo( "idPlayerStart", "idEntity",
 ////idPlayerStart::Spawn
 ////================
 ////*/
-////void idPlayerStart::Spawn( void ) {
+////void idPlayerStart::Spawn( ) {
 ////	teleportStage = 0;
 ////}
 ////
@@ -347,7 +347,7 @@ idActivator.Type = new idTypeInfo("idActivator", "idEntity",
 ////idActivator::Spawn
 ////================
 ////*/
-////void idActivator::Spawn( void ) {
+////void idActivator::Spawn( ) {
 ////	bool start_off;
 ////
 ////	spawnArgs.GetBool( "stay_on", "0", stay_on );
@@ -366,7 +366,7 @@ idActivator.Type = new idTypeInfo("idActivator", "idEntity",
 ////idActivator::Think
 ////================
 ////*/
-////void idActivator::Think( void ) {
+////void idActivator::Think( ) {
 ////	RunPhysics();
 ////	if ( thinkFlags & TH_THINK ) {
 ////		if ( TouchTriggers() ) {
@@ -424,76 +424,6 @@ idPathCorner.Type = new idTypeInfo("idPathCorner", "idEntity",
 	idPathCorner.prototype.Save, idPathCorner.prototype.Restore );
 
 ////END_CLASS
-////
-/////*
-////=====================
-////idPathCorner::Spawn
-////=====================
-////*/
-////void idPathCorner::Spawn( void ) {
-////}
-////
-/////*
-////=====================
-////idPathCorner::DrawDebugInfo
-////=====================
-////*/
-////void idPathCorner::DrawDebugInfo( void ) {
-////	var ent:idEntity
-////	idBounds bnds( idVec3( -4.0, -4.0f, -8.0f ), idVec3( 4.0, 4.0f, 64.0f ) );
-////
-////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
-////		if ( !ent.IsType( idPathCorner::Type ) ) {
-////			continue;
-////		}
-////
-////		idVec3 org = ent.GetPhysics().GetOrigin();
-////		gameRenderWorld.DebugBounds( colorRed, bnds, org, 0 );
-////	}
-////}
-////
-/////*
-////============
-////idPathCorner::RandomPath
-////============
-////*/
-////idPathCorner *idPathCorner::RandomPath( const idEntity *source, const idEntity *ignore ) {
-////	int	i;
-////	int	num;
-////	int which;
-////	var ent:idEntity
-////	idPathCorner *path[ MAX_GENTITIES ];
-////
-////	num = 0;
-////	for( i = 0; i < source.targets.Num(); i++ ) {
-////		ent = source.targets[ i ].GetEntity();
-////		if ( ent && ( ent != ignore ) && ent.IsType( idPathCorner::Type ) ) {
-////			path[ num++ ] = static_cast<idPathCorner *>( ent );
-////			if ( num >= MAX_GENTITIES ) {
-////				break;
-////			}
-////		}
-////	}
-////
-////	if ( !num ) {
-////		return NULL;
-////	}
-////
-////	which = gameLocal.random.RandomInt( num );
-////	return path[ which ];
-////}
-////
-/////*
-////=====================
-////idPathCorner::Event_RandomPath
-////=====================
-////*/
-////void idPathCorner::Event_RandomPath( void ) {
-////	idPathCorner *path;
-////
-////	path = RandomPath( this, NULL );
-////	idThread::ReturnEntity( path );
-////}
 
 /*
 ===============================================================================
@@ -536,7 +466,7 @@ idDamagable.Type = new idTypeInfo("idDamagable", "idEntity",
 ////idDamagable::idDamagable
 ////================
 ////*/
-////idDamagable::idDamagable( void ) {
+////idDamagable::idDamagable( ) {
 ////	count = 0;
 ////	nextTriggerTime = 0;
 ////}
@@ -566,7 +496,7 @@ idDamagable.Type = new idTypeInfo("idDamagable", "idEntity",
 ////idDamagable::Spawn
 ////================
 ////*/
-////void idDamagable::Spawn( void ) {
+////void idDamagable::Spawn( ) {
 ////	idStr broken;
 ////
 ////	health = spawnArgs.GetInt( "health", "5" );
@@ -674,7 +604,7 @@ idDamagable.Type = new idTypeInfo("idDamagable", "idEntity",
 ////idDamagable::Event_RestoreDamagable
 ////================
 ////*/
-////void idDamagable::Event_RestoreDamagable( void ) {
+////void idDamagable::Event_RestoreDamagable( ) {
 ////	health = spawnArgs.GetInt( "health", "5" );
 ////	Show();
 ////}
@@ -719,7 +649,7 @@ idExplodable.Type = new idTypeInfo("idExplodable", "idEntity",
 ////idExplodable::Spawn
 ////================
 ////*/
-////void idExplodable::Spawn( void ) {
+////void idExplodable::Spawn( ) {
 ////	Hide();
 ////}
 ////
@@ -790,7 +720,7 @@ idSpring.Type = new idTypeInfo( "idSpring", "idEntity",
 ////idSpring::Think
 ////================
 ////*/
-////void idSpring::Think( void ) {
+////void idSpring::Think( ) {
 ////	idVec3 start, end, origin;
 ////	idMat3 axis;
 ////
@@ -826,7 +756,7 @@ idSpring.Type = new idTypeInfo( "idSpring", "idEntity",
 ////idSpring::Event_LinkSpring
 ////================
 ////*/
-////void idSpring::Event_LinkSpring( void ) {
+////void idSpring::Event_LinkSpring( ) {
 ////	idStr name1, name2;
 ////
 ////	spawnArgs.GetString( "ent1", "", name1 );
@@ -860,7 +790,7 @@ idSpring.Type = new idTypeInfo( "idSpring", "idEntity",
 ////idSpring::Spawn
 ////================
 ////*/
-////void idSpring::Spawn( void ) {
+////void idSpring::Spawn( ) {
 ////	float Kstretch, damping, restLength;
 ////
 ////	spawnArgs.GetInt( "id1", "0", id1 );
@@ -920,7 +850,7 @@ idForceField.Type = new idTypeInfo("idForceField", "idEntity",
 ////idForceField::Toggle
 ////================
 ////*/
-////void idForceField::Toggle( void ) {
+////void idForceField::Toggle( ) {
 ////	if ( thinkFlags & TH_THINK ) {
 ////		BecomeInactive( TH_THINK );
 ////	} else {
@@ -933,7 +863,7 @@ idForceField.Type = new idTypeInfo("idForceField", "idEntity",
 ////idForceField::Think
 ////================
 ////*/
-////void idForceField::Think( void ) {
+////void idForceField::Think( ) {
 ////	if ( thinkFlags & TH_THINK ) {
 ////		// evaluate force
 ////		forceField.Evaluate( gameLocal.time );
@@ -964,7 +894,7 @@ idForceField.Type = new idTypeInfo("idForceField", "idEntity",
 ////idForceField::Spawn
 ////================
 ////*/
-////void idForceField::Spawn( void ) {
+////void idForceField::Spawn( ) {
 ////	idVec3 uniform;
 ////	float explosion, implosion, randomTorque;
 ////
@@ -1007,7 +937,7 @@ idForceField.Type = new idTypeInfo("idForceField", "idEntity",
 ////idForceField::Event_Toggle
 ////================
 ////*/
-////void idForceField::Event_Toggle( void ) {
+////void idForceField::Event_Toggle( ) {
 ////	Toggle();
 ////}
 ////
@@ -1030,7 +960,7 @@ idForceField.Type = new idTypeInfo("idForceField", "idEntity",
 ////idForceField::Event_FindTargets
 ////================
 ////*/
-////void idForceField::Event_FindTargets( void ) {
+////void idForceField::Event_FindTargets( ) {
 ////	FindTargets();
 ////	RemoveNullTargets();
 ////	if ( targets.Num() ) {
@@ -1148,7 +1078,7 @@ idAnimated.Type = new idTypeInfo("idAnimated", "idAFEntity_Gibbable",
 ////idAnimated::Spawn
 ////================
 ////*/
-////void idAnimated::Spawn( void ) {
+////void idAnimated::Spawn( ) {
 ////	idStr		animname;
 ////	int			anim2;
 ////	float		wait;
@@ -1222,7 +1152,7 @@ idAnimated.Type = new idTypeInfo("idAnimated", "idAFEntity_Gibbable",
 ////idAnimated::LoadAF
 ////===============
 ////*/
-////bool idAnimated::LoadAF( void ) {
+////bool idAnimated::LoadAF( ) {
 ////	idStr fileName;
 ////
 ////	if ( !spawnArgs.GetString( "ragdoll", "*unknown*", fileName ) ) {
@@ -1248,7 +1178,7 @@ idAnimated.Type = new idTypeInfo("idAnimated", "idAFEntity_Gibbable",
 ////idAnimated::StartRagdoll
 ////================
 ////*/
-////bool idAnimated::StartRagdoll( void ) {
+////bool idAnimated::StartRagdoll( ) {
 ////	// if no AF loaded
 ////	if ( !af.IsLoaded() ) {
 ////		return false;
@@ -1273,7 +1203,7 @@ idAnimated.Type = new idTypeInfo("idAnimated", "idAFEntity_Gibbable",
 ////idAnimated::PlayNextAnim
 ////=====================
 ////*/
-////void idAnimated::PlayNextAnim( void ) {
+////void idAnimated::PlayNextAnim( ) {
 ////	const char *animname;
 ////	int len;
 ////	int cycle;
@@ -1335,7 +1265,7 @@ idAnimated.Type = new idTypeInfo("idAnimated", "idAFEntity_Gibbable",
 ////idAnimated::Event_StartRagdoll
 ////================
 ////*/
-////void idAnimated::Event_StartRagdoll( void ) {
+////void idAnimated::Event_StartRagdoll( ) {
 ////	StartRagdoll();
 ////}
 ////
@@ -1389,7 +1319,7 @@ idAnimated.Type = new idTypeInfo("idAnimated", "idAFEntity_Gibbable",
 ////idAnimated::Event_Start
 ////================
 ////*/
-////void idAnimated::Event_Start( void ) {
+////void idAnimated::Event_Start( ) {
 ////	int cycle;
 ////	int len;
 ////
@@ -1429,7 +1359,7 @@ idAnimated.Type = new idTypeInfo("idAnimated", "idAFEntity_Gibbable",
 ////idAnimated::Event_Footstep
 ////===============
 ////*/
-////void idAnimated::Event_Footstep( void ) {
+////void idAnimated::Event_Footstep( ) {
 ////	StartSound( "snd_footstep", SND_CHANNEL_BODY, 0, false, NULL );
 ////}
 ////
@@ -1547,245 +1477,6 @@ idStaticEntity.Type = new idTypeInfo("idStaticEntity", "idEntity",
 	idStaticEntity.eventCallbacks, idStaticEntity.CreateInstance, idStaticEntity.prototype.Spawn,
 	idStaticEntity.prototype.Save, idStaticEntity.prototype.Restore );
 
-////END_CLASS
-////
-/////*
-////===============
-////idStaticEntity::idStaticEntity
-////===============
-////*/
-////idStaticEntity::idStaticEntity( void ) {
-////	spawnTime = 0;
-////	active = false;
-////	fadeFrom.Set( 1, 1, 1, 1 );
-////	fadeTo.Set( 1, 1, 1, 1 );
-////	fadeStart = 0;
-////	fadeEnd	= 0;
-////	runGui = false;
-////}
-////
-/////*
-////===============
-////idStaticEntity::Save
-////===============
-////*/
-////void idStaticEntity::Save( idSaveGame *savefile ) const {
-////	savefile.WriteInt( spawnTime );
-////	savefile.WriteBool( active );
-////	savefile.WriteVec4( fadeFrom );
-////	savefile.WriteVec4( fadeTo );
-////	savefile.WriteInt( fadeStart );
-////	savefile.WriteInt( fadeEnd );
-////	savefile.WriteBool( runGui );
-////}
-////
-/////*
-////===============
-////idStaticEntity::Restore
-////===============
-////*/
-////void idStaticEntity::Restore( idRestoreGame *savefile ) {
-////	savefile.ReadInt( spawnTime );
-////	savefile.ReadBool( active );
-////	savefile.ReadVec4( fadeFrom );
-////	savefile.ReadVec4( fadeTo );
-////	savefile.ReadInt( fadeStart );
-////	savefile.ReadInt( fadeEnd );
-////	savefile.ReadBool( runGui );
-////}
-////
-/////*
-////===============
-////idStaticEntity::Spawn
-////===============
-////*/
-////void idStaticEntity::Spawn( void ) {
-////	bool solid;
-////	bool hidden;
-////
-////	// an inline static model will not do anything at all
-////	if ( spawnArgs.GetBool( "inline" ) || gameLocal.world.spawnArgs.GetBool( "inlineAllStatics" ) ) {
-////		Hide();
-////		return;
-////	}
-////
-////	solid = spawnArgs.GetBool( "solid" );
-////	hidden = spawnArgs.GetBool( "hide" );
-////
-////	if ( solid && !hidden ) {
-////		GetPhysics().SetContents( CONTENTS_SOLID );
-////	} else {
-////		GetPhysics().SetContents( 0 );
-////	}
-////
-////	spawnTime = gameLocal.time;
-////	active = false;
-////
-////	idStr model = spawnArgs.GetString( "model" );
-////	if ( model.Find( ".prt" ) >= 0 ) {
-////		// we want the parametric particles out of sync with each other
-////		renderEntity.shaderParms[ SHADERPARM_TIMEOFFSET ] = gameLocal.random.RandomInt( 32767 );
-////	}
-////
-////	fadeFrom.Set( 1, 1, 1, 1 );
-////	fadeTo.Set( 1, 1, 1, 1 );
-////	fadeStart = 0;
-////	fadeEnd	= 0;
-////
-////	// NOTE: this should be used very rarely because it is expensive
-////	runGui = spawnArgs.GetBool( "runGui" );
-////	if ( runGui ) {
-////		BecomeActive( TH_THINK );
-////	}
-////}
-////
-/////*
-////================
-////idStaticEntity::ShowEditingDialog
-////================
-////*/
-////void idStaticEntity::ShowEditingDialog( void ) {
-////	common.InitTool( EDITOR_PARTICLE, &spawnArgs );
-////}
-/////*
-////================
-////idStaticEntity::Think
-////================
-////*/
-////void idStaticEntity::Think( void ) {
-////	idEntity::Think();
-////	if ( thinkFlags & TH_THINK ) {
-////		if ( runGui && renderEntity.gui[0] ) {
-////			idPlayer *player = gameLocal.GetLocalPlayer();
-////			if ( player ) {
-////				if ( !player.objectiveSystemOpen ) {
-////					renderEntity.gui[0].StateChanged( gameLocal.time, true );
-////					if ( renderEntity.gui[1] ) {
-////						renderEntity.gui[1].StateChanged( gameLocal.time, true );
-////					}
-////					if ( renderEntity.gui[2] ) {
-////						renderEntity.gui[2].StateChanged( gameLocal.time, true );
-////					}
-////				}
-////			}
-////		}
-////		if ( fadeEnd > 0 ) {
-////			idVec4 color;
-////			if ( gameLocal.time < fadeEnd ) {
-////				color.Lerp( fadeFrom, fadeTo, ( float )( gameLocal.time - fadeStart ) / ( float )( fadeEnd - fadeStart ) );
-////			} else {
-////				color = fadeTo;
-////				fadeEnd = 0;
-////				BecomeInactive( TH_THINK );
-////			}
-////			SetColor( color );
-////		}
-////	}
-////}
-////
-/////*
-////================
-////idStaticEntity::Fade
-////================
-////*/
-////void idStaticEntity::Fade( const idVec4 &to, float fadeTime ) {
-////	GetColor( fadeFrom );
-////	fadeTo = to;
-////	fadeStart = gameLocal.time;
-////	fadeEnd = gameLocal.time + SEC2MS( fadeTime );
-////	BecomeActive( TH_THINK );
-////}
-////
-/////*
-////================
-////idStaticEntity::Hide
-////================
-////*/
-////void idStaticEntity::Hide( void ) {
-////	idEntity::Hide();
-////	GetPhysics().SetContents( 0 );
-////}
-////
-/////*
-////================
-////idStaticEntity::Show
-////================
-////*/
-////void idStaticEntity::Show( void ) {
-////	idEntity::Show();
-////	if ( spawnArgs.GetBool( "solid" ) ) {
-////		GetPhysics().SetContents( CONTENTS_SOLID );
-////	}
-////}
-////
-/////*
-////================
-////idStaticEntity::Event_Activate
-////================
-////*/
-////void idStaticEntity::Event_Activate( activator:idEntity ) {
-////	idStr activateGui;
-////
-////	spawnTime = gameLocal.time;
-////	active = !active;
-////
-////	const idKeyValue *kv = spawnArgs.FindKey( "hide" );
-////	if ( kv ) {
-////		if ( IsHidden() ) {
-////			Show();
-////		} else {
-////			Hide();
-////		}
-////	}
-////
-////	renderEntity.shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( spawnTime );
-////	renderEntity.shaderParms[5] = active;
-////	// this change should be a good thing, it will automatically turn on 
-////	// lights etc.. when triggered so that does not have to be specifically done
-////	// with trigger parms.. it MIGHT break things so need to keep an eye on it
-////	renderEntity.shaderParms[ SHADERPARM_MODE ] = ( renderEntity.shaderParms[ SHADERPARM_MODE ] ) ?  0.0f : 1.0f;
-////	BecomeActive( TH_UPDATEVISUALS );
-////}
-////
-/////*
-////================
-////idStaticEntity::WriteToSnapshot
-////================
-////*/
-////void idStaticEntity::WriteToSnapshot( idBitMsgDelta &msg ) const {
-////	GetPhysics().WriteToSnapshot( msg );
-////	WriteBindToSnapshot( msg );
-////	WriteColorToSnapshot( msg );
-////	WriteGUIToSnapshot( msg );
-////	msg.WriteBits( IsHidden()?1:0, 1 );
-////}
-////
-/////*
-////================
-////idStaticEntity::ReadFromSnapshot
-////================
-////*/
-////void idStaticEntity::ReadFromSnapshot( const idBitMsgDelta &msg ) {
-////	bool hidden;
-////
-////	GetPhysics().ReadFromSnapshot( msg );
-////	ReadBindFromSnapshot( msg );
-////	ReadColorFromSnapshot( msg );
-////	ReadGUIFromSnapshot( msg );
-////	hidden = msg.ReadBits( 1 ) == 1;
-////	if ( hidden != IsHidden() ) {
-////		if ( hidden ) {
-////			Hide();
-////		} else {
-////			Show();
-////		}
-////	}
-////	if ( msg.HasChanged() ) {
-////		UpdateVisuals();
-////	}
-////}
-////
-////
 /////*
 ////===============================================================================
 ////
@@ -1825,7 +1516,7 @@ idFuncEmitter.Type = new idTypeInfo("idFuncEmitter", "idStaticEntity",
 ////idFuncEmitter::idFuncEmitter
 ////===============
 ////*/
-////idFuncEmitter::idFuncEmitter( void ) {
+////idFuncEmitter::idFuncEmitter( ) {
 ////	hidden = false;
 ////}
 ////
@@ -1834,7 +1525,7 @@ idFuncEmitter.Type = new idTypeInfo("idFuncEmitter", "idStaticEntity",
 ////idFuncEmitter::Spawn
 ////===============
 ////*/
-////void idFuncEmitter::Spawn( void ) {
+////void idFuncEmitter::Spawn( ) {
 ////	if ( spawnArgs.GetBool( "start_off" ) ) {
 ////		hidden = true;
 ////		renderEntity.shaderParms[SHADERPARM_PARTICLE_STOPTIME] = MS2SEC( 1 );
@@ -1946,7 +1637,7 @@ idFuncSplat.Type = new idTypeInfo("idFuncSplat", "idFuncEmitter",
 ////idFuncSplat::idFuncSplat
 ////===============
 ////*/
-////idFuncSplat::idFuncSplat( void ) {
+////idFuncSplat::idFuncSplat( ) {
 ////}
 ////
 /////*
@@ -1954,7 +1645,7 @@ idFuncSplat.Type = new idTypeInfo("idFuncSplat", "idFuncEmitter",
 ////idFuncSplat::Spawn
 ////===============
 ////*/
-////void idFuncSplat::Spawn( void ) {
+////void idFuncSplat::Spawn( ) {
 ////}
 ////
 /////*
@@ -1962,7 +1653,7 @@ idFuncSplat.Type = new idTypeInfo("idFuncSplat", "idFuncEmitter",
 ////idFuncSplat::Event_Splat
 ////================
 ////*/
-////void idFuncSplat::Event_Splat( void ) {
+////void idFuncSplat::Event_Splat( ) {
 ////	const char *splat = NULL;
 ////	int count = spawnArgs.GetInt( "splatCount", "1" );
 ////	for ( int i = 0; i < count; i++ ) {
@@ -2059,7 +1750,7 @@ idFuncSmoke.Type = new idTypeInfo("idFuncSmoke", "idEntity",
 ////idFuncSmoke::Spawn
 ////===============
 ////*/
-////void idFuncSmoke::Spawn( void ) {
+////void idFuncSmoke::Spawn( ) {
 ////	const char *smokeName = spawnArgs.GetString( "smoke" );
 ////	if ( *smokeName != '\0' ) {
 ////		smoke = static_cast<const idDeclParticle *>( declManager.FindType( DECL_PARTICLE, smokeName ) );
@@ -2098,7 +1789,7 @@ idFuncSmoke.Type = new idTypeInfo("idFuncSmoke", "idEntity",
 ////idFuncSmoke::Think
 ////================
 ////*/
-////void idFuncSmoke::Think( void ) {
+////void idFuncSmoke::Think( ) {
 ////
 ////	// if we are completely closed off from the player, don't do anything at all
 ////	if ( CheckDormant() || smoke == NULL || smokeTime == -1 ) {
@@ -2156,7 +1847,7 @@ idTextEntity.Type = new idTypeInfo("idTextEntity", "idEntity",
 ////idTextEntity::Spawn
 ////================
 ////*/
-////void idTextEntity::Spawn( void ) {
+////void idTextEntity::Spawn( ) {
 ////	// these are cached as the are used each frame
 ////	text = spawnArgs.GetString( "text" );
 ////	playerOriented = spawnArgs.GetBool( "playerOriented" );
@@ -2191,7 +1882,7 @@ idTextEntity.Type = new idTypeInfo("idTextEntity", "idEntity",
 ////idTextEntity::Think
 ////================
 ////*/
-////void idTextEntity::Think( void ) {
+////void idTextEntity::Think( ) {
 ////	if ( thinkFlags & TH_THINK ) {
 ////		gameRenderWorld.DrawText( text, GetPhysics().GetOrigin(), 0.25, colorWhite, playerOriented ? gameLocal.GetLocalPlayer().viewAngles.ToMat3() : GetPhysics().GetAxis().Transpose(), 1 );
 ////		for ( int i = 0; i < targets.Num(); i++ ) {
@@ -2246,7 +1937,7 @@ idVacuumSeparatorEntity.Type = new idTypeInfo("idVacuumSeparatorEntity", "idEnti
 ////idVacuumSeparatorEntity::idVacuumSeparatorEntity
 ////================
 ////*/
-////idVacuumSeparatorEntity::idVacuumSeparatorEntity( void ) {
+////idVacuumSeparatorEntity::idVacuumSeparatorEntity( ) {
 ////	portal = 0;
 ////}
 ////
@@ -2457,7 +2148,7 @@ idLocationEntity.Type = new idTypeInfo("idLocationEntity", "idEntity",
 ////idLocationEntity::GetLocation
 ////======================
 ////*/
-////const char *idLocationEntity::GetLocation( void ) const {
+////const char *idLocationEntity::GetLocation( ) const {
 ////	return spawnArgs.GetString( "location" );
 ////}
 ////
@@ -2530,7 +2221,7 @@ idBeam.Type = new idTypeInfo("idBeam", "idEntity",
 ////idBeam::Spawn
 ////===============
 ////*/
-////void idBeam::Spawn( void ) {
+////void idBeam::Spawn( ) {
 ////	float width;
 ////
 ////	if ( spawnArgs.GetFloat( "width", "0", width ) ) {
@@ -2547,7 +2238,7 @@ idBeam.Type = new idTypeInfo("idBeam", "idEntity",
 ////idBeam::Think
 ////================
 ////*/
-////void idBeam::Think( void ) {
+////void idBeam::Think( ) {
 ////	idBeam *masterEnt;
 ////
 ////	if ( !IsHidden() && !target.GetEntity() ) {
@@ -2593,7 +2284,7 @@ idBeam.Type = new idTypeInfo("idBeam", "idEntity",
 ////idBeam::Show
 ////================
 ////*/
-////void idBeam::Show( void ) {
+////void idBeam::Show( ) {
 ////	idBeam *targetEnt;
 ////
 ////	idEntity::Show();
@@ -2610,7 +2301,7 @@ idBeam.Type = new idTypeInfo("idBeam", "idEntity",
 ////idBeam::Event_MatchTarget
 ////================
 ////*/
-////void idBeam::Event_MatchTarget( void ) {
+////void idBeam::Event_MatchTarget( ) {
 ////	var/*int*/i:number;
 ////	idEntity *targetEnt;
 ////	idBeam *targetBeam;
@@ -2807,7 +2498,7 @@ idShaking.Type = new idTypeInfo("idShaking", "idEntity",
 ////===============
 ////*/
 ////idShaking::idShaking() {
-////	active = false;
+////	this.active = false;
 ////}
 ////
 /////*
@@ -2816,7 +2507,7 @@ idShaking.Type = new idTypeInfo("idShaking", "idEntity",
 ////===============
 ////*/
 ////void idShaking::Save( idSaveGame *savefile ) const {
-////	savefile.WriteBool( active );
+////	savefile.WriteBool( this.active );
 ////	savefile.WriteStaticObject( physicsObj );
 ////}
 ////
@@ -2826,7 +2517,7 @@ idShaking.Type = new idTypeInfo("idShaking", "idEntity",
 ////===============
 ////*/
 ////void idShaking::Restore( idRestoreGame *savefile ) {
-////	savefile.ReadBool( active );
+////	savefile.ReadBool( this.active );
 ////	savefile.ReadStaticObject( physicsObj );
 ////	RestorePhysics( &physicsObj );
 ////}
@@ -2836,7 +2527,7 @@ idShaking.Type = new idTypeInfo("idShaking", "idEntity",
 ////idShaking::Spawn
 ////===============
 ////*/
-////void idShaking::Spawn( void ) {
+////void idShaking::Spawn( ) {
 ////	physicsObj.SetSelf( this );
 ////	physicsObj.SetClipModel( new idClipModel( GetPhysics().GetClipModel() ), 1.0f );
 ////	physicsObj.SetOrigin( GetPhysics().GetOrigin() );
@@ -2844,7 +2535,7 @@ idShaking.Type = new idTypeInfo("idShaking", "idEntity",
 ////	physicsObj.SetClipMask( MASK_SOLID );
 ////	SetPhysics( &physicsObj );
 ////	
-////	active = false;
+////	this.active = false;
 ////	if ( !spawnArgs.GetBool( "start_off" ) ) {
 ////		BeginShaking();
 ////	}
@@ -2855,12 +2546,12 @@ idShaking.Type = new idTypeInfo("idShaking", "idEntity",
 ////idShaking::BeginShaking
 ////================
 ////*/
-////void idShaking::BeginShaking( void ) {
+////void idShaking::BeginShaking( ) {
 ////	int			phase;
 ////	idAngles	shake;
 ////	int			period;
 ////
-////	active = true;
+////	this.active = true;
 ////	phase = gameLocal.random.RandomInt( 1000 );
 ////	shake = spawnArgs.GetAngles( "shake", "0.5 0.5 0.5" );
 ////	period = spawnArgs.GetFloat( "period", "0.05" ) * 1000;
@@ -2873,10 +2564,10 @@ idShaking.Type = new idTypeInfo("idShaking", "idEntity",
 ////================
 ////*/
 ////void idShaking::Event_Activate( activator:idEntity ) {
-////	if ( !active ) {
+////	if ( !this.active ) {
 ////		BeginShaking();
 ////	} else {
-////		active = false;
+////		this.active = false;
 ////		physicsObj.SetAngularExtrapolation( EXTRAPOLATION_NONE, 0, 0, physicsObj.GetAxis().ToAngles(), ang_zero, ang_zero );
 ////	}
 ////}
@@ -2971,7 +2662,7 @@ idEarthQuake.Type = new idTypeInfo("idEarthQuake", "idEntity",
 ////idEarthQuake::Spawn
 ////===============
 ////*/
-////void idEarthQuake::Spawn( void ) {
+////void idEarthQuake::Spawn( ) {
 ////	nextTriggerTime = 0;
 ////	shakeStopTime = 0;
 ////	wait = spawnArgs.GetFloat( "wait", "15" );
@@ -3050,7 +2741,7 @@ idEarthQuake.Type = new idTypeInfo("idEarthQuake", "idEntity",
 ////idEarthQuake::Think
 ////================
 ////*/
-////void idEarthQuake::Think( void ) {
+////void idEarthQuake::Think( ) {
 ////	if ( thinkFlags & TH_THINK ) {
 ////		if ( gameLocal.time > shakeStopTime ) {
 ////			BecomeInactive( TH_THINK );
@@ -3134,7 +2825,7 @@ idFuncPortal.Type = new idTypeInfo("idFuncPortal", "idEntity",
 ////idFuncPortal::Spawn
 ////===============
 ////*/
-////void idFuncPortal::Spawn( void ) {
+////void idFuncPortal::Spawn( ) {
 ////	portal = gameRenderWorld.FindPortal( GetPhysics().GetAbsBounds().Expand( 32.0f ) );
 ////	if ( portal > 0 ) {
 ////		state = spawnArgs.GetBool( "start_on" );
@@ -3220,7 +2911,7 @@ idFuncAASPortal.Type = new idTypeInfo("idFuncAASPortal", "idEntity",
 ////idFuncAASPortal::Spawn
 ////===============
 ////*/
-////void idFuncAASPortal::Spawn( void ) {
+////void idFuncAASPortal::Spawn( ) {
 ////	state = spawnArgs.GetBool( "start_on" );
 ////	gameLocal.SetAASAreaState( GetPhysics().GetAbsBounds(), AREACONTENTS_CLUSTERPORTAL, state );
 ////}
@@ -3301,7 +2992,7 @@ idFuncAASObstacle.Type = new idTypeInfo("idFuncAASObstacle", "idEntity",
 ////idFuncAASObstacle::Spawn
 ////===============
 ////*/
-////void idFuncAASObstacle::Spawn( void ) {
+////void idFuncAASObstacle::Spawn( ) {
 ////	state = spawnArgs.GetBool( "start_on" );
 ////	gameLocal.SetAASAreaState( GetPhysics().GetAbsBounds(), AREACONTENTS_OBSTACLE, state );
 ////}
@@ -3387,7 +3078,7 @@ idFuncRadioChatter.Type = new idTypeInfo("idFuncRadioChatter", "idEntity",
 ////idFuncRadioChatter::Spawn
 ////===============
 ////*/
-////void idFuncRadioChatter::Spawn( void ) {
+////void idFuncRadioChatter::Spawn( ) {
 ////	time = spawnArgs.GetFloat( "time", "5.0" );
 ////}
 ////
@@ -3555,7 +3246,7 @@ idPhantomObjects.Type = new idTypeInfo( "idPhantomObjects", "idEntity",
 ////idPhantomObjects::Spawn
 ////===============
 ////*/
-////void idPhantomObjects::Spawn( void ) {
+////void idPhantomObjects::Spawn( ) {
 ////	throw_time = spawnArgs.GetFloat( "time", "5" );
 ////	speed = spawnArgs.GetFloat( "speed", "1200" );
 ////	shake_time = spawnArgs.GetFloat( "shake_time", "1" );
@@ -3629,7 +3320,7 @@ idPhantomObjects.Type = new idTypeInfo( "idPhantomObjects", "idEntity",
 ////idPhantomObjects::Think
 ////================
 ////*/
-////void idPhantomObjects::Think( void ) {
+////void idPhantomObjects::Think( ) {
 ////	int			i;
 ////	int			num;
 ////	float		time;

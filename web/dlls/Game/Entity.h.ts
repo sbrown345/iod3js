@@ -1287,19 +1287,19 @@ idEntity::IsHidden
 		return this.fl.hidden;
 	}
 
-/////*
-////================
-////idEntity::Hide
-////================
-////*/
-////Hide( ):void {
-////	if ( !IsHidden() ) {
-////		this.fl.hidden = true;
-////		this.FreeModelDef();
-////		this.UpdateVisuals();
-////	}
-////}
-////
+/*
+================
+idEntity::Hide
+================
+*/
+	Hide ( ): void {
+		if ( !this.IsHidden ( ) ) {
+			this.fl.hidden = true;
+			this.FreeModelDef ( );
+			this.UpdateVisuals ( );
+		}
+	}
+
 /////*
 ////================
 ////idEntity::Show
@@ -2981,18 +2981,17 @@ idEntity::IsAtRest
 ////AddContactEntity( ent:idEntity ) {
 ////	this.GetPhysics().AddContactEntity( ent );
 ////}
-////
-/////*
-////================
-////idEntity::RemoveContactEntity
-////================
-////*/
-////RemoveContactEntity( ent:idEntity ) {
-////	this.GetPhysics().RemoveContactEntity( ent );
-////}
-////
-////
-////
+
+/*
+================
+idEntity::RemoveContactEntity
+================
+*/
+	RemoveContactEntity ( ent: idEntity ) {
+		this.GetPhysics ( ).RemoveContactEntity( ent );
+	}
+
+
 /////***********************************************************************
 ////
 ////	Damage

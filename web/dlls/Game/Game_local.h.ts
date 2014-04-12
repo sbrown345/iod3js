@@ -243,10 +243,10 @@ class idEntityPtr<type> {
 ////private:
 	spawnId :number/*int*/;
 
-	
-constructor() {
-	this.spawnId = 0;
-}
+
+	constructor ( ) {
+		this.spawnId = 0;
+	}
 
 ////ID_INLINE void idEntityPtr<type>::Save( idSaveGame *savefile ) const {
 ////	savefile.WriteInt( this.spawnId );
@@ -296,6 +296,8 @@ GetEntity( ) :type {
 ////}
 
 };
+
+class contactEntity_t extends idEntityPtr<idEntity> { } // from Physics_Base
 
 //============================================================================
 
@@ -634,6 +636,12 @@ class idGameLocal extends idGame {
 
 	////void					GetMapLoadingGUI( char gui[ MAX_STRING_CHARS ] );
 
+
+/*
+===========
+idGameLocal::idGameLocal
+============
+*/
 	constructor() {
 		super();
 
@@ -646,18 +654,6 @@ class idGameLocal extends idGame {
 
 		this.Clear ( );
 	}
-
-
-
-
-///*
-//===========
-//idGameLocal::idGameLocal
-//============
-//*/
-//constructor() {
-//	this.Clear();
-//}
 
 /*
 ===========
@@ -2588,14 +2584,14 @@ idGameLocal::InPlayerPVS
 ////	}
 ////}
 
-/////*
-////================
-////idGameLocal::GetGravity
-////================
-////*/
-////const idVec3 &idGameLocal::GetGravity( ) const {
-////	return this.gravity;
-////}
+/*
+================
+idGameLocal::GetGravity
+================
+*/
+	GetGravity ( ): idVec3 {
+		return this.gravity;
+	}
 
 /////*
 ////================
@@ -3054,14 +3050,14 @@ idGameLocal::InPlayerPVS
 ////	return this.mapFile;
 ////}
 
-/////*
-////================
-////idGameLocal::GetMapName
-////================
-////*/
-////const char *idGameLocal::GetMapName( ) const {
-////	return this.mapFileName.c_str();
-////}
+/*
+================
+idGameLocal::GetMapName
+================
+*/
+	GetMapName ( ): string {
+		return this.mapFileName.c_str ( );
+	}
 
 /////*
 ////================

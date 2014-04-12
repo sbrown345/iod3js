@@ -1786,7 +1786,7 @@ idStr::SetFileExtension
 */
 	SetFileExtension ( extension: string ): idStr {
 		this.StripFileExtension ( );
-		if ( extension != '.' ) {
+		if ( extension[0] != '.' ) {
 			this.Append( '.' );
 		}
 		this.Append( extension );

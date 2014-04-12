@@ -351,7 +351,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////
 ////#ifdef TEST_COLLISION_DETECTION
 ////	bool startsolid;
-////	if ( gameLocal.clip.Contents( this.current.i.position, clipModel, this.current.i.orientation, clipMask, self ) ) {
+////	if ( gameLocal.clip.Contents( this.current.i.position, this.clipModel, this.current.i.orientation, clipMask, self ) ) {
 ////		startsolid = true;
 ////	}
 ////#endif
@@ -361,7 +361,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	rotation.SetOrigin( this.current.i.position );
 ////
 ////	// if there was a collision
-////	if ( gameLocal.clip.Motion( collision, this.current.i.position, next.i.position, rotation, clipModel, this.current.i.orientation, clipMask, self ) ) {
+////	if ( gameLocal.clip.Motion( collision, this.current.i.position, next.i.position, rotation, this.clipModel, this.current.i.orientation, clipMask, self ) ) {
 ////		// set the next state to the state at the moment of impact
 ////		next.i.position = collision.endpos;
 ////		next.i.orientation = collision.endAxis;
@@ -371,7 +371,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	}
 ////
 ////#ifdef TEST_COLLISION_DETECTION
-////	if ( gameLocal.clip.Contents( next.i.position, clipModel, next.i.orientation, clipMask, self ) ) {
+////	if ( gameLocal.clip.Contents( next.i.position, this.clipModel, next.i.orientation, clipMask, self ) ) {
 ////		if ( !startsolid ) {
 ////			int bah = 1;
 ////		}
@@ -445,7 +445,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////  Does not catch all cases where the body is at rest but is generally good enough.
 ////================
 ////*/
-////bool idPhysics_RigidBody::TestIfAtRest( void ) const {
+////bool idPhysics_RigidBody::TestIfAtRest( ) const {
 ////	var/*int*/i:number;
 ////	float gv;
 ////	idVec3 v, av, normal, point;
@@ -531,7 +531,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////  Drops the object straight down to the floor and verifies if the object is at rest on the floor.
 ////================
 ////*/
-////void idPhysics_RigidBody::DropToFloorAndRest( void ) {
+////void idPhysics_RigidBody::DropToFloorAndRest( ) {
 ////	idVec3 down;
 ////	trace_t tr;
 ////
@@ -539,7 +539,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////
 ////		testSolid = false;
 ////
-////		if ( gameLocal.clip.Contents( this.current.i.position, clipModel, this.current.i.orientation, clipMask, self ) ) {
+////		if ( gameLocal.clip.Contents( this.current.i.position, this.clipModel, this.current.i.orientation, clipMask, self ) ) {
 ////			gameLocal.DWarning( "rigid body in solid for entity '%s' type '%s' at (%s)",
 ////								self.name.c_str(), self.GetType().classname, this.current.i.position.ToString(0) );
 ////			Rest();
@@ -550,9 +550,9 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////
 ////	// put the body on the floor
 ////	down = this.current.i.position + gravityNormal * 128.0f;
-////	gameLocal.clip.Translation( tr, this.current.i.position, down, clipModel, this.current.i.orientation, clipMask, self );
+////	gameLocal.clip.Translation( tr, this.current.i.position, down, this.clipModel, this.current.i.orientation, clipMask, self );
 ////	this.current.i.position = tr.endpos;
-////	clipModel.Link( gameLocal.clip, self, clipModel.GetId(), tr.endpos, this.current.i.orientation );
+////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), tr.endpos, this.current.i.orientation );
 ////
 ////	// if on the floor already
 ////	if ( tr.fraction == 0.0f ) {
@@ -577,10 +577,10 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::DebugDraw
 ////================
 ////*/
-////void idPhysics_RigidBody::DebugDraw( void ) {
+////void idPhysics_RigidBody::DebugDraw( ) {
 ////
 ////	if ( rb_showBodies.GetBool() || ( rb_showActive.GetBool() && this.current.atRest < 0 ) ) {
-////		collisionModelManager.DrawModel( clipModel.Handle(), clipModel.GetOrigin(), clipModel.GetAxis(), vec3_origin, 0.0f );
+////		collisionModelManager.DrawModel( this.clipModel.Handle(), this.clipModel.GetOrigin(), this.clipModel.GetAxis(), vec3_origin, 0.0f );
 ////	}
 ////
 ////	if ( rb_showMass.GetBool() ) {
@@ -597,7 +597,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	}
 ////
 ////	if ( rb_showVelocity.GetBool() ) {
-////		DrawVelocity( clipModel.GetId(), 0.1f, 4.0f );
+////		DrawVelocity( this.clipModel.GetId(), 0.1f, 4.0f );
 ////	}
 ////}
 ////
@@ -606,13 +606,13 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::idPhysics_RigidBody
 ////================
 ////*/
-////idPhysics_RigidBody::idPhysics_RigidBody( void ) {
+////idPhysics_RigidBody::idPhysics_RigidBody( ) {
 ////
 ////	// set default rigid body properties
 ////	SetClipMask( MASK_SOLID );
 ////	SetBouncyness( 0.6f );
 ////	SetFriction( 0.6f, 0.6f, 0.0f );
-////	clipModel = NULL;
+////	this.clipModel = NULL;
 ////
 ////	memset( &current, 0, sizeof( this.current ) );
 ////
@@ -653,10 +653,10 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::~idPhysics_RigidBody
 ////================
 ////*/
-////idPhysics_RigidBody::~idPhysics_RigidBody( void ) {
-////	if ( clipModel ) {
-////		delete clipModel;
-////		clipModel = NULL;
+////idPhysics_RigidBody::~idPhysics_RigidBody( ) {
+////	if ( this.clipModel ) {
+////		delete this.clipModel;
+////		this.clipModel = NULL;
 ////	}
 ////	delete integrator;
 ////}
@@ -715,7 +715,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	savefile.WriteFloat( angularFriction );
 ////	savefile.WriteFloat( contactFriction );
 ////	savefile.WriteFloat( bouncyness );
-////	savefile.WriteClipModel( clipModel );
+////	savefile.WriteClipModel( this.clipModel );
 ////
 ////	savefile.WriteFloat( mass );
 ////	savefile.WriteFloat( inverseMass );
@@ -746,7 +746,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	savefile.ReadFloat( angularFriction );
 ////	savefile.ReadFloat( contactFriction );
 ////	savefile.ReadFloat( bouncyness );
-////	savefile.ReadClipModel( clipModel );
+////	savefile.ReadClipModel( this.clipModel );
 ////
 ////	savefile.ReadFloat( mass );
 ////	savefile.ReadFloat( inverseMass );
@@ -779,14 +779,14 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	assert( model.IsTraceModel() );	// and it should be a trace model
 ////	assert( density > 0.0f );			// density should be valid
 ////
-////	if ( clipModel && clipModel != model && freeOld ) {
-////		delete clipModel;
+////	if ( this.clipModel && this.clipModel != model && freeOld ) {
+////		delete this.clipModel;
 ////	}
-////	clipModel = model;
-////	clipModel.Link( gameLocal.clip, self, 0, this.current.i.position, this.current.i.orientation );
+////	this.clipModel = model;
+////	this.clipModel.Link( gameLocal.clip, self, 0, this.current.i.position, this.current.i.orientation );
 ////
 ////	// get mass properties from the trace model
-////	clipModel.GetMassProperties( density, mass, centerOfMass, inertiaTensor );
+////	this.clipModel.GetMassProperties( density, mass, centerOfMass, inertiaTensor );
 ////
 ////	// check whether or not the clip model has valid mass properties
 ////	if ( mass <= 0.0f || FLOAT_IS_NAN( mass ) ) {
@@ -826,7 +826,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////================
 ////*/
 ////idClipModel *idPhysics_RigidBody::GetClipModel( /*int*/ id:number ) const {
-////	return clipModel;
+////	return this.clipModel;
 ////}
 ////
 /////*
@@ -834,7 +834,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::GetNumClipModels
 ////================
 ////*/
-////int idPhysics_RigidBody::GetNumClipModels( void ) const {
+////int idPhysics_RigidBody::GetNumClipModels( ) const {
 ////	return 1;
 ////}
 ////
@@ -893,7 +893,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::Rest
 ////================
 ////*/
-////void idPhysics_RigidBody::Rest( void ) {
+////void idPhysics_RigidBody::Rest( ) {
 ////	this.current.atRest = gameLocal.time;
 ////	this.current.i.linearMomentum.Zero();
 ////	this.current.i.angularMomentum.Zero();
@@ -905,7 +905,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::DropToFloor
 ////================
 ////*/
-////void idPhysics_RigidBody::DropToFloor( void ) {
+////void idPhysics_RigidBody::DropToFloor( ) {
 ////	dropToFloor = true;
 ////	testSolid = true;
 ////}
@@ -915,7 +915,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::NoContact
 ////================
 ////*/
-////void idPhysics_RigidBody::NoContact( void ) {
+////void idPhysics_RigidBody::NoContact( ) {
 ////	noContact = true;
 ////}
 ////
@@ -924,7 +924,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::Activate
 ////================
 ////*/
-////void idPhysics_RigidBody::Activate( void ) {
+////void idPhysics_RigidBody::Activate( ) {
 ////	this.current.atRest = -1;
 ////	self.BecomeActive( TH_PHYSICS );
 ////}
@@ -936,7 +936,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////  put to rest untill something collides with this physics object
 ////================
 ////*/
-////void idPhysics_RigidBody::PutToRest( void ) {
+////void idPhysics_RigidBody::PutToRest( ) {
 ////	Rest();
 ////}
 ////
@@ -945,7 +945,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::EnableImpact
 ////================
 ////*/
-////void idPhysics_RigidBody::EnableImpact( void ) {
+////void idPhysics_RigidBody::EnableImpact( ) {
 ////	noImpact = false;
 ////}
 ////
@@ -954,26 +954,26 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::DisableImpact
 ////================
 ////*/
-////void idPhysics_RigidBody::DisableImpact( void ) {
+////void idPhysics_RigidBody::DisableImpact( ) {
 ////	noImpact = true;
 ////}
-////
-/////*
-////================
-////idPhysics_RigidBody::SetContents
-////================
-////*/
-////void idPhysics_RigidBody::SetContents( int contents, /*int*/ id:number ) {
-////	clipModel.SetContents( contents );
-////}
-////
+
+/*
+================
+idPhysics_RigidBody::SetContents
+================
+*/
+	SetContents(/*int*/ contents: number, /*int*/ id: number  = -1) :void{
+	this.clipModel.SetContents( contents );
+}
+
 /////*
 ////================
 ////idPhysics_RigidBody::GetContents
 ////================
 ////*/
 ////int idPhysics_RigidBody::GetContents( /*int*/ id:number ) const {
-////	return clipModel.GetContents();
+////	return this.clipModel.GetContents();
 ////}
 ////
 /////*
@@ -982,7 +982,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////================
 ////*/
 ////const idBounds &idPhysics_RigidBody::GetBounds( /*int*/ id:number ) const {
-////	return clipModel.GetBounds();
+////	return this.clipModel.GetBounds();
 ////}
 ////
 /////*
@@ -991,7 +991,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////================
 ////*/
 ////const idBounds &idPhysics_RigidBody::GetAbsBounds( /*int*/ id:number ) const {
-////	return clipModel.GetAbsBounds();
+////	return this.clipModel.GetAbsBounds();
 ////}
 ////
 /////*
@@ -1028,7 +1028,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////		else {
 ////			this.current.i.orientation = this.current.localAxis;
 ////		}
-////		clipModel.Link( gameLocal.clip, self, clipModel.GetId(), this.current.i.position, this.current.i.orientation );
+////		this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////		this.current.i.linearMomentum = mass * ( ( this.current.i.position - oldOrigin ) / timeStep );
 ////		this.current.i.angularMomentum = inertiaTensor * ( ( this.current.i.orientation * oldAxis.Transpose() ).ToAngularVelocity() / timeStep );
 ////		this.current.externalForce.Zero();
@@ -1059,7 +1059,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 //////	this.current.i.linearMomentum -= this.current.pushVelocity.SubVec3( 0 ) * mass;
 //////	this.current.i.angularMomentum -= this.current.pushVelocity.SubVec3( 1 ) * inertiaTensor;
 ////
-////	clipModel.Unlink();
+////	this.clipModel.Unlink();
 ////
 ////	next = this.current;
 ////
@@ -1088,7 +1088,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	}
 ////
 ////	// update the position of the clip model
-////	clipModel.Link( gameLocal.clip, self, clipModel.GetId(), this.current.i.position, this.current.i.orientation );
+////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////
 ////	DebugDraw();
 ////
@@ -1184,7 +1184,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::GetTime
 ////================
 ////*/
-////int idPhysics_RigidBody::GetTime( void ) const {
+////int idPhysics_RigidBody::GetTime( ) const {
 ////	return gameLocal.time;
 ////}
 ////
@@ -1240,7 +1240,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::IsAtRest
 ////================
 ////*/
-////bool idPhysics_RigidBody::IsAtRest( void ) const {
+////bool idPhysics_RigidBody::IsAtRest( ) const {
 ////	return this.current.atRest >= 0;
 ////}
 ////
@@ -1249,7 +1249,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::GetRestStartTime
 ////================
 ////*/
-////int idPhysics_RigidBody::GetRestStartTime( void ) const {
+////int idPhysics_RigidBody::GetRestStartTime( ) const {
 ////	return this.current.atRest;
 ////}
 ////
@@ -1258,7 +1258,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::IsPushable
 ////================
 ////*/
-////bool idPhysics_RigidBody::IsPushable( void ) const {
+////bool idPhysics_RigidBody::IsPushable( ) const {
 ////	return ( !noImpact && !hasMaster );
 ////}
 ////
@@ -1267,7 +1267,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::SaveState
 ////================
 ////*/
-////void idPhysics_RigidBody::SaveState( void ) {
+////void idPhysics_RigidBody::SaveState( ) {
 ////	this.saved = this.current;
 ////}
 ////
@@ -1276,10 +1276,10 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idPhysics_RigidBody::RestoreState
 ////================
 ////*/
-////void idPhysics_RigidBody::RestoreState( void ) {
+////void idPhysics_RigidBody::RestoreState( ) {
 ////	this.current = this.saved;
 ////
-////	clipModel.Link( gameLocal.clip, self, clipModel.GetId(), this.current.i.position, this.current.i.orientation );
+////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////
 ////	EvaluateContacts();
 ////}
@@ -1302,7 +1302,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////		this.current.i.position = newOrigin;
 ////	}
 ////
-////	clipModel.Link( gameLocal.clip, self, clipModel.GetId(), this.current.i.position, clipModel.GetAxis() );
+////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.clipModel.GetAxis() );
 ////
 ////	Activate();
 ////}
@@ -1325,7 +1325,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////		this.current.i.orientation = newAxis;
 ////	}
 ////
-////	clipModel.Link( gameLocal.clip, self, clipModel.GetId(), clipModel.GetOrigin(), this.current.i.orientation );
+////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.clipModel.GetOrigin(), this.current.i.orientation );
 ////
 ////	Activate();
 ////}
@@ -1340,7 +1340,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	this.current.localOrigin += translation;
 ////	this.current.i.position += translation;
 ////
-////	clipModel.Link( gameLocal.clip, self, clipModel.GetId(), this.current.i.position, clipModel.GetAxis() );
+////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.clipModel.GetAxis() );
 ////
 ////	Activate();
 ////}
@@ -1367,7 +1367,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////		this.current.localOrigin = this.current.i.position;
 ////	}
 ////
-////	clipModel.Link( gameLocal.clip, self, clipModel.GetId(), this.current.i.position, this.current.i.orientation );
+////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////
 ////	Activate();
 ////}
@@ -1442,13 +1442,13 @@ idPhysics_RigidBody::GetAxis
 ////*/
 ////void idPhysics_RigidBody::ClipTranslation( trace_t &results, const idVec3 &translation, const idClipModel *model ) const {
 ////	if ( model ) {
-////		gameLocal.clip.TranslationModel( results, clipModel.GetOrigin(), clipModel.GetOrigin() + translation,
-////											clipModel, clipModel.GetAxis(), clipMask,
+////		gameLocal.clip.TranslationModel( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,
+////											this.clipModel, this.clipModel.GetAxis(), clipMask,
 ////											model.Handle(), model.GetOrigin(), model.GetAxis() );
 ////	}
 ////	else {
-////		gameLocal.clip.Translation( results, clipModel.GetOrigin(), clipModel.GetOrigin() + translation,
-////											clipModel, clipModel.GetAxis(), clipMask, self );
+////		gameLocal.clip.Translation( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,
+////											this.clipModel, this.clipModel.GetAxis(), clipMask, self );
 ////	}
 ////}
 ////
@@ -1459,13 +1459,13 @@ idPhysics_RigidBody::GetAxis
 ////*/
 ////void idPhysics_RigidBody::ClipRotation( trace_t &results, const idRotation &rotation, const idClipModel *model ) const {
 ////	if ( model ) {
-////		gameLocal.clip.RotationModel( results, clipModel.GetOrigin(), rotation,
-////											clipModel, clipModel.GetAxis(), clipMask,
+////		gameLocal.clip.RotationModel( results, this.clipModel.GetOrigin(), rotation,
+////											this.clipModel, this.clipModel.GetAxis(), clipMask,
 ////											model.Handle(), model.GetOrigin(), model.GetAxis() );
 ////	}
 ////	else {
-////		gameLocal.clip.Rotation( results, clipModel.GetOrigin(), rotation,
-////											clipModel, clipModel.GetAxis(), clipMask, self );
+////		gameLocal.clip.Rotation( results, this.clipModel.GetOrigin(), rotation,
+////											this.clipModel, this.clipModel.GetAxis(), clipMask, self );
 ////	}
 ////}
 ////
@@ -1476,11 +1476,11 @@ idPhysics_RigidBody::GetAxis
 ////*/
 ////int idPhysics_RigidBody::ClipContents( const idClipModel *model ) const {
 ////	if ( model ) {
-////		return gameLocal.clip.ContentsModel( clipModel.GetOrigin(), clipModel, clipModel.GetAxis(), -1,
+////		return gameLocal.clip.ContentsModel( this.clipModel.GetOrigin(), this.clipModel, this.clipModel.GetAxis(), -1,
 ////									model.Handle(), model.GetOrigin(), model.GetAxis() );
 ////	}
 ////	else {
-////		return gameLocal.clip.Contents( clipModel.GetOrigin(), clipModel, clipModel.GetAxis(), -1, NULL );
+////		return gameLocal.clip.Contents( this.clipModel.GetOrigin(), this.clipModel, this.clipModel.GetAxis(), -1, NULL );
 ////	}
 ////}
 ////
@@ -1489,8 +1489,8 @@ idPhysics_RigidBody::GetAxis
 ////idPhysics_RigidBody::DisableClip
 ////================
 ////*/
-////void idPhysics_RigidBody::DisableClip( void ) {
-////	clipModel.Disable();
+////void idPhysics_RigidBody::DisableClip( ) {
+////	this.clipModel.Disable();
 ////}
 ////
 /////*
@@ -1498,8 +1498,8 @@ idPhysics_RigidBody::GetAxis
 ////idPhysics_RigidBody::EnableClip
 ////================
 ////*/
-////void idPhysics_RigidBody::EnableClip( void ) {
-////	clipModel.Enable();
+////void idPhysics_RigidBody::EnableClip( ) {
+////	this.clipModel.Enable();
 ////}
 ////
 /////*
@@ -1507,8 +1507,8 @@ idPhysics_RigidBody::GetAxis
 ////idPhysics_RigidBody::UnlinkClip
 ////================
 ////*/
-////void idPhysics_RigidBody::UnlinkClip( void ) {
-////	clipModel.Unlink();
+////void idPhysics_RigidBody::UnlinkClip( ) {
+////	this.clipModel.Unlink();
 ////}
 ////
 /////*
@@ -1516,8 +1516,8 @@ idPhysics_RigidBody::GetAxis
 ////idPhysics_RigidBody::LinkClip
 ////================
 ////*/
-////void idPhysics_RigidBody::LinkClip( void ) {
-////	clipModel.Link( gameLocal.clip, self, clipModel.GetId(), this.current.i.position, this.current.i.orientation );
+////void idPhysics_RigidBody::LinkClip( ) {
+////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////}
 ////
 /////*
@@ -1525,7 +1525,7 @@ idPhysics_RigidBody::GetAxis
 ////idPhysics_RigidBody::EvaluateContacts
 ////================
 ////*/
-////bool idPhysics_RigidBody::EvaluateContacts( void ) {
+////bool idPhysics_RigidBody::EvaluateContacts( ) {
 ////	idVec6 dir;
 ////	int num;
 ////
@@ -1537,8 +1537,8 @@ idPhysics_RigidBody::GetAxis
 ////	dir.SubVec3(1) = this.current.i.angularMomentum;
 ////	dir.SubVec3(0).Normalize();
 ////	dir.SubVec3(1).Normalize();
-////	num = gameLocal.clip.Contacts( &contacts[0], 10, clipModel.GetOrigin(),
-////					dir, CONTACT_EPSILON, clipModel, clipModel.GetAxis(), clipMask, self );
+////	num = gameLocal.clip.Contacts( &contacts[0], 10, this.clipModel.GetOrigin(),
+////					dir, CONTACT_EPSILON, this.clipModel, this.clipModel.GetAxis(), clipMask, self );
 ////	contacts.SetNum( num, false );
 ////
 ////	AddContactEntitiesForContacts();
@@ -1706,8 +1706,8 @@ idPhysics_RigidBody::GetAxis
 ////	this.current.i.orientation = quat.ToMat3();
 ////	this.current.localAxis = localQuat.ToMat3();
 ////
-////	if ( clipModel ) {
-////		clipModel.Link( gameLocal.clip, self, clipModel.GetId(), this.current.i.position, this.current.i.orientation );
+////	if ( this.clipModel ) {
+////		this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////	}
 ////}
 }

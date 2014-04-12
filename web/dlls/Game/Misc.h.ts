@@ -145,7 +145,7 @@ class idPathCorner extends idEntity {
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idPathCorner>[];
 //
-	Spawn():void{throw "placeholder";}
+	//Spawn():void{throw "placeholder";}
 //
 //	static void			DrawDebugInfo( );
 //
@@ -153,6 +153,77 @@ class idPathCorner extends idEntity {
 //
 //private:
 	Event_RandomPath(): void { throw "placeholder"; }
+
+	
+/*
+=====================
+idPathCorner::Spawn
+=====================
+*/
+	Spawn ( ): void {
+	}
+
+/////*
+////=====================
+////idPathCorner::DrawDebugInfo
+////=====================
+////*/
+////void idPathCorner::DrawDebugInfo( ) {
+////	var ent:idEntity
+////	idBounds bnds( idVec3( -4.0, -4.0f, -8.0f ), idVec3( 4.0, 4.0f, 64.0f ) );
+////
+////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
+////		if ( !ent.IsType( idPathCorner::Type ) ) {
+////			continue;
+////		}
+////
+////		idVec3 org = ent.GetPhysics().GetOrigin();
+////		gameRenderWorld.DebugBounds( colorRed, bnds, org, 0 );
+////	}
+////}
+////
+/////*
+////============
+////idPathCorner::RandomPath
+////============
+////*/
+////idPathCorner *idPathCorner::RandomPath( const idEntity *source, const idEntity *ignore ) {
+////	int	i;
+////	int	num;
+////	int which;
+////	var ent:idEntity
+////	idPathCorner *path[ MAX_GENTITIES ];
+////
+////	num = 0;
+////	for( i = 0; i < source.targets.Num(); i++ ) {
+////		ent = source.targets[ i ].GetEntity();
+////		if ( ent && ( ent != ignore ) && ent.IsType( idPathCorner::Type ) ) {
+////			path[ num++ ] = static_cast<idPathCorner *>( ent );
+////			if ( num >= MAX_GENTITIES ) {
+////				break;
+////			}
+////		}
+////	}
+////
+////	if ( !num ) {
+////		return NULL;
+////	}
+////
+////	which = gameLocal.random.RandomInt( num );
+////	return path[ which ];
+////}
+////
+/////*
+////=====================
+////idPathCorner::Event_RandomPath
+////=====================
+////*/
+////void idPathCorner::Event_RandomPath( ) {
+////	idPathCorner *path;
+////
+////	path = RandomPath( this, NULL );
+////	idThread::ReturnEntity( path );
+////}
 };
 
 
@@ -349,7 +420,7 @@ class idStaticEntity extends idEntity {
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-Spawn():void{throw "placeholder";}
+//Spawn():void{throw "placeholder";}
 //	void				ShowEditingDialog( );
 //	virtual void		Hide( );
 //	virtual void		Show( );
@@ -360,15 +431,259 @@ Spawn():void{throw "placeholder";}
 //	virtual void		ReadFromSnapshot( const idBitMsgDelta &msg );
 //
 //private:
-	Event_Activate(activator: idEntity): void { throw "placeholder"; }
-//
-//	int					spawnTime;
-//	bool				active;
-//	idVec4				fadeFrom;
-//	idVec4				fadeTo;
-//	int					fadeStart;
-//	int					fadeEnd;
-//	bool				runGui;
+	//Event_Activate(activator: idEntity): void { throw "placeholder"; }
+	
+	spawnTime :number/*int*/;
+	active:boolean;
+	fadeFrom = new idVec4;
+	fadeTo = new idVec4;
+	fadeStart :number/*int*/;
+	fadeEnd :number/*int*/;
+	runGui:boolean;
+
+
+	
+////END_CLASS
+
+/*
+===============
+idStaticEntity::idStaticEntity
+===============
+*/
+	constructor ( ) {
+		super ( );
+		this.spawnTime = 0;
+		this.active = false;
+		this.fadeFrom.Set( 1, 1, 1, 1 );
+		this.fadeTo.Set( 1, 1, 1, 1 );
+		this.fadeStart = 0;
+		this.fadeEnd = 0;
+		this.runGui = false;
+	}
+
+/////*
+////===============
+////idStaticEntity::Save
+////===============
+////*/
+////void idStaticEntity::Save( idSaveGame *savefile ) const {
+////	savefile.WriteInt( this.spawnTime );
+////	savefile.WriteBool( this.active );
+////	savefile.WriteVec4( this.fadeFrom );
+////	savefile.WriteVec4( fadeTo );
+////	savefile.WriteInt( this.fadeStart );
+////	savefile.WriteInt( this.fadeEnd );
+////	savefile.WriteBool( this.runGui );
+////}
+////
+/////*
+////===============
+////idStaticEntity::Restore
+////===============
+////*/
+////void idStaticEntity::Restore( idRestoreGame *savefile ) {
+////	savefile.ReadInt( this.spawnTime );
+////	savefile.ReadBool( this.active );
+////	savefile.ReadVec4( this.fadeFrom );
+////	savefile.ReadVec4( fadeTo );
+////	savefile.ReadInt( this.fadeStart );
+////	savefile.ReadInt( this.fadeEnd );
+////	savefile.ReadBool( this.runGui );
+////}
+
+/*
+===============
+idStaticEntity::Spawn
+===============
+*/
+Spawn( ):void {
+	var solid: boolean;
+	var hidden:boolean;
+
+	// an inline static model will not do anything at all
+	if (this.spawnArgs.GetBool( "inline" ) || gameLocal.world.spawnArgs.GetBool( "inlineAllStatics" ) ) {
+		this.Hide();
+		return;
+	}
+
+	solid = this. spawnArgs.GetBool( "solid" );
+	hidden = this.spawnArgs.GetBool( "hide" );
+
+	if ( solid && !hidden ) {
+		this.GetPhysics().SetContents( contentsFlags_t.CONTENTS_SOLID );
+	} else {
+		this.GetPhysics().SetContents( 0 );
+	}
+
+	this.spawnTime = gameLocal.time;
+	this.active = false;
+
+	var model = new idStr( this.spawnArgs.GetString( "model" ) );
+	if ( model.Find( ".prt" ) >= 0 ) {
+		// we want the parametric particles out of sync with each other
+		this.renderEntity.shaderParms[SHADERPARM_TIMEOFFSET] = gameLocal.random.RandomInt_max( 32767 );
+	}
+
+	this.fadeFrom.Set( 1, 1, 1, 1 );
+	this.fadeTo.Set( 1, 1, 1, 1 );
+	this.fadeStart = 0;
+	this.fadeEnd	= 0;
+
+	// NOTE: this should be used very rarely because it is expensive
+	this.runGui = this.spawnArgs.GetBool( "runGui" );
+	if ( this.runGui ) {
+		this.BecomeActive( TH_THINK );
+	}
+}
+
+/////*
+////================
+////idStaticEntity::ShowEditingDialog
+////================
+////*/
+////void idStaticEntity::ShowEditingDialog( ) {
+////	common.InitTool( EDITOR_PARTICLE, &this.spawnArgs );
+////}
+/////*
+////================
+////idStaticEntity::Think
+////================
+////*/
+////void idStaticEntity::Think( ) {
+////	idEntity::Think();
+////	if ( thinkFlags & TH_THINK ) {
+////		if ( this.runGui && this.renderEntity.gui[0] ) {
+////			idPlayer *player = gameLocal.GetLocalPlayer();
+////			if ( player ) {
+////				if ( !player.objectiveSystemOpen ) {
+////					this.renderEntity.gui[0].StateChanged( gameLocal.time, true );
+////					if ( this.renderEntity.gui[1] ) {
+////						this.renderEntity.gui[1].StateChanged( gameLocal.time, true );
+////					}
+////					if ( this.renderEntity.gui[2] ) {
+////						this.renderEntity.gui[2].StateChanged( gameLocal.time, true );
+////					}
+////				}
+////			}
+////		}
+////		if ( this.fadeEnd > 0 ) {
+////			idVec4 color;
+////			if ( gameLocal.time < this.fadeEnd ) {
+////				color.Lerp( this.fadeFrom, fadeTo, ( float )( gameLocal.time - this.fadeStart ) / ( float )( this.fadeEnd - this.fadeStart ) );
+////			} else {
+////				color = fadeTo;
+////				this.fadeEnd = 0;
+////				BecomeInactive( TH_THINK );
+////			}
+////			SetColor( color );
+////		}
+////	}
+////}
+////
+/////*
+////================
+////idStaticEntity::Fade
+////================
+////*/
+////void idStaticEntity::Fade( const idVec4 &to, float fadeTime ) {
+////	GetColor( this.fadeFrom );
+////	fadeTo = to;
+////	this.fadeStart = gameLocal.time;
+////	this.fadeEnd = gameLocal.time + SEC2MS( fadeTime );
+////	this.BecomeActive( TH_THINK );
+////}
+////
+/*
+================
+idStaticEntity::Hide
+================
+*/
+	Hide ( ): void {
+		super.Hide ( );
+		this.GetPhysics ( ).SetContents( 0 );
+	}
+
+/////*
+////================
+////idStaticEntity::Show
+////================
+////*/
+////void idStaticEntity::Show( ) {
+////	idEntity::Show();
+////	if ( this.spawnArgs.GetBool( "solid" ) ) {
+////		this.GetPhysics().SetContents( CONTENTS_SOLID );
+////	}
+////}
+////
+/*
+================
+idStaticEntity::Event_Activate
+================
+*/
+Event_Activate( activator:idEntity ):void  {
+	todoThrow();
+	//idStr activateGui;
+
+	//this.spawnTime = gameLocal.time;
+	//this.active = !this.active;
+
+	//const idKeyValue *kv = this.spawnArgs.FindKey( "hide" );
+	//if ( kv ) {
+	//	if ( IsHidden() ) {
+	//		Show();
+	//	} else {
+	//		Hide();
+	//	}
+	//}
+
+	//this.renderEntity.shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( this.spawnTime );
+	//this.renderEntity.shaderParms[5] = this.active;
+	//// this change should be a good thing, it will automatically turn on 
+	//// lights etc.. when triggered so that does not have to be specifically done
+	//// with trigger parms.. it MIGHT break things so need to keep an eye on it
+	//this.renderEntity.shaderParms[ SHADERPARM_MODE ] = ( this.renderEntity.shaderParms[ SHADERPARM_MODE ] ) ?  0.0f : 1.0f;
+	//this.BecomeActive( TH_UPDATEVISUALS );
+}
+
+/////*
+////================
+////idStaticEntity::WriteToSnapshot
+////================
+////*/
+////void idStaticEntity::WriteToSnapshot( idBitMsgDelta &msg ) const {
+////	this.GetPhysics().WriteToSnapshot( msg );
+////	WriteBindToSnapshot( msg );
+////	WriteColorToSnapshot( msg );
+////	WriteGUIToSnapshot( msg );
+////	msg.WriteBits( IsHidden()?1:0, 1 );
+////}
+////
+/////*
+////================
+////idStaticEntity::ReadFromSnapshot
+////================
+////*/
+////void idStaticEntity::ReadFromSnapshot( const idBitMsgDelta &msg ) {
+////	bool hidden;
+////
+////	this.GetPhysics().ReadFromSnapshot( msg );
+////	ReadBindFromSnapshot( msg );
+////	ReadColorFromSnapshot( msg );
+////	ReadGUIFromSnapshot( msg );
+////	hidden = msg.ReadBits( 1 ) == 1;
+////	if ( hidden != IsHidden() ) {
+////		if ( hidden ) {
+////			Hide();
+////		} else {
+////			Show();
+////		}
+////	}
+////	if ( msg.HasChanged() ) {
+////		UpdateVisuals();
+////	}
+////}
+////
+////
 };
 
 

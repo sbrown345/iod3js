@@ -96,17 +96,17 @@ class idAFConstraint {
 ////	friend class idAFTree;
 ////
 ////public:
-////							idAFConstraint( void );
-////	virtual					~idAFConstraint( void );
-////	constraintType_t		GetType( void ) const { return type; }
-////	const idStr &			GetName( void ) const { return name; }
-////	idAFBody *				GetBody1( void ) const { return body1; }
-////	idAFBody *				GetBody2( void ) const { return body2; }
+////							idAFConstraint( );
+////	virtual					~idAFConstraint( );
+////	constraintType_t		GetType( ) const { return type; }
+////	const idStr &			GetName( ) const { return name; }
+////	idAFBody *				GetBody1( ) const { return body1; }
+////	idAFBody *				GetBody2( ) const { return body2; }
 ////	void					SetPhysics( idPhysics_AF *p ) { physics = p; }
-////	const idVecX &			GetMultiplier( void );
+////	const idVecX &			GetMultiplier( );
 ////	virtual void			SetBody1( idAFBody *body );
 ////	virtual void			SetBody2( idAFBody *body );
-////	virtual void			DebugDraw( void );
+////	virtual void			DebugDraw( );
 ////	virtual void			GetForce( idAFBody *body, idVec6 &force );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
@@ -159,7 +159,7 @@ class idAFConstraint_Fixed extends idAFConstraint {
 ////	void					SetRelativeAxis( const idMat3 &axis ) { this.relAxis = axis; }
 ////	virtual void			SetBody1( idAFBody *body );
 ////	virtual void			SetBody2( idAFBody *body );
-////	virtual void			DebugDraw( void );
+////	virtual void			DebugDraw( );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
 ////	virtual void			GetCenter( idVec3 &center );
@@ -173,7 +173,7 @@ class idAFConstraint_Fixed extends idAFConstraint {
 ////protected:
 ////	virtual void			Evaluate( float invTimeStep );
 ////	virtual void			ApplyFriction( float invTimeStep );
-////	void					InitOffset( void );
+////	void					InitOffset( );
 };
 
 // ball and socket or spherical joint which allows 3 degrees of freedom
@@ -182,17 +182,17 @@ class idAFConstraint_BallAndSocketJoint extends idAFConstraint {
 ////
 ////public:
 ////							idAFConstraint_BallAndSocketJoint( const idStr &name, idAFBody *body1, idAFBody *body2 );
-////							~idAFConstraint_BallAndSocketJoint( void );
+////							~idAFConstraint_BallAndSocketJoint( );
 ////	void					SetAnchor( const idVec3 &worldPosition );
-////	idVec3					GetAnchor( void ) const;
-////	void					SetNoLimit( void );
+////	idVec3					GetAnchor( ) const;
+////	void					SetNoLimit( );
 ////	void					SetConeLimit( const idVec3 &coneAxis, const float coneAngle, const idVec3 &body1Axis );
 ////	void					SetPyramidLimit( const idVec3 &pyramidAxis, const idVec3 &baseAxis,
 ////											const float angle1, const float angle2, const idVec3 &body1Axis );
 ////	void					SetLimitEpsilon( const float e );
 ////	void					SetFriction( const float f ) { friction = f; }
-////	float					GetFriction( void ) const;
-////	virtual void			DebugDraw( void );
+////	float					GetFriction( ) const;
+////	virtual void			DebugDraw( );
 ////	virtual void			GetForce( idAFBody *body, idVec6 &force );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
@@ -217,7 +217,7 @@ class idAFConstraint_BallAndSocketJoint extends idAFConstraint {
 class idAFConstraint_BallAndSocketJointFriction extends idAFConstraint {
 ////
 ////public:
-////							idAFConstraint_BallAndSocketJointFriction( void );
+////							idAFConstraint_BallAndSocketJointFriction( );
 ////	void					Setup( idAFConstraint_BallAndSocketJoint *cc );
 ////	bool					Add( idPhysics_AF *phys, float invTimeStep );
 ////	virtual void			Translate( const idVec3 &translation );
@@ -237,19 +237,19 @@ class idAFConstraint_UniversalJoint extends idAFConstraint {
 
 ////public:
 ////							idAFConstraint_UniversalJoint( const idStr &name, idAFBody *body1, idAFBody *body2 );
-////							~idAFConstraint_UniversalJoint( void );
+////							~idAFConstraint_UniversalJoint( );
 ////	void					SetAnchor( const idVec3 &worldPosition );
-////	idVec3					GetAnchor( void ) const;
+////	idVec3					GetAnchor( ) const;
 ////	void					SetShafts( const idVec3 &cardanShaft1, const idVec3 &cardanShaft2 );
 ////	void					GetShafts( idVec3 &cardanShaft1, idVec3 &cardanShaft2 ) { cardanShaft1 = shaft1; cardanShaft2 = shaft2; }
-////	void					SetNoLimit( void );
+////	void					SetNoLimit( );
 ////	void					SetConeLimit( const idVec3 &coneAxis, const float coneAngle );
 ////	void					SetPyramidLimit( const idVec3 &pyramidAxis, const idVec3 &baseAxis,
 ////											const float angle1, const float angle2 );
 ////	void					SetLimitEpsilon( const float e );
 ////	void					SetFriction( const float f ) { friction = f; }
-////	float					GetFriction( void ) const;
-////	virtual void			DebugDraw( void );
+////	float					GetFriction( ) const;
+////	virtual void			DebugDraw( );
 ////	virtual void			GetForce( idAFBody *body, idVec6 &force );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
@@ -278,7 +278,7 @@ class idAFConstraint_UniversalJoint extends idAFConstraint {
 class idAFConstraint_UniversalJointFriction extends idAFConstraint {
 
 ////public:
-////							idAFConstraint_UniversalJointFriction( void );
+////							idAFConstraint_UniversalJointFriction( );
 ////	void					Setup( idAFConstraint_UniversalJoint *cc );
 ////	bool					Add( idPhysics_AF *phys, float invTimeStep );
 ////	virtual void			Translate( const idVec3 &translation );
@@ -298,7 +298,7 @@ class idAFConstraint_CylindricalJoint extends idAFConstraint {
 ////
 ////public:
 ////							idAFConstraint_CylindricalJoint( const idStr &name, idAFBody *body1, idAFBody *body2 );
-////	virtual void			DebugDraw( void );
+////	virtual void			DebugDraw( );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
 ////
@@ -315,21 +315,21 @@ class idAFConstraint_Hinge extends idAFConstraint {
 ////
 ////public:
 ////							idAFConstraint_Hinge( const idStr &name, idAFBody *body1, idAFBody *body2 );
-////							~idAFConstraint_Hinge( void );
+////							~idAFConstraint_Hinge( );
 ////	void					SetAnchor( const idVec3 &worldPosition );
-////	idVec3					GetAnchor( void ) const;
+////	idVec3					GetAnchor( ) const;
 ////	void					SetAxis( const idVec3 &axis );
 ////	void					GetAxis( idVec3 &a1, idVec3 &a2 ) const { a1 = axis1; a2 = axis2; }
-////	idVec3					GetAxis( void ) const;
-////	void					SetNoLimit( void );
+////	idVec3					GetAxis( ) const;
+////	void					SetNoLimit( );
 ////	void					SetLimit( const idVec3 &axis, const float angle, const idVec3 &body1Axis );
 ////	void					SetLimitEpsilon( const float e );
-////	float					GetAngle( void ) const;
+////	float					GetAngle( ) const;
 ////	void					SetSteerAngle( const float degrees );
 ////	void					SetSteerSpeed( const float speed );
 ////	void					SetFriction( const float f ) { friction = f; }
-////	float					GetFriction( void ) const;
-////	virtual void			DebugDraw( void );
+////	float					GetFriction( ) const;
+////	virtual void			DebugDraw( );
 ////	virtual void			GetForce( idAFBody *body, idVec6 &force );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
@@ -357,7 +357,7 @@ class idAFConstraint_Hinge extends idAFConstraint {
 class idAFConstraint_HingeFriction extends idAFConstraint {
 ////
 ////public:
-////							idAFConstraint_HingeFriction( void );
+////							idAFConstraint_HingeFriction( );
 ////	void					Setup( idAFConstraint_Hinge *cc );
 ////	bool					Add( idPhysics_AF *phys, float invTimeStep );
 ////	virtual void			Translate( const idVec3 &translation );
@@ -375,7 +375,7 @@ class idAFConstraint_HingeFriction extends idAFConstraint {
 class idAFConstraint_HingeSteering extends idAFConstraint {
 ////
 ////public:
-////							idAFConstraint_HingeSteering( void );
+////							idAFConstraint_HingeSteering( );
 ////	void					Setup( idAFConstraint_Hinge *cc );
 ////	void					SetSteerAngle( const float degrees ) { steerAngle = degrees; }
 ////	void					SetSteerSpeed( const float speed ) { steerSpeed = speed; }
@@ -405,7 +405,7 @@ class idAFConstraint_Slider extends idAFConstraint {
 ////public:
 ////							idAFConstraint_Slider( const idStr &name, idAFBody *body1, idAFBody *body2 );
 ////	void					SetAxis( const idVec3 &ax );
-////	virtual void			DebugDraw( void );
+////	virtual void			DebugDraw( );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
 ////	virtual void			GetCenter( idVec3 &center );
@@ -428,7 +428,7 @@ class idAFConstraint_Line extends idAFConstraint {
 ////
 ////public:
 ////							idAFConstraint_Line( const idStr &name, idAFBody *body1, idAFBody *body2 );
-////	virtual void			DebugDraw( void );
+////	virtual void			DebugDraw( );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
 ////
@@ -446,7 +446,7 @@ class idAFConstraint_Plane extends idAFConstraint {
 ////public:
 ////							idAFConstraint_Plane( const idStr &name, idAFBody *body1, idAFBody *body2 );
 ////	void					SetPlane( const idVec3 &normal, const idVec3 &anchor );
-////	virtual void			DebugDraw( void );
+////	virtual void			DebugDraw( );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
 ////	virtual void			Save( idSaveGame *saveFile ) const;
@@ -471,7 +471,7 @@ class idAFConstraint_Spring extends idAFConstraint {
 ////	void					SetAnchor( const idVec3 &worldAnchor1, const idVec3 &worldAnchor2 );
 ////	void					SetSpring( const float stretch, const float compress, const float damping, const float restLength );
 ////	void					SetLimit( const float minLength, const float maxLength );
-////	virtual void			DebugDraw( void );
+////	virtual void			DebugDraw( );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
 ////	virtual void			GetCenter( idVec3 &center );
@@ -497,11 +497,11 @@ class idAFConstraint_Spring extends idAFConstraint {
 class idAFConstraint_Contact extends idAFConstraint {
 ////
 ////public:
-////							idAFConstraint_Contact( void );
-////							~idAFConstraint_Contact( void );
+////							idAFConstraint_Contact( );
+////							~idAFConstraint_Contact( );
 ////	void					Setup( idAFBody *b1, idAFBody *b2, contactInfo_t &c );
-////	const contactInfo_t &	GetContact( void ) const { return contact; }
-////	virtual void			DebugDraw( void );
+////	const contactInfo_t &	GetContact( ) const { return contact; }
+////	virtual void			DebugDraw( );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
 ////	virtual void			GetCenter( idVec3 &center );
@@ -519,10 +519,10 @@ class idAFConstraint_Contact extends idAFConstraint {
 class idAFConstraint_ContactFriction extends idAFConstraint {
 ////
 ////public:
-////							idAFConstraint_ContactFriction( void );
+////							idAFConstraint_ContactFriction( );
 ////	void					Setup( idAFConstraint_Contact *cc );
 ////	bool					Add( idPhysics_AF *phys, float invTimeStep );
-////	virtual void			DebugDraw( void );
+////	virtual void			DebugDraw( );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
 ////
@@ -538,14 +538,14 @@ class idAFConstraint_ContactFriction extends idAFConstraint {
 class idAFConstraint_ConeLimit extends idAFConstraint {
 ////
 ////public:
-////							idAFConstraint_ConeLimit( void );
+////							idAFConstraint_ConeLimit( );
 ////	void					Setup( idAFBody *b1, idAFBody *b2, const idVec3 &coneAnchor, const idVec3 &coneAxis,
 ////									const float coneAngle, const idVec3 &body1Axis );
 ////	void					SetAnchor( const idVec3 &coneAnchor );
 ////	void					SetBody1Axis( const idVec3 &body1Axis );
 ////	void					SetEpsilon( const float e ) { epsilon = e; }
 ////	bool					Add( idPhysics_AF *phys, float invTimeStep );
-////	virtual void			DebugDraw( void );
+////	virtual void			DebugDraw( );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
 ////	virtual void			Save( idSaveGame *saveFile ) const;
@@ -569,7 +569,7 @@ class idAFConstraint_ConeLimit extends idAFConstraint {
 class idAFConstraint_PyramidLimit extends idAFConstraint {
 ////
 ////public:
-////							idAFConstraint_PyramidLimit( void );
+////							idAFConstraint_PyramidLimit( );
 ////	void					Setup( idAFBody *b1, idAFBody *b2, const idVec3 &pyramidAnchor,
 ////									const idVec3 &pyramidAxis, const idVec3 &baseAxis,
 ////									const float pyramidAngle1, const float pyramidAngle2, const idVec3 &body1Axis );
@@ -577,7 +577,7 @@ class idAFConstraint_PyramidLimit extends idAFConstraint {
 ////	void					SetBody1Axis( const idVec3 &body1Axis );
 ////	void					SetEpsilon( const float e ) { epsilon = e; }
 ////	bool					Add( idPhysics_AF *phys, float invTimeStep );
-////	virtual void			DebugDraw( void );
+////	virtual void			DebugDraw( );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
 ////	virtual void			Save( idSaveGame *saveFile ) const;
@@ -601,7 +601,7 @@ class idAFConstraint_PyramidLimit extends idAFConstraint {
 class idAFConstraint_Suspension extends idAFConstraint {
 ////
 ////public:
-////							idAFConstraint_Suspension( void );
+////							idAFConstraint_Suspension( );
 ////
 ////	void					Setup( const char *name, idAFBody *body, const idVec3 &origin, const idMat3 &axis, idClipModel *clipModel );
 ////	void					SetSuspension( const float up, const float down, const float k, const float d, const float f );
@@ -611,9 +611,9 @@ class idAFConstraint_Suspension extends idAFConstraint {
 ////	void					SetMotorForce( const float force ) { motorForce = force; }
 ////	void					SetMotorVelocity( const float vel ) { motorVelocity = vel; }
 ////	void					SetEpsilon( const float e ) { epsilon = e; }
-////	const idVec3			GetWheelOrigin( void ) const;
+////	const idVec3			GetWheelOrigin( ) const;
 ////
-////	virtual void			DebugDraw( void );
+////	virtual void			DebugDraw( );
 ////	virtual void			Translate( const idVec3 &translation );
 ////	virtual void			Rotate( const idRotation &rotation );
 ////
@@ -660,34 +660,34 @@ class idAFBody {
 ////	friend class idAFTree;
 ////
 ////public:
-////							idAFBody( void );
+////							idAFBody( );
 ////							idAFBody( const idStr &name, idClipModel *clipModel, float density );
-////							~idAFBody( void );
+////							~idAFBody( );
 ////
-////	void					Init( void );
-////	const idStr &			GetName( void ) const { return name; }
-////	const idVec3 &			GetWorldOrigin( void ) const { return current.worldOrigin; }
-////	const idMat3 &			GetWorldAxis( void ) const { return current.worldAxis; }
-////	const idVec3 &			GetLinearVelocity( void ) const { return current.spatialVelocity.SubVec3(0); }
-////	const idVec3 &			GetAngularVelocity( void ) const { return current.spatialVelocity.SubVec3(1); }
+////	void					Init( );
+////	const idStr &			GetName( ) const { return name; }
+////	const idVec3 &			GetWorldOrigin( ) const { return current.worldOrigin; }
+////	const idMat3 &			GetWorldAxis( ) const { return current.worldAxis; }
+////	const idVec3 &			GetLinearVelocity( ) const { return current.spatialVelocity.SubVec3(0); }
+////	const idVec3 &			GetAngularVelocity( ) const { return current.spatialVelocity.SubVec3(1); }
 ////	idVec3					GetPointVelocity( const idVec3 &point ) const;
-////	const idVec3 &			GetCenterOfMass( void ) const { return centerOfMass; }
+////	const idVec3 &			GetCenterOfMass( ) const { return centerOfMass; }
 ////	void					SetClipModel( idClipModel *clipModel );
-////	idClipModel *			GetClipModel( void ) const { return clipModel; }
+	GetClipModel ( ): idClipModel { return this.clipModel; }
 ////	void					SetClipMask( const int mask ) { clipMask = mask; fl.clipMaskSet = true; }
-////	int						GetClipMask( void ) const { return clipMask; }
+////	int						GetClipMask( ) const { return clipMask; }
 ////	void					SetSelfCollision( const bool enable ) { fl.selfCollision = enable; }
 ////	void					SetWorldOrigin( const idVec3 &origin ) { current.worldOrigin = origin; }
 ////	void					SetWorldAxis( const idMat3 &axis ) { current.worldAxis = axis; }
 ////	void					SetLinearVelocity( const idVec3 &linear ) const { current.spatialVelocity.SubVec3(0) = linear; }
 ////	void					SetAngularVelocity( const idVec3 &angular ) const { current.spatialVelocity.SubVec3(1) = angular; }
 ////	void					SetFriction( float linear, float angular, float contact );
-////	float					GetContactFriction( void ) const { return contactFriction; }
+////	float					GetContactFriction( ) const { return contactFriction; }
 ////	void					SetBouncyness( float bounce );
-////	float					GetBouncyness( void ) const { return bouncyness; }
+////	float					GetBouncyness( ) const { return bouncyness; }
 ////	void					SetDensity( float density, const idMat3 &inertiaScale = mat3_identity );
-////	float					GetInverseMass( void ) const { return invMass; }
-////	idMat3					GetInverseWorldInertia( void ) const { return current.worldAxis.Transpose() * inverseInertiaTensor * current.worldAxis; }
+////	float					GetInverseMass( ) const { return invMass; }
+////	idMat3					GetInverseWorldInertia( ) const { return current.worldAxis.Transpose() * inverseInertiaTensor * current.worldAxis; }
 ////
 ////	void					SetFrictionDirection( const idVec3 &dir );
 ////	bool					GetFrictionDirection( idVec3 &dir ) const;
@@ -695,9 +695,9 @@ class idAFBody {
 ////	void					SetContactMotorDirection( const idVec3 &dir );
 ////	bool					GetContactMotorDirection( idVec3 &dir ) const;
 ////	void					SetContactMotorVelocity( float vel ) { contactMotorVelocity = vel; }
-////	float					GetContactMotorVelocity( void ) const { return contactMotorVelocity; }
+////	float					GetContactMotorVelocity( ) const { return contactMotorVelocity; }
 ////	void					SetContactMotorForce( float force ) { contactMotorForce = force; }
-////	float					GetContactMotorForce( void ) const { return contactMotorForce; }
+////	float					GetContactMotorForce( ) const { return contactMotorForce; }
 ////
 ////	void					AddForce( const idVec3 &point, const idVec3 &force );
 ////	void					InverseWorldSpatialInertiaMultiply( idVecX &dst, const float *v ) const;
@@ -711,7 +711,7 @@ class idAFBody {
 ////	idStr					name;						// name of body
 ////	idAFBody *				parent;						// parent of this body
 ////	idList<idAFBody *>		children;					// children of this body
-////	idClipModel *			clipModel;					// model used for collision detection
+		clipModel: idClipModel;					// model used for collision detection
 ////	idAFConstraint *		primaryConstraint;			// primary constraint (this.constraint.body1 = this)
 ////	idList<idAFConstraint *>constraints;				// all constraints attached to this body
 ////	idAFTree *				tree;						// tree structure this body is part of
@@ -775,12 +775,12 @@ class idAFTree {
 ////	friend class idPhysics_AF;
 ////
 ////public:
-////	void					Factor( void ) const;
+////	void					Factor( ) const;
 ////	void					Solve( int auxiliaryIndex = 0 ) const;
 ////	void					Response( const idAFConstraint *constraint, int row, int auxiliaryIndex ) const;
 ////	void					CalculateForces( float timeStep ) const;
-////	void					SetMaxSubTreeAuxiliaryIndex( void );
-////	void					SortBodies( void );
+////	void					SetMaxSubTreeAuxiliaryIndex( );
+////	void					SortBodies( );
 ////	void					SortBodies_r( idList<idAFBody*>&sortedList, idAFBody *body );
 ////	void					DebugDraw( const idVec4 &color ) const;
 ////
@@ -814,8 +814,8 @@ class idPhysics_AF extends idPhysics_Base {
 ////public:
 ////	CLASS_PROTOTYPE( idPhysics_AF );
 ////
-////							idPhysics_AF( void );
-////							~idPhysics_AF( void );
+////							idPhysics_AF( );
+////							~idPhysics_AF( );
 ////
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
@@ -832,12 +832,12 @@ class idPhysics_AF extends idPhysics_Base {
 ////	int						GetConstraintId( idAFConstraint *constraint ) const;
 ////	int						GetConstraintId( const char *constraintName ) const;
 ////							// number of bodies and constraints
-////	int						GetNumBodies( void ) const;
-////	int						GetNumConstraints( void ) const;
+////	int						GetNumBodies( ) const;
+////	int						GetNumConstraints( ) const;
 ////							// retrieve body or constraint
 ////	idAFBody *				GetBody( const char *bodyName ) const;
 ////	idAFBody *				GetBody( /*int*/ id:number ) const;
-////	idAFBody *				GetMasterBody( void ) const { return masterBody; }
+////	idAFBody *				GetMasterBody( ) const { return masterBody; }
 ////	idAFConstraint *		GetConstraint( const char *constraintName ) const;
 ////	idAFConstraint *		GetConstraint( /*int*/ id:number ) const;
 ////							// delete body or constraint
@@ -864,13 +864,13 @@ class idPhysics_AF extends idPhysics_Base {
 ////							// set joint friction dent
 ////	void					SetJointFrictionDent( const float dent, const float start, const float end );
 ////							// get the current joint friction scale
-////	float					GetJointFrictionScale( void ) const;
+////	float					GetJointFrictionScale( ) const;
 ////							// set the contact friction scale
 ////	void					SetContactFrictionScale( const float scale ) { contactFrictionScale = scale; }
 ////							// set contact friction dent
 ////	void					SetContactFrictionDent( const float dent, const float start, const float end );
 ////							// get the current contact friction scale
-////	float					GetContactFrictionScale( void ) const;
+////	float					GetContactFrictionScale( ) const;
 ////							// enable or disable collision detection
 ////	void					SetCollision( const bool enable ) { enableCollision = enable; }
 ////							// enable or disable self collision
@@ -878,21 +878,21 @@ class idPhysics_AF extends idPhysics_Base {
 ////							// enable or disable coming to a dead stop
 ////	void					SetComeToRest( bool enable ) { comeToRest = enable; }
 ////							// call when structure of articulated figure changes
-////	void					SetChanged( void ) { changedAF = true; }
+////	void					SetChanged( ) { changedAF = true; }
 ////							// enable/disable activation by impact
-////	void					EnableImpact( void );
-////	void					DisableImpact( void );
+////	void					EnableImpact( );
+////	void					DisableImpact( );
 ////							// lock of unlock the world constraints
 ////	void					LockWorldConstraints( const bool lock ) { worldConstraintsLocked = lock; }
 ////							// set force pushable
 ////	void					SetForcePushable( const bool enable ) { forcePushable = enable; }
 ////							// update the clip model positions
-////	void					UpdateClipModels( void );
+////	void					UpdateClipModels( );
 ////
 ////public:	// common physics interface
 ////	void					SetClipModel( idClipModel *model, float density, /*int*/ id:number = 0, bool freeOld = true );
 ////	idClipModel *			GetClipModel( /*int*/ id:number = 0 ) const;
-////	int						GetNumClipModels( void ) const;
+////	int						GetNumClipModels( ) const;
 ////
 ////	void					SetMass( float mass, /*int*/ id:number = -1 );
 ////	float					GetMass( /*int*/ id:number = -1 ) const;
@@ -905,19 +905,19 @@ class idPhysics_AF extends idPhysics_Base {
 ////
 ////	bool					Evaluate( int timeStepMSec, int endTimeMSec );
 ////	void					UpdateTime( int endTimeMSec );
-////	int						GetTime( void ) const;
+////	int						GetTime( ) const;
 ////
 ////	void					GetImpactInfo( /*int*/ id:number, const idVec3 &point, impactInfo_t *info ) const;
 ////	void					ApplyImpulse( /*int*/ id:number, const idVec3 &point, const idVec3 &impulse );
 ////	void					AddForce( /*int*/ id:number, const idVec3 &point, const idVec3 &force );
-////	bool					IsAtRest( void ) const;
-////	int						GetRestStartTime( void ) const;
-////	void					Activate( void );
-////	void					PutToRest( void );
-////	bool					IsPushable( void ) const;
+////	bool					IsAtRest( ) const;
+////	int						GetRestStartTime( ) const;
+////	void					Activate( );
+////	void					PutToRest( );
+////	bool					IsPushable( ) const;
 ////
-////	void					SaveState( void );
-////	void					RestoreState( void );
+////	void					SaveState( );
+////	void					RestoreState( );
 ////
 ////	void					SetOrigin( const idVec3 &newOrigin, /*int*/ id:number = -1 );
 ////	void					SetAxis( const idMat3 &newAxis, /*int*/ id:number = -1 );
@@ -938,13 +938,13 @@ class idPhysics_AF extends idPhysics_Base {
 ////	void					ClipRotation( trace_t &results, const idRotation &rotation, const idClipModel *model ) const;
 ////	int						ClipContents( const idClipModel *model ) const;
 ////
-////	void					DisableClip( void );
-////	void					EnableClip( void );
+////	void					DisableClip( );
+////	void					EnableClip( );
 ////
-////	void					UnlinkClip( void );
-////	void					LinkClip( void );
+////	void					UnlinkClip( );
+////	void					LinkClip( );
 ////
-////	bool					EvaluateContacts( void );
+////	bool					EvaluateContacts( );
 ////
 ////	void					SetPushed( int deltaTime );
 ////	const idVec3 &			GetPushedLinearVelocity( /*int*/ id:number = 0 ) const;
@@ -1017,31 +1017,31 @@ class idPhysics_AF extends idPhysics_Base {
 ////	idLCP *					lcp;							// linear complementarity problem solver
 ////
 ////private:
-////	void					BuildTrees( void );
+////	void					BuildTrees( );
 ////	bool					IsClosedLoop( const idAFBody *body1, const idAFBody *body2 ) const;
-////	void					PrimaryFactor( void );
+////	void					PrimaryFactor( );
 ////	void					EvaluateBodies( float timeStep );
 ////	void					EvaluateConstraints( float timeStep );
-////	void					AddFrameConstraints( void );
-////	void					RemoveFrameConstraints( void );
+////	void					AddFrameConstraints( );
+////	void					RemoveFrameConstraints( );
 ////	void					ApplyFriction( float timeStep, float endTimeMSec );
 ////	void					PrimaryForces( float timeStep  );
 ////	void					AuxiliaryForces( float timeStep );
-////	void					VerifyContactConstraints( void );
-////	void					SetupContactConstraints( void );
-////	void					ApplyContactForces( void );
+////	void					VerifyContactConstraints( );
+////	void					SetupContactConstraints( );
+////	void					ApplyContactForces( );
 ////	void					Evolve( float timeStep );
 ////	idEntity *				SetupCollisionForBody( idAFBody *body ) const;
 ////	bool					CollisionImpulse( float timeStep, idAFBody *body, trace_t &collision );
 ////	bool					ApplyCollisions( float timeStep );
 ////	void					CheckForCollisions( float timeStep );
-////	void					ClearExternalForce( void );
-////	void					AddGravity( void );
-////	void					SwapStates( void );
+////	void					ClearExternalForce( );
+////	void					AddGravity( );
+////	void					SwapStates( );
 ////	bool					TestIfAtRest( float timeStep );
-////	void					Rest( void );
+////	void					Rest( );
 ////	void					AddPushVelocity( const idVec6 &pushVelocity );
-////	void					DebugDraw( void );
+////	void					DebugDraw( );
 
 	//////===============================================================
 	//////                                                        M
@@ -2312,25 +2312,25 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////	return totalMass;
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::SetContents
-	////================
-	////*/
-	////void idPhysics_AF::SetContents( int contents, /*int*/ id:number ) {
-	////	var/*int*/i:number;
-	////
-	////	if ( id >= 0 && id < bodies.Num() ) {
-	////		bodies[id].GetClipModel().SetContents( contents );
-	////	}
-	////	else {
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
-	////			bodies[i].GetClipModel().SetContents( contents );
-	////		}
-	////	}
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_AF::SetContents
+	================
+	*/
+	SetContents( /*int*/ contents: number, /*int*/ id: number  = -1):void {
+		var/*int*/i:number;
+	
+		if ( id >= 0 && id < this.bodies.Num() ) {
+			this.bodies[id].GetClipModel().SetContents( contents );
+		}
+		else {
+			for ( i = 0; i < this.bodies.Num(); i++ ) {
+				this.bodies[i].GetClipModel().SetContents( contents );
+			}
+		}
+	}
+	
 	/////*
 	////================
 	////idPhysics_AF::GetContents
@@ -2339,13 +2339,13 @@ class idPhysics_AF extends idPhysics_Base {
 	////int idPhysics_AF::GetContents( /*int*/ id:number ) const {
 	////	int i, contents;
 	////
-	////	if ( id >= 0 && id < bodies.Num() ) {
-	////		return bodies[id].GetClipModel().GetContents();
+	////	if ( id >= 0 && id < this.bodies.Num() ) {
+	////		return this.bodies[id].GetClipModel().GetContents();
 	////	}
 	////	else {
 	////		contents = 0;
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
-	////			contents |= bodies[i].GetClipModel().GetContents();
+	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////			contents |= this.bodies[i].GetClipModel().GetContents();
 	////		}
 	////		return contents;
 	////	}
@@ -2360,20 +2360,20 @@ class idPhysics_AF extends idPhysics_Base {
 	////	var/*int*/i:number;
 	////	static idBounds relBounds;
 	////
-	////	if ( id >= 0 && id < bodies.Num() ) {
-	////		return bodies[id].GetClipModel().GetBounds();
+	////	if ( id >= 0 && id < this.bodies.Num() ) {
+	////		return this.bodies[id].GetClipModel().GetBounds();
 	////	}
-	////	else if ( !bodies.Num() ) {
+	////	else if ( !this.bodies.Num() ) {
 	////		relBounds.Zero();
 	////		return relBounds;
 	////	}
 	////	else {
-	////		relBounds = bodies[0].GetClipModel().GetBounds();
-	////		for ( i = 1; i < bodies.Num(); i++ ) {
+	////		relBounds = this.bodies[0].GetClipModel().GetBounds();
+	////		for ( i = 1; i < this.bodies.Num(); i++ ) {
 	////			idBounds bounds;
-	////			idVec3 origin = ( bodies[i].GetWorldOrigin() - bodies[0].GetWorldOrigin() ) * bodies[0].GetWorldAxis().Transpose();
-	////			idMat3 axis = bodies[i].GetWorldAxis() * bodies[0].GetWorldAxis().Transpose();
-	////			bounds.FromTransformedBounds( bodies[i].GetClipModel().GetBounds(), origin, axis );
+	////			idVec3 origin = ( this.bodies[i].GetWorldOrigin() - this.bodies[0].GetWorldOrigin() ) * this.bodies[0].GetWorldAxis().Transpose();
+	////			idMat3 axis = this.bodies[i].GetWorldAxis() * this.bodies[0].GetWorldAxis().Transpose();
+	////			bounds.FromTransformedBounds( this.bodies[i].GetClipModel().GetBounds(), origin, axis );
 	////			relBounds += bounds;
 	////		}
 	////		return relBounds;
@@ -2389,17 +2389,17 @@ class idPhysics_AF extends idPhysics_Base {
 	////	var/*int*/i:number;
 	////	static idBounds absBounds;
 	////
-	////	if ( id >= 0 && id < bodies.Num() ) {
-	////		return bodies[id].GetClipModel().GetAbsBounds();
+	////	if ( id >= 0 && id < this.bodies.Num() ) {
+	////		return this.bodies[id].GetClipModel().GetAbsBounds();
 	////	}
-	////	else if ( !bodies.Num() ) {
+	////	else if ( !this.bodies.Num() ) {
 	////		absBounds.Zero();
 	////		return absBounds;
 	////	}
 	////	else {
-	////		absBounds = bodies[0].GetClipModel().GetAbsBounds();
-	////		for ( i = 1; i < bodies.Num(); i++ ) {
-	////			absBounds += bodies[i].GetClipModel().GetAbsBounds();
+	////		absBounds = this.bodies[0].GetClipModel().GetAbsBounds();
+	////		for ( i = 1; i < this.bodies.Num(); i++ ) {
+	////			absBounds += this.bodies[i].GetClipModel().GetAbsBounds();
 	////		}
 	////		return absBounds;
 	////	}
@@ -2563,7 +2563,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	if ( IsOutsideWorld() ) {
 	////		gameLocal.Warning( "articulated figure moved outside world bounds for entity '%s' type '%s' at (%s)",
-	////							self.name.c_str(), self.GetType().classname, bodies[0].current.worldOrigin.ToString(0) );
+	////							self.name.c_str(), self.GetType().classname, this.bodies[0].current.worldOrigin.ToString(0) );
 	////		Rest();
 	////	}
 	////
@@ -2690,8 +2690,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////
 	////	if ( af_showBodies.GetBool() ) {
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
-	////			body = bodies[i];
+	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////			body = this.bodies[i];
 	////			if ( body == constrainedBody1 || body == constrainedBody2 ) {
 	////				continue;
 	////			}
@@ -2705,27 +2705,27 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////
 	////	if ( af_showBodyNames.GetBool() ) {
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
-	////			body = bodies[i];
+	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////			body = this.bodies[i];
 	////			gameRenderWorld.DrawText( body.GetName().c_str(), body.GetWorldOrigin(), 0.08f, colorCyan, gameLocal.GetLocalPlayer().viewAngles.ToMat3(), 1 );
 	////		}
 	////	}
 	////
 	////	if ( af_showMass.GetBool() ) {
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
-	////			body = bodies[i];
+	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////			body = this.bodies[i];
 	////			gameRenderWorld.DrawText( va( "\n%1.2f", 1.0f / body.GetInverseMass() ), body.GetWorldOrigin(), 0.08f, colorCyan, gameLocal.GetLocalPlayer().viewAngles.ToMat3(), 1 );
 	////		}
 	////	}
 	////
 	////	if ( af_showTotalMass.GetBool() ) {
 	////		axis = gameLocal.GetLocalPlayer().viewAngles.ToMat3();
-	////		gameRenderWorld.DrawText( va( "\n%1.2f", totalMass ), bodies[0].GetWorldOrigin() + axis[2] * 8.0f, 0.15f, colorCyan, axis, 1 );
+	////		gameRenderWorld.DrawText( va( "\n%1.2f", totalMass ), this.bodies[0].GetWorldOrigin() + axis[2] * 8.0f, 0.15f, colorCyan, axis, 1 );
 	////	}
 	////
 	////	if ( af_showInertia.GetBool() ) {
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
-	////			body = bodies[i];
+	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////			body = this.bodies[i];
 	////			idMat3 &I = body.inertiaTensor;
 	////			gameRenderWorld.DrawText( va( "\n\n\n( %.1f %.1f %.1f )\n( %.1f %.1f %.1f )\n( %.1f %.1f %.1f )",
 	////										I[0].x, I[0].y, I[0].z,
@@ -2736,8 +2736,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////
 	////	if ( af_showVelocity.GetBool() ) {
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
-	////			DrawVelocity( bodies[i].clipModel.GetId(), 0.1f, 4.0f );
+	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////			DrawVelocity( this.bodies[i].clipModel.GetId(), 0.1f, 4.0f );
 	////		}
 	////	}
 	////
@@ -2783,7 +2783,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////*/
 	////idPhysics_AF::idPhysics_AF( ) {
 	////	trees.Clear();
-	////	bodies.Clear();
+	////	this.bodies.Clear();
 	////	constraints.Clear();
 	////	primaryConstraints.Clear();
 	////	auxiliaryConstraints.Clear();
@@ -2855,8 +2855,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	trees.DeleteContents( true );
 	////
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		delete bodies[i];
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		delete this.bodies[i];
 	////	}
 	////
 	////	for ( i = 0; i < constraints.Num(); i++ ) {
@@ -2914,9 +2914,9 @@ class idPhysics_AF extends idPhysics_Base {
 	////	idPhysics_AF_SavePState( saveFile, current );
 	////	idPhysics_AF_SavePState( saveFile, saved );
 	////
-	////	saveFile.WriteInt( bodies.Num() );
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		bodies[i].Save( saveFile );
+	////	saveFile.WriteInt( this.bodies.Num() );
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		this.bodies[i].Save( saveFile );
 	////	}
 	////	if ( masterBody ) {
 	////		saveFile.WriteBool( true );
@@ -2988,9 +2988,9 @@ class idPhysics_AF extends idPhysics_Base {
 	////	idPhysics_AF_RestorePState( saveFile, saved );
 	////
 	////	saveFile.ReadInt( num );
-	////	assert( num == bodies.Num() );
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		bodies[i].Restore( saveFile );
+	////	assert( num == this.bodies.Num() );
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		this.bodies[i].Restore( saveFile );
 	////	}
 	////	saveFile.ReadBool( hasMaster );
 	////	if ( hasMaster ) {
@@ -3083,8 +3083,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	trees.DeleteContents( true );
 	////
 	////	totalMass = 0.0f;
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		b = bodies[i];
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		b = this.bodies[i];
 	////		b.parent = NULL;
 	////		b.primaryConstraint = NULL;
 	////		b.constraints.SetNum( 0, false );
@@ -3095,8 +3095,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	if ( forceTotalMass > 0.0f ) {
 	////		scale = forceTotalMass / totalMass;
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
-	////			b = bodies[i];
+	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////			b = this.bodies[i];
 	////			b.mass *= scale;
 	////			b.invMass = 1.0f / b.mass;
 	////			b.inertiaTensor *= scale;
@@ -3131,23 +3131,23 @@ class idPhysics_AF extends idPhysics_Base {
 	////		}
 	////
 	////		// create trees for all parent bodies
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
-	////			if ( !bodies[i].parent ) {
+	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////			if ( !this.bodies[i].parent ) {
 	////				tree = new idAFTree();
 	////				tree.sortedBodies.Clear();
-	////				tree.sortedBodies.Append( bodies[i] );
-	////				bodies[i].tree = tree;
+	////				tree.sortedBodies.Append( this.bodies[i] );
+	////				this.bodies[i].tree = tree;
 	////				trees.Append( tree );
 	////			}
 	////		}
 	////
 	////		// add each child body to the appropriate tree
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
-	////			if ( bodies[i].parent ) {
-	////				for ( b = bodies[i].parent; !b.tree; b = b.parent ) {
+	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////			if ( this.bodies[i].parent ) {
+	////				for ( b = this.bodies[i].parent; !b.tree; b = b.parent ) {
 	////				}
-	////				b.tree.sortedBodies.Append( bodies[i] );
-	////				bodies[i].tree = b.tree;
+	////				b.tree.sortedBodies.Append( this.bodies[i] );
+	////				this.bodies[i].tree = b.tree;
 	////			}
 	////		}
 	////
@@ -3164,11 +3164,11 @@ class idPhysics_AF extends idPhysics_Base {
 	////	} else {
 	////
 	////		// create a tree for each body
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
+	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////			tree = new idAFTree();
 	////			tree.sortedBodies.Clear();
-	////			tree.sortedBodies.Append( bodies[i] );
-	////			bodies[i].tree = tree;
+	////			tree.sortedBodies.Append( this.bodies[i] );
+	////			this.bodies[i].tree = tree;
 	////			trees.Append( tree );
 	////		}
 	////
@@ -3201,7 +3201,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		gameLocal.Error( "idPhysics_AF::AddBody: body '%s' has no clip model.", body.name.c_str() );
 	////	}
 	////
-	////	if ( bodies.Find( body ) ) {
+	////	if ( this.bodies.Find( body ) ) {
 	////		gameLocal.Error( "idPhysics_AF::AddBody: body '%s' added twice.", body.name.c_str() );
 	////	}
 	////
@@ -3209,7 +3209,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		gameLocal.Error( "idPhysics_AF::AddBody: a body with the name '%s' already exists.", body.name.c_str() );
 	////	}
 	////
-	////	id = bodies.Num();
+	////	id = this.bodies.Num();
 	////	body.clipModel.SetId( id );
 	////	if ( body.linearFriction < 0.0f ) {
 	////		body.linearFriction = linearFriction;
@@ -3223,7 +3223,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		body.clipMask = clipMask;
 	////	}
 	////
-	////	bodies.Append( body );
+	////	this.bodies.Append( body );
 	////
 	////	changedAF = true;
 	////
@@ -3246,10 +3246,10 @@ class idPhysics_AF extends idPhysics_Base {
 	////	if ( !constraint.body1 ) {
 	////		gameLocal.Error( "idPhysics_AF::AddConstraint: body1 == NULL on constraint '%s'.", constraint.name.c_str() );
 	////	}
-	////	if ( !bodies.Find( constraint.body1 ) ) {
+	////	if ( !this.bodies.Find( constraint.body1 ) ) {
 	////		gameLocal.Error( "idPhysics_AF::AddConstraint: body1 of constraint '%s' is not part of the articulated figure.", constraint.name.c_str() );
 	////	}
-	////	if ( constraint.body2 && !bodies.Find( constraint.body2 ) ) {
+	////	if ( constraint.body2 && !this.bodies.Find( constraint.body2 ) ) {
 	////		gameLocal.Error( "idPhysics_AF::AddConstraint: body2 of constraint '%s' is not part of the articulated figure.", constraint.name.c_str() );
 	////	}
 	////	if ( constraint.body1 == constraint.body2 ) {
@@ -3280,14 +3280,14 @@ class idPhysics_AF extends idPhysics_Base {
 	////void idPhysics_AF::ForceBodyId( idAFBody *body, int newId ) {
 	////	/*int*/ id:number;
 	////
-	////	id = bodies.FindIndex( body );
+	////	id = this.bodies.FindIndex( body );
 	////	if ( id == -1 ) {
 	////		gameLocal.Error( "ForceBodyId: body '%s' is not part of the articulated figure.\n", body.name.c_str() );
 	////	}
 	////	if ( id != newId ) {
-	////		idAFBody *b = bodies[newId];
-	////		bodies[newId] = bodies[id];
-	////		bodies[id] = b;
+	////		idAFBody *b = this.bodies[newId];
+	////		this.bodies[newId] = this.bodies[id];
+	////		this.bodies[id] = b;
 	////		changedAF = true;
 	////	}
 	////}
@@ -3300,7 +3300,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////int idPhysics_AF::GetBodyId( idAFBody *body ) const {
 	////	/*int*/ id:number;
 	////
-	////	id = bodies.FindIndex( body );
+	////	id = this.bodies.FindIndex( body );
 	////	if ( id == -1 && body ) {
 	////		gameLocal.Error( "GetBodyId: body '%s' is not part of the articulated figure.\n", body.name.c_str() );
 	////	}
@@ -3315,8 +3315,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////int idPhysics_AF::GetBodyId( const char *bodyName ) const {
 	////	var/*int*/i:number;
 	////
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		if ( !bodies[i].name.Icmp( bodyName ) ) {
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		if ( !this.bodies[i].name.Icmp( bodyName ) ) {
 	////			return i;
 	////		}
 	////	}
@@ -3362,7 +3362,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////int idPhysics_AF::GetNumBodies( ) const {
-	////	return bodies.Num();
+	////	return this.bodies.Num();
 	////}
 	////
 	/////*
@@ -3382,9 +3382,9 @@ class idPhysics_AF extends idPhysics_Base {
 	////idAFBody *idPhysics_AF::GetBody( const char *bodyName ) const {
 	////	var/*int*/i:number;
 	////
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		if ( !bodies[i].name.Icmp( bodyName ) ) {
-	////			return bodies[i];
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		if ( !this.bodies[i].name.Icmp( bodyName ) ) {
+	////			return this.bodies[i];
 	////		}
 	////	}
 	////
@@ -3397,11 +3397,11 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////idAFBody *idPhysics_AF::GetBody( /*int*/ id:number ) const {
-	////	if ( id < 0 || id >= bodies.Num() ) {
+	////	if ( id < 0 || id >= this.bodies.Num() ) {
 	////		gameLocal.Error( "GetBody: no body with id %d exists\n", id );
 	////		return NULL;
 	////	}
-	////	return bodies[id];
+	////	return this.bodies[id];
 	////}
 	////
 	/////*
@@ -3443,13 +3443,13 @@ class idPhysics_AF extends idPhysics_Base {
 	////	var/*int*/i:number;
 	////
 	////	// find the body with the given name
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		if ( !bodies[i].name.Icmp( bodyName ) ) {
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		if ( !this.bodies[i].name.Icmp( bodyName ) ) {
 	////			break;
 	////		}
 	////	}
 	////
-	////	if ( i >= bodies.Num() ) {
+	////	if ( i >= this.bodies.Num() ) {
 	////		gameLocal.Warning( "DeleteBody: no body found in the articulated figure with the name '%s' for entity '%s' type '%s'.",
 	////							bodyName, self.name.c_str(), self.GetType().classname );
 	////		return;
@@ -3466,14 +3466,14 @@ class idPhysics_AF extends idPhysics_Base {
 	////void idPhysics_AF::DeleteBody( /*int*/ id:number ) {
 	////	int j;
 	////
-	////	if ( id < 0 || id > bodies.Num() ) {
+	////	if ( id < 0 || id > this.bodies.Num() ) {
 	////		gameLocal.Error( "DeleteBody: no body with id %d.", id );
 	////		return;
 	////	}
 	////
 	////	// remove any constraints attached to this body
 	////	for ( j = 0; j < constraints.Num(); j++ ) {
-	////		if ( constraints[j].body1 == bodies[id] || constraints[j].body2 == bodies[id] ) {
+	////		if ( constraints[j].body1 == this.bodies[id] || constraints[j].body2 == this.bodies[id] ) {
 	////			delete constraints[j];
 	////			constraints.RemoveIndex( j );
 	////			j--;
@@ -3481,12 +3481,12 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////
 	////	// remove the body
-	////	delete bodies[id];
-	////	bodies.RemoveIndex( id );
+	////	delete this.bodies[id];
+	////	this.bodies.RemoveIndex( id );
 	////
 	////	// set new body ids
-	////	for ( j = 0; j < bodies.Num(); j++ ) {
-	////		bodies[j].clipModel.SetId( j );
+	////	for ( j = 0; j < this.bodies.Num(); j++ ) {
+	////		this.bodies[j].clipModel.SetId( j );
 	////	}
 	////
 	////	changedAF = true;
@@ -3545,12 +3545,12 @@ class idPhysics_AF extends idPhysics_Base {
 	////	idAFBody *body;
 	////	idAFConstraint_Contact *contact;
 	////
-	////	if ( id < 0 || id >= bodies.Num() || maxContacts <= 0 ) {
+	////	if ( id < 0 || id >= this.bodies.Num() || maxContacts <= 0 ) {
 	////		return 0;
 	////	}
 	////
 	////	numContacts = 0;
-	////	body = bodies[id];
+	////	body = this.bodies[id];
 	////	for ( i = 0; i < contactConstraints.Num(); i++ ) {
 	////		contact = contactConstraints[i];
 	////		if ( contact.body1 == body || contact.body2 == body ) {
@@ -3585,14 +3585,14 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////void idPhysics_AF::GetImpactInfo( /*int*/ id:number, const idVec3 &point, impactInfo_t *info ) const {
-	////	if ( id < 0 || id >= bodies.Num() ) {
+	////	if ( id < 0 || id >= this.bodies.Num() ) {
 	////		memset( info, 0, sizeof( *info ) );
 	////		return;
 	////	}
-	////	info.invMass = 1.0f / bodies[id].mass;
-	////	info.invInertiaTensor = bodies[id].current.worldAxis.Transpose() * bodies[id].inverseInertiaTensor * bodies[id].current.worldAxis;
-	////	info.position = point - bodies[id].current.worldOrigin;
-	////	info.velocity = bodies[id].current.spatialVelocity.SubVec3(0) + bodies[id].current.spatialVelocity.SubVec3(1).Cross( info.position );
+	////	info.invMass = 1.0f / this.bodies[id].mass;
+	////	info.invInertiaTensor = this.bodies[id].current.worldAxis.Transpose() * this.bodies[id].inverseInertiaTensor * this.bodies[id].current.worldAxis;
+	////	info.position = point - this.bodies[id].current.worldOrigin;
+	////	info.velocity = this.bodies[id].current.spatialVelocity.SubVec3(0) + this.bodies[id].current.spatialVelocity.SubVec3(1).Cross( info.position );
 	////}
 	////
 	/////*
@@ -3601,15 +3601,15 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////void idPhysics_AF::ApplyImpulse( /*int*/ id:number, const idVec3 &point, const idVec3 &impulse ) {
-	////	if ( id < 0 || id >= bodies.Num() ) {
+	////	if ( id < 0 || id >= this.bodies.Num() ) {
 	////		return;
 	////	}
 	////	if ( noImpact || impulse.LengthSqr() < Square( impulseThreshold ) ) {
 	////		return;
 	////	}
-	////	idMat3 invWorldInertiaTensor = bodies[id].current.worldAxis.Transpose() * bodies[id].inverseInertiaTensor * bodies[id].current.worldAxis;
-	////	bodies[id].current.spatialVelocity.SubVec3(0) += bodies[id].invMass * impulse;
-	////	bodies[id].current.spatialVelocity.SubVec3(1) += invWorldInertiaTensor * (point - bodies[id].current.worldOrigin).Cross( impulse );
+	////	idMat3 invWorldInertiaTensor = this.bodies[id].current.worldAxis.Transpose() * this.bodies[id].inverseInertiaTensor * this.bodies[id].current.worldAxis;
+	////	this.bodies[id].current.spatialVelocity.SubVec3(0) += this.bodies[id].invMass * impulse;
+	////	this.bodies[id].current.spatialVelocity.SubVec3(1) += invWorldInertiaTensor * (point - this.bodies[id].current.worldOrigin).Cross( impulse );
 	////	Activate();
 	////}
 	////
@@ -3622,11 +3622,11 @@ class idPhysics_AF extends idPhysics_Base {
 	////	if ( noImpact ) {
 	////		return;
 	////	}
-	////	if ( id < 0 || id >= bodies.Num() ) {
+	////	if ( id < 0 || id >= this.bodies.Num() ) {
 	////		return;
 	////	}
-	////	bodies[id].current.externalForce.SubVec3( 0 ) += force;
-	////	bodies[id].current.externalForce.SubVec3( 1 ) += (point - bodies[id].current.worldOrigin).Cross( force );
+	////	this.bodies[id].current.externalForce.SubVec3( 0 ) += force;
+	////	this.bodies[id].current.externalForce.SubVec3( 1 ) += (point - this.bodies[id].current.worldOrigin).Cross( force );
 	////	Activate();
 	////}
 	////
@@ -3667,8 +3667,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	saved = current;
 	////
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		memcpy( &bodies[i].saved, bodies[i].current, sizeof( AFBodyPState_t ) );
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		memcpy( &this.bodies[i].saved, this.bodies[i].current, sizeof( AFBodyPState_t ) );
 	////	}
 	////}
 	////
@@ -3682,8 +3682,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	current = saved;
 	////
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		*(bodies[i].current) = bodies[i].saved;
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		*(this.bodies[i].current) = this.bodies[i].saved;
 	////	}
 	////
 	////	EvaluateContacts();
@@ -3696,9 +3696,9 @@ class idPhysics_AF extends idPhysics_Base {
 	////*/
 	////void idPhysics_AF::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
 	////	if ( masterBody ) {
-	////		Translate( masterBody.current.worldOrigin + masterBody.current.worldAxis * newOrigin - bodies[0].current.worldOrigin );
+	////		Translate( masterBody.current.worldOrigin + masterBody.current.worldAxis * newOrigin - this.bodies[0].current.worldOrigin );
 	////	} else {
-	////		Translate( newOrigin - bodies[0].current.worldOrigin );
+	////		Translate( newOrigin - this.bodies[0].current.worldOrigin );
 	////	}
 	////}
 	////
@@ -3712,12 +3712,12 @@ class idPhysics_AF extends idPhysics_Base {
 	////	idRotation rotation;
 	////
 	////	if ( masterBody ) {
-	////		axis = bodies[0].current.worldAxis.Transpose() * ( newAxis * masterBody.current.worldAxis );
+	////		axis = this.bodies[0].current.worldAxis.Transpose() * ( newAxis * masterBody.current.worldAxis );
 	////	} else {
-	////		axis = bodies[0].current.worldAxis.Transpose() * newAxis;
+	////		axis = this.bodies[0].current.worldAxis.Transpose() * newAxis;
 	////	}
 	////	rotation = axis.ToRotation();
-	////	rotation.SetOrigin( bodies[0].current.worldOrigin );
+	////	rotation.SetOrigin( this.bodies[0].current.worldOrigin );
 	////
 	////	Rotate( rotation );
 	////}
@@ -3739,9 +3739,9 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////
 	////	// translate all the bodies
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////
-	////		body = bodies[i];
+	////		body = this.bodies[i];
 	////		body.current.worldOrigin += translation;
 	////	}
 	////
@@ -3767,8 +3767,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////
 	////	// rotate all the bodies
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		body = bodies[i];
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		body = this.bodies[i];
 	////
 	////		body.current.worldOrigin *= rotation;
 	////		body.current.worldAxis *= rotation.ToMat3();

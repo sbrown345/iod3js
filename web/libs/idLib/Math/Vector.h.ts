@@ -676,14 +676,14 @@ class idVec3 {
 
 		return true;
 	}
-
-////ID_INLINE bool idVec3::operator==( /*const idVec3 &a*/a:idVec3 ) const {
-////	return Compare( a );
-////}
-
-////ID_INLINE bool idVec3::operator!=( /*const idVec3 &a*/a:idVec3 ) const {
-////	return !Compare( a );
-////}
+	//==
+	opEqualTo ( a: idVec3 ): boolean {
+		return this.Compare( a );
+	}
+	//!=
+	opNotEqualTo ( /*const idVec3 &a*/a: idVec3 ): boolean {
+		return !this.Compare( a );
+	}
 
 ////ID_INLINE float idVec3::NormalizeFast( ) {
 ////	float sqrLength, invLength;
@@ -1367,12 +1367,12 @@ class idVec4 {
 ////	this.w = w;
 ////}
 
-////ID_INLINE void idVec4::Set( const float x, const float y, const float z, const float w ) {
-////	this.x = x;
-////	this.y = y;
-////	this.z = z;
-////	this.w = w;
-////}
+	Set ( /*const float */x: number, /*const float */y: number, /*const float */z: number, /*const float */w: number ): void {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
+	}
 
 	Zero ( ): void {
 		this.x = this.y = this.z = this.w = 0.0;
@@ -1487,11 +1487,11 @@ class idVec4 {
 ////}
 
 ////ID_INLINE bool idVec4::operator==( const idVec4 &a ) const {
-////	return Compare( a );
+////	return this.Compare( a );
 ////}
 
 ////ID_INLINE bool idVec4::operator!=( const idVec4 &a ) const {
-////	return !Compare( a );
+////	return !this.Compare( a );
 ////}
 
 ////ID_INLINE float idVec4::Length( ) const {
@@ -2032,11 +2032,11 @@ class idVec6 {
 ////}
 
 ////ID_INLINE bool idVec6::operator==( const idVec6 &a ) const {
-////	return Compare( a );
+////	return this.Compare( a );
 ////}
 
 ////ID_INLINE bool idVec6::operator!=( const idVec6 &a ) const {
-////	return !Compare( a );
+////	return !this.Compare( a );
 ////}
 
 ////ID_INLINE void idVec6::Set( const float a1, const float a2, const float a3, const float a4, const float a5, const float a6 ) {
@@ -2406,11 +2406,11 @@ class idVec6 {
 ////}
 
 ////ID_INLINE bool idVecX::operator==( const idVecX &a ) const {
-////	return Compare( a );
+////	return this.Compare( a );
 ////}
 
 ////ID_INLINE bool idVecX::operator!=( const idVecX &a ) const {
-////	return !Compare( a );
+////	return !this.Compare( a );
 ////}
 
 ////ID_INLINE void idVecX::SetSize( int newSize ) {

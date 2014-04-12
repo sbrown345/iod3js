@@ -356,27 +356,27 @@ class idPhysics_StaticMulti extends idPhysics {
 ////	return 0.0f;
 ////}
 ////
-/////*
-////================
-////idPhysics_StaticMulti::SetContents
-////================
-////*/
-////void idPhysics_StaticMulti::SetContents( int contents, /*int*/ id:number ) {
-////	var/*int*/i:number;
-////
-////	if ( id >= 0 && id < this.clipModels.Num() ) {
-////		if ( this.clipModels[id] ) {
-////			this.clipModels[id].SetContents( contents );
-////		}
-////	} else if ( id == -1 ) {
-////		for ( i = 0; i < this.clipModels.Num(); i++ ) {
-////			if ( this.clipModels[i] ) {
-////				this.clipModels[i].SetContents( contents );
-////			}
-////		}
-////	}
-////}
-////
+/*
+================
+idPhysics_StaticMulti::SetContents
+================
+*/
+	SetContents( /*int*/ contents: number, /*int*/ id: number = -1 ) :void{
+	var/*int*/i:number;
+
+	if ( id >= 0 && id < this.clipModels.Num() ) {
+		if ( this.clipModels[id] ) {
+			this.clipModels[id].SetContents( contents );
+		}
+	} else if ( id == -1 ) {
+		for ( i = 0; i < this.clipModels.Num(); i++ ) {
+			if ( this.clipModels[i] ) {
+				this.clipModels[i].SetContents( contents );
+			}
+		}
+	}
+}
+
 /////*
 ////================
 ////idPhysics_StaticMulti::GetContents

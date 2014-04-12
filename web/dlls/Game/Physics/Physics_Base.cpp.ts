@@ -37,16 +37,17 @@ If you have questions concerning this license or the applicable additional terms
 //
 //#ifndef __PHYSICS_BASE_H__
 //#define __PHYSICS_BASE_H__
-//
-///*
-//===============================================================================
-//
-//Physics base for a moving object using one or more collision models.
-//
-//===============================================================================
-//*/
-//
+
+/*
+===============================================================================
+
+Physics base for a moving object using one or more collision models.
+
+===============================================================================
+*/
+
 //#define contactEntity_t		idEntityPtr<idEntity>
+//class contactEntity_t extends idEntityPtr<idEntity> {} // moved to Game_local, after idEntityPtr
 
 class idPhysics_Base extends idPhysics {
 	//
@@ -155,12 +156,12 @@ class idPhysics_Base extends idPhysics {
 	//	void					ReadFromSnapshot(const idBitMsgDelta &msg);
 	//
 	//protected:
-	//	idEntity *				self;					// entity using this physics object
-	//	int						clipMask;				// contents the physics object collides with
-	//	idVec3					gravityVector;			// direction and magnitude of gravity
-	//	idVec3					gravityNormal;			// normalized direction of gravity
-	//	idList<contactInfo_t>	contacts;				// contacts with other physics objects
-	//	idList<contactEntity_t>	contactEntities;		// entities touching this physics object
+	self:idEntity;					// entity using this physics object
+	clipMask :number/*int*/;				// contents the physics object collides with
+	gravityVector = new idVec3;			// direction and magnitude of gravity
+	gravityNormal = new idVec3;			// normalized direction of gravity
+	contacts = new idList<contactInfo_t>(contactInfo_t);				// contacts with other physics objects
+	contactEntities = new idList<contactEntity_t>(contactEntity_t);		// entities touching this physics object
 	//
 	//protected:
 	//	// add ground contacts for the clip model
@@ -177,31 +178,33 @@ class idPhysics_Base extends idPhysics {
 	//
 	//#endif /* !__PHYSICS_BASE_H__ */
 	//
-	//
-	///*
-	//================
-	//idPhysics_Base::idPhysics_Base
-	//================
-	//*/
-	//idPhysics_Base::idPhysics_Base( void ) {
-	//	self = NULL;
-	//	clipMask = 0;
-	//	SetGravity( gameLocal.GetGravity() );
-	//	ClearContacts();
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::~idPhysics_Base
-	//================
-	//*/
-	//idPhysics_Base::~idPhysics_Base( void ) {
-	//	if ( self && self->GetPhysics() == this ) {
-	//		self->SetPhysics( NULL );
-	//	}
-	//	idForce::DeletePhysics( this );
-	//	ClearContacts();
-	//}
+	
+	/*
+	================
+	idPhysics_Base::idPhysics_Base
+	================
+	*/
+	constructor() {
+		super ( );
+		this.self = null;
+		this.clipMask = 0;
+		this.SetGravity( gameLocal.GetGravity() );
+		this.ClearContacts();
+	}
+	
+	/*
+	================
+	idPhysics_Base::~idPhysics_Base
+	================
+	*/
+	destructor(): void {
+		todoThrow ( );
+		//if ( this.self && this.self.GetPhysics() == this ) {
+		//	this.self.SetPhysics( null );
+		//}
+		//idForce.DeletePhysics( this );
+		//this.ClearContacts();
+	}
 	//
 	///*
 	//================
@@ -211,17 +214,17 @@ class idPhysics_Base extends idPhysics {
 	//void idPhysics_Base::Save( idSaveGame *savefile ) const {
 	//	var/*int*/i:number;
 	//
-	//	savefile->WriteObject( self );
-	//	savefile->WriteInt( clipMask );
-	//	savefile->WriteVec3( gravityVector );
-	//	savefile->WriteVec3( gravityNormal );
+	//	savefile.WriteObject( this.self );
+	//	savefile.WriteInt( clipMask );
+	//	savefile.WriteVec3( gravityVector );
+	//	savefile.WriteVec3( gravityNormal );
 	//
-	//	savefile->WriteInt( contacts.Num() );
-	//	for ( i = 0; i < contacts.Num(); i++ ) {
-	//		savefile->WriteContactInfo( contacts[i] );
+	//	savefile.WriteInt( this.contacts.Num() );
+	//	for ( i = 0; i < this.contacts.Num(); i++ ) {
+	//		savefile.WriteContactInfo( this.contacts[i] );
 	//	}
 	//
-	//	savefile->WriteInt( contactEntities.Num() );
+	//	savefile.WriteInt( contactEntities.Num() );
 	//	for ( i = 0; i < contactEntities.Num(); i++ ) {
 	//		contactEntities[i].Save( savefile );
 	//	}
@@ -235,18 +238,18 @@ class idPhysics_Base extends idPhysics {
 	//void idPhysics_Base::Restore( idRestoreGame *savefile ) {
 	//	int i, num;
 	//
-	//	savefile->ReadObject( reinterpret_cast<idClass *&>( self ) );
-	//	savefile->ReadInt( clipMask );
-	//	savefile->ReadVec3( gravityVector );
-	//	savefile->ReadVec3( gravityNormal );
+	//	savefile.ReadObject( reinterpret_cast<idClass *&>( this.self ) );
+	//	savefile.ReadInt( clipMask );
+	//	savefile.ReadVec3( gravityVector );
+	//	savefile.ReadVec3( gravityNormal );
 	//
-	//	savefile->ReadInt( num );
-	//	contacts.SetNum( num );
-	//	for ( i = 0; i < contacts.Num(); i++ ) {
-	//		savefile->ReadContactInfo( contacts[i] );
+	//	savefile.ReadInt( num );
+	//	this.contacts.SetNum( num );
+	//	for ( i = 0; i < this.contacts.Num(); i++ ) {
+	//		savefile.ReadContactInfo( this.contacts[i] );
 	//	}
 	//
-	//	savefile->ReadInt( num );
+	//	savefile.ReadInt( num );
 	//	contactEntities.SetNum( num );
 	//	for ( i = 0; i < contactEntities.Num(); i++ ) {
 	//		contactEntities[i].Restore( savefile );
@@ -260,7 +263,7 @@ class idPhysics_Base extends idPhysics {
 	//*/
 	//void idPhysics_Base::SetSelf( idEntity *e ) {
 	//	assert( e );
-	//	self = e;
+	//	this.self = e;
 	//}
 	//
 	///*
@@ -285,7 +288,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetNumClipModels
 	//================
 	//*/
-	//int idPhysics_Base::GetNumClipModels( void ) const {
+	//int idPhysics_Base::GetNumClipModels( ) const {
 	//	return 0;
 	//}
 	//
@@ -306,13 +309,13 @@ class idPhysics_Base extends idPhysics {
 	//	return 0.0f;
 	//}
 	//
-	///*
-	//================
-	//idPhysics_Base::SetContents
-	//================
-	//*/
-	//void idPhysics_Base::SetContents( int contents, /*int*/ id:number ) {
-	//}
+	/*
+	================
+	idPhysics_Base::SetContents
+	================
+	*/
+	SetContents ( /*int*/ contents: number, /*int*/ id: number = -1): void {
+	}
 	//
 	///*
 	//================
@@ -381,7 +384,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetTime
 	//================
 	//*/
-	//int idPhysics_Base::GetTime( void ) const {
+	//int idPhysics_Base::GetTime( ) const {
 	//	return 0;
 	//}
 	//
@@ -415,7 +418,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::Activate
 	//================
 	//*/
-	//void idPhysics_Base::Activate( void ) {
+	//void idPhysics_Base::Activate( ) {
 	//}
 	//
 	///*
@@ -423,7 +426,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::PutToRest
 	//================
 	//*/
-	//void idPhysics_Base::PutToRest( void ) {
+	//void idPhysics_Base::PutToRest( ) {
 	//}
 	//
 	///*
@@ -431,7 +434,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::IsAtRest
 	//================
 	//*/
-	//bool idPhysics_Base::IsAtRest( void ) const {
+	//bool idPhysics_Base::IsAtRest( ) const {
 	//	return true;
 	//}
 	//
@@ -440,7 +443,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetRestStartTime
 	//================
 	//*/
-	//int idPhysics_Base::GetRestStartTime( void ) const {
+	//int idPhysics_Base::GetRestStartTime( ) const {
 	//	return 0;
 	//}
 	//
@@ -449,7 +452,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::IsPushable
 	//================
 	//*/
-	//bool idPhysics_Base::IsPushable( void ) const {
+	//bool idPhysics_Base::IsPushable( ) const {
 	//	return true;
 	//}
 	//
@@ -458,7 +461,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::SaveState
 	//================
 	//*/
-	//void idPhysics_Base::SaveState( void ) {
+	//void idPhysics_Base::SaveState( ) {
 	//}
 	//
 	///*
@@ -466,7 +469,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::RestoreState
 	//================
 	//*/
-	//void idPhysics_Base::RestoreState( void ) {
+	//void idPhysics_Base::RestoreState( ) {
 	//}
 	//
 	///*
@@ -553,23 +556,23 @@ class idPhysics_Base extends idPhysics {
 	//	return vec3_origin;
 	//}
 	//
-	///*
-	//================
-	//idPhysics_Base::SetGravity
-	//================
-	//*/
-	//void idPhysics_Base::SetGravity( const idVec3 &newGravity ) {
-	//	gravityVector = newGravity;
-	//	gravityNormal = newGravity;
-	//	gravityNormal.Normalize();
-	//}
-	//
+	/*
+	================
+	idPhysics_Base::SetGravity
+	================
+	*/
+	SetGravity ( newGravity: idVec3 ): void {
+		this.gravityVector.equals( newGravity );
+		this.gravityNormal.equals( newGravity );
+		this.gravityNormal.Normalize ( );
+	}
+
 	///*
 	//================
 	//idPhysics_Base::GetGravity
 	//================
 	//*/
-	//const idVec3 &idPhysics_Base::GetGravity( void ) const {
+	//const idVec3 &idPhysics_Base::GetGravity( ) const {
 	//	return gravityVector;
 	//}
 	//
@@ -578,7 +581,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetGravityNormal
 	//================
 	//*/
-	//const idVec3 &idPhysics_Base::GetGravityNormal( void ) const {
+	//const idVec3 &idPhysics_Base::GetGravityNormal( ) const {
 	//	return gravityNormal;
 	//}
 	//
@@ -614,7 +617,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::DisableClip
 	//================
 	//*/
-	//void idPhysics_Base::DisableClip( void ) {
+	//void idPhysics_Base::DisableClip( ) {
 	//}
 	//
 	///*
@@ -622,7 +625,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::EnableClip
 	//================
 	//*/
-	//void idPhysics_Base::EnableClip( void ) {
+	//void idPhysics_Base::EnableClip( ) {
 	//}
 	//
 	///*
@@ -630,7 +633,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::UnlinkClip
 	//================
 	//*/
-	//void idPhysics_Base::UnlinkClip( void ) {
+	//void idPhysics_Base::UnlinkClip( ) {
 	//}
 	//
 	///*
@@ -638,7 +641,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::LinkClip
 	//================
 	//*/
-	//void idPhysics_Base::LinkClip( void ) {
+	//void idPhysics_Base::LinkClip( ) {
 	//}
 	//
 	///*
@@ -646,7 +649,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::EvaluateContacts
 	//================
 	//*/
-	//bool idPhysics_Base::EvaluateContacts( void ) {
+	//bool idPhysics_Base::EvaluateContacts( ) {
 	//	return false;
 	//}
 	//
@@ -655,8 +658,8 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetNumContacts
 	//================
 	//*/
-	//int idPhysics_Base::GetNumContacts( void ) const {
-	//	return contacts.Num();
+	//int idPhysics_Base::GetNumContacts( ) const {
+	//	return this.contacts.Num();
 	//}
 	//
 	///*
@@ -665,26 +668,26 @@ class idPhysics_Base extends idPhysics {
 	//================
 	//*/
 	//const contactInfo_t &idPhysics_Base::GetContact( int num ) const {
-	//	return contacts[num];
+	//	return this.contacts[num];
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::ClearContacts
-	//================
-	//*/
-	//void idPhysics_Base::ClearContacts( void ) {
-	//	var/*int*/i:number;
-	//	idEntity *ent;
-	//
-	//	for ( i = 0; i < contacts.Num(); i++ ) {
-	//		ent = gameLocal.entities[ contacts[i].entityNum ];
-	//		if ( ent ) {
-	//			ent->RemoveContactEntity( self );
-	//		}
-	//	}
-	//	contacts.SetNum( 0, false );
-	//}
+	
+	/*
+	================
+	idPhysics_Base::ClearContacts
+	================
+	*/
+	ClearContacts( ):void {
+		var/*int*/i:number;
+		var ent: idEntity ;
+	
+		for ( i = 0; i < this.contacts.Num(); i++ ) {
+			ent = gameLocal.entities[ this.contacts[i].entityNum ];
+			if ( ent ) {
+				ent.RemoveContactEntity( this.self );
+			}
+		}
+		this.contacts.SetNum( 0, false );
+	}
 	//
 	///*
 	//================
@@ -737,11 +740,11 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::HasGroundContacts
 	//================
 	//*/
-	//bool idPhysics_Base::HasGroundContacts( void ) const {
+	//bool idPhysics_Base::HasGroundContacts( ) const {
 	//	var/*int*/i:number;
 	//
-	//	for ( i = 0; i < contacts.Num(); i++ ) {
-	//		if ( contacts[i].normal * -gravityNormal > 0.0f ) {
+	//	for ( i = 0; i < this.contacts.Num(); i++ ) {
+	//		if ( this.contacts[i].normal * -gravityNormal > 0.0f ) {
 	//			return true;
 	//		}
 	//	}
@@ -756,8 +759,8 @@ class idPhysics_Base extends idPhysics {
 	//bool idPhysics_Base::IsGroundEntity( int entityNum ) const {
 	//	var/*int*/i:number;
 	//
-	//	for ( i = 0; i < contacts.Num(); i++ ) {
-	//		if ( contacts[i].entityNum == entityNum && ( contacts[i].normal * -gravityNormal > 0.0f ) ) {
+	//	for ( i = 0; i < this.contacts.Num(); i++ ) {
+	//		if ( this.contacts[i].entityNum == entityNum && ( this.contacts[i].normal * -gravityNormal > 0.0f ) ) {
 	//			return true;
 	//		}
 	//	}
@@ -772,8 +775,8 @@ class idPhysics_Base extends idPhysics {
 	//bool idPhysics_Base::IsGroundClipModel( int entityNum, /*int*/ id:number ) const {
 	//	var/*int*/i:number;
 	//
-	//	for ( i = 0; i < contacts.Num(); i++ ) {
-	//		if ( contacts[i].entityNum == entityNum && contacts[i].id == id && ( contacts[i].normal * -gravityNormal > 0.0f ) ) {
+	//	for ( i = 0; i < this.contacts.Num(); i++ ) {
+	//		if ( this.contacts[i].entityNum == entityNum && this.contacts[i].id == id && ( this.contacts[i].normal * -gravityNormal > 0.0f ) ) {
 	//			return true;
 	//		}
 	//	}
@@ -819,7 +822,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetBlockingInfo
 	//================
 	//*/
-	//const trace_t *idPhysics_Base::GetBlockingInfo( void ) const {
+	//const trace_t *idPhysics_Base::GetBlockingInfo( ) const {
 	//	return NULL;
 	//}
 	//
@@ -828,7 +831,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetBlockingEntity
 	//================
 	//*/
-	//idEntity *idPhysics_Base::GetBlockingEntity( void ) const {
+	//idEntity *idPhysics_Base::GetBlockingEntity( ) const {
 	//	return NULL;
 	//}
 	//
@@ -837,7 +840,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetLinearEndTime
 	//================
 	//*/
-	//int idPhysics_Base::GetLinearEndTime( void ) const {
+	//int idPhysics_Base::GetLinearEndTime( ) const {
 	//	return 0;
 	//}
 	//
@@ -846,7 +849,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetAngularEndTime
 	//================
 	//*/
-	//int idPhysics_Base::GetAngularEndTime( void ) const {
+	//int idPhysics_Base::GetAngularEndTime( ) const {
 	//	return 0;
 	//}
 	//
@@ -859,14 +862,14 @@ class idPhysics_Base extends idPhysics {
 	//	idVec6 dir;
 	//	int index, num;
 	//
-	//	index = contacts.Num();
-	//	contacts.SetNum( index + 10, false );
+	//	index = this.contacts.Num();
+	//	this.contacts.SetNum( index + 10, false );
 	//
 	//	dir.SubVec3(0) = gravityNormal;
 	//	dir.SubVec3(1) = vec3_origin;
-	//	num = gameLocal.clip.Contacts( &contacts[index], 10, clipModel->GetOrigin(),
-	//					dir, CONTACT_EPSILON, clipModel, clipModel->GetAxis(), clipMask, self );
-	//	contacts.SetNum( index + num, false );
+	//	num = gameLocal.clip.Contacts( &this.contacts[index], 10, clipModel.GetOrigin(),
+	//					dir, CONTACT_EPSILON, clipModel, clipModel.GetAxis(), clipMask, this.self );
+	//	this.contacts.SetNum( index + num, false );
 	//}
 	//
 	///*
@@ -874,14 +877,14 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::AddContactEntitiesForContacts
 	//================
 	//*/
-	//void idPhysics_Base::AddContactEntitiesForContacts( void ) {
+	//void idPhysics_Base::AddContactEntitiesForContacts( ) {
 	//	var/*int*/i:number;
 	//	idEntity *ent;
 	//
-	//	for ( i = 0; i < contacts.Num(); i++ ) {
-	//		ent = gameLocal.entities[ contacts[i].entityNum ];
-	//		if ( ent && ent != self ) {
-	//			ent->AddContactEntity( self );
+	//	for ( i = 0; i < this.contacts.Num(); i++ ) {
+	//		ent = gameLocal.entities[ this.contacts[i].entityNum ];
+	//		if ( ent && ent != this.self ) {
+	//			ent.AddContactEntity( this.self );
 	//		}
 	//	}
 	//}
@@ -891,14 +894,14 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::ActivateContactEntities
 	//================
 	//*/
-	//void idPhysics_Base::ActivateContactEntities( void ) {
+	//void idPhysics_Base::ActivateContactEntities( ) {
 	//	var/*int*/i:number;
 	//	idEntity *ent;
 	//
 	//	for ( i = 0; i < contactEntities.Num(); i++ ) {
 	//		ent = contactEntities[i].GetEntity();
 	//		if ( ent ) {
-	//			ent->ActivatePhysics( self );
+	//			ent.ActivatePhysics( this.self );
 	//		} else {
 	//			contactEntities.RemoveIndex( i-- );
 	//		}
@@ -910,7 +913,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::IsOutsideWorld
 	//================
 	//*/
-	//bool idPhysics_Base::IsOutsideWorld( void ) const {
+	//bool idPhysics_Base::IsOutsideWorld( ) const {
 	//	if ( !gameLocal.clip.GetWorldBounds().Expand( 128.0f ).IntersectsBounds( GetAbsBounds() ) ) {
 	//		return true;
 	//	}
@@ -932,7 +935,7 @@ class idPhysics_Base extends idPhysics {
 	//	if ( dir.LengthSqr() > Square( 0.1f ) ) {
 	//		dir.Truncate( 10.0f );
 	//		org = GetOrigin( id );
-	//		gameRenderWorld->DebugArrow( colorRed, org, org + dir, 1 );
+	//		gameRenderWorld.DebugArrow( colorRed, org, org + dir, 1 );
 	//	}
 	//
 	//	dir = GetAngularVelocity( id );
@@ -956,11 +959,11 @@ class idPhysics_Base extends idPhysics {
 	//		start = org + vec;
 	//		for ( a = 20.0f; a < length; a += 20.0f ) {
 	//			end = org + idRotation( vec3_origin, dir, -a ).ToMat3() * vec;
-	//			gameRenderWorld->DebugLine( colorBlue, start, end, 1 );
+	//			gameRenderWorld.DebugLine( colorBlue, start, end, 1 );
 	//			start = end;
 	//		}
 	//		end = org + idRotation( vec3_origin, dir, -length ).ToMat3() * vec;
-	//		gameRenderWorld->DebugArrow( colorBlue, start, end, 1 );
+	//		gameRenderWorld.DebugArrow( colorBlue, start, end, 1 );
 	//	}
 	//}
 	//

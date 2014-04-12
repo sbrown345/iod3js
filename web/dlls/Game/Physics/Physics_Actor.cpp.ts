@@ -51,10 +51,10 @@ class idPhysics_Actor extends idPhysics_Base {
 	//
 	//public:
 	//	CLASS_PROTOTYPE(idPhysics_Actor);
-	static	Type:idTypeInfo;						
-	static	CreateInstance( ): idClass {throw "placeholder";}
-	GetType( ):idTypeInfo {throw "placeholder";}
-	static	eventCallbacks : idEventFunc<idPhysics_Actor>[];
+	static Type: idTypeInfo;
+	static CreateInstance ( ): idClass { throw "placeholder"; }
+	GetType ( ): idTypeInfo { throw "placeholder"; }
+	static eventCallbacks: idEventFunc<idPhysics_Actor>[];
 	//
 	//	idPhysics_Actor(void);
 	//	~idPhysics_Actor(void);
@@ -104,35 +104,35 @@ class idPhysics_Actor extends idPhysics_Base {
 	//	bool					EvaluateContacts(void);
 	//
 	//protected:
-	clipModel:idClipModel;			// clip model used for collision detection
-	clipModelAxis = new idMat3;		// axis of clip model aligned with gravity direction
-	
+	clipModel: idClipModel; // clip model used for collision detection
+	clipModelAxis = new idMat3; // axis of clip model aligned with gravity direction
+
 	// derived properties
-	mass :number/*float*/;
-	invMass :number/*float*/;
-	
+	mass: number /*float*/;
+	invMass: number /*float*/;
+
 	// master
-	masterEntity:idEntity;
-	masterYaw :number/*float*/;
-	masterDeltaYaw :number/*float*/;
-	
+	masterEntity: idEntity;
+	masterYaw: number /*float*/;
+	masterDeltaYaw: number /*float*/;
+
 	// results of last evaluate
-	groundEntityPtr = new idEntityPtr<idEntity>();
+	groundEntityPtr = new idEntityPtr<idEntity> ( );
 	//};
 	//
 	//#endif /* !__PHYSICS_ACTOR_H__ */
 	//
-	
-	
+
+
 	/*
 	================
 	idPhysics_Actor::idPhysics_Actor
 	================
 	*/
-	constructor() {
+	constructor ( ) {
 		super ( );
 		this.clipModel = null;
-		this.SetClipModelAxis();
+		this.SetClipModelAxis ( );
 		this.mass = 100.0;
 		this.invMass = 1.0 / this.mass;
 		this.masterEntity = null;
@@ -140,13 +140,13 @@ class idPhysics_Actor extends idPhysics_Base {
 		this.masterDeltaYaw = 0.0;
 		this.groundEntityPtr = null;
 	}
-	
+
 	/*
 	================
 	idPhysics_Actor::~idPhysics_Actor
 	================
 	*/
-	destructor( ) {
+	destructor ( ) {
 		if ( this.clipModel ) {
 			delete this.clipModel;
 			this.clipModel = null;
@@ -161,16 +161,16 @@ class idPhysics_Actor extends idPhysics_Base {
 	//void idPhysics_Actor::Save( idSaveGame *savefile ) const {
 	//
 	//	savefile.WriteClipModel( this.clipModel );
-	//	savefile.WriteMat3( clipModelAxis );
+	//	savefile.WriteMat3( this.clipModelAxis );
 	//
 	//	savefile.WriteFloat( this.mass );
-	//	savefile.WriteFloat( invMass );
+	//	savefile.WriteFloat( this.invMass );
 	//
-	//	savefile.WriteObject( masterEntity );
+	//	savefile.WriteObject( this.masterEntity );
 	//	savefile.WriteFloat( masterYaw );
-	//	savefile.WriteFloat( masterDeltaYaw );
+	//	savefile.WriteFloat( this.masterDeltaYaw );
 	//
-	//	groundEntityPtr.Save( savefile );
+	//	this.groundEntityPtr.Save( savefile );
 	//}
 	//
 	///*
@@ -181,94 +181,94 @@ class idPhysics_Actor extends idPhysics_Base {
 	//void idPhysics_Actor::Restore( idRestoreGame *savefile ) {
 	//
 	//	savefile.ReadClipModel( this.clipModel );
-	//	savefile.ReadMat3( clipModelAxis );
+	//	savefile.ReadMat3( this.clipModelAxis );
 	//
 	//	savefile.ReadFloat( this.mass );
-	//	savefile.ReadFloat( invMass );
+	//	savefile.ReadFloat( this.invMass );
 	//
-	//	savefile.ReadObject( reinterpret_cast<idClass *&>( masterEntity ) );
+	//	savefile.ReadObject( reinterpret_cast<idClass *&>( this.masterEntity ) );
 	//	savefile.ReadFloat( masterYaw );
-	//	savefile.ReadFloat( masterDeltaYaw );
+	//	savefile.ReadFloat( this.masterDeltaYaw );
 	//
-	//	groundEntityPtr.Restore( savefile );
+	//	this.groundEntityPtr.Restore( savefile );
 	//}
-	
+
 	/*
 	================
 	idPhysics_Actor::SetClipModelAxis
 	================
 	*/
-	SetClipModelAxis():void {
+	SetClipModelAxis ( ): void {
 		todoThrow ( );
 		//// align clip model to gravity direction
 		//if ( ( gravityNormal[2] == -1.0 ) || ( gravityNormal == vec3_zero ) ) {
-		//	clipModelAxis.Identity();
+		//	this.clipModelAxis.Identity();
 		//}
 		//else {
-		//	clipModelAxis[2] = -gravityNormal;
-		//	clipModelAxis[2].NormalVectors( clipModelAxis[0], clipModelAxis[1] );
-		//	clipModelAxis[1] = -clipModelAxis[1];
+		//	this.clipModelAxis[2] = -gravityNormal;
+		//	this.clipModelAxis[2].NormalVectors( this.clipModelAxis[0], this.clipModelAxis[1] );
+		//	this.clipModelAxis[1] = -this.clipModelAxis[1];
 		//}
-	
+
 		//if ( this.clipModel ) {
-		//	this.clipModel.Link( gameLocal.clip, self, 0, this.clipModel.GetOrigin(), clipModelAxis );
+		//	this.clipModel.Link( gameLocal.clip, this.self, 0, this.clipModel.GetOrigin(), this.clipModelAxis );
 		//}
 	}
-	
-	///*
-	//================
-	//idPhysics_Actor::GetGravityAxis
-	//================
-	//*/
-	//const idMat3 &idPhysics_Actor::GetGravityAxis( ) const {
-	//	return clipModelAxis;
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::GetMasterDeltaYaw
-	//================
-	//*/
-	//float idPhysics_Actor::GetMasterDeltaYaw( ) const {
-	//	return masterDeltaYaw;
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::GetGroundEntity
-	//================
-	//*/
-	//idEntity *idPhysics_Actor::GetGroundEntity( ) const {
-	//	return groundEntityPtr.GetEntity();
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::SetClipModel
-	//================
-	//*/
-	//void idPhysics_Actor::SetClipModel( idClipModel *model, const float density, /*int*/ id:number, bool freeOld ) {
-	//	assert( self );
-	//	assert( model );					// a clip model is required
-	//	assert( model.IsTraceModel() );	// and it should be a trace model
-	//	assert( density > 0.0 );			// density should be valid
-	//
-	//	if ( this.clipModel && this.clipModel != model && freeOld ) {
-	//		delete this.clipModel;
-	//	}
-	//	this.clipModel = model;
-	//	this.clipModel.Link( gameLocal.clip, self, 0, this.clipModel.GetOrigin(), clipModelAxis );
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::GetClipModel
-	//================
-	//*/
-	//idClipModel *idPhysics_Actor::GetClipModel( /*int*/ id:number ) const {
-	//	return this.clipModel;
-	//}
-	//
+
+	/*
+	================
+	idPhysics_Actor::GetGravityAxis
+	================
+	*/
+	GetGravityAxis ( ): idMat3 {
+		return this.clipModelAxis;
+	}
+
+	/*
+	================
+	idPhysics_Actor::GetMasterDeltaYaw
+	================
+	*/
+	GetMasterDeltaYaw ( ): number /*float*/ {
+		return this.masterDeltaYaw;
+	}
+
+	/*
+	================
+	idPhysics_Actor::GetGroundEntity
+	================
+	*/
+	GetGroundEntity ( ): idEntity {
+		return this.groundEntityPtr.GetEntity ( );
+	}
+
+	/*
+	================
+	idPhysics_Actor::SetClipModel
+	================
+	*/
+	SetClipModel(model: idClipModel, /*float */density: number, /*int*/ id: number = 0, freeOld: boolean=true ): void {
+		assert( this.self );
+		assert( model ); // a clip model is required
+		assert( model.IsTraceModel ( ) ); // and it should be a trace model
+		assert( density > 0.0 ); // density should be valid
+
+		if ( this.clipModel && this.clipModel != model && freeOld ) {
+			delete this.clipModel;
+		}
+		this.clipModel = model;
+		this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.clipModel.GetOrigin ( ), this.clipModelAxis );
+	}
+
+	/*
+	================
+	idPhysics_Actor::GetClipModel
+	================
+	*/
+	GetClipModel( /*int*/ id: number  = 0): idClipModel {
+		return this.clipModel;
+	}
+
 	/*
 	================
 	idPhysics_Actor::GetNumClipModels
@@ -278,141 +278,143 @@ class idPhysics_Actor extends idPhysics_Base {
 		return 1;
 	}
 
-	///*
-	//================
-	//idPhysics_Actor::SetMass
-	//================
-	//*/
-	//void idPhysics_Actor::SetMass( float _mass, /*int*/ id:number ) {
-	//	assert( _mass > 0.0 );
-	//	this.mass = _mass;
-	//	invMass = 1.0 / _mass;
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::GetMass
-	//================
-	//*/
-	//float idPhysics_Actor::GetMass( /*int*/ id:number ) const {
-	//	return this.mass;
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::SetClipMask
-	//================
-	//*/
-	//void idPhysics_Actor::SetContents( int contents, /*int*/ id:number ) {
-	//	this.clipModel.SetContents( contents );
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::SetClipMask
-	//================
-	//*/
-	//int idPhysics_Actor::GetContents( /*int*/ id:number ) const {
-	//	return this.clipModel.GetContents();
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::GetBounds
-	//================
-	//*/
-	//const idBounds &idPhysics_Actor::GetBounds( /*int*/ id:number ) const {
-	//	return this.clipModel.GetBounds();
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::GetAbsBounds
-	//================
-	//*/
-	//const idBounds &idPhysics_Actor::GetAbsBounds( /*int*/ id:number ) const {
-	//	return this.clipModel.GetAbsBounds();
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::IsPushable
-	//================
-	//*/
-	//bool idPhysics_Actor::IsPushable( ) const {
-	//	return ( masterEntity == NULL );
-	//}
-	
+	/*
+	================
+	idPhysics_Actor::SetMass
+	================
+	*/
+	SetMass( /*float*/ _mass: number, /*int*/ id: number  = -1): void {
+		assert( _mass > 0.0 );
+		this.mass = _mass;
+		this.invMass = 1.0 / _mass;
+	}
+
+	/*
+	================
+	idPhysics_Actor::GetMass
+	================
+	*/
+	GetMass( /*int*/ id: number  = -1): number /*float*/ {
+		return this.mass;
+	}
+
+	/*
+	================
+	idPhysics_Actor::SetClipMask
+	================
+	*/
+	SetContents ( /*int*/ contents: number, /*int*/ id: number = -1 ): void {
+		this.clipModel.SetContents( contents );
+	}
+
+	/*
+	================
+	idPhysics_Actor::SetClipMask
+	================
+	*/
+	GetContents ( /*int*/ id: number ): number {
+		return this.clipModel.GetContents ( );
+	}
+
+	/*
+	================
+	idPhysics_Actor::GetBounds
+	================
+	*/
+	GetBounds ( /*int*/ id: number = -1): idBounds {
+		return this.clipModel.GetBounds ( );
+	}
+
+	/*
+	================
+	idPhysics_Actor::GetAbsBounds
+	================
+	*/
+	GetAbsBounds( /*int*/ id: number  = -1): idBounds {
+		return this.clipModel.GetAbsBounds ( );
+	}
+
+	/*
+	================
+	idPhysics_Actor::IsPushable
+	================
+	*/
+	IsPushable ( ): boolean {
+		return ( this.masterEntity == null );
+	}
+
 	/*
 	================
 	idPhysics_Actor::GetOrigin
 	================
 	*/
-	GetOrigin( /*int*/ id: number=0): idVec3 {
-		return this.clipModel.GetOrigin();
+	GetOrigin ( /*int*/ id: number=0 ): idVec3 {
+		return this.clipModel.GetOrigin ( );
 	}
-	
+
 	/*
 	================
 	idPhysics_Player::GetAxis
 	================
 	*/
-	GetAxis( /*int*/ id: number = 0): idMat3 {
+	GetAxis ( /*int*/ id: number = 0 ): idMat3 {
 		return this.clipModel.GetAxis ( );
 	}
 
-	///*
-	//================
-	//idPhysics_Actor::SetGravity
-	//================
-	//*/
-	//void idPhysics_Actor::SetGravity( const idVec3 &newGravity ) {
-	//	if ( newGravity != gravityVector ) {
-	//		idPhysics_Base::SetGravity( newGravity );
-	//		SetClipModelAxis();
-	//	}
+	/*
+	================
+	idPhysics_Actor::SetGravity
+	================
+	*/
+	SetGravity ( newGravity: idVec3 ): void {
+		if ( newGravity.opNotEqualTo( this.gravityVector ) ) {
+			super.SetGravity( newGravity );
+			this.SetClipModelAxis ( );
+		}
+	}
+
+	/*
+	================
+	idPhysics_Actor::ClipTranslation
+	================
+	*/
+	ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void {
+		todoThrow ( );
+		//if ( model ) {
+		//	gameLocal.clip.TranslationModel( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,
+		//							this.clipModel, this.clipModel.GetAxis(), this.clipMask,
+		//							model.Handle(), model.GetOrigin(), model.GetAxis() );
+		//}
+		//else {
+		//	gameLocal.clip.Translation( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,
+		//							this.clipModel, this.clipModel.GetAxis(), this.clipMask, this.self );
+		//}
+	}
+
+	/*
+	================
+	idPhysics_Actor::ClipRotation
+	================
+	*/
+	//ClipRotation(results:trace_t, rotation:idRotation , model :idClipModel ) :void {
+	//	//todoThrow ( );
+	//	//if ( model ) {
+	//	//	gameLocal.clip.RotationModel( results, this.clipModel.GetOrigin(), rotation,
+	//	//							this.clipModel, this.clipModel.GetAxis(), this.clipMask,
+	//	//							model.Handle(), model.GetOrigin(), model.GetAxis() );
+	//	//}
+	//	//else {
+	//	//	gameLocal.clip.Rotation( results, this.clipModel.GetOrigin(), rotation,
+	//	//							this.clipModel, this.clipModel.GetAxis(), this.clipMask, this.self );
+	//	//}
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::ClipTranslation
-	//================
-	//*/
-	//void idPhysics_Actor::ClipTranslation( trace_t &results, const idVec3 &translation, const idClipModel *model ) const {
-	//	if ( model ) {
-	//		gameLocal.clip.TranslationModel( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,
-	//								this.clipModel, this.clipModel.GetAxis(), clipMask,
-	//								model.Handle(), model.GetOrigin(), model.GetAxis() );
-	//	}
-	//	else {
-	//		gameLocal.clip.Translation( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,
-	//								this.clipModel, this.clipModel.GetAxis(), clipMask, self );
-	//	}
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::ClipRotation
-	//================
-	//*/
-	//void idPhysics_Actor::ClipRotation( trace_t &results, const idRotation &rotation, const idClipModel *model ) const {
-	//	if ( model ) {
-	//		gameLocal.clip.RotationModel( results, this.clipModel.GetOrigin(), rotation,
-	//								this.clipModel, this.clipModel.GetAxis(), clipMask,
-	//								model.Handle(), model.GetOrigin(), model.GetAxis() );
-	//	}
-	//	else {
-	//		gameLocal.clip.Rotation( results, this.clipModel.GetOrigin(), rotation,
-	//								this.clipModel, this.clipModel.GetAxis(), clipMask, self );
-	//	}
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::ClipContents
-	//================
-	//*/
-	//int idPhysics_Actor::ClipContents( const idClipModel *model ) const {
+
+	/*
+	================
+	idPhysics_Actor::ClipContents
+	================
+	*/
+	//ClipContents( model :idClipModel ) :number {
 	//	if ( model ) {
 	//		return gameLocal.clip.ContentsModel( this.clipModel.GetOrigin(), this.clipModel, this.clipModel.GetAxis(), -1,
 	//									model.Handle(), model.GetOrigin(), model.GetAxis() );
@@ -421,57 +423,57 @@ class idPhysics_Actor extends idPhysics_Base {
 	//		return gameLocal.clip.Contents( this.clipModel.GetOrigin(), this.clipModel, this.clipModel.GetAxis(), -1, NULL );
 	//	}
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::DisableClip
-	//================
-	//*/
-	//void idPhysics_Actor::DisableClip( ) {
-	//	this.clipModel.Disable();
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::EnableClip
-	//================
-	//*/
-	//void idPhysics_Actor::EnableClip( ) {
-	//	this.clipModel.Enable();
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::UnlinkClip
-	//================
-	//*/
-	//void idPhysics_Actor::UnlinkClip( ) {
-	//	this.clipModel.Unlink();
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::LinkClip
-	//================
-	//*/
-	//void idPhysics_Actor::LinkClip( ) {
-	//	this.clipModel.Link( gameLocal.clip, self, 0, this.clipModel.GetOrigin(), this.clipModel.GetAxis() );
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Actor::EvaluateContacts
-	//================
-	//*/
-	//bool idPhysics_Actor::EvaluateContacts( ) {
-	//
-	//	// get all the ground contacts
-	//	ClearContacts();
-	//	AddGroundContacts( this.clipModel );
-	//	AddContactEntitiesForContacts();
-	//
-	//	return ( contacts.Num() != 0 );
-	//}
+
+	/*
+	================
+	idPhysics_Actor::DisableClip
+	================
+	*/
+	DisableClip ( ): void {
+		this.clipModel.Disable ( );
+	}
+
+	/*
+	================
+	idPhysics_Actor::EnableClip
+	================
+	*/
+	EnableClip ( ): void {
+		this.clipModel.Enable ( );
+	}
+
+	/*
+	================
+	idPhysics_Actor::UnlinkClip
+	================
+	*/
+	UnlinkClip ( ): void {
+		this.clipModel.Unlink ( );
+	}
+
+	/*
+	================
+	idPhysics_Actor::LinkClip
+	================
+	*/
+	LinkClip ( ): void {
+		this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.clipModel.GetOrigin ( ), this.clipModel.GetAxis ( ) );
+	}
+
+	/*
+	================
+	idPhysics_Actor::EvaluateContacts
+	================
+	*/
+	EvaluateContacts ( ): boolean {
+		todoThrow ( );
+		//// get all the ground contacts
+		//this.ClearContacts ( );
+		//this.AddGroundContacts( this.clipModel );
+		//this.AddContactEntitiesForContacts ( );
+
+		return ( this.contacts.Num ( ) != 0 );
+	}
 }
 
 //CLASS_DECLARATION(idPhysics_Base, idPhysics_Actor)

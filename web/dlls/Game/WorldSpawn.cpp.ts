@@ -74,56 +74,56 @@ class idWorldspawn extends idEntity {
 	////================
 	////*/
 
-	////
-	/////*
-	////================
-	////idWorldspawn::Spawn
-	////================
-	////*/
-	////void idWorldspawn::Spawn( void ) {
-	////	idStr				scriptname;
-	////	idThread			*thread;
-	////	const function_t	*func;
-	////	const idKeyValue	*kv;
-	////
-	////	assert( gameLocal.world == NULL );
-	////	gameLocal.world = this;
-	////
-	////	g_gravity.SetFloat( spawnArgs.GetFloat( "gravity", va( "%f", DEFAULT_GRAVITY ) ) );
-	////
-	////	// disable stamina on hell levels
-	////	if ( spawnArgs.GetBool( "no_stamina" ) ) {
-	////		pm_stamina.SetFloat( 0.0f );
-	////	}
-	////
-	////	// load script
-	////	scriptname = gameLocal.GetMapName();
-	////	scriptname.SetFileExtension( ".script" );
-	////	if ( fileSystem->ReadFile( scriptname, NULL, NULL ) > 0 ) {
-	////		gameLocal.program.CompileFile( scriptname );
-	////
-	////		// call the main function by default
-	////		func = gameLocal.program.FindFunction( "main" );
-	////		if ( func != NULL ) {
-	////			thread = new idThread( func );
-	////			thread->DelayedStart( 0 );
-	////		}
-	////	}
-	////
-	////	// call any functions specified in worldspawn
-	////	kv = spawnArgs.MatchPrefix( "call" );
-	////	while( kv != NULL ) {
-	////		func = gameLocal.program.FindFunction( kv->GetValue() );
-	////		if ( func == NULL ) {
-	////			gameLocal.Error( "Function '%s' not found in script for '%s' key on worldspawn", kv->GetValue().c_str(), kv->GetKey().c_str() );
-	////		}
-	////
-	////		thread = new idThread( func );
-	////		thread->DelayedStart( 0 );
-	////		kv = spawnArgs.MatchPrefix( "call", kv );
-	////	}
-	////}
-	////
+	
+	/*
+	================
+	idWorldspawn::Spawn
+	================
+	*/
+	Spawn ( ): void {
+		var scriptname = new idStr;
+		var thread: idThread;
+		var func: function_t;
+		var kv: idKeyValue;
+
+		assert( gameLocal.world == null );
+		gameLocal.world = this;
+
+		g_gravity.SetFloat( this.spawnArgs.GetFloat( "gravity", va( "%f", DEFAULT_GRAVITY ) ) );
+
+		// disable stamina on hell levels
+		if ( this.spawnArgs.GetBool( "no_stamina" ) ) {
+			pm_stamina.SetFloat( 0.0 );
+		}
+
+		// load script
+		scriptname.equals( gameLocal.GetMapName ( ) );
+		scriptname.SetFileExtension( ".script" );
+		if ( fileSystem.ReadFile( scriptname.data, null, null ) > 0 ) {
+			gameLocal.program.CompileFile( scriptname.data );
+
+			// call the main function by default
+			func = gameLocal.program.FindFunction( "main" );
+			if ( func != null ) {
+				thread = new idThread( func );
+				thread.DelayedStart( 0 );
+			}
+		}
+
+		// call any functions specified in worldspawn
+		kv = this.spawnArgs.MatchPrefix( "call" );
+		while ( kv != null ) {
+			func = gameLocal.program.FindFunction( kv.GetValue ( ).data );
+			if ( func == null ) {
+				gameLocal.Error( "Function '%s' not found in script for '%s' key on worldspawn", kv.GetValue ( ).c_str ( ), kv.GetKey ( ).c_str ( ) );
+			}
+
+			thread = new idThread( func );
+			thread.DelayedStart( 0 );
+			kv = this.spawnArgs.MatchPrefix( "call", kv );
+		}
+	}
+
 	/////*
 	////=================
 	////idWorldspawn::Save
@@ -140,31 +140,31 @@ class idWorldspawn extends idEntity {
 	////void idWorldspawn::Restore( idRestoreGame *savefile ) {
 	////	assert( gameLocal.world == this );
 	////
-	////	g_gravity.SetFloat( spawnArgs.GetFloat( "gravity", va( "%f", DEFAULT_GRAVITY ) ) );
+	////	g_gravity.SetFloat( this.spawnArgs.GetFloat( "gravity", va( "%f", DEFAULT_GRAVITY ) ) );
 	////
 	////	// disable stamina on hell levels
-	////	if ( spawnArgs.GetBool( "no_stamina" ) ) {
-	////		pm_stamina.SetFloat( 0.0f );
+	////	if ( this.spawnArgs.GetBool( "no_stamina" ) ) {
+	////		pm_stamina.SetFloat( 0.0 );
 	////	}
 	////}
 	////
-	/////*
-	////================
-	////idWorldspawn::~idWorldspawn
-	////================
-	////*/
-	////idWorldspawn::~idWorldspawn() {
-	////	if ( gameLocal.world == this ) {
-	////		gameLocal.world = NULL;
-	////	}
-	////}
-	////
+	/*
+	================
+	idWorldspawn::~idWorldspawn
+	================
+	*/
+	destrcutor ( ): void {
+		if ( gameLocal.world == this ) {
+			gameLocal.world = null;
+		}
+	}
+
 	/////*
 	////================
 	////idWorldspawn::Event_Remove
 	////================
 	////*/
-	////void idWorldspawn::Event_Remove( void ) {
+	////void idWorldspawn::Event_Remove( ) {
 	////	gameLocal.Error( "Tried to remove world" );
 	////}
 }
