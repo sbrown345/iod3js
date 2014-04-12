@@ -416,7 +416,7 @@ Zero( ):void {
 //	max = d1 + d2;
 //}
 
-//ID_INLINE void idBounds::AxisProjection( const idVec3 &origin, const idMat3 &axis, const idVec3 &dir, float &min, float &max ) const {
+//ID_INLINE void idBounds::AxisProjection( origin:idVec3, const idMat3 &axis, const idVec3 &dir, float &min, float &max ) const {
 //	float d1, d2;
 //	idVec3 center, extents;
 
@@ -636,28 +636,28 @@ idBounds::PlaneSide
 //		hit[ax2] >= this.b[0][ax2] && hit[ax2] <= this.b[1][ax2]);
 //}
 
-///*
-//============
-//idBounds::FromTransformedBounds
-//============
-//*/
-//void idBounds::FromTransformedBounds(const idBounds &bounds, const idVec3 &origin, const idMat3 &axis) {
-//	var/*int*/i:number;
-//	idVec3 center, extents, rotatedExtents;
+/*
+============
+idBounds::FromTransformedBounds
+============
+*/
+	FromTransformedBounds ( bounds: idBounds, origin: idVec3, axis: idMat3 ): void {
+		var /*int*/i: number;
+		var center = new idVec3, extents = new idVec3, rotatedExtents = new idVec3;
 
-//	center = (bounds[0] + bounds[1]) * 0.5;
-//	extents = bounds[1] - center;
+		center.equals( ( bounds[0].opAddition( bounds[1] ) ).timesFloat( 0.5 ) );
+		extents.equals( bounds[1].opSubtraction( center ) );
 
-//	for (i = 0; i < 3; i++) {
-//		rotatedExtents[i] = idMath.Fabs(extents[0] * axis[0][i]) +
-//			idMath.Fabs(extents[1] * axis[1][i]) +
-//			idMath.Fabs(extents[2] * axis[2][i]);
-//	}
+		for ( i = 0; i < 3; i++ ) {
+			rotatedExtents[i] = idMath.Fabs( extents[0] * axis[0][i] ) +
+				idMath.Fabs( extents[1] * axis[1][i] ) +
+				idMath.Fabs( extents[2] * axis[2][i] );
+		}
 
-//	center = origin + center * axis;
-//	this.b[0] = center - rotatedExtents;
-//	this.b[1] = center + rotatedExtents;
-//}
+		center.equals( origin.opAddition( idMat3.opMultiplication_VecMat( center, axis ) ) );
+		this.b[0].equals( center.opSubtraction( rotatedExtents ) );
+		this.b[1].equals( center.opAddition( rotatedExtents ) );
+	}
 
 ///*
 //============
@@ -699,7 +699,7 @@ idBounds::PlaneSide
 //Most tight bounds for the translational movement of the given bounds.
 //============
 //*/
-//void idBounds::FromBoundsTranslation(const idBounds &bounds, const idVec3 &origin, const idMat3 &axis, const idVec3 &translation) {
+//void idBounds::FromBoundsTranslation(bounds:idBounds, const idVec3 &origin, const idMat3 &axis, const idVec3 &translation) {
 //	var/*int*/i:number;
 
 //	if (axis.IsRotated()) {
@@ -795,7 +795,7 @@ idBounds::PlaneSide
 //Most tight bounds for the rotational movement of the given bounds.
 //============
 //*/
-//void idBounds::FromBoundsRotation(const idBounds &bounds, const idVec3 &origin, const idMat3 &axis, const idRotation &rotation) {
+//void idBounds::FromBoundsRotation(bounds:idBounds, const idVec3 &origin, const idMat3 &axis, const idRotation &rotation) {
 //	var/*int*/i:number;
 //	float radius;
 //	idVec3 point;

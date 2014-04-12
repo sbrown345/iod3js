@@ -57,7 +57,7 @@ class idRenderModelStatic extends idRenderModel {
 //	InitFromFile( fileName:string ): void { throw "placeholder"; }
 //	PartialInitFromFile( fileName:string ): void { throw "placeholder"; }
 //	PurgeModel(): void { throw "placeholder"; }
-//	Reset(): void { throw "placeholder"; }
+	Reset ( ): void {}
 //	LoadModel(): void { throw "placeholder"; }
 //	IsLoaded(): boolean { throw "placeholder"; }
 //	SetLevelLoadReferenced( referenced:boolean ): void { throw "placeholder"; }

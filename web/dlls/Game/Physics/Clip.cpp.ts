@@ -77,7 +77,7 @@ class trmCache_t {
 	inertiaTensor = new idMat3;
 }
 
-////idVec3 vec3_boxEpsilon( CM_BOX_EPSILON, CM_BOX_EPSILON, CM_BOX_EPSILON );
+var vec3_boxEpsilon = new idVec3( CM_BOX_EPSILON, CM_BOX_EPSILON, CM_BOX_EPSILON );
 
 var clipLinkAllocator = idBlockAlloc_template<clipLink_t>( clipLink_t, 1024 );
 
@@ -781,37 +781,37 @@ idClipModel::Unlink
 		}
 	}
 
-/////*
-////===============
-////idClipModel::Link_r
-////===============
-////*/
-////void idClipModel::Link_r( struct clipSector_s *node ) {
-////	clipLink_t *link;
-////
-////	while( node.this.axis != -1 ) {
-////		if ( this.absBounds[0][node.axis] > node.dist ) {
-////			node = node.children[0];
-////		} else if ( this.absBounds[1][node.axis] < node.dist ) {
-////			node = node.children[1];
-////		} else {
-////			Link_r( node.children[0] );
-////			node = node.children[1];
-////		}
-////	}
-////
-////	link = clipLinkAllocator.Alloc();
-////	link.clipModel = this;
-////	link.sector = node;
-////	link.nextInSector = node.clipLinks;
-////	link.prevInSector = NULL;
-////	if ( node.clipLinks ) {
-////		node.clipLinks.prevInSector = link;
-////	}
-////	node.clipLinks = link;
-////	link.nextLink = this.clipLinks;
-////	this.clipLinks = link;
-////}
+/*
+===============
+idClipModel::Link_r
+===============
+*/
+	Link_r ( node: clipSector_t ): void {
+		var link: clipLink_t;
+
+		while ( node.axis != -1 ) {
+			if ( this.absBounds[0][node.axis] > node.dist ) {
+				node = node.children[0];
+			} else if ( this.absBounds[1][node.axis] < node.dist ) {
+				node = node.children[1];
+			} else {
+				this.Link_r( node.children[0] );
+				node = node.children[1];
+			}
+		}
+
+		link = clipLinkAllocator.Alloc ( );
+		link.clipModel = this;
+		link.sector = node;
+		link.nextInSector = node.clipLinks;
+		link.prevInSector = null;
+		if ( node.clipLinks ) {
+			node.clipLinks.prevInSector = link;
+		}
+		node.clipLinks = link;
+		link.nextLink = this.clipLinks;
+		this.clipLinks = link;
+	}
 
 /*
 ===============
@@ -832,23 +832,23 @@ idClipModel::Link
 		if ( this.bounds.IsCleared ( ) ) {
 			return;
 		}
-		todoThrow ( );
-		//// set the abs box
-		//if ( this.axis.IsRotated() ) {
-		//	// expand for rotation
-		//	this.absBounds.FromTransformedBounds( this.bounds, this.origin, this.axis );
-		//} else {
-		//	// normal
-		//	this.absBounds[0] = this.bounds[0] + this.origin;
-		//	this.absBounds[1] = this.bounds[1] + this.origin;
-		//}
 
-		//// because movement is clipped an epsilon away from an actual edge,
-		//// we must fully check even when bounding boxes don't quite touch
-		//this.absBounds[0] -= vec3_boxEpsilon;
-		//this.absBounds[1] += vec3_boxEpsilon;
+		// set the abs box
+		if ( this.axis.IsRotated ( ) ) {
+			// expand for rotation
+			this.absBounds.FromTransformedBounds( this.bounds, this.origin, this.axis );
+		} else {
+			// normal
+			this.absBounds[0].equals( this.bounds[0].opAddition( this.origin ) );
+			this.absBounds[1].equals( this.bounds[1].opAddition( this.origin ) );
+		}
 
-		//Link_r( clp.clipSectors );
+		// because movement is clipped an epsilon away from an actual edge,
+		// we must fully check even when bounding boxes don't quite touch
+		this.absBounds[0].opSubtractionAssignment( vec3_boxEpsilon );
+		this.absBounds[1].opAdditionAssignment( vec3_boxEpsilon );
+
+		this.Link_r( clp.clipSectors[0] );
 	}
 
 /*

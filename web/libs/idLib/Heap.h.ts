@@ -255,11 +255,23 @@ class idBlockAlloc<T> {
 
 //template<class type, int blockSize>
 	Free ( t: T ): void {
-		todoThrow ( );
-		//var element = (element_t *)( ( (unsigned char *) t ) - ( (int) &((element_t *)0).t ) );
-		//element.next = free;
-		//this.free = element;
-		//this.active--;
+		todo( "check" );
+		var element: element_t<T>;
+		// find the previous element
+		//element_t *element = (element_t *)( ( (unsigned char *) t ) - ( (int) &((element_t *)0)->t ) );
+		outer:
+			for ( var block = this.blocks; block; block = block.next ) {
+				for ( var i = 0; i < this.blockSize; i++ ) {
+					if ( block.elements[i].t == t ) {
+						element = block.elements[i - 1];
+						break outer;
+					}
+				}
+			}
+
+		element.next = this.free;
+		this.free = element;
+		this.active--;
 	}
 
 ////template<class type, int blockSize>
@@ -268,7 +280,6 @@ class idBlockAlloc<T> {
 			var block = this.blocks;
 			this.blocks = this.blocks.next;
 			$delete( block );
-			delete block;
 		}
 		this.blocks = null;
 		this.free = null;
