@@ -66,7 +66,7 @@ class idPhysics_Base extends idPhysics {
 	//
 	//public:	// common physics interface
 	//
-	//	void					SetSelf(idEntity *e);
+	SetSelf ( e: idEntity ): void { throw "placeholder"; }
 	//
 	//	void					SetClipModel(idClipModel *model, float density, /*int*/ id:number = 0, bool freeOld = true);
 	//	idClipModel *			GetClipModel(/*int*/ id:number = 0) const;

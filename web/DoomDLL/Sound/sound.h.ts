@@ -116,7 +116,7 @@ class idSoundEmitter {
 ////
 ////	// pass SCHANNEL_ANY to effect all channels
 ////	virtual void			ModifySound( const s_channelType channel, const soundShaderParms_t *parms ) = 0;
-////	virtual void			StopSound( const s_channelType channel ) = 0;
+	StopSound ( /*s_channelType */channel: number ): void { throw "placeholder"; }
 ////	// to is in Db (sigh), over is in seconds
 ////	virtual void			FadeSound( const s_channelType channel, float to, float over ) = 0;
 ////

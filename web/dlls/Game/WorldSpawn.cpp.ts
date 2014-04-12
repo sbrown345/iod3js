@@ -61,7 +61,7 @@ class idWorldspawn extends idEntity {
 	////	void			Restore(idRestoreGame *savefile);
 	////
 	////private:
-	Event_Remove(): void { throw "placeholder"; }
+	//Event_Remove(): void { throw "placeholder"; }
 	////};
 	////
 	////#endif /* !__GAME_WORLDSPAWN_H__ */
@@ -124,30 +124,31 @@ class idWorldspawn extends idEntity {
 		}
 	}
 
-	/////*
-	////=================
-	////idWorldspawn::Save
-	////=================
-	////*/
-	////void idWorldspawn::Save( idRestoreGame *savefile ) {
-	////}
-	////
-	/////*
-	////=================
-	////idWorldspawn::Restore
-	////=================
-	////*/
-	////void idWorldspawn::Restore( idRestoreGame *savefile ) {
-	////	assert( gameLocal.world == this );
-	////
-	////	g_gravity.SetFloat( this.spawnArgs.GetFloat( "gravity", va( "%f", DEFAULT_GRAVITY ) ) );
-	////
-	////	// disable stamina on hell levels
-	////	if ( this.spawnArgs.GetBool( "no_stamina" ) ) {
-	////		pm_stamina.SetFloat( 0.0 );
-	////	}
-	////}
-	////
+	/*
+	=================
+	idWorldspawn::Save
+	=================
+	*/
+	Save ( savefile: idRestoreGame ): void {
+	}
+
+	/*
+	=================
+	idWorldspawn::Restore
+	=================
+	*/
+	Restore(savefile: idRestoreGame ): void {
+		todoThrow ( );
+		//assert( gameLocal.world == this );
+
+		//g_gravity.SetFloat( this.spawnArgs.GetFloat( "gravity", va( "%f", DEFAULT_GRAVITY ) ) );
+
+		//// disable stamina on hell levels
+		//if ( this.spawnArgs.GetBool( "no_stamina" ) ) {
+		//	pm_stamina.SetFloat( 0.0 );
+		//}
+	}
+	
 	/*
 	================
 	idWorldspawn::~idWorldspawn
@@ -159,14 +160,14 @@ class idWorldspawn extends idEntity {
 		}
 	}
 
-	/////*
-	////================
-	////idWorldspawn::Event_Remove
-	////================
-	////*/
-	////void idWorldspawn::Event_Remove( ) {
-	////	gameLocal.Error( "Tried to remove world" );
-	////}
+	/*
+	================
+	idWorldspawn::Event_Remove
+	================
+	*/
+	Event_Remove ( ): void {
+		gameLocal.Error( "Tried to remove world" );
+	}
 }
 
 

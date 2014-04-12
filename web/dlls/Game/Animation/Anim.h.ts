@@ -544,7 +544,7 @@ class idAnimator {
 	//idAnimator::idAnimator() {
 	//	int	i, j;
 	//
-	//	modelDef				= NULL;
+	//	this.modelDef				= NULL;
 	//	entity					= NULL;
 	//	numJoints				= 0;
 	//	joints					= NULL;
@@ -601,7 +601,7 @@ class idAnimator {
 	//	var/*int*/i:number;
 	//	int j;
 	//
-	//	savefile.WriteModelDef( modelDef );
+	//	savefile.WriteModelDef( this.modelDef );
 	//	savefile.WriteObject( entity );
 	//
 	//	savefile.WriteInt( jointMods.Num() );
@@ -673,7 +673,7 @@ class idAnimator {
 	//	int j;
 	//	/*int*/num:number;
 	//
-	//	savefile.ReadModelDef( modelDef );
+	//	savefile.ReadModelDef( this.modelDef );
 	//	savefile.ReadObject( reinterpret_cast<idClass *&>( entity ) );
 	//
 	//	savefile.ReadInt( num );
@@ -737,7 +737,7 @@ class idAnimator {
 	//
 	//	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
 	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
-	//			channels[ i ][ j ].Restore( savefile, modelDef );
+	//			channels[ i ][ j ].Restore( savefile, this.modelDef );
 	//		}
 	//	}
 	//}
@@ -766,7 +766,7 @@ class idAnimator {
 	//	joints = NULL;
 	//	numJoints = 0;
 	//
-	//	modelDef = NULL;
+	//	this.modelDef = NULL;
 	//
 	//	ForceUpdate();
 	//}
@@ -789,7 +789,7 @@ class idAnimator {
 	//		channel[ i ] = channel[ i - 1 ];
 	//	}
 	//
-	//	channel[ 0 ].Reset( modelDef );
+	//	channel[ 0 ].Reset( this.modelDef );
 	//	channel[ 1 ].Clear( currentTime, blendTime );
 	//	ForceUpdate();
 	//}
@@ -809,31 +809,31 @@ class idAnimator {
 	//		return NULL;
 	//	}
 	//
-	//	modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, modelname, false ) );
-	//	if ( !modelDef ) {
+	//	this.modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, modelname, false ) );
+	//	if ( !this.modelDef ) {
 	//		return NULL;
 	//	}
 	//	
-	//	idRenderModel *renderModel = modelDef.ModelHandle();
+	//	idRenderModel *renderModel = this.modelDef.ModelHandle();
 	//	if ( !renderModel ) {
-	//		modelDef = NULL;
+	//		this.modelDef = NULL;
 	//		return NULL;
 	//	}
 	//
 	//	// make sure model hasn't been purged
-	//	modelDef.Touch();
+	//	this.modelDef.Touch();
 	//
-	//	modelDef.SetupJoints( &numJoints, &joints, frameBounds, removeOriginOffset );
-	//	modelDef.ModelHandle().Reset();
+	//	this.modelDef.SetupJoints( &numJoints, &joints, frameBounds, removeOriginOffset );
+	//	this.modelDef.ModelHandle().Reset();
 	//
-	//	// set the modelDef on all channels
+	//	// set the this.modelDef on all channels
 	//	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
 	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
-	//			channels[ i ][ j ].Reset( modelDef );
+	//			channels[ i ][ j ].Reset( this.modelDef );
 	//		}
 	//	}
 	//
-	//	return modelDef.ModelHandle();
+	//	return this.modelDef.ModelHandle();
 	//}
 	//
 	///*
@@ -887,8 +887,8 @@ class idAnimator {
 	//=====================
 	//*/
 	//void idAnimator::GetJointList( jointnames:string, idList<jointHandle_t> &jointList ) const {
-	//	if ( modelDef ) {
-	//		modelDef.GetJointList( jointnames, jointList );
+	//	if ( this.modelDef ) {
+	//		this.modelDef.GetJointList( jointnames, jointList );
 	//	}
 	//}
 	//
@@ -898,38 +898,38 @@ class idAnimator {
 	//=====================
 	//*/
 	//int	idAnimator::NumAnims( ) const {
-	//	if ( !modelDef ) {
+	//	if ( !this.modelDef ) {
 	//		return 0;
 	//	}
 	//	
-	//	return modelDef.NumAnims();
+	//	return this.modelDef.NumAnims();
 	//}
 	//
-	///*
+	/*
 	//=====================
 	//idAnimator::GetAnim
 	//=====================
 	//*/
-	//const idAnim *idAnimator::GetAnim( int index ) const {
-	//	if ( !modelDef ) {
+	//const idAnim *idAnimator::GetAnim_int( int index ) const {
+	//	if ( !this.modelDef ) {
 	//		return NULL;
 	//	}
-	//	
-	//	return modelDef.GetAnim( index );
+		
+	//	return this.modelDef.GetAnim( index );
 	//}
-	//
-	///*
-	//=====================
-	//idAnimator::GetAnim
-	//=====================
-	//*/
-	//int idAnimator::GetAnim( name:string ) const {
-	//	if ( !modelDef ) {
-	//		return 0;
-	//	}
-	//	
-	//	return modelDef.GetAnim( name );
-	//}
+	
+	/*
+	=====================
+	idAnimator::GetAnim
+	=====================
+	*/
+	GetAnim_str( name:string ) :number {
+		if ( !this.modelDef ) {
+			return 0;
+		}
+		
+		return this.modelDef.GetAnim( name );
+	}
 	//
 	///*
 	//=====================
@@ -937,11 +937,11 @@ class idAnimator {
 	//=====================
 	//*/
 	//bool idAnimator::HasAnim( name:string ) const {
-	//	if ( !modelDef ) {
+	//	if ( !this.modelDef ) {
 	//		return false;
 	//	}
 	//	
-	//	return modelDef.HasAnim( name );
+	//	return this.modelDef.HasAnim( name );
 	//}
 	//
 	///*

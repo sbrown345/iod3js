@@ -52,7 +52,7 @@
 ////	idAFBody *				touchedByBody;
 ////} afTouch_t;
 ////
-////class idAF {
+class idAF {
 ////public:
 ////							idAF( void );
 ////							~idAF( void );
@@ -115,6 +115,6 @@
 ////	bool					LoadConstraint( const idDeclAF_Constraint *fc );
 ////
 ////	bool					TestSolid( void ) const;
-////};
+};
 ////
 ////#endif /* !__GAME_AF_H__ */

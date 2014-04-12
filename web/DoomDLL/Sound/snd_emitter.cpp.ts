@@ -415,30 +415,30 @@ class idSoundEmitterLocal extends idSoundEmitter {
 ////	void				CheckForCompletion( int current44kHzTime );
 ////	void				Spatialize( idVec3 listenerPos, int listenerArea, idRenderWorld *rw );
 
-	soundWorld: idSoundWorldLocal;				// the world that holds this emitter
+	soundWorld: idSoundWorldLocal; // the world that holds this emitter
 
-		index:number/*int*/;						// in world emitter list
+	index: number /*int*/; // in world emitter list
 	removeStatus: removeStatus_t;
 
 	origin = new idVec3;
-	listenerId:number/*int*/;		
-	parms = new soundShaderParms_t;						// default overrides for all channels
+	listenerId: number /*int*/;
+	parms = new soundShaderParms_t; // default overrides for all channels
 
 
 	// the following are calculated in UpdateEmitter, and don't need to be archived
-	maxDistance:number/*float*/;				// greatest of all playing channel distances
-	lastValidPortalArea:number/*int*/;		// so an emitter that slides out of the world continues playing
-	playing:boolean;					// if false, no channel is active
-	hasShakes:boolean;
-	spatializedOrigin = new idVec3;			// the virtual sound origin, either the real sound origin,
-								// or a point through a portal chain
-	realDistance:number/*float*/;				// in meters
-	distance:number/*float*/;					// in meters, this may be the straight-line distance, or
-								// it may go through a chain of portals.  If there
-								// is not an open-portal path, distance will be > maxDistance
-	
+	maxDistance: number /*float*/; // greatest of all playing channel distances
+	lastValidPortalArea: number /*int*/; // so an emitter that slides out of the world continues playing
+	playing: boolean; // if false, no channel is active
+	hasShakes: boolean;
+	spatializedOrigin = new idVec3; // the virtual sound origin, either the real sound origin,
+	// or a point through a portal chain
+	realDistance: number /*float*/; // in meters
+	distance: number /*float*/; // in meters, this may be the straight-line distance, or
+	// it may go through a chain of portals.  If there
+	// is not an open-portal path, distance will be > maxDistance
+
 	// a single soundEmitter can have many channels playing from the same point
-	channels = newStructArray<idSoundChannel>(idSoundChannel,SOUND_MAX_CHANNELS);
+	channels = newStructArray<idSoundChannel>( idSoundChannel, SOUND_MAX_CHANNELS );
 ////
 ////	idSlowChannel		slowChannels[SOUND_MAX_CHANNELS];
 ////
@@ -450,8 +450,8 @@ class idSoundEmitterLocal extends idSoundEmitter {
 ////	// flashing lights and screen shakes.  Because the material expression
 ////	// evaluation doesn't do common subexpression removal, we cache the
 ////	// last generated value
-	ampTime:number/*int*/;
-	amplitude:number/*float*/;
+	ampTime: number /*int*/;
+	amplitude: number /*float*/;
 /////*
 ////===============
 ////idSoundEmitterLocal::idSoundEmitterLocal
@@ -985,7 +985,6 @@ idSoundEmitterLocal::Clear
 ////
 ////	return length;
 ////}
-}
 /////*
 ////===================
 ////idSoundEmitterLocal::ModifySound
@@ -1029,15 +1028,16 @@ idSoundEmitterLocal::Clear
 ////	}
 ////}
 ////
-/////*
-////===================
-////idSoundEmitterLocal::StopSound
-////
-////can pass SCHANNEL_ANY
-////===================
-////*/
-////void idSoundEmitterLocal::StopSound( const s_channelType channel ) {
-////	var/*int*/i:number;
+/*
+===================
+idSoundEmitterLocal::StopSound
+
+can pass SCHANNEL_ANY
+===================
+*/
+	StopSound ( /*const s_channelType */channel: number ): void {
+		todoThrow ( );
+		var /*int*/i: number;
 ////
 ////	if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
 ////		common.Printf( "StopSound(%i,%i)\n", index, channel );
@@ -1078,7 +1078,7 @@ idSoundEmitterLocal::Clear
 ////	}
 ////
 ////	Sys_LeaveCriticalSection();
-////}
+	}
 ////
 /////*
 ////===================
@@ -1214,7 +1214,7 @@ idSoundEmitterLocal::Clear
 ////	int index = chan - this.channels;
 ////	slowChannels[index].Reset();
 ////}
-////
+}
 /////*
 ////===================
 ////idSlowChannel::Reset

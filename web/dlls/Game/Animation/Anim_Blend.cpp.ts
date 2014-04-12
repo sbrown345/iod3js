@@ -2882,47 +2882,49 @@ idDeclModelDef::GetDefaultSkin
 //	
 //	return anims[ index - 1 ];
 //}
-//
-///*
-//=====================
-//idDeclModelDef::GetAnim
-//=====================
-//*/
-//int idDeclModelDef::GetAnim( name:string ) const {
-//	int				i;
-//	int				which;
-//	const int		MAX_ANIMS = 64;
-//	int				animList[ MAX_ANIMS ];
-//	int				numAnims;
-//	int				len;
-//
-//	len = strlen( name );
-//	if ( len && idStr::CharIsNumeric( name[ len - 1 ] ) ) {
-//		// find a specific animation
-//		return GetSpecificAnim( name );
-//	}
-//
-//	// find all animations with same name
-//	numAnims = 0;
-//	for( i = 0; i < anims.Num(); i++ ) {
-//		if ( !strcmp( anims[ i ].Name(), name ) ) {
-//			animList[ numAnims++ ] = i;
-//			if ( numAnims >= MAX_ANIMS ) {
-//				break;
-//			}
-//		}
-//	}
-//
-//	if ( !numAnims ) {
-//		return 0;
-//	}
-//
-//	// get a random anim
-//	//FIXME: don't access gameLocal here?
-//	which = gameLocal.random.RandomInt( numAnims );
-//	return animList[ which ] + 1;
-//}
-//
+
+/*
+=====================
+idDeclModelDef::GetAnim
+=====================
+*/
+	GetAnim(name: string ) :number{
+	todoThrow();
+		return 99999999999;
+		//int				i;
+		//int				which;
+		//const int		MAX_ANIMS = 64;
+		//int				animList[ MAX_ANIMS ];
+		//int				numAnims;
+		//int				len;
+
+		//len = strlen( name );
+		//if ( len && idStr::CharIsNumeric( name[ len - 1 ] ) ) {
+		//	// find a specific animation
+		//	return GetSpecificAnim( name );
+		//}
+
+		//// find all animations with same name
+		//numAnims = 0;
+		//for( i = 0; i < anims.Num(); i++ ) {
+		//	if ( !strcmp( anims[ i ].Name(), name ) ) {
+		//		animList[ numAnims++ ] = i;
+		//		if ( numAnims >= MAX_ANIMS ) {
+		//			break;
+		//		}
+		//	}
+		//}
+
+		//if ( !numAnims ) {
+		//	return 0;
+		//}
+
+		//// get a random anim
+		////FIXME: don't access gameLocal here?
+		//which = gameLocal.random.RandomInt( numAnims );
+		//return animList[ which ] + 1;
+	}
+
 ///*
 //=====================
 //idDeclModelDef::GetSkin

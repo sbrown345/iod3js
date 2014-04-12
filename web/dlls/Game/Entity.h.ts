@@ -1752,31 +1752,32 @@ idEntity::StartSoundShader
 		return true;
 	}
 
-/////*
-////================
-////idEntity::StopSound
-////================
-////*/
-////StopSound( const s_channelType channel, bool broadcast ) {
-////	if ( !gameLocal.isNewFrame ) {
-////		return;
-////	}
-////
-////	if ( gameLocal.isServer && broadcast ) {
-////		idBitMsg	msg;
-////		byte		msgBuf[MAX_EVENT_PARAM_SIZE];
-////
-////		msg.Init( msgBuf, sizeof( msgBuf ) );
-////		msg.BeginWriting();
-////		msg.WriteByte( channel );
-////		ServerSendEvent( EVENT_STOPSOUNDSHADER, &msg, false, -1 );
-////	}
-////
-////	if ( this.refSound.referenceSound ) {
-////		this.refSound.referenceSound.StopSound( channel );
-////	}
-////}
-////
+/*
+================
+idEntity::StopSound
+================
+*/
+	StopSound ( /*const s_channelType */channel: number, broadcast: boolean ): void {
+		if ( !gameLocal.isNewFrame ) {
+			return;
+		}
+
+		if ( gameLocal.isServer && broadcast ) {
+			todoThrow ( );
+			//idBitMsg	msg;
+			//byte		msgBuf[MAX_EVENT_PARAM_SIZE];
+
+			//msg.Init( msgBuf, sizeof( msgBuf ) );
+			//msg.BeginWriting();
+			//msg.WriteByte( channel );
+			//ServerSendEvent( EVENT_STOPSOUNDSHADER, &msg, false, -1 );
+		}
+
+		if ( this.refSound.referenceSound ) {
+			this.refSound.referenceSound.StopSound( channel );
+		}
+	}
+
 /*
 ================
 idEntity::SetSoundVolume
@@ -4990,24 +4991,24 @@ idEntity::Event_FindTargets
 ////
 };
 
-////
-/////*
-////===============================================================================
-////
-////	Animated entity base class.
-////
-////===============================================================================
-////*/
-////
-////typedef struct damageEffect_s {
-////	jointHandle_t			jointNum;
-////	idVec3					localOrigin;
-////	idVec3					localNormal;
-////	int						time;
-////	const idDeclParticle*	type;
-////	struct damageEffect_s *	next;
-////} damageEffect_t;
-////
+
+/*
+===============================================================================
+
+	Animated entity base class.
+
+===============================================================================
+*/
+
+class damageEffect_t {
+	//jointHandle_t			jointNum;
+	//idVec3					localOrigin;
+	//idVec3					localNormal;
+	//int						time;
+	//const idDeclParticle*	type;
+	//struct damageEffect_s *	next;
+};
+
 class idAnimatedEntity extends idEntity {
 ////public:
 ////	CLASS_PROTOTYPE( idAnimatedEntity );
@@ -5046,8 +5047,8 @@ class idAnimatedEntity extends idEntity {
 ////	};
 ////
 ////protected:
-////	idAnimator				animator;
-////	damageEffect_t *		damageEffects;
+	animator = new idAnimator;
+	damageEffects:damageEffect_t;
 ////
 //private:
 	Event_GetJointHandle( jointname:string ): void { throw "placeholder"; }

@@ -376,7 +376,7 @@ class idGameEdit {
 			}
 		}
 
-		renderEntity.referenceSound = NULL;
+		renderEntity.referenceSound = null;
 
 		// get shader parms
 		args.GetVector_R( "_color", "1 1 1", color );

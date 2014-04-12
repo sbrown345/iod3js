@@ -2359,7 +2359,7 @@ set to their apropriate values.
 ===============
 */
 	EvaluateRegisters ( /*float **/registers: Float32Array, /*const float */shaderParms: Float32Array /*[MAX_ENTITY_SHADER_PARMS]*/,
-		view: viewDef_t, soundEmitter: idSoundEmitter ): void {
+		view: viewDef_t, soundEmitter: idSoundEmitter = null): void {
 		var /*int		*/i: number, b: number;
 		var op: expOp_t;
 
@@ -2579,7 +2579,7 @@ CheckForConstantRegisters():void {
 	memset( shaderParms, 0, sizeof( shaderParms ) );
 	var viewDef = new viewDef_t;
 
-	this.EvaluateRegisters( this.constantRegisters, shaderParms, /*&*/viewDef, 0 );
+	this.EvaluateRegisters( this.constantRegisters, shaderParms, /*&*/viewDef, null/*0*/ );
 }
 
 /////*
