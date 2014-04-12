@@ -56,13 +56,13 @@
 function DEG2RAD ( a: number ) { return a * idMath.M_DEG2RAD; }
 function RAD2DEG ( a: number ) { return a * idMath.M_RAD2DEG; }
 
-////#define SEC2MS(t)				( idMath::FtoiFast( (t) * idMath::M_SEC2MS ) )
+////#define SEC2MS(t)				( idMath.FtoiFast( (t) * idMath.M_SEC2MS ) )
 ////#define MS2SEC(t)				( (t) * idMath::M_MS2SEC )
 
-////#define	ANGLE2SHORT(x)			( idMath::FtoiFast( (x) * 65536.0 / 360.0 ) & 65535 )
+////#define	ANGLE2SHORT(x)			( idMath.FtoiFast( (x) * 65536.0 / 360.0 ) & 65535 )
 ////#define	SHORT2ANGLE(x)			( (x) * ( 360.0 / 65536.0 ) )
 
-////#define	ANGLE2BYTE(x)			( idMath::FtoiFast( (x) * 256.0 / 360.0 ) & 255 )
+////#define	ANGLE2BYTE(x)			( idMath.FtoiFast( (x) * 256.0 / 360.0 ) & 255 )
 ////#define	BYTE2ANGLE(x)			( (x) * ( 360.0 / 256.0 ) )
 
 
@@ -77,7 +77,7 @@ function float2uint(v: number): number {
 ////#define FLOATSIGNBITNOTSET(f)	((~(*(const unsigned long *)&(f))) >> 31)
 ////#define FLOATNOTZERO(f)			((*(const unsigned long *)&(f)) & ~(1<<31) )
 function INTSIGNBITSET ( i: number ): number { return i >>> 31; } ///	(((const unsigned long)(i)) >> 31)
-function INTSIGNBITNOTSET(i:number):number	{throw "convert this";}
+function INTSIGNBITNOTSET ( i: number ): number { return ( ~( /*(const unsigned long)*/( i ) ) ) >>> 31; }
 
 ////#define	FLOAT_IS_NAN(x)			(((*(const unsigned long *)&x) & 0x7f800000) == 0x7f800000)
 ////#define FLOAT_IS_INF(x)			(((*(const unsigned long *)&x) & 0x7fffffff) == 0x7f800000)

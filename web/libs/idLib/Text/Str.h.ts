@@ -116,7 +116,7 @@ var S_COLOR_BLACK				="^9";
 class idStr implements ITrackedObject {
 	refAddress: number;
 	trackObject(): void {
-		//objectTracker.addObject(this);
+		// it is added manually because not every string needs to be tracked
 	}
 
 	destructor(): void {

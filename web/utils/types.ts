@@ -82,13 +82,19 @@ function long ( v: number ): number {
 	return Math.floor( v );
 }
 
-function int ( v: number ): number {
+function int ( v: boolean ): number
+function int ( v: number ): number
+function int ( v: any ): number {
 	return v | 0;
 }
 
 var uint32 = function (v: number): number {
     return v >>> 0;
 };
+
+function bool ( v: number ) {
+	return !!v;
+}
 
 var reinterpret_cast_float_to_int_floatArray = new Float32Array(1);
 var reinterpret_cast_float_to_int_intArray = new Int32Array(reinterpret_cast_float_to_int_floatArray.buffer );

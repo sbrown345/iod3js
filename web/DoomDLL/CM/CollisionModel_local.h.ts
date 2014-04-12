@@ -81,10 +81,24 @@ Collision model
 
 class cm_vertex_t {
 	static size = 24;
-	p = new idVec3;					// vertex point
-	checkcount:number/*int*/;			// for multi-check avoidance
-	side:number/*unsigned long*/;				// each bit tells at which side this vertex passes one of the trace model edges
-	sideSet: number/*unsigned long*/;			// each bit tells if sidedness for the trace model edge has been calculated yet
+	p = new idVec3; // vertex point
+	checkcount: number /*int*/; // for multi-check avoidance
+	side: number /*unsigned long*/; // each bit tells at which side this vertex passes one of the trace model edges
+	sideSet: number /*unsigned long*/; // each bit tells if sidedness for the trace model edge has been calculated yet
+
+	memset0 ( ): void {
+		this.p.memset0 ( );
+		this.checkcount = this.side = this.sideSet = 0;
+	}
+
+	copy ( dest: cm_vertex_t = null ): cm_vertex_t {
+		dest = dest || new cm_vertex_t;
+		dest.p.equals( this.p );
+		dest.checkcount = this.checkcount;
+		dest.side = this.side;
+		dest.sideSet = this.sideSet;
+		return dest;
+	}
 }
 
 
@@ -97,6 +111,25 @@ class cm_edge_t {
 	sideSet: number /*unsigned long*/; // each bit tells if sidedness for the trace model vertex has been calculated yet
 	vertexNum = new Int32Array( 2 ); // start and end point of edge
 	normal = new idVec3; // edge normal
+
+	memset0 ( ): void {
+		this.checkcount = this.internal = this.numUsers = this.side = this.sideSet = 0;
+		this.vertexNum[0] = this.vertexNum[1] = 0;
+		this.normal.memset0 ( );
+	}
+
+	copy(dest: cm_edge_t = null): cm_edge_t {
+		dest = dest || new cm_edge_t;
+		dest.checkcount = this.checkcount;
+		dest.internal = this.internal;
+		dest.numUsers = this.numUsers;
+		dest.side = this.side;
+		dest.sideSet = this.sideSet;
+		dest.vertexNum[0] = this.vertexNum[0];
+		dest.vertexNum[1] = this.vertexNum[1];
+		dest.normal.equals( this.normal );
+		return dest;
+	}
 }
 
 class cm_polygonBlock_t {
@@ -142,6 +175,18 @@ class cm_polygon_t{
 		this.plane.memset0();
 		this.numEdges = 0;
 		memset( this.edges, 0, sizeof( this.edges ) );
+	}
+
+	copy ( dest: cm_polygon_t = null ): cm_polygon_t {
+		dest = dest || new cm_polygon_t;
+		dest.bounds.opEquals( this.bounds );
+		dest.checkcount = this.checkcount;
+		dest.contents = this.contents;
+		dest.material = this.material;
+		dest.plane.opEquals( this.plane );
+		dest.numEdges = this.numEdges;
+		dest.edges[0] = this.edges[0]; // the whole array is copied manually after
+		return dest;
 	}
 }
 
@@ -232,11 +277,11 @@ class cm_node_t {
 	static size = 28;
 	planeType: number /*int*/; // node axial plane type
 	//planeDist: number /*float*/; // node plane distance
-	_planeDist = new Float32Array(1);
+	_planeDist = new Float32Array( 1 );
 	polygons: cm_polygonRef_t; // polygons in node
 	brushes: cm_brushRef_t; // brushes in node
 	parent: cm_node_t; // parent of this nodecm_nodeBlock_t
-	children = new Array<cm_node_t>(2); // node children
+	children = new Array<cm_node_t>( 2 ); // node children
 
 	get planeDist ( ): number { return this._planeDist[0]; }
 
@@ -245,6 +290,15 @@ class cm_node_t {
 			throw 'Undefined value';
 		}
 		this._planeDist[0] = value;
+	}
+
+	memset0 ( ): void {
+		this.planeType = 0;
+		this.planeDist = 0.0;
+		this.polygons = null;
+		this.polygons = null;
+		this.parent = null;
+		this.children[0] = this.children[1] = null;
 	}
 }
 
@@ -873,17 +927,17 @@ idCollisionModelManagerLocal::Clear
 ////	// don't free the node here
 ////	// the nodes are allocated in blocks which are freed when the model is freed
 ////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::FreePolygonReference
-////================
-////*/
-////void idCollisionModelManagerLocal::FreePolygonReference( pref: cm_polygonRef_t ) {
-////	// don't free the polygon reference here
-////	// the polygon references are allocated in blocks which are freed when the model is freed
-////}
-////
+
+/*
+================
+idCollisionModelManagerLocal::FreePolygonReference
+================
+*/
+	FreePolygonReference ( pref: cm_polygonRef_t ): void {
+		// don't free the polygon reference here
+		// the polygon references are allocated in blocks which are freed when the model is freed
+	}
+
 /////*
 ////================
 ////idCollisionModelManagerLocal::FreeBrushReference
@@ -893,20 +947,20 @@ idCollisionModelManagerLocal::Clear
 ////	// don't free the brush reference here
 ////	// the brush references are allocated in blocks which are freed when the model is freed
 ////}
-////
-/////*
-////================
-////idCollisionModelManagerLocal::FreePolygon
-////================
-////*/
-////void idCollisionModelManagerLocal::FreePolygon( model: cm_model_t, cm_polygon_t *poly ) {
-////	model.numPolygons--;
-////	model.polygonMemory -= sizeof( cm_polygon_t ) + ( poly.numEdges - 1 ) * sizeof( poly.edges[0] );
-////	if ( model.polygonBlock == NULL ) {
-////		Mem_Free( poly );
-////	}
-////}
-////
+
+/*
+================
+idCollisionModelManagerLocal::FreePolygon
+================
+*/
+	FreePolygon ( model: cm_model_t, poly: cm_polygon_t ): void {
+		model.numPolygons--;
+		model.polygonMemory -= sizeof( cm_polygon_t ) + ( poly.numEdges - 1 ) * sizeofSingleItem( poly.edges );
+		if ( model.polygonBlock == null ) {
+			Mem_Free( poly );
+		}
+	}
+
 /////*
 ////================
 ////idCollisionModelManagerLocal::FreeBrush
@@ -1822,353 +1876,344 @@ idCollisionModelManagerLocal::WindingOutsideBrushes
 		}
 		return null;
 	}
-////
-/////*
-////===============================================================================
-////
-////Merging polygons
-////
-////===============================================================================
-////*/
-////
-/////*
-////=============
-////idCollisionModelManagerLocal::ReplacePolygons
-////
-////  does not allow for a node to have multiple references to the same polygon
-////=============
-////*/
-////void idCollisionModelManagerLocal::ReplacePolygons( model: cm_model_t, node: cm_node_t, cm_polygon_t *p1, cm_polygon_t *p2, cm_polygon_t *newp ) {
-////	var pref: cm_polygonRef_t, *lastpref, *nextpref;
-////	var p: cm_polygon_t;
-////	bool linked;
-////
-////	while( 1 ) {
-////		linked = false;
-////		lastpref = NULL;
-////		for ( pref = node.polygons; pref; pref = nextpref ) {
-////			nextpref = pref.next;
-////			//
-////			p = pref.p;
-////			// if this polygon reference should change
-////			if ( p == p1 || p == p2 ) {
-////				// if the new polygon is already linked at this node
-////				if ( linked ) {
-////					if ( lastpref ) {
-////						lastpref.next = nextpref;
-////					}
-////					else {
-////						node.polygons = nextpref;
-////					}
-////					FreePolygonReference( pref );
-////					model.numPolygonRefs--;
-////				}
-////				else {
-////					pref.p = newp;
-////					linked = true;
-////					lastpref = pref;
-////				}
-////			}
-////			else {
-////				lastpref = pref;
-////			}
-////		}
-////		// if leaf node
-////		if ( node.planeType == -1 ) {
-////			break;
-////		}
-////		if ( p1.bounds[0][node.planeType] > node.planeDist && p2.bounds[0][node.planeType] > node.planeDist ) {
-////			node = node.children[0];
-////		}
-////		else if ( p1.bounds[1][node.planeType] < node.planeDist && p2.bounds[1][node.planeType] < node.planeDist ) {
-////			node = node.children[1];
-////		}
-////		else {
-////			ReplacePolygons( model, node.children[1], p1, p2, newp );
-////			node = node.children[0];
-////		}
-////	}
-////}
-////
-/////*
-////=============
-////idCollisionModelManagerLocal::TryMergePolygons
-////=============
-////*/
-////#define	CONTINUOUS_EPSILON	0.005f
-////#define NORMAL_EPSILON		0.01f
-////
-////cm_polygon_t *idCollisionModelManagerLocal::TryMergePolygons( model: cm_model_t, cm_polygon_t *p1, cm_polygon_t *p2 ) {
-////	int i, j, nexti, prevj;
-////	int p1BeforeShare, p1AfterShare, p2BeforeShare, p2AfterShare;
-////	int newEdges[CM_MAX_POLYGON_EDGES], newNumEdges;
-////	int edgeNum, edgeNum1, edgeNum2, newEdgeNum1, newEdgeNum2;
-////	cm_edge_t *edge;
-////	cm_polygon_t *newp;
-////	idVec3 delta, normal;
-////	float dot;
-////	bool keep1, keep2;
-////
-////	if ( p1.material != p2.material ) {
-////		return NULL;
-////	}
-////	if ( idMath.Fabs( p1.plane.Dist() - p2.plane.Dist() ) > NORMAL_EPSILON ) {
-////		return NULL;
-////	}
-////	for ( i = 0; i < 3; i++ ) {
-////		if ( idMath.Fabs( p1.plane.Normal()[i] - p2.plane.Normal()[i] ) > NORMAL_EPSILON ) {
-////			return NULL;
-////		}
-////		if ( p1.bounds[0][i] > p2.bounds[1][i] ) {
-////			return NULL;
-////		}
-////		if ( p1.bounds[1][i] < p2.bounds[0][i] ) {
-////			return NULL;
-////		}
-////	}
-////	// this allows for merging polygons with multiple shared edges
-////	// polygons with multiple shared edges probably never occur tho ;)
-////	p1BeforeShare = p1AfterShare = p2BeforeShare = p2AfterShare = -1;
-////	for ( i = 0; i < p1.numEdges; i++ ) {
-////		nexti = (i+1)%p1.numEdges;
-////		for ( j = 0; j < p2.numEdges; j++ ) {
-////			prevj = (j+p2.numEdges-1)%p2.numEdges;
-////			//
-////			if ( abs(p1.edges[i]) != abs(p2.edges[j]) ) {
-////				// if the next edge of p1 and the previous edge of p2 are the same
-////				if ( abs(p1.edges[nexti]) == abs(p2.edges[prevj]) ) {
-////					// if both polygons don't use the edge in the same direction
-////					if ( p1.edges[nexti] != p2.edges[prevj] ) {
-////						p1BeforeShare = i;
-////						p2AfterShare = j;
-////					}
-////					break;
-////				}
-////			}
-////			// if both polygons don't use the edge in the same direction
-////			else if ( p1.edges[i] != p2.edges[j] ) {
-////				// if the next edge of p1 and the previous edge of p2 are not the same
-////				if ( abs(p1.edges[nexti]) != abs(p2.edges[prevj]) ) {
-////					p1AfterShare = nexti;
-////					p2BeforeShare = prevj;
-////					break;
-////				}
-////			}
-////		}
-////	}
-////	if ( p1BeforeShare < 0 || p1AfterShare < 0 || p2BeforeShare < 0 || p2AfterShare < 0 ) {
-////		return NULL;
-////	}
-////
-////	// check if the new polygon would still be convex
-////	edgeNum = p1.edges[p1BeforeShare];
-////	edge = model.edges + abs(edgeNum);
-////	delta = model.vertices[edge.vertexNum[INTSIGNBITNOTSET(edgeNum)]].p - 
-////					model.vertices[edge.vertexNum[INTSIGNBITSET(edgeNum)]].p;
-////	normal = p1.plane.Normal().Cross( delta );
-////	normal.Normalize();
-////
-////	edgeNum = p2.edges[p2AfterShare];
-////	edge = model.edges + abs(edgeNum);
-////	delta = model.vertices[edge.vertexNum[INTSIGNBITNOTSET(edgeNum)]].p -
-////					model.vertices[edge.vertexNum[INTSIGNBITSET(edgeNum)]].p;
-////
-////	dot = delta * normal;
-////	if (dot < -CONTINUOUS_EPSILON)
-////		return NULL;			// not a convex polygon
-////	keep1 = (bool)(dot > CONTINUOUS_EPSILON);
-////
-////	edgeNum = p2.edges[p2BeforeShare];
-////	edge = model.edges + abs(edgeNum);
-////	delta = model.vertices[edge.vertexNum[INTSIGNBITNOTSET(edgeNum)]].p -
-////					model.vertices[edge.vertexNum[INTSIGNBITSET(edgeNum)]].p;
-////	normal = p1.plane.Normal().Cross( delta );
-////	normal.Normalize();
-////
-////	edgeNum = p1.edges[p1AfterShare];
-////	edge = model.edges + abs(edgeNum);
-////	delta = model.vertices[edge.vertexNum[INTSIGNBITNOTSET(edgeNum)]].p -
-////					model.vertices[edge.vertexNum[INTSIGNBITSET(edgeNum)]].p;
-////
-////	dot = delta * normal;
-////	if (dot < -CONTINUOUS_EPSILON)
-////		return NULL;			// not a convex polygon
-////	keep2 = (bool)(dot > CONTINUOUS_EPSILON);
-////
-////	newEdgeNum1 = newEdgeNum2 = 0;
-////	// get new edges if we need to replace colinear ones
-////	if ( !keep1 ) {
-////		edgeNum1 = p1.edges[p1BeforeShare];
-////		edgeNum2 = p2.edges[p2AfterShare];
-////		GetEdge( model, model.vertices[model.edges[abs(edgeNum1)].vertexNum[INTSIGNBITSET(edgeNum1)]].p,
-////					model.vertices[model.edges[abs(edgeNum2)].vertexNum[INTSIGNBITNOTSET(edgeNum2)]].p,
-////						&newEdgeNum1, -1 );
-////		if ( newEdgeNum1 == 0 ) {
-////			keep1 = true;
-////		}
-////	}
-////	if ( !keep2 ) {
-////		edgeNum1 = p2.edges[p2BeforeShare];
-////		edgeNum2 = p1.edges[p1AfterShare];
-////		GetEdge( model, model.vertices[model.edges[abs(edgeNum1)].vertexNum[INTSIGNBITSET(edgeNum1)]].p,
-////					model.vertices[model.edges[abs(edgeNum2)].vertexNum[INTSIGNBITNOTSET(edgeNum2)]].p,
-////						&newEdgeNum2, -1 );
-////		if ( newEdgeNum2 == 0 ) {
-////			keep2 = true;
-////		}
-////	}
-////	// set edges for new polygon
-////	newNumEdges = 0;
-////	if ( !keep2 ) {
-////		newEdges[newNumEdges++] = newEdgeNum2;
-////	}
-////	if ( p1AfterShare < p1BeforeShare ) {
-////		for ( i = p1AfterShare + (!keep2); i <= p1BeforeShare - (!keep1); i++ ) {
-////			newEdges[newNumEdges++] = p1.edges[i];
-////		}
-////	}
-////	else {
-////		for ( i = p1AfterShare + (!keep2); i < p1.numEdges; i++ ) {
-////			newEdges[newNumEdges++] = p1.edges[i];
-////		}
-////		for ( i = 0; i <= p1BeforeShare - (!keep1); i++ ) {
-////			newEdges[newNumEdges++] = p1.edges[i];
-////		}
-////	}
-////	if ( !keep1 ) {
-////		newEdges[newNumEdges++] = newEdgeNum1;
-////	}
-////	if ( p2AfterShare < p2BeforeShare ) {
-////		for ( i = p2AfterShare + (!keep1); i <= p2BeforeShare - (!keep2); i++ ) {
-////			newEdges[newNumEdges++] = p2.edges[i];
-////		}
-////	}
-////	else {
-////		for ( i = p2AfterShare + (!keep1); i < p2.numEdges; i++ ) {
-////			newEdges[newNumEdges++] = p2.edges[i];
-////		}
-////		for ( i = 0; i <= p2BeforeShare - (!keep2); i++ ) {
-////			newEdges[newNumEdges++] = p2.edges[i];
-////		}
-////	}
-////
-////	newp = this.AllocPolygon( model, newNumEdges );
-////	memcpy( newp, p1, sizeof(cm_polygon_t) );
-////	memcpy( newp.edges, newEdges, newNumEdges * sizeof(int) );
-////	newp.numEdges = newNumEdges;
-////	newp.checkcount = 0;
-////	// increase usage count for the edges of this polygon
-////	for ( i = 0; i < newp.numEdges; i++ ) {
-////		if ( !keep1 && newp.edges[i] == newEdgeNum1 ) {
-////			continue;
-////		}
-////		if ( !keep2 && newp.edges[i] == newEdgeNum2 ) {
-////			continue;
-////		}
-////		model.edges[abs(newp.edges[i])].numUsers++;
-////	}
-////	// create new bounds from the merged polygons
-////	newp.bounds = p1.bounds + p2.bounds;
-////
-////	return newp;
-////}
-////
-/////*
-////=============
-////idCollisionModelManagerLocal::MergePolygonWithTreePolygons
-////=============
-////*/
-////bool idCollisionModelManagerLocal::MergePolygonWithTreePolygons( model: cm_model_t, node: cm_node_t, cm_polygon_t *polygon ) {
-////	var i:number;
-////	var pref: cm_polygonRef_t;
-////	var p: cm_polygon_t, *newp;
-////
-////	while( 1 ) {
-////		for ( pref = node.polygons; pref; pref = pref.next ) {
-////			p = pref.p;
-////			//
-////			if ( p == polygon ) {
-////				continue;
-////			}
-////			//
-////			newp = TryMergePolygons( model, polygon, p );
-////			// if polygons were merged
-////			if ( newp ) {
-////				model.numMergedPolys++;
-////				// replace links to the merged polygons with links to the new polygon
-////				ReplacePolygons( model, model.node, polygon, p, newp );
-////				// decrease usage count for edges of both merged polygons
-////				for ( i = 0; i < polygon.numEdges; i++ ) {
-////					model.edges[abs(polygon.edges[i])].numUsers--;
-////				}
-////				for ( i = 0; i < p.numEdges; i++ ) {
-////					model.edges[abs(p.edges[i])].numUsers--;
-////				}
-////				// free merged polygons
-////				FreePolygon( model, polygon );
-////				FreePolygon( model, p );
-////
-////				return true;
-////			}
-////		}
-////		// if leaf node
-////		if ( node.planeType == -1 ) {
-////			break;
-////		}
-////		if ( polygon.bounds[0][node.planeType] > node.planeDist ) {
-////			node = node.children[0];
-////		}
-////		else if ( polygon.bounds[1][node.planeType] < node.planeDist ) {
-////			node = node.children[1];
-////		}
-////		else {
-////			if ( MergePolygonWithTreePolygons( model, node.children[1], polygon ) ) {
-////				return true;
-////			}
-////			node = node.children[0];
-////		}
-////	}
-////	return false;
-////}
-////
-/////*
-////=============
-////idCollisionModelManagerLocal::MergeTreePolygons
-////
-////  try to merge any two polygons with the same surface flags and the same contents
-////=============
-////*/
-////void idCollisionModelManagerLocal::MergeTreePolygons( model: cm_model_t, node: cm_node_t ) {
-////	var pref: cm_polygonRef_t;
-////	var p: cm_polygon_t;
-////	bool merge;
-////
-////	while( 1 ) {
-////		do {
-////			merge = false;
-////			for ( pref = node.polygons; pref; pref = pref.next ) {
-////				p = pref.p;
-////				// if we checked this polygon already
-////				if ( p.checkcount == this.checkCount ) {
-////					continue;
-////				}
-////				p.checkcount = this.checkCount;
-////				// try to merge this polygon with other polygons in the tree
-////				if ( MergePolygonWithTreePolygons( model, model.node, p ) ) {
-////					merge = true;
-////					break;
-////				}
-////			}
-////		} while (merge);
-////		// if leaf node
-////		if ( node.planeType == -1 ) {
-////			break;
-////		}
-////		MergeTreePolygons( model, node.children[1] );
-////		node = node.children[0];
-////	}
-////}
-////
+
+/*
+===============================================================================
+
+Merging polygons
+
+===============================================================================
+*/
+
+/*
+=============
+idCollisionModelManagerLocal::ReplacePolygons
+
+  does not allow for a node to have multiple references to the same polygon
+=============
+*/
+	ReplacePolygons ( model: cm_model_t, node: cm_node_t, p1: cm_polygon_t, p2: cm_polygon_t, newp: cm_polygon_t ): void {
+		var pref: cm_polygonRef_t, lastpref: cm_polygonRef_t, nextpref: cm_polygonRef_t;
+		var p: cm_polygon_t;
+		var linked: boolean;
+
+		while ( 1 ) {
+			linked = false;
+			lastpref = null;
+			for ( pref = node.polygons; pref; pref = nextpref ) {
+				nextpref = pref.next;
+				//
+				p = pref.p;
+				// if this polygon reference should change
+				if ( p == p1 || p == p2 ) {
+					// if the new polygon is already linked at this node
+					if ( linked ) {
+						if ( lastpref ) {
+							lastpref.next = nextpref;
+						} else {
+							node.polygons = nextpref;
+						}
+						this.FreePolygonReference( pref );
+						model.numPolygonRefs--;
+					} else {
+						pref.p = newp;
+						linked = true;
+						lastpref = pref;
+					}
+				} else {
+					lastpref = pref;
+				}
+			}
+			// if leaf node
+			if ( node.planeType == -1 ) {
+				break;
+			}
+			if ( p1.bounds[0][node.planeType] > node.planeDist && p2.bounds[0][node.planeType] > node.planeDist ) {
+				node = node.children[0];
+			} else if ( p1.bounds[1][node.planeType] < node.planeDist && p2.bounds[1][node.planeType] < node.planeDist ) {
+				node = node.children[1];
+			} else {
+				this.ReplacePolygons( model, node.children[1], p1, p2, newp );
+				node = node.children[0];
+			}
+		}
+	}
+
+/*
+=============
+idCollisionModelManagerLocal::TryMergePolygons
+=============
+*/
+	static CONTINUOUS_EPSILON =0.005;
+	static NORMAL_EPSILON =0.01;
+
+	TryMergePolygons ( model: cm_model_t, p1: cm_polygon_t, p2: cm_polygon_t ): cm_polygon_t {
+		var /*int */i: number, j: number, nexti: number, prevj: number;
+		var /*int */p1BeforeShare: number, p1AfterShare: number, p2BeforeShare: number, p2AfterShare: number;
+		var /*int */newEdges = new Int32Array( CM_MAX_POLYGON_EDGES ), newNumEdges: number;
+		var /*int */edgeNum: number, edgeNum1: number, edgeNum2: number, newEdgeNum1 = new R<number> ( ), newEdgeNum2 = new R<number> ( );
+		var edge: cm_edge_t;
+		var newp: cm_polygon_t;
+		var delta = new idVec3, normal = new idVec3;
+		var /*float */dot: number;
+		var keep1: boolean, keep2: boolean;
+
+		if ( p1.material != p2.material ) {
+			return null;
+		}
+		if ( idMath.Fabs( p1.plane.Dist ( ) - p2.plane.Dist ( ) ) > idCollisionModelManagerLocal.NORMAL_EPSILON ) {
+			return null;
+		}
+		for ( i = 0; i < 3; i++ ) {
+			if ( idMath.Fabs( p1.plane.Normal ( )[i] - p2.plane.Normal ( )[i] ) > idCollisionModelManagerLocal.NORMAL_EPSILON ) {
+				return null;
+			}
+			if ( p1.bounds[0][i] > p2.bounds[1][i] ) {
+				return null;
+			}
+			if ( p1.bounds[1][i] < p2.bounds[0][i] ) {
+				return null;
+			}
+		}
+		// this allows for merging polygons with multiple shared edges
+		// polygons with multiple shared edges probably never occur tho ;)
+		p1BeforeShare = p1AfterShare = p2BeforeShare = p2AfterShare = -1;
+		for ( i = 0; i < p1.numEdges; i++ ) {
+			nexti = ( i + 1 ) % p1.numEdges;
+			for ( j = 0; j < p2.numEdges; j++ ) {
+				prevj = ( j + p2.numEdges - 1 ) % p2.numEdges;
+				//
+				if ( abs( p1.edges[i] ) != abs( p2.edges[j] ) ) {
+					// if the next edge of p1 and the previous edge of p2 are the same
+					if ( abs( p1.edges[nexti] ) == abs( p2.edges[prevj] ) ) {
+						// if both polygons don't use the edge in the same direction
+						if ( p1.edges[nexti] != p2.edges[prevj] ) {
+							p1BeforeShare = i;
+							p2AfterShare = j;
+						}
+						break;
+					}
+				}
+				// if both polygons don't use the edge in the same direction
+				else if ( p1.edges[i] != p2.edges[j] ) {
+					// if the next edge of p1 and the previous edge of p2 are not the same
+					if ( abs( p1.edges[nexti] ) != abs( p2.edges[prevj] ) ) {
+						p1AfterShare = nexti;
+						p2BeforeShare = prevj;
+						break;
+					}
+				}
+			}
+		}
+		if ( p1BeforeShare < 0 || p1AfterShare < 0 || p2BeforeShare < 0 || p2AfterShare < 0 ) {
+			return null;
+		}
+
+		// check if the new polygon would still be convex
+		edgeNum = p1.edges[p1BeforeShare];
+		edge = model.edges[abs( edgeNum )];
+		delta.equals( model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p.opSubtraction(
+			model.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]].p ) );
+		normal = p1.plane.Normal ( ).Cross( delta );
+		normal.Normalize ( );
+
+		edgeNum = p2.edges[p2AfterShare];
+		edge = model.edges[abs( edgeNum )];
+		delta.equals( model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p.opSubtraction(
+			model.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]].p ) );
+
+		dot = delta.timesVec( normal );
+		if ( dot < -idCollisionModelManagerLocal.CONTINUOUS_EPSILON )
+			return null; // not a convex polygon
+		keep1 = ( dot > idCollisionModelManagerLocal.CONTINUOUS_EPSILON );
+
+		edgeNum = p2.edges[p2BeforeShare];
+		edge = model.edges[abs( edgeNum )];
+		delta.equals( model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p.opSubtraction(
+			model.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]].p ) );
+		normal = p1.plane.Normal ( ).Cross( delta );
+		normal.Normalize ( );
+
+		edgeNum = p1.edges[p1AfterShare];
+		edge = model.edges[abs( edgeNum )];
+		delta.equals( model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p.opSubtraction(
+			model.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]].p ) );
+
+		dot = delta.timesVec( normal );
+		if ( dot < -idCollisionModelManagerLocal.CONTINUOUS_EPSILON )
+			return null; // not a convex polygon
+		keep2 = ( dot > idCollisionModelManagerLocal.CONTINUOUS_EPSILON );
+
+		newEdgeNum1.$ = newEdgeNum2.$ = 0;
+		// get new edges if we need to replace colinear ones
+		if ( !keep1 ) {
+			edgeNum1 = p1.edges[p1BeforeShare];
+			edgeNum2 = p2.edges[p2AfterShare];
+			this.GetEdge( model, model.vertices[model.edges[abs( edgeNum1 )].vertexNum[INTSIGNBITSET( edgeNum1 )]].p,
+				model.vertices[model.edges[abs( edgeNum2 )].vertexNum[INTSIGNBITNOTSET( edgeNum2 )]].p,
+				newEdgeNum1, -1 );
+			if ( newEdgeNum1.$ == 0 ) {
+				keep1 = true;
+			}
+		}
+		if ( !keep2 ) {
+			edgeNum1 = p2.edges[p2BeforeShare];
+			edgeNum2 = p1.edges[p1AfterShare];
+			this.GetEdge( model, model.vertices[model.edges[abs( edgeNum1 )].vertexNum[INTSIGNBITSET( edgeNum1 )]].p,
+				model.vertices[model.edges[abs( edgeNum2 )].vertexNum[INTSIGNBITNOTSET( edgeNum2 )]].p,
+				newEdgeNum2, -1 );
+			if ( newEdgeNum2.$ == 0 ) {
+				keep2 = true;
+			}
+		}
+		// set edges for new polygon
+		newNumEdges = 0;
+		if ( !keep2 ) {
+			newEdges[newNumEdges++] = newEdgeNum2.$;
+		}
+		if ( p1AfterShare < p1BeforeShare ) {
+			for ( i = p1AfterShare + int( !keep2 ); i <= p1BeforeShare - int( !keep1 ); i++ ) {
+				newEdges[newNumEdges++] = p1.edges[i];
+			}
+		} else {
+			for ( i = p1AfterShare + int( !keep2 ); i < p1.numEdges; i++ ) {
+				newEdges[newNumEdges++] = p1.edges[i];
+			}
+			for ( i = 0; i <= p1BeforeShare - int( !keep1 ); i++ ) {
+				newEdges[newNumEdges++] = p1.edges[i];
+			}
+		}
+		if ( !keep1 ) {
+			newEdges[newNumEdges++] = newEdgeNum1.$;
+		}
+		if ( p2AfterShare < p2BeforeShare ) {
+			for ( i = p2AfterShare + int( !keep1 ); i <= p2BeforeShare - int( !keep2 ); i++ ) {
+				newEdges[newNumEdges++] = p2.edges[i];
+			}
+		} else {
+			for ( i = p2AfterShare + int( !keep1 ); i < p2.numEdges; i++ ) {
+				newEdges[newNumEdges++] = p2.edges[i];
+			}
+			for ( i = 0; i <= p2BeforeShare - int( !keep2 ); i++ ) {
+				newEdges[newNumEdges++] = p2.edges[i];
+			}
+		}
+
+		newp = this.AllocPolygon( model, newNumEdges );
+		p1.copy( newp ); //memcpy( newp, p1, sizeof(cm_polygon_t) );
+		memcpy( newp.edges, newEdges, newNumEdges * sizeof( int ) );
+		newp.numEdges = newNumEdges;
+		newp.checkcount = 0;
+		// increase usage count for the edges of this polygon
+		for ( i = 0; i < newp.numEdges; i++ ) {
+			if ( !keep1 && newp.edges[i] == newEdgeNum1.$ ) {
+				continue;
+			}
+			if ( !keep2 && newp.edges[i] == newEdgeNum2.$ ) {
+				continue;
+			}
+			model.edges[abs( newp.edges[i] )].numUsers++;
+		}
+		// create new bounds from the merged polygons
+		newp.bounds.opEquals( p1.bounds.opAddition( p2.bounds ) );
+
+		return newp;
+	}
+
+/*
+=============
+idCollisionModelManagerLocal::MergePolygonWithTreePolygons
+=============
+*/
+	MergePolygonWithTreePolygons ( model: cm_model_t, node: cm_node_t, polygon: cm_polygon_t ): boolean {
+		var i: number;
+		var pref: cm_polygonRef_t;
+		var p: cm_polygon_t, newp: cm_polygon_t;
+
+		while ( 1 ) {
+			for ( pref = node.polygons; pref; pref = pref.next ) {
+				p = pref.p;
+				//
+				if ( p == polygon ) {
+					continue;
+				}
+				//
+				newp = this.TryMergePolygons( model, polygon, p );
+				// if polygons were merged
+				if ( newp ) {
+					model.numMergedPolys++;
+					// replace links to the merged polygons with links to the new polygon
+					this.ReplacePolygons( model, model.node, polygon, p, newp );
+					// decrease usage count for edges of both merged polygons
+					for ( i = 0; i < polygon.numEdges; i++ ) {
+						model.edges[abs( polygon.edges[i] )].numUsers--;
+					}
+					for ( i = 0; i < p.numEdges; i++ ) {
+						model.edges[abs( p.edges[i] )].numUsers--;
+					}
+					// free merged polygons
+					this.FreePolygon( model, polygon );
+					this.FreePolygon( model, p );
+
+					return true;
+				}
+			}
+			// if leaf node
+			if ( node.planeType == -1 ) {
+				break;
+			}
+			if ( polygon.bounds[0][node.planeType] > node.planeDist ) {
+				node = node.children[0];
+			} else if ( polygon.bounds[1][node.planeType] < node.planeDist ) {
+				node = node.children[1];
+			} else {
+				if ( this.MergePolygonWithTreePolygons( model, node.children[1], polygon ) ) {
+					return true;
+				}
+				node = node.children[0];
+			}
+		}
+		return false;
+	}
+
+/*
+=============
+idCollisionModelManagerLocal::MergeTreePolygons
+
+  try to merge any two polygons with the same surface flags and the same contents
+=============
+*/
+	MergeTreePolygons ( model: cm_model_t, node: cm_node_t ): void {
+		var pref: cm_polygonRef_t;
+		var p: cm_polygon_t;
+		var merge: boolean;
+
+		while ( 1 ) {
+			do {
+				merge = false;
+				for ( pref = node.polygons; pref; pref = pref.next ) {
+					p = pref.p;
+					// if we checked this polygon already
+					if ( p.checkcount == this.checkCount ) {
+						continue;
+					}
+					p.checkcount = this.checkCount;
+					// try to merge this polygon with other polygons in the tree
+					if ( this.MergePolygonWithTreePolygons( model, model.node, p ) ) {
+						merge = true;
+						break;
+					}
+				}
+			} while ( merge );
+			// if leaf node
+			if ( node.planeType == -1 ) {
+				break;
+			}
+			this.MergeTreePolygons( model, node.children[1] );
+			node = node.children[0];
+		}
+	}
+
 /////*
 ////===============================================================================
 ////
@@ -2190,180 +2235,181 @@ idCollisionModelManagerLocal::WindingOutsideBrushes
 ////						then this edge is an internal edge
 ////
 ////*/
-////
-/////*
-////=============
-////idCollisionModelManagerLocal::PointInsidePolygon
-////=============
-////*/
-////bool idCollisionModelManagerLocal::PointInsidePolygon( model: cm_model_t, var p: cm_polygon_t, idVec3 &v ) {
-////	int i, edgeNum;
-////	idVec3 *v1, *v2, dir1, dir2, vec;
-////	cm_edge_t *edge;
-////
-////	for ( i = 0; i < p.numEdges; i++ ) {
-////		edgeNum = p.edges[i];
-////		edge = model.edges + abs(edgeNum);
-////		//
-////		v1 = &model.vertices[edge.vertexNum[INTSIGNBITSET(edgeNum)]].p;
-////		v2 = &model.vertices[edge.vertexNum[INTSIGNBITNOTSET(edgeNum)]].p;
-////		dir1 = (*v2) - (*v1);
-////		vec = v - (*v1);
-////		dir2 = dir1.Cross( p.plane.Normal() );
-////		if ( vec * dir2 > VERTEX_EPSILON ) {
-////			return false;
-////		}
-////	}
-////	return true;
-////}
-////
-/////*
-////=============
-////idCollisionModelManagerLocal::FindInternalEdgesOnPolygon
-////=============
-////*/
-////void idCollisionModelManagerLocal::FindInternalEdgesOnPolygon( model: cm_model_t, cm_polygon_t *p1, cm_polygon_t *p2 ) {
-////	int i, j, k, edgeNum;
-////	cm_edge_t *edge;
-////	idVec3 *v1, *v2, dir1, dir2;
-////	float d;
-////
-////	// bounds of polygons should overlap or touch
-////	for ( i = 0; i < 3; i++ ) {
-////		if ( p1.bounds[0][i] > p2.bounds[1][i] ) {
-////			return;
-////		}
-////		if ( p1.bounds[1][i] < p2.bounds[0][i] ) {
-////			return;
-////		}
-////	}
-////	//
-////	// FIXME: doubled geometry causes problems
-////	//
-////	for ( i = 0; i < p1.numEdges; i++ ) {
-////		edgeNum = p1.edges[i];
-////		edge = model.edges + abs(edgeNum);
-////		// if already an internal edge
-////		if ( edge.internal ) {
-////			continue;
-////		}
-////		//
-////		v1 = &model.vertices[edge.vertexNum[INTSIGNBITSET(edgeNum)]].p;
-////		v2 = &model.vertices[edge.vertexNum[INTSIGNBITNOTSET(edgeNum)]].p;
-////		// if either of the two vertices is outside the bounds of the other polygon
-////		for ( k = 0; k < 3; k++ ) {
-////			d = p2.bounds[1][k] + VERTEX_EPSILON;
-////			if ( (*v1)[k] > d || (*v2)[k] > d ) {
-////				break;
-////			}
-////			d = p2.bounds[0][k] - VERTEX_EPSILON;
-////			if ( (*v1)[k] < d || (*v2)[k] < d ) {
-////				break;
-////			}
-////		}
-////		if ( k < 3 ) {
-////			continue;
-////		}
-////		//
-////		k = abs(edgeNum);
-////		for ( j = 0; j < p2.numEdges; j++ ) {
-////			if ( k == abs(p2.edges[j]) ) {
-////				break;
-////			}
-////		}
-////		// if the edge is shared between the two polygons
-////		if ( j < p2.numEdges ) {
-////			// if the edge is used by more than 2 polygons
-////			if ( edge.numUsers > 2 ) {
-////				// could still be internal but we'd have to test all polygons using the edge
-////				continue;
-////			}
-////			// if the edge goes in the same direction for both polygons
-////			if ( edgeNum == p2.edges[j] ) {
-////				// the polygons can lay ontop of each other or one can obscure the other
-////				continue;
-////			}
-////		}
-////		// the edge was not shared
-////		else {
-////			// both vertices should be on the plane of the other polygon
-////			d = p2.plane.Distance( *v1 );
-////			if ( idMath.Fabs(d) > VERTEX_EPSILON ) {
-////				continue;
-////			}
-////			d = p2.plane.Distance( *v2 );
-////			if ( idMath.Fabs(d) > VERTEX_EPSILON ) {
-////				continue;
-////			}
-////		}
-////		// the two polygon plane normals should face towards each other
-////		dir1 = (*v2) - (*v1);
-////		dir2 = p1.plane.Normal().Cross( dir1 );
-////		if ( p2.plane.Normal() * dir2 < 0 ) {
-////			//continue;
-////			break;
-////		}
-////		// if the edge was not shared
-////		if ( j >= p2.numEdges ) {
-////			// both vertices of the edge should be inside the winding of the other polygon
-////			if ( !PointInsidePolygon( model, p2, *v1 ) ) {
-////				continue;
-////			}
-////			if ( !PointInsidePolygon( model, p2, *v2 ) ) {
-////				continue;
-////			}
-////		}
-////		// we got another internal edge
-////		edge.internal = true;
-////		model.numInternalEdges++;
-////	}
-////}
-////
-/////*
-////=============
-////idCollisionModelManagerLocal::FindInternalPolygonEdges
-////=============
-////*/
-////void idCollisionModelManagerLocal::FindInternalPolygonEdges( model: cm_model_t, node: cm_node_t, cm_polygon_t *polygon ) {
-////	var pref: cm_polygonRef_t;
-////	var p: cm_polygon_t;
-////
-////	if ( polygon.material.GetCullType() == CT_TWO_SIDED || polygon.material.ShouldCreateBackSides() ) {
-////		return;
-////	}
-////
-////	while( 1 ) {
-////		for ( pref = node.polygons; pref; pref = pref.next ) {
-////			p = pref.p;
-////			//
-////			// FIXME: use some sort of additional checkcount because currently
-////			//			polygons can be checked multiple times
-////			//
-////			// if the polygons don't have the same contents
-////			if ( p.contents != polygon.contents ) {
-////				continue;
-////			}
-////			if ( p == polygon ) {
-////				continue;
-////			}
-////			FindInternalEdgesOnPolygon( model, polygon, p );
-////		}
-////		// if leaf node
-////		if ( node.planeType == -1 ) {
-////			break;
-////		}
-////		if ( polygon.bounds[0][node.planeType] > node.planeDist ) {
-////			node = node.children[0];
-////		}
-////		else if ( polygon.bounds[1][node.planeType] < node.planeDist ) {
-////			node = node.children[1];
-////		}
-////		else {
-////			FindInternalPolygonEdges( model, node.children[1], polygon );
-////			node = node.children[0];
-////		}
-////	}
-////}
+
+/*
+=============
+idCollisionModelManagerLocal::PointInsidePolygon
+=============
+*/
+	PointInsidePolygon ( model: cm_model_t, p: cm_polygon_t, v: idVec3 ): boolean {
+		var /*int */i: number, edgeNum: number;
+		var v1: idVec3, v2: idVec3, dir1 = new idVec3, dir2 = new idVec3, vec = new idVec3;
+		var edge: cm_edge_t;
+
+		for ( i = 0; i < p.numEdges; i++ ) {
+			edgeNum = p.edges[i];
+			edge = model.edges[abs( edgeNum )];
+			//
+			v1 = model.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]].p;
+			v2 = model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p;
+			dir1.equals( v2.opSubtraction( v1 ) );
+			vec.equals( v.opSubtraction( v1 ) );
+			dir2 = dir1.Cross( p.plane.Normal ( ) );
+			if ( vec.timesVec( dir2 ) > VERTEX_EPSILON ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+/*
+=============
+idCollisionModelManagerLocal::FindInternalEdgesOnPolygon
+=============
+*/
+	FindInternalEdgesOnPolygon(model: cm_model_t, p1: cm_polygon_t, p2: cm_polygon_t ):void {
+		var/*int */i: number, j: number, k: number, edgeNum: number;
+		var edge: cm_edge_t ;
+		var v1: idVec3, v2: idVec3, dir1 = new idVec3, dir2 = new idVec3 ;
+	var /*float */d:number;
+
+	// bounds of polygons should overlap or touch
+	for ( i = 0; i < 3; i++ ) {
+		if ( p1.bounds[0][i] > p2.bounds[1][i] ) {
+			return;
+		}
+		if ( p1.bounds[1][i] < p2.bounds[0][i] ) {
+			return;
+		}
+	}
+	//
+	// FIXME: doubled geometry causes problems
+	//
+	for ( i = 0; i < p1.numEdges; i++ ) {
+		edgeNum = p1.edges[i];
+		edge = model.edges[ abs(edgeNum)];
+		// if already an internal edge
+		if ( edge.internal ) {
+			continue;
+		}
+		//
+		v1 = model.vertices[edge.vertexNum[INTSIGNBITSET(edgeNum)]].p;
+		v2 = model.vertices[edge.vertexNum[INTSIGNBITNOTSET(edgeNum)]].p;
+		// if either of the two vertices is outside the bounds of the other polygon
+		for ( k = 0; k < 3; k++ ) {
+			d = p2.bounds[1][k] + VERTEX_EPSILON;
+			if ( (v1)[k] > d || (v2)[k] > d ) {
+				break;
+			}
+			d = p2.bounds[0][k] - VERTEX_EPSILON;
+			if ( (v1)[k] < d || (v2)[k] < d ) {
+				break;
+			}
+		}
+		if ( k < 3 ) {
+			continue;
+		}
+		//
+		k = abs(edgeNum);
+		for ( j = 0; j < p2.numEdges; j++ ) {
+			if ( k == abs(p2.edges[j]) ) {
+				break;
+			}
+		}
+		// if the edge is shared between the two polygons
+		if ( j < p2.numEdges ) {
+			// if the edge is used by more than 2 polygons
+			if ( edge.numUsers > 2 ) {
+				// could still be internal but we'd have to test all polygons using the edge
+				continue;
+			}
+			// if the edge goes in the same direction for both polygons
+			if ( edgeNum == p2.edges[j] ) {
+				// the polygons can lay ontop of each other or one can obscure the other
+				continue;
+			}
+		}
+		// the edge was not shared
+		else {
+			// both vertices should be on the plane of the other polygon
+			d = p2.plane.Distance( v1 );
+			if ( idMath.Fabs(d) > VERTEX_EPSILON ) {
+				continue;
+			}
+			d = p2.plane.Distance( v2 );
+			if ( idMath.Fabs(d) > VERTEX_EPSILON ) {
+				continue;
+			}
+		}
+		// the two polygon plane normals should face towards each other
+		dir1 .equals( (v2) .opSubtraction (v1));
+		dir2.equals(p1.plane.Normal().Cross( dir1 ));
+		if ( p2.plane.Normal ( ).timesVec( dir2 ) < 0 ) {
+			//continue;
+			break;
+		}
+		// if the edge was not shared
+		if ( j >= p2.numEdges ) {
+			// both vertices of the edge should be inside the winding of the other polygon
+			if ( !this.PointInsidePolygon( model, p2, v1 ) ) {
+				continue;
+			}
+			if ( !this.PointInsidePolygon( model, p2, v2 ) ) {
+				continue;
+			}
+		}
+		// we got another internal edge
+		edge.internal = 1/*true*/;
+		model.numInternalEdges++;
+	}
+}
+
+/*
+=============
+idCollisionModelManagerLocal::FindInternalPolygonEdges
+=============
+*/
+	FindInternalPolygonEdges(model: cm_model_t, node: cm_node_t, polygon: cm_polygon_t) :void{
+	var pref: cm_polygonRef_t;
+	var p: cm_polygon_t;
+
+		if (polygon.material.GetCullType() == cullType_t.CT_TWO_SIDED || polygon.material.ShouldCreateBackSides() ) {
+		return;
+	}
+
+	while( 1 ) {
+		for ( pref = node.polygons; pref; pref = pref.next ) {
+			p = pref.p;
+			//
+			// FIXME: use some sort of additional checkcount because currently
+			//			polygons can be checked multiple times
+			//
+			// if the polygons don't have the same contents
+			if ( p.contents != polygon.contents ) {
+				continue;
+			}
+			if ( p == polygon ) {
+				continue;
+			}
+			this.FindInternalEdgesOnPolygon( model, polygon, p );
+		}
+		// if leaf node
+		if ( node.planeType == -1 ) {
+			break;
+		}
+		if ( polygon.bounds[0][node.planeType] > node.planeDist ) {
+			node = node.children[0];
+		}
+		else if ( polygon.bounds[1][node.planeType] < node.planeDist ) {
+			node = node.children[1];
+		}
+		else {
+			this.FindInternalPolygonEdges( model, node.children[1], polygon );
+			node = node.children[0];
+		}
+	}
+}
 ////
 /////*
 ////=============
@@ -2390,148 +2436,148 @@ idCollisionModelManagerLocal::WindingOutsideBrushes
 ////	}
 ////}
 ////
-/////*
-////=============
-////idCollisionModelManagerLocal::FindInternalEdges
-////=============
-////*/
-////void idCollisionModelManagerLocal::FindInternalEdges( model: cm_model_t, node: cm_node_t ) {
-////	var pref: cm_polygonRef_t;
-////	var p: cm_polygon_t;
-////
-////	while( 1 ) {
-////		for ( pref = node.polygons; pref; pref = pref.next ) {
-////			p = pref.p;
-////			// if we checked this polygon already
-////			if ( p.checkcount == this.checkCount ) {
-////				continue;
-////			}
-////			p.checkcount = this.checkCount;
-////
-////			FindInternalPolygonEdges( model, model.node, p );
-////
-////			//FindContainedEdges( model, p );
-////		}
-////		// if leaf node
-////		if ( node.planeType == -1 ) {
-////			break;
-////		}
-////		FindInternalEdges( model, node.children[1] );
-////		node = node.children[0];
-////	}
-////}
-////
-/////*
-////===============================================================================
-////
-////Spatial subdivision
-////
-////===============================================================================
-////*/
-////
-/////*
-////================
-////CM_FindSplitter
-////================
-////*/
-////static int CM_FindSplitter( const node: cm_node_t, const idBounds &bounds, int *planeType, float *planeDist ) {
-////	int i, j, type, axis[3], polyCount;
-////	float dist, t, bestt, size[3];
-////	cm_brushRef_t *bref;
-////	var pref: cm_polygonRef_t;
-////	const cm_node_t *n;
-////	bool forceSplit = false;
-////
-////	for ( i = 0; i < 3; i++ ) {
-////		size[i] = bounds[1][i] - bounds[0][i];
-////		axis[i] = i;
-////	}
-////	// sort on largest axis
-////	for ( i = 0; i < 2; i++ ) {
-////		if ( size[i] < size[i+1] ) {
-////			t = size[i];
-////			size[i] = size[i+1];
-////			size[i+1] = t;
-////			j = axis[i];
-////			axis[i] = axis[i+1];
-////			axis[i+1] = j;
-////			i = -1;
-////		}
-////	}
-////	// if the node is too small for further splits
-////	if ( size[0] < MIN_NODE_SIZE ) {
-////		polyCount = 0;
-////		for ( pref = node.polygons; pref; pref = pref.next) {
-////			polyCount++;
-////		}
-////		if ( polyCount > MAX_NODE_POLYGONS ) {
-////			forceSplit = true;
-////		}
-////	}
-////	// find an axial aligned splitter
-////	for ( i = 0; i < 3; i++ ) {
-////		// start with the largest axis first
-////		type = axis[i];
-////		bestt = size[i];
-////		// if the node is small anough in this axis direction
-////		if ( !forceSplit && bestt < MIN_NODE_SIZE ) {
-////			break;
-////		}
-////		// find an axial splitter from the brush bounding boxes
-////		// also try brushes from parent nodes
-////		for ( n = node; n; n = n.parent ) {
-////			for ( bref = n.brushes; bref; bref = bref.next) {
-////				for ( j = 0; j < 2; j++ ) {
-////					dist = bref.b.bounds[j][type];
-////					// if the splitter is already used or outside node bounds
-////					if ( dist >= bounds[1][type] || dist <= bounds[0][type] ) {
-////						continue;
-////					}
-////					// find the most centered splitter
-////					t = abs((bounds[1][type] - dist) - (dist - bounds[0][type]));
-////					if ( t < bestt ) {
-////						bestt = t;
-////						*planeType = type;
-////						*planeDist = dist;
-////					}
-////				}
-////			}
-////		}
-////		// find an axial splitter from the polygon bounding boxes
-////		// also try brushes from parent nodes
-////		for ( n = node; n; n = n.parent ) {
-////			for ( pref = n.polygons; pref; pref = pref.next) {
-////				for ( j = 0; j < 2; j++ ) {
-////					dist = pref.p.bounds[j][type];
-////					// if the splitter is already used or outside node bounds
-////					if ( dist >= bounds[1][type] || dist <= bounds[0][type] ) {
-////						continue;
-////					}
-////					// find the most centered splitter
-////					t = abs((bounds[1][type] - dist) - (dist - bounds[0][type]));
-////					if ( t < bestt ) {
-////						bestt = t;
-////						*planeType = type;
-////						*planeDist = dist;
-////					}
-////				}
-////			}
-////		}
-////		// if we found a splitter on the largest axis
-////		if ( bestt < size[i] ) {
-////			// if forced split due to lots of polygons
-////			if ( forceSplit ) {
-////				return true;
-////			}
-////			// don't create splitters real close to the bounds
-////			if ( bounds[1][type] - *planeDist > (MIN_NODE_SIZE*0.5) &&
-////				*planeDist - bounds[0][type] > (MIN_NODE_SIZE*0.5) ) {
-////				return true;
-////			}
-////		}
-////	}
-////	return false;
-////}
+/*
+=============
+idCollisionModelManagerLocal::FindInternalEdges
+=============
+*/
+FindInternalEdges( model: cm_model_t, node: cm_node_t ) :void{
+	var pref: cm_polygonRef_t;
+	var p: cm_polygon_t;
+
+	while( 1 ) {
+		for ( pref = node.polygons; pref; pref = pref.next ) {
+			p = pref.p;
+			// if we checked this polygon already
+			if ( p.checkcount == this.checkCount ) {
+				continue;
+			}
+			p.checkcount = this.checkCount;
+
+			this.FindInternalPolygonEdges( model, model.node, p );
+
+			//FindContainedEdges( model, p );
+		}
+		// if leaf node
+		if ( node.planeType == -1 ) {
+			break;
+		}
+		this.FindInternalEdges( model, node.children[1] );
+		node = node.children[0];
+	}
+}
+
+/*
+===============================================================================
+
+Spatial subdivision
+
+===============================================================================
+*/
+
+/*
+================
+CM_FindSplitter
+================
+*/
+	static CM_FindSplitter ( node: cm_node_t, bounds: idBounds, /*int **/planeType: R<number>, /*float **/planeDist: R<number> ): number {
+		var /*int */i: number, j: number, type: number, axis = new Int32Array( 3 ), polyCount: number;
+		var /*float */dist: number, t: number, bestt: number, size = new Float32Array( 3 );
+		var bref: cm_brushRef_t;
+		var pref: cm_polygonRef_t;
+		var n: cm_node_t;
+		var forceSplit = false;
+
+		for ( i = 0; i < 3; i++ ) {
+			size[i] = bounds[1][i] - bounds[0][i];
+			axis[i] = i;
+		}
+		// sort on largest axis
+		for ( i = 0; i < 2; i++ ) {
+			if ( size[i] < size[i + 1] ) {
+				t = size[i];
+				size[i] = size[i + 1];
+				size[i + 1] = t;
+				j = axis[i];
+				axis[i] = axis[i + 1];
+				axis[i + 1] = j;
+				i = -1;
+			}
+		}
+		// if the node is too small for further splits
+		if ( size[0] < MIN_NODE_SIZE ) {
+			polyCount = 0;
+			for ( pref = node.polygons; pref; pref = pref.next ) {
+				polyCount++;
+			}
+			if ( polyCount > MAX_NODE_POLYGONS ) {
+				forceSplit = true;
+			}
+		}
+		// find an axial aligned splitter
+		for ( i = 0; i < 3; i++ ) {
+			// start with the largest axis first
+			type = axis[i];
+			bestt = size[i];
+			// if the node is small anough in this axis direction
+			if ( !forceSplit && bestt < MIN_NODE_SIZE ) {
+				break;
+			}
+			// find an axial splitter from the brush bounding boxes
+			// also try brushes from parent nodes
+			for ( n = node; n; n = n.parent ) {
+				for ( bref = n.brushes; bref; bref = bref.next ) {
+					for ( j = 0; j < 2; j++ ) {
+						dist = bref.b.bounds[j][type];
+						// if the splitter is already used or outside node bounds
+						if ( dist >= bounds[1][type] || dist <= bounds[0][type] ) {
+							continue;
+						}
+						// find the most centered splitter
+						t = abs( ( bounds[1][type] - dist ) - ( dist - bounds[0][type] ) );
+						if ( t < bestt ) {
+							bestt = t;
+							planeType.$ = type;
+							planeDist.$ = dist;
+						}
+					}
+				}
+			}
+			// find an axial splitter from the polygon bounding boxes
+			// also try brushes from parent nodes
+			for ( n = node; n; n = n.parent ) {
+				for ( pref = n.polygons; pref; pref = pref.next ) {
+					for ( j = 0; j < 2; j++ ) {
+						dist = pref.p.bounds[j][type];
+						// if the splitter is already used or outside node bounds
+						if ( dist >= bounds[1][type] || dist <= bounds[0][type] ) {
+							continue;
+						}
+						// find the most centered splitter
+						t = abs( ( bounds[1][type] - dist ) - ( dist - bounds[0][type] ) );
+						if ( t < bestt ) {
+							bestt = t;
+							planeType.$ = type;
+							planeDist.$ = dist;
+						}
+					}
+				}
+			}
+			// if we found a splitter on the largest axis
+			if ( bestt < size[i] ) {
+				// if forced split due to lots of polygons
+				if ( forceSplit ) {
+					return 1 /*true*/;
+				}
+				// don't create splitters real close to the bounds
+				if ( bounds[1][type] - planeDist.$ > ( MIN_NODE_SIZE * 0.5 ) &&
+					planeDist.$ - bounds[0][type] > ( MIN_NODE_SIZE * 0.5 ) ) {
+					return 1 /*true*/;
+				}
+			}
+		}
+		return 0 /*false*/;
+	}
 
 /*
 ================
@@ -2637,82 +2683,77 @@ idCollisionModelManagerLocal::R_CreateAxialBSPTree
 ================
 */
 	R_CreateAxialBSPTree ( model: cm_model_t, node: cm_node_t, bounds: idBounds ): cm_node_t {
-		todoThrow ( );
-////	int planeType;
-////	float planeDist;
-////	var pref: cm_polygonRef_t, *nextpref, *prevpref;
-////	cm_brushRef_t *bref, *nextbref, *prevbref;
-////	cm_node_t *frontNode, *backNode, *n;
-////	idBounds frontBounds, backBounds;
-////
-////	if ( !CM_FindSplitter( node, bounds, &planeType, &planeDist ) ) {
-////		node.planeType = -1;
-////		return node;
-////	}
-////	// create two child nodes
-////	frontNode = AllocNode( model, NODE_BLOCK_SIZE_LARGE );
-////	memset( frontNode, 0, sizeof(cm_node_t) );
-////	frontNode.parent = node;
-////	frontNode.planeType = -1;
-////	//
-////	backNode = AllocNode( model, NODE_BLOCK_SIZE_LARGE );
-////	memset( backNode, 0, sizeof(cm_node_t) );
-////	backNode.parent = node;
-////	backNode.planeType = -1;
-////	//
-////	model.numNodes += 2;
-////	// set front node bounds
-////	frontBounds = bounds;
-////	frontBounds[0][planeType] = planeDist;
-////	// set back node bounds
-////	backBounds = bounds;
-////	backBounds[1][planeType] = planeDist;
-////	//
-////	node.planeType = planeType;
-////	node.planeDist = planeDist;
-////	node.children[0] = frontNode;
-////	node.children[1] = backNode;
-////	// filter polygons and brushes down the tree if necesary
-////	for ( n = node; n; n = n.parent ) {
-////		prevpref = NULL;
-////		for ( pref = n.polygons; pref; pref = nextpref) {
-////			nextpref = pref.next;
-////			// if polygon is not inside all children
-////			if ( !CM_R_InsideAllChildren( n, pref.p.bounds ) ) {
-////				// filter polygon down the tree
-////				R_FilterPolygonIntoTree( model, n, pref, pref.p );
-////				if ( prevpref ) {
-////					prevpref.next = nextpref;
-////				}
-////				else {
-////					n.polygons = nextpref;
-////				}
-////			}
-////			else {
-////				prevpref = pref;
-////			}
-////		}
-////		prevbref = NULL;
-////		for ( bref = n.brushes; bref; bref = nextbref) {
-////			nextbref = bref.next;
-////			// if brush is not inside all children
-////			if ( !CM_R_InsideAllChildren( n, bref.b.bounds ) ) {
-////				// filter brush down the tree
-////				R_FilterBrushIntoTree( model, n, bref, bref.b );
-////				if ( prevbref ) {
-////					prevbref.next = nextbref;
-////				}
-////				else {
-////					n.brushes = nextbref;
-////				}
-////			}
-////			else {
-////				prevbref = bref;
-////			}
-////		}
-////	}
-////	R_CreateAxialBSPTree( model, frontNode, frontBounds );
-////	R_CreateAxialBSPTree( model, backNode, backBounds );
+		var /*int */planeType = new R<number>();
+		var /*float */planeDist = new R<number>();
+		var pref: cm_polygonRef_t, nextpref: cm_polygonRef_t, prevpref: cm_polygonRef_t;
+		var bref: cm_brushRef_t, nextbref: cm_brushRef_t, prevbref: cm_brushRef_t;
+		var frontNode: cm_node_t, backNode: cm_node_t, n: cm_node_t;
+		var frontBounds = new idBounds, backBounds = new idBounds;
+
+		if ( !idCollisionModelManagerLocal.CM_FindSplitter( node, bounds, planeType, planeDist ) ) {
+			node.planeType = -1;
+			return node;
+		}
+		// create two child nodes
+		frontNode = this.AllocNode( model, NODE_BLOCK_SIZE_LARGE );
+		frontNode.memset0 ( );
+		frontNode.parent = node;
+		frontNode.planeType = -1;
+		//
+		backNode = this.AllocNode( model, NODE_BLOCK_SIZE_LARGE );
+		backNode.memset0 ( );
+		backNode.parent = node;
+		backNode.planeType = -1;
+		//
+		model.numNodes += 2;
+		// set front node bounds
+		frontBounds.opEquals( bounds );
+		frontBounds[0][planeType.$] = planeDist.$;
+		// set back node bounds
+		backBounds.opEquals( bounds );
+		backBounds[1][planeType.$] = planeDist.$;
+		//
+		node.planeType = planeType.$;
+		node.planeDist = planeDist.$;
+		node.children[0] = frontNode;
+		node.children[1] = backNode;
+		// filter polygons and brushes down the tree if necesary
+		for ( n = node; n; n = n.parent ) {
+			prevpref = null;
+			for ( pref = n.polygons; pref; pref = nextpref ) {
+				nextpref = pref.next;
+				// if polygon is not inside all children
+				if ( !idCollisionModelManagerLocal.CM_R_InsideAllChildren( n, pref.p.bounds ) ) {
+					// filter polygon down the tree
+					this.R_FilterPolygonIntoTree( model, n, pref, pref.p );
+					if ( prevpref ) {
+						prevpref.next = nextpref;
+					} else {
+						n.polygons = nextpref;
+					}
+				} else {
+					prevpref = pref;
+				}
+			}
+			prevbref = null;
+			for ( bref = n.brushes; bref; bref = nextbref ) {
+				nextbref = bref.next;
+				// if brush is not inside all children
+				if ( !idCollisionModelManagerLocal.CM_R_InsideAllChildren( n, bref.b.bounds ) ) {
+					// filter brush down the tree
+					this.R_FilterBrushIntoTree( model, n, bref, bref.b );
+					if ( prevbref ) {
+						prevbref.next = nextbref;
+					} else {
+						n.brushes = nextbref;
+					}
+				} else {
+					prevbref = bref;
+				}
+			}
+		}
+		this.R_CreateAxialBSPTree( model, frontNode, frontBounds );
+		this.R_CreateAxialBSPTree( model, backNode, backBounds );
 		return node;
 	}
 
@@ -3303,7 +3344,7 @@ idCollisionModelManagerLocal::PolygonFromWinding
 ////	cm_brush_t *brush;
 ////	idPlane *planes;
 ////	idFixedWinding w;
-////	material:idMaterial  = NULL;
+////	material:idMaterial  = null;
 ////
 ////	contents = 0;
 ////	bounds.Clear();
@@ -3432,147 +3473,147 @@ CM_GetNodeContents
 		return contents;
 	}
 
-/////*
-////==================
-////idCollisionModelManagerLocal::RemapEdges
-////==================
-////*/
-////void idCollisionModelManagerLocal::RemapEdges( node: cm_node_t, int *edgeRemap ) {
-////	var pref: cm_polygonRef_t;
-////	var p: cm_polygon_t;
-////	var i:number;
-////
-////	while ( 1 ) {
-////		for ( pref = node.polygons; pref; pref = pref.next ) {
-////			p = pref.p;
-////			// if we checked this polygon already
-////			if ( p.checkcount == this.checkCount ) {
-////				continue;
-////			}
-////			p.checkcount = this.checkCount;
-////			for ( i = 0; i < p.numEdges; i++ ) {
-////				if ( p.edges[i] < 0 ) {
-////					p.edges[i] = -edgeRemap[ abs(p.edges[i]) ];
-////				}
-////				else {
-////					p.edges[i] = edgeRemap[ p.edges[i] ];
-////				}
-////			}
-////		}
-////		if ( node.planeType == -1 ) {
-////			break;
-////		}
-////
-////		RemapEdges( node.children[1], edgeRemap );
-////		node = node.children[0];
-////	}
-////}
-////
-/////*
-////==================
-////idCollisionModelManagerLocal::OptimizeArrays
-////
-////  due to polygon merging and polygon removal the vertex and edge array
-////  can have a lot of unused entries.
-////==================
-////*/
-////void idCollisionModelManagerLocal::OptimizeArrays( model: cm_model_t ) {
-////	int i, newNumVertices, newNumEdges, *v;
-////	int *remap;
-////	cm_edge_t *oldEdges;
-////	cm_vertex_t *oldVertices;
-////
-////	remap = (int *) Mem_ClearedAlloc( Max( model.numVertices, model.numEdges ) * sizeof( int ) );
-////	// get all used vertices
-////	for ( i = 0; i < model.numEdges; i++ ) {
-////		remap[ model.edges[i].vertexNum[0] ] = true;
-////		remap[ model.edges[i].vertexNum[1] ] = true;
-////	}
-////	// create remap index and move vertices
-////	newNumVertices = 0;
-////	for ( i = 0; i < model.numVertices; i++ ) {
-////		if ( remap[ i ] ) {
-////			remap[ i ] = newNumVertices;
-////			model.vertices[ newNumVertices ] = model.vertices[ i ];
-////			newNumVertices++;
-////		}
-////	}
-////	model.numVertices = newNumVertices;
-////	// change edge vertex indexes
-////	for ( i = 1; i < model.numEdges; i++ ) {
-////		v = model.edges[i].vertexNum;
-////		v[0] = remap[ v[0] ];
-////		v[1] = remap[ v[1] ];
-////	}
-////
-////	// create remap index and move edges
-////	newNumEdges = 1;
-////	for ( i = 1; i < model.numEdges; i++ ) {
-////		// if the edge is used
-////		if ( model.edges[ i ].numUsers ) {
-////			remap[ i ] = newNumEdges;
-////			model.edges[ newNumEdges ] = model.edges[ i ];
-////			newNumEdges++;
-////		}
-////	}
-////	// change polygon edge indexes
-////	this.checkCount++;
-////	RemapEdges( model.node, remap );
-////	model.numEdges = newNumEdges;
-////
-////	Mem_Free( remap );
-////
-////	// realloc vertices
-////	oldVertices = model.vertices;
-////	if ( oldVertices ) {
-////		model.vertices = (cm_vertex_t *) Mem_ClearedAlloc( model.numVertices * sizeof(cm_vertex_t) );
-////		memcpy( model.vertices, oldVertices, model.numVertices * sizeof(cm_vertex_t) );
-////		Mem_Free( oldVertices );
-////	}
-////
-////	// realloc edges
-////	oldEdges = model.edges;
-////	if ( oldEdges ) {
-////		model.edges = (cm_edge_t *) Mem_ClearedAlloc( model.numEdges * sizeof(cm_edge_t) );
-////		memcpy( model.edges, oldEdges, model.numEdges * sizeof(cm_edge_t) );
-////		Mem_Free( oldEdges );
-////	}
-////}
-////
+/*
+==================
+idCollisionModelManagerLocal::RemapEdges
+==================
+*/
+	RemapEdges ( node: cm_node_t, /*int */edgeRemap: Int32Array ) {
+		var pref: cm_polygonRef_t;
+		var p: cm_polygon_t;
+		var i: number;
+
+		while ( 1 ) {
+			for ( pref = node.polygons; pref; pref = pref.next ) {
+				p = pref.p;
+				// if we checked this polygon already
+				if ( p.checkcount == this.checkCount ) {
+					continue;
+				}
+				p.checkcount = this.checkCount;
+				for ( i = 0; i < p.numEdges; i++ ) {
+					if ( p.edges[i] < 0 ) {
+						p.edges[i] = -edgeRemap[abs( p.edges[i] )];
+					} else {
+						p.edges[i] = edgeRemap[p.edges[i]];
+					}
+				}
+			}
+			if ( node.planeType == -1 ) {
+				break;
+			}
+
+			this.RemapEdges( node.children[1], edgeRemap );
+			node = node.children[0];
+		}
+	}
+
+/*
+==================
+idCollisionModelManagerLocal::OptimizeArrays
+
+  due to polygon merging and polygon removal the vertex and edge array
+  can have a lot of unused entries.
+==================
+*/
+	OptimizeArrays ( model: cm_model_t ): void {
+		var /*int */i: number, newNumVertices: number, newNumEdges: number, v: Int32Array;
+		var remap: Int32Array;
+		var oldEdges: cm_edge_t [];
+		var oldVertices: cm_vertex_t[];
+
+		remap = new Int32Array( Mem_ClearedAlloc( Max( model.numVertices, model.numEdges ) * sizeof( int ) ) );
+		// get all used vertices
+		for ( i = 0; i < model.numEdges; i++ ) {
+			remap[model.edges[i].vertexNum[0]] = 1 /*true*/;
+			remap[model.edges[i].vertexNum[1]] = 1 /*true*/;
+		}
+		// create remap index and move vertices
+		newNumVertices = 0;
+		for ( i = 0; i < model.numVertices; i++ ) {
+			if ( remap[i] ) {
+				remap[i] = newNumVertices;
+				model.vertices[newNumVertices] = model.vertices[i];
+				newNumVertices++;
+			}
+		}
+		model.numVertices = newNumVertices;
+		// change edge vertex indexes
+		for ( i = 1; i < model.numEdges; i++ ) {
+			v = model.edges[i].vertexNum;
+			v[0] = remap[v[0]];
+			v[1] = remap[v[1]];
+		}
+
+		// create remap index and move edges
+		newNumEdges = 1;
+		for ( i = 1; i < model.numEdges; i++ ) {
+			// if the edge is used
+			if ( model.edges[i].numUsers ) {
+				remap[i] = newNumEdges;
+				model.edges[newNumEdges] = model.edges[i];
+				newNumEdges++;
+			}
+		}
+		// change polygon edge indexes
+		this.checkCount++;
+		this.RemapEdges( model.node, remap );
+		model.numEdges = newNumEdges;
+
+		Mem_Free( remap );
+
+		// realloc vertices
+		oldVertices = model.vertices;
+		if ( oldVertices ) {
+			model.vertices = newStructArray<cm_vertex_t>( cm_vertex_t, model.numVertices );
+			clearStructArray( model.vertices );
+			memcpyStructs( model.vertices, oldVertices, model.numVertices );
+			Mem_Free( oldVertices );
+		}
+
+		// realloc edges
+		oldEdges = model.edges;
+		if ( oldEdges ) {
+			model.edges = newStructArray<cm_edge_t>( cm_edge_t, model.numEdges ); 
+			clearStructArray( model.edges );
+			memcpyStructs( model.edges, oldEdges, model.numEdges );
+			Mem_Free( oldEdges );
+		}
+	}
+
 /*
 ================
 idCollisionModelManagerLocal::FinishModel
 ================
 */
 	FinishModel ( model: cm_model_t ): void {
-		todoThrow ( );
-////	// try to merge polygons
-////	this.checkCount++;
-////	MergeTreePolygons( model, model.node );
-////	// find internal edges (no mesh can ever collide with internal edges)
-////	this.checkCount++;
-////	FindInternalEdges( model, model.node );
-////	// calculate edge normals
-////	this.checkCount++;
-////	this.CalculateEdgeNormals( model, model.node );
-////
-////	//common.Printf( "%s vertex hash spread is %d\n", model.name.c_str(), cm_vertexHash.GetSpread() );
-////	//common.Printf( "%s edge hash spread is %d\n", model.name.c_str(), cm_edgeHash.GetSpread() );
-////
-////	// remove all unused vertices and edges
-////	OptimizeArrays( model );
-////	// get model bounds from brush and polygon bounds
-////	idCollisionModelManagerLocal.CM_GetNodeBounds( &model.bounds, model.node );
-////	// get model contents
-////	model.contents = idCollisionModelManagerLocal.CM_GetNodeContents( model.node );
-////	// total memory used by this model
-////	model.usedMemory = model.numVertices * sizeof(cm_vertex_t) +
-////						model.numEdges * sizeof(cm_edge_t) +
-////						model.polygonMemory +
-////						model.brushMemory +
-////						model.numNodes * sizeof(cm_node_t) +
-////						model.numPolygonRefs * sizeof(cm_polygonRef_t) +
-////						model.numBrushRefs * sizeof(cm_brushRef_t);
+	// try to merge polygons
+	this.checkCount++;
+	this.MergeTreePolygons( model, model.node );
+	// find internal edges (no mesh can ever collide with internal edges)
+	this.checkCount++;
+	this.FindInternalEdges( model, model.node );
+	// calculate edge normals
+	this.checkCount++;
+	this.CalculateEdgeNormals( model, model.node );
+
+	//common.Printf( "%s vertex hash spread is %d\n", model.name.c_str(), cm_vertexHash.GetSpread() );
+	//common.Printf( "%s edge hash spread is %d\n", model.name.c_str(), cm_edgeHash.GetSpread() );
+
+	// remove all unused vertices and edges
+	this.OptimizeArrays( model );
+	// get model bounds from brush and polygon bounds
+	idCollisionModelManagerLocal.CM_GetNodeBounds( model.bounds, model.node );
+	// get model contents
+	model.contents = idCollisionModelManagerLocal.CM_GetNodeContents( model.node );
+	// total memory used by this model
+	model.usedMemory = model.numVertices * sizeof(cm_vertex_t) +
+						model.numEdges * sizeof(cm_edge_t) +
+						model.polygonMemory +
+						model.brushMemory +
+						model.numNodes * sizeof(cm_node_t) +
+						model.numPolygonRefs * sizeof(cm_polygonRef_t) +
+						model.numBrushRefs * sizeof(cm_brushRef_t);
 	}
 
 /*
@@ -3720,7 +3761,7 @@ idCollisionModelManagerLocal::LoadRenderModel
 ////	}
 ////
 ////	model = AllocModel();
-////	model.node = AllocNode( model, NODE_BLOCK_SIZE_SMALL );
+////	model.node = this.AllocNode( model, NODE_BLOCK_SIZE_SMALL );
 ////
 ////	CM_EstimateVertsAndEdges( mapEnt, &model.maxVertices, &model.maxEdges );
 ////	model.numVertices = 0;

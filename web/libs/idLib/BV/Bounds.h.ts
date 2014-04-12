@@ -181,11 +181,12 @@ class idBounds {
 //}
 
 //ID_INLINE idBounds idBounds::operator+( const idBounds &a ) const {
-//	idBounds newBounds;
-//	newBounds = *this;
-//	newBounds.AddBounds( a );
-//	return newBounds;
-//}
+	opAddition ( a: idBounds ): idBounds {
+		var newBounds = new idBounds;
+		newBounds.opEquals( this );
+		newBounds.AddBounds( a );
+		return newBounds;
+	}
 
 	opAdditionAssignment ( a: idBounds ): idBounds {
 		this.AddBounds( a );
