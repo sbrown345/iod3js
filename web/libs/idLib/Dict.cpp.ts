@@ -661,10 +661,8 @@ idDict::GetVector
 
 		found = this.GetString_Rstring( key, defaultString, s );
 		out.Zero ( );
-		var arr = sscanf( s.$, "%f %f %f" );
-		out.x = arr[0];
-		out.y = arr[1];
-		out.z = arr[2];
+		var arr = s.$.split( " " ).map( parseFloat );
+		assert( arr.length == 3 );
 		return found;
 	}
 ////
@@ -721,16 +719,8 @@ idDict::GetMatrix
 
 		found = this.GetString_Rstring( key, defaultString, s );
 		out.Identity ( ); // sccanf has a bug in it on Mac OS 9.  Sigh.
-		var arr = sscanf( s.$, "%f %f %f %f %f %f %f %f %f" );
-		out[0].x = arr[0];
-		out[0].y = arr[1];
-		out[0].z = arr[2];
-		out[1].x = arr[3];
-		out[1].y = arr[4];
-		out[1].z = arr[5];
-		out[2].x = arr[6];
-		out[2].y = arr[7];
-		out[2].z = arr[8];
+		var arr = s.$.split( " " ).map( parseFloat );
+		assert( arr.length == 9 );
 		return found;
 	}
 

@@ -4216,9 +4216,9 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	mass						= 1.0f;
 ////	invMass						= 1.0f;
-////	centerOfMass				= vec3_zero;
-////	inertiaTensor				= mat3_identity;
-////	inverseInertiaTensor		= mat3_identity;
+////	centerOfMass				 .equals(  vec3_zero);
+////	inertiaTensor				 .equals(  mat3_identity);
+////	inverseInertiaTensor		 .equals(  mat3_identity);
 ////
 ////	current						= &state[0];
 ////	next						= &state[1];
@@ -4315,7 +4315,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	centerOfMass.Zero();
 ////
 ////	// calculate the inverse mass and inverse inertia tensor
-////	invMass = 1.0f / mass;
+////	invMass = 1.0 / mass;
 ////	if ( inertiaScale != mat3_identity ) {
 ////		inertiaTensor *= inertiaScale;
 ////	}

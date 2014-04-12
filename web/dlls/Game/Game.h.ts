@@ -370,7 +370,7 @@ class idGameEdit {
 		if ( !args.GetMatrix_R( "rotation", "1 0 0 0 1 0 0 0 1", renderEntity.axis ) ) {
 			angle = args.GetFloat( "angle" );
 			if ( angle != 0.0 ) {
-				renderEntity.axis = new idAngles( 0.0, angle, 0.0 ).ToMat3 ( );
+				renderEntity.axis.equals( new idAngles( 0.0, angle, 0.0 ).ToMat3 ( ) );
 			} else {
 				renderEntity.axis.Identity ( );
 			}

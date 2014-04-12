@@ -1737,6 +1737,12 @@ class idVec5 {
 ////ID_INLINE idVec5::idVec5( ) {
 ////}
 
+	static fromVec3 ( vec3: idVec3 ): idVec5 {
+		var vec5 = new idVec5 ( );
+		vec5.values = vec3.values;
+		return vec5;
+	}
+
 	constructor ( )
 	constructor ( xyz: idVec3, st: idVec2 )
 	constructor ( x: number, y: number, z: number, s: number, t: number )

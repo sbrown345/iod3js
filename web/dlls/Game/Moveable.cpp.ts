@@ -981,7 +981,7 @@ idExplodingBarrel.Type = new idTypeInfo("idExplodingBarrel", "idBarrel",
 ////		gameRenderWorld->FreeLightDef( lightDefHandle );
 ////	}
 ////	memset( &light, 0, sizeof ( light ) );
-////	light.axis = mat3_identity;
+////	light.axis .equals( mat3_identity);
 ////	light.lightRadius.x = spawnArgs.GetFloat( "light_radius" );
 ////	light.lightRadius.y = light.lightRadius.z = light.lightRadius.x;
 ////	light.origin = physicsObj.GetOrigin();

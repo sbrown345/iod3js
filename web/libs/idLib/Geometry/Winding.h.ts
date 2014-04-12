@@ -215,6 +215,9 @@ class idWinding {
 	opAdditionAssignment ( v: idVec3 ): idWinding
 	opAdditionAssignment ( v: idVec5 ): idWinding
 	opAdditionAssignment ( v: any ): idWinding {
+		if ( v instanceof idVec3 ) {
+			v = idVec5.fromVec3( v );
+		}
 		this.AddPoint( v );
 		return this;
 	}

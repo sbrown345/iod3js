@@ -2191,21 +2191,21 @@ idCollisionModelManagerLocal::SetupHash
 ================
 */
 idCollisionModelManagerLocal.prototype.SetupHash = function ( ): void {
-	if ( !this.cm_vertexHash ) {
-		this.cm_vertexHash = new idHashIndex( VERTEX_HASH_SIZE, 1024 );
+	if ( !cm_vertexHash ) {
+		cm_vertexHash = new idHashIndex( VERTEX_HASH_SIZE, 1024 );
 	}
-	if ( !this.cm_edgeHash ) {
-		this.cm_edgeHash = new idHashIndex( EDGE_HASH_SIZE, 1024 );
+	if ( !cm_edgeHash ) {
+		cm_edgeHash = new idHashIndex( EDGE_HASH_SIZE, 1024 );
 	}
 	// init variables used during loading and optimization
-	if ( !this.cm_windingList ) {
-		this.cm_windingList = new cm_windingList_t;
+	if ( !cm_windingList ) {
+		cm_windingList = new cm_windingList_t;
 	}
-	if ( !this.cm_outList ) {
-		this.cm_outList = new cm_windingList_t;
+	if ( !cm_outList ) {
+		cm_outList = new cm_windingList_t;
 	}
-	if ( !this.cm_tmpList ) {
-		this.cm_tmpList = new cm_windingList_t;
+	if ( !cm_tmpList ) {
+		cm_tmpList = new cm_windingList_t;
 	}
 };
 
@@ -2215,16 +2215,16 @@ idCollisionModelManagerLocal::ShutdownHash
 ================
 */
 idCollisionModelManagerLocal.prototype.ShutdownHash = function ( ): void {
-	$delete( this.cm_vertexHash );
-	this.cm_vertexHash = null;
+	$delete( cm_vertexHash );
+	cm_vertexHash = null;
 	$delete(this. cm_edgeHash );
-	this.cm_edgeHash = null;
-	$delete(this.cm_tmpList );
-	this.cm_tmpList = null;
-	$delete(this.cm_outList );
-	this.cm_outList = null;
-	$delete(this.cm_windingList );
-	this.cm_windingList = null;
+	cm_edgeHash = null;
+	$delete(cm_tmpList );
+	cm_tmpList = null;
+	$delete(cm_outList );
+	cm_outList = null;
+	$delete(cm_windingList );
+	cm_windingList = null;
 };
 
 /*

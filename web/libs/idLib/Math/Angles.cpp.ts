@@ -424,9 +424,9 @@ class idAngles {
 ////	float sx, cx, sy, cy, sz, cz;
 ////	float sxcy, cxcy, sxsy, cxsy;
 ////
-////	idMath::SinCos( DEG2RAD( this.yaw ) * 0.5f, sz, cz );
-////	idMath::SinCos( DEG2RAD( this.pitch ) * 0.5f, sy, cy );
-////	idMath::SinCos( DEG2RAD( this.roll ) * 0.5f, sx, cx );
+////	idMath::SinCos( DEG2RAD( this.yaw ) * 0.5, sz, cz );
+////	idMath::SinCos( DEG2RAD( this.pitch ) * 0.5, sy, cy );
+////	idMath::SinCos( DEG2RAD( this.roll ) * 0.5, sx, cx );
 ////
 ////	sxcy = sx * cy;
 ////	cxcy = cx * cy;
@@ -458,9 +458,9 @@ class idAngles {
 ////		return idRotation( vec3_origin, idVec3( 0.0, -1.0, 0.0 ), this.pitch );
 ////	}
 ////
-////	idMath::SinCos( DEG2RAD( this.yaw ) * 0.5f, sz, cz );
-////	idMath::SinCos( DEG2RAD( this.pitch ) * 0.5f, sy, cy );
-////	idMath::SinCos( DEG2RAD( this.roll ) * 0.5f, sx, cx );
+////	idMath::SinCos( DEG2RAD( this.yaw ) * 0.5, sz, cz );
+////	idMath::SinCos( DEG2RAD( this.pitch ) * 0.5, sy, cy );
+////	idMath::SinCos( DEG2RAD( this.roll ) * 0.5, sx, cx );
 ////
 ////	sxcy = sx * cy;
 ////	cxcy = cx * cy;
@@ -496,9 +496,9 @@ idAngles::ToMat3
 		idMath.SinCos( DEG2RAD( this.pitch ), sp, cp );
 		idMath.SinCos( DEG2RAD( this.roll ), sr, cr );
 
-		mat[0].Set( cp.$ * cy.$, cp.$ * sy.$, -sp );
-		mat[1].Set( sr.$ * sp.$ * cy.$ + cr.$ * -sy, sr.$ * sp.$ * sy.$ + cr.$ * cy.$, sr.$ * cp.$ );
-		mat[2].Set( cr.$ * sp.$ * cy.$ + -sr.$ * -sy, cr.$ * sp.$ * sy.$ + -sr.$ * cy.$, cr.$ * cp.$ );
+		mat[0].Set( cp.$ * cy.$, cp.$ * sy.$, -sp.$ );
+		mat[1].Set( sr.$ * sp.$ * cy.$ + cr.$ * -sy.$, sr.$ * sp.$ * sy.$ + cr.$ * cy.$, sr.$ * cp.$ );
+		mat[2].Set( cr.$ * sp.$ * cy.$ + -sr.$ * -sy.$, cr.$ * sp.$ * sy.$ + -sr.$ * cy.$, cr.$ * cp.$ );
 
 		return mat;
 	}

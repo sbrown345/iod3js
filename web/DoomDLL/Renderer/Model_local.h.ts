@@ -1326,7 +1326,7 @@ idRenderModelStatic::ConvertLWOToModelSurfaces
 			mvTable = newStructArray<matchVert_t>( matchVert_t, layer.polygon.count * 3 ); // (matchVert_t *)R_ClearedStaticAlloc( layer.polygon.count * 3 * sizeof( mvTable[0] ) );
 
 			// we will have a hash chain based on the xyz values
-			mvHash = newStructArray<matchVert_t>( matchVert_t, layer.point.count ); //(matchVert_t **)R_ClearedStaticAlloc( layer.point.count * sizeof( mvHash[0] ) );
+			mvHash = new Array<matchVert_t>( layer.point.count ); //(matchVert_t **)R_ClearedStaticAlloc( layer.point.count * sizeof( mvHash[0] ) );
 
 			// allocate triangle surface
 			tri = R_AllocStaticTriSurf ( );
