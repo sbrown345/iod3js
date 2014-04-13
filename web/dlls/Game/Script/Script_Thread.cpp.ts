@@ -893,31 +893,43 @@ idThread::Execute
 //	return false;
 //}
 //
-///*
-//================
-//idThread::CallFunction
-//
-//NOTE: If this is called from within a event called by this thread, the function arguments will be invalid after calling this function.
-//================
-//*/
-//CallFunction( const function_t *func, bool clearStack ) :void{
-//	this.ClearWaitFor();
-//	this.interpreter.EnterFunction( func, clearStack );
-//}
-//
-///*
-//================
-//idThread::CallFunction
-//
-//NOTE: If this is called from within a event called by this thread, the function arguments will be invalid after calling this function.
-//================
-//*/
-//CallFunction( idEntity *self, const function_t *func, bool clearStack ) :void{
-//	assert( self );
-//	this.ClearWaitFor();
-//	this.interpreter.EnterObjectFunction( self, func, clearStack );
-//}
-//
+
+
+	CallFunction ( func: function_t, clearStack: boolean ): void
+	CallFunction ( self: idEntity, func: function_t, clearStack: boolean ): void
+	CallFunction ( a1?: any, a2?: any, a3?: any ): void {
+		if ( arguments.length == 2 ) {
+			this.CallFunction_2_args( a1, a2 );
+		} else {
+			this.CallFunction_3_args( a1, a2, a3 );
+		}
+	}
+
+/*
+================
+idThread::CallFunction
+
+NOTE: If this is called from within a event called by this thread, the function arguments will be invalid after calling this function.
+================
+*/
+	private CallFunction_2_args ( func: function_t, clearStack: boolean ): void {
+		this.ClearWaitFor ( );
+		this.interpreter.EnterFunction( func, clearStack );
+	}
+
+/*
+================
+idThread::CallFunction
+
+NOTE: If this is called from within a event called by this thread, the function arguments will be invalid after calling this function.
+================
+*/
+	private CallFunction_3_args ( self: idEntity, func: function_t, clearStack: boolean ): void {
+		assert( self );
+		this.ClearWaitFor ( );
+		this.interpreter.EnterObjectFunction( self, func, clearStack );
+	}
+
 /*
 ================
 idThread::ClearWaitFor

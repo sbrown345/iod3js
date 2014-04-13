@@ -412,138 +412,137 @@ class idActor extends idAFEntity_Gibbable {
 idActor::Spawn
 =====================
 */
-Spawn():void {
-	todoThrow();
-////	idEntity		*ent;
-////	idStr			jointName;
-////	float			fovDegrees;
-////	copyJoints_t	copyJoint;
-////
-////	animPrefix	= "";
-////	state		= NULL;
-////	idealState	= NULL;
-////
-////	spawnArgs.GetInt( "rank", "0", rank );
-////	spawnArgs.GetInt( "team", "0", team );
-////	spawnArgs.GetVector( "offsetModel", "0 0 0", modelOffset );
-////
-////	spawnArgs.GetBool( "use_combat_bbox", "0", this.use_combat_bbox );	
-////
-////	this.viewAxis.equals( GetPhysics().GetAxis();
-////
-////	spawnArgs.GetFloat( "fov", "90", fovDegrees );
-////	SetFOV( fovDegrees );
-////
-////	pain_debounce_time	= 0;
-////
-////	pain_delay		= SEC2MS( spawnArgs.GetFloat( "pain_delay" ) );
-////	pain_threshold	= spawnArgs.GetInt( "pain_threshold" );
-////
-////	LoadAF();
-////
-////	walkIK.Init( this, IK_ANIM, modelOffset );
-////
-////	// the animation used to be set to the IK_ANIM at this point, but that was fixed, resulting in
-////	// attachments not binding correctly, so we're stuck setting the IK_ANIM before attaching things.
-////	animator.ClearAllAnims( gameLocal.time, 0 );
-////	animator.SetFrame( ANIMCHANNEL_ALL, animator.GetAnim( IK_ANIM ), 0, 0, 0 );
-////
-////	// spawn any attachments we might have
-////	const idKeyValue *kv = spawnArgs.MatchPrefix( "def_attach", NULL );
-////	while ( kv ) {
-////		idDict args;
-////
-////		args.Set( "classname", kv.GetValue().c_str() );
-////
-////		// make items non-touchable so the player can't take them out of the character's hands
-////		args.Set( "no_touch", "1" );
-////
-////		// don't let them drop to the floor
-////		args.Set( "dropToFloor", "0" );
-////		
-////		gameLocal.SpawnEntityDef( args, &ent );
-////		if ( !ent ) {
-////			gameLocal.Error( "Couldn't spawn '%s' to attach to entity '%s'", kv.GetValue().c_str(), name.c_str() );
-////		} else {
-////			Attach( ent );
-////		}
-////		kv = spawnArgs.MatchPrefix( "def_attach", kv );
-////	}
-////
-////	SetupDamageGroups();
-////	SetupHead();
-////
-////	// clear the bind anim
-////	animator.ClearAllAnims( gameLocal.time, 0 );
-////
-////	idEntity *headEnt = this.head.GetEntity();
-////	idAnimator *headAnimator;
-////	if ( headEnt ) {
-////		headAnimator = headEnt.GetAnimator();
-////	} else {
-////		headAnimator = &animator;
-////	}
-////
-////	if ( headEnt ) {
-////		// set up the list of joints to copy to the head
-////		for( kv = spawnArgs.MatchPrefix( "copy_joint", NULL ); kv != NULL; kv = spawnArgs.MatchPrefix( "copy_joint", kv ) ) {
-////			if ( kv.GetValue() == "" ) {
-////				// probably clearing out inherited key, so skip it
-////				continue;
-////			}
-////
-////			jointName = kv.GetKey();
-////			if ( jointName.StripLeadingOnce( "copy_joint_world " ) ) {
-////				copyJoint.mod = JOINTMOD_WORLD_OVERRIDE;
-////			} else {
-////				jointName.StripLeadingOnce( "copy_joint " );
-////				copyJoint.mod = JOINTMOD_LOCAL_OVERRIDE;
-////			}
-////
-////			copyJoint.from = animator.GetJointHandle( jointName );
-////			if ( copyJoint.from == INVALID_JOINT ) {
-////				gameLocal.Warning( "Unknown copy_joint '%s' on entity %s", jointName.c_str(), name.c_str() );
-////				continue;
-////			}
-////
-////			jointName = kv.GetValue();
-////			copyJoint.to = headAnimator.GetJointHandle( jointName );
-////			if ( copyJoint.to == INVALID_JOINT ) {
-////				gameLocal.Warning( "Unknown copy_joint '%s' on head of entity %s", jointName.c_str(), name.c_str() );
-////				continue;
-////			}
-////
-////			copyJoints.Append( copyJoint );
-////		}
-////	}
-////
-////	// set up blinking
-////	blink_anim = headAnimator.GetAnim( "blink" );
-////	blink_time = 0;	// it's ok to blink right away
-////	blink_min = SEC2MS( spawnArgs.GetFloat( "blink_min", "0.5" ) );
-////	blink_max = SEC2MS( spawnArgs.GetFloat( "blink_max", "8" ) );
-////
-////	// set up the head anim if necessary
-////	int headAnim = headAnimator.GetAnim( "def_head" );
-////	if ( headAnim ) {
-////		if ( headEnt ) {
-////            headAnimator.CycleAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, 0 );
-////		} else {
-////			headAnimator.CycleAnim( ANIMCHANNEL_HEAD, headAnim, gameLocal.time, 0 );
-////		}
-////	}
-////
-////	if ( spawnArgs.GetString( "sound_bone", "", jointName ) ) {
-////		soundJoint = animator.GetJointHandle( jointName );
-////		if ( soundJoint == INVALID_JOINT ) {
-////			gameLocal.Warning( "idAnimated '%s' at (%s): cannot find joint '%s' for sound playback", name.c_str(), GetPhysics().GetOrigin().ToString(0), jointName.c_str() );
-////		}
-////	}
-////
-////	finalBoss = spawnArgs.GetBool( "finalBoss" );
-////
-////	FinishSetup();
-}
+	Spawn ( ): void {
+		var ent: idEntity;
+		var jointName = new idStr;
+		var fovDegrees: number /*float*/;
+		var copyJoint = new copyJoints_t;
+
+		this.animPrefix.equals( "" );
+		this.state = null;
+		this.idealState = null;
+
+		this.spawnArgs.GetInt( "rank", "0", this.rank );
+		this.spawnArgs.GetInt( "team", "0", this.team );
+		this.spawnArgs.GetVector( "offsetModel", "0 0 0", this.modelOffset );
+
+		this.spawnArgs.GetBool( "use_combat_bbox", "0", this.use_combat_bbox );
+
+		this.viewAxis.equals( this.GetPhysics ( ).GetAxis ( ) );
+
+		this.spawnArgs.GetFloat( "fov", "90", fovDegrees );
+		this.SetFOV( fovDegrees );
+
+		this.pain_debounce_time = 0;
+
+		this.pain_delay = SEC2MS( this.spawnArgs.GetFloat( "pain_delay" ) );
+		this.pain_threshold = this.spawnArgs.GetInt( "pain_threshold" );
+
+		this.LoadAF ( );
+
+		this.walkIK.Init( this, IK_ANIM, this.modelOffset );
+
+		// the animation used to be set to the IK_ANIM at this point, but that was fixed, resulting in
+		// attachments not binding correctly, so we're stuck setting the IK_ANIM before attaching things.
+		this.animator.ClearAllAnims( gameLocal.time, 0 );
+		this.animator.SetFrame( ANIMCHANNEL_ALL, this.animator.GetAnim( IK_ANIM ), 0, 0, 0 );
+
+		// spawn any attachments we might have
+		var kv = this.spawnArgs.MatchPrefix( "def_attach", null );
+		while ( kv ) {
+			var args = new idDict;
+
+			args.Set( "classname", kv.GetValue ( ).c_str ( ) );
+
+			// make items non-touchable so the player can't take them out of the character's hands
+			args.Set( "no_touch", "1" );
+
+			// don't let them drop to the floor
+			args.Set( "dropToFloor", "0" );
+
+			gameLocal.SpawnEntityDef( args, ent );
+			if ( !ent ) {
+				gameLocal.Error( "Couldn't spawn '%s' to attach to entity '%s'", kv.GetValue ( ).c_str ( ), this.name.c_str ( ) );
+			} else {
+				this.Attach( ent );
+			}
+			kv = this.spawnArgs.MatchPrefix( "def_attach", kv );
+		}
+
+		this.SetupDamageGroups ( );
+		this.SetupHead ( );
+
+		// clear the bind anim
+		this.animator.ClearAllAnims( gameLocal.time, 0 );
+
+		var headEnt = this.head.GetEntity ( );
+		var headAnimator: idAnimator;
+		if ( headEnt ) {
+			headAnimator = headEnt.GetAnimator ( );
+		} else {
+			headAnimator = this.animator;
+		}
+
+		if ( headEnt ) {
+			// set up the list of joints to copy to the head
+			for ( kv = this.spawnArgs.MatchPrefix( "copy_joint", null ); kv != null; kv = this.spawnArgs.MatchPrefix( "copy_joint", kv ) ) {
+				if ( kv.GetValue ( ) == "" ) {
+					// probably clearing out inherited key, so skip it
+					continue;
+				}
+
+				jointName = kv.GetKey ( );
+				if ( jointName.StripLeadingOnce( "copy_joint_world " ) ) {
+					copyJoint.mod = jointModTransform_t.JOINTMOD_WORLD_OVERRIDE;
+				} else {
+					jointName.StripLeadingOnce( "copy_joint " );
+					copyJoint.mod = jointModTransform_t.JOINTMOD_LOCAL_OVERRIDE;
+				}
+
+				copyJoint.from = this.animator.GetJointHandle( jointName );
+				if ( copyJoint.from == jointHandle_t.INVALID_JOINT ) {
+					gameLocal.Warning( "Unknown copy_joint '%s' on entity %s", jointName.c_str ( ), this.name.c_str ( ) );
+					continue;
+				}
+
+				jointName = kv.GetValue ( );
+				copyJoint.to = headAnimator.GetJointHandle( jointName );
+				if ( copyJoint.to == jointHandle_t.INVALID_JOINT ) {
+					gameLocal.Warning( "Unknown copy_joint '%s' on head of entity %s", jointName.c_str ( ), this.name.c_str ( ) );
+					continue;
+				}
+
+				this.copyJoints.Append( copyJoint );
+			}
+		}
+
+		// set up blinking
+		this.blink_anim = headAnimator.GetAnim( "blink" );
+		this.blink_time = 0; // it's ok to blink right away
+		this.blink_min = SEC2MS( this.spawnArgs.GetFloat( "blink_min", "0.5" ) );
+		this.blink_max = SEC2MS( this.spawnArgs.GetFloat( "blink_max", "8" ) );
+
+		// set up the head anim if necessary
+		var /*int */headAnim = headAnimator.GetAnim( "def_head" );
+		if ( headAnim ) {
+			if ( headEnt ) {
+				headAnimator.CycleAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, 0 );
+			} else {
+				headAnimator.CycleAnim( ANIMCHANNEL_HEAD, headAnim, gameLocal.time, 0 );
+			}
+		}
+
+		if ( this.spawnArgs.GetString( "sound_bone", "", jointName ) ) {
+			this.soundJoint = this.animator.GetJointHandle( jointName );
+			if ( soundJoint == jointHandle_t.INVALID_JOINT ) {
+				gameLocal.Warning( "idAnimated '%s' at (%s): cannot find joint '%s' for sound playback", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ), jointName.c_str ( ) );
+			}
+		}
+
+		this.finalBoss = this.spawnArgs.GetBool( "finalBoss" );
+
+		this.FinishSetup ( );
+	}
 
 /////*
 ////================
@@ -554,9 +553,9 @@ Spawn():void {
 ////	const char	*scriptObjectName;
 ////
 ////	// setup script object
-////	if ( spawnArgs.GetString( "scriptobject", NULL, &scriptObjectName ) ) {
+////	if ( this.spawnArgs.GetString( "scriptobject", NULL, &scriptObjectName ) ) {
 ////		if ( !scriptObject.SetType( scriptObjectName ) ) {
-////			gameLocal.Error( "Script object '%s' not found on entity '%s'.", scriptObjectName, name.c_str() );
+////			gameLocal.Error( "Script object '%s' not found on entity '%s'.", scriptObjectName, this.name.c_str() );
 ////		}
 ////
 ////		ConstructScriptObject();
@@ -583,12 +582,12 @@ Spawn():void {
 ////		return;
 ////	}
 ////
-////	headModel = spawnArgs.GetString( "def_head", "" );
+////	headModel = this.spawnArgs.GetString( "def_head", "" );
 ////	if ( headModel[ 0 ] ) {
-////		jointName = spawnArgs.GetString( "head_joint" );
-////		joint = animator.GetJointHandle( jointName );
-////		if ( joint == INVALID_JOINT ) {
-////			gameLocal.Error( "Joint '%s' not found for 'head_joint' on '%s'", jointName.c_str(), name.c_str() );
+////		jointName = this.spawnArgs.GetString( "head_joint" );
+////		joint = this.animator.GetJointHandle( jointName );
+////		if ( joint == jointHandle_t.INVALID_JOINT ) {
+////			gameLocal.Error( "Joint '%s' not found for 'head_joint' on '%s'", jointName.c_str(), this.name.c_str() );
 ////		}
 ////
 ////		// set the damage joint to be part of the head damage group
@@ -602,23 +601,23 @@ Spawn():void {
 ////
 ////		// copy any sounds in case we have frame commands on the head
 ////		idDict	args;
-////		sndKV = spawnArgs.MatchPrefix( "snd_", NULL );
+////		sndKV = this.spawnArgs.MatchPrefix( "snd_", NULL );
 ////		while( sndKV ) {
 ////			args.Set( sndKV.GetKey(), sndKV.GetValue() );
-////			sndKV = spawnArgs.MatchPrefix( "snd_", sndKV );
+////			sndKV = this.spawnArgs.MatchPrefix( "snd_", sndKV );
 ////		}
 ////
 ////		headEnt = static_cast<idAFAttachment *>( gameLocal.SpawnEntityType( idAFAttachment::Type, &args ) );
-////		headEnt.SetName( va( "%s_head", name.c_str() ) );
+////		headEnt.SetName( va( "%s_head", this.name.c_str() ) );
 ////		headEnt.SetBody( this, headModel, damageJoint );
 ////		this.head = headEnt;
 ////
 ////		idVec3		origin;
 ////		idMat3		axis;
 ////		idAttachInfo &attach = attachments.Alloc();
-////		attach.channel = animator.GetChannelForJoint( joint );
-////		animator.GetJointTransform( joint, gameLocal.time, origin, axis );
-////		origin = renderEntity.origin + ( origin + modelOffset ) * renderEntity.axis;
+////		attach.channel = this.animator.GetChannelForJoint( joint );
+////		this.animator.GetJointTransform( joint, gameLocal.time, origin, axis );
+////		origin = renderEntity.origin + ( origin + this.modelOffset ) * renderEntity.axis;
 ////		attach.ent = headEnt;
 ////		headEnt.SetOrigin( origin );
 ////		headEnt.SetAxis( renderEntity.axis );
@@ -654,7 +653,7 @@ Spawn():void {
 ////			headAnimator.SetJointPos( copyJoints[ i ].to, copyJoints[ i ].mod, pos * mat );
 ////			headAnimator.SetJointAxis( copyJoints[ i ].to, copyJoints[ i ].mod, axis * mat );
 ////		} else {
-////			animator.GetJointLocalTransform( copyJoints[ i ].from, gameLocal.time, pos, axis );
+////			this.animator.GetJointLocalTransform( copyJoints[ i ].from, gameLocal.time, pos, axis );
 ////			headAnimator.SetJointPos( copyJoints[ i ].to, copyJoints[ i ].mod, pos );
 ////			headAnimator.SetJointAxis( copyJoints[ i ].to, copyJoints[ i ].mod, axis );
 ////		}
@@ -683,8 +682,8 @@ Spawn():void {
 ////	idActor *ent;
 ////	var/*int*/i:number;
 ////
-////	savefile.WriteInt( team );
-////	savefile.WriteInt( rank );
+////	savefile.WriteInt( this.team );
+////	savefile.WriteInt( this.rank );
 ////	savefile.WriteMat3( this.viewAxis );
 ////
 ////	savefile.WriteInt( enemyList.Num() );
@@ -694,12 +693,12 @@ Spawn():void {
 ////
 ////	savefile.WriteFloat( fovDot );
 ////	savefile.WriteVec3( eyeOffset );
-////	savefile.WriteVec3( modelOffset );
+////	savefile.WriteVec3( this.modelOffset );
 ////	savefile.WriteAngles( deltaViewAngles );
 ////
-////	savefile.WriteInt( pain_debounce_time );
-////	savefile.WriteInt( pain_delay );
-////	savefile.WriteInt( pain_threshold );
+////	savefile.WriteInt( this.pain_debounce_time );
+////	savefile.WriteInt( this.pain_delay );
+////	savefile.WriteInt( this.pain_threshold );
 ////
 ////	savefile.WriteInt( damageGroups.Num() );
 ////	for( i = 0; i < damageGroups.Num(); i++ ) {
@@ -725,12 +724,12 @@ Spawn():void {
 ////	savefile.WriteJoint( rightEyeJoint );
 ////	savefile.WriteJoint( soundJoint );
 ////
-////	walkIK.Save( savefile );
+////	this.walkIK.Save( savefile );
 ////
-////	savefile.WriteString( animPrefix );
+////	savefile.WriteString( this.animPrefix );
 ////	savefile.WriteString( painAnim );
 ////
-////	savefile.WriteInt( blink_anim );
+////	savefile.WriteInt( this.blink_anim );
 ////	savefile.WriteInt( blink_time );
 ////	savefile.WriteInt( blink_min );
 ////	savefile.WriteInt( blink_max );
@@ -760,8 +759,8 @@ Spawn():void {
 ////	idToken token;
 ////
 ////	//FIXME: this is unneccesary
-////	if ( state ) {
-////		idLexer src( state.Name(), idStr::Length( state.Name() ), "idAI::Save" );
+////	if ( this.state ) {
+////		idLexer src( this.state.Name(), idStr::Length( this.state.Name() ), "idAI::Save" );
 ////
 ////		src.ReadTokenOnLine( &token );
 ////		src.ExpectTokenString( "::" );
@@ -772,8 +771,8 @@ Spawn():void {
 ////		savefile.WriteString( "" );
 ////	}
 ////
-////	if ( idealState ) {
-////		idLexer src( idealState.Name(), idStr::Length( idealState.Name() ), "idAI::Save" );
+////	if ( this.idealState ) {
+////		idLexer src( this.idealState.Name(), idStr::Length( this.idealState.Name() ), "idAI::Save" );
 ////
 ////		src.ReadTokenOnLine( &token );
 ////		src.ExpectTokenString( "::" );
@@ -797,8 +796,8 @@ Spawn():void {
 ////	int i, num;
 ////	idActor *ent;
 ////
-////	savefile.ReadInt( team );
-////	savefile.ReadInt( rank );
+////	savefile.ReadInt( this.team );
+////	savefile.ReadInt( this.rank );
 ////	savefile.ReadMat3( this.viewAxis );
 ////
 ////	savefile.ReadInt( num );
@@ -812,12 +811,12 @@ Spawn():void {
 ////
 ////	savefile.ReadFloat( fovDot );
 ////	savefile.ReadVec3( eyeOffset );
-////	savefile.ReadVec3( modelOffset );
+////	savefile.ReadVec3( this.modelOffset );
 ////	savefile.ReadAngles( deltaViewAngles );
 ////
-////	savefile.ReadInt( pain_debounce_time );
-////	savefile.ReadInt( pain_delay );
-////	savefile.ReadInt( pain_threshold );
+////	savefile.ReadInt( this.pain_debounce_time );
+////	savefile.ReadInt( this.pain_delay );
+////	savefile.ReadInt( this.pain_threshold );
 ////
 ////	savefile.ReadInt( num );
 ////	damageGroups.SetGranularity( 1 );
@@ -849,12 +848,12 @@ Spawn():void {
 ////	savefile.ReadJoint( rightEyeJoint );
 ////	savefile.ReadJoint( soundJoint );
 ////
-////	walkIK.Restore( savefile );
+////	this.walkIK.Restore( savefile );
 ////
-////	savefile.ReadString( animPrefix );
+////	savefile.ReadString( this.animPrefix );
 ////	savefile.ReadString( painAnim );
 ////
-////	savefile.ReadInt( blink_anim );
+////	savefile.ReadInt( this.blink_anim );
 ////	savefile.ReadInt( blink_time );
 ////	savefile.ReadInt( blink_min );
 ////	savefile.ReadInt( blink_max );
@@ -885,12 +884,12 @@ Spawn():void {
 ////
 ////	savefile.ReadString( statename );
 ////	if ( statename.Length() > 0 ) {
-////		state = GetScriptFunction( statename );
+////		this.state = GetScriptFunction( statename );
 ////	}
 ////
 ////	savefile.ReadString( statename );
 ////	if ( statename.Length() > 0 ) {
-////		idealState = GetScriptFunction( statename );
+////		this.idealState = GetScriptFunction( statename );
 ////	}
 ////}
 ////
@@ -983,7 +982,7 @@ Spawn():void {
 ////bool idActor::LoadAF( ) {
 ////	idStr fileName;
 ////
-////	if ( !spawnArgs.GetString( "ragdoll", "*unknown*", fileName ) || !fileName.Length() ) {
+////	if ( !this.spawnArgs.GetString( "ragdoll", "*unknown*", fileName ) || !fileName.Length() ) {
 ////		return false;
 ////	}
 ////	af.SetAnimator( GetAnimator() );
@@ -998,67 +997,67 @@ Spawn():void {
 ////void idActor::SetupBody( ) {
 ////	jointname:string;
 ////
-////	animator.ClearAllAnims( gameLocal.time, 0 );
-////	animator.ClearAllJoints();
+////	this.animator.ClearAllAnims( gameLocal.time, 0 );
+////	this.animator.ClearAllJoints();
 ////
 ////	idEntity *headEnt = this.head.GetEntity();
 ////	if ( headEnt ) {
-////		jointname = spawnArgs.GetString( "bone_leftEye" );
+////		jointname = this.spawnArgs.GetString( "bone_leftEye" );
 ////		leftEyeJoint = headEnt.GetAnimator().GetJointHandle( jointname );
 ////
-////		jointname = spawnArgs.GetString( "bone_rightEye" );
+////		jointname = this.spawnArgs.GetString( "bone_rightEye" );
 ////		rightEyeJoint = headEnt.GetAnimator().GetJointHandle( jointname );
 ////
 ////		// set up the eye height.  check if it's specified in the def.
-////		if ( !spawnArgs.GetFloat( "eye_height", "0", eyeOffset.z ) ) {
+////		if ( !this.spawnArgs.GetFloat( "eye_height", "0", eyeOffset.z ) ) {
 ////			// if not in the def, then try to base it off the idle animation
 ////			int anim = headEnt.GetAnimator().GetAnim( "idle" );
-////			if ( anim && ( leftEyeJoint != INVALID_JOINT ) ) {
+////			if ( anim && ( leftEyeJoint != jointHandle_t.INVALID_JOINT ) ) {
 ////				idVec3 pos;
 ////				idMat3 axis;
 ////				headEnt.GetAnimator().PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, 0 );
 ////				headEnt.GetAnimator().GetJointTransform( leftEyeJoint, gameLocal.time, pos, axis );
 ////				headEnt.GetAnimator().ClearAllAnims( gameLocal.time, 0 );
 ////				headEnt.GetAnimator().ForceUpdate();
-////				pos += headEnt.GetPhysics().GetOrigin() - GetPhysics().GetOrigin();
-////				eyeOffset = pos + modelOffset;
+////				pos += headEnt.GetPhysics().GetOrigin() - this.GetPhysics().GetOrigin();
+////				eyeOffset = pos + this.modelOffset;
 ////			} else {
 ////				// just base it off the bounding box size
-////				eyeOffset.z = GetPhysics().GetBounds()[ 1 ].z - 6;
+////				eyeOffset.z = this.GetPhysics().GetBounds()[ 1 ].z - 6;
 ////			}
 ////		}
 ////		headAnim.Init( this, headEnt.GetAnimator(), ANIMCHANNEL_ALL );
 ////	} else {
-////		jointname = spawnArgs.GetString( "bone_leftEye" );
-////		leftEyeJoint = animator.GetJointHandle( jointname );
+////		jointname = this.spawnArgs.GetString( "bone_leftEye" );
+////		leftEyeJoint = this.animator.GetJointHandle( jointname );
 ////
-////		jointname = spawnArgs.GetString( "bone_rightEye" );
-////		rightEyeJoint = animator.GetJointHandle( jointname );
+////		jointname = this.spawnArgs.GetString( "bone_rightEye" );
+////		rightEyeJoint = this.animator.GetJointHandle( jointname );
 ////
 ////		// set up the eye height.  check if it's specified in the def.
-////		if ( !spawnArgs.GetFloat( "eye_height", "0", eyeOffset.z ) ) {
+////		if ( !this.spawnArgs.GetFloat( "eye_height", "0", eyeOffset.z ) ) {
 ////			// if not in the def, then try to base it off the idle animation
-////			int anim = animator.GetAnim( "idle" );
-////			if ( anim && ( leftEyeJoint != INVALID_JOINT ) ) {
+////			int anim = this.animator.GetAnim( "idle" );
+////			if ( anim && ( leftEyeJoint != jointHandle_t.INVALID_JOINT ) ) {
 ////				idVec3 pos;
 ////				idMat3 axis;
-////				animator.PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, 0 );
-////				animator.GetJointTransform( leftEyeJoint, gameLocal.time, pos, axis );
-////				animator.ClearAllAnims( gameLocal.time, 0 );
-////				animator.ForceUpdate();
-////				eyeOffset = pos + modelOffset;
+////				this.animator.PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, 0 );
+////				this.animator.GetJointTransform( leftEyeJoint, gameLocal.time, pos, axis );
+////				this.animator.ClearAllAnims( gameLocal.time, 0 );
+////				this.animator.ForceUpdate();
+////				eyeOffset = pos + this.modelOffset;
 ////			} else {
 ////				// just base it off the bounding box size
-////				eyeOffset.z = GetPhysics().GetBounds()[ 1 ].z - 6;
+////				eyeOffset.z = this.GetPhysics().GetBounds()[ 1 ].z - 6;
 ////			}
 ////		}
-////		headAnim.Init( this, &animator, ANIMCHANNEL_HEAD );
+////		headAnim.Init( this, &this.animator, ANIMCHANNEL_HEAD );
 ////	}
 ////
 ////	waitState = "";
 ////
-////	torsoAnim.Init( this, &animator, ANIMCHANNEL_TORSO );
-////	legsAnim.Init( this, &animator, ANIMCHANNEL_LEGS );
+////	torsoAnim.Init( this, &this.animator, ANIMCHANNEL_TORSO );
+////	legsAnim.Init( this, &this.animator, ANIMCHANNEL_LEGS );
 ////}
 ////
 /////*
@@ -1068,15 +1067,15 @@ Spawn():void {
 ////*/
 ////void idActor::CheckBlink( ) {
 ////	// check if it's time to blink
-////	if ( !blink_anim || ( health <= 0 ) || !allowEyeFocus || ( blink_time > gameLocal.time ) ) {
+////	if ( !this.blink_anim || ( health <= 0 ) || !allowEyeFocus || ( blink_time > gameLocal.time ) ) {
 ////		return;
 ////	}
 ////
 ////	idEntity *headEnt = this.head.GetEntity();
 ////	if ( headEnt ) {
-////		headEnt.GetAnimator().PlayAnim( ANIMCHANNEL_EYELIDS, blink_anim, gameLocal.time, 1 );
+////		headEnt.GetAnimator().PlayAnim( ANIMCHANNEL_EYELIDS, this.blink_anim, gameLocal.time, 1 );
 ////	} else {
-////		animator.PlayAnim( ANIMCHANNEL_EYELIDS, blink_anim, gameLocal.time, 1 );
+////		this.animator.PlayAnim( ANIMCHANNEL_EYELIDS, this.blink_anim, gameLocal.time, 1 );
 ////	}
 ////
 ////	// set the next blink time
@@ -1093,7 +1092,7 @@ Spawn():void {
 ////		af.GetPhysicsToVisualTransform( origin, axis );
 ////		return true;
 ////	}
-////	origin = modelOffset;
+////	origin = this.modelOffset;
 ////	axis = this.viewAxis;
 ////	return true;
 ////}
@@ -1104,12 +1103,12 @@ Spawn():void {
 ////================
 ////*/
 ////bool idActor::GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis ) {
-////	if ( soundJoint != INVALID_JOINT ) {
-////		animator.GetJointTransform( soundJoint, gameLocal.time, origin, axis );
-////		origin += modelOffset;
+////	if ( soundJoint != jointHandle_t.INVALID_JOINT ) {
+////		this.animator.GetJointTransform( soundJoint, gameLocal.time, origin, axis );
+////		origin += this.modelOffset;
 ////		axis = this.viewAxis;
 ////	} else {
-////		origin = GetPhysics().GetGravityNormal() * -eyeOffset.z;
+////		origin = this.GetPhysics().GetGravityNormal() * -eyeOffset.z;
 ////		axis.Identity();
 ////	}
 ////	return true;
@@ -1164,7 +1163,7 @@ Spawn():void {
 ////
 ////	// make sure we have a scriptObject
 ////	if ( !scriptObject.HasObject() ) {
-////		gameLocal.Error( "No scriptobject set on '%s'.  Check the '%s' entityDef.", name.c_str(), GetEntityDefName() );
+////		gameLocal.Error( "No scriptobject set on '%s'.  Check the '%s' entityDef.", this.name.c_str(), GetEntityDefName() );
 ////	}
 ////
 ////	if ( !this.scriptThread ) {
@@ -1172,7 +1171,7 @@ Spawn():void {
 ////		this.scriptThread = new idThread();
 ////		this.scriptThread.ManualDelete();
 ////		this.scriptThread.ManualControl();
-////		this.scriptThread.SetThreadName( name.c_str() );
+////		this.scriptThread.SetThreadName( this.name.c_str() );
 ////	} else {
 ////		this.scriptThread.EndThread();
 ////	}
@@ -1180,7 +1179,7 @@ Spawn():void {
 ////	// call script object's constructor
 ////	constructor = scriptObject.GetConstructor();
 ////	if ( !constructor ) {
-////		gameLocal.Error( "Missing constructor on '%s' for entity '%s'", scriptObject.GetTypeName(), name.c_str() );
+////		gameLocal.Error( "Missing constructor on '%s' for entity '%s'", scriptObject.GetTypeName(), this.name.c_str() );
 ////	}
 ////
 ////	// init the script object's data
@@ -1219,12 +1218,12 @@ Spawn():void {
 ////	}
 ////
 ////	if ( ai_debugScript.GetInteger() == entityNumber ) {
-////		gameLocal.Printf( "%d: %s: State: %s\n", gameLocal.time, name.c_str(), newState.Name() );
+////		gameLocal.Printf( "%d: %s: State: %s\n", gameLocal.time, this.name.c_str(), newState.Name() );
 ////	}
 ////
-////	state = newState;
-////	idealState = state;
-////	this.scriptThread.CallFunction( this, state, true );
+////	this.state = newState;
+////	this.idealState = this.state;
+////	this.scriptThread.CallFunction( this, this.state, true );
 ////}
 ////
 /////*
@@ -1256,8 +1255,8 @@ Spawn():void {
 ////	// a series of state changes can happen in a single frame.
 ////	// this loop limits them in case we've entered an infinite loop.
 ////	for( i = 0; i < 20; i++ ) {
-////		if ( idealState != state ) {
-////			SetState( idealState );
+////		if ( this.idealState != this.state ) {
+////			SetState( this.idealState );
 ////		}
 ////
 ////		// don't call script until it's done waiting
@@ -1266,7 +1265,7 @@ Spawn():void {
 ////		}
 ////        
 ////		this.scriptThread.Execute();
-////		if ( idealState == state ) {
+////		if ( this.idealState == this.state ) {
 ////			break;
 ////		}
 ////	}
@@ -1315,7 +1314,7 @@ Spawn():void {
 ////=====================
 ////*/
 ////idVec3 idActor::EyeOffset( ) const {
-////	return GetPhysics().GetGravityNormal() * -eyeOffset.z;
+////	return this.GetPhysics().GetGravityNormal() * -eyeOffset.z;
 ////}
 ////
 /////*
@@ -1324,7 +1323,7 @@ Spawn():void {
 ////=====================
 ////*/
 ////idVec3 idActor::GetEyePosition( ) const {
-////	return GetPhysics().GetOrigin() + ( GetPhysics().GetGravityNormal() * -eyeOffset.z );
+////	return this.GetPhysics().GetOrigin() + ( this.GetPhysics().GetGravityNormal() * -eyeOffset.z );
 ////}
 ////
 /////*
@@ -1353,7 +1352,7 @@ Spawn():void {
 ////	delta = pos - GetEyePosition();
 ////
 ////	// get our gravity normal
-////	const idVec3 &gravityDir = GetPhysics().GetGravityNormal();
+////	const idVec3 &gravityDir = this.GetPhysics().GetGravityNormal();
 ////
 ////	// infinite vertical vision, so project it onto our orientation plane
 ////	delta -= gravityDir * ( gravityDir * delta );
@@ -1424,7 +1423,7 @@ Spawn():void {
 ////*/
 ////void idActor::GetAIAimTargets( const idVec3 &lastSightPos, idVec3 &headPos, idVec3 &chestPos ) {
 ////	headPos = lastSightPos + EyeOffset();
-////	chestPos = ( headPos + lastSightPos + GetPhysics().GetBounds().GetCenter() ) * 0.5f;
+////	chestPos = ( headPos + lastSightPos + this.GetPhysics().GetBounds().GetCenter() ) * 0.5f;
 ////}
 ////
 /////*
@@ -1536,27 +1535,27 @@ Spawn():void {
 ////	}
 ////
 ////	// disable the monster bounding box
-////	GetPhysics().DisableClip();
+////	this.GetPhysics().DisableClip();
 ////
 ////	// start using the AF
-////	af.StartFromCurrentPose( spawnArgs.GetInt( "velocityTime", "0" ) );
+////	af.StartFromCurrentPose( this.spawnArgs.GetInt( "velocityTime", "0" ) );
 ////
-////	slomoStart = MS2SEC( gameLocal.time ) + spawnArgs.GetFloat( "ragdoll_slomoStart", "-1.6" );
-////	slomoEnd = MS2SEC( gameLocal.time ) + spawnArgs.GetFloat( "ragdoll_slomoEnd", "0.8" );
+////	slomoStart = MS2SEC( gameLocal.time ) + this.spawnArgs.GetFloat( "ragdoll_slomoStart", "-1.6" );
+////	slomoEnd = MS2SEC( gameLocal.time ) + this.spawnArgs.GetFloat( "ragdoll_slomoEnd", "0.8" );
 ////
 ////	// do the first part of the death in slow motion
 ////	af.GetPhysics().SetTimeScaleRamp( slomoStart, slomoEnd );
 ////
-////	jointFrictionDent = spawnArgs.GetFloat( "ragdoll_jointFrictionDent", "0.1" );
-////	jointFrictionDentStart = MS2SEC( gameLocal.time ) + spawnArgs.GetFloat( "ragdoll_jointFrictionStart", "0.2" );
-////	jointFrictionDentEnd = MS2SEC( gameLocal.time ) + spawnArgs.GetFloat( "ragdoll_jointFrictionEnd", "1.2" );
+////	jointFrictionDent = this.spawnArgs.GetFloat( "ragdoll_jointFrictionDent", "0.1" );
+////	jointFrictionDentStart = MS2SEC( gameLocal.time ) + this.spawnArgs.GetFloat( "ragdoll_jointFrictionStart", "0.2" );
+////	jointFrictionDentEnd = MS2SEC( gameLocal.time ) + this.spawnArgs.GetFloat( "ragdoll_jointFrictionEnd", "1.2" );
 ////
 ////	// set joint friction dent
 ////	af.GetPhysics().SetJointFrictionDent( jointFrictionDent, jointFrictionDentStart, jointFrictionDentEnd );
 ////
-////	contactFrictionDent = spawnArgs.GetFloat( "ragdoll_contactFrictionDent", "0.1" );
-////	contactFrictionDentStart = MS2SEC( gameLocal.time ) + spawnArgs.GetFloat( "ragdoll_contactFrictionStart", "1.0" );
-////	contactFrictionDentEnd = MS2SEC( gameLocal.time ) + spawnArgs.GetFloat( "ragdoll_contactFrictionEnd", "2.0" );
+////	contactFrictionDent = this.spawnArgs.GetFloat( "ragdoll_contactFrictionDent", "0.1" );
+////	contactFrictionDentStart = MS2SEC( gameLocal.time ) + this.spawnArgs.GetFloat( "ragdoll_contactFrictionStart", "1.0" );
+////	contactFrictionDentEnd = MS2SEC( gameLocal.time ) + this.spawnArgs.GetFloat( "ragdoll_contactFrictionEnd", "2.0" );
 ////
 ////	// set contact friction dent
 ////	af.GetPhysics().SetContactFrictionDent( contactFrictionDent, contactFrictionDentStart, contactFrictionDentEnd );
@@ -1593,11 +1592,11 @@ Spawn():void {
 ////	if ( af.IsActive() ) {
 ////		return idAFEntity_Base::UpdateAnimationControllers();
 ////	} else {
-////		animator.ClearAFPose();
+////		this.animator.ClearAFPose();
 ////	}
 ////
-////	if ( walkIK.IsInitialized() ) {
-////		walkIK.Evaluate();
+////	if ( this.walkIK.IsInitialized() ) {
+////		this.walkIK.Evaluate();
 ////		return true;
 ////	}
 ////
@@ -1637,15 +1636,15 @@ Spawn():void {
 ////	idVec3			originOffset;
 ////
 ////	jointName = ent.spawnArgs.GetString( "joint" );
-////	joint = animator.GetJointHandle( jointName );
-////	if ( joint == INVALID_JOINT ) {
-////		gameLocal.Error( "Joint '%s' not found for attaching '%s' on '%s'", jointName.c_str(), ent.GetClassname(), name.c_str() );
+////	joint = this.animator.GetJointHandle( jointName );
+////	if ( joint == jointHandle_t.INVALID_JOINT ) {
+////		gameLocal.Error( "Joint '%s' not found for attaching '%s' on '%s'", jointName.c_str(), ent.GetClassname(), this.name.c_str() );
 ////	}
 ////
 ////	angleOffset = ent.spawnArgs.GetAngles( "angles" );
 ////	originOffset = ent.spawnArgs.GetVector( "origin" );
 ////
-////	attach.channel = animator.GetChannelForJoint( joint );
+////	attach.channel = this.animator.GetChannelForJoint( joint );
 ////	GetJointWorldTransform( joint, gameLocal.time, origin, axis );
 ////	attach.ent = ent;
 ////
@@ -1663,8 +1662,8 @@ Spawn():void {
 ////================
 ////*/
 ////void idActor::Teleport( const idVec3 &origin, angles:idAngles, idEntity *destination ) {
-////	GetPhysics().SetOrigin( origin + idVec3( 0, 0, CM_CLIP_EPSILON ) );
-////	GetPhysics().SetLinearVelocity( vec3_origin );
+////	this.GetPhysics().SetOrigin( origin + idVec3( 0, 0, CM_CLIP_EPSILON ) );
+////	this.GetPhysics().SetLinearVelocity( vec3_origin );
 ////
 ////	this.viewAxis.equals( angles.ToMat3();
 ////
@@ -1949,11 +1948,11 @@ Spawn():void {
 ////		}
 ////		animatorPtr = this.head.GetEntity().GetAnimator();
 ////	} else {
-////		animatorPtr = &animator;
+////		animatorPtr = &this.animator;
 ////	}
 ////
-////	if ( animPrefix.Length() ) {
-////		temp = va( "%s_%s", animPrefix.c_str(), animname );
+////	if ( this.animPrefix.Length() ) {
+////		temp = va( "%s_%s", this.animPrefix.c_str(), animname );
 ////		anim = animatorPtr.GetAnim( temp );
 ////		if ( anim ) {
 ////			return anim;
@@ -1984,15 +1983,15 @@ Spawn():void {
 ////		headEnt = this.head.GetEntity();
 ////		if ( headEnt ) {
 ////			headAnimator = headEnt.GetAnimator();
-////			syncAnim = animator.CurrentAnim( syncToChannel );
+////			syncAnim = this.animator.CurrentAnim( syncToChannel );
 ////			if ( syncAnim ) {
 ////				anim = headAnimator.GetAnim( syncAnim.AnimFullName() );
 ////				if ( !anim ) {
 ////					anim = headAnimator.GetAnim( syncAnim.AnimName() );
 ////				}
 ////				if ( anim ) {
-////					cycle = animator.CurrentAnim( syncToChannel ).GetCycleCount();
-////					starttime = animator.CurrentAnim( syncToChannel ).GetStartTime();
+////					cycle = this.animator.CurrentAnim( syncToChannel ).GetCycleCount();
+////					starttime = this.animator.CurrentAnim( syncToChannel ).GetStartTime();
 ////					headAnimator.PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, blendTime );
 ////					headAnimator.CurrentAnim( ANIMCHANNEL_ALL ).SetCycleCount( cycle );
 ////					headAnimator.CurrentAnim( ANIMCHANNEL_ALL ).SetStartTime( starttime );
@@ -2014,14 +2013,14 @@ Spawn():void {
 ////				if ( anim ) {
 ////					cycle = headAnimator.CurrentAnim( ANIMCHANNEL_ALL ).GetCycleCount();
 ////					starttime = headAnimator.CurrentAnim( ANIMCHANNEL_ALL ).GetStartTime();
-////					animator.PlayAnim( channel, anim, gameLocal.time, blendTime );
-////					animator.CurrentAnim( channel ).SetCycleCount( cycle );
-////					animator.CurrentAnim( channel ).SetStartTime( starttime );
+////					this.animator.PlayAnim( channel, anim, gameLocal.time, blendTime );
+////					this.animator.CurrentAnim( channel ).SetCycleCount( cycle );
+////					this.animator.CurrentAnim( channel ).SetStartTime( starttime );
 ////				}
 ////			}
 ////		}
 ////	} else {
-////		animator.SyncAnimChannels( channel, syncToChannel, gameLocal.time, blendTime );
+////		this.animator.SyncAnimChannels( channel, syncToChannel, gameLocal.time, blendTime );
 ////	}
 ////}
 ////
@@ -2106,7 +2105,7 @@ Spawn():void {
 ////				health = -999;
 ////			}
 ////			Killed( inflictor, attacker, damage, dir, location );
-////			if ( ( health < -20 ) && spawnArgs.GetBool( "gib" ) && damageDef.GetBool( "gib" ) ) {
+////			if ( ( health < -20 ) && this.spawnArgs.GetBool( "gib" ) && damageDef.GetBool( "gib" ) ) {
 ////				Gib( dir, damageDefName );
 ////			}
 ////		} else {
@@ -2130,7 +2129,7 @@ Spawn():void {
 ////=====================
 ////*/
 ////void idActor::ClearPain( ) {
-////	pain_debounce_time = 0;
+////	this.pain_debounce_time = 0;
 ////}
 ////
 /////*
@@ -2147,12 +2146,12 @@ Spawn():void {
 ////		BecomeActive( TH_PHYSICS );
 ////	}
 ////
-////	if ( gameLocal.time < pain_debounce_time ) {
+////	if ( gameLocal.time < this.pain_debounce_time ) {
 ////		return false;
 ////	}
 ////
 ////	// don't play pain sounds more than necessary
-////	pain_debounce_time = gameLocal.time + pain_delay;
+////	this.pain_debounce_time = gameLocal.time + this.pain_delay;
 ////
 ////	if ( health > 75  ) {
 ////		StartSound( "snd_pain_small", SND_CHANNEL_VOICE, 0, false, NULL );
@@ -2169,7 +2168,7 @@ Spawn():void {
 ////		return false;
 ////	}
 ////
-////	if ( pain_threshold && ( damage < pain_threshold ) ) {
+////	if ( this.pain_threshold && ( damage < this.pain_threshold ) ) {
 ////		return false;
 ////	}
 ////
@@ -2177,28 +2176,28 @@ Spawn():void {
 ////	idStr damageGroup = GetDamageGroup( location );
 ////
 ////	painAnim = "";
-////	if ( animPrefix.Length() ) {
+////	if ( this.animPrefix.Length() ) {
 ////		if ( damageGroup.Length() && ( damageGroup != "legs" ) ) {
-////			sprintf( painAnim, "%s_pain_%s", animPrefix.c_str(), damageGroup.c_str() );
-////			if ( !animator.HasAnim( painAnim ) ) {
+////			sprintf( painAnim, "%s_pain_%s", this.animPrefix.c_str(), damageGroup.c_str() );
+////			if ( !this.animator.HasAnim( painAnim ) ) {
 ////				sprintf( painAnim, "pain_%s", damageGroup.c_str() );
-////				if ( !animator.HasAnim( painAnim ) ) {
+////				if ( !this.animator.HasAnim( painAnim ) ) {
 ////					painAnim = "";
 ////				}
 ////			}
 ////		}
 ////
 ////		if ( !painAnim.Length() ) {
-////			sprintf( painAnim, "%s_pain", animPrefix.c_str() );
-////			if ( !animator.HasAnim( painAnim ) ) {
+////			sprintf( painAnim, "%s_pain", this.animPrefix.c_str() );
+////			if ( !this.animator.HasAnim( painAnim ) ) {
 ////				painAnim = "";
 ////			}
 ////		}
 ////	} else if ( damageGroup.Length() && ( damageGroup != "legs" ) ) {
 ////		sprintf( painAnim, "pain_%s", damageGroup.c_str() );
-////		if ( !animator.HasAnim( painAnim ) ) {
+////		if ( !this.animator.HasAnim( painAnim ) ) {
 ////			sprintf( painAnim, "pain_%s", damageGroup.c_str() );
-////			if ( !animator.HasAnim( painAnim ) ) {
+////			if ( !this.animator.HasAnim( painAnim ) ) {
 ////				painAnim = "";
 ////			}
 ////		}
@@ -2209,7 +2208,7 @@ Spawn():void {
 ////	}
 ////
 ////	if ( g_debugDamage.GetBool() ) {
-////		gameLocal.Printf( "Damage: joint: '%s', zone '%s', anim '%s'\n", animator.GetJointName( ( jointHandle_t )location ), 
+////		gameLocal.Printf( "Damage: joint: '%s', zone '%s', anim '%s'\n", this.animator.GetJointName( ( jointHandle_t )location ), 
 ////			damageGroup.c_str(), painAnim.c_str() );
 ////	}
 ////
@@ -2242,28 +2241,28 @@ Spawn():void {
 ////	float					scale;
 ////
 ////	// create damage zones
-////	damageGroups.SetNum( animator.NumJoints() );
-////	arg = spawnArgs.MatchPrefix( "damage_zone ", NULL );
+////	damageGroups.SetNum( this.animator.NumJoints() );
+////	arg = this.spawnArgs.MatchPrefix( "damage_zone ", NULL );
 ////	while ( arg ) {
 ////		groupname = arg.GetKey();
 ////		groupname.Strip( "damage_zone " );
-////		animator.GetJointList( arg.GetValue(), jointList );
+////		this.animator.GetJointList( arg.GetValue(), jointList );
 ////		for( i = 0; i < jointList.Num(); i++ ) {
 ////			jointnum = jointList[ i ];
 ////			damageGroups[ jointnum ] = groupname;
 ////		}
 ////		jointList.Clear();
-////		arg = spawnArgs.MatchPrefix( "damage_zone ", arg );
+////		arg = this.spawnArgs.MatchPrefix( "damage_zone ", arg );
 ////	}
 ////
 ////	// initilize the damage zones to normal damage
-////	damageScale.SetNum( animator.NumJoints() );
+////	damageScale.SetNum( this.animator.NumJoints() );
 ////	for( i = 0; i < damageScale.Num(); i++ ) {
 ////		damageScale[ i ] = 1.0f;
 ////	}
 ////
 ////	// set the percentage on damage zones
-////	arg = spawnArgs.MatchPrefix( "damage_scale ", NULL );
+////	arg = this.spawnArgs.MatchPrefix( "damage_scale ", NULL );
 ////	while ( arg ) {
 ////		scale = atof( arg.GetValue() );
 ////		groupname = arg.GetKey();
@@ -2273,7 +2272,7 @@ Spawn():void {
 ////				damageScale[ i ] = scale;
 ////			}
 ////		}
-////		arg = spawnArgs.MatchPrefix( "damage_scale ", arg );
+////		arg = this.spawnArgs.MatchPrefix( "damage_scale ", arg );
 ////	}
 ////}
 ////
@@ -2319,17 +2318,17 @@ Spawn():void {
 ////	const char *sound = NULL;
 ////	const idMaterial *material;
 ////
-////	if ( !GetPhysics().HasGroundContacts() ) {
+////	if ( !this.GetPhysics().HasGroundContacts() ) {
 ////		return;
 ////	}
 ////
 ////	// start footstep sound based on material type
-////	material = GetPhysics().GetContact( 0 ).material;
+////	material = this.GetPhysics().GetContact( 0 ).material;
 ////	if ( material != NULL ) {
-////		sound = spawnArgs.GetString( va( "snd_footstep_%s", gameLocal.sufaceTypeNames[ material.GetSurfaceType() ] ) );
+////		sound = this.spawnArgs.GetString( va( "snd_footstep_%s", gameLocal.sufaceTypeNames[ material.GetSurfaceType() ] ) );
 ////	}
 ////	if ( *sound == '\0' ) {
-////		sound = spawnArgs.GetString( "snd_footstep" );
+////		sound = this.spawnArgs.GetString( "snd_footstep" );
 ////	}
 ////	if ( *sound != '\0' ) {
 ////		StartSoundShader( declManager.FindSound( sound ), SND_CHANNEL_BODY, 0, false, NULL );
@@ -2358,7 +2357,7 @@ Spawn():void {
 ////	if ( headEnt ) {
 ////		headEnt.GetAnimator().Clear( ANIMCHANNEL_EYELIDS, gameLocal.time, FRAME2MS( 2 ) );
 ////	} else {
-////		animator.Clear( ANIMCHANNEL_EYELIDS, gameLocal.time, FRAME2MS( 2 ) );
+////		this.animator.Clear( ANIMCHANNEL_EYELIDS, gameLocal.time, FRAME2MS( 2 ) );
 ////	}
 ////}
 ////
@@ -2377,7 +2376,7 @@ Spawn():void {
 ////=====================
 ////*/
 ////void idActor::Event_EnableWalkIK( ) {
-////	walkIK.EnableAll();
+////	this.walkIK.EnableAll();
 ////}
 ////
 /////*
@@ -2386,7 +2385,7 @@ Spawn():void {
 ////=====================
 ////*/
 ////void idActor::Event_DisableWalkIK( ) {
-////	walkIK.DisableAll();
+////	this.walkIK.DisableAll();
 ////}
 ////
 /////*
@@ -2395,7 +2394,7 @@ Spawn():void {
 ////=====================
 ////*/
 ////void idActor::Event_EnableLegIK( int num ) {
-////	walkIK.EnableLeg( num );
+////	this.walkIK.EnableLeg( num );
 ////}
 ////
 /////*
@@ -2404,7 +2403,7 @@ Spawn():void {
 ////=====================
 ////*/
 ////void idActor::Event_DisableLegIK( int num ) {
-////	walkIK.DisableLeg( num );
+////	this.walkIK.DisableLeg( num );
 ////}
 ////
 /////*
@@ -2453,7 +2452,7 @@ Spawn():void {
 ////=====================
 ////*/
 ////void idActor::Event_SetAnimPrefix( const char *prefix ) {
-////	animPrefix = prefix;
+////	this.animPrefix.equals(prefix);
 ////}
 ////
 /////*
@@ -2494,9 +2493,9 @@ Spawn():void {
 ////	anim = GetAnim( channel, animname );
 ////	if ( !anim ) {
 ////		if ( ( channel == ANIMCHANNEL_HEAD ) && this.head.GetEntity() ) {
-////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, name.c_str(), spawnArgs.GetString( "def_head", "" ) );
+////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), this.spawnArgs.GetString( "def_head", "" ) );
 ////		} else {
-////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, name.c_str(), GetEntityDefName() );
+////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), GetEntityDefName() );
 ////		}
 ////		idThread::ReturnInt( 0 );
 ////		return;
@@ -2573,9 +2572,9 @@ Spawn():void {
 ////	anim = GetAnim( channel, animname );
 ////	if ( !anim ) {
 ////		if ( ( channel == ANIMCHANNEL_HEAD ) && this.head.GetEntity() ) {
-////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, name.c_str(), spawnArgs.GetString( "def_head", "" ) );
+////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), this.spawnArgs.GetString( "def_head", "" ) );
 ////		} else {
-////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, name.c_str(), GetEntityDefName() );
+////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), GetEntityDefName() );
 ////		}
 ////		idThread::ReturnInt( false );
 ////		return;
@@ -2646,9 +2645,9 @@ Spawn():void {
 ////	anim = GetAnim( channel, animname );	
 ////	if ( !anim ) {
 ////		if ( ( channel == ANIMCHANNEL_HEAD ) && this.head.GetEntity() ) {
-////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, name.c_str(), spawnArgs.GetString( "def_head", "" ) );
+////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), this.spawnArgs.GetString( "def_head", "" ) );
 ////		} else {
-////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, name.c_str(), GetEntityDefName() );
+////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), GetEntityDefName() );
 ////		}
 ////
 ////		switch( channel ) {
@@ -2754,34 +2753,34 @@ Spawn():void {
 ////	switch( channel ) {
 ////	case ANIMCHANNEL_HEAD :
 ////		if ( headEnt ) {
-////			animator.CurrentAnim( ANIMCHANNEL_ALL ).SetSyncedAnimWeight( anim, weight );
+////			this.animator.CurrentAnim( ANIMCHANNEL_ALL ).SetSyncedAnimWeight( anim, weight );
 ////		} else {
-////			animator.CurrentAnim( ANIMCHANNEL_HEAD ).SetSyncedAnimWeight( anim, weight );
+////			this.animator.CurrentAnim( ANIMCHANNEL_HEAD ).SetSyncedAnimWeight( anim, weight );
 ////		}
 ////		if ( torsoAnim.IsIdle() ) {
-////			animator.CurrentAnim( ANIMCHANNEL_TORSO ).SetSyncedAnimWeight( anim, weight );
+////			this.animator.CurrentAnim( ANIMCHANNEL_TORSO ).SetSyncedAnimWeight( anim, weight );
 ////			if ( legsAnim.IsIdle() ) {
-////				animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( anim, weight );
+////				this.animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( anim, weight );
 ////			}
 ////		}
 ////		break;
 ////
 ////	case ANIMCHANNEL_TORSO :
-////		animator.CurrentAnim( ANIMCHANNEL_TORSO ).SetSyncedAnimWeight( anim, weight );
+////		this.animator.CurrentAnim( ANIMCHANNEL_TORSO ).SetSyncedAnimWeight( anim, weight );
 ////		if ( legsAnim.IsIdle() ) {
-////			animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( anim, weight );
+////			this.animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( anim, weight );
 ////		}
 ////		if ( headEnt && headAnim.IsIdle() ) {
-////			animator.CurrentAnim( ANIMCHANNEL_ALL ).SetSyncedAnimWeight( anim, weight );
+////			this.animator.CurrentAnim( ANIMCHANNEL_ALL ).SetSyncedAnimWeight( anim, weight );
 ////		}
 ////		break;
 ////
 ////	case ANIMCHANNEL_LEGS :
-////		animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( anim, weight );
+////		this.animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( anim, weight );
 ////		if ( torsoAnim.IsIdle() ) {
-////			animator.CurrentAnim( ANIMCHANNEL_TORSO ).SetSyncedAnimWeight( anim, weight );
+////			this.animator.CurrentAnim( ANIMCHANNEL_TORSO ).SetSyncedAnimWeight( anim, weight );
 ////			if ( headEnt && headAnim.IsIdle() ) {
-////				animator.CurrentAnim( ANIMCHANNEL_ALL ).SetSyncedAnimWeight( anim, weight );
+////				this.animator.CurrentAnim( ANIMCHANNEL_ALL ).SetSyncedAnimWeight( anim, weight );
 ////			}
 ////		}
 ////		break;
@@ -2997,10 +2996,10 @@ Spawn():void {
 ////*/
 ////void idActor::Event_CheckAnim( int channel, const char *animname ) {
 ////	if ( !GetAnim( channel, animname ) ) {
-////		if ( animPrefix.Length() ) {
-////			gameLocal.Error( "Can't find anim '%s_%s' for '%s'", animPrefix.c_str(), animname, name.c_str() );
+////		if ( this.animPrefix.Length() ) {
+////			gameLocal.Error( "Can't find anim '%s_%s' for '%s'", this.animPrefix.c_str(), animname, this.name.c_str() );
 ////		} else {
-////			gameLocal.Error( "Can't find anim '%s' for '%s'", animname, name.c_str() );
+////			gameLocal.Error( "Can't find anim '%s' for '%s'", animname, this.name.c_str() );
 ////		}
 ////	}
 ////}
@@ -3021,7 +3020,7 @@ Spawn():void {
 ////				return;
 ////			}
 ////		} else {
-////			idThread::ReturnString( animator.AnimFullName( anim ) );
+////			idThread::ReturnString( this.animator.AnimFullName( anim ) );
 ////			return;
 ////		}
 ////	}
@@ -3045,7 +3044,7 @@ Spawn():void {
 ////				return;
 ////			}
 ////		} else {
-////			idThread::ReturnFloat( MS2SEC( animator.AnimLength( anim ) ) );
+////			idThread::ReturnFloat( MS2SEC( this.animator.AnimLength( anim ) ) );
 ////			return;
 ////		}		
 ////	}
@@ -3069,7 +3068,7 @@ Spawn():void {
 ////				return;
 ////			}
 ////		} else {
-////			idThread::ReturnFloat( animator.TotalMovementDelta( anim ).Length() );
+////			idThread::ReturnFloat( this.animator.TotalMovementDelta( anim ).Length() );
 ////			return;
 ////		}
 ////	}
@@ -3106,7 +3105,7 @@ Spawn():void {
 ////
 ////		actor = static_cast<idActor *>( ent );
 ////		if ( actor.enemyNode.ListHead() != &enemyList ) {
-////			gameLocal.Error( "'%s' is not in '%s' enemy list", actor.name.c_str(), name.c_str() );
+////			gameLocal.Error( "'%s' is not in '%s' enemy list", actor.name.c_str(), this.name.c_str() );
 ////		}
 ////	}
 ////
@@ -3151,9 +3150,9 @@ Spawn():void {
 ////=====================
 ////*/
 ////void idActor::Event_SetNextState( name:string ) {
-////	idealState = GetScriptFunction( name );
-////	if ( idealState == state ) {
-////		state = NULL;
+////	this.idealState = GetScriptFunction( name );
+////	if ( this.idealState == this.state ) {
+////		this.state = NULL;
 ////	}
 ////}
 ////
@@ -3163,9 +3162,9 @@ Spawn():void {
 ////=====================
 ////*/
 ////void idActor::Event_SetState( name:string ) {
-////	idealState = GetScriptFunction( name );
-////	if ( idealState == state ) {
-////		state = NULL;
+////	this.idealState = GetScriptFunction( name );
+////	if ( this.idealState == this.state ) {
+////		this.state = NULL;
 ////	}
 ////	this.scriptThread.DoneProcessing();
 ////}
@@ -3176,8 +3175,8 @@ Spawn():void {
 ////=====================
 ////*/
 ////void idActor::Event_GetState( ) {
-////	if ( state ) {
-////		idThread::ReturnString( state.Name() );
+////	if ( this.state ) {
+////		idThread::ReturnString( this.state.Name() );
 ////	} else {
 ////		idThread::ReturnString( "" );
 ////	}

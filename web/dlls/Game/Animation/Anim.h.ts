@@ -3879,14 +3879,14 @@ class idAnimator {
 	//	return this.modelDef.HasAnim( name );
 	//}
 	//
-	///*
-	//=====================
-	//idAnimator::NumJoints
-	//=====================
-	//*/
-	//int	idAnimator::NumJoints( ) const {
-	//	return numJoints;
-	//}
+	/*
+	=====================
+	idAnimator::NumJoints
+	=====================
+	*/
+	NumJoints( ) :number{
+		return this.numJoints;
+	}
 	
 	/*
 	=====================
@@ -4045,7 +4045,7 @@ class idAnimator {
 	//	var/*int*/i:number;
 	//	jointMod_t *jointMod;
 	//
-	//	if ( !this.modelDef || !this.modelDef.ModelHandle() || ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
+	//	if ( !this.modelDef || !this.modelDef.ModelHandle() || ( jointnum < 0 ) || ( jointnum >= this.numJoints ) ) {
 	//		return;
 	//	}
 	//
@@ -4085,7 +4085,7 @@ class idAnimator {
 	//	var/*int*/i:number;
 	//	jointMod_t *jointMod;
 	//
-	//	if ( !this.modelDef || !this.modelDef.ModelHandle() || ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
+	//	if ( !this.modelDef || !this.modelDef.ModelHandle() || ( jointnum < 0 ) || ( jointnum >= this.numJoints ) ) {
 	//		return;
 	//	}
 	//
@@ -4124,7 +4124,7 @@ class idAnimator {
 	//void idAnimator::ClearJoint( jointnum:jointHandle_t ) {
 	//	var/*int*/i:number;
 	//
-	//	if ( !this.modelDef || !this.modelDef.ModelHandle() || ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
+	//	if ( !this.modelDef || !this.modelDef.ModelHandle() || ( jointnum < 0 ) || ( jointnum >= this.numJoints ) ) {
 	//		return;
 	//	}
 	//

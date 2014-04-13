@@ -409,46 +409,46 @@ Resets the memory for the script object without changing its type.
 //	return this.type.Name();
 //}
 //
-///*
-//============
-//idScriptObject::GetConstructor
-//============
-//*/
-//const function_t *idScriptObject::GetConstructor( ) const {
-//	const function_t *func;
-//
-//	func = GetFunction( "init" );
-//	return func;
-//}
-//
-///*
-//============
-//idScriptObject::GetDestructor
-//============
-//*/
-//const function_t *idScriptObject::GetDestructor( ) const {
-//	const function_t *func;
-//
-//	func = GetFunction( "destroy" );
-//	return func;
-//}
-//
-///*
-//============
-//idScriptObject::GetFunction
-//============
-//*/
-//const function_t *idScriptObject::GetFunction( name:string ) const {
-//	const function_t *func;
-//
-//	if ( this.type == &type_object ) {
-//		return null;
-//	}
-//
-//	func = gameLocal.program.FindFunction( name, this.type );
-//	return func;
-//}
-//
+/*
+============
+idScriptObject::GetConstructor
+============
+*/
+	GetConstructor ( ): function_t {
+		var func: function_t;
+
+		func = this.GetFunction( "init" );
+		return func;
+	}
+
+/*
+============
+idScriptObject::GetDestructor
+============
+*/
+	GetDestructor ( ): function_t {
+		var func: function_t;
+
+		func = this.GetFunction( "destroy" );
+		return func;
+	}
+
+/*
+============
+idScriptObject::GetFunction
+============
+*/
+	GetFunction ( name: string ): function_t {
+		var func: function_t;
+
+		if ( this.type == type_object ) {
+			return null;
+		}
+
+		func = gameLocal.program.FindFunction_type( name, this.type );
+		return func;
+	}
+
 ///*
 //============
 //idScriptObject::GetVariable
@@ -1084,31 +1084,31 @@ Returns >0 if function found.
 		return null;
 	}
 
-///*
-//================
-//idProgram::FindFunction
-//
-//Searches for the specified object function in the currently loaded script.
-//
-//Returns 0 if function not found.
-//Returns >0 if function found.
-//================
-//*/
-//function_t *idProgram::FindFunction( name:string, const idTypeDef *type ) const {
-//	const idVarDef	*tdef;
-//	const idVarDef	*def;
-//
-//	// look for the function
-//	def = null;
-//	for( tdef = type.def; tdef != &def_object; tdef = tdef.TypeDef().SuperClass().def ) {
-//		def = this.GetDef( null, name, tdef );
-//		if ( def ) {
-//			return def.value.functionPtr;
-//		}
-//	}
-//
-//	return null;
-//}
+/*
+================
+idProgram::FindFunction
+
+Searches for the specified object function in the currently loaded script.
+
+Returns 0 if function not found.
+Returns >0 if function found.
+================
+*/
+	FindFunction_type ( name: string, type: idTypeDef ): function_t {
+		var tdef: idVarDef;
+		var def: idVarDef;
+
+		// look for the function
+		def = null;
+		for ( tdef = type.def; tdef != def_object; tdef = tdef.TypeDef ( ).SuperClass ( ).def ) {
+			def = this.GetDef( null, name, tdef );
+			if ( def ) {
+				return def.value.functionPtr;
+			}
+		}
+
+		return null;
+	}
 
 /*
 ================

@@ -672,7 +672,7 @@ idEntity::Spawn
 		this.SetAxis( axis );
 
 		temp.$ = this.spawnArgs.GetString( "model" );
-		if ( temp.$ && temp.$ ) {
+		if ( temp.$ ) {
 			this.SetModel( temp.$ );
 		}
 
@@ -3234,31 +3234,30 @@ Called during idEntity::Spawn.  Calls the constructor on the script object.
 Can be overridden by subclasses when a thread doesn't need to be allocated.
 ================
 */
-	ConstructScriptObject(): idThread {
+	ConstructScriptObject ( ): idThread {
 		var thread: idThread;
-	todoThrow ( );
-	//const function_t *constructor;
+		var $constructor: function_t;
 
-	//// init the script object's data
-	//this.scriptObject.ClearObject();
+		// init the script object's data
+		this.scriptObject.ClearObject ( );
 
-	//// call script object's constructor
-	//constructor = this.scriptObject.GetConstructor();
-	//if ( constructor ) {
-	//	// start a thread that will initialize after Spawn is done being called
-	//	thread = new idThread();
-	//	thread.SetThreadName( this.name.c_str() );
-	//	thread.CallFunction( this, constructor, true );
-	//	thread.DelayedStart( 0 );
-	//} else {
-	//	thread = NULL;
-	//}
+		// call script object's constructor
+		$constructor = this.scriptObject.GetConstructor ( );
+		if ( $constructor ) {
+			// start a thread that will initialize after Spawn is done being called
+			thread = new idThread ( );
+			thread.SetThreadName( this.name.c_str ( ) );
+			thread.CallFunction( this, $constructor, true );
+			thread.DelayedStart( 0 );
+		} else {
+			thread = null;
+		}
 
-	//// clear out the object's memory
-	//this.scriptObject.ClearObject();
+		// clear out the object's memory
+		this.scriptObject.ClearObject ( );
 
-	return thread;
-}
+		return thread;
+	}
 
 /////*
 ////================

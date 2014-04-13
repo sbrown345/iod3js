@@ -537,6 +537,7 @@ idClipModel::Init
 	constructor ( )
 	constructor ( name: string )
 	constructor ( trm: idTraceModel )
+	constructor ( trm: idClipModel )
 	constructor ( a1?: any ) {
 		if ( arguments.length === 0 ) {
 			this.constructor_default ( );
@@ -554,9 +555,14 @@ idClipModel::Init
 			break;
 
 		case "object":
-			var name: string = a1;
-			this.constructor_name( name );
-			break;
+			if ( a1 instanceof idTraceModel ) {
+				var trm: idTraceModel = a1;
+				this.constructor_trace( trm );
+			} else if ( a1 instanceof idClipModel ) {
+				todoThrow ( );
+			} else {
+				todoThrow ( );
+			}
 			break;
 
 		default:

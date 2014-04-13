@@ -121,16 +121,16 @@ class idMultiModelAF extends idEntity {
 ////			continue;
 ////		}
 ////
-////		renderEntity.origin = physicsObj.GetOrigin( i );
-////		renderEntity.axis = physicsObj.GetAxis( i );
-////		renderEntity.hModel = modelHandles[i];
-////		renderEntity.bodyId = i;
+////		this.renderEntity.origin = physicsObj.GetOrigin( i );
+////		this.renderEntity.axis = physicsObj.GetAxis( i );
+////		this.renderEntity.hModel = modelHandles[i];
+////		this.renderEntity.bodyId = i;
 ////
 ////		// add to refresh list
 ////		if ( modelDefHandles[i] == -1 ) {
-////			modelDefHandles[i] = gameRenderWorld.AddEntityDef( &renderEntity );
+////			modelDefHandles[i] = gameRenderWorld.AddEntityDef( &this.renderEntity );
 ////		} else {
-////			gameRenderWorld.UpdateEntityDef( modelDefHandles[i], &renderEntity );
+////			gameRenderWorld.UpdateEntityDef( modelDefHandles[i], &this.renderEntity );
 ////		}
 ////	}
 ////}
@@ -577,7 +577,7 @@ Hide( ) :void{
 ////	}
 ////
 ////	if ( this.combatModel ) {
-////		this.combatModel.Link( gameLocal.clip, this, 0, renderEntity.origin, renderEntity.axis, modelDefHandle );
+////		this.combatModel.Link( gameLocal.clip, this, 0, this.renderEntity.origin, this.renderEntity.axis, modelDefHandle );
 ////	}
 ////}
 
@@ -986,7 +986,7 @@ Spawn( ):void {
 ////		return;
 ////	}
 ////	if ( this.combatModel ) {
-////		this.combatModel.Link( gameLocal.clip, this, 0, renderEntity.origin, renderEntity.axis, modelDefHandle );
+////		this.combatModel.Link( gameLocal.clip, this, 0, this.renderEntity.origin, this.renderEntity.axis, modelDefHandle );
 ////	}
 ////}
 ////
@@ -1177,44 +1177,43 @@ destructor():void {
 idAFEntity_Gibbable::Spawn
 ================
 */
-Spawn( ):void {
-	this.InitSkeletonModel();
+	Spawn ( ): void {
+		this.InitSkeletonModel ( );
 
-	this.gibbed = false;
-}
+		this.gibbed = false;
+	}
 
 /*
 ================
 idAFEntity_Gibbable::InitSkeletonModel
 ================
 */
-	InitSkeletonModel(): void {
-		todoThrow ( );
-		//const char *modelName;
-		//const idDeclModelDef *modelDef;
+	InitSkeletonModel ( ): void {
+		var modelName: string;
+		var modelDef: idDeclModelDef;
 
-		//this.skeletonModel = NULL;
-		//this.skeletonModelDefHandle = -1;
+		this.skeletonModel = null;
+		this.skeletonModelDefHandle = -1;
 
-		//modelName = spawnArgs.GetString( "model_gib" );
+		modelName = this.spawnArgs.GetString( "model_gib" );
 
-		//modelDef = NULL;
-		//if ( modelName[0] != '\0' ) {
-		//	modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, modelName, false ) );
-		//	if ( modelDef ) {
-		//		this.skeletonModel = modelDef.ModelHandle();
-		//	} else {
-		//		this.skeletonModel = renderModelManager.FindModel( modelName );
-		//	}
-		//	if ( this.skeletonModel != NULL && renderEntity.hModel != NULL ) {
-		//		if ( this.skeletonModel.NumJoints() != renderEntity.hModel.NumJoints() ) {
-		//			gameLocal.Error( "gib model '%s' has different number of joints than model '%s'",
-		//								this.skeletonModel.Name(), renderEntity.hModel.Name() );
-		//		}
-		//	}
-		//}
+		modelDef = null;
+		if ( modelName /*[0] != '\0'*/ ) {
+			modelDef = static_cast<idDeclModelDef>( declManager.FindType( declType_t.DECL_MODELDEF, modelName, false ) );
+			if ( modelDef ) {
+				this.skeletonModel = modelDef.ModelHandle ( );
+			} else {
+				this.skeletonModel = renderModelManager.FindModel( modelName );
+			}
+			if ( this.skeletonModel != null && this.renderEntity.hModel != null ) {
+				if ( this.skeletonModel.NumJoints ( ) != this.renderEntity.hModel.NumJoints ( ) ) {
+					gameLocal.Error( "gib model '%s' has different number of joints than model '%s'",
+						this.skeletonModel.Name ( ), this.renderEntity.hModel.Name ( ) );
+				}
+			}
+		}
 	}
-////
+
 /////*
 ////================
 ////idAFEntity_Gibbable::Present
@@ -1234,7 +1233,7 @@ idAFEntity_Gibbable::InitSkeletonModel
 ////
 ////	// update skeleton model
 ////	if ( this.gibbed && !IsHidden() && this.skeletonModel != NULL ) {
-////		skeleton = renderEntity;
+////		skeleton = this.renderEntity;
 ////		skeleton.hModel = this.skeletonModel;
 ////		// add to refresh list
 ////		if ( this.skeletonModelDefHandle == -1 ) {
@@ -1341,8 +1340,8 @@ idAFEntity_Gibbable::InitSkeletonModel
 ////		if ( gameLocal.time > gameLocal.GetGibTime() ) {
 ////			gameLocal.SetGibTime( gameLocal.time + GIB_DELAY );
 ////			SpawnGibs( dir, damageDefName );
-////			renderEntity.noShadow = true;
-////			renderEntity.shaderParms[ SHADERPARM_TIME_OF_DEATH ] = gameLocal.time * 0.001f;
+////			this.renderEntity.noShadow = true;
+////			this.renderEntity.shaderParms[ SHADERPARM_TIME_OF_DEATH ] = gameLocal.time * 0.001f;
 ////			StartSound( "snd_gibbed", SND_CHANNEL_ANY, 0, false, NULL );
 ////			this.gibbed = true;
 ////		}
@@ -1650,9 +1649,9 @@ idAFEntity_WithAttachedHead::Spawn
 ////		this.head = headEnt;
 ////
 ////		this.animator.GetJointTransform( joint, gameLocal.time, origin, axis );
-////		origin = renderEntity.origin + origin * renderEntity.axis;
+////		origin = this.renderEntity.origin + origin * this.renderEntity.axis;
 ////		headEnt.SetOrigin( origin );
-////		headEnt.SetAxis( renderEntity.axis );
+////		headEnt.SetAxis( this.renderEntity.axis );
 ////		headEnt.BindToJoint( this, joint, true );
 ////	}
 ////}
@@ -1679,7 +1678,7 @@ idAFEntity_WithAttachedHead::Spawn
 ////	}
 ////
 ////	if ( this.combatModel ) {
-////		this.combatModel.Link( gameLocal.clip, this, 0, renderEntity.origin, renderEntity.axis, modelDefHandle );
+////		this.combatModel.Link( gameLocal.clip, this, 0, this.renderEntity.origin, this.renderEntity.axis, modelDefHandle );
 ////	}
 ////	headEnt = this.head.GetEntity();
 ////	if ( headEnt ) {
@@ -1912,7 +1911,7 @@ idAFEntity_Vehicle::idAFEntity_Vehicle
 ////	else {
 ////		player = other;
 ////		this.animator.GetJointTransform( eyesJoint, gameLocal.time, origin, axis );
-////		origin = renderEntity.origin + origin * renderEntity.axis;
+////		origin = this.renderEntity.origin + origin * this.renderEntity.axis;
 ////		player.GetPhysics().SetOrigin( origin );
 ////		player.BindToBody( this, 0, true );
 ////
@@ -2033,7 +2032,7 @@ idAFEntity_VehicleSimple::idAFEntity_VehicleSimple
 ////		}
 ////
 ////		GetAnimator().GetJointTransform( wheelJoints[i], 0, origin, axis );
-////		origin = renderEntity.origin + origin * renderEntity.axis;
+////		origin = this.renderEntity.origin + origin * this.renderEntity.axis;
 ////
 ////		suspension[i] = new idAFConstraint_Suspension();
 ////		suspension[i].Setup( va( "suspension%d", i ), af.GetPhysics().GetBody( 0 ), origin, af.GetPhysics().GetAxis( 0 ), wheelModel );
@@ -2133,7 +2132,7 @@ idAFEntity_VehicleSimple::idAFEntity_VehicleSimple
 ////			}
 ////
 ////			// set wheel position for suspension
-////			origin = ( origin - renderEntity.origin ) * renderEntity.axis.Transpose();
+////			origin = ( origin - this.renderEntity.origin ) * this.renderEntity.axis.Transpose();
 ////			GetAnimator().SetJointPos( wheelJoints[i], JOINTMOD_WORLD_OVERRIDE, origin );
 ////		}
 /////*
@@ -2698,7 +2697,7 @@ idAFEntity_SteamPipe::idAFEntity_SteamPipe
 ////	temp = spawnArgs.GetString ( "model_steam" );
 ////	if ( *temp != '\0' ) {
 ////		if ( !strstr( temp, "." ) ) {
-////			modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, temp, false ) );
+////			modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( declType_t.DECL_MODELDEF, temp, false ) );
 ////			if ( modelDef ) {
 ////				steamRenderEntity.hModel = modelDef.ModelHandle();
 ////			}

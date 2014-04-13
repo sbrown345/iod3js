@@ -141,18 +141,19 @@ idInterpreter::PopParms
 		this.localstackUsed -= numParms;
 	}
 
-///*
-//====================
-//idInterpreter::Push
-//====================
-//*/
-//ID_INLINE void idInterpreter::Push( int value ) {
-//	if ( this.localstackUsed + sizeof( int ) > LOCALSTACK_SIZE ) {
-//		this.Error( "Push: locals stack overflow\n" );
-//	}
-//	*( int * )&this.localstack[ this.localstackUsed ]	= value;
-//	this.localstackUsed += sizeof( int );
-//}
+/*
+====================
+idInterpreter::Push
+====================
+*/
+	Push ( /*int*/ value: number ): void {
+		if ( this.localstackUsed + sizeof( int ) > LOCALSTACK_SIZE ) {
+			this.Error( "Push: locals stack overflow\n" );
+		}
+
+		( new Int32Array( this.localstack.buffer ) )[this.localstackUsed / 4] = value; ////*( int * )&this.localstack[ this.localstackUsed ]	= value;
+		this.localstackUsed += sizeof( int );
+	}
 
 /*
 ====================
@@ -762,7 +763,7 @@ Prints file and line number information with warning.
 //====================
 //*/
 //void idInterpreter::ThreadCall( idInterpreter *source, const function_t *func, int args ) {
-//	Reset();
+//	this.Reset();
 //
 //	memcpy( this.localstack, &source.localstack[ source.localstackUsed - args ], args );
 //
@@ -775,27 +776,27 @@ Prints file and line number information with warning.
 //	this.thread.SetThreadName( this.currentFunction.Name() );
 //}
 //
-///*
-//================
-//idInterpreter::EnterObjectFunction
-//
-//Calls a function on a script object.
-//
-//NOTE: If this is called from within a event called by this interpreter, the function arguments will be invalid after calling this function.
-//================
-//*/
-//void idInterpreter::EnterObjectFunction( idEntity *self, const function_t *func, bool clearStack ) {
-//	if ( clearStack ) {
-//		Reset();
-//	}
-//	if ( this.popParms ) {
-//		PopParms( this.popParms );
-//		this.popParms = 0;
-//	}
-//	Push( self.entityNumber + 1 );
-//	this.EnterFunction( func, false );
-//}
-//
+/*
+================
+idInterpreter::EnterObjectFunction
+
+Calls a function on a script object.
+
+NOTE: If this is called from within a event called by this interpreter, the function arguments will be invalid after calling this function.
+================
+*/
+	EnterObjectFunction(self: idEntity, func: function_t , clearStack :boolean) :void{
+	if ( clearStack ) {
+		this.Reset();
+	}
+	if ( this.popParms ) {
+		this.PopParms( this.popParms );
+		this.popParms = 0;
+	}
+	this.Push( self.entityNumber + 1 );
+	this.EnterFunction( func, false );
+}
+
 ///*
 //====================
 //idInterpreter::EnterFunction
@@ -2023,7 +2024,7 @@ idInterpreter::Execute
 //
 //		case opc.OP_PUSH_F:
 //			var_a = this.GetVariable( st.a );
-//			Push( *var_a.intPtr );
+//			this.Push( *var_a.intPtr );
 //			break;
 //
 //		case opc.OP_PUSH_FTOS:
@@ -2034,15 +2035,15 @@ idInterpreter::Execute
 //		case opc.OP_PUSH_BTOF:
 //			var_a = this.GetVariable( st.a );
 //			floatVal = *var_a.intPtr;
-//			Push( *reinterpret_cast<int *>( &floatVal ) );
+//			this.Push( *reinterpret_cast<int *>( &floatVal ) );
 //			break;
 //
 //		case opc.OP_PUSH_FTOB:
 //			var_a = this.GetVariable( st.a );
 //			if ( *var_a.floatPtr != 0.0 ) {
-//				Push( 1 );
+//				this.Push( 1 );
 //			} else {
-//				Push( 0 );
+//				this.Push( 0 );
 //			}
 //			break;
 //
@@ -2058,7 +2059,7 @@ idInterpreter::Execute
 //
 //		case opc.OP_PUSH_ENT:
 //			var_a = this.GetVariable( st.a );
-//			Push( *var_a.entityNumberPtr );
+//			this.Push( *var_a.entityNumberPtr );
 //			break;
 
 		case opc.OP_PUSH_S:
@@ -2067,19 +2068,19 @@ idInterpreter::Execute
 
 //		case opc.OP_PUSH_V:
 //			var_a = this.GetVariable( st.a );
-//			Push( *reinterpret_cast<int *>( &var_a.vectorPtr.x ) );
-//			Push( *reinterpret_cast<int *>( &var_a.vectorPtr.y ) );
-//			Push( *reinterpret_cast<int *>( &var_a.vectorPtr.z ) );
+//			this.Push( *reinterpret_cast<int *>( &var_a.vectorPtr.x ) );
+//			this.Push( *reinterpret_cast<int *>( &var_a.vectorPtr.y ) );
+//			this.Push( *reinterpret_cast<int *>( &var_a.vectorPtr.z ) );
 //			break;
 //
 //		case opc.OP_PUSH_OBJ:
 //			var_a = this.GetVariable( st.a );
-//			Push( *var_a.entityNumberPtr );
+//			this.Push( *var_a.entityNumberPtr );
 //			break;
 //
 //		case opc.OP_PUSH_OBJENT:
 //			var_a = this.GetVariable( st.a );
-//			Push( *var_a.entityNumberPtr );
+//			this.Push( *var_a.entityNumberPtr );
 //			break;
 //
 			case opc.OP_BREAK:

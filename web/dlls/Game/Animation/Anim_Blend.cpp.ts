@@ -946,15 +946,15 @@ idDeclModelDef::GetAnim
 //const int * idDeclModelDef::JointParents( ) const {
 //	return this.jointParents.Ptr();
 //}
-//
-///*
-//=====================
-//idDeclModelDef::NumJoints
-//=====================
-//*/
-//int idDeclModelDef::NumJoints( ) const {
-//	return this.joints.Num();
-//}
+
+/*
+=====================
+idDeclModelDef::NumJoints
+=====================
+*/
+	NumJoints ( ): number {
+		return this.joints.Num ( );
+	}
 //
 ///*
 //=====================
@@ -987,7 +987,7 @@ idDeclModelDef::GetJointName
 		joint = this.modelHandle.GetJoints ( );
 		return joint[jointHandle].name.c_str ( );
 	}
-//
+
 ///*
 //=====================
 //idDeclModelDef::NumJointsOnChannel
