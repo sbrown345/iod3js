@@ -2585,15 +2585,14 @@ idEntity::InitDefaultPhysics
 				if ( setClipModel ) {
 					var /*int */numSides = new R<number> ( );
 					var trm = new idTraceModel ;
-					todoThrow ( );
-					//if (this.spawnArgs.GetInt_R("cylinder", "0", numSides) && numSides.$ > 0 ) {
-					//	trm.SetupCylinder(bounds, numSides.$ < 3 ? 3 : numSides.$ );
-					//} else if (this.spawnArgs.GetInt_R("cone", "0", numSides) && numSides.$> 0 ) {
-					//	trm.SetupCone(bounds, numSides.$ < 3 ? 3 : numSides.$ );
-					//} else {
-					//	trm.SetupBox( bounds );
-					//}
-					//clipModel = new idClipModel( trm );
+					if (this.spawnArgs.GetInt_R("cylinder", "0", numSides) && numSides.$ > 0 ) {
+						trm.SetupCylinder(bounds, numSides.$ < 3 ? 3 : numSides.$ );
+					} else if (this.spawnArgs.GetInt_R("cone", "0", numSides) && numSides.$> 0 ) {
+						trm.SetupCone(bounds, numSides.$ < 3 ? 3 : numSides.$ );
+					} else {
+						trm.SetupBox( bounds );
+					}
+					clipModel = new idClipModel( trm );
 				}
 			}
 

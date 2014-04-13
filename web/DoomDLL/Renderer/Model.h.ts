@@ -81,14 +81,21 @@ class silEdge_t {
 
 // this is used for calculating unsmoothed normals and tangents for deformed models
 class dominantTri_t {
-	v2:number; v3:number; //glIndex_t
+	v2: number;
+	v3: number; //glIndex_t
 	normalizationScale: Float32Array;
 	constructor ( ) {
 		this.v2 = 0;
 		this.v3 = 0;
 		this.normalizationScale = new Float32Array( 3 );
 	}
-} ;
+
+	memset0 ( ): void {
+		this.v2 = 0;
+		this.v3 = 0;
+		this.normalizationScale.set( [0, 0, 0] );
+	}
+}
 
 class shadowCache_t {
 	xyz = new idVec4; // we use homogenous coordinate tricks
@@ -234,7 +241,7 @@ enum dynamicModel_t{
 
 enum jointHandle_t{
 	INVALID_JOINT				= -1
-};
+}
 
 class idMD5Joint {
 ////public:

@@ -244,7 +244,7 @@ idTraceModel::SetupBox
 		this.polys[4].bounds[0][1] = boxBounds[1][1];
 		this.polys[5].bounds[1][0] = boxBounds[0][0];
 
-		this.bounds = boxBounds;
+		this.bounds.opEquals( boxBounds );
 	}
 
 /////*
@@ -347,22 +347,22 @@ idTraceModel::InitBox
 ////	int i, e0, e1, v0, v1, v2;
 ////	idVec3 v;
 ////
-////	if ( this.type != TRM_OCTAHEDRON ) {
+////	if ( this.type != traceModel_t.TRM_OCTAHEDRON ) {
 ////		InitOctahedron();
 ////	}
 ////
-////	offset = ( octBounds[0] + octBounds[1] ) * 0.5;
-////	v[0] = octBounds[1][0] - offset[0];
-////	v[1] = octBounds[1][1] - offset[1];
-////	v[2] = octBounds[1][2] - offset[2];
+////	this.offset.equals( ( octBounds[0] + octBounds[1] ) * 0.5;
+////	v[0] = octBounds[1][0] - this.offset[0];
+////	v[1] = octBounds[1][1] - this.offset[1];
+////	v[2] = octBounds[1][2] - this.offset[2];
 ////
 ////	// set vertices
-////	this.verts[0].Set( offset.x + v[0], offset.y, offset.z );
-////	this.verts[1].Set( offset.x - v[0], offset.y, offset.z );
-////	this.verts[2].Set( offset.x, offset.y + v[1], offset.z );
-////	this.verts[3].Set( offset.x, offset.y - v[1], offset.z );
-////	this.verts[4].Set( offset.x, offset.y, offset.z + v[2] );
-////	this.verts[5].Set( offset.x, offset.y, offset.z - v[2] );
+////	this.verts[0].Set( this.offset.x + v[0], this.offset.y, this.offset.z );
+////	this.verts[1].Set( this.offset.x - v[0], this.offset.y, this.offset.z );
+////	this.verts[2].Set( this.offset.x, this.offset.y + v[1], this.offset.z );
+////	this.verts[3].Set( this.offset.x, this.offset.y - v[1], this.offset.z );
+////	this.verts[4].Set( this.offset.x, this.offset.y, this.offset.z + v[2] );
+////	this.verts[5].Set( this.offset.x, this.offset.y, this.offset.z - v[2] );
 ////
 ////	// set polygons
 ////	for ( i = 0; i < numPolys; i++ ) {
@@ -382,7 +382,7 @@ idTraceModel::InitBox
 ////	}
 ////
 ////	// trm bounds
-////	bounds = octBounds;
+////	this.bounds.opEquals( octBounds;
 ////
 ////	this.GenerateEdgeNormals();
 ////}
@@ -413,7 +413,7 @@ idTraceModel::InitBox
 ////*/
 ////void idTraceModel::InitOctahedron( ) {
 ////
-////	this.type = TRM_OCTAHEDRON;
+////	this.type = traceModel_t.TRM_OCTAHEDRON;
 ////	this.numVerts = 6;
 ////	this.numEdges = 12;
 ////	numPolys = 8;
@@ -474,7 +474,7 @@ idTraceModel::InitBox
 ////	this.polys[7].edges[2] = -12;
 ////
 ////	// convex model
-////	isConvex = true;
+////	this.isConvex = true;
 ////}
 ////
 /////*
@@ -487,7 +487,7 @@ idTraceModel::InitBox
 ////	float s, d;
 ////	idVec3 a, b, c;
 ////
-////	if ( this.type != TRM_DODECAHEDRON ) {
+////	if ( this.type != traceModel_t.TRM_DODECAHEDRON ) {
 ////		InitDodecahedron();
 ////	}
 ////
@@ -508,29 +508,29 @@ idTraceModel::InitBox
 ////	b[2] *= s;
 ////	c[2] *= s;
 ////
-////	offset = ( dodBounds[0] + dodBounds[1] ) * 0.5;
+////	this.offset.equals( ( dodBounds[0] + dodBounds[1] ) * 0.5;
 ////
 ////	// set vertices
-////	this.verts[ 0].Set( offset.x + a[0], offset.y + a[1], offset.z + a[2] );
-////	this.verts[ 1].Set( offset.x + a[0], offset.y + a[1], offset.z - a[2] );
-////	this.verts[ 2].Set( offset.x + a[0], offset.y - a[1], offset.z + a[2] );
-////	this.verts[ 3].Set( offset.x + a[0], offset.y - a[1], offset.z - a[2] );
-////	this.verts[ 4].Set( offset.x - a[0], offset.y + a[1], offset.z + a[2] );
-////	this.verts[ 5].Set( offset.x - a[0], offset.y + a[1], offset.z - a[2] );
-////	this.verts[ 6].Set( offset.x - a[0], offset.y - a[1], offset.z + a[2] );
-////	this.verts[ 7].Set( offset.x - a[0], offset.y - a[1], offset.z - a[2] );
-////	this.verts[ 8].Set( offset.x + b[0], offset.y + c[1], offset.z        );
-////	this.verts[ 9].Set( offset.x - b[0], offset.y + c[1], offset.z        );
-////	this.verts[10].Set( offset.x + b[0], offset.y - c[1], offset.z        );
-////	this.verts[11].Set( offset.x - b[0], offset.y - c[1], offset.z        );
-////	this.verts[12].Set( offset.x + c[0], offset.y       , offset.z + b[2] );
-////	this.verts[13].Set( offset.x + c[0], offset.y       , offset.z - b[2] );
-////	this.verts[14].Set( offset.x - c[0], offset.y       , offset.z + b[2] );
-////	this.verts[15].Set( offset.x - c[0], offset.y       , offset.z - b[2] );
-////	this.verts[16].Set( offset.x       , offset.y + b[1], offset.z + c[2] );
-////	this.verts[17].Set( offset.x       , offset.y - b[1], offset.z + c[2] );
-////	this.verts[18].Set( offset.x       , offset.y + b[1], offset.z - c[2] );
-////	this.verts[19].Set( offset.x       , offset.y - b[1], offset.z - c[2] );
+////	this.verts[ 0].Set( this.offset.x + a[0], this.offset.y + a[1], this.offset.z + a[2] );
+////	this.verts[ 1].Set( this.offset.x + a[0], this.offset.y + a[1], this.offset.z - a[2] );
+////	this.verts[ 2].Set( this.offset.x + a[0], this.offset.y - a[1], this.offset.z + a[2] );
+////	this.verts[ 3].Set( this.offset.x + a[0], this.offset.y - a[1], this.offset.z - a[2] );
+////	this.verts[ 4].Set( this.offset.x - a[0], this.offset.y + a[1], this.offset.z + a[2] );
+////	this.verts[ 5].Set( this.offset.x - a[0], this.offset.y + a[1], this.offset.z - a[2] );
+////	this.verts[ 6].Set( this.offset.x - a[0], this.offset.y - a[1], this.offset.z + a[2] );
+////	this.verts[ 7].Set( this.offset.x - a[0], this.offset.y - a[1], this.offset.z - a[2] );
+////	this.verts[ 8].Set( this.offset.x + b[0], this.offset.y + c[1], this.offset.z        );
+////	this.verts[ 9].Set( this.offset.x - b[0], this.offset.y + c[1], this.offset.z        );
+////	this.verts[10].Set( this.offset.x + b[0], this.offset.y - c[1], this.offset.z        );
+////	this.verts[11].Set( this.offset.x - b[0], this.offset.y - c[1], this.offset.z        );
+////	this.verts[12].Set( this.offset.x + c[0], this.offset.y       , this.offset.z + b[2] );
+////	this.verts[13].Set( this.offset.x + c[0], this.offset.y       , this.offset.z - b[2] );
+////	this.verts[14].Set( this.offset.x - c[0], this.offset.y       , this.offset.z + b[2] );
+////	this.verts[15].Set( this.offset.x - c[0], this.offset.y       , this.offset.z - b[2] );
+////	this.verts[16].Set( this.offset.x       , this.offset.y + b[1], this.offset.z + c[2] );
+////	this.verts[17].Set( this.offset.x       , this.offset.y - b[1], this.offset.z + c[2] );
+////	this.verts[18].Set( this.offset.x       , this.offset.y + b[1], this.offset.z - c[2] );
+////	this.verts[19].Set( this.offset.x       , this.offset.y - b[1], this.offset.z - c[2] );
 ////
 ////	// set polygons
 ////	for ( i = 0; i < numPolys; i++ ) {
@@ -556,7 +556,7 @@ idTraceModel::InitBox
 ////	}
 ////
 ////	// trm bounds
-////	bounds = dodBounds;
+////	this.bounds.opEquals( dodBounds;
 ////
 ////	this.GenerateEdgeNormals();
 ////}
@@ -587,7 +587,7 @@ idTraceModel::InitBox
 ////*/
 ////void idTraceModel::InitDodecahedron( ) {
 ////
-////	this.type = TRM_DODECAHEDRON;
+////	this.type = traceModel_t.TRM_DODECAHEDRON;
 ////	this.numVerts = 20;
 ////	this.numEdges = 30;
 ////	numPolys = 12;
@@ -710,103 +710,103 @@ idTraceModel::InitBox
 ////	this.polys[11].edges[4] = -22;
 ////
 ////	// convex model
-////	isConvex = true;
+////	this.isConvex = true;
 ////}
-////
-/////*
-////============
-////idTraceModel::SetupCylinder
-////============
-////*/
-////void idTraceModel::SetupCylinder( const idBounds &cylBounds, const int numSides ) {
-////	int i, n, ii, n2;
-////	float angle;
-////	idVec3 halfSize;
-////
-////	n = numSides;
-////	if ( n < 3 ) {
-////		n = 3;
-////	}
-////	if ( n * 2 > MAX_TRACEMODEL_VERTS ) {
-////		idLib::common.Printf( "WARNING: idTraceModel::SetupCylinder: too many vertices\n" );
-////		n = MAX_TRACEMODEL_VERTS / 2;
-////	}
-////	if ( n * 3 > MAX_TRACEMODEL_EDGES ) {
-////		idLib::common.Printf( "WARNING: idTraceModel::SetupCylinder: too many sides\n" );
-////		n = MAX_TRACEMODEL_EDGES / 3;
-////	}
-////	if ( n + 2 > MAX_TRACEMODEL_POLYS ) {
-////		idLib::common.Printf( "WARNING: idTraceModel::SetupCylinder: too many polygons\n" );
-////		n = MAX_TRACEMODEL_POLYS - 2;
-////	}
-////
-////	this.type = TRM_CYLINDER;
-////	this.numVerts = n * 2;
-////	this.numEdges = n * 3;
-////	numPolys = n + 2;
-////	offset = ( cylBounds[0] + cylBounds[1] ) * 0.5;
-////	halfSize = cylBounds[1] - offset;
-////	for ( i = 0; i < n; i++ ) {
-////		// verts
-////		angle = idMath::TWO_PI * i / n;
-////		this.verts[i].x = cos( angle ) * halfSize.x + offset.x;
-////		this.verts[i].y = sin( angle ) * halfSize.y + offset.y;
-////		this.verts[i].z = -halfSize.z + offset.z;
-////		this.verts[n+i].x = this.verts[i].x;
-////		this.verts[n+i].y = this.verts[i].y;
-////		this.verts[n+i].z = halfSize.z + offset.z;
-////		// edges
-////		ii = i + 1;
-////		n2 = n << 1;
-////		this.edges[ii].v[0] = i;
-////		this.edges[ii].v[1] = ii % n;
-////		this.edges[n+ii].v[0] = this.edges[ii].v[0] + n;
-////		this.edges[n+ii].v[1] = this.edges[ii].v[1] + n;
-////		this.edges[n2+ii].v[0] = i;
-////		this.edges[n2+ii].v[1] = n + i;
-////		// vertical polygon edges
-////		this.polys[i].numEdges = 4;
-////		this.polys[i].edges[0] = ii;
-////		this.polys[i].edges[1] = n2 + (ii % n) + 1;
-////		this.polys[i].edges[2] = -(n + ii);
-////		this.polys[i].edges[3] = -(n2 + ii);
-////		// bottom and top polygon edges
-////		this.polys[n].edges[i] = -(n - i);
-////		this.polys[n+1].edges[i] = n + ii;
-////	}
-////	// bottom and top polygon numEdges
-////	this.polys[n].numEdges = n;
-////	this.polys[n+1].numEdges = n;
-////	// polygons
-////	for ( i = 0; i < n; i++ ) {
-////		// vertical polygon plane
-////		this.polys[i].normal = (this.verts[(i+1)%n] - this.verts[i]).Cross( this.verts[n+i] - this.verts[i] );
-////		this.polys[i].normal.Normalize();
-////		this.polys[i].dist = this.polys[i].normal * this.verts[i];
-////		// vertical polygon bounds
-////		this.polys[i].bounds.Clear();
-////		this.polys[i].bounds.AddPoint( this.verts[i] );
-////		this.polys[i].bounds.AddPoint( this.verts[(i+1)%n] );
-////		this.polys[i].bounds[0][2] = -halfSize.z + offset.z;
-////		this.polys[i].bounds[1][2] = halfSize.z + offset.z;
-////	}
-////	// bottom and top polygon plane
-////	this.polys[n].normal.Set( 0.0, 0.0, -1.0 );
-////	this.polys[n].dist = -cylBounds[0][2];
-////	this.polys[n+1].normal.Set( 0.0, 0.0, 1.0 );
-////	this.polys[n+1].dist = cylBounds[1][2];
-////	// trm bounds
-////	bounds = cylBounds;
-////	// bottom and top polygon bounds
-////	this.polys[n].bounds = bounds;
-////	this.polys[n].bounds[1][2] = bounds[0][2];
-////	this.polys[n+1].bounds = bounds;
-////	this.polys[n+1].bounds[0][2] = bounds[1][2];
-////	// convex model
-////	isConvex = true;
-////
-////	this.GenerateEdgeNormals();
-////}
+
+/*
+============
+idTraceModel::SetupCylinder
+============
+*/
+	SetupCylinder ( cylBounds: idBounds, /*int */numSides: number ): void {
+		var /*int */i: number, n: number, ii: number, n2: number;
+		var /*float */angle: number;
+		var halfSize = new idVec3;
+
+		n = numSides;
+		if ( n < 3 ) {
+			n = 3;
+		}
+		if ( n * 2 > MAX_TRACEMODEL_VERTS ) {
+			idLib.common.Printf( "WARNING: idTraceModel::SetupCylinder: too many vertices\n" );
+			n = MAX_TRACEMODEL_VERTS / 2;
+		}
+		if ( n * 3 > MAX_TRACEMODEL_EDGES ) {
+			idLib.common.Printf( "WARNING: idTraceModel::SetupCylinder: too many sides\n" );
+			n = MAX_TRACEMODEL_EDGES / 3;
+		}
+		if ( n + 2 > MAX_TRACEMODEL_POLYS ) {
+			idLib.common.Printf( "WARNING: idTraceModel::SetupCylinder: too many polygons\n" );
+			n = MAX_TRACEMODEL_POLYS - 2;
+		}
+
+		this.type = traceModel_t.TRM_CYLINDER;
+		this.numVerts = n * 2;
+		this.numEdges = n * 3;
+		this.numPolys = n + 2;
+		this.offset.equals( ( cylBounds[0].opAddition( cylBounds[1] ) ).timesFloat( 0.5 ) );
+		halfSize.equals( cylBounds[1].opSubtraction( this.offset ) );
+		for ( i = 0; i < n; i++ ) {
+			// verts
+			angle = idMath.TWO_PI * i / n;
+			this.verts[i].x = cos( angle ) * halfSize.x + this.offset.x;
+			this.verts[i].y = sin( angle ) * halfSize.y + this.offset.y;
+			this.verts[i].z = -halfSize.z + this.offset.z;
+			this.verts[n + i].x = this.verts[i].x;
+			this.verts[n + i].y = this.verts[i].y;
+			this.verts[n + i].z = halfSize.z + this.offset.z;
+			// edges
+			ii = i + 1;
+			n2 = n << 1;
+			this.edges[ii].v[0] = i;
+			this.edges[ii].v[1] = ii % n;
+			this.edges[n + ii].v[0] = this.edges[ii].v[0] + n;
+			this.edges[n + ii].v[1] = this.edges[ii].v[1] + n;
+			this.edges[n2 + ii].v[0] = i;
+			this.edges[n2 + ii].v[1] = n + i;
+			// vertical polygon edges
+			this.polys[i].numEdges = 4;
+			this.polys[i].edges[0] = ii;
+			this.polys[i].edges[1] = n2 + ( ii % n ) + 1;
+			this.polys[i].edges[2] = -( n + ii );
+			this.polys[i].edges[3] = -( n2 + ii );
+			// bottom and top polygon edges
+			this.polys[n].edges[i] = -( n - i );
+			this.polys[n + 1].edges[i] = n + ii;
+		}
+		// bottom and top polygon numEdges
+		this.polys[n].numEdges = n;
+		this.polys[n + 1].numEdges = n;
+		// polygons
+		for ( i = 0; i < n; i++ ) {
+			// vertical polygon plane
+			this.polys[i].normal.equals( this.verts[( i + 1 ) % n].opSubtraction( this.verts[i] ).Cross( this.verts[n + i].opSubtraction( this.verts[i] ) ) );
+			this.polys[i].normal.Normalize ( );
+			this.polys[i].dist = this.polys[i].normal.timesVec( this.verts[i] );
+			// vertical polygon bounds
+			this.polys[i].bounds.Clear ( );
+			this.polys[i].bounds.AddPoint( this.verts[i] );
+			this.polys[i].bounds.AddPoint( this.verts[( i + 1 ) % n] );
+			this.polys[i].bounds[0][2] = -halfSize.z + this.offset.z;
+			this.polys[i].bounds[1][2] = halfSize.z + this.offset.z;
+		}
+		// bottom and top polygon plane
+		this.polys[n].normal.Set( 0.0, 0.0, -1.0 );
+		this.polys[n].dist = -cylBounds[0][2];
+		this.polys[n + 1].normal.Set( 0.0, 0.0, 1.0 );
+		this.polys[n + 1].dist = cylBounds[1][2];
+		// trm bounds
+		this.bounds.opEquals( cylBounds );
+		// bottom and top polygon bounds
+		this.polys[n].bounds = this.bounds;
+		this.polys[n].bounds[1][2] = this.bounds[0][2];
+		this.polys[n + 1].bounds = this.bounds;
+		this.polys[n + 1].bounds[0][2] = this.bounds[1][2];
+		// convex model
+		this.isConvex = true;
+
+		this.GenerateEdgeNormals ( );
+	}
 ////
 /////*
 ////============
@@ -825,90 +825,90 @@ idTraceModel::InitBox
 ////	cylBounds[1].Set( halfWidth, halfWidth, halfHeight );
 ////	SetupCylinder( cylBounds, numSides );
 ////}
-////
-/////*
-////============
-////idTraceModel::SetupCone
-////============
-////*/
-////void idTraceModel::SetupCone( const idBounds &coneBounds, const int numSides ) {
-////	int i, n, ii;
-////	float angle;
-////	idVec3 halfSize;
-////
-////	n = numSides;
-////	if ( n < 2 ) {
-////		n = 3;
-////	}
-////	if ( n + 1 > MAX_TRACEMODEL_VERTS ) {
-////		idLib::common.Printf( "WARNING: idTraceModel::SetupCone: too many vertices\n" );
-////		n = MAX_TRACEMODEL_VERTS - 1;
-////	}
-////	if ( n * 2 > MAX_TRACEMODEL_EDGES ) {
-////		idLib::common.Printf( "WARNING: idTraceModel::SetupCone: too many edges\n" );
-////		n = MAX_TRACEMODEL_EDGES / 2;
-////	}
-////	if ( n + 1 > MAX_TRACEMODEL_POLYS ) {
-////		idLib::common.Printf( "WARNING: idTraceModel::SetupCone: too many polygons\n" );
-////		n = MAX_TRACEMODEL_POLYS - 1;
-////	}
-////
-////	this.type = TRM_CONE;
-////	this.numVerts = n + 1;
-////	this.numEdges = n * 2;
-////	numPolys = n + 1;
-////	offset = ( coneBounds[0] + coneBounds[1] ) * 0.5;
-////	halfSize = coneBounds[1] - offset;
-////	this.verts[n].Set( 0.0, 0.0, halfSize.z + offset.z );
-////	for ( i = 0; i < n; i++ ) {
-////		// verts
-////		angle = idMath::TWO_PI * i / n;
-////		this.verts[i].x = cos( angle ) * halfSize.x + offset.x;
-////		this.verts[i].y = sin( angle ) * halfSize.y + offset.y;
-////		this.verts[i].z = -halfSize.z + offset.z;
-////		// edges
-////		ii = i + 1;
-////		this.edges[ii].v[0] = i;
-////		this.edges[ii].v[1] = ii % n;
-////		this.edges[n+ii].v[0] = i;
-////		this.edges[n+ii].v[1] = n;
-////		// vertical polygon edges
-////		this.polys[i].numEdges = 3;
-////		this.polys[i].edges[0] = ii;
-////		this.polys[i].edges[1] = n + (ii % n) + 1;
-////		this.polys[i].edges[2] = -(n + ii);
-////		// bottom polygon edges
-////		this.polys[n].edges[i] = -(n - i);
-////	}
-////	// bottom polygon numEdges
-////	this.polys[n].numEdges = n;
-////
-////	// polygons
-////	for ( i = 0; i < n; i++ ) {
-////		// polygon plane
-////		this.polys[i].normal = (this.verts[(i+1)%n] - this.verts[i]).Cross( this.verts[n] - this.verts[i] );
-////		this.polys[i].normal.Normalize();
-////		this.polys[i].dist = this.polys[i].normal * this.verts[i];
-////		// polygon bounds
-////		this.polys[i].bounds.Clear();
-////		this.polys[i].bounds.AddPoint( this.verts[i] );
-////		this.polys[i].bounds.AddPoint( this.verts[(i+1)%n] );
-////		this.polys[i].bounds.AddPoint( this.verts[n] );
-////	}
-////	// bottom polygon plane
-////	this.polys[n].normal.Set( 0.0, 0.0, -1.0 );
-////	this.polys[n].dist = -coneBounds[0][2];
-////	// trm bounds
-////	bounds = coneBounds;
-////	// bottom polygon bounds
-////	this.polys[n].bounds = bounds;
-////	this.polys[n].bounds[1][2] = bounds[0][2];
-////	// convex model
-////	isConvex = true;
-////
-////	this.GenerateEdgeNormals();
-////}
-////
+
+/*
+============
+idTraceModel::SetupCone
+============
+*/
+	SetupCone ( coneBounds: idBounds, /*int */numSides: number ): void {
+		var /*int */i: number, n: number, ii: number;
+		var /*float */angle: number;
+		var halfSize = new idVec3;
+
+		n = numSides;
+		if ( n < 2 ) {
+			n = 3;
+		}
+		if ( n + 1 > MAX_TRACEMODEL_VERTS ) {
+			idLib.common.Printf( "WARNING: idTraceModel::SetupCone: too many vertices\n" );
+			n = MAX_TRACEMODEL_VERTS - 1;
+		}
+		if ( n * 2 > MAX_TRACEMODEL_EDGES ) {
+			idLib.common.Printf( "WARNING: idTraceModel::SetupCone: too many edges\n" );
+			n = MAX_TRACEMODEL_EDGES / 2;
+		}
+		if ( n + 1 > MAX_TRACEMODEL_POLYS ) {
+			idLib.common.Printf( "WARNING: idTraceModel::SetupCone: too many polygons\n" );
+			n = MAX_TRACEMODEL_POLYS - 1;
+		}
+
+		this.type = traceModel_t.TRM_CONE;
+		this.numVerts = n + 1;
+		this.numEdges = n * 2;
+		this.numPolys = n + 1;
+		this.offset.equals( ( coneBounds[0].opAddition( coneBounds[1] ) ).timesFloat( 0.5 ) );
+		halfSize.equals( coneBounds[1].opSubtraction( this.offset ) );
+		this.verts[n].Set( 0.0, 0.0, halfSize.z + this.offset.z );
+		for ( i = 0; i < n; i++ ) {
+			// verts
+			angle = idMath.TWO_PI * i / n;
+			this.verts[i].x = cos( angle ) * halfSize.x + this.offset.x;
+			this.verts[i].y = sin( angle ) * halfSize.y + this.offset.y;
+			this.verts[i].z = -halfSize.z + this.offset.z;
+			// edges
+			ii = i + 1;
+			this.edges[ii].v[0] = i;
+			this.edges[ii].v[1] = ii % n;
+			this.edges[n + ii].v[0] = i;
+			this.edges[n + ii].v[1] = n;
+			// vertical polygon edges
+			this.polys[i].numEdges = 3;
+			this.polys[i].edges[0] = ii;
+			this.polys[i].edges[1] = n + ( ii % n ) + 1;
+			this.polys[i].edges[2] = -( n + ii );
+			// bottom polygon edges
+			this.polys[n].edges[i] = -( n - i );
+		}
+		// bottom polygon numEdges
+		this.polys[n].numEdges = n;
+
+		// polygons
+		for ( i = 0; i < n; i++ ) {
+			// polygon plane
+			this.polys[i].normal.equals( this.verts[( i + 1 ) % n].opSubtraction( this.verts[i] ).Cross( this.verts[n].opSubtraction( this.verts[i] ) ) );
+			this.polys[i].normal.Normalize ( );
+			this.polys[i].dist = this.polys[i].normal.timesVec( this.verts[i] );
+			// polygon bounds
+			this.polys[i].bounds.Clear ( );
+			this.polys[i].bounds.AddPoint( this.verts[i] );
+			this.polys[i].bounds.AddPoint( this.verts[( i + 1 ) % n] );
+			this.polys[i].bounds.AddPoint( this.verts[n] );
+		}
+		// bottom polygon plane
+		this.polys[n].normal.Set( 0.0, 0.0, -1.0 );
+		this.polys[n].dist = -coneBounds[0][2];
+		// trm bounds
+		this.bounds.opEquals( coneBounds );
+		// bottom polygon bounds
+		this.polys[n].bounds = this.bounds;
+		this.polys[n].bounds[1][2] = this.bounds[0][2];
+		// convex model
+		this.isConvex = true;
+
+		this.GenerateEdgeNormals ( );
+	}
+
 /////*
 ////============
 ////idTraceModel::SetupCone
@@ -937,11 +937,11 @@ idTraceModel::InitBox
 ////	int i, j, edgeNum;
 ////	float halfLength = length * 0.5;
 ////
-////	if ( this.type != TRM_BONE ) {
+////	if ( this.type != traceModel_t.TRM_BONE ) {
 ////		InitBone();
 ////	}
 ////	// offset to center
-////	offset.Set( 0.0, 0.0, 0.0 );
+////	this.offset.Set( 0.0, 0.0, 0.0 );
 ////	// set vertices
 ////	this.verts[0].Set( 0.0, 0.0, -halfLength );
 ////	this.verts[1].Set( 0.0, width * -0.5, 0.0 );
@@ -949,8 +949,8 @@ idTraceModel::InitBox
 ////	this.verts[3].Set( width * -0.5, width * 0.25f, 0.0 );
 ////	this.verts[4].Set( 0.0, 0.0, halfLength );
 ////	// set bounds
-////	bounds[0].Set( width * -0.5, width * -0.5, -halfLength );
-////	bounds[1].Set( width * 0.5, width * 0.25f, halfLength );
+////	this.bounds[0].Set( width * -0.5, width * -0.5, -halfLength );
+////	this.bounds[1].Set( width * 0.5, width * 0.25f, halfLength );
 ////	// poly plane normals
 ////	this.polys[0].normal = ( this.verts[2] - this.verts[0] ).Cross( this.verts[1] - this.verts[0] );
 ////	this.polys[0].normal.Normalize();
@@ -983,10 +983,10 @@ idTraceModel::InitBox
 ////void idTraceModel::InitBone( ) {
 ////	var/*int */i:number;
 ////
-////	this.type = TRM_BONE;
+////	this.type = traceModel_t.TRM_BONE;
 ////	this.numVerts = 5;
 ////	this.numEdges = 9;
-////	numPolys = 6;
+////	this.numPolys = 6;
 ////
 ////	// set bone edges
 ////	for ( i = 0; i < 3; i++ ) {
@@ -1030,7 +1030,7 @@ idTraceModel::InitBox
 ////	this.polys[5].edges[2] = -9;
 ////
 ////	// convex model
-////	isConvex = true;
+////	this.isConvex = true;
 ////}
 ////
 /////*
@@ -1042,16 +1042,16 @@ idTraceModel::InitBox
 ////	int i, j;
 ////	idVec3 mid;
 ////
-////	this.type = TRM_POLYGON;
+////	this.type = traceModel_t.TRM_POLYGON;
 ////	this.numVerts = count;
 ////	// times three because we need to be able to turn the polygon into a volume
 ////	if ( this.numVerts * 3 > MAX_TRACEMODEL_EDGES ) {
-////		idLib::common.Printf( "WARNING: idTraceModel::SetupPolygon: too many vertices\n" );
+////		idLib.common.Printf( "WARNING: idTraceModel::SetupPolygon: too many vertices\n" );
 ////		this.numVerts = MAX_TRACEMODEL_EDGES / 3;
 ////	}
 ////
 ////	this.numEdges = this.numVerts;
-////	numPolys = 2;
+////	this.numPolys = 2;
 ////	// set polygon planes
 ////	this.polys[0].numEdges = numEdges;
 ////	this.polys[0].normal = ( v[1] - v[0] ).Cross( v[2] - v[0] );
@@ -1079,11 +1079,11 @@ idTraceModel::InitBox
 ////	}
 ////	this.polys[1].bounds = this.polys[0].bounds;
 ////	// offset to center
-////	offset = mid * (1.0 / this.numVerts);
+////	this.offset.equals( mid * (1.0 / this.numVerts);
 ////	// total bounds
-////	bounds = this.polys[0].bounds;
+////	this.bounds.opEquals( this.polys[0].bounds;
 ////	// considered non convex because the model has no volume
-////	isConvex = false;
+////	this.isConvex = false;
 ////}
 ////
 /////*
@@ -1196,9 +1196,9 @@ idTraceModel::GenerateEdgeNormals
 ////		this.polys[i].bounds[0] += translation;
 ////		this.polys[i].bounds[1] += translation;
 ////	}
-////	offset += translation;
-////	bounds[0] += translation;
-////	bounds[1] += translation;
+////	this.offset += translation;
+////	this.bounds[0] += translation;
+////	this.bounds[1] += translation;
 ////}
 ////
 /////*
@@ -1213,7 +1213,7 @@ idTraceModel::GenerateEdgeNormals
 ////		this.verts[i] *= rotation;
 ////	}
 ////
-////	bounds.Clear();
+////	this.bounds.Clear();
 ////	for ( i = 0; i < numPolys; i++ ) {
 ////		this.polys[i].normal *= rotation;
 ////		this.polys[i].bounds.Clear();
@@ -1223,7 +1223,7 @@ idTraceModel::GenerateEdgeNormals
 ////			this.polys[i].bounds.AddPoint( this.verts[edges[abs(edgeNum)].v[INTSIGNBITSET(edgeNum)]] );
 ////		}
 ////		this.polys[i].dist = this.polys[i].normal * this.verts[edges[abs(edgeNum)].v[INTSIGNBITSET(edgeNum)]];
-////		bounds += this.polys[i].bounds;
+////		this.bounds += this.polys[i].bounds;
 ////	}
 ////
 ////	this.GenerateEdgeNormals();
@@ -1239,7 +1239,7 @@ idTraceModel::GenerateEdgeNormals
 ////	traceModelEdge_t *edge;
 ////	idVec3 dir;
 ////
-////	if ( this.type == TRM_POLYGON ) {
+////	if ( this.type == traceModel_t.TRM_POLYGON ) {
 ////		for ( i = 0; i < this.numEdges; i++ ) {
 ////			edgeNum = this.polys[0].edges[i];
 ////			edge = &edges[abs(edgeNum)];
@@ -1277,22 +1277,22 @@ idTraceModel::GenerateEdgeNormals
 ////			this.numEdges != trm.numEdges || numPolys != trm.numPolys ) {
 ////		return false;
 ////	}
-////	if ( bounds != trm.bounds || offset != trm.offset ) {
+////	if ( this.bounds != trm.bounds || this.offset != trm.this.offset ) {
 ////		return false;
 ////	}
 ////
 ////	switch( this.type ) {
-////		case TRM_INVALID:
-////		case TRM_BOX:
-////		case TRM_OCTAHEDRON:
-////		case TRM_DODECAHEDRON:
-////		case TRM_CYLINDER:
-////		case TRM_CONE:
+////		case traceModel_t.TRM_INVALID:
+////		case traceModel_t.TRM_BOX:
+////		case traceModel_t.TRM_OCTAHEDRON:
+////		case traceModel_t.TRM_DODECAHEDRON:
+////		case traceModel_t.TRM_CYLINDER:
+////		case traceModel_t.TRM_CONE:
 ////			break;
-////		case TRM_BONE:
-////		case TRM_POLYGON:
-////		case TRM_POLYGONVOLUME:
-////		case TRM_CUSTOM:
+////		case traceModel_t.TRM_BONE:
+////		case traceModel_t.TRM_POLYGON:
+////		case traceModel_t.TRM_POLYGONVOLUME:
+////		case traceModel_t.TRM_CUSTOM:
 ////			for ( i = 0; i < trm.this.numVerts; i++ ) {
 ////				if ( this.verts[i] != trm.this.verts[i] ) {
 ////					return false;

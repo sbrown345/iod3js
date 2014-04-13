@@ -167,12 +167,12 @@ class idAngles {
 ////	this.yaw = yaw;
 ////	this.roll = roll;
 ////}
-////
-////ID_INLINE idAngles &idAngles::Zero() {
-////	this.pitch = this.yaw = this.roll = 0.0;
-////	return *this;
-////}
-////
+
+	Zero ( ): idAngles {
+		this.pitch = this.yaw = this.roll = 0.0;
+		return this;
+	}
+
 ////ID_INLINE float idAngles::operator[](int index) const {
 ////	assert((index >= 0) && (index < 3));
 ////	return (this.pitch)[index];
@@ -203,7 +203,7 @@ class idAngles {
 ////	this.yaw += a.yaw;
 ////	this.roll += a.roll;
 ////
-////	return *this;
+////	return this;
 ////}
 ////
 ////ID_INLINE idAngles idAngles::operator-(const idAngles &a) const {
@@ -215,7 +215,7 @@ class idAngles {
 ////	this.yaw -= a.yaw;
 ////	this.roll -= a.roll;
 ////
-////	return *this;
+////	return this;
 ////}
 ////
 ////ID_INLINE idAngles idAngles::operator*(const float a) const {
@@ -226,7 +226,7 @@ class idAngles {
 ////	this.pitch *= a;
 ////	this.yaw *= a;
 ////	this.roll *= a;
-////	return *this;
+////	return this;
 ////}
 ////
 ////ID_INLINE idAngles idAngles::operator/(const float a) const {
@@ -239,7 +239,7 @@ class idAngles {
 ////	this.pitch *= inva;
 ////	this.yaw *= inva;
 ////	this.roll *= inva;
-////	return *this;
+////	return this;
 ////}
 ////
 ////ID_INLINE idAngles operator*(const float a, const idAngles &b) {
@@ -349,7 +349,7 @@ class idAngles {
 ////		}
 ////	}
 ////
-////	return *this;
+////	return this;
 ////}
 ////
 /////*
@@ -373,7 +373,7 @@ class idAngles {
 ////	if ( this.roll > 180.0 ) {
 ////		this.roll -= 360.0;
 ////	}
-////	return *this;
+////	return this;
 ////}
 ////
 /////*

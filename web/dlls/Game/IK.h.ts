@@ -28,18 +28,18 @@
 ////
 ////#ifndef __GAME_IK_H__
 ////#define __GAME_IK_H__
-////
-/////*
-////===============================================================================
-////
-////  IK base class with a simple fast two bone solver.
-////
-////===============================================================================
-////*/
-////
-////#define IK_ANIM				"ik_pose"
-////
-////class idIK {
+
+/*
+===============================================================================
+
+  IK base class with a simple fast two bone solver.
+
+===============================================================================
+*/
+
+var IK_ANIM		=		"ik_pose"
+
+class idIK {
 ////public:
 ////							idIK( void );
 ////	virtual					~idIK( void );
@@ -57,24 +57,24 @@
 ////	float					GetBoneAxis( const idVec3 &startPos, const idVec3 &endPos, const idVec3 &dir, idMat3 &axis );
 ////
 ////protected:
-////	bool					initialized;
-////	bool					ik_activate;
-////	idEntity *				self;				// entity using the animated model
-////	idAnimator *			animator;			// animator on entity
-////	int						modifiedAnim;		// animation modified by the IK
-////	idVec3					modelOffset;
-////};
-////
-////
-/////*
-////===============================================================================
-////
-////  IK controller for a walking character with an arbitrary number of legs.	
-////
-////===============================================================================
-////*/
-////
-////class idIK_Walk extends idIK {
+	initialized:boolean;
+	ik_activate:boolean;
+	self:idEntity;				// entity using the animated model
+	animator:idAnimator;			// animator on entity
+	modifiedAnim :number/*int*/;		// animation modified by the IK
+	modelOffset = new idVec3;
+};
+
+
+/*
+===============================================================================
+
+  IK controller for a walking character with an arbitrary number of legs.	
+
+===============================================================================
+*/
+
+class idIK_Walk extends idIK {
 ////public:
 ////
 ////							idIK_Walk( void );
@@ -93,18 +93,18 @@
 ////	void					DisableLeg( int num );
 ////
 ////private:
-////	static const int		MAX_LEGS		= 8;
+	static MAX_LEGS		= 8;
 ////
 ////	idClipModel *			footModel;
 ////
-////	int						numLegs;
-////	int						enabledLegs;
+////	int						numLegs :number/*int*/;
+////	int						enabledLegs :number/*int*/;
 ////	jointHandle_t			footJoints[MAX_LEGS];
 ////	jointHandle_t			ankleJoints[MAX_LEGS];
 ////	jointHandle_t			kneeJoints[MAX_LEGS];
 ////	jointHandle_t			hipJoints[MAX_LEGS];
 ////	jointHandle_t			dirJoints[MAX_LEGS];
-////	jointHandle_t			waistJoint;
+////	jointHandle_t			waistJoint:jointHandle_t;
 ////
 ////	idVec3					hipForward[MAX_LEGS];
 ////	idVec3					kneeForward[MAX_LEGS];
@@ -115,26 +115,26 @@
 ////	idMat3					upperLegToHipJoint[MAX_LEGS];
 ////	idMat3					lowerLegToKneeJoint[MAX_LEGS];
 ////
-////	float					smoothing;
-////	float					waistSmoothing;
-////	float					footShift;
-////	float					waistShift;
-////	float					minWaistFloorDist;
-////	float					minWaistAnkleDist;
-////	float					footUpTrace;
-////	float					footDownTrace;
-////	bool					tiltWaist;
-////	bool					usePivot;
+////	float					smoothing :number/*float*/;
+////	float					waistSmoothing :number/*float*/;
+////	float					footShift :number/*float*/;
+////	float					waistShift :number/*float*/;
+////	float					minWaistFloorDist :number/*float*/;
+////	float					minWaistAnkleDist :number/*float*/;
+////	float					footUpTrace :number/*float*/;
+////	float					footDownTrace :number/*float*/;
+////	bool					tiltWaist:boolean;
+////	bool					usePivot:boolean;
 ////
 ////	// state
-////	int						pivotFoot;
-////	float					pivotYaw;
-////	idVec3					pivotPos;
-////	bool					oldHeightsValid;
-////	float					oldWaistHeight;
-////	float					oldAnkleHeights[MAX_LEGS];
-////	idVec3					waistOffset;
-////};
+////	int						pivotFoot :number/*int*/;
+////	float					pivotYaw :number/*float*/;
+////	idVec3					pivotPos = new idVec3;
+////	bool					oldHeightsValid:boolean;
+////	float					oldWaistHeight :number/*float*/;
+////	float					oldAnkleHeights = new Float32Array(MAX_LEGS);
+////	idVec3					waistOffset = new idVec3;
+};
 ////
 ////
 /////*
