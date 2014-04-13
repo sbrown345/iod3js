@@ -2477,10 +2477,6 @@ class idMD5Mesh {
 }
 
 class idRenderModelMD5 extends idRenderModelStatic {
-	constructor() {
-		super();
-		todoThrow()
-	}
 ////public:
 ////	virtual void				InitFromFile( fileName:string );
 ////	virtual IsDynamicModel() const;

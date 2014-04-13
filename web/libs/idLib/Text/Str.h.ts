@@ -877,9 +877,9 @@ class idStr implements ITrackedObject {
 		this.data = this.data.toUpperCase ( );
 	}
 
-////ID_INLINE bool idStr::IsNumeric( ) const {
-////	return idStr::IsNumeric( this.data );
-////}
+	IsNumeric ( ): boolean {
+		return idStr.IsNumeric( this.data );
+	}
 
 	IsColor ( ): boolean {
 		return idStr.IsColor( this.data );
@@ -1707,34 +1707,30 @@ idStr::StripTrailingWhitespace
 		}
 		this.data = this.data.substr( 0, this.len );
 	}
-/////*
-////============
-////idStr::StripQuotes
+/*
+============
+idStr::StripQuotes
 
-////Removes the quotes from the beginning and end of the string
-////============
-////*/
-////idStr& idStr::StripQuotes ( )
-////{
-////	if ( this.data[0] != '\"' )
-////	{
-////		return *this;
-////	}
+Removes the quotes from the beginning and end of the string
+============
+*/
+	StripQuotes ( ): idStr {
+		if ( this.data[0] != '\"' ) {
+			return this;
+		}
 
-////	// Remove the trailing quote first
-////	if ( this.data[len-1] == '\"' )
-////	{
-////		this.data[len-1] = '\0';
-////		len--;
-////	}
+		// Remove the trailing quote first
+		if ( this.data[this.len - 1] == '\"' ) {
+			this.len--;
+		}
 
-////	// Strip the leading quote now
-////	len--;	
-////	memmove( &data[ 0 ], &data[ 1 ], len );
-////	this.data[len] = '\0';
+		// Strip the leading quote now
+		this.len--;
 
-////	return *this;
-////}
+		this.data = this.data.substr( 1, this.len );
+		
+		return this;
+	}
 
 /////*
 ////=====================================================================

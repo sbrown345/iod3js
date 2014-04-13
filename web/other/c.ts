@@ -101,6 +101,15 @@ function isdigit ( c: string ): number {
     return ( c >= "0" && c <= "9" ) ? 1 : 0;
 }
 
+function isspace ( c: string ): number {
+	return ( c === ' ' ||
+		c === '\t' ||
+		c === '\n' ||
+		c === '\v' ||
+		c === '\f' ||
+		c === '\r' ) ? 1 : 0;
+}
+
 function tolower(s: string): string {
 	return s.toLowerCase();
 }

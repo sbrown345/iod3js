@@ -166,18 +166,18 @@ class idBounds {
 //ID_INLINE idBounds &idBounds::operator+=( const idVec3 &t ) {
 //	this.b[0] += t;
 //	this.b[1] += t;
-//	return *this;
+//	return this;
 //}
 
 //ID_INLINE idBounds idBounds::operator*( const idMat3 &r ) const {
 //	idBounds bounds;
-//	bounds.FromTransformedBounds( *this, vec3_origin, r );
+//	bounds.FromTransformedBounds( this, vec3_origin, r );
 //	return bounds;
 //}
 
 //ID_INLINE idBounds &idBounds::operator*=( const idMat3 &r ) {
-//	this.FromTransformedBounds( *this, vec3_origin, r );
-//	return *this;
+//	this.FromTransformedBounds( this, vec3_origin, r );
+//	return this;
 //}
 
 //ID_INLINE idBounds idBounds::operator+( const idBounds &a ) const {
@@ -207,7 +207,7 @@ class idBounds {
 //					this.b[1][2] - this.b[0][2] > a.b[1][2] - a.b[0][2] );
 //	this.b[0] += a.b[1];
 //	this.b[1] += a.b[0];
-//	return *this;
+//	return this;
 //}
 
 //ID_INLINE bool idBounds::Compare( const idBounds &a ) const {
@@ -240,12 +240,12 @@ Zero( ):void {
 		return new idVec3( ( this.b[1][0] + this.b[0][0] ) * 0.5, ( this.b[1][1] + this.b[0][1] ) * 0.5, ( this.b[1][2] + this.b[0][2] ) * 0.5 );
 	}
 
-//ID_INLINE float idBounds::GetVolume( ) const {
-//	if ( this.b[0][0] >= this.b[1][0] || this.b[0][1] >= this.b[1][1] || this.b[0][2] >= this.b[1][2] ) {
-//		return 0.0;
-//	}
-//	return ( ( this.b[1][0] - this.b[0][0] ) * ( this.b[1][1] - this.b[0][1] ) * ( this.b[1][2] - this.b[0][2] ) );
-//}
+	GetVolume ( ): number {
+		if ( this.b[0][0] >= this.b[1][0] || this.b[0][1] >= this.b[1][1] || this.b[0][2] >= this.b[1][2] ) {
+			return 0.0;
+		}
+		return ( ( this.b[1][0] - this.b[0][0] ) * ( this.b[1][1] - this.b[0][1] ) * ( this.b[1][2] - this.b[0][2] ) );
+	}
 
 	IsCleared ( ): boolean {
 		return this.b[0][0] > this.b[1][0];
@@ -339,7 +339,7 @@ Zero( ):void {
 //	if ( a.b[1][2] < this.b[1][2] ) {
 //		this.b[1][2] = a.b[1][2];
 //	}
-//	return *this;
+//	return this;
 //}
 
 	Expand ( /*float */d: number ): idBounds {
@@ -347,15 +347,15 @@ Zero( ):void {
 			new idVec3( this.b[1][0] + d, this.b[1][1] + d, this.b[1][2] + d ) );
 	}
 
-//ID_INLINE idBounds &idBounds::ExpandSelf( const float d ) {
-//	this.b[0][0] -= d;
-//	this.b[0][1] -= d;
-//	this.b[0][2] -= d;
-//	this.b[1][0] += d;
-//	this.b[1][1] += d;
-//	this.b[1][2] += d;
-//	return *this;
-//}
+	ExpandSelf ( /*float */d: number ): idBounds {
+		this.b[0][0] -= d;
+		this.b[0][1] -= d;
+		this.b[0][2] -= d;
+		this.b[1][0] += d;
+		this.b[1][1] += d;
+		this.b[1][2] += d;
+		return this;
+	}
 
 //ID_INLINE idBounds idBounds::Translate( const idVec3 &translation ) const {
 //	return idBounds( this.b[0] + translation, this.b[1] + translation );
@@ -364,18 +364,18 @@ Zero( ):void {
 //ID_INLINE idBounds &idBounds::TranslateSelf( const idVec3 &translation ) {
 //	this.b[0] += translation;
 //	this.b[1] += translation;
-//	return *this;
+//	return this;
 //}
 
 //ID_INLINE idBounds idBounds::Rotate( const idMat3 &rotation ) const {
 //	idBounds bounds;
-//	bounds.FromTransformedBounds( *this, vec3_origin, rotation );
+//	bounds.FromTransformedBounds( this, vec3_origin, rotation );
 //	return bounds;
 //}
 
 //ID_INLINE idBounds &idBounds::RotateSelf( const idMat3 &rotation ) {
-//	FromTransformedBounds( *this, vec3_origin, rotation );
-//	return *this;
+//	FromTransformedBounds( this, vec3_origin, rotation );
+//	return this;
 //}
 
 //ID_INLINE bool idBounds::ContainsPoint( const idVec3 &p ) const {
@@ -777,7 +777,7 @@ idBounds::FromTransformedBounds
 //	float radius;
 
 //	if (idMath.Fabs(rotation.GetAngle()) < 180.0f) {
-//		(*this) = BoundsForPointRotation(point, rotation);
+//		(this) = BoundsForPointRotation(point, rotation);
 //	}
 //	else {
 
@@ -804,12 +804,12 @@ idBounds::FromTransformedBounds
 
 //	if (idMath.Fabs(rotation.GetAngle()) < 180.0f) {
 
-//		(*this) = BoundsForPointRotation(bounds[0] * axis + origin, rotation);
+//		(this) = BoundsForPointRotation(bounds[0] * axis + origin, rotation);
 //		for (i = 1; i < 8; i++) {
 //			point[0] = bounds[(i ^ (i >> 1)) & 1][0];
 //			point[1] = bounds[(i >> 1) & 1][1];
 //			point[2] = bounds[(i >> 2) & 1][2];
-//			(*this) += BoundsForPointRotation(point * axis + origin, rotation);
+//			(this) += BoundsForPointRotation(point * axis + origin, rotation);
 //		}
 //	}
 //	else {

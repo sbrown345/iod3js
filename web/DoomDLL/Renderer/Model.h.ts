@@ -378,8 +378,8 @@ class idRenderModel {
 ////	// Returns the handle for the joint with the given name.
 ////	virtual jointHandle_t		GetJointHandle( const char *name ) const = 0;
 
-////	// Returns the name for the joint with the given handle.
-////	virtual const char *		GetJointName( jointHandle_t handle ) const = 0;
+	// Returns the name for the joint with the given handle.
+	GetJointName ( handle: jointHandle_t ): string { throw "placeholder"; }
 
 ////	// Returns the default animation pose or NULL if the model is not an MD5.
 ////	virtual const idJointQuat *	GetDefaultPose( ) const = 0;

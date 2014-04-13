@@ -70,14 +70,13 @@
 //
 class idDeclParticle extends idDecl {
 ////public:
-
-////
-////	idList<idParticleStage *>stages;
-////	idBounds				bounds;
-////	float					depthHack;
+	
+	stages = new idList<idParticleStage>(idParticleStage, true);
+	bounds = new idBounds;
+	depthHack :number/*float*/;
 ////
 ////private:
-////	bool					RebuildTextSource( void );
+////	bool					RebuildTextSource( );
 ////	void					GetStageBounds( idParticleStage *stage );
 ////	idParticleStage *		ParseParticleStage( idLexer &src );
 ////	void					ParseParms( idLexer &src, float *parms, int maxParms );
@@ -90,413 +89,411 @@ class idDeclParticle extends idDecl {
 ////idDeclParticle::Size
 ////=================
 ////*/
-////size_t idDeclParticle::Size( void ) const {
+////size_t idDeclParticle::Size( ) const {
 ////	return sizeof( idDeclParticle );
 ////}
 ////
-/////*
-////=====================
-////idDeclParticle::GetStageBounds
-////=====================
-////*/
-////void idDeclParticle::GetStageBounds( idParticleStage *stage ) {
-////
-////	stage.bounds.Clear();
-////
-////	// this isn't absolutely guaranteed, but it should be close
-////
-////	particleGen_t g;
-////
-////	renderEntity_t	renderEntity;
-////	memset( &renderEntity, 0, sizeof( renderEntity ) );
-////	renderEntity.axis = mat3_identity;
-////
-////	renderView_t	renderView;
-////	memset( &renderView, 0, sizeof( renderView ) );
-////	renderView.viewaxis = mat3_identity;
-////
-////	g.renderEnt = &renderEntity;
-////	g.renderView = &renderView;
-////	g.origin.Zero();
-////	g.axis = mat3_identity;
-////
-////	idRandom	steppingRandom;
-////	steppingRandom.SetSeed( 0 );
-////
-////	// just step through a lot of possible particles as a representative sampling
-////	for ( int i = 0 ; i < 1000 ; i++ ) {
-////		g.random = g.originalRandom = steppingRandom;
-////
-////		int	maxMsec = stage.particleLife * 1000;
-////		for ( int inCycleTime = 0 ; inCycleTime < maxMsec ; inCycleTime += 16 ) {
-////
-////			// make sure we get the very last tic, which may make up an extreme edge
-////			if ( inCycleTime + 16 > maxMsec ) {
-////				inCycleTime = maxMsec - 1;
-////			}
-////
-////			g.frac = (float)inCycleTime / ( stage.particleLife * 1000 );
-////			g.age = inCycleTime * 0.001f;
-////
-////			// if the particle doesn't get drawn because it is faded out or beyond a kill region,
-////			// don't increment the verts
-////
-////			idVec3	origin;
-////			stage.ParticleOrigin( &g, origin );			
-////			stage.bounds.AddPoint( origin );
-////		}
-////	}
-////
-////	// find the max size
-////	float	maxSize = 0;
-////
-////	for ( float f = 0; f <= 1.0f; f += 1.0f / 64 ) {
-////		float size = stage.size.Eval( f, steppingRandom );
-////		float aspect = stage.aspect.Eval( f, steppingRandom );
-////		if ( aspect > 1 ) {
-////			size *= aspect;
-////		}
-////		if ( size > maxSize ) {
-////			maxSize = size;
-////		}
-////	}
-////
-////	maxSize += 8;	// just for good measure
-////	// users can specify a per-stage bounds expansion to handle odd cases
-////	stage.bounds.ExpandSelf( maxSize + stage.boundsExpansion );
-////}
-////
-/////*
-////================
-////idDeclParticle::ParseParms
-////
-////Parses a variable length list of parms on one line
-////================
-////*/
-////void idDeclParticle::ParseParms( idLexer &src, float *parms, int maxParms ) {
-////	idToken token;
-////
-////	memset( parms, 0, maxParms * sizeof( *parms ) );
-////	int	count = 0;
-////	while( 1 ) {
-////		if ( !src.ReadTokenOnLine( &token ) ) {
-////			return;
-////		}
-////		if ( count == maxParms ) {
-////			src.Error( "too many parms on line" );
-////			return;
-////		}
-////		token.StripQuotes();
-////		parms[count] = atof( token );
-////		count++;
-////	}
-////}
-////
-/////*
-////================
-////idDeclParticle::ParseParametric
-////================
-////*/
-////void idDeclParticle::ParseParametric( idLexer &src, idParticleParm *parm ) {
-////	idToken token;
-////
-////	parm.table = NULL;
-////	parm.from = parm.to = 0.0;
-////
-////	if ( !src.ReadToken( &token ) ) {
-////		src.Error( "not enough parameters" );
-////		return;
-////	}
-////
-////	if ( token.IsNumeric() ) {
-////		// can have a to + 2nd parm
-////		parm.from = parm.to = atof( token );
-////		if ( src.ReadToken( &token ) ) {
-////			if ( !token.Icmp( "to" ) ) {
-////				if ( !src.ReadToken( &token ) ) {
-////					src.Error( "missing second parameter" );
-////					return;
-////				}
-////				parm.to = atof( token );
-////			} else {
-////				src.UnreadToken( &token );
-////			}
-////		}
-////	} else {
-////		// table
-////		parm.table = static_cast<const idDeclTable *>( declManager.FindType( DECL_TABLE, token, false ) );
-////	}
-////
-////}
-////
-/////*
-////================
-////idDeclParticle::ParseParticleStage
-////================
-////*/
-////idParticleStage *idDeclParticle::ParseParticleStage( idLexer &src ) {
-////	idToken token;
-////
-////	idParticleStage *stage = new idParticleStage;
-////	stage.Default();
-////
-////	while (1) {
-////		if ( src.HadError() ) {
-////			break;
-////		}
-////		if ( !src.ReadToken( &token ) ) {
-////			break;
-////		}
-////		if ( !token.Icmp( "}" ) ) {
-////			break;
-////		}
-////		if ( !token.Icmp( "material" ) ) {
-////			src.ReadToken( &token );
-////			stage.material = declManager.FindMaterial( token.c_str() );
-////			continue;
-////		}
-////		if ( !token.Icmp( "count" ) ) {
-////			stage.totalParticles = src.ParseInt();
-////			continue;
-////		}
-////		if ( !token.Icmp( "time" ) ) {
-////			stage.particleLife = src.ParseFloat();
-////			continue;
-////		}
-////		if ( !token.Icmp( "cycles" ) ) {
-////			stage.cycles = src.ParseFloat();
-////			continue;
-////		}
-////		if ( !token.Icmp( "timeOffset" ) ) {
-////			stage.timeOffset = src.ParseFloat();
-////			continue;
-////		}
-////		if ( !token.Icmp( "deadTime" ) ) {
-////			stage.deadTime = src.ParseFloat();
-////			continue;
-////		}
-////		if ( !token.Icmp( "randomDistribution" ) ) {
-////			stage.randomDistribution = src.ParseBool();
-////			continue;
-////		}
-////		if ( !token.Icmp( "bunching" ) ) {
-////			stage.spawnBunching = src.ParseFloat();
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "distribution" ) ) {
-////			src.ReadToken( &token );
-////			if ( !token.Icmp( "rect" ) ) {
-////				stage.distributionType = PDIST_RECT;
-////			} else if ( !token.Icmp( "cylinder" ) ) {
-////				stage.distributionType = PDIST_CYLINDER;
-////			} else if ( !token.Icmp( "sphere" ) ) {
-////				stage.distributionType = PDIST_SPHERE;
-////			} else {
-////				src.Error( "bad distribution type: %s\n", token.c_str() );
-////			}
-////			ParseParms( src, stage.distributionParms, sizeof( stage.distributionParms ) / sizeof( stage.distributionParms[0] ) );
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "direction" ) ) {
-////			src.ReadToken( &token );
-////			if ( !token.Icmp( "cone" ) ) {
-////				stage.directionType = PDIR_CONE;
-////			} else if ( !token.Icmp( "outward" ) ) {
-////				stage.directionType = PDIR_OUTWARD;
-////			} else {
-////				src.Error( "bad direction type: %s\n", token.c_str() );
-////			}
-////			ParseParms( src, stage.directionParms, sizeof( stage.directionParms ) / sizeof( stage.directionParms[0] ) );
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "orientation" ) ) {
-////			src.ReadToken( &token );
-////			if ( !token.Icmp( "view" ) ) {
-////				stage.orientation = POR_VIEW;
-////			} else if ( !token.Icmp( "aimed" ) ) {
-////				stage.orientation = POR_AIMED;
-////			} else if ( !token.Icmp( "x" ) ) {
-////				stage.orientation = POR_X;
-////			} else if ( !token.Icmp( "y" ) ) {
-////				stage.orientation = POR_Y;
-////			} else if ( !token.Icmp( "z" ) ) {
-////				stage.orientation = POR_Z;
-////			} else {
-////				src.Error( "bad orientation type: %s\n", token.c_str() );
-////			}
-////			ParseParms( src, stage.orientationParms, sizeof( stage.orientationParms ) / sizeof( stage.orientationParms[0] ) );
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "customPath" ) ) {
-////			src.ReadToken( &token );
-////			if ( !token.Icmp( "standard" ) ) {
-////				stage.customPathType = PPATH_STANDARD;
-////			} else if ( !token.Icmp( "helix" ) ) {
-////				stage.customPathType = PPATH_HELIX;
-////			} else if ( !token.Icmp( "flies" ) ) {
-////				stage.customPathType = PPATH_FLIES;
-////			} else if ( !token.Icmp( "spherical" ) ) {
-////				stage.customPathType = PPATH_ORBIT;
-////			} else {
-////				src.Error( "bad path type: %s\n", token.c_str() );
-////			}
-////			ParseParms( src, stage.customPathParms, sizeof( stage.customPathParms ) / sizeof( stage.customPathParms[0] ) );
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "speed" ) ) {
-////			ParseParametric( src, &stage.speed );
-////			continue;
-////		}
-////		if ( !token.Icmp( "rotation" ) ) {
-////			ParseParametric( src, &stage.rotationSpeed );
-////			continue;
-////		}
-////		if ( !token.Icmp( "angle" ) ) {
-////			stage.initialAngle = src.ParseFloat();
-////			continue;
-////		}
-////		if ( !token.Icmp( "entityColor" ) ) { 
-////			stage.entityColor = src.ParseBool();
-////			continue;
-////		}
-////		if ( !token.Icmp( "size" ) ) {
-////			ParseParametric( src, &stage.size );
-////			continue;
-////		}
-////		if ( !token.Icmp( "aspect" ) ) {
-////			ParseParametric( src, &stage.aspect );
-////			continue;
-////		}
-////		if ( !token.Icmp( "fadeIn" ) ) {
-////			stage.fadeInFraction = src.ParseFloat();
-////			continue;
-////		}
-////		if ( !token.Icmp( "fadeOut" ) ) {
-////			stage.fadeOutFraction = src.ParseFloat();
-////			continue;
-////		}
-////		if ( !token.Icmp( "fadeIndex" ) ) {
-////			stage.fadeIndexFraction = src.ParseFloat();
-////			continue;
-////		}
-////		if ( !token.Icmp( "color" ) ) {
-////			stage.color[0] = src.ParseFloat();
-////			stage.color[1] = src.ParseFloat();
-////			stage.color[2] = src.ParseFloat();
-////			stage.color[3] = src.ParseFloat();
-////			continue;
-////		}
-////		if ( !token.Icmp( "fadeColor" ) ) {
-////			stage.fadeColor[0] = src.ParseFloat();
-////			stage.fadeColor[1] = src.ParseFloat();
-////			stage.fadeColor[2] = src.ParseFloat();
-////			stage.fadeColor[3] = src.ParseFloat();
-////			continue;
-////		}
-////		if ( !token.Icmp("offset" ) ) {
-////			stage.offset[0] = src.ParseFloat();
-////			stage.offset[1] = src.ParseFloat();
-////			stage.offset[2] = src.ParseFloat();
-////			continue;
-////		}
-////		if ( !token.Icmp( "animationFrames" ) ) {
-////			stage.animationFrames = src.ParseInt();
-////			continue;
-////		}
-////		if ( !token.Icmp( "animationRate" ) ) {
-////			stage.animationRate = src.ParseFloat();
-////			continue;
-////		}
-////		if ( !token.Icmp( "boundsExpansion" ) ) {
-////			stage.boundsExpansion = src.ParseFloat();
-////			continue;
-////		}
-////		if ( !token.Icmp( "gravity" ) ) {
-////			src.ReadToken( &token );
-////			if ( !token.Icmp( "world" ) ) {
-////				stage.worldGravity = true;
-////			} else {
-////				src.UnreadToken( &token );
-////			}
-////			stage.gravity = src.ParseFloat();
-////			continue;
-////		}
-////
-////		src.Error( "unknown token %s\n", token.c_str() );
-////	}
-////
-////	// derive values
-////	stage.cycleMsec = ( stage.particleLife + stage.deadTime ) * 1000;
-////
-////	return stage;
-////}
-////
+/*
+=====================
+idDeclParticle::GetStageBounds
+=====================
+*/
+	GetStageBounds(stage: idParticleStage ):void {
+
+	stage.bounds.Clear();
+
+	// this isn't absolutely guaranteed, but it should be close
+
+		var g = new particleGen_t ;
+
+		var renderEntity = new renderEntity_t;
+		renderEntity.memset0 ( );//memset( &renderEntity, 0, sizeof( renderEntity ) );
+	renderEntity.axis = mat3_identity;
+
+		var renderView = new renderView_t;
+renderView.	memset0();
+	renderView.viewaxis = mat3_identity;
+
+	g.renderEnt = renderEntity;
+	g.renderView = renderView;
+	g.origin.Zero();
+	g.axis = mat3_identity;
+
+		var steppingRandom = new idRandom;
+	steppingRandom.SetSeed( 0 );
+
+	// just step through a lot of possible particles as a representative sampling
+	for ( var i = 0 ; i < 1000 ; i++ ) {
+		g.random.seed = g.originalRandom.seed = steppingRandom.seed;
+
+		var	maxMsec = stage.particleLife * 1000;
+		for ( var inCycleTime = 0 ; inCycleTime < maxMsec ; inCycleTime += 16 ) {
+
+			// make sure we get the very last tic, which may make up an extreme edge
+			if ( inCycleTime + 16 > maxMsec ) {
+				inCycleTime = maxMsec - 1;
+			}
+
+			g.frac = /*(float)*/inCycleTime / ( stage.particleLife * 1000 );
+			g.age = inCycleTime * 0.001;
+
+			// if the particle doesn't get drawn because it is faded out or beyond a kill region,
+			// don't increment the verts
+
+			var origin = new idVec3	;
+			stage.ParticleOrigin( g, origin );			
+			stage.bounds.AddPoint( origin );
+		}
+	}
+
+	// find the max size
+	var/*float*/maxSize = 0.0;
+
+	for ( var/*float*/ f = 0; f <= 1.0; f += 1.0 / 64 ) {
+		var/*float */size = stage.size.Eval( f, steppingRandom );
+		var/*float */aspect = stage.aspect.Eval( f, steppingRandom );
+		if ( aspect > 1 ) {
+			size *= aspect;
+		}
+		if ( size > maxSize ) {
+			maxSize = size;
+		}
+	}
+
+	maxSize += 8;	// just for good measure
+	// users can specify a per-stage bounds expansion to handle odd cases
+	stage.bounds.ExpandSelf( maxSize + stage.boundsExpansion );
+}
+
+/*
+================
+idDeclParticle::ParseParms
+
+Parses a variable length list of parms on one line
+================
+*/
+	ParseParms ( src: idLexer, /*float **/parms: Float32Array, /*int */maxParms: number ): void {
+		var token = new idToken;
+
+		memset( parms, 0, maxParms * 4 /*sizeof( *parms ) */ );
+		var /*int	*/count = 0;
+		while ( 1 ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return;
+			}
+			if ( count == maxParms ) {
+				src.Error( "too many parms on line" );
+				return;
+			}
+			token.StripQuotes ( );
+			parms[count] = atof( token );
+			count++;
+		}
+	}
+
+/*
+================
+idDeclParticle::ParseParametric
+================
+*/
+	ParseParametric ( src: idLexer, parm: idParticleParm ): void {
+		var token = new idToken;
+
+		parm.table = null;
+		parm.from = parm.to = 0.0;
+
+		if ( !src.ReadToken( token ) ) {
+			src.Error( "not enough parameters" );
+			return;
+		}
+
+		if ( token.IsNumeric ( ) ) {
+			// can have a to + 2nd parm
+			parm.from = parm.to = atof( token );
+			if ( src.ReadToken( token ) ) {
+				if ( !token.Icmp( "to" ) ) {
+					if ( !src.ReadToken( token ) ) {
+						src.Error( "missing second parameter" );
+						return;
+					}
+					parm.to = atof( token );
+				} else {
+					src.UnreadToken( token );
+				}
+			}
+		} else {
+			// table
+			parm.table = static_cast<idDeclTable>( declManager.FindType( declType_t.DECL_TABLE, token.data, false ) );
+		}
+	}
+
+/*
+================
+idDeclParticle::ParseParticleStage
+================
+*/
+	ParseParticleStage ( src: idLexer ): idParticleStage {
+		var token = new idToken;
+
+		var stage = new idParticleStage;
+		stage.Default ( );
+
+		while ( 1 ) {
+			if ( src.HadError ( ) ) {
+				break;
+			}
+			if ( !src.ReadToken( token ) ) {
+				break;
+			}
+			if ( !token.Icmp( "}" ) ) {
+				break;
+			}
+			if ( !token.Icmp( "material" ) ) {
+				src.ReadToken( token );
+				stage.material = declManager.FindMaterial( token.c_str ( ) );
+				continue;
+			}
+			if ( !token.Icmp( "count" ) ) {
+				stage.totalParticles = src.ParseInt ( );
+				continue;
+			}
+			if ( !token.Icmp( "time" ) ) {
+				stage.particleLife = src.ParseFloat ( );
+				continue;
+			}
+			if ( !token.Icmp( "cycles" ) ) {
+				stage.cycles = src.ParseFloat ( );
+				continue;
+			}
+			if ( !token.Icmp( "timeOffset" ) ) {
+				stage.timeOffset = src.ParseFloat ( );
+				continue;
+			}
+			if ( !token.Icmp( "deadTime" ) ) {
+				stage.deadTime = src.ParseFloat ( );
+				continue;
+			}
+			if ( !token.Icmp( "randomDistribution" ) ) {
+				stage.randomDistribution = src.ParseBool ( );
+				continue;
+			}
+			if ( !token.Icmp( "bunching" ) ) {
+				stage.spawnBunching = src.ParseFloat ( );
+				continue;
+			}
+
+			if ( !token.Icmp( "distribution" ) ) {
+				src.ReadToken( token );
+				if ( !token.Icmp( "rect" ) ) {
+					stage.distributionType = prtDistribution_t.PDIST_RECT;
+				} else if ( !token.Icmp( "cylinder" ) ) {
+					stage.distributionType = prtDistribution_t.PDIST_CYLINDER;
+				} else if ( !token.Icmp( "sphere" ) ) {
+					stage.distributionType = prtDistribution_t.PDIST_SPHERE;
+				} else {
+					src.Error( "bad distribution type: %s\n", token.c_str ( ) );
+				}
+				this.ParseParms( src, stage.distributionParms, stage.distributionParms.length );
+				continue;
+			}
+
+			if ( !token.Icmp( "direction" ) ) {
+				src.ReadToken( token );
+				if ( !token.Icmp( "cone" ) ) {
+					stage.directionType = prtDirection_t.PDIR_CONE;
+				} else if ( !token.Icmp( "outward" ) ) {
+					stage.directionType = prtDirection_t.PDIR_OUTWARD;
+				} else {
+					src.Error( "bad direction type: %s\n", token.c_str ( ) );
+				}
+				this.ParseParms(src, stage.directionParms, stage.directionParms.length );
+				continue;
+			}
+
+			if ( !token.Icmp( "orientation" ) ) {
+				src.ReadToken( token );
+				if ( !token.Icmp( "view" ) ) {
+					stage.orientation = prtOrientation_t.POR_VIEW;
+				} else if ( !token.Icmp( "aimed" ) ) {
+					stage.orientation = prtOrientation_t.POR_AIMED;
+				} else if ( !token.Icmp( "x" ) ) {
+					stage.orientation = prtOrientation_t.POR_X;
+				} else if ( !token.Icmp( "y" ) ) {
+					stage.orientation = prtOrientation_t.POR_Y;
+				} else if ( !token.Icmp( "z" ) ) {
+					stage.orientation = prtOrientation_t.POR_Z;
+				} else {
+					src.Error( "bad orientation type: %s\n", token.c_str ( ) );
+				}
+				this.ParseParms(src, stage.orientationParms, stage.orientationParms.length);
+				continue;
+			}
+
+			if ( !token.Icmp( "customPath" ) ) {
+				src.ReadToken( token );
+				if ( !token.Icmp( "standard" ) ) {
+					stage.customPathType = prtCustomPth_t.PPATH_STANDARD;
+				} else if ( !token.Icmp( "helix" ) ) {
+					stage.customPathType = prtCustomPth_t.PPATH_HELIX;
+				} else if ( !token.Icmp( "flies" ) ) {
+					stage.customPathType = prtCustomPth_t.PPATH_FLIES;
+				} else if ( !token.Icmp( "spherical" ) ) {
+					stage.customPathType = prtCustomPth_t.PPATH_ORBIT;
+				} else {
+					src.Error( "bad path type: %s\n", token.c_str ( ) );
+				}
+				this.ParseParms(src, stage.customPathParms, stage.customPathParms.length );
+				continue;
+			}
+
+			if ( !token.Icmp( "speed" ) ) {
+				this.ParseParametric( src, stage.speed );
+				continue;
+			}
+			if ( !token.Icmp( "rotation" ) ) {
+				this.ParseParametric( src, stage.rotationSpeed );
+				continue;
+			}
+			if ( !token.Icmp( "angle" ) ) {
+				stage.initialAngle = src.ParseFloat ( );
+				continue;
+			}
+			if ( !token.Icmp( "entityColor" ) ) {
+				stage.entityColor = src.ParseBool ( );
+				continue;
+			}
+			if ( !token.Icmp( "size" ) ) {
+				this.ParseParametric( src, stage.size );
+				continue;
+			}
+			if ( !token.Icmp( "aspect" ) ) {
+				this.ParseParametric( src, stage.aspect );
+				continue;
+			}
+			if ( !token.Icmp( "fadeIn" ) ) {
+				stage.fadeInFraction = src.ParseFloat ( );
+				continue;
+			}
+			if ( !token.Icmp( "fadeOut" ) ) {
+				stage.fadeOutFraction = src.ParseFloat ( );
+				continue;
+			}
+			if ( !token.Icmp( "fadeIndex" ) ) {
+				stage.fadeIndexFraction = src.ParseFloat ( );
+				continue;
+			}
+			if ( !token.Icmp( "color" ) ) {
+				stage.color[0] = src.ParseFloat ( );
+				stage.color[1] = src.ParseFloat ( );
+				stage.color[2] = src.ParseFloat ( );
+				stage.color[3] = src.ParseFloat ( );
+				continue;
+			}
+			if ( !token.Icmp( "fadeColor" ) ) {
+				stage.fadeColor[0] = src.ParseFloat ( );
+				stage.fadeColor[1] = src.ParseFloat ( );
+				stage.fadeColor[2] = src.ParseFloat ( );
+				stage.fadeColor[3] = src.ParseFloat ( );
+				continue;
+			}
+			if ( !token.Icmp( "offset" ) ) {
+				stage.offset[0] = src.ParseFloat ( );
+				stage.offset[1] = src.ParseFloat ( );
+				stage.offset[2] = src.ParseFloat ( );
+				continue;
+			}
+			if ( !token.Icmp( "animationFrames" ) ) {
+				stage.animationFrames = src.ParseInt ( );
+				continue;
+			}
+			if ( !token.Icmp( "animationRate" ) ) {
+				stage.animationRate = src.ParseFloat ( );
+				continue;
+			}
+			if ( !token.Icmp( "boundsExpansion" ) ) {
+				stage.boundsExpansion = src.ParseFloat ( );
+				continue;
+			}
+			if ( !token.Icmp( "gravity" ) ) {
+				src.ReadToken( token );
+				if ( !token.Icmp( "world" ) ) {
+					stage.worldGravity = true;
+				} else {
+					src.UnreadToken( token );
+				}
+				stage.gravity = src.ParseFloat ( );
+				continue;
+			}
+
+			src.Error( "unknown token %s\n", token.c_str ( ) );
+		}
+
+		// derive values
+		stage.cycleMsec = ( stage.particleLife + stage.deadTime ) * 1000;
+
+		return stage;
+	}
+
 /*
 ================
 idDeclParticle::Parse
 ================
 */
-	Parse(text: string, textLength: number): boolean {
-		todoThrow ( );
-////	idLexer src;
-////	idToken	token;
-////
-////	src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
-////	src.SetFlags( DECL_LEXER_FLAGS );
-////	src.SkipUntilString( "{" );
-////
-////	depthHack = 0.0;
-////
-////	while (1) {
-////		if ( !src.ReadToken( &token ) ) {
-////			break;
-////		}
-////
-////		if ( !token.Icmp( "}" ) ) {
-////			break;
-////		}
-////
-////		if ( !token.Icmp( "{" ) ) {
-////			idParticleStage *stage = ParseParticleStage( src );
-////			if ( !stage ) {
-////				src.Warning( "Particle stage parse failed" );
-////				MakeDefault();
-////				return false;
-////			}
-////			stages.Append( stage );
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "depthHack" ) ) {
-////			depthHack = src.ParseFloat();
-////			continue;
-////		}
-////
-////		src.Warning( "bad token %s", token.c_str() );
-////		MakeDefault();
-////		return false;
-////	}
-////
-////	//
-////	// calculate the bounds
-////	//
-////	bounds.Clear();
-////	for( int i = 0; i < stages.Num(); i++ ) {
-////		GetStageBounds( stages[i] );
-////		bounds.AddBounds( stages[i].bounds );
-////	}
-////
-////	if ( bounds.GetVolume() <= 0.1f ) {
-////		bounds = idBounds( vec3_origin ).Expand( 8.0f );
-////	}
-////
-	return true;
-}
+	Parse ( text: string, textLength: number ): boolean {
+		var src = new idLexer;
+		var token = new idToken;
+
+		src.LoadMemory( text, textLength, this.GetFileName ( ), this.GetLineNum ( ) );
+		src.SetFlags( DECL_LEXER_FLAGS );
+		src.SkipUntilString( "{" );
+
+		this.depthHack = 0.0;
+
+		while ( 1 ) {
+			if ( !src.ReadToken( token ) ) {
+				break;
+			}
+
+			if ( !token.Icmp( "}" ) ) {
+				break;
+			}
+
+			if ( !token.Icmp( "{" ) ) {
+				var stage = this.ParseParticleStage( src );
+				if ( !stage ) {
+					src.Warning( "Particle stage parse failed" );
+					this.MakeDefault ( );
+					return false;
+				}
+				this.stages.Append( stage );
+				continue;
+			}
+
+			if ( !token.Icmp( "depthHack" ) ) {
+				this.depthHack = src.ParseFloat ( );
+				continue;
+			}
+
+			src.Warning( "bad token %s", token.c_str ( ) );
+			this.MakeDefault ( );
+			return false;
+		}
+
+		//
+		// calculate the bounds
+		//
+		this.bounds.Clear ( );
+		for ( var i = 0; i < this.stages.Num ( ); i++ ) {
+			this.GetStageBounds( this.stages[i] );
+			this.bounds.AddBounds( this.stages[i].bounds );
+		}
+
+		if ( this.bounds.GetVolume ( ) <= 0.1 ) {
+			this.bounds.opEquals( new idBounds( vec3_origin ).Expand( 8.0 ) );
+		}
+
+		return true;
+	}
 
 /*
 ================
@@ -504,8 +501,7 @@ idDeclParticle::FreeData
 ================
 */
 	FreeData(): void {
-		todoThrow ( );
-		//this.stages.DeleteContents( true );
+		this.stages.DeleteContents( true );
 	}
 
 /*
@@ -589,7 +585,7 @@ idDeclParticle::DefaultDefinition
 ////	}
 ////	f.WriteFloatString( "\n" );
 ////
-////	if ( stage.customPathType != PPATH_STANDARD ) {
+////	if ( stage.customPathType != prtCustomPth_t.PPATH_STANDARD ) {
 ////		f.WriteFloatString( "\t\tcustomPath %s ", ParticleCustomDesc[stage.customPathType].name );
 ////		for ( i = 0; i < ParticleCustomDesc[stage.customPathType].count; i++ ) {
 ////			f.WriteFloatString( "%.3f ", stage.customPathParms[i] );
@@ -638,7 +634,7 @@ idDeclParticle::DefaultDefinition
 ////idDeclParticle::RebuildTextSource
 ////================
 ////*/
-////bool idDeclParticle::RebuildTextSource( void ) {
+////bool idDeclParticle::RebuildTextSource( ) {
 ////	idFile_Memory f;
 ////
 ////	f.WriteFloatString("\n\n/*\n"
@@ -648,12 +644,12 @@ idDeclParticle::DefaultDefinition
 ////
 ////	f.WriteFloatString( "particle %s {\n", GetName() );
 ////
-////	if ( depthHack ) {
-////		f.WriteFloatString( "\tdepthHack\t%f\n", depthHack );
+////	if ( this.depthHack ) {
+////		f.WriteFloatString( "\tdepthHack\t%f\n", this.depthHack );
 ////	}
 ////
-////	for ( int i = 0; i < stages.Num(); i++ ) {
-////		WriteStage( &f, stages[i] );
+////	for ( int i = 0; i < this.stages.Num(); i++ ) {
+////		WriteStage( &f, this.stages[i] );
 ////	}
 ////
 ////	f.WriteFloatString( "}" );
@@ -677,29 +673,7 @@ idDeclParticle::DefaultDefinition
 ////	return true;
 ////}
 }
-/////*
-////====================================================================================
-////
-////idParticleParm
-////
-////====================================================================================
-////*/
-////
-////float idParticleParm::Eval( float frac, idRandom &rand ) const {
-////	if ( table ) {
-////		return table.TableLookup( frac );
-////	}
-////	return from + frac * ( to - from );
-////}
-////
-////float idParticleParm::Integrate( float frac, idRandom &rand ) const {
-////	if ( table ) {
-////		common.Printf( "idParticleParm::Integrate: can't integrate tables\n" );
-////		return 0;
-////	}
-////	return ( from + frac * ( to - from ) * 0.5f ) * frac;
-////}
-////
+
 /////*
 ////====================================================================================
 ////
@@ -713,8 +687,8 @@ idDeclParticle::DefaultDefinition
 //
 class idParticleStage {
 ////public:
-////							idParticleStage( void );
-////	virtual					~idParticleStage( void ) {}
+////							idParticleStage( );
+////	virtual					~idParticleStage( ) {}
 ////
 ////	void					Default();
 ////	virtual int				NumQuadsPerParticle() const;	// includes trails and cross faded animations
@@ -731,187 +705,187 @@ class idParticleStage {
 ////	int						NumCustomPathParms();
 ////	void					SetCustomPathType( const char *p );
 ////	void					operator=( const idParticleStage &src );
-////
-////
-////	//------------------------------
-////
-////	const idMaterial *		material;
-////
-////	int						totalParticles;		// total number of particles, although some may be invisible at a given time
-////	float					cycles;				// allows things to oneShot ( 1 cycle ) or run for a set number of cycles
-////												// on a per stage basis
-////
-////	int						cycleMsec;			// ( particleLife + deadTime ) in msec
-////
-////	float					spawnBunching;		// 0.0 = all come out at first instant, 1.0 = evenly spaced over cycle time
-////	float					particleLife;		// total seconds of life for each particle
-////	float					timeOffset;			// time offset from system start for the first particle to spawn
-////	float					deadTime;			// time after particleLife before respawning
-////	
-////	//-------------------------------	// standard path parms
-////		
-////	prtDistribution_t		distributionType;
-////	float					distributionParms[4];
-////	
-////	prtDirection_t			directionType;
-////	float					directionParms[4];
-////	
-////	idParticleParm			speed;
-////	float					gravity;				// can be negative to float up
-////	bool					worldGravity;			// apply gravity in world space
-////	bool					randomDistribution;		// randomly orient the quad on emission ( defaults to true ) 
-////	bool					entityColor;			// force color from render entity ( fadeColor is still valid )
-////	
-////	//------------------------------	// custom path will completely replace the standard path calculations
-////	
-////	prtCustomPth_t			customPathType;		// use custom C code routines for determining the origin
-////	float					customPathParms[8];
-////	
-////	//--------------------------------
-////	
-////	idVec3					offset;				// offset from origin to spawn all particles, also applies to customPath
-////	
-////	int						animationFrames;	// if > 1, subdivide the texture S axis into frames and crossfade
-////	float					animationRate;		// frames per second
-////
-////	float					initialAngle;		// in degrees, random angle is used if zero ( default ) 
-////	idParticleParm			rotationSpeed;		// half the particles will have negative rotation speeds
-////	
-////	prtOrientation_t		orientation;	// view, aimed, or axis fixed
-////	float					orientationParms[4];
-////
-////	idParticleParm			size;
-////	idParticleParm			aspect;				// greater than 1 makes the T axis longer
-////
-////	idVec4					color;
-////	idVec4					fadeColor;			// either 0 0 0 0 for additive, or 1 1 1 0 for blended materials
-////	float					fadeInFraction;		// in 0.0 to 1.0 range
-////	float					fadeOutFraction;	// in 0.0 to 1.0 range
-////	float					fadeIndexFraction;	// in 0.0 to 1.0 range, causes later index smokes to be more faded 
-////
-////	bool					hidden;				// for editor use
-////	//-----------------------------------
-////
-////	float					boundsExpansion;	// user tweak to fix poorly calculated bounds
-////
-////	idBounds				bounds;				// derived
-/////*
-////================
-////idParticleStage::idParticleStage
-////================
-////*/
-////idParticleStage::idParticleStage( void ) {
-////	material = NULL;
-////	totalParticles = 0;
-////	cycles = 0.0;
-////	cycleMsec = 0;
-////	spawnBunching = 0.0;
-////	particleLife = 0.0;
-////	timeOffset = 0.0;
-////	deadTime = 0.0;
-////	distributionType = PDIST_RECT;
-////	distributionParms[0] = distributionParms[1] = distributionParms[2] = distributionParms[3] = 0.0;
-////	directionType = PDIR_CONE;
-////	directionParms[0] = directionParms[1] = directionParms[2] = directionParms[3] = 0.0;
-////	// idParticleParm		speed;
-////	gravity = 0.0;
-////	worldGravity = false;
-////	customPathType = PPATH_STANDARD;
-////	customPathParms[0] = customPathParms[1] = customPathParms[2] = customPathParms[3] = 0.0;
-////	customPathParms[4] = customPathParms[5] = customPathParms[6] = customPathParms[7] = 0.0;
-////	offset.Zero();
-////	animationFrames = 0;
-////	animationRate = 0.0;
-////	randomDistribution = true;
-////	entityColor = false;
-////	initialAngle = 0.0;
-////	// idParticleParm		rotationSpeed;
-////	orientation = POR_VIEW;
-////	orientationParms[0] = orientationParms[1] = orientationParms[2] = orientationParms[3] = 0.0;
-////	// idParticleParm		size
-////	// idParticleParm		aspect
-////	color.Zero();
-////	fadeColor.Zero();
-////	fadeInFraction = 0.0;
-////	fadeOutFraction = 0.0;
-////	fadeIndexFraction = 0.0;
-////	hidden = false;
-////	boundsExpansion = 0.0;
-////	bounds.Clear();
-////}
-////
-/////*
-////================
-////idParticleStage::Default
-////
-////Sets the stage to a default state
-////================
-////*/
-////void idParticleStage::Default() {
-////	material = declManager.FindMaterial( "_default" );
-////	totalParticles = 100;
-////	spawnBunching = 1.0f;
-////	particleLife = 1.5f;
-////	timeOffset = 0.0;
-////	deadTime = 0.0;
-////	distributionType = PDIST_RECT;
-////	distributionParms[0] = 8.0f;
-////	distributionParms[1] = 8.0f;
-////	distributionParms[2] = 8.0f;
-////	distributionParms[3] = 0.0;
-////	directionType = PDIR_CONE;
-////	directionParms[0] = 90.0f;
-////	directionParms[1] = 0.0;
-////	directionParms[2] = 0.0;
-////	directionParms[3] = 0.0;
-////	orientation = POR_VIEW;
-////	orientationParms[0] = 0.0;
-////	orientationParms[1] = 0.0;
-////	orientationParms[2] = 0.0;
-////	orientationParms[3] = 0.0;
-////	speed.from = 150.0f;
-////	speed.to = 150.0f;
-////	speed.table = NULL;
-////	gravity = 1.0f;
-////	worldGravity = false;
-////	customPathType = PPATH_STANDARD;
-////	customPathParms[0] = 0.0;
-////	customPathParms[1] = 0.0;
-////	customPathParms[2] = 0.0;
-////	customPathParms[3] = 0.0;
-////	customPathParms[4] = 0.0;
-////	customPathParms[5] = 0.0;
-////	customPathParms[6] = 0.0;
-////	customPathParms[7] = 0.0;
-////	offset.Zero();
-////	animationFrames = 0;
-////	animationRate = 0.0;
-////	initialAngle = 0.0;
-////	rotationSpeed.from = 0.0;
-////	rotationSpeed.to = 0.0;
-////	rotationSpeed.table = NULL;
-////	size.from = 4.0f;
-////	size.to = 4.0f;
-////	size.table = NULL;
-////	aspect.from = 1.0f;
-////	aspect.to = 1.0f;
-////	aspect.table = NULL;
-////	color.x = 1.0f;
-////	color.y = 1.0f;
-////	color.z = 1.0f;
-////	color.w = 1.0f;
-////	fadeColor.x = 0.0;
-////	fadeColor.y = 0.0;
-////	fadeColor.z = 0.0;
-////	fadeColor.w = 0.0;
-////	fadeInFraction = 0.1f;
-////	fadeOutFraction = 0.25f;
-////	fadeIndexFraction = 0.0;
-////	boundsExpansion = 0.0;
-////	randomDistribution = true;
-////	entityColor = false;
-////	cycleMsec = ( particleLife + deadTime ) * 1000;
-////}
+
+
+	//------------------------------
+
+	material: idMaterial;
+
+	totalParticles: number /*int*/; // total number of particles, although some may be invisible at a given time
+	cycles: number /*float*/; // allows things to oneShot ( 1 cycle ) or run for a set number of cycles
+	// on a per stage basis
+
+	cycleMsec: number /*int*/; // ( particleLife + deadTime ) in msec
+
+	spawnBunching: number /*float*/; // 0.0 = all come out at first instant, 1.0 = evenly spaced over cycle time
+	particleLife: number /*float*/; // total seconds of life for each particle
+	timeOffset: number /*float*/; // time offset from system start for the first particle to spawn
+	deadTime: number /*float*/; // time after particleLife before respawning
+
+	//-------------------------------	// standard path parms
+
+	distributionType: prtDistribution_t;
+	distributionParms = new Float32Array( 4 );
+
+	directionType: prtDirection_t;
+	directionParms = new Float32Array( 4 );
+
+	speed = new idParticleParm;
+	gravity: number /*float*/; // can be negative to float up
+	worldGravity: boolean; // apply gravity in world space
+	randomDistribution: boolean; // randomly orient the quad on emission ( defaults to true ) 
+	entityColor: boolean; // force color from render entity ( fadeColor is still valid )
+
+	//------------------------------	// custom path will completely replace the standard path calculations
+
+	customPathType: prtCustomPth_t; // use custom C code routines for determining the origin
+	customPathParms = new Float32Array( 8 );
+
+	//--------------------------------
+
+	offset = new idVec3; // offset from origin to spawn all particles, also applies to customPath
+
+	animationFrames: number /*int*/; // if > 1, subdivide the texture S axis into frames and crossfade
+	animationRate: number /*float*/; // frames per second
+
+	initialAngle: number /*float*/; // in degrees, random angle is used if zero ( default ) 
+	rotationSpeed = new idParticleParm; // half the particles will have negative rotation speeds
+
+	orientation: prtOrientation_t; // view, aimed, or axis fixed
+	orientationParms = new Float32Array( 4 );
+
+	size = new idParticleParm;
+	aspect = new idParticleParm; // greater than 1 makes the T axis longer
+
+	color = new idVec4;
+	fadeColor = new idVec4; // either 0 0 0 0 for additive, or 1 1 1 0 for blended materials
+	fadeInFraction: number /*float*/; // in 0.0 to 1.0 range
+	fadeOutFraction: number /*float*/; // in 0.0 to 1.0 range
+	fadeIndexFraction: number /*float*/; // in 0.0 to 1.0 range, causes later index smokes to be more faded 
+
+	hidden: boolean; // for editor use
+	//-----------------------------------
+
+	boundsExpansion: number /*float*/; // user tweak to fix poorly calculated bounds
+
+	bounds = new idBounds; // derived
+/*
+================
+idParticleStage::idParticleStage
+================
+*/
+	constructor ( ) {
+		this.material = null;
+		this.totalParticles = 0;
+		this.cycles = 0.0;
+		this.cycleMsec = 0;
+		this.spawnBunching = 0.0;
+		this.particleLife = 0.0;
+		this.timeOffset = 0.0;
+		this.deadTime = 0.0;
+		this.distributionType = prtDistribution_t.PDIST_RECT;
+		this.distributionParms[0] = this.distributionParms[1] = this.distributionParms[2] = this.distributionParms[3] = 0.0;
+		this.directionType = prtDirection_t.PDIR_CONE;
+		this.directionParms[0] = this.directionParms[1] = this.directionParms[2] = this.directionParms[3] = 0.0;
+		// idParticleParm		speed;
+		this.gravity = 0.0;
+		this.worldGravity = false;
+		this.customPathType = prtCustomPth_t.PPATH_STANDARD;
+		this.customPathParms[0] = this.customPathParms[1] = this.customPathParms[2] = this.customPathParms[3] = 0.0;
+		this.customPathParms[4] = this.customPathParms[5] = this.customPathParms[6] = this.customPathParms[7] = 0.0;
+		this.offset.Zero ( );
+		this.animationFrames = 0;
+		this.animationRate = 0.0;
+		this.randomDistribution = true;
+		this.entityColor = false;
+		this.initialAngle = 0.0;
+		// idParticleParm		rotationSpeed;
+		this.orientation = prtOrientation_t.POR_VIEW;
+		this.orientationParms[0] = this.orientationParms[1] = this.orientationParms[2] = this.orientationParms[3] = 0.0;
+		// idParticleParm		size
+		// idParticleParm		aspect
+		this.color.Zero ( );
+		this.fadeColor.Zero ( );
+		this.fadeInFraction = 0.0;
+		this.fadeOutFraction = 0.0;
+		this.fadeIndexFraction = 0.0;
+		this.hidden = false;
+		this.boundsExpansion = 0.0;
+		this.bounds.Clear ( );
+	}
+
+/*
+================
+idParticleStage::Default
+
+Sets the stage to a default state
+================
+*/
+	Default ( ): void {
+		this.material = declManager.FindMaterial( "_default" );
+		this.totalParticles = 100;
+		this.spawnBunching = 1.0;
+		this.particleLife = 1.5;
+		this.timeOffset = 0.0;
+		this.deadTime = 0.0;
+		this.distributionType = prtDistribution_t.PDIST_RECT;
+		this.distributionParms[0] = 8.0;
+		this.distributionParms[1] = 8.0;
+		this.distributionParms[2] = 8.0;
+		this.distributionParms[3] = 0.0;
+		this.directionType = prtDirection_t.PDIR_CONE;
+		this.directionParms[0] = 90.0;
+		this.directionParms[1] = 0.0;
+		this.directionParms[2] = 0.0;
+		this.directionParms[3] = 0.0;
+		this.orientation = prtOrientation_t.POR_VIEW;
+		this.orientationParms[0] = 0.0;
+		this.orientationParms[1] = 0.0;
+		this.orientationParms[2] = 0.0;
+		this.orientationParms[3] = 0.0;
+		this.speed.from = 150.0;
+		this.speed.to = 150.0;
+		this.speed.table = null;
+		this.gravity = 1.0;
+		this.worldGravity = false;
+		this.customPathType = prtCustomPth_t.PPATH_STANDARD;
+		this.customPathParms[0] = 0.0;
+		this.customPathParms[1] = 0.0;
+		this.customPathParms[2] = 0.0;
+		this.customPathParms[3] = 0.0;
+		this.customPathParms[4] = 0.0;
+		this.customPathParms[5] = 0.0;
+		this.customPathParms[6] = 0.0;
+		this.customPathParms[7] = 0.0;
+		this.offset.Zero ( );
+		this.animationFrames = 0;
+		this.animationRate = 0.0;
+		this.initialAngle = 0.0;
+		this.rotationSpeed.from = 0.0;
+		this.rotationSpeed.to = 0.0;
+		this.rotationSpeed.table = null;
+		this.size.from = 4.0;
+		this.size.to = 4.0;
+		this.size.table = null;
+		this.aspect.from = 1.0;
+		this.aspect.to = 1.0;
+		this.aspect.table = null;
+		this.color.x = 1.0;
+		this.color.y = 1.0;
+		this.color.z = 1.0;
+		this.color.w = 1.0;
+		this.fadeColor.x = 0.0;
+		this.fadeColor.y = 0.0;
+		this.fadeColor.z = 0.0;
+		this.fadeColor.w = 0.0;
+		this.fadeInFraction = 0.1;
+		this.fadeOutFraction = 0.25;
+		this.fadeIndexFraction = 0.0;
+		this.boundsExpansion = 0.0;
+		this.randomDistribution = true;
+		this.entityColor = false;
+		this.cycleMsec = ( this.particleLife + this.deadTime ) * 1000;
+	}
 ////
 /////*
 ////================
@@ -923,8 +897,8 @@ class idParticleStage {
 ////int idParticleStage::NumQuadsPerParticle() const {
 ////	int	count = 1;
 ////
-////	if ( orientation == POR_AIMED ) {
-////		int	trails = idMath::Ftoi( orientationParms[0] );
+////	if ( orientation == prtOrientation_t.POR_AIMED ) {
+////		int	trails = idMath::Ftoi( this.orientationParms[0] );
 ////		// each trail stage will add an extra quad
 ////		count *= ( 1 + trails );
 ////	}
@@ -936,52 +910,53 @@ class idParticleStage {
 ////
 ////	return count;
 ////}
-////
-/////*
-////===============
-////idParticleStage::ParticleOrigin
-////===============
-////*/
-////void idParticleStage::ParticleOrigin( particleGen_t *g, idVec3 &origin ) const {
-////	if ( customPathType == PPATH_STANDARD ) {
+
+/*
+===============
+idParticleStage::ParticleOrigin
+===============
+*/
+	ParticleOrigin ( g: particleGen_t, origin: idVec3 ): void {
+		todoThrow ( );
+////	if ( customPathType == prtCustomPth_t.PPATH_STANDARD ) {
 ////		//
 ////		// find intial origin distribution
 ////		//
 ////		float radiusSqr, angle1, angle2;
 ////
 ////		switch( distributionType ) {
-////			case PDIST_RECT: {	// ( sizeX sizeY sizeZ )
-////				origin[0] = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0f ) * distributionParms[0];
-////				origin[1] = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0f ) * distributionParms[1];
-////				origin[2] = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0f ) * distributionParms[2];
+////			case prtDistribution_t.PDIST_RECT: {	// ( sizeX sizeY sizeZ )
+////				origin[0] = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0 ) * this.distributionParms[0];
+////				origin[1] = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0 ) * this.distributionParms[1];
+////				origin[2] = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0 ) * this.distributionParms[2];
 ////				break;
 ////			}
-////			case PDIST_CYLINDER: {	// ( sizeX sizeY sizeZ ringFraction )
-////				angle1 = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0f ) * idMath::TWO_PI;
+////			case prtDistribution_t.PDIST_CYLINDER: {	// ( sizeX sizeY sizeZ ringFraction )
+////				angle1 = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0 ) * idMath::TWO_PI;
 ////
 ////				idMath::SinCos16( angle1, origin[0], origin[1] );
-////				origin[2] = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0f );
+////				origin[2] = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0 );
 ////
 ////				// reproject points that are inside the ringFraction to the outer band
-////				if ( distributionParms[3] > 0.0 ) {
+////				if ( this.distributionParms[3] > 0.0 ) {
 ////					radiusSqr = origin[0] * origin[0] + origin[1] * origin[1];
-////					if ( radiusSqr < distributionParms[3] * distributionParms[3] ) {
+////					if ( radiusSqr < this.distributionParms[3] * this.distributionParms[3] ) {
 ////						// if we are inside the inner reject zone, rescale to put it out into the good zone
-////						float f = sqrt( radiusSqr ) / distributionParms[3];
-////						float invf = 1.0f / f;
-////						float newRadius = distributionParms[3] + f * ( 1.0f - distributionParms[3] );
+////						float f = sqrt( radiusSqr ) / this.distributionParms[3];
+////						float invf = 1.0 / f;
+////						float newRadius = this.distributionParms[3] + f * ( 1.0 - this.distributionParms[3] );
 ////						float rescale = invf * newRadius;
 ////
 ////						origin[0] *= rescale;
 ////						origin[1] *= rescale;
 ////					}
 ////				}
-////				origin[0] *= distributionParms[0];
-////				origin[1] *= distributionParms[1];
-////				origin[2] *= distributionParms[2];
+////				origin[0] *= this.distributionParms[0];
+////				origin[1] *= this.distributionParms[1];
+////				origin[2] *= this.distributionParms[2];
 ////				break;
 ////			}
-////			case PDIST_SPHERE: {	// ( sizeX sizeY sizeZ ringFraction )
+////			case prtDistribution_t.PDIST_SPHERE: {	// ( sizeX sizeY sizeZ ringFraction )
 ////				// iterating with rejection is the only way to get an even distribution over a sphere
 ////				if ( randomDistribution ) {
 ////					do {
@@ -989,20 +964,20 @@ class idParticleStage {
 ////						origin[1] = g.random.CRandomFloat();
 ////						origin[2] = g.random.CRandomFloat();
 ////						radiusSqr = origin[0] * origin[0] + origin[1] * origin[1] + origin[2] * origin[2];
-////					} while( radiusSqr > 1.0f );
+////					} while( radiusSqr > 1.0 );
 ////				} else {
-////					origin.Set( 1.0f, 1.0f, 1.0f );
-////					radiusSqr = 3.0f;
+////					origin.Set( 1.0, 1.0, 1.0 );
+////					radiusSqr = 3.0;
 ////				}
 ////
-////				if ( distributionParms[3] > 0.0 ) {
+////				if ( this.distributionParms[3] > 0.0 ) {
 ////					// we could iterate until we got something that also satisfied ringFraction,
 ////					// but for narrow rings that could be a lot of work, so reproject inside points instead
-////					if ( radiusSqr < distributionParms[3] * distributionParms[3] ) {
+////					if ( radiusSqr < this.distributionParms[3] * this.distributionParms[3] ) {
 ////						// if we are inside the inner reject zone, rescale to put it out into the good zone
-////						float f = sqrt( radiusSqr ) / distributionParms[3];
-////						float invf = 1.0f / f;
-////						float newRadius = distributionParms[3] + f * ( 1.0f - distributionParms[3] );
+////						float f = sqrt( radiusSqr ) / this.distributionParms[3];
+////						float invf = 1.0 / f;
+////						float newRadius = this.distributionParms[3] + f * ( 1.0 - this.distributionParms[3] );
 ////						float rescale = invf * newRadius;
 ////
 ////						origin[0] *= rescale;
@@ -1010,9 +985,9 @@ class idParticleStage {
 ////						origin[2] *= rescale;
 ////					}
 ////				}
-////				origin[0] *= distributionParms[0];
-////				origin[1] *= distributionParms[1];
-////				origin[2] *= distributionParms[2];
+////				origin[0] *= this.distributionParms[0];
+////				origin[1] *= this.distributionParms[1];
+////				origin[2] *= this.distributionParms[2];
 ////				break;
 ////			}
 ////		}
@@ -1027,9 +1002,9 @@ class idParticleStage {
 ////		idVec3	dir;
 ////
 ////		switch( directionType ) {
-////			case PDIR_CONE: {
+////			case prtDirection_t.PDIR_CONE: {
 ////				// angle is the full angle, so 360 degrees is any spherical direction
-////				angle1 = g.random.CRandomFloat() * directionParms[0] * idMath::M_DEG2RAD;
+////				angle1 = g.random.CRandomFloat() * this.directionParms[0] * idMath::M_DEG2RAD;
 ////				angle2 = g.random.CRandomFloat() * idMath::PI;
 ////		
 ////				float s1, c1, s2, c2;
@@ -1041,17 +1016,17 @@ class idParticleStage {
 ////				dir[2] = c1;
 ////				break;
 ////			}
-////			case PDIR_OUTWARD: {
+////			case prtDirection_t.PDIR_OUTWARD: {
 ////				dir = origin;
 ////				dir.Normalize();
-////				dir[2] += directionParms[0];
+////				dir[2] += this.directionParms[0];
 ////				break;
 ////			}
 ////		}
 ////
 ////		// add speed
 ////		float iSpeed = speed.Integrate( g.frac, g.random );
-////		origin += dir * iSpeed * particleLife;	
+////		origin += dir * iSpeed * this.particleLife;	
 ////
 ////	} else {
 ////		//
@@ -1060,24 +1035,24 @@ class idParticleStage {
 ////		//
 ////		float angle1, angle2, speed1, speed2;
 ////		switch( customPathType ) {
-////			case PPATH_HELIX: {		// ( sizeX sizeY sizeZ radialSpeed axialSpeed )
+////			case prtCustomPth_t.PPATH_HELIX: {		// ( sizeX sizeY sizeZ radialSpeed axialSpeed )
 ////				speed1 = g.random.CRandomFloat();
 ////				speed2 = g.random.CRandomFloat();
-////				angle1 = g.random.RandomFloat() * idMath::TWO_PI + customPathParms[3] * speed1 * g.age;
+////				angle1 = g.random.RandomFloat() * idMath::TWO_PI + this.customPathParms[3] * speed1 * g.age;
 ////
 ////				float s1, c1;
 ////				idMath::SinCos16( angle1, s1, c1 );
 ////
-////				origin[0] = c1 * customPathParms[0];
-////				origin[1] = s1 * customPathParms[1];
-////				origin[2] = g.random.RandomFloat() * customPathParms[2] + customPathParms[4] * speed2 * g.age;
+////				origin[0] = c1 * this.customPathParms[0];
+////				origin[1] = s1 * this.customPathParms[1];
+////				origin[2] = g.random.RandomFloat() * this.customPathParms[2] + this.customPathParms[4] * speed2 * g.age;
 ////				break;
 ////			}
-////			case PPATH_FLIES: {		// ( radialSpeed axialSpeed size )
-////				speed1 = idMath::ClampFloat( 0.4f, 1.0f, g.random.CRandomFloat() );
-////				speed2 = idMath::ClampFloat( 0.4f, 1.0f, g.random.CRandomFloat() );
-////				angle1 = g.random.RandomFloat() * idMath::PI * 2 + customPathParms[0] * speed1 * g.age;
-////				angle2 = g.random.RandomFloat() * idMath::PI * 2 + customPathParms[1] * speed1 * g.age;
+////			case prtCustomPth_t.PPATH_FLIES: {		// ( radialSpeed axialSpeed size )
+////				speed1 = idMath::ClampFloat( 0.4f, 1.0, g.random.CRandomFloat() );
+////				speed2 = idMath::ClampFloat( 0.4f, 1.0, g.random.CRandomFloat() );
+////				angle1 = g.random.RandomFloat() * idMath::PI * 2 + this.customPathParms[0] * speed1 * g.age;
+////				angle2 = g.random.RandomFloat() * idMath::PI * 2 + this.customPathParms[1] * speed1 * g.age;
 ////
 ////				float s1, c1, s2, c2;
 ////				idMath::SinCos16( angle1, s1, c1 );
@@ -1086,24 +1061,24 @@ class idParticleStage {
 ////				origin[0] = c1 * c2;
 ////				origin[1] = s1 * c2;
 ////				origin[2] = -s2;
-////				origin *= customPathParms[2];
+////				origin *= this.customPathParms[2];
 ////				break;
 ////			}
-////			case PPATH_ORBIT: {		// ( radius speed axis )
-////				angle1 = g.random.RandomFloat() * idMath::TWO_PI + customPathParms[1] * g.age;
+////			case prtCustomPth_t.PPATH_ORBIT: {		// ( radius speed axis )
+////				angle1 = g.random.RandomFloat() * idMath::TWO_PI + this.customPathParms[1] * g.age;
 ////
 ////				float s1, c1;
 ////				idMath::SinCos16( angle1, s1, c1 );
 ////
-////				origin[0] = c1 * customPathParms[0];
-////				origin[1] = s1 * customPathParms[0];
-////				origin.ProjectSelfOntoSphere( customPathParms[0] );
+////				origin[0] = c1 * this.customPathParms[0];
+////				origin[1] = s1 * this.customPathParms[0];
+////				origin.ProjectSelfOntoSphere( this.customPathParms[0] );
 ////				break;
 ////			}
-////			case PPATH_DRIP: {		// ( speed )
+////			case prtCustomPth_t.PPATH_DRIP: {		// ( speed )
 ////				origin[0] = 0.0;
 ////				origin[1] = 0.0;
-////				origin[2] = -( g.age * customPathParms[0] );
+////				origin[2] = -( g.age * this.customPathParms[0] );
 ////				break;
 ////			}
 ////			default: {
@@ -1126,7 +1101,7 @@ class idParticleStage {
 ////	} else {
 ////		origin[2] -= gravity * g.age * g.age;
 ////	}
-////}
+	}
 ////
 /////*
 ////==================
@@ -1142,7 +1117,7 @@ class idParticleStage {
 ////
 ////	idVec3	left, up;
 ////
-////	if ( orientation == POR_AIMED ) {
+////	if ( orientation == prtOrientation_t.POR_AIMED ) {
 ////		// reset the values to an earlier time to get a previous origin
 ////		idRandom	currentRandom = g.random;
 ////		float		currentAge = g.age;
@@ -1150,20 +1125,20 @@ class idParticleStage {
 ////		idDrawVert *verts_p = verts;
 ////		idVec3		stepOrigin = origin;
 ////		idVec3		stepLeft;
-////		int			numTrails = idMath::Ftoi( orientationParms[0] );
-////		float		trailTime = orientationParms[1];
+////		int			numTrails = idMath::Ftoi( this.orientationParms[0] );
+////		float		trailTime = this.orientationParms[1];
 ////
 ////		if ( trailTime == 0 ) {
-////			trailTime = 0.5f;
+////			trailTime = 0.5;
 ////		}
 ////
-////		float height = 1.0f / ( 1 + numTrails );
+////		float height = 1.0 / ( 1 + numTrails );
 ////		float t = 0;
 ////
 ////		for ( int i = 0 ; i <= numTrails ; i++ ) {
 ////			g.random = g.originalRandom;
 ////			g.age = currentAge - ( i + 1 ) * trailTime / ( numTrails + 1 );	// time to back up
-////			g.frac = g.age / particleLife;
+////			g.frac = g.age / this.particleLife;
 ////
 ////			idVec3	oldOrigin;
 ////			ParticleOrigin( g, oldOrigin );
@@ -1231,7 +1206,7 @@ class idParticleStage {
 ////
 ////	angle = ( initialAngle ) ? initialAngle : 360 * g.random.RandomFloat();
 ////
-////	float	angleMove = rotationSpeed.Integrate( g.frac, g.random ) * particleLife;
+////	float	angleMove = rotationSpeed.Integrate( g.frac, g.random ) * this.particleLife;
 ////	// have hald the particles rotate each way
 ////	if ( g.index & 1 ) {
 ////		angle += angleMove;
@@ -1243,7 +1218,7 @@ class idParticleStage {
 ////	float c = idMath::Cos16( angle );
 ////	float s = idMath::Sin16( angle );
 ////
-////	if ( orientation  == POR_Z ) {
+////	if ( orientation  == prtOrientation_t.POR_Z ) {
 ////		// oriented in entity space
 ////		left[0] = s;
 ////		left[1] = c;
@@ -1251,7 +1226,7 @@ class idParticleStage {
 ////		up[0] = c;
 ////		up[1] = -s;
 ////		up[2] = 0;
-////	} else if ( orientation == POR_X ) {
+////	} else if ( orientation == prtOrientation_t.POR_X ) {
 ////		// oriented in entity space
 ////		left[0] = 0;
 ////		left[1] = c;
@@ -1259,7 +1234,7 @@ class idParticleStage {
 ////		up[0] = 0;
 ////		up[1] = -s;
 ////		up[2] = c;
-////	} else if ( orientation == POR_Y ) {
+////	} else if ( orientation == prtOrientation_t.POR_Y ) {
 ////		// oriented in entity space
 ////		left[0] = c;
 ////		left[1] = 0;
@@ -1299,7 +1274,7 @@ class idParticleStage {
 ////	float	t, height;
 ////
 ////	if ( animationFrames > 1 ) {
-////		width = 1.0f / animationFrames;
+////		width = 1.0 / animationFrames;
 ////		float	floatFrame;
 ////		if ( animationRate ) {
 ////			// explicit, cycling animation
@@ -1313,11 +1288,11 @@ class idParticleStage {
 ////		s = width * intFrame;
 ////	} else {
 ////		s = 0.0;
-////		width = 1.0f;
+////		width = 1.0;
 ////	}
 ////
 ////	t = 0.0;
-////	height = 1.0f;
+////	height = 1.0;
 ////
 ////	verts[0].st[0] = s;
 ////	verts[0].st[1] = t;
@@ -1338,28 +1313,28 @@ class idParticleStage {
 ////==================
 ////*/
 ////void idParticleStage::ParticleColors( particleGen_t *g, idDrawVert *verts ) const {
-////	float	fadeFraction = 1.0f;
+////	float	fadeFraction = 1.0;
 ////
 ////	// most particles fade in at the beginning and fade out at the end
 ////	if ( g.frac < fadeInFraction ) {
 ////		fadeFraction *= ( g.frac / fadeInFraction );
 ////	} 
-////	if ( 1.0f - g.frac < fadeOutFraction ) {
-////		fadeFraction *= ( ( 1.0f - g.frac ) / fadeOutFraction );
+////	if ( 1.0 - g.frac < fadeOutFraction ) {
+////		fadeFraction *= ( ( 1.0 - g.frac ) / fadeOutFraction );
 ////	}
 ////
 ////	// individual gun smoke particles get more and more faded as the
 ////	// cycle goes on (note that totalParticles won't be correct for a surface-particle deform)
 ////	if ( fadeIndexFraction ) {
-////		float	indexFrac = ( totalParticles - g.index ) / (float)totalParticles;
+////		float	indexFrac = ( this.totalParticles - g.index ) / (float)this.totalParticles;
 ////		if ( indexFrac < fadeIndexFraction ) {
 ////			fadeFraction *= indexFrac / fadeIndexFraction;
 ////		}
 ////	}
 ////
 ////	for ( int i = 0 ; i < 4 ; i++ ) {
-////		float	fcolor = ( ( entityColor ) ? g.renderEnt.shaderParms[i] : color[i] ) * fadeFraction + fadeColor[i] * ( 1.0f - fadeFraction );
-////		int		icolor = idMath::FtoiFast( fcolor * 255.0f );
+////		float	fcolor = ( ( entityColor ) ? g.renderEnt.shaderParms[i] : color[i] ) * fadeFraction + fadeColor[i] * ( 1.0 - fadeFraction );
+////		int		icolor = idMath::FtoiFast( fcolor * 255.0 );
 ////		if ( icolor < 0 ) {
 ////			icolor = 0;
 ////		} else if ( icolor > 255 ) {
@@ -1412,9 +1387,9 @@ class idParticleStage {
 ////	}
 ////
 ////	// if we are doing strip-animation, we need to double the quad and cross fade it
-////	float	width = 1.0f / animationFrames;
+////	float	width = 1.0 / animationFrames;
 ////	float	frac = g.animationFrameFrac;
-////	float	iFrac = 1.0f - frac;
+////	float	iFrac = 1.0 - frac;
 ////	for ( int i = 0 ; i < numVerts ; i++ ) {
 ////		verts[numVerts + i] = verts[i];
 ////
@@ -1470,7 +1445,7 @@ class idParticleStage {
 ////==================
 ////*/
 ////void idParticleStage::SetCustomPathType( const char *p ) {
-////	customPathType = PPATH_STANDARD;
+////	customPathType = prtCustomPth_t.PPATH_STANDARD;
 ////	for ( int i = 0; i < CustomParticleCount; i ++ ) {
 ////		if ( idStr::Icmp( p, ParticleCustomDesc[i].name ) == 0 ) {
 ////			customPathType = static_cast<prtCustomPth_t>( i );
@@ -1479,63 +1454,69 @@ class idParticleStage {
 ////	}
 ////}
 ////
-/////*
-////==================
-////idParticleStage::operator=
-////==================
-////*/
-////void idParticleStage::operator=( const idParticleStage &src ) {
-////	material = src.material;
-////	totalParticles = src.totalParticles;
-////	cycles = src.cycles;
-////	cycleMsec = src.cycleMsec;
-////	spawnBunching = src.spawnBunching;
-////	particleLife = src.particleLife;
-////	timeOffset = src.timeOffset;
-////	deadTime = src.deadTime;
-////	distributionType = src.distributionType;
-////	distributionParms[0] = src.distributionParms[0];
-////	distributionParms[1] = src.distributionParms[1];
-////	distributionParms[2] = src.distributionParms[2];
-////	distributionParms[3] = src.distributionParms[3];
-////	directionType = src.directionType;
-////	directionParms[0] = src.directionParms[0];
-////	directionParms[1] = src.directionParms[1];
-////	directionParms[2] = src.directionParms[2];
-////	directionParms[3] = src.directionParms[3];
-////	speed = src.speed;
-////	gravity = src.gravity;
-////	worldGravity = src.worldGravity;
-////	randomDistribution = src.randomDistribution;
-////	entityColor = src.entityColor;
-////	customPathType = src.customPathType;
-////	customPathParms[0] = src.customPathParms[0];
-////	customPathParms[1] = src.customPathParms[1];
-////	customPathParms[2] = src.customPathParms[2];
-////	customPathParms[3] = src.customPathParms[3];
-////	customPathParms[4] = src.customPathParms[4];
-////	customPathParms[5] = src.customPathParms[5];
-////	customPathParms[6] = src.customPathParms[6];
-////	customPathParms[7] = src.customPathParms[7];
-////	offset = src.offset;
-////	animationFrames = src.animationFrames;
-////	animationRate = src.animationRate;
-////	initialAngle = src.initialAngle;
-////	rotationSpeed = src.rotationSpeed;
-////	orientation = src.orientation;
-////	orientationParms[0] = src.orientationParms[0];
-////	orientationParms[1] = src.orientationParms[1];
-////	orientationParms[2] = src.orientationParms[2];
-////	orientationParms[3] = src.orientationParms[3];
-////	size = src.size;
-////	aspect = src.aspect;
-////	color = src.color;
-////	fadeColor = src.fadeColor;
-////	fadeInFraction = src.fadeInFraction;
-////	fadeOutFraction = src.fadeOutFraction;
-////	fadeIndexFraction = src.fadeIndexFraction;
-////	hidden = src.hidden;
-////	boundsExpansion = src.boundsExpansion;
-////	bounds = src.bounds;
-////}
+/*
+==================
+idParticleStage::operator=
+==================
+*/
+	opEquals ( src: idParticleStage ): void {
+		todoThrow ( );
+		//this.material = src.material;
+		//this.totalParticles = src.totalParticles;
+		//this.cycles = src.cycles;
+		//this.cycleMsec = src.cycleMsec;
+		//this.spawnBunching = src.spawnBunching;
+		//this.particleLife = src.particleLife;
+		//this.timeOffset = src.timeOffset;
+		//this.deadTime = src.deadTime;
+		//this.distributionType = src.distributionType;
+		//this.distributionParms[0] = src.distributionParms[0];
+		//this.distributionParms[1] = src.distributionParms[1];
+		//this.distributionParms[2] = src.distributionParms[2];
+		//this.distributionParms[3] = src.distributionParms[3];
+		//this.directionType = src.directionType;
+		//this.directionParms[0] = src.directionParms[0];
+		//this.directionParms[1] = src.directionParms[1];
+		//this.directionParms[2] = src.directionParms[2];
+		//this.directionParms[3] = src.directionParms[3];
+		//this.speed = src.speed;
+		//this.gravity = src.gravity;
+		//this.worldGravity = src.worldGravity;
+		//this.randomDistribution = src.randomDistribution;
+		//this.entityColor = src.entityColor;
+		//this.customPathType = src.customPathType;
+		//this.customPathParms[0] = src.customPathParms[0];
+		//this.customPathParms[1] = src.customPathParms[1];
+		//this.customPathParms[2] = src.customPathParms[2];
+		//this.customPathParms[3] = src.customPathParms[3];
+		//this.customPathParms[4] = src.customPathParms[4];
+		//this.customPathParms[5] = src.customPathParms[5];
+		//this.customPathParms[6] = src.customPathParms[6];
+		//this.customPathParms[7] = src.customPathParms[7];
+		//this.offset.equals(src.offset);
+		//this.animationFrames = src.animationFrames;
+		//this.animationRate = src.animationRate;
+		//this.initialAngle = src.initialAngle;
+		//this.rotationSpeed = src.rotationSpeed;
+		//this.orientation = src.orientation;
+		//this.orientationParms[0] = src.orientationParms[0];
+		//this.orientationParms[1] = src.orientationParms[1];
+		//this.orientationParms[2] = src.orientationParms[2];
+		//this.orientationParms[3] = src.orientationParms[3];
+		//	this.size.opEquals( src.size );
+		//	this.aspect.opEquals( src.aspect );//todo: check others
+		//this.color.equals(src.color);
+		//this.fadeColor.equals(src.fadeColor);
+		//this.fadeInFraction = src.fadeInFraction;
+		//this.fadeOutFraction = src.fadeOutFraction;
+		//this.fadeIndexFraction = src.fadeIndexFraction;
+		//this.hidden = src.hidden;
+		//this.boundsExpansion = src.boundsExpansion;
+		//this.bounds = src.bounds;
+	}
+
+	valueOf(): number {
+		todoThrow("error: implicity idParticleStage valueOf called");
+		return NaN;
+	}
 }

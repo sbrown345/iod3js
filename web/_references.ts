@@ -245,6 +245,7 @@
 //#include "../framework/DeclFX.h"
 /// <reference path="doomdll/framework/declfx.cpp.ts" />
 //#include "../framework/DeclParticle.h"
+/// <reference path="doomdll/framework/declparticle.h.ts" />
 /// <reference path="doomdll/framework/declparticle.cpp.ts" />
 //#include "../framework/DeclAF.h"
 /// <reference path="doomdll/framework/declaf.h.ts" />

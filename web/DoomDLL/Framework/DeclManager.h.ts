@@ -102,30 +102,30 @@ class idDeclBase {
 ////public:
 ////	virtual 				~idDeclBase() {};
 	GetName(): string { throw "placeholder"; }
-////	virtual declType_t		GetType( void ) const = 0;
-////	virtual declState_t		GetState( void ) const = 0;
-////	virtual bool			IsImplicit( void ) const = 0;
-////	virtual bool			IsValid( void ) const = 0;
-////	virtual void			Invalidate( void ) = 0;
-////	virtual void			Reload( void ) = 0;
+	GetType( ) :declType_t  { throw "placeholder"; }
+	GetState( ) :declState_t { throw "placeholder"; }
+	IsImplicit( ) :boolean   { throw "placeholder"; }
+	IsValid( ) :boolean    { throw "placeholder"; }
+	Invalidate( ) : void { throw "placeholder"; }
+	Reload( ) : void { throw "placeholder"; }
 	EnsureNotPurged(): void { throw "placeholder"; }
 	Index( ) :number { throw "placeholder"; }
 	GetLineNum ( ): number { throw "placeholder"; }
 	GetFileName( ):string { throw "placeholder"; }
 ////	virtual void			GetText( char *text ) const = 0;
-////	virtual int				GetTextLength( void ) const = 0;
+////	virtual int				GetTextLength( ) const = 0;
 	SetText ( text: Uint8Array ): void { throw "placeholder"; }
-////	virtual bool			ReplaceSourceFileText( void ) = 0;
-////	virtual bool			SourceFileChanged( void ) const = 0;
+////	virtual bool			ReplaceSourceFileText( ) = 0;
+////	virtual bool			SourceFileChanged( ) const = 0;
 	MakeDefault(): void { throw "placeholder"; }
 	EverReferenced ( ): boolean /* = 0;*/ { throw "placeholder"; }
 	SetDefaultText ( ): boolean /* = 0;*/ { throw "placeholder"; }
 	DefaultDefinition ( ): string { throw "placeholder"; }
 	Parse( text:string, textLength:number ):boolean { throw "placeholder"; }
 	FreeData ( ): void /* = 0;*/ { throw "placeholder"; }
-////	virtual size_t			Size( void ) const = 0;
-////	virtual void			List( void ) const = 0;
-////	virtual void			Print( void ) const = 0;
+////	virtual size_t			Size( ) const = 0;
+////	virtual void			List( ) const = 0;
+////	virtual void			Print( ) const = 0;
 };
 
 
@@ -133,29 +133,29 @@ class idDecl {
 ////public:
 ////							// The constructor should initialize variables such that
 ////							// an immediate call to FreeData() does no harm.
-////							idDecl( void ) { this.base = NULL; }
-////	virtual 				~idDecl( void ) {};
+////							idDecl( ) { this.base = NULL; }
+////	virtual 				~idDecl( ) {};
 
 	// Returns the name of the decl.
 	GetName ( ): string { return this.base.GetName ( ); }
 
-////							// Returns the decl type.
-////	declType_t				GetType( void ) const { return this.base.GetType(); }
-
-////							// Returns the decl state which is usefull for finding out if a decl defaulted.
-////	declState_t				GetState( void ) const { return this.base.GetState(); }
-
-////							// Returns true if the decl was defaulted or the text was created with a call to SetDefaultText.
-////	bool					IsImplicit( void ) const { return this.base.IsImplicit(); }
-
-////							// The only way non-manager code can have an invalid decl is if the *ByIndex()
-////							// call was used with forceParse = false to walk the lists to look at names
-////							// without touching the media.
-////	bool					IsValid( void ) const { return this.base.IsValid(); }
-
-////							// Sets state back to unparsed.
-////							// Used by decl editors to undo any changes to the decl.
-////	void					Invalidate( void ) { this.base.Invalidate(); }
+	// Returns the decl type.
+	GetType( ):declType_t { return this.base.GetType(); }
+	
+	// Returns the decl state which is usefull for finding out if a decl defaulted.
+	GetState( ):declState_t  { return this.base.GetState(); }
+	
+	// Returns true if the decl was defaulted or the text was created with a call to SetDefaultText.
+	IsImplicit( ) :boolean { return this.base.IsImplicit(); }
+	
+	// The only way non-manager code can have an invalid decl is if the *ByIndex()
+	// call was used with forceParse = false to walk the lists to look at names
+	// without touching the media.
+	IsValid( ) :boolean { return this.base.IsValid(); }
+	
+	// Sets state back to unparsed.
+	// Used by decl editors to undo any changes to the decl.
+	Invalidate( ):void { this.base.Invalidate(); }
 
 							// if a pointer might possible be stale from a previous level,
 							// call this to have it re-parsed
@@ -174,23 +174,23 @@ class idDecl {
 ////	void					GetText( char *text ) const { this.base.GetText( text ); }
 
 ////							// Returns the length of the decl text.
-////	int						GetTextLength( void ) const { return this.base.GetTextLength(); }
+////	int						GetTextLength( ) const { return this.base.GetTextLength(); }
 
 							// Sets new decl text.
 	SetText ( text: Uint8Array ): void { this.base.SetText( text ); }
 
 ////							// Saves out new text for the decl.
 ////							// Used by decl editors to replace the decl text in the source file.
-////	bool					ReplaceSourceFileText( void ) { return this.base.ReplaceSourceFileText(); }
+////	bool					ReplaceSourceFileText( ) { return this.base.ReplaceSourceFileText(); }
 
 ////							// Returns true if the source file changed since it was loaded and parsed.
-////	bool					SourceFileChanged( void ) const { return this.base.SourceFileChanged(); }
+////	bool					SourceFileChanged( ) const { return this.base.SourceFileChanged(); }
 
 							// Frees data and makes the decl a default.
 	MakeDefault ( ): void { this.base.MakeDefault ( ); }
 
 ////							// Returns true if the decl was ever referenced.
-////	bool					EverReferenced( void ) const { return this.base.EverReferenced(); }
+////	bool					EverReferenced( ) const { return this.base.EverReferenced(); }
 
 ////public:
 ////							// Sets textSource to a default text if necessary.
@@ -220,17 +220,17 @@ class idDecl {
 	FreeData( ):void { this.base.FreeData ( ); }
 
 ////							// Returns the size of the decl in memory.
-////	virtual size_t			Size( void ) const { return this.base.Size(); }
+////	virtual size_t			Size( ) const { return this.base.Size(); }
 
 ////							// If this isn't overridden, it will just print the decl name.
 ////							// The manager will have printed 7 characters on the line already,
 ////							// containing the reference state and index number.
-////	virtual void			List( void ) const { this.base.List(); }
+////	virtual void			List( ) const { this.base.List(); }
 
 ////							// The print function will already have dumped the text source
 ////							// and common data, subclasses can override this to dump more
 ////							// explicit data.
-////	virtual void			Print( void ) const { this.base.Print(); }
+////	virtual void			Print( ) const { this.base.Print(); }
 
 //public:
 	base: idDeclBase ;
@@ -249,23 +249,23 @@ function idDeclAllocator<T> ( type: any ): ( ) => T {
 
 class idDeclManager {
 ////public:
-////	virtual					~idDeclManager( void ) {}
+////	virtual					~idDeclManager( ) {}
 
-////	virtual void			Init( void ) = 0;
-////	virtual void			Shutdown( void ) = 0;
+////	virtual void			Init( ) = 0;
+////	virtual void			Shutdown( ) = 0;
 ////	virtual void			Reload( bool force ) = 0;
 
 ////	virtual void			BeginLevelLoad() = 0;
 ////	virtual void			EndLevelLoad() = 0;
 
 ////							// Registers a new decl type.
-////	virtual void			RegisterDeclType( const char *typeName, declType_t type, idDecl *(*allocator)( void ) ) = 0;
+////	virtual void			RegisterDeclType( const char *typeName, declType_t type, idDecl *(*allocator)( ) ) = 0;
 
 ////							// Registers a new folder with decl files.
 ////	virtual void			RegisterDeclFolder( const char *folder, const char *extension, declType_t defaultType ) = 0;
 
 ////							// Returns a checksum for all loaded decl text.
-////	virtual int				GetChecksum( void ) const = 0;
+////	virtual int				GetChecksum( ) const = 0;
 
 ////							// Returns the number of decl types.
 	GetNumDeclTypes ( ): number /*int*/ /*const = 0;*/ { throw "placeholder"; }

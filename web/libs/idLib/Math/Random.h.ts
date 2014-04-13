@@ -54,6 +54,11 @@ class idRandom {
 	////private:
 		seed:number /*int*/;
 	////};
+
+	memset0 ( ): void {
+		this.seed = 0;
+	}
+
 	////
 	////ID_INLINE idRandom::idRandom( int seed ) {
 	////	this.seed = seed;

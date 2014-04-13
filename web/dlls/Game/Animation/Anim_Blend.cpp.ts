@@ -100,7 +100,7 @@ class idDeclModelDef extends idDecl {
 	offset = new idVec3;
 	joints = new idList<jointInfo_t>(jointInfo_t);
 	jointParents = new idList</*int*/number>(Number);
-	channelJoints : idList < number/*int*/ >[/* ANIM_NumAnimChannels */];
+	channelJoints = new Array<idList<number/*int*/>>(ANIM_NumAnimChannels);
 	modelHandle:idRenderModel;
 	anims = new idList<idAnim >(idAnim ,true);
 	skin:idDeclSkin;
@@ -156,11 +156,13 @@ idDeclModelDef::CopyDecl
 		for ( i = 0; i < this.anims.Num ( ); i++ ) {
 			this.anims[i] = new idAnim( this, decl.anims[i] );
 		}
-
 		this.joints.SetNum( decl.joints.Num ( ) );
-		memcpy( this.joints.Ptr ( ), decl.joints.Ptr ( ), decl.joints.Num ( ) * sizeof( this.joints[0] ) );
+		memcpyStructs( this.joints.Ptr ( ), decl.joints.Ptr ( ), decl.joints.Num ( ) );
+
 		this.jointParents.SetNum( decl.jointParents.Num ( ) );
-		memcpy( this.jointParents.Ptr ( ), decl.jointParents.Ptr ( ), decl.jointParents.Num ( ) * sizeof( this.jointParents[0] ) );
+		for ( var j = 0; j < decl.jointParents.Num ( ); j++ ) {
+			this.jointParents[j] = decl.jointParents[j];
+		}
 		for ( i = 0; i < ANIM_NumAnimChannels; i++ ) {
 			this.channelJoints[i] = decl.channelJoints[i];
 		}
@@ -251,7 +253,7 @@ idDeclModelDef::GetJointList
 		pos = 0;//jointnames;
 	while( jointnames[pos] ) {
 		// skip over whitespace
-		while( ( jointnames[pos] != 0 ) && isspace( jointnames[pos] ) ) {
+		while( ( jointnames[pos] /*!= 0*/ ) && isspace( jointnames[pos] ) ) {
 			pos++;
 		}
 
@@ -277,12 +279,12 @@ idDeclModelDef::GetJointList
 			getChildren = false;
 		}
 
-		while( ( jointnames[pos] != 0 ) && !isspace( jointnames[pos] ) ) {
+		while( ( jointnames[pos] /*!= 0*/ ) && !isspace( jointnames[pos] ) ) {
 			jointname.Append( jointnames[pos] );
 			pos++;
 		}
 
-		joint = this.FindJoint( jointname );
+		joint = this.FindJoint( jointname .data);
 		if ( !joint ) {
 			gameLocal.Warning( "Unknown joint '%s' in '%s' for model '%s'", jointname.c_str(), jointnames, this.GetName() );
 			continue;
@@ -294,24 +296,25 @@ idDeclModelDef::GetJointList
 			jointList.Remove( joint.num );
 		}
 
-		if ( getChildren ) {
-			// include all joint's children
-			child = joint + 1;
-			for( i = joint.num + 1; i < num; i++, child++ ) {
-				// all children of the joint should follow it in the list.
-				// once we reach a joint without a parent or with a parent
-				// who is earlier in the list than the specified joint, then
-				// we've gone through all it's children.
-				if ( child.parentNum < joint.num ) {
-					break;
-				}
+		if (getChildren) {
+			todoThrow ( );
+		//	// include all joint's children
+		//	child = joint + 1;
+		//	for( i = joint.num + 1; i < num; i++, child++ ) {
+		//		// all children of the joint should follow it in the list.
+		//		// once we reach a joint without a parent or with a parent
+		//		// who is earlier in the list than the specified joint, then
+		//		// we've gone through all it's children.
+		//		if ( child.parentNum < joint.num ) {
+		//			break;
+		//		}
 
-				if ( !subtract ) {
-					jointList.AddUnique( child.num );
-				} else {
-					jointList.Remove( child.num );
-				}
-			}
+		//		if ( !subtract ) {
+		//			jointList.AddUnique( child.num );
+		//		} else {
+		//			jointList.Remove( child.num );
+		//		}
+		//	}
 		}
 	}
 }

@@ -1856,14 +1856,14 @@ idLexer::~idLexer
 ////	idStr.Copynz( baseFolder, path, sizeof( baseFolder ) );
 ////}
 
-/////*
-////================
-////idLexer::HadError
-////================
-////*/
-////bool idLexer::HadError( ) const {
-////	return hadError;
-////}
+/*
+================
+idLexer::HadError
+================
+*/
+	HadError ( ): boolean {
+		return this.hadError;
+	}
 
 
 	SetFlags ( /*int */flags: number ): void {

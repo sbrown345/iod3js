@@ -65,19 +65,28 @@ var ANIMCHANNEL_EYELIDS		= 4;
 //	float	backlerp;
 //} frameBlend_t;
 //
-//typedef struct {
-//	int						nameIndex;
-//	int						parentNum;
-//	int						animBits;
-//	int						firstComponent;
-//} jointAnimInfo_t;
-//
-class jointInfo_t {
-	num:jointHandle_t;
-	parentNum:jointHandle_t;
-	channel: number /*int*/;
+class jointAnimInfo_t {
+	nameIndex: number /*int*/;
+	parentNum: number /*int*/;
+	animBits: number /*int*/;
+	firstComponent: number /*int*/;
 }
-//
+
+class jointInfo_t {
+	num: jointHandle_t;
+	parentNum: jointHandle_t;
+	channel: number /*int*/;
+
+	copy ( dest: jointInfo_t = null ): jointInfo_t {
+		dest = dest || new jointInfo_t;
+		dest.num = this.num;
+		dest.parentNum = this.parentNum;
+		dest.channel = this.channel;
+		return dest;
+	}
+}
+
+
 //
 // joint modifier modes.  make sure to change script/doom_defs.script if you add any, or change their order.
 //
@@ -89,73 +98,73 @@ enum jointModTransform_t{
 	JOINTMOD_WORLD_OVERRIDE		// sets the joint's position or orientation in model space
 };
 
-//typedef struct {
-//	jointHandle_t			jointnum;
-//	idMat3					mat;
-//	idVec3					pos;
-//	jointModTransform_t		transform_pos;
-//	 jointModTransform_t		transform_axis;
-//} jointMod_t;
-//
-//#define	ANIM_TX				BIT( 0 )
-//#define	ANIM_TY				BIT( 1 )
-//#define	ANIM_TZ				BIT( 2 )
-//#define	ANIM_QX				BIT( 3 )
-//#define	ANIM_QY				BIT( 4 )
-//#define	ANIM_QZ				BIT( 5 )
-//
-//typedef enum {
-//	FC_SCRIPTFUNCTION,
-//	FC_SCRIPTFUNCTIONOBJECT,
-//	FC_EVENTFUNCTION,
-//	FC_SOUND,
-//	FC_SOUND_VOICE,
-//	FC_SOUND_VOICE2,
-//	FC_SOUND_BODY,
-//	FC_SOUND_BODY2,
-//	FC_SOUND_BODY3,
-//	FC_SOUND_WEAPON,
-//	FC_SOUND_ITEM,
-//	FC_SOUND_GLOBAL,
-//	FC_SOUND_CHATTER,
-//	FC_SKIN,
-//	FC_TRIGGER,
-//	FC_TRIGGER_SMOKE_PARTICLE,
-//	FC_MELEE,
-//	FC_DIRECTDAMAGE,
-//	FC_BEGINATTACK,
-//	FC_ENDATTACK,
-//	FC_MUZZLEFLASH,
-//	FC_CREATEMISSILE,
-//	FC_LAUNCHMISSILE,
-//	FC_FIREMISSILEATTARGET,
-//	FC_FOOTSTEP,
-//	FC_LEFTFOOT,
-//	FC_RIGHTFOOT,
-//	FC_ENABLE_EYE_FOCUS,
-//	FC_DISABLE_EYE_FOCUS,
-//	FC_FX,
-//	FC_DISABLE_GRAVITY,
-//	FC_ENABLE_GRAVITY,
-//	FC_JUMP,
-//	FC_ENABLE_CLIP,
-//	FC_DISABLE_CLIP,
-//	FC_ENABLE_WALK_IK,
-//	FC_DISABLE_WALK_IK,
-//	FC_ENABLE_LEG_IK,
-//	FC_DISABLE_LEG_IK,
-//	FC_RECORDDEMO,
-//	FC_AVIGAME
-//} frameCommandType_t;
-//
+class jointMod_t {
+	//jointHandle_t			jointnum;
+	//idMat3					mat;
+	//idVec3					pos;
+	//jointModTransform_t		transform_pos;
+	// jointModTransform_t		transform_axis;
+};
+
+var	ANIM_TX				=BIT( 0 )
+var	ANIM_TY				=BIT( 1 )
+var	ANIM_TZ				=BIT( 2 )
+var	ANIM_QX				=BIT( 3 )
+var	ANIM_QY				=BIT( 4 )
+var	ANIM_QZ				=BIT( 5 )
+
+enum frameCommandType_t{
+	FC_SCRIPTFUNCTION,
+	FC_SCRIPTFUNCTIONOBJECT,
+	FC_EVENTFUNCTION,
+	FC_SOUND,
+	FC_SOUND_VOICE,
+	FC_SOUND_VOICE2,
+	FC_SOUND_BODY,
+	FC_SOUND_BODY2,
+	FC_SOUND_BODY3,
+	FC_SOUND_WEAPON,
+	FC_SOUND_ITEM,
+	FC_SOUND_GLOBAL,
+	FC_SOUND_CHATTER,
+	FC_SKIN,
+	FC_TRIGGER,
+	FC_TRIGGER_SMOKE_PARTICLE,
+	FC_MELEE,
+	FC_DIRECTDAMAGE,
+	FC_BEGINATTACK,
+	FC_ENDATTACK,
+	FC_MUZZLEFLASH,
+	FC_CREATEMISSILE,
+	FC_LAUNCHMISSILE,
+	FC_FIREMISSILEATTARGET,
+	FC_FOOTSTEP,
+	FC_LEFTFOOT,
+	FC_RIGHTFOOT,
+	FC_ENABLE_EYE_FOCUS,
+	FC_DISABLE_EYE_FOCUS,
+	FC_FX,
+	FC_DISABLE_GRAVITY,
+	FC_ENABLE_GRAVITY,
+	FC_JUMP,
+	FC_ENABLE_CLIP,
+	FC_DISABLE_CLIP,
+	FC_ENABLE_WALK_IK,
+	FC_DISABLE_WALK_IK,
+	FC_ENABLE_LEG_IK,
+	FC_DISABLE_LEG_IK,
+	FC_RECORDDEMO,
+	FC_AVIGAME
+};
+
 class frameLookup_t{
 	num: number /*int*/;
 	firstCommand: number /*int*/;
 }
 
 class frameCommand_t {
-//	frameCommandType_t		type;
-//	idStr					*string;
+	type: frameCommandType_t;
+	$string = new idStr;
 //
 //	union {
 //		const idSoundShader	*soundShader;
@@ -226,18 +235,18 @@ class animFlags_t {
 
 class idMD5Anim {
 //private:
-	numFrames :number/*int*/;
-	frameRate:number/*int*/;
-	animLength:number/*int*/;
-	numJoints:number/*int*/;
-	numAnimatedComponents:number/*int*/;
+	numFrames: number /*int*/;
+	frameRate: number /*int*/;
+	animLength: number /*int*/;
+	numJoints: number /*int*/;
+	numAnimatedComponents: number /*int*/;
 //	idList<idBounds>		bounds;
 //	idList<jointAnimInfo_t>	jointInfo;
 //	idList<idJointQuat>		baseFrame;
 //	idList<float>			componentFrames;
 	name = new idStr;
 	totaldelta = new idVec3;
-	ref_count :number/*mutable int*/;
+	ref_count: number /*mutable int*/;
 
 //public:
 //							idMD5Anim();
@@ -269,20 +278,20 @@ class idMD5Anim {
 //	void					GetOriginRotation( idQuat &rotation, /*int*/time:number, int cyclecount ) const;
 //	void					GetBounds( idBounds &bounds, int currentTime, int cyclecount ) const;
 
-	
+
 /*
 ====================
 idMD5Anim::idMD5Anim
 ====================
 */
-constructor() {
-	this.ref_count	= 0;
-	this.numFrames	= 0;
-	this.numJoints	= 0;
-	this.frameRate	= 24;
-	this.animLength	= 0;
-	this.totaldelta.Zero();
-}
+	constructor ( ) {
+		this.ref_count = 0;
+		this.numFrames = 0;
+		this.numJoints = 0;
+		this.frameRate = 24;
+		this.animLength = 0;
+		this.totaldelta.Zero ( );
+	}
 //
 ///*
 //====================
@@ -317,27 +326,27 @@ constructor() {
 idMD5Anim::NumFrames
 ====================
 */
-NumFrames(): number {
-	return this.numFrames;
-}
+	NumFrames ( ): number {
+		return this.numFrames;
+	}
 
 /*
 ====================
 idMD5Anim::NumJoints
 ====================
 */
-NumJoints( ) :number {
-	return this. numJoints;
-}
+	NumJoints ( ): number {
+		return this.numJoints;
+	}
 
 /*
 ====================
 idMD5Anim::Length
 ====================
 */
-Length( ) :number {
-	return this.animLength;
-}
+	Length ( ): number {
+		return this.animLength;
+	}
 //
 ///*
 //=====================
@@ -557,40 +566,40 @@ idMD5Anim::TotalMovementDelta
 //	// done
 //	return true;
 //}
-//
-///*
-//====================
-//idMD5Anim::IncreaseRefs
-//====================
-//*/
-//void idMD5Anim::IncreaseRefs( ) const {
-//	ref_count++;
-//}
-//
-///*
-//====================
-//idMD5Anim::DecreaseRefs
-//====================
-//*/
-//void idMD5Anim::DecreaseRefs( ) const {
-//	ref_count--;
-//}
-//
-///*
-//====================
-//idMD5Anim::NumRefs
-//====================
-//*/
-//int idMD5Anim::NumRefs( ) const {
-//	return ref_count;
-//}
-//
+
+/*
+====================
+idMD5Anim::IncreaseRefs
+====================
+*/
+	IncreaseRefs ( ): void {
+		this.ref_count++;
+	}
+
+/*
+====================
+idMD5Anim::DecreaseRefs
+====================
+*/
+	DecreaseRefs ( ): void {
+		this.ref_count--;
+	}
+
+/*
+====================
+idMD5Anim::NumRefs
+====================
+*/
+	NumRefs ( ): number {
+		return this.ref_count;
+	}
+
 ///*
 //====================
 //idMD5Anim::GetFrameBlend
 //====================
 //*/
-//void idMD5Anim::GetFrameBlend( framenum/*int*/:number, frameBlend_t &frame ) const {
+//void idMD5Anim::GetFrameBlend( framenum/*int*/:number, frameBlend_t &frame ) :void {
 //	frame.cycleCount	= 0;
 //	frame.backlerp		= 0.0f;
 //	frame.frontlerp		= 1.0f;
@@ -1141,7 +1150,7 @@ idMD5Anim::CheckModelHierarchy
 		//	}
 		//}
 	}
-};
+}
 
 /*
 ==============================================================================================
@@ -1196,7 +1205,17 @@ class idAnim {
 idAnim::idAnim
 =====================
 */
-	constructor ( ) {
+	constructor ( ) 
+	constructor(modelDef: idDeclModelDef, anim: idAnim)
+	constructor(modelDef?: idDeclModelDef, anim?: idAnim) {
+		if ( arguments.length == 0 ) {
+			this.constructor_default ( );
+		} else {
+			this.constructor_modelAnm (modelDef, anim );
+		}
+	}
+
+	private constructor_default ( ):void {
 		this.modelDef = null;
 		this.numAnims = 0;
 		//this.memset( anims, 0, sizeof( anims ) );
@@ -1208,50 +1227,52 @@ idAnim::idAnim
 idAnim::idAnim
 =====================
 */
-idAnim::idAnim( modelDef:idDeclModelDef, const idAnim *anim ) {
-	var/*int*/i:number;
+	constructor_modelAnm ( modelDef: idDeclModelDef, anim: idAnim ): void {
+		var /*int*/i: number;
 
-	this.modelDef = modelDef;
-	numAnims = anim.numAnims;
-	name = anim.name;
-	this.realname = anim.realname;
-	flags = anim.flags;
+		this.modelDef = modelDef;
+		this.numAnims = anim.numAnims;
+		this.name.equals( anim.name );
+		this.realname = anim.realname;
+		this.flags = anim.flags;
 
-	memset( anims, 0, sizeof( anims ) );
-	for( i = 0; i < numAnims; i++ ) {
-		anims[ i ] = anim.anims[ i ];
-		anims[ i ].IncreaseRefs();
-	}
+		//memset(this.anims, 0, sizeof(this.anims));
 
-	frameLookup.SetNum( anim.frameLookup.Num() );
-	memcpy( frameLookup.Ptr(), anim.frameLookup.Ptr(), frameLookup.MemoryUsed() );
 
-	frameCommands.SetNum( anim.frameCommands.Num() );
-	for( i = 0; i < frameCommands.Num(); i++ ) {
-		frameCommands[ i ] = anim.frameCommands[ i ];
-		if ( anim.frameCommands[ i ].string ) {
-			frameCommands[ i ].string = new idStr( *anim.frameCommands[ i ].string );
+		for ( i = 0; i < this.numAnims; i++ ) {
+			this.anims[i] = anim.anims[i];
+			this.anims[i].IncreaseRefs ( );
+		}
+
+		this.frameLookup.SetNum( anim.frameLookup.Num ( ) );
+		memcpyStructs( this.frameLookup, anim.frameLookup, this.frameLookup.Num ( ) /*.MemoryUsed()*/ );
+
+		this.frameCommands.SetNum( anim.frameCommands.Num ( ) );
+		for ( i = 0; i < this.frameCommands.Num ( ); i++ ) {
+			this.frameCommands[i] = anim.frameCommands[i];
+			if ( anim.frameCommands[i].$string ) {
+				this.frameCommands[i].$string = new idStr( anim.frameCommands[i].$string );
+			}
 		}
 	}
-}
-//
-///*
-//=====================
-//idAnim::~idAnim
-//=====================
-//*/
-//idAnim::~idAnim() {
-//	var/*int*/i:number;
-//
-//	for( i = 0; i < numAnims; i++ ) {
-//		anims[ i ].DecreaseRefs();
-//	}
-//
-//	for( i = 0; i < frameCommands.Num(); i++ ) {
-//		delete frameCommands[ i ].string;
-//	}
-//}
-//
+
+/*
+=====================
+idAnim::~idAnim
+=====================
+*/
+	destructor ( ): void {
+		var /*int*/i: number;
+
+		for ( i = 0; i < this.numAnims; i++ ) {
+			this.anims[i].DecreaseRefs ( );
+		}
+
+		for ( i = 0; i < this.frameCommands.Num ( ); i++ ) {
+			delete this.frameCommands[i].$string;
+		}
+	}
+
 /*
 =====================
 idAnim::SetAnim
@@ -1262,29 +1283,29 @@ idAnim::SetAnim
 
 		this.modelDef = modelDef;
 		todoThrow ( );
-		//for( i = 0; i < numAnims; i++ ) {
-		//	anims[ i ].DecreaseRefs();
-		//	anims[ i ] = null;
+		//for( i = 0; i < this.numAnims; i++ ) {
+		//	this.anims[ i ].DecreaseRefs();
+		//	this.anims[ i ] = null;
 		//}
 
 		//assert( ( num > 0 ) && ( num <= ANIM_MaxSyncedAnims ) );
-		//numAnims	= num;
+		//this.numAnims	= num;
 		//this.realname	.equals( sourcename;
 		//name		.equals( animname;
 
 		//for( i = 0; i < num; i++ ) {
-		//	anims[ i ] = md5anims[ i ];
-		//	anims[ i ].IncreaseRefs();
+		//	this.anims[ i ] = md5anims[ i ];
+		//	this.anims[ i ].IncreaseRefs();
 		//}
 
-		//memset( &flags, 0, sizeof( flags ) );
+		//memset( &this.flags, 0, sizeof( this.flags ) );
 
-		//for( i = 0; i < frameCommands.Num(); i++ ) {
-		//	delete frameCommands[ i ].string;
+		//for( i = 0; i < this.frameCommands.Num(); i++ ) {
+		//	delete this.frameCommands[ i ].string;
 		//}
 
-		//frameLookup.Clear();
-		//frameCommands.Clear();
+		//this.frameLookup.Clear();
+		//this.frameCommands.Clear();
 	}
 //
 /*
@@ -1313,10 +1334,10 @@ idAnim::FullName
 //=====================
 //*/
 //const idMD5Anim *idAnim::MD5Anim( /*int*/num:number ) const {
-//	if ( anims == NULL || anims[0] == NULL ) { 
+//	if ( this.anims == NULL || this.anims[0] == NULL ) { 
 //		return NULL;
 //	}
-//	return anims[ num ];
+//	return this.anims[ num ];
 //}
 //
 ///*
@@ -1334,11 +1355,11 @@ idAnim::FullName
 //=====================
 //*/
 //int idAnim::Length( ) const {
-//	if ( !anims[ 0 ] ) {
+//	if ( !this.anims[ 0 ] ) {
 //		return 0;
 //	}
 //
-//	return anims[ 0 ].Length();
+//	return this.anims[ 0 ].Length();
 //}
 //
 ///*
@@ -1347,11 +1368,11 @@ idAnim::FullName
 //=====================
 //*/
 //int	idAnim::NumFrames( ) const { 
-//	if ( !anims[ 0 ] ) {
+//	if ( !this.anims[ 0 ] ) {
 //		return 0;
 //	}
 //	
-//	return anims[ 0 ].NumFrames();
+//	return this.anims[ 0 ].NumFrames();
 //}
 //
 ///*
@@ -1360,7 +1381,7 @@ idAnim::FullName
 //=====================
 //*/
 //int	idAnim::NumAnims( ) const { 
-//	return numAnims;
+//	return this.numAnims;
 //}
 //
 ///*
@@ -1369,11 +1390,11 @@ idAnim::FullName
 //=====================
 //*/
 //const idVec3 &idAnim::TotalMovementDelta( ) const {
-//	if ( !anims[ 0 ] ) {
+//	if ( !this.anims[ 0 ] ) {
 //		return vec3_zero;
 //	}
 //	
-//	return anims[ 0 ].TotalMovementDelta();
+//	return this.anims[ 0 ].TotalMovementDelta();
 //}
 //
 ///*
@@ -1382,12 +1403,12 @@ idAnim::FullName
 //=====================
 //*/
 //bool idAnim::GetOrigin( idVec3 &offset, int animNum, int currentTime, int cyclecount ) const {
-//	if ( !anims[ animNum ] ) {
+//	if ( !this.anims[ animNum ] ) {
 //		offset.Zero();
 //		return false;
 //	}
 //
-//	anims[ animNum ].GetOrigin( offset, currentTime, cyclecount );
+//	this.anims[ animNum ].GetOrigin( offset, currentTime, cyclecount );
 //	return true;
 //}
 //
@@ -1397,12 +1418,12 @@ idAnim::FullName
 //=====================
 //*/
 //bool idAnim::GetOriginRotation( idQuat &rotation, int animNum, int currentTime, int cyclecount ) const {
-//	if ( !anims[ animNum ] ) {
+//	if ( !this.anims[ animNum ] ) {
 //		rotation.Set( 0.0f, 0.0f, 0.0f, 1.0f );
 //		return false;
 //	}
 //
-//	anims[ animNum ].GetOriginRotation( rotation, currentTime, cyclecount );
+//	this.anims[ animNum ].GetOriginRotation( rotation, currentTime, cyclecount );
 //	return true;
 //}
 //
@@ -1412,11 +1433,11 @@ idAnim::FullName
 //=====================
 //*/
 //ID_INLINE bool idAnim::GetBounds( idBounds &bounds, int animNum, int currentTime, int cyclecount ) const {
-//	if ( !anims[ animNum ] ) {
+//	if ( !this.anims[ animNum ] ) {
 //		return false;
 //	}
 //
-//	anims[ animNum ].GetBounds( bounds, currentTime, cyclecount );
+//	this.anims[ animNum ].GetBounds( bounds, currentTime, cyclecount );
 //	return true;
 //}
 //
@@ -1439,7 +1460,7 @@ Returns NULL if no error.
 //	const jointInfo_t	*jointInfo;
 //
 //	// make sure we're within bounds
-//	if ( ( framenum < 1 ) || ( framenum > anims[ 0 ].NumFrames() ) ) {
+//	if ( ( framenum < 1 ) || ( framenum > this.anims[ 0 ].NumFrames() ) ) {
 //		return va( "Frame %d out of range", framenum );
 //	}
 //
@@ -1767,37 +1788,37 @@ Returns NULL if no error.
 //	}
 //
 //	// check if we've initialized the frame loopup table
-//	if ( !frameLookup.Num() ) {
+//	if ( !this.frameLookup.Num() ) {
 //		// we haven't, so allocate the table and initialize it
-//		frameLookup.SetGranularity( 1 );
-//		frameLookup.SetNum( anims[ 0 ].NumFrames() );
-//		for( i = 0; i < frameLookup.Num(); i++ ) {
-//			frameLookup[ i ].num = 0;
-//			frameLookup[ i ].firstCommand = 0;
+//		this.frameLookup.SetGranularity( 1 );
+//		this.frameLookup.SetNum( this.anims[ 0 ].NumFrames() );
+//		for( i = 0; i < this.frameLookup.Num(); i++ ) {
+//			this.frameLookup[ i ].num = 0;
+//			this.frameLookup[ i ].firstCommand = 0;
 //		}
 //	}
 //
 //	// allocate space for a new command
-//	frameCommands.Alloc();
+//	this.frameCommands.Alloc();
 //
 //	// calculate the index of the new command
-//	index = frameLookup[ framenum ].firstCommand + frameLookup[ framenum ].num;
+//	index = this.frameLookup[ framenum ].firstCommand + this.frameLookup[ framenum ].num;
 //
 //	// move all commands from our index onward up one to give us space for our new command
-//	for( i = frameCommands.Num() - 1; i > index; i-- ) {
-//		frameCommands[ i ] = frameCommands[ i - 1 ];
+//	for( i = this.frameCommands.Num() - 1; i > index; i-- ) {
+//		this.frameCommands[ i ] = this.frameCommands[ i - 1 ];
 //	}
 //
 //	// fix the indices of any later frames to account for the inserted command
-//	for( i = framenum + 1; i < frameLookup.Num(); i++ ) {
-//		frameLookup[ i ].firstCommand++;
+//	for( i = framenum + 1; i < this.frameLookup.Num(); i++ ) {
+//		this.frameLookup[ i ].firstCommand++;
 //	}
 //
 //	// store the new command 
-//	frameCommands[ index ] = fc;
+//	this.frameCommands[ index ] = fc;
 //
 //	// increase the number of commands on this frame
-//	frameLookup[ framenum ].num++;
+//	this.frameLookup[ framenum ].num++;
 //
 		// return with no error
 		return null;
@@ -1814,7 +1835,7 @@ Returns NULL if no error.
 //	int frame;
 //	int numframes;
 //
-//	numframes = anims[ 0 ].NumFrames();
+//	numframes = this.anims[ 0 ].NumFrames();
 //
 //	frame = from;
 //	while( frame != to ) {
@@ -1823,10 +1844,10 @@ Returns NULL if no error.
 //			frame = 0;
 //		}
 //
-//		index = frameLookup[ frame ].firstCommand;
-//		end = index + frameLookup[ frame ].num;
+//		index = this.frameLookup[ frame ].firstCommand;
+//		end = index + this.frameLookup[ frame ].num;
 //		while( index < end ) {
-//			const frameCommand_t &command = frameCommands[ index++ ];
+//			const frameCommand_t &command = this.frameCommands[ index++ ];
 //			switch( command.type ) {
 //				case FC_SCRIPTFUNCTION: {
 //					gameLocal.CallFrameCommand( ent, command.function );
@@ -2099,17 +2120,17 @@ Returns NULL if no error.
 //	int numframes;
 //	int end;
 //
-//	if ( !frameCommands.Num() ) {
+//	if ( !this.frameCommands.Num() ) {
 //		return -1;
 //	}
 //
-//	numframes = anims[ 0 ].NumFrames();
+//	numframes = this.anims[ 0 ].NumFrames();
 //	for( frame = 0; frame < numframes; frame++ ) {
-//		end = frameLookup[ frame ].firstCommand + frameLookup[ frame ].num;
-//		for( index = frameLookup[ frame ].firstCommand; index < end; index++ ) {
-//			if ( frameCommands[ index ].type == framecommand ) {
+//		end = this.frameLookup[ frame ].firstCommand + this.frameLookup[ frame ].num;
+//		for( index = this.frameLookup[ frame ].firstCommand; index < end; index++ ) {
+//			if ( this.frameCommands[ index ].type == framecommand ) {
 //				if ( command ) {
-//					*command = &frameCommands[ index ];
+//					*command = &this.frameCommands[ index ];
 //				}
 //				return frame;
 //			}
@@ -2129,7 +2150,7 @@ Returns NULL if no error.
 //=====================
 //*/
 //bool idAnim::HasFrameCommands( ) const {
-//	if ( !frameCommands.Num() ) {
+//	if ( !this.frameCommands.Num() ) {
 //		return false;
 //	}
 //	return true;

@@ -518,21 +518,21 @@ Copies the contents and size attributes of another list.
 //	return this.list[ index ];
 //}
 
-///*
-//================
-//idList<type>::Ptr
+/*
+================
+idList<type>::Ptr
 
-//Returns a pointer to the begining of the array.  Useful for iterating through the list in loops.
+Returns a pointer to the begining of the array.  Useful for iterating through the list in loops.
 
-//Note: may return NULL if the list is empty.
+Note: may return NULL if the list is empty.
 
-//FIXME: Create an iterator template for this kind of thing.
-//================
-//*/
+FIXME: Create an iterator template for this kind of thing.
+================
+*/
 //template< class type >
-//ID_INLINE type *idList<type>::Ptr( ) {
-//	return this.list;
-//}
+	Ptr ( ): idList<type> {
+		return this.list;
+	}
 
 ///*
 //================
