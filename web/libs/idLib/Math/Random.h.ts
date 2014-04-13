@@ -48,11 +48,11 @@ class idRandom {
 	////	int					RandomInt( int max );		// random integer in the range [0, max[
 	////	float				RandomFloat( );		// random number in the range [0.0f, 1.0f]
 	////	float				CRandomFloat( );		// random number in the range [-1.0f, 1.0f]
-	
+
 	static MAX_RAND = 0x7fff;
-	
+
 	////private:
-		seed:number /*int*/;
+	seed: number /*int*/;
 	////};
 
 	memset0 ( ): void {
@@ -67,8 +67,8 @@ class idRandom {
 	SetSeed ( /*int */seed: number ): void {
 		this.seed = seed;
 	}
-	
-	GetSeed(): number/*int */ {
+
+	GetSeed ( ): number /*int */ {
 		return this.seed;
 	}
 
@@ -83,15 +83,15 @@ class idRandom {
 		}
 		return this.RandomInt ( ) % max;
 	}
-	
-	////ID_INLINE float idRandom::RandomFloat( ) {
-	////	return ( RandomInt() / ( float )( idRandom::MAX_RAND + 1 ) );
-	////}
-	////
-	////ID_INLINE float idRandom::CRandomFloat( ) {
-	////	return ( 2.0f * ( RandomFloat() - 0.5f ) );
-	////}
-	////
+
+	RandomFloat ( ) {
+		return ( this.RandomInt ( ) / ( idRandom.MAX_RAND + 1 ) );
+	}
+
+	CRandomFloat ( ): number {
+		return ( 2.0 * ( this.RandomFloat ( ) - 0.5 ) );
+	}
+
 }
 /////*
 ////===============================================================================

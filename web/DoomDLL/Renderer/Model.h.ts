@@ -128,7 +128,7 @@ class srfTriangles_t {
 
 	facePlanes: idPlane[]; // [numIndexes/3] plane equations															idPlane *					
 
-	dominantTris: dominantTri_t; // [numVerts] for deformed surface fast tangent calculation									dominantTri_t *				
+	dominantTris: dominantTri_t[]; // [numVerts] for deformed surface fast tangent calculation									dominantTri_t *				
 
 	numShadowIndexesNoFrontCaps: number; // shadow volumes with front caps omitted											  int							
 	numShadowIndexesNoCaps: number; // shadow volumes with the front and rear caps omitted								  int							

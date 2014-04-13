@@ -419,19 +419,37 @@ class idMat3 {
 //#define mat3_default	mat3_identity
 //
 
-	constructor()
-	constructor(x: idVec3, y: idVec3, z: idVec3) 
-	constructor(x?: idVec3, y?: idVec3, z?: idVec3) {
+	constructor ( )
+	constructor ( x: idVec3, y: idVec3, z: idVec3 )
+	constructor ( xx?: number, xy?: number, xz?: number, yx?: number, yy?: number, yz?: number, zx?: number, zy?: number, zz?: number )
+	constructor ( x?: idVec3, y?: idVec3, z?: idVec3, a4?: number, a5?: number, a6?: number, a7?: number, a8?: number, a9?: number )
+	constructor ( x?: any, y?: any, z?: any, a4?: number, a5?: number, a6?: number, a7?: number, a8?: number, a9?: number ) {
 		this.mat = [
 			new idVec3( this.values.subarray( 0, 3 ) ),
 			new idVec3( this.values.subarray( 3, 6 ) ),
 			new idVec3( this.values.subarray( 6, 9 ) )
 		];
 
-		if( x && y && z ) {
-			this.mat[ 0 ].x = x.x; this.mat[ 0 ].y = x.y; this.mat[ 0 ].z = x.z;
-			this.mat[ 1 ].x = y.x; this.mat[ 1 ].y = y.y; this.mat[ 1 ].z = y.z;
-			this.mat[2].x = z.x; this.mat[2].y = z.y; this.mat[2].z = z.z;
+		if ( arguments.length == 3 ) {
+			this.mat[0].x = x.x;
+			this.mat[0].y = x.y;
+			this.mat[0].z = x.z;
+			this.mat[1].x = y.x;
+			this.mat[1].y = y.y;
+			this.mat[1].z = y.z;
+			this.mat[2].x = z.x;
+			this.mat[2].y = z.y;
+			this.mat[2].z = z.z;
+		} else if ( arguments.length == 9 ) {
+			this.mat[0].x = arguments[0];
+			this.mat[0].y = arguments[1];
+			this.mat[0].z = arguments[2];
+			this.mat[1].x = arguments[3];
+			this.mat[1].y = arguments[4];
+			this.mat[1].z = arguments[5];
+			this.mat[2].x = arguments[6];
+			this.mat[2].y = arguments[7];
+			this.mat[2].z = arguments[8];
 		}
 	}
 
@@ -444,13 +462,7 @@ class idMat3 {
 	memset0 ( ): void {
 		clearStructArray( this.mat );
 	}
-
-//
-//ID_INLINE idMat3::idMat3( const float xx, const float xy, const float xz, const float yx, const float yy, const float yz, const float zx, const float zy, const float zz ) {
-//	this.mat[ 0 ].x = xx; this.mat[ 0 ].y = xy; this.mat[ 0 ].z = xz;
-//	this.mat[ 1 ].x = yx; this.mat[ 1 ].y = yy; this.mat[ 1 ].z = yz;
-//	this.mat[ 2 ].x = zx; this.mat[ 2 ].y = zy; this.mat[ 2 ].z = zz;
-//}
+	
 //
 //ID_INLINE idMat3::idMat3( const float src[ 3 ][ 3 ] ) {
 //	memcpy( this.mat, src, 3 * 3 * sizeof( float ) );
@@ -576,14 +588,15 @@ class idMat3 {
 //	return this.mat * a;
 //}
 //
-//ID_INLINE idVec3 &operator*=( vec:idVec3, mat:idMat3  ) {
-//	float x = this.mat[ 0 ].x * vec.x + this.mat[ 1 ].x * vec.y + this.mat[ 2 ].x * vec.z;
-//	float y = this.mat[ 0 ].y * vec.x + this.mat[ 1 ].y * vec.y + this.mat[ 2 ].y * vec.z;
-//	vec.z = this.mat[ 0 ].z * vec.x + this.mat[ 1 ].z * vec.y + this.mat[ 2 ].z * vec.z;
-//	vec.x = x;
-//	vec.y = y;
-//	return vec;
-//}
+	//ID_INLINE idVec3 &operator*=( vec:idVec3, mat:idMat3  ) {
+	static opMultiplicationAssignment_vec3_mat3 ( vec: idVec3, mat: idMat3 ): idVec3 {
+		var /*float */x = mat[0].x * vec.x + mat[1].x * vec.y + mat[2].x * vec.z;
+		var /*float */y = mat[0].y * vec.x + mat[1].y * vec.y + mat[2].y * vec.z;
+		vec.z = mat[0].z * vec.x + mat[1].z * vec.y + mat[2].z * vec.z;
+		vec.x = x;
+		vec.y = y;
+		return vec;
+	}
 
 	Compare ( a: idMat3 ): boolean {
 		if ( this.mat[0].Compare( a[0] ) &&
@@ -703,13 +716,13 @@ class idMat3 {
 //	this.mat[ 1 ].Normalize();
 //	return *this;
 //}
-//
-//ID_INLINE idMat3 idMat3::Transpose( ) const {
-//	return idMat3(	this.mat[0][0], this.mat[1][0], this.mat[2][0],
-//					this.mat[0][1], this.mat[1][1], this.mat[2][1],
-//					this.mat[0][2], this.mat[1][2], this.mat[2][2] );
-//}
-//
+
+	Transpose ( ): idMat3 {
+		return new idMat3( this.mat[0][0], this.mat[1][0], this.mat[2][0],
+			this.mat[0][1], this.mat[1][1], this.mat[2][1],
+			this.mat[0][2], this.mat[1][2], this.mat[2][2] );
+	}
+
 //ID_INLINE idMat3 &idMat3::TransposeSelf( ) {
 //	float tmp0, tmp1, tmp2;
 //

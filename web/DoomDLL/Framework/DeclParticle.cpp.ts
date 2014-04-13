@@ -898,7 +898,7 @@ Sets the stage to a default state
 ////	int	count = 1;
 ////
 ////	if ( orientation == prtOrientation_t.POR_AIMED ) {
-////		int	trails = idMath::Ftoi( this.orientationParms[0] );
+////		int	trails = idMath.Ftoi( this.orientationParms[0] );
 ////		// each trail stage will add an extra quad
 ////		count *= ( 1 + trails );
 ////	}
@@ -917,190 +917,203 @@ idParticleStage::ParticleOrigin
 ===============
 */
 	ParticleOrigin ( g: particleGen_t, origin: idVec3 ): void {
-		todoThrow ( );
-////	if ( customPathType == prtCustomPth_t.PPATH_STANDARD ) {
-////		//
-////		// find intial origin distribution
-////		//
-////		float radiusSqr, angle1, angle2;
-////
-////		switch( distributionType ) {
-////			case prtDistribution_t.PDIST_RECT: {	// ( sizeX sizeY sizeZ )
-////				origin[0] = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0 ) * this.distributionParms[0];
-////				origin[1] = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0 ) * this.distributionParms[1];
-////				origin[2] = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0 ) * this.distributionParms[2];
-////				break;
-////			}
-////			case prtDistribution_t.PDIST_CYLINDER: {	// ( sizeX sizeY sizeZ ringFraction )
-////				angle1 = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0 ) * idMath::TWO_PI;
-////
-////				idMath::SinCos16( angle1, origin[0], origin[1] );
-////				origin[2] = ( ( randomDistribution ) ? g.random.CRandomFloat() : 1.0 );
-////
-////				// reproject points that are inside the ringFraction to the outer band
-////				if ( this.distributionParms[3] > 0.0 ) {
-////					radiusSqr = origin[0] * origin[0] + origin[1] * origin[1];
-////					if ( radiusSqr < this.distributionParms[3] * this.distributionParms[3] ) {
-////						// if we are inside the inner reject zone, rescale to put it out into the good zone
-////						float f = sqrt( radiusSqr ) / this.distributionParms[3];
-////						float invf = 1.0 / f;
-////						float newRadius = this.distributionParms[3] + f * ( 1.0 - this.distributionParms[3] );
-////						float rescale = invf * newRadius;
-////
-////						origin[0] *= rescale;
-////						origin[1] *= rescale;
-////					}
-////				}
-////				origin[0] *= this.distributionParms[0];
-////				origin[1] *= this.distributionParms[1];
-////				origin[2] *= this.distributionParms[2];
-////				break;
-////			}
-////			case prtDistribution_t.PDIST_SPHERE: {	// ( sizeX sizeY sizeZ ringFraction )
-////				// iterating with rejection is the only way to get an even distribution over a sphere
-////				if ( randomDistribution ) {
-////					do {
-////						origin[0] = g.random.CRandomFloat();
-////						origin[1] = g.random.CRandomFloat();
-////						origin[2] = g.random.CRandomFloat();
-////						radiusSqr = origin[0] * origin[0] + origin[1] * origin[1] + origin[2] * origin[2];
-////					} while( radiusSqr > 1.0 );
-////				} else {
-////					origin.Set( 1.0, 1.0, 1.0 );
-////					radiusSqr = 3.0;
-////				}
-////
-////				if ( this.distributionParms[3] > 0.0 ) {
-////					// we could iterate until we got something that also satisfied ringFraction,
-////					// but for narrow rings that could be a lot of work, so reproject inside points instead
-////					if ( radiusSqr < this.distributionParms[3] * this.distributionParms[3] ) {
-////						// if we are inside the inner reject zone, rescale to put it out into the good zone
-////						float f = sqrt( radiusSqr ) / this.distributionParms[3];
-////						float invf = 1.0 / f;
-////						float newRadius = this.distributionParms[3] + f * ( 1.0 - this.distributionParms[3] );
-////						float rescale = invf * newRadius;
-////
-////						origin[0] *= rescale;
-////						origin[1] *= rescale;
-////						origin[2] *= rescale;
-////					}
-////				}
-////				origin[0] *= this.distributionParms[0];
-////				origin[1] *= this.distributionParms[1];
-////				origin[2] *= this.distributionParms[2];
-////				break;
-////			}
-////		}
-////
-////		// offset will effect all particle origin types
-////		// add this before the velocity and gravity additions
-////		origin += offset;
-////
-////		//
-////		// add the velocity over time
-////		//
-////		idVec3	dir;
-////
-////		switch( directionType ) {
-////			case prtDirection_t.PDIR_CONE: {
-////				// angle is the full angle, so 360 degrees is any spherical direction
-////				angle1 = g.random.CRandomFloat() * this.directionParms[0] * idMath::M_DEG2RAD;
-////				angle2 = g.random.CRandomFloat() * idMath::PI;
-////		
-////				float s1, c1, s2, c2;
-////				idMath::SinCos16( angle1, s1, c1 );
-////				idMath::SinCos16( angle2, s2, c2 );
-////
-////				dir[0] = s1 * c2;
-////				dir[1] = s1 * s2;
-////				dir[2] = c1;
-////				break;
-////			}
-////			case prtDirection_t.PDIR_OUTWARD: {
-////				dir = origin;
-////				dir.Normalize();
-////				dir[2] += this.directionParms[0];
-////				break;
-////			}
-////		}
-////
-////		// add speed
-////		float iSpeed = speed.Integrate( g.frac, g.random );
-////		origin += dir * iSpeed * this.particleLife;	
-////
-////	} else {
-////		//
-////		// custom paths completely override both the origin and velocity calculations, but still
-////		// use the standard gravity
-////		//
-////		float angle1, angle2, speed1, speed2;
-////		switch( customPathType ) {
-////			case prtCustomPth_t.PPATH_HELIX: {		// ( sizeX sizeY sizeZ radialSpeed axialSpeed )
-////				speed1 = g.random.CRandomFloat();
-////				speed2 = g.random.CRandomFloat();
-////				angle1 = g.random.RandomFloat() * idMath::TWO_PI + this.customPathParms[3] * speed1 * g.age;
-////
-////				float s1, c1;
-////				idMath::SinCos16( angle1, s1, c1 );
-////
-////				origin[0] = c1 * this.customPathParms[0];
-////				origin[1] = s1 * this.customPathParms[1];
-////				origin[2] = g.random.RandomFloat() * this.customPathParms[2] + this.customPathParms[4] * speed2 * g.age;
-////				break;
-////			}
-////			case prtCustomPth_t.PPATH_FLIES: {		// ( radialSpeed axialSpeed size )
-////				speed1 = idMath::ClampFloat( 0.4f, 1.0, g.random.CRandomFloat() );
-////				speed2 = idMath::ClampFloat( 0.4f, 1.0, g.random.CRandomFloat() );
-////				angle1 = g.random.RandomFloat() * idMath::PI * 2 + this.customPathParms[0] * speed1 * g.age;
-////				angle2 = g.random.RandomFloat() * idMath::PI * 2 + this.customPathParms[1] * speed1 * g.age;
-////
-////				float s1, c1, s2, c2;
-////				idMath::SinCos16( angle1, s1, c1 );
-////				idMath::SinCos16( angle2, s2, c2 );
-////
-////				origin[0] = c1 * c2;
-////				origin[1] = s1 * c2;
-////				origin[2] = -s2;
-////				origin *= this.customPathParms[2];
-////				break;
-////			}
-////			case prtCustomPth_t.PPATH_ORBIT: {		// ( radius speed axis )
-////				angle1 = g.random.RandomFloat() * idMath::TWO_PI + this.customPathParms[1] * g.age;
-////
-////				float s1, c1;
-////				idMath::SinCos16( angle1, s1, c1 );
-////
-////				origin[0] = c1 * this.customPathParms[0];
-////				origin[1] = s1 * this.customPathParms[0];
-////				origin.ProjectSelfOntoSphere( this.customPathParms[0] );
-////				break;
-////			}
-////			case prtCustomPth_t.PPATH_DRIP: {		// ( speed )
-////				origin[0] = 0.0;
-////				origin[1] = 0.0;
-////				origin[2] = -( g.age * this.customPathParms[0] );
-////				break;
-////			}
-////			default: {
-////				common.Error( "idParticleStage::ParticleOrigin: bad customPathType" );
-////			}
-////		}
-////
-////		origin += offset;
-////	}
-////
-////	// adjust for the per-particle smoke offset
-////	origin *= g.axis;
-////	origin += g.origin;
-////
-////	// add gravity after adjusting for axis
-////	if ( worldGravity ) {
-////		idVec3 gra( 0, 0, -gravity );
-////		gra *= g.renderEnt.axis.Transpose();
-////		origin += gra * g.age * g.age;
-////	} else {
-////		origin[2] -= gravity * g.age * g.age;
-////	}
+		if ( this.customPathType == prtCustomPth_t.PPATH_STANDARD ) {
+			//
+			// find intial origin distribution
+			//
+			var /*float */radiusSqr: number, angle1: number, angle2: number;
+
+			switch ( this.distributionType ) {
+			case prtDistribution_t.PDIST_RECT:
+			{ // ( sizeX sizeY sizeZ )
+				origin[0] = ( ( this.randomDistribution ) ? g.random.CRandomFloat ( ) : 1.0 ) * this.distributionParms[0];
+				origin[1] = ( ( this.randomDistribution ) ? g.random.CRandomFloat ( ) : 1.0 ) * this.distributionParms[1];
+				origin[2] = ( ( this.randomDistribution ) ? g.random.CRandomFloat ( ) : 1.0 ) * this.distributionParms[2];
+				break;
+			}
+			case prtDistribution_t.PDIST_CYLINDER:
+			{ // ( sizeX sizeY sizeZ ringFraction )
+				angle1 = ( ( this.randomDistribution ) ? g.random.CRandomFloat ( ) : 1.0 ) * idMath.TWO_PI;
+
+				var $or1 = new R( origin[0] );
+				var $or2 = new R( origin[1] );
+				idMath.SinCos16( angle1, $or1, $or2 );
+				origin[0] = $or1.$;
+				origin[1] = $or2.$;
+				origin[2] = ( ( this.randomDistribution ) ? g.random.CRandomFloat ( ) : 1.0 );
+
+				// reproject points that are inside the ringFraction to the outer band
+				if ( this.distributionParms[3] > 0.0 ) {
+					radiusSqr = origin[0] * origin[0] + origin[1] * origin[1];
+					if ( radiusSqr < this.distributionParms[3] * this.distributionParms[3] ) {
+						// if we are inside the inner reject zone, rescale to put it out into the good zone
+						var /*float */ f = sqrt( radiusSqr ) / this.distributionParms[3];
+						var /*float */ invf = 1.0 / f;
+						var /*float */ newRadius = this.distributionParms[3] + f * ( 1.0 - this.distributionParms[3] );
+						var /*float */ rescale = invf * newRadius;
+
+						origin[0] *= rescale;
+						origin[1] *= rescale;
+					}
+				}
+				origin[0] *= this.distributionParms[0];
+				origin[1] *= this.distributionParms[1];
+				origin[2] *= this.distributionParms[2];
+				break;
+			}
+			case prtDistribution_t.PDIST_SPHERE:
+			{ // ( sizeX sizeY sizeZ ringFraction )
+				// iterating with rejection is the only way to get an even distribution over a sphere
+				if ( this.randomDistribution ) {
+					do {
+						origin[0] = g.random.CRandomFloat ( );
+						origin[1] = g.random.CRandomFloat ( );
+						origin[2] = g.random.CRandomFloat ( );
+						radiusSqr = origin[0] * origin[0] + origin[1] * origin[1] + origin[2] * origin[2];
+					} while ( radiusSqr > 1.0 );
+				} else {
+					origin.Set( 1.0, 1.0, 1.0 );
+					radiusSqr = 3.0;
+				}
+
+				if ( this.distributionParms[3] > 0.0 ) {
+					// we could iterate until we got something that also satisfied ringFraction,
+					// but for narrow rings that could be a lot of work, so reproject inside points instead
+					if ( radiusSqr < this.distributionParms[3] * this.distributionParms[3] ) {
+						// if we are inside the inner reject zone, rescale to put it out into the good zone
+						var /*float */ f = sqrt( radiusSqr ) / this.distributionParms[3];
+						var /*float */ invf = 1.0 / f;
+						var /*float */ newRadius = this.distributionParms[3] + f * ( 1.0 - this.distributionParms[3] );
+						var /*float */ rescale = invf * newRadius;
+
+						origin[0] *= rescale;
+						origin[1] *= rescale;
+						origin[2] *= rescale;
+					}
+				}
+				origin[0] *= this.distributionParms[0];
+				origin[1] *= this.distributionParms[1];
+				origin[2] *= this.distributionParms[2];
+				break;
+			}
+			}
+
+			// offset will effect all particle origin types
+			// add this before the velocity and gravity additions
+			origin.opAdditionAssignment( this.offset );
+
+			//
+			// add the velocity over time
+			//
+			var dir = new idVec3;
+
+			switch ( this.directionType ) {
+			case prtDirection_t.PDIR_CONE:
+			{
+				// angle is the full angle, so 360 degrees is any spherical direction
+				angle1 = g.random.CRandomFloat ( ) * this.directionParms[0] * idMath.M_DEG2RAD;
+				angle2 = g.random.CRandomFloat ( ) * idMath.PI;
+
+				var /*float */s1 = new R<number> ( ), c1 = new R<number> ( ), s2 = new R<number> ( ), c2 = new R<number> ( );
+				idMath.SinCos16( angle1, s1, c1 );
+				idMath.SinCos16( angle2, s2, c2 );
+
+				dir[0] = s1.$ * c2.$;
+				dir[1] = s1.$ * s2.$;
+				dir[2] = c1.$;
+				break;
+			}
+			case prtDirection_t.PDIR_OUTWARD:
+			{
+				dir = origin;
+				dir.Normalize ( );
+				dir[2] += this.directionParms[0];
+				break;
+			}
+			}
+
+			// add speed
+			var /*float */iSpeed = this.speed.Integrate( g.frac, g.random );
+			origin.opAdditionAssignment( dir.timesFloat( iSpeed ).timesFloat( this.particleLife ) );
+
+		} else {
+			//
+			// custom paths completely override both the origin and velocity calculations, but still
+			// use the standard gravity
+			//
+			var /*float */angle1: number, angle2: number, speed1: number, speed2: number;
+			switch ( this.customPathType ) {
+			case prtCustomPth_t.PPATH_HELIX:
+			{ // ( sizeX sizeY sizeZ radialSpeed axialSpeed )
+				speed1 = g.random.CRandomFloat ( );
+				speed2 = g.random.CRandomFloat ( );
+				angle1 = g.random.RandomFloat ( ) * idMath.TWO_PI + this.customPathParms[3] * speed1 * g.age;
+
+				var /*float */s1 = new R<number> ( ), c1 = new R<number> ( );
+				idMath.SinCos16( angle1, s1, c1 );
+
+				origin[0] = c1.$ * this.customPathParms[0];
+				origin[1] = s1.$ * this.customPathParms[1];
+				origin[2] = g.random.RandomFloat ( ) * this.customPathParms[2] + this.customPathParms[4] * speed2 * g.age;
+				break;
+			}
+			case prtCustomPth_t.PPATH_FLIES:
+			{ // ( radialSpeed axialSpeed size )
+				speed1 = idMath.ClampFloat( 0.4, 1.0, g.random.CRandomFloat ( ) );
+				speed2 = idMath.ClampFloat( 0.4, 1.0, g.random.CRandomFloat ( ) );
+				angle1 = g.random.RandomFloat ( ) * idMath.PI * 2 + this.customPathParms[0] * speed1 * g.age;
+				angle2 = g.random.RandomFloat ( ) * idMath.PI * 2 + this.customPathParms[1] * speed1 * g.age;
+
+				var /*float */s1 = new R<number> ( ), c1 = new R<number> ( ), s2 = new R<number> ( ), c2 = new R<number> ( );
+				idMath.SinCos16( angle1, s1, c1 );
+				idMath.SinCos16( angle2, s2, c2 );
+
+				origin[0] = c1.$ * c2.$;
+				origin[1] = s1.$ * c2.$;
+				origin[2] = -s2.$;
+				origin.opMultiplicationAssignment( this.customPathParms[2] );
+				break;
+			}
+			case prtCustomPth_t.PPATH_ORBIT:
+			{ // ( radius speed axis )
+				angle1 = g.random.RandomFloat ( ) * idMath.TWO_PI + this.customPathParms[1] * g.age;
+
+				var /*float */s1 = new R<number> ( ), c1 = new R<number> ( );
+				idMath.SinCos16( angle1, s1, c1 );
+
+				origin[0] = c1.$ * this.customPathParms[0];
+				origin[1] = s1.$ * this.customPathParms[0];
+				origin.ProjectSelfOntoSphere( this.customPathParms[0] );
+				break;
+			}
+			case prtCustomPth_t.PPATH_DRIP:
+			{ // ( speed )
+				origin[0] = 0.0;
+				origin[1] = 0.0;
+				origin[2] = -( g.age * this.customPathParms[0] );
+				break;
+			}
+			default:
+			{
+				common.Error( "idParticleStage::ParticleOrigin: bad customPathType" );
+			}
+			}
+
+			origin.opAdditionAssignment( this.offset );
+		}
+
+		// adjust for the per-particle smoke offset
+		origin.opMultiplicationAssignment_mat3( g.axis );
+		origin.opAdditionAssignment( g.origin );
+
+		// add gravity after adjusting for axis
+		if ( this.worldGravity ) {
+			var gra = new idVec3( 0, 0, -this.gravity );
+			gra.opMultiplicationAssignment_mat3( g.renderEnt.axis.Transpose ( ) );
+			origin.opAdditionAssignment( gra.timesFloat( g.age ).timesFloat( g.age ) );
+		} else {
+			origin[2] -= this.gravity * g.age * g.age;
+		}
 	}
 ////
 /////*
@@ -1125,7 +1138,7 @@ idParticleStage::ParticleOrigin
 ////		idDrawVert *verts_p = verts;
 ////		idVec3		stepOrigin = origin;
 ////		idVec3		stepLeft;
-////		int			numTrails = idMath::Ftoi( this.orientationParms[0] );
+////		int			numTrails = idMath.Ftoi( this.orientationParms[0] );
 ////		float		trailTime = this.orientationParms[1];
 ////
 ////		if ( trailTime == 0 ) {
@@ -1214,9 +1227,9 @@ idParticleStage::ParticleOrigin
 ////		angle -= angleMove;
 ////	}
 ////
-////	angle = angle / 180 * idMath::PI;
-////	float c = idMath::Cos16( angle );
-////	float s = idMath::Sin16( angle );
+////	angle = angle / 180 * idMath.PI;
+////	float c = idMath.Cos16( angle );
+////	float s = idMath.Sin16( angle );
 ////
 ////	if ( orientation  == prtOrientation_t.POR_Z ) {
 ////		// oriented in entity space
@@ -1334,7 +1347,7 @@ idParticleStage::ParticleOrigin
 ////
 ////	for ( int i = 0 ; i < 4 ; i++ ) {
 ////		float	fcolor = ( ( entityColor ) ? g.renderEnt.shaderParms[i] : color[i] ) * fadeFraction + fadeColor[i] * ( 1.0 - fadeFraction );
-////		int		icolor = idMath::FtoiFast( fcolor * 255.0 );
+////		int		icolor = idMath.FtoiFast( fcolor * 255.0 );
 ////		if ( icolor < 0 ) {
 ////			icolor = 0;
 ////		} else if ( icolor > 255 ) {
@@ -1415,7 +1428,7 @@ idParticleStage::ParticleOrigin
 ////==================
 ////*/
 ////const char* idParticleStage::GetCustomPathName() {
-////	int index = ( customPathType < CustomParticleCount ) ? customPathType : 0;
+////	int index = ( this.customPathType < CustomParticleCount ) ? this.customPathType : 0;
 ////	return ParticleCustomDesc[index].name;
 ////}
 ////
@@ -1425,7 +1438,7 @@ idParticleStage::ParticleOrigin
 ////==================
 ////*/
 ////const char* idParticleStage::GetCustomPathDesc() {
-////	int index = ( customPathType < CustomParticleCount ) ? customPathType : 0;
+////	int index = ( this.customPathType < CustomParticleCount ) ? this.customPathType : 0;
 ////	return ParticleCustomDesc[index].desc;
 ////}
 ////
@@ -1435,7 +1448,7 @@ idParticleStage::ParticleOrigin
 ////==================
 ////*/
 ////int idParticleStage::NumCustomPathParms() {
-////	int index = ( customPathType < CustomParticleCount ) ? customPathType : 0;
+////	int index = ( this.customPathType < CustomParticleCount ) ? this.customPathType : 0;
 ////	return ParticleCustomDesc[index].count;
 ////}
 ////
@@ -1445,10 +1458,10 @@ idParticleStage::ParticleOrigin
 ////==================
 ////*/
 ////void idParticleStage::SetCustomPathType( const char *p ) {
-////	customPathType = prtCustomPth_t.PPATH_STANDARD;
+////	this.customPathType = prtCustomPth_t.PPATH_STANDARD;
 ////	for ( int i = 0; i < CustomParticleCount; i ++ ) {
 ////		if ( idStr::Icmp( p, ParticleCustomDesc[i].name ) == 0 ) {
-////			customPathType = static_cast<prtCustomPth_t>( i );
+////			this.customPathType = static_cast<prtCustomPth_t>( i );
 ////			break;
 ////		}
 ////	}

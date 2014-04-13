@@ -1229,7 +1229,7 @@ function R_DeriveFaceTangents ( tri: srfTriangles_t, faceTangents: faceTangents_
 		ft.degenerate = false;
 
 //#ifdef USE_INVA
-		var /*float */inva = area < 0.0 ? -1 : 1; // was = 1.0f / area;
+		var /*float */inva = area < 0.0 ? -1 : 1; // was = 1.0 / area;
 
 		temp[0] = ( d0[0] * d1[4] - d0[4] * d1[0] ) * inva;
 		temp[1] = ( d0[1] * d1[4] - d0[4] * d1[1] ) * inva;
@@ -1461,130 +1461,130 @@ function R_DeriveTangentsWithoutNormals ( tri: srfTriangles_t ): void {
 //	out[1] = v[1] * ilength;
 //	out[2] = v[2] * ilength;
 //}
-//
-///*
-//===================
-//R_BuildDominantTris
-//
-//Find the largest triangle that uses each vertex
-//===================
-//*/
-//typedef struct {
-//	int		vertexNum;
-//	int		faceNum;
-//} indexSort_t;
-//
-//static int IndexSort( const void *a, const void *b ) {
-//	if ( ((indexSort_t *)a).vertexNum < ((indexSort_t *)b).vertexNum ) {
-//		return -1;
-//	}
-//	if ( ((indexSort_t *)a).vertexNum > ((indexSort_t *)b).vertexNum ) {
-//		return 1;
-//	}
-//	return 0;
-//}
-//
-//void R_BuildDominantTris( srfTriangles_t *tri ) {
-//	int i, j;
-//	dominantTri_t *dt;
-//	indexSort_t *ind = (indexSort_t *)R_StaticAlloc( tri.numIndexes * sizeof( *ind ) );
-//
-//	for ( i = 0; i < tri.numIndexes; i++ ) {
-//		ind[i].vertexNum = tri.indexes[i];
-//		ind[i].faceNum = i / 3;
-//	}
-//	qsort( ind, tri.numIndexes, sizeof( *ind ), IndexSort );
-//
-//	tri.dominantTris = dt = triDominantTrisAllocator.Alloc( tri.numVerts );
-//	memset( dt, 0, tri.numVerts * sizeof( dt[0] ) );
-//
-//	for ( i = 0; i < tri.numIndexes; i += j ) {
-//		float	maxArea = 0;
-//		int		vertNum = ind[i].vertexNum;
-//		for ( j = 0; i + j < tri.numIndexes && ind[i+j].vertexNum == vertNum; j++ ) {
-//			float		d0[5], d1[5];
-//			idDrawVert	*a, *b, *c;
-//			idVec3		normal, tangent, bitangent;
-//
-//			int	i1 = tri.indexes[ind[i+j].faceNum * 3 + 0];
-//			int	i2 = tri.indexes[ind[i+j].faceNum * 3 + 1];
-//			int	i3 = tri.indexes[ind[i+j].faceNum * 3 + 2];
-//			
-//			a = tri.verts + i1;
-//			b = tri.verts + i2;
-//			c = tri.verts + i3;
-//
-//			d0[0] = b.xyz[0] - a.xyz[0];
-//			d0[1] = b.xyz[1] - a.xyz[1];
-//			d0[2] = b.xyz[2] - a.xyz[2];
-//			d0[3] = b.st[0] - a.st[0];
-//			d0[4] = b.st[1] - a.st[1];
-//
-//			d1[0] = c.xyz[0] - a.xyz[0];
-//			d1[1] = c.xyz[1] - a.xyz[1];
-//			d1[2] = c.xyz[2] - a.xyz[2];
-//			d1[3] = c.st[0] - a.st[0];
-//			d1[4] = c.st[1] - a.st[1];
-//
-//			normal[0] = ( d1[1] * d0[2] - d1[2] * d0[1] );
-//			normal[1] = ( d1[2] * d0[0] - d1[0] * d0[2] );
-//			normal[2] = ( d1[0] * d0[1] - d1[1] * d0[0] );
-//
-//			float area = normal.Length();
-//
-//			// if this is smaller than what we already have, skip it
-//			if ( area < maxArea ) {
-//				continue;
-//			}
-//			maxArea = area;
-//
-//			if ( i1 == vertNum ) {
-//				dt[vertNum].v2 = i2;
-//				dt[vertNum].v3 = i3;
-//			} else if ( i2 == vertNum ) {
-//				dt[vertNum].v2 = i3;
-//				dt[vertNum].v3 = i1;
-//			} else {
-//				dt[vertNum].v2 = i1;
-//				dt[vertNum].v3 = i2;
-//			}
-//
-//			float	len = area;
-//			if ( len < 0.001f ) {
-//				len = 0.001f;
-//			}
-//			dt[vertNum].normalizationScale[2] = 1.0f / len;		// normal
-//
-//			// texture area
-//			area = d0[3] * d1[4] - d0[4] * d1[3];
-//
-//			tangent[0] = ( d0[0] * d1[4] - d0[4] * d1[0] );
-//			tangent[1] = ( d0[1] * d1[4] - d0[4] * d1[1] );
-//			tangent[2] = ( d0[2] * d1[4] - d0[4] * d1[2] );
-//			len = tangent.Length();
-//			if ( len < 0.001f ) {
-//				len = 0.001f;
-//			}
-//			dt[vertNum].normalizationScale[0] = ( area > 0 ? 1 : -1 ) / len;	// tangents[0]
-//	        
-//			bitangent[0] = ( d0[3] * d1[0] - d0[0] * d1[3] );
-//			bitangent[1] = ( d0[3] * d1[1] - d0[1] * d1[3] );
-//			bitangent[2] = ( d0[3] * d1[2] - d0[2] * d1[3] );
-//			len = bitangent.Length();
-//			if ( len < 0.001f ) {
-//				len = 0.001f;
-//			}
+
+/*
+===================
+R_BuildDominantTris
+
+Find the largest triangle that uses each vertex
+===================
+*/
+class indexSort_t{
+	vertexNum: number /*int*/;
+	faceNum: number /*int*/;
+}
+
+function IndexSort ( /*const void **/a: any, /*const void **/b: any ): number {
+	if ( ( <indexSort_t >a ).vertexNum < ( <indexSort_t >b ).vertexNum ) {
+		return -1;
+	}
+	if ( ( <indexSort_t >a ).vertexNum > ( <indexSort_t >b ).vertexNum ) {
+		return 1;
+	}
+	return 0;
+}
+
+function R_BuildDominantTris ( tri: srfTriangles_t ): void {
+	var /*int */i: number, j: number;
+	var dt: dominantTri_t [];
+	var ind = newStructArray<indexSort_t>( indexSort_t, tri.numIndexes ); // (indexSort_t *)R_StaticAlloc( tri.numIndexes * sizeof( *ind ) );
+
+	for ( i = 0; i < tri.numIndexes; i++ ) {
+		ind[i].vertexNum = tri.indexes[i];
+		ind[i].faceNum = int(i / 3);
+	}
+	qsort( ind, tri.numIndexes, ind.length, IndexSort );
+
+	tri.dominantTris = dt = triDominantTrisAllocator.Alloc( tri.numVerts );
+	clearStructArray( tri.dominantTris ); //memset( dt, 0, tri.numVerts * sizeof( dt[0] ) );
+
+	for ( i = 0; i < tri.numIndexes; i += j ) {
+		var /*float	*/maxArea = 0.0;
+		var /*int		*/vertNum = ind[i].vertexNum;
+		for ( j = 0; i + j < tri.numIndexes && ind[i + j].vertexNum == vertNum; j++ ) {
+			var d0 = new Float32Array( 5 ), d1 = new Float32Array( 5 );
+			var a: idDrawVert, b: idDrawVert, c: idDrawVert;
+			var normal = new idVec3, tangent = new idVec3, bitangent = new idVec3;
+
+			var /*int*/i1 = tri.indexes[ind[i + j].faceNum * 3 + 0];
+			var /*int*/i2 = tri.indexes[ind[i + j].faceNum * 3 + 1];
+			var /*int*/i3 = tri.indexes[ind[i + j].faceNum * 3 + 2];
+
+			a = tri.verts[i1];
+			b = tri.verts[i2];
+			c = tri.verts[i3];
+
+			d0[0] = b.xyz[0] - a.xyz[0];
+			d0[1] = b.xyz[1] - a.xyz[1];
+			d0[2] = b.xyz[2] - a.xyz[2];
+			d0[3] = b.st[0] - a.st[0];
+			d0[4] = b.st[1] - a.st[1];
+
+			d1[0] = c.xyz[0] - a.xyz[0];
+			d1[1] = c.xyz[1] - a.xyz[1];
+			d1[2] = c.xyz[2] - a.xyz[2];
+			d1[3] = c.st[0] - a.st[0];
+			d1[4] = c.st[1] - a.st[1];
+
+			normal[0] = ( d1[1] * d0[2] - d1[2] * d0[1] );
+			normal[1] = ( d1[2] * d0[0] - d1[0] * d0[2] );
+			normal[2] = ( d1[0] * d0[1] - d1[1] * d0[0] );
+
+			var /*float*/ area = normal.Length ( );
+
+			// if this is smaller than what we already have, skip it
+			if ( area < maxArea ) {
+				continue;
+			}
+			maxArea = area;
+
+			if ( i1 == vertNum ) {
+				dt[vertNum].v2 = i2;
+				dt[vertNum].v3 = i3;
+			} else if ( i2 == vertNum ) {
+				dt[vertNum].v2 = i3;
+				dt[vertNum].v3 = i1;
+			} else {
+				dt[vertNum].v2 = i1;
+				dt[vertNum].v3 = i2;
+			}
+
+			var /*float*/ len = area;
+			if ( len < 0.001 ) {
+				len = 0.001;
+			}
+			dt[vertNum].normalizationScale[2] = 1.0 / len; // normal
+
+			// texture area
+			area = d0[3] * d1[4] - d0[4] * d1[3];
+
+			tangent[0] = ( d0[0] * d1[4] - d0[4] * d1[0] );
+			tangent[1] = ( d0[1] * d1[4] - d0[4] * d1[1] );
+			tangent[2] = ( d0[2] * d1[4] - d0[4] * d1[2] );
+			len = tangent.Length ( );
+			if ( len < 0.001 ) {
+				len = 0.001;
+			}
+			dt[vertNum].normalizationScale[0] = ( area > 0 ? 1 : -1 ) / len; // tangents[0]
+
+			bitangent[0] = ( d0[3] * d1[0] - d0[0] * d1[3] );
+			bitangent[1] = ( d0[3] * d1[1] - d0[1] * d1[3] );
+			bitangent[2] = ( d0[3] * d1[2] - d0[2] * d1[3] );
+			len = bitangent.Length ( );
+			if ( len < 0.001 ) {
+				len = 0.001;
+			}
 //#ifdef DERIVE_UNSMOOTHED_BITANGENT
-//			dt[vertNum].normalizationScale[1] = ( area > 0 ? 1 : -1 );
+			dt[vertNum].normalizationScale[1] = ( area > 0 ? 1 : -1 );
 //#else
 //			dt[vertNum].normalizationScale[1] = ( area > 0 ? 1 : -1 ) / len;	// tangents[1]
 //#endif
-//		}
-//	}
-//
-//	R_StaticFree( ind );
-//}
-//
+		}
+	}
+
+	R_StaticFree( ind );
+}
+
 /*
 ====================
 R_DeriveUnsmoothedTangents
@@ -1727,7 +1727,7 @@ function R_DeriveTangents(tri:srfTriangles_t, allocFacePlanes:boolean = true):vo
 
 //#ifdef USE_INVA
 //		float area = d0[3] * d1[4] - d0[4] * d1[3];
-//		float inva = area < 0.0 ? -1 : 1;		// was = 1.0f / area;
+//		float inva = area < 0.0 ? -1 : 1;		// was = 1.0 / area;
 
 //        temp[0] = (d0[0] * d1[4] - d0[4] * d1[0]) * inva;
 //        temp[1] = (d0[1] * d1[4] - d0[4] * d1[1]) * inva;
@@ -2150,9 +2150,8 @@ function R_CleanupTriangles(tri: srfTriangles_t, createNormals:boolean, identify
 	R_BoundTriSurf( tri );
 
 	if (useUnsmoothedTangents) {
-		todoThrow ( );
-		//R_BuildDominantTris( tri );
-		//R_DeriveUnsmoothedTangents( tri );
+		R_BuildDominantTris( tri );
+		R_DeriveUnsmoothedTangents( tri );
 	} else if ( !createNormals ) {
 		R_DeriveFacePlanes( tri );
 		R_DeriveTangentsWithoutNormals( tri );

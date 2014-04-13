@@ -2694,7 +2694,7 @@ idSIMD_Generic::DeriveUnsmoothedTangents
 */
 //#define DERIVE_UNSMOOTHED_BITANGENT
 
-	static DeriveUnsmoothedTangents ( verts: idDrawVert[], dominantTris: dominantTri_t, /*int */numVerts: number ): void {
+	static DeriveUnsmoothedTangents ( verts: idDrawVert[], dominantTris: dominantTri_t[], /*int */numVerts: number ): void {
 		var /*int */i: number;
 
 		for ( i = 0; i < numVerts; i++ ) {

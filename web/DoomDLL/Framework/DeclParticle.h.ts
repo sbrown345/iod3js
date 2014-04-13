@@ -59,14 +59,14 @@ class idParticleParm {
 		return this.from + frac * ( this.to - this.from );
 	}
 
-////float idParticleParm::Integrate( float frac, idRandom &rand ) const {
-////	if (this. table ) {
-////		common.Printf( "idParticleParm::Integrate: can't integrate tables\n" );
-////		return 0;
-////	}
-////	return (this. from + frac * ( this.to -this. from ) * 0.5 ) * frac;
-////}
-////
+	Integrate ( /*float */frac: number, rand: idRandom ): number {
+		if ( this.table ) {
+			common.Printf( "idParticleParm::Integrate: can't integrate tables\n" );
+			return 0;
+		}
+		return ( this.from + frac * ( this.to - this.from ) * 0.5 ) * frac;
+	}
+
 }
 
 

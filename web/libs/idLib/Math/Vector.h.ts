@@ -249,8 +249,8 @@ class idVec2 {
 ////}
 
 ////ID_INLINE void idVec2::Snap( ) {
-////	x = floor( x + 0.5f );
-////	y = floor( y + 0.5f );
+////	x = floor( x + 0.5 );
+////	y = floor( y + 0.5 );
 ////}
 
 ////ID_INLINE void idVec2::SnapInt( ) {
@@ -417,7 +417,7 @@ class idVec3 {
 	//z: number;  //float		
 
 	values: Float32Array;
-	
+
 	get x ( ): number { return this.values[0]; }
 
 	set x ( value: number ) {
@@ -427,7 +427,7 @@ class idVec3 {
 		this.values[0] = value;
 	}
 
-	get y(): number { return this.values[1]; }
+	get y ( ): number { return this.values[1]; }
 
 	set y ( value: number ) {
 		if ( value === undefined ) {
@@ -436,7 +436,7 @@ class idVec3 {
 		this.values[1] = value;
 	}
 
-	get z(): number { return this.values[2]; }
+	get z ( ): number { return this.values[2]; }
 
 	set z ( value: number ) {
 		if ( value === undefined ) {
@@ -621,7 +621,8 @@ class idVec3 {
 	}
 
 	/*operator+=*/
-	/*AdditionAssignment*/ opAdditionAssignment( a: idVec3 ): idVec3 {
+	/*AdditionAssignment*/
+	opAdditionAssignment ( a: idVec3 ): idVec3 {
 		this.x += a.x;
 		this.y += a.y;
 		this.z += a.z;
@@ -797,7 +798,8 @@ class idVec3 {
 ////	return this
 ////}
 
-/*float */Length( ):number {
+/*float */
+	Length ( ): number {
 		return /*( float )*/idMath.Sqrt( this.x * this.x + this.y * this.y + this.z * this.z );
 	}
 
@@ -862,9 +864,9 @@ class idVec3 {
 ////}
 
 ////ID_INLINE void idVec3::Snap( ) {
-////	x = floor( this.x + 0.5f );
-////	y = floor( this.y + 0.5f );
-////	z = floor( this.z + 0.5f );
+////	x = floor( this.x + 0.5 );
+////	y = floor( this.y + 0.5 );
+////	z = floor( this.z + 0.5 );
 ////}
 
 ////ID_INLINE void idVec3::SnapInt( ) {
@@ -938,9 +940,9 @@ class idVec3 {
 
 ////ID_INLINE void idVec3::ProjectOntoPlane( const idVec3 &normal, const float overBounce ) {
 ////	float backoff;
-	
+
 ////	backoff = *this * normal;
-	
+
 ////	if ( overBounce != 1.0 ) {
 ////		if ( backoff < 0 ) {
 ////			backoff *= overBounce;
@@ -968,8 +970,8 @@ class idVec3 {
 ////	return true;
 ////}
 
-	ToString(): string {
-		return va("x: %4.2f, y: %4.2f, z:%4.2f", this.x, this.y, this.z);
+	ToString ( ): string {
+		return va( "x: %4.2f, y: %4.2f, z:%4.2f", this.x, this.y, this.z );
 	}
 
 /////*
@@ -979,7 +981,7 @@ class idVec3 {
 ////*/
 ////float idVec3::ToYaw( ) const {
 ////	float yaw;
-	
+
 ////	if ( ( y == 0.0 ) && ( x == 0.0 ) ) {
 ////		yaw = 0.0;
 ////	} else {
@@ -1000,7 +1002,7 @@ class idVec3 {
 ////float idVec3::ToPitch( ) const {
 ////	float	forward;
 ////	float	pitch;
-	
+
 ////	if ( ( x == 0.0 ) && ( y == 0.0 ) ) {
 ////		if ( z > 0.0 ) {
 ////			pitch = 90.0f;
@@ -1027,7 +1029,7 @@ class idVec3 {
 ////	float forward;
 ////	float yaw;
 ////	float pitch;
-	
+
 ////	if ( ( x == 0.0 ) && ( y == 0.0 ) ) {
 ////		yaw = 0.0;
 ////		if ( z > 0.0 ) {
@@ -1060,7 +1062,7 @@ class idVec3 {
 ////	float forward;
 ////	float yaw;
 ////	float pitch;
-	
+
 ////	if ( ( x == 0.0 ) && ( y == 0.0 ) ) {
 ////		yaw = 0.0;
 ////		if ( z > 0.0 ) {
@@ -1170,28 +1172,35 @@ class idVec3 {
 ////	(*this) = ( v1 * scale0 + v2 * scale1 );
 ////}
 
-/////*
-////=============
-////ProjectSelfOntoSphere
+/*
+=============
+ProjectSelfOntoSphere
 
-////Projects the z component onto a sphere.
-////=============
-////*/
-////void idVec3::ProjectSelfOntoSphere( const float radius ) {
-////	float rsqr = radius * radius;
-////	float len = Length();
-////	if ( len  < rsqr * 0.5f ) {
-////		z = sqrt( rsqr - len );
-////	} else {
-////		z = rsqr / ( 2.0 * sqrt( len ) );
-////	}
-////}
+Projects the z component onto a sphere.
+=============
+*/
+	ProjectSelfOntoSphere ( /*float */radius: number ): void {
+		var /*float */rsqr = radius * radius;
+		var /*float */len = this.Length ( );
+		if ( len < rsqr * 0.5 ) {
+			this.z = sqrt( rsqr - len );
+		} else {
+			this.z = rsqr / ( 2.0 * sqrt( len ) );
+		}
+	}
 
-	valueOf(): number {
-		todoThrow("error: implicity idVec3 valueOf called");
+
+
+	// from call to Matrix.h to keep syntax similar
+	opMultiplicationAssignment_mat3 ( mat: idMat3 ): idVec3 {
+		return idMat3.opMultiplicationAssignment_vec3_mat3( this, mat );
+	}
+
+	valueOf ( ): number {
+		todoThrow( "error: implicity idVec3 valueOf called" );
 		return NaN;
 	}
-};
+}
 
 // todo: maybe it should extend Float32Array. underlying values can be changed by swapping the buffer?
 Object.defineProperty(idVec3.prototype, "0", {

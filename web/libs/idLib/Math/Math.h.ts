@@ -415,42 +415,42 @@ static Sqrt( /*float */x:number):number {
 //#endif
 	}
 
-////ID_INLINE void idMath::SinCos16( float a, float &s, float &c ) {
-////	float t, d;
+	static SinCos16 ( /*float*/ a: number, /*float */s: R<number>, /*float*/c: R<number> ) {
+		var /*float */t: number, d: number;
 
-////	if ( ( a < 0.0 ) || ( a >= idMath::TWO_PI ) ) {
-////		a -= floorf( a / idMath::TWO_PI ) * idMath::TWO_PI;
-////	}
-////#if 1
-////	if ( a < idMath.PI ) {
-////		if ( a > HALF_PI ) {
-////			a = idMath.PI - a;
-////			d = -1.0;
-////		} else {
-////			d = 1.0;
-////		}
-////	} else {
-////		if ( a > idMath.PI + HALF_PI ) {
-////			a = a - TWO_PI;
-////			d = 1.0;
-////		} else {
-////			a = idMath.PI - a;
-////			d = -1.0;
-////		}
-////	}
-////#else
-////	a = idMath.PI - a;
-////	if ( fabs( a ) >= HALF_PI ) {
-////		a = ( ( a < 0.0 ) ? -idMath.PI : idMath.PI ) - a;
-////		d = 1.0;
-////	} else {
-////		d = -1.0;
-////	}
-////#endif
-////	t = a * a;
-////	s = a * ( ( ( ( ( -2.39e-08f * t + 2.7526e-06f ) * t - 1.98409e-04f ) * t + 8.3333315e-03f ) * t - 1.666666664e-01f ) * t + 1.0 );
-////	c = d * ( ( ( ( ( -2.605e-07f * t + 2.47609e-05f ) * t - 1.3888397e-03f ) * t + 4.16666418e-02f ) * t - 4.999999963e-01f ) * t + 1.0 );
-////}
+		if ( ( a < 0.0 ) || ( a >= idMath.TWO_PI ) ) {
+			a -= floorf( a / idMath.TWO_PI ) * idMath.TWO_PI;
+		}
+//#if 1
+		if ( a < idMath.PI ) {
+			if ( a > idMath.HALF_PI ) {
+				a = idMath.PI - a;
+				d = -1.0;
+			} else {
+				d = 1.0;
+			}
+		} else {
+			if ( a > idMath.PI + idMath.HALF_PI ) {
+				a = a - idMath.TWO_PI;
+				d = 1.0;
+			} else {
+				a = idMath.PI - a;
+				d = -1.0;
+			}
+		}
+//#else
+//	a = idMath.PI - a;
+//	if ( fabs( a ) >= HALF_PI ) {
+//		a = ( ( a < 0.0 ) ? -idMath.PI : idMath.PI ) - a;
+//		d = 1.0;
+//	} else {
+//		d = -1.0;
+//	}
+//#endif
+		t = a * a;
+		s.$ = a * ( ( ( ( ( -2.39e-08 * t + 2.7526e-06 ) * t - 1.98409e-04 ) * t + 8.3333315e-03 ) * t - 1.666666664e-01 ) * t + 1.0 );
+		c.$ = d * ( ( ( ( ( -2.605e-07 * t + 2.47609e-05 ) * t - 1.3888397e-03 ) * t + 4.16666418e-02 ) * t - 4.999999963e-01 ) * t + 1.0 );
+	}
 
 ////ID_INLINE void idMath::SinCos64( float a, double &s, double &c ) {
 ////#ifdef _WIN32
@@ -877,15 +877,15 @@ static Sqrt( /*float */x:number):number {
 		return value;
 	}
 
-////ID_INLINE float idMath::ClampFloat( float min, float max, float value ) {
-////	if ( value < min ) {
-////		return min;
-////	}
-////	if ( value > max ) {
-////		return max;
-////	}
-////	return value;
-////}
+	static ClampFloat ( /*float*/ min: number, /*float */max: number, /*float */value: number ): number {
+		if ( value < min ) {
+			return min;
+		}
+		if ( value > max ) {
+			return max;
+		}
+		return value;
+	}
 
 ////ID_INLINE float idMath::AngleNormalize360( /*float*/angle:number ) {
 ////	if ( ( angle >= 360.0 ) || ( angle < 0.0 ) ) {
