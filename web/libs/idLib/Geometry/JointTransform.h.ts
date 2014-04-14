@@ -77,50 +77,50 @@ class idJointMat {
 	//	bool			operator==(	const idJointMat &a ) const;					// exact compare, no epsilon
 	//	bool			operator!=(	const idJointMat &a ) const;					// exact compare, no epsilon
 	//
-	//	idMat3			ToMat3( void ) const;
-	//	idVec3			ToVec3( void ) const;
-	//	idJointQuat		ToJointQuat( void ) const;
-	//	const float *	ToFloatPtr( void ) const;
-	//	float *			ToFloatPtr( void );
+	//	idMat3			ToMat3( ) const;
+	//	idVec3			ToVec3( ) const;
+	//	idJointQuat		ToJointQuat( ) const;
+	//	const float *	ToFloatPtr( ) const;
+	//	float *			ToFloatPtr( );
 	//
 	//private:
-	//	float			mat[3*4];
+	mat = new Float32Array(3*4);
 	//};
 	//
 	//ID_INLINE void idJointMat::SetRotation( const idMat3 &m ) {
 	//	// NOTE: idMat3 is transposed because it is column-major
-	//	mat[0 * 4 + 0] = m[0][0];
-	//	mat[0 * 4 + 1] = m[1][0];
-	//	mat[0 * 4 + 2] = m[2][0];
-	//	mat[1 * 4 + 0] = m[0][1];
-	//	mat[1 * 4 + 1] = m[1][1];
-	//	mat[1 * 4 + 2] = m[2][1];
-	//	mat[2 * 4 + 0] = m[0][2];
-	//	mat[2 * 4 + 1] = m[1][2];
-	//	mat[2 * 4 + 2] = m[2][2];
+	//	this.mat[0 * 4 + 0] = m[0][0];
+	//	this.mat[0 * 4 + 1] = m[1][0];
+	//	this.mat[0 * 4 + 2] = m[2][0];
+	//	this.mat[1 * 4 + 0] = m[0][1];
+	//	this.mat[1 * 4 + 1] = m[1][1];
+	//	this.mat[1 * 4 + 2] = m[2][1];
+	//	this.mat[2 * 4 + 0] = m[0][2];
+	//	this.mat[2 * 4 + 1] = m[1][2];
+	//	this.mat[2 * 4 + 2] = m[2][2];
 	//}
 	//
 	//ID_INLINE void idJointMat::SetTranslation( const idVec3 &t ) {
-	//	mat[0 * 4 + 3] = t[0];
-	//	mat[1 * 4 + 3] = t[1];
-	//	mat[2 * 4 + 3] = t[2];
+	//	this.mat[0 * 4 + 3] = t[0];
+	//	this.mat[1 * 4 + 3] = t[1];
+	//	this.mat[2 * 4 + 3] = t[2];
 	//}
 	//
 	//ID_INLINE idVec3 idJointMat::operator*( const idVec3 &v ) const {
-	//	return idVec3(	mat[0 * 4 + 0] * v[0] + mat[0 * 4 + 1] * v[1] + mat[0 * 4 + 2] * v[2],
-	//					mat[1 * 4 + 0] * v[0] + mat[1 * 4 + 1] * v[1] + mat[1 * 4 + 2] * v[2],
-	//					mat[2 * 4 + 0] * v[0] + mat[2 * 4 + 1] * v[1] + mat[2 * 4 + 2] * v[2] );
+	//	return idVec3(	this.mat[0 * 4 + 0] * v[0] + this.mat[0 * 4 + 1] * v[1] + this.mat[0 * 4 + 2] * v[2],
+	//					this.mat[1 * 4 + 0] * v[0] + this.mat[1 * 4 + 1] * v[1] + this.mat[1 * 4 + 2] * v[2],
+	//					this.mat[2 * 4 + 0] * v[0] + this.mat[2 * 4 + 1] * v[1] + this.mat[2 * 4 + 2] * v[2] );
 	//}
 	//
 	//ID_INLINE idVec3 idJointMat::operator*( const idVec4 &v ) const {
-	//	return idVec3(	mat[0 * 4 + 0] * v[0] + mat[0 * 4 + 1] * v[1] + mat[0 * 4 + 2] * v[2] + mat[0 * 4 + 3] * v[3],
-	//					mat[1 * 4 + 0] * v[0] + mat[1 * 4 + 1] * v[1] + mat[1 * 4 + 2] * v[2] + mat[1 * 4 + 3] * v[3],
-	//					mat[2 * 4 + 0] * v[0] + mat[2 * 4 + 1] * v[1] + mat[2 * 4 + 2] * v[2] + mat[2 * 4 + 3] * v[3] );
+	//	return idVec3(	this.mat[0 * 4 + 0] * v[0] + this.mat[0 * 4 + 1] * v[1] + this.mat[0 * 4 + 2] * v[2] + this.mat[0 * 4 + 3] * v[3],
+	//					this.mat[1 * 4 + 0] * v[0] + this.mat[1 * 4 + 1] * v[1] + this.mat[1 * 4 + 2] * v[2] + this.mat[1 * 4 + 3] * v[3],
+	//					this.mat[2 * 4 + 0] * v[0] + this.mat[2 * 4 + 1] * v[1] + this.mat[2 * 4 + 2] * v[2] + this.mat[2 * 4 + 3] * v[3] );
 	//}
 	//
 	//ID_INLINE idJointMat &idJointMat::operator*=( const idJointMat &a ) {
 	//	float dst[3];
-	//
+	//var mat = this.mat;
 	//	dst[0] = mat[0 * 4 + 0] * a.mat[0 * 4 + 0] + mat[1 * 4 + 0] * a.mat[0 * 4 + 1] + mat[2 * 4 + 0] * a.mat[0 * 4 + 2];
 	//	dst[1] = mat[0 * 4 + 0] * a.mat[1 * 4 + 0] + mat[1 * 4 + 0] * a.mat[1 * 4 + 1] + mat[2 * 4 + 0] * a.mat[1 * 4 + 2];
 	//	dst[2] = mat[0 * 4 + 0] * a.mat[2 * 4 + 0] + mat[1 * 4 + 0] * a.mat[2 * 4 + 1] + mat[2 * 4 + 0] * a.mat[2 * 4 + 2];
@@ -158,7 +158,7 @@ class idJointMat {
 	//
 	//ID_INLINE idJointMat &idJointMat::operator/=( const idJointMat &a ) {
 	//	float dst[3];
-	//
+	//var mat = this.mat;
 	//	mat[0 * 4 + 3] -= a.mat[0 * 4 + 3];
 	//	mat[1 * 4 + 3] -= a.mat[1 * 4 + 3];
 	//	mat[2 * 4 + 3] -= a.mat[2 * 4 + 3];
@@ -224,22 +224,22 @@ class idJointMat {
 	//	return !Compare( a );
 	//}
 	//
-	//ID_INLINE idMat3 idJointMat::ToMat3( void ) const {
-	//	return idMat3(	mat[0 * 4 + 0], mat[1 * 4 + 0], mat[2 * 4 + 0],
-	//					mat[0 * 4 + 1], mat[1 * 4 + 1], mat[2 * 4 + 1],
-	//					mat[0 * 4 + 2], mat[1 * 4 + 2], mat[2 * 4 + 2] );
+	ToMat3 ( ): idMat3 {
+		return new idMat3( this.mat[0 * 4 + 0], this.mat[1 * 4 + 0], this.mat[2 * 4 + 0],
+			this.mat[0 * 4 + 1], this.mat[1 * 4 + 1], this.mat[2 * 4 + 1],
+			this.mat[0 * 4 + 2], this.mat[1 * 4 + 2], this.mat[2 * 4 + 2] );
+	}
+
+	ToVec3 ( ): idVec3 {
+		return new idVec3( this.mat[0 * 4 + 3], this.mat[1 * 4 + 3], this.mat[2 * 4 + 3] );
+	}
+	
+	//ID_INLINE const float *idJointMat::ToFloatPtr( ) const {
+	//	return this.mat;
 	//}
 	//
-	//ID_INLINE idVec3 idJointMat::ToVec3( void ) const {
-	//	return idVec3( mat[0 * 4 + 3], mat[1 * 4 + 3], mat[2 * 4 + 3] );
-	//}
-	//
-	//ID_INLINE const float *idJointMat::ToFloatPtr( void ) const {
-	//	return mat;
-	//}
-	//
-	//ID_INLINE float *idJointMat::ToFloatPtr( void ) {
-	//	return mat;
+	//ID_INLINE float *idJointMat::ToFloatPtr( ) {
+	//	return this.mat;
 	//}
 	//
 	//#endif /* !__JOINTTRANSFORM_H__ */
@@ -250,7 +250,7 @@ class idJointMat {
 	//idJointMat::ToJointQuat
 	//=============
 	//*/
-	//idJointQuat idJointMat::ToJointQuat( void ) const {
+	//idJointQuat idJointMat::ToJointQuat( ) const {
 	//	idJointQuat	jq;
 	//	float		trace;
 	//	float		s;
@@ -261,7 +261,7 @@ class idJointMat {
 	//
 	//	static int 	next[3] = { 1, 2, 0 };
 	//
-	//	trace = mat[0 * 4 + 0] + mat[1 * 4 + 1] + mat[2 * 4 + 2];
+	//	trace = this.mat[0 * 4 + 0] + this.mat[1 * 4 + 1] + this.mat[2 * 4 + 2];
 	//
 	//	if ( trace > 0.0f ) {
 	//
@@ -269,34 +269,34 @@ class idJointMat {
 	//		s = idMath::InvSqrt( t ) * 0.5f;
 	//
 	//		jq.q[3] = s * t;
-	//		jq.q[0] = ( mat[1 * 4 + 2] - mat[2 * 4 + 1] ) * s;
-	//		jq.q[1] = ( mat[2 * 4 + 0] - mat[0 * 4 + 2] ) * s;
-	//		jq.q[2] = ( mat[0 * 4 + 1] - mat[1 * 4 + 0] ) * s;
+	//		jq.q[0] = ( this.mat[1 * 4 + 2] - this.mat[2 * 4 + 1] ) * s;
+	//		jq.q[1] = ( this.mat[2 * 4 + 0] - this.mat[0 * 4 + 2] ) * s;
+	//		jq.q[2] = ( this.mat[0 * 4 + 1] - this.mat[1 * 4 + 0] ) * s;
 	//
 	//	} else {
 	//
 	//		i = 0;
-	//		if ( mat[1 * 4 + 1] > mat[0 * 4 + 0] ) {
+	//		if ( this.mat[1 * 4 + 1] > this.mat[0 * 4 + 0] ) {
 	//			i = 1;
 	//		}
-	//		if ( mat[2 * 4 + 2] > mat[i * 4 + i] ) {
+	//		if ( this.mat[2 * 4 + 2] > this.mat[i * 4 + i] ) {
 	//			i = 2;
 	//		}
 	//		j = next[i];
 	//		k = next[j];
 	//
-	//		t = ( mat[i * 4 + i] - ( mat[j * 4 + j] + mat[k * 4 + k] ) ) + 1.0f;
+	//		t = ( this.mat[i * 4 + i] - ( this.mat[j * 4 + j] + this.mat[k * 4 + k] ) ) + 1.0f;
 	//		s = idMath::InvSqrt( t ) * 0.5f;
 	//
 	//		jq.q[i] = s * t;
-	//		jq.q[3] = ( mat[j * 4 + k] - mat[k * 4 + j] ) * s;
-	//		jq.q[j] = ( mat[i * 4 + j] + mat[j * 4 + i] ) * s;
-	//		jq.q[k] = ( mat[i * 4 + k] + mat[k * 4 + i] ) * s;
+	//		jq.q[3] = ( this.mat[j * 4 + k] - this.mat[k * 4 + j] ) * s;
+	//		jq.q[j] = ( this.mat[i * 4 + j] + this.mat[j * 4 + i] ) * s;
+	//		jq.q[k] = ( this.mat[i * 4 + k] + this.mat[k * 4 + i] ) * s;
 	//	}
 	//
-	//	jq.t[0] = mat[0 * 4 + 3];
-	//	jq.t[1] = mat[1 * 4 + 3];
-	//	jq.t[2] = mat[2 * 4 + 3];
+	//	jq.t[0] = this.mat[0 * 4 + 3];
+	//	jq.t[1] = this.mat[1 * 4 + 3];
+	//	jq.t[2] = this.mat[2 * 4 + 3];
 	//
 	//	return jq;
 	//}

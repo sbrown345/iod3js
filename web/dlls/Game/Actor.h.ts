@@ -99,9 +99,9 @@ class idAttachInfo {
 };
 
 class copyJoints_t {
-////	jointModTransform_t		mod;
-////	jointHandle_t			from;
-////	jointHandle_t			to;
+	mod:jointModTransform_t;
+	from:jointHandle_t;
+	to:jointHandle_t;
 };
 
 class idActor extends idAFEntity_Gibbable {
@@ -384,7 +384,7 @@ class idActor extends idAFEntity_Gibbable {
 		//	var ent:idEntity
 
 		//	DeconstructScriptObject();
-		//	scriptObject.Free();
+		//	this.scriptObject.Free();
 
 		//	StopSound( SND_CHANNEL_ANY, false );
 
@@ -415,23 +415,30 @@ idActor::Spawn
 	Spawn ( ): void {
 		var ent: idEntity;
 		var jointName = new idStr;
-		var fovDegrees: number /*float*/;
+		var fovDegrees = new R<number>()/*float*/;
 		var copyJoint = new copyJoints_t;
 
 		this.animPrefix.equals( "" );
 		this.state = null;
 		this.idealState = null;
 
-		this.spawnArgs.GetInt( "rank", "0", this.rank );
-		this.spawnArgs.GetInt( "team", "0", this.team );
-		this.spawnArgs.GetVector( "offsetModel", "0 0 0", this.modelOffset );
+		var $rank = new R(this.rank) ;
+		this.spawnArgs.GetInt_R("rank", "0", $rank);
+		this.rank = $rank.$;
 
-		this.spawnArgs.GetBool( "use_combat_bbox", "0", this.use_combat_bbox );
+		var $team = new R(this.team );
+		this.spawnArgs.GetInt_R("team", "0", $team);
+		this.team = $team.$;
+		this.spawnArgs.GetVector_R( "offsetModel", "0 0 0", this.modelOffset );
+
+		var $use_combat_box = new R(this.use_combat_bbox  );
+		this.spawnArgs.GetBool_R("use_combat_bbox", "0", $use_combat_box);
+		this.use_combat_bbox = $use_combat_box.$;
 
 		this.viewAxis.equals( this.GetPhysics ( ).GetAxis ( ) );
 
-		this.spawnArgs.GetFloat( "fov", "90", fovDegrees );
-		this.SetFOV( fovDegrees );
+		this.spawnArgs.GetFloat_R("fov", "90", fovDegrees);
+		this.SetFOV( fovDegrees.$ );
 
 		this.pain_debounce_time = 0;
 
@@ -486,7 +493,7 @@ idActor::Spawn
 		if ( headEnt ) {
 			// set up the list of joints to copy to the head
 			for ( kv = this.spawnArgs.MatchPrefix( "copy_joint", null ); kv != null; kv = this.spawnArgs.MatchPrefix( "copy_joint", kv ) ) {
-				if ( kv.GetValue ( ) == "" ) {
+				if ( kv.GetValue ( ).data == "" ) {
 					// probably clearing out inherited key, so skip it
 					continue;
 				}
@@ -517,13 +524,13 @@ idActor::Spawn
 		}
 
 		// set up blinking
-		this.blink_anim = headAnimator.GetAnim( "blink" );
+		this.blink_anim = headAnimator.GetAnim_name( "blink" );
 		this.blink_time = 0; // it's ok to blink right away
 		this.blink_min = SEC2MS( this.spawnArgs.GetFloat( "blink_min", "0.5" ) );
 		this.blink_max = SEC2MS( this.spawnArgs.GetFloat( "blink_max", "8" ) );
 
 		// set up the head anim if necessary
-		var /*int */headAnim = headAnimator.GetAnim( "def_head" );
+		var /*int */headAnim = headAnimator.GetAnim_name( "def_head" );
 		if ( headAnim ) {
 			if ( headEnt ) {
 				headAnimator.CycleAnim( ANIMCHANNEL_ALL, headAnim, gameLocal.time, 0 );
@@ -532,9 +539,9 @@ idActor::Spawn
 			}
 		}
 
-		if ( this.spawnArgs.GetString( "sound_bone", "", jointName ) ) {
-			this.soundJoint = this.animator.GetJointHandle( jointName );
-			if ( soundJoint == jointHandle_t.INVALID_JOINT ) {
+		if ( this.spawnArgs.GetString_RidStr( "sound_bone", "", jointName ) ) {
+			this.soundJoint = this.animator.GetJointHandle( jointName .data);
+			if ( this.soundJoint == jointHandle_t.INVALID_JOINT ) {
 				gameLocal.Warning( "idAnimated '%s' at (%s): cannot find joint '%s' for sound playback", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ), jointName.c_str ( ) );
 			}
 		}
@@ -544,25 +551,25 @@ idActor::Spawn
 		this.FinishSetup ( );
 	}
 
-/////*
-////================
-////idActor::FinishSetup
-////================
-////*/
-////void idActor::FinishSetup( ) {
-////	const char	*scriptObjectName;
-////
-////	// setup script object
-////	if ( this.spawnArgs.GetString( "scriptobject", NULL, &scriptObjectName ) ) {
-////		if ( !scriptObject.SetType( scriptObjectName ) ) {
-////			gameLocal.Error( "Script object '%s' not found on entity '%s'.", scriptObjectName, this.name.c_str() );
-////		}
-////
-////		ConstructScriptObject();
-////	}
-////
-////	SetupBody();
-////}
+/*
+================
+idActor::FinishSetup
+================
+*/
+FinishSetup( ):void {
+var scriptObjectName = new R<string>();
+
+	// setup script object
+	if ( this.spawnArgs.GetString_Rstring( "scriptobject", null, scriptObjectName ) ) {
+		if ( !this.scriptObject.SetType( scriptObjectName ) ) {
+			gameLocal.Error( "Script object '%s' not found on entity '%s'.", scriptObjectName, this.name.c_str() );
+		}
+
+		this.ConstructScriptObject();
+	}
+
+	SetupBody();
+}
 ////
 /////*
 ////================
@@ -973,22 +980,22 @@ idActor::Spawn
 ////		}
 ////	}
 ////}
-////
-/////*
-////================
-////idActor::LoadAF
-////================
-////*/
-////bool idActor::LoadAF( ) {
-////	idStr fileName;
-////
-////	if ( !this.spawnArgs.GetString( "ragdoll", "*unknown*", fileName ) || !fileName.Length() ) {
-////		return false;
-////	}
-////	af.SetAnimator( GetAnimator() );
-////	return af.Load( this, fileName );
-////}
-////
+
+/*
+================
+idActor::LoadAF
+================
+*/
+	LoadAF ( ): boolean {
+		var fileName = new idStr;
+
+		if ( !this.spawnArgs.GetString_RidStr( "ragdoll", "*unknown*", fileName ) || !fileName.Length ( ) ) {
+			return false;
+		}
+		this.af.SetAnimator( this.GetAnimator ( ) );
+		return this.af.Load( this, fileName.data );
+	}
+
 /////*
 ////=====================
 ////idActor::SetupBody
@@ -1088,8 +1095,8 @@ idActor::Spawn
 ////================
 ////*/
 ////bool idActor::GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis ) {
-////	if ( af.IsActive() ) {
-////		af.GetPhysicsToVisualTransform( origin, axis );
+////	if ( this.af.IsActive() ) {
+////		this.af.GetPhysicsToVisualTransform( origin, axis );
 ////		return true;
 ////	}
 ////	origin = this.modelOffset;
@@ -1162,7 +1169,7 @@ idActor::Spawn
 ////	const function_t *constructor;
 ////
 ////	// make sure we have a scriptObject
-////	if ( !scriptObject.HasObject() ) {
+////	if ( !this.scriptObject.HasObject() ) {
 ////		gameLocal.Error( "No scriptobject set on '%s'.  Check the '%s' entityDef.", this.name.c_str(), GetEntityDefName() );
 ////	}
 ////
@@ -1177,13 +1184,13 @@ idActor::Spawn
 ////	}
 ////	
 ////	// call script object's constructor
-////	constructor = scriptObject.GetConstructor();
+////	constructor = this.scriptObject.GetConstructor();
 ////	if ( !constructor ) {
-////		gameLocal.Error( "Missing constructor on '%s' for entity '%s'", scriptObject.GetTypeName(), this.name.c_str() );
+////		gameLocal.Error( "Missing constructor on '%s' for entity '%s'", this.scriptObject.GetTypeName(), this.name.c_str() );
 ////	}
 ////
 ////	// init the script object's data
-////	scriptObject.ClearObject();
+////	this.scriptObject.ClearObject();
 ////
 ////	// just set the current function on the script.  we'll execute in the subclasses.
 ////	this.scriptThread.CallFunction( this, constructor, true );
@@ -1199,9 +1206,9 @@ idActor::Spawn
 ////const function_t *idActor::GetScriptFunction( const char *funcname ) {
 ////	const function_t *func;
 ////
-////	func = scriptObject.GetFunction( funcname );
+////	func = this.scriptObject.GetFunction( funcname );
 ////	if ( !func ) {
-////		this.scriptThread.Error( "Unknown function '%s' in '%s'", funcname, scriptObject.GetTypeName() );
+////		this.scriptThread.Error( "Unknown function '%s' in '%s'", funcname, this.scriptObject.GetTypeName() );
 ////	}
 ////
 ////	return func;
@@ -1274,28 +1281,28 @@ idActor::Spawn
 ////		this.scriptThread.Warning( "idActor::UpdateScript: exited loop to prevent lockup" );
 ////	}
 ////}
-////
-/////***********************************************************************
-////
-////	vision
-////
-////***********************************************************************/
-////
-/////*
-////=====================
-////idActor::setFov
-////=====================
-////*/
-////void idActor::SetFOV( float fov ) {
-////	fovDot = (float)cos( DEG2RAD( fov * 0.5f ) );
-////}
+
+/***********************************************************************
+
+	vision
+
+***********************************************************************/
+
+/*
+=====================
+idActor::setFov
+=====================
+*/
+	SetFOV ( /*float*/ fov: number ): void {
+		this.fovDot = /*(float)*/cos( DEG2RAD( fov * 0.5 ) );
+	}
 ////
 /////*
 ////=====================
 ////idActor::SetEyeHeight
 ////=====================
 ////*/
-////void idActor::SetEyeHeight( float height ) {
+////void idActor::SetEyeHeight( float height ):void {
 ////	eyeOffset.z = height;
 ////}
 ////
@@ -1331,7 +1338,7 @@ idActor::Spawn
 ////idActor::GetViewPos
 ////=====================
 ////*/
-////void idActor::GetViewPos( idVec3 &origin, idMat3 &axis ) const {
+////void idActor::GetViewPos( idVec3 &origin, idMat3 &axis ) :void {
 ////	origin = GetEyePosition();
 ////	axis = this.viewAxis;
 ////}
@@ -1423,7 +1430,7 @@ idActor::Spawn
 ////*/
 ////void idActor::GetAIAimTargets( const idVec3 &lastSightPos, idVec3 &headPos, idVec3 &chestPos ) {
 ////	headPos = lastSightPos + EyeOffset();
-////	chestPos = ( headPos + lastSightPos + this.GetPhysics().GetBounds().GetCenter() ) * 0.5f;
+////	chestPos = ( headPos + lastSightPos + this.GetPhysics().GetBounds().GetCenter() ) * 0.5;
 ////}
 ////
 /////*
@@ -1449,7 +1456,7 @@ idActor::Spawn
 ////idActor::SetCombatModel
 ////================
 ////*/
-////void idActor::SetCombatModel( ) {
+////void idActor::SetCombatModel( ):void {
 ////	idAFAttachment *headEnt;
 ////
 ////	if ( !this.use_combat_bbox ) {
@@ -1481,7 +1488,7 @@ idActor::Spawn
 ////idActor::LinkCombat
 ////================
 ////*/
-////void idActor::LinkCombat( ) {
+////void idActor::LinkCombat( ):void {
 ////	idAFAttachment *headEnt;
 ////
 ////	if ( fl.hidden || this.use_combat_bbox ) {
@@ -1502,7 +1509,7 @@ idActor::Spawn
 ////idActor::UnlinkCombat
 ////================
 ////*/
-////void idActor::UnlinkCombat( ) {
+////void idActor::UnlinkCombat( ) :void{
 ////	idAFAttachment *headEnt;
 ////
 ////	if ( combatModel ) {
@@ -1525,12 +1532,12 @@ idActor::Spawn
 ////	float contactFrictionDent, contactFrictionDentStart, contactFrictionDentEnd;
 ////
 ////	// if no AF loaded
-////	if ( !af.IsLoaded() ) {
+////	if ( !this.af.IsLoaded() ) {
 ////		return false;
 ////	}
 ////
 ////	// if the AF is already active
-////	if ( af.IsActive() ) {
+////	if ( this.af.IsActive() ) {
 ////		return true;
 ////	}
 ////
@@ -1538,27 +1545,27 @@ idActor::Spawn
 ////	this.GetPhysics().DisableClip();
 ////
 ////	// start using the AF
-////	af.StartFromCurrentPose( this.spawnArgs.GetInt( "velocityTime", "0" ) );
+////	this.af.StartFromCurrentPose( this.spawnArgs.GetInt( "velocityTime", "0" ) );
 ////
 ////	slomoStart = MS2SEC( gameLocal.time ) + this.spawnArgs.GetFloat( "ragdoll_slomoStart", "-1.6" );
 ////	slomoEnd = MS2SEC( gameLocal.time ) + this.spawnArgs.GetFloat( "ragdoll_slomoEnd", "0.8" );
 ////
 ////	// do the first part of the death in slow motion
-////	af.GetPhysics().SetTimeScaleRamp( slomoStart, slomoEnd );
+////	this.af.GetPhysics().SetTimeScaleRamp( slomoStart, slomoEnd );
 ////
 ////	jointFrictionDent = this.spawnArgs.GetFloat( "ragdoll_jointFrictionDent", "0.1" );
 ////	jointFrictionDentStart = MS2SEC( gameLocal.time ) + this.spawnArgs.GetFloat( "ragdoll_jointFrictionStart", "0.2" );
 ////	jointFrictionDentEnd = MS2SEC( gameLocal.time ) + this.spawnArgs.GetFloat( "ragdoll_jointFrictionEnd", "1.2" );
 ////
 ////	// set joint friction dent
-////	af.GetPhysics().SetJointFrictionDent( jointFrictionDent, jointFrictionDentStart, jointFrictionDentEnd );
+////	this.af.GetPhysics().SetJointFrictionDent( jointFrictionDent, jointFrictionDentStart, jointFrictionDentEnd );
 ////
 ////	contactFrictionDent = this.spawnArgs.GetFloat( "ragdoll_contactFrictionDent", "0.1" );
 ////	contactFrictionDentStart = MS2SEC( gameLocal.time ) + this.spawnArgs.GetFloat( "ragdoll_contactFrictionStart", "1.0" );
 ////	contactFrictionDentEnd = MS2SEC( gameLocal.time ) + this.spawnArgs.GetFloat( "ragdoll_contactFrictionEnd", "2.0" );
 ////
 ////	// set contact friction dent
-////	af.GetPhysics().SetContactFrictionDent( contactFrictionDent, contactFrictionDentStart, contactFrictionDentEnd );
+////	this.af.GetPhysics().SetContactFrictionDent( contactFrictionDent, contactFrictionDentStart, contactFrictionDentEnd );
 ////
 ////	// drop any items the actor is holding
 ////	idMoveableItem::DropItems( this, "death", NULL );
@@ -1576,9 +1583,9 @@ idActor::Spawn
 ////idActor::StopRagdoll
 ////================
 ////*/
-////void idActor::StopRagdoll( ) {
-////	if ( af.IsActive() ) {
-////		af.Stop();
+////void idActor::StopRagdoll( ):void {
+////	if ( this.af.IsActive() ) {
+////		this.af.Stop();
 ////	}
 ////}
 ////
@@ -1589,7 +1596,7 @@ idActor::Spawn
 ////*/
 ////bool idActor::UpdateAnimationControllers( ) {
 ////
-////	if ( af.IsActive() ) {
+////	if ( this.af.IsActive() ) {
 ////		return idAFEntity_Base::UpdateAnimationControllers();
 ////	} else {
 ////		this.animator.ClearAFPose();
@@ -1608,7 +1615,7 @@ idActor::Spawn
 ////idActor::RemoveAttachments
 ////================
 ////*/
-////void idActor::RemoveAttachments( ) {
+////void idActor::RemoveAttachments( ) :void{
 ////	var/*int*/i:number;
 ////	var ent:idEntity
 ////
@@ -1620,13 +1627,14 @@ idActor::Spawn
 ////		}
 ////	}
 ////}
-////
-/////*
-////================
-////idActor::Attach
-////================
-////*/
-////void idActor::Attach( ent:idEntity ) {
+
+/*
+================
+idActor::Attach
+================
+*/
+	Attach(ent: idEntity): void {
+		todoThrow ( );
 ////	idVec3			origin;
 ////	idMat3			axis;
 ////	jointHandle_t	joint;
@@ -1654,14 +1662,14 @@ idActor::Spawn
 ////	ent.SetAxis( newAxis );
 ////	ent.BindToJoint( this, joint, true );
 ////	ent.cinematic = cinematic;
-////}
+	}
 ////
 /////*
 ////================
 ////idActor::Teleport
 ////================
 ////*/
-////void idActor::Teleport( const idVec3 &origin, angles:idAngles, idEntity *destination ) {
+////void idActor::Teleport( const idVec3 &origin, angles:idAngles, idEntity *destination ) :void{
 ////	this.GetPhysics().SetOrigin( origin + idVec3( 0, 0, CM_CLIP_EPSILON ) );
 ////	this.GetPhysics().SetLinearVelocity( vec3_origin );
 ////
@@ -1689,7 +1697,7 @@ idActor::Spawn
 ////idActor::SetDeltaViewAngles
 ////================
 ////*/
-////void idActor::SetDeltaViewAngles( const idAngles &delta ) {
+////void idActor::SetDeltaViewAngles( const idAngles &delta ) :void{
 ////	deltaViewAngles = delta;
 ////}
 ////
@@ -1773,7 +1781,7 @@ idActor::Spawn
 ////idActor::GetAASLocation
 ////==============
 ////*/
-////void idActor::GetAASLocation( idAAS *aas, pos:idVec3, int &areaNum ) const {
+////void idActor::GetAASLocation( idAAS *aas, pos:idVec3, int &areaNum ) :void {
 ////	idVec3		size;
 ////	idBounds	bounds;
 ////
@@ -1805,13 +1813,13 @@ idActor::Spawn
 ////idActor::SetAnimState
 ////=====================
 ////*/
-////void idActor::SetAnimState( int channel, const char *statename, int blendFrames ) {
+////void idActor::SetAnimState( int channel, const char *statename, int blendFrames ):void {
 ////	const function_t *func;
 ////
-////	func = scriptObject.GetFunction( statename );
+////	func = this.scriptObject.GetFunction( statename );
 ////	if ( !func ) {
 ////		assert( 0 );
-////		gameLocal.Error( "Can't find function '%s' in object '%s'", statename, scriptObject.GetTypeName() );
+////		gameLocal.Error( "Can't find function '%s' in object '%s'", statename, this.scriptObject.GetTypeName() );
 ////	}
 ////
 ////	switch( channel ) {
@@ -1917,7 +1925,7 @@ idActor::Spawn
 ////idActor::SetWaitState
 ////=====================
 ////*/
-////void idActor::SetWaitState( const char *_waitstate ) {
+////void idActor::SetWaitState( const char *_waitstate ):void {
 ////	waitState = _waitstate;
 ////}
 ////
@@ -1926,7 +1934,7 @@ idActor::Spawn
 ////idActor::UpdateAnimState
 ////=====================
 ////*/
-////void idActor::UpdateAnimState( ) {
+////void idActor::UpdateAnimState( ):void {
 ////	headAnim.UpdateState();
 ////	torsoAnim.UpdateState();
 ////	legsAnim.UpdateState();
@@ -1969,7 +1977,7 @@ idActor::Spawn
 ////idActor::SyncAnimChannels
 ////===============
 ////*/
-////void idActor::SyncAnimChannels( int channel, int syncToChannel, int blendFrames ) {
+////void idActor::SyncAnimChannels( int channel, int syncToChannel, int blendFrames ) :void{
 ////	idAnimator		*headAnimator;
 ////	idAFAttachment	*headEnt;
 ////	int				anim;
@@ -2035,7 +2043,7 @@ idActor::Spawn
 ////idActor::Gib
 ////============
 ////*/
-////void idActor::Gib( const idVec3 &dir, const char *damageDefName ) {
+////void idActor::Gib( const idVec3 &dir, const char *damageDefName ):void {
 ////	// no gibbing in multiplayer - by self damage or by moving objects
 ////	if ( gameLocal.isMultiplayer ) {
 ////		return;
@@ -2113,9 +2121,9 @@ idActor::Spawn
 ////		}
 ////	} else {
 ////		// don't accumulate knockback
-////		if ( af.IsLoaded() ) {
+////		if ( this.af.IsLoaded() ) {
 ////			// clear impacts
-////			af.Rest();
+////			this.af.Rest();
 ////
 ////			// physics is turned off by calling af.Rest()
 ////			BecomeActive( TH_PHYSICS );
@@ -2128,7 +2136,7 @@ idActor::Spawn
 ////idActor::ClearPain
 ////=====================
 ////*/
-////void idActor::ClearPain( ) {
+////void idActor::ClearPain( ):void {
 ////	this.pain_debounce_time = 0;
 ////}
 ////
@@ -2138,9 +2146,9 @@ idActor::Spawn
 ////=====================
 ////*/
 ////bool idActor::Pain( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location ) {
-////	if ( af.IsLoaded() ) {
+////	if ( this.af.IsLoaded() ) {
 ////		// clear impacts
-////		af.Rest();
+////		this.af.Rest();
 ////
 ////		// physics is turned off by calling af.Rest()
 ////		BecomeActive( TH_PHYSICS );
@@ -2220,7 +2228,7 @@ idActor::Spawn
 ////idActor::SpawnGibs
 ////=====================
 ////*/
-////void idActor::SpawnGibs( const idVec3 &dir, const char *damageDefName ) {
+////void idActor::SpawnGibs( const idVec3 &dir, const char *damageDefName ) :void{
 ////	idAFEntity_Gibbable::SpawnGibs( dir, damageDefName );
 ////	RemoveAttachments();
 ////}
@@ -2232,7 +2240,7 @@ idActor::Spawn
 ////FIXME: only store group names once and store an index for each joint
 ////=====================
 ////*/
-////void idActor::SetupDamageGroups( ) {
+////void idActor::SetupDamageGroups( ) :void{
 ////	int						i;
 ////	const idKeyValue		*arg;
 ////	idStr					groupname;
@@ -2314,7 +2322,7 @@ idActor::Spawn
 ////idActor::Event_EnableEyeFocus
 ////=====================
 ////*/
-////void idActor::PlayFootStepSound( ) {
+////void idActor::PlayFootStepSound( ) :void{
 ////	const char *sound = NULL;
 ////	const idMaterial *material;
 ////
@@ -2340,7 +2348,7 @@ idActor::Spawn
 ////idActor::Event_EnableEyeFocus
 ////=====================
 ////*/
-////void idActor::Event_EnableEyeFocus( ) {
+////void idActor::Event_EnableEyeFocus( ):void {
 ////	allowEyeFocus = true;
 ////	blink_time = gameLocal.time + blink_min + gameLocal.random.RandomFloat() * ( blink_max - blink_min );
 ////}
@@ -2350,7 +2358,7 @@ idActor::Spawn
 ////idActor::Event_DisableEyeFocus
 ////=====================
 ////*/
-////void idActor::Event_DisableEyeFocus( ) {
+////void idActor::Event_DisableEyeFocus( ):void {
 ////	allowEyeFocus = false;
 ////	
 ////	idEntity *headEnt = this.head.GetEntity();
@@ -2366,7 +2374,7 @@ idActor::Spawn
 ////idActor::Event_Footstep
 ////===============
 ////*/
-////void idActor::Event_Footstep( ) {
+////void idActor::Event_Footstep( ) :void{
 ////	PlayFootStepSound();
 ////}
 ////
@@ -2375,7 +2383,7 @@ idActor::Spawn
 ////idActor::Event_EnableWalkIK
 ////=====================
 ////*/
-////void idActor::Event_EnableWalkIK( ) {
+////void idActor::Event_EnableWalkIK( ):void {
 ////	this.walkIK.EnableAll();
 ////}
 ////
@@ -2384,7 +2392,7 @@ idActor::Spawn
 ////idActor::Event_DisableWalkIK
 ////=====================
 ////*/
-////void idActor::Event_DisableWalkIK( ) {
+////void idActor::Event_DisableWalkIK( ) :void{
 ////	this.walkIK.DisableAll();
 ////}
 ////
@@ -2393,7 +2401,7 @@ idActor::Spawn
 ////idActor::Event_EnableLegIK
 ////=====================
 ////*/
-////void idActor::Event_EnableLegIK( int num ) {
+////void idActor::Event_EnableLegIK( int num ) :void{
 ////	this.walkIK.EnableLeg( num );
 ////}
 ////
@@ -2402,7 +2410,7 @@ idActor::Spawn
 ////idActor::Event_DisableLegIK
 ////=====================
 ////*/
-////void idActor::Event_DisableLegIK( int num ) {
+////void idActor::Event_DisableLegIK( int num ):void {
 ////	this.walkIK.DisableLeg( num );
 ////}
 ////
@@ -2411,7 +2419,7 @@ idActor::Spawn
 ////idActor::Event_PreventPain
 ////=====================
 ////*/
-////void idActor::Event_PreventPain( float duration ) {
+////void idActor::Event_PreventPain( float duration ):void {
 ////	painTime = gameLocal.time + SEC2MS( duration );
 ////}
 ////
@@ -2420,7 +2428,7 @@ idActor::Spawn
 ////idActor::Event_DisablePain
 ////===============
 ////*/
-////void idActor::Event_DisablePain( ) {
+////void idActor::Event_DisablePain( ) :void{
 ////	allowPain = false;
 ////}
 ////
@@ -2429,7 +2437,7 @@ idActor::Spawn
 ////idActor::Event_EnablePain
 ////===============
 ////*/
-////void idActor::Event_EnablePain( ) {
+////void idActor::Event_EnablePain( ) :void{
 ////	allowPain = true;
 ////}
 ////
@@ -2438,7 +2446,7 @@ idActor::Spawn
 ////idActor::Event_GetPainAnim
 ////=====================
 ////*/
-////void idActor::Event_GetPainAnim( ) {
+////void idActor::Event_GetPainAnim( ) :void{
 ////	if ( !painAnim.Length() ) {
 ////		idThread::ReturnString( "pain" );
 ////	} else {
@@ -2451,7 +2459,7 @@ idActor::Spawn
 ////idActor::Event_SetAnimPrefix
 ////=====================
 ////*/
-////void idActor::Event_SetAnimPrefix( const char *prefix ) {
+////void idActor::Event_SetAnimPrefix( const char *prefix ):void {
 ////	this.animPrefix.equals(prefix);
 ////}
 ////
@@ -2460,7 +2468,7 @@ idActor::Spawn
 ////idActor::Event_StopAnim
 ////===============
 ////*/
-////void idActor::Event_StopAnim( int channel, int frames ) {
+////void idActor::Event_StopAnim( int channel, int frames ):void {
 ////	switch( channel ) {
 ////	case ANIMCHANNEL_HEAD :
 ////		headAnim.StopAnim( frames );
@@ -2485,7 +2493,7 @@ idActor::Spawn
 ////idActor::Event_PlayAnim
 ////===============
 ////*/
-////void idActor::Event_PlayAnim( int channel, const char *animname ) {
+////void idActor::Event_PlayAnim( int channel, const char *animname ):void {
 ////	animFlags_t	flags;
 ////	idEntity *headEnt;
 ////	int	anim;
@@ -2565,7 +2573,7 @@ idActor::Spawn
 ////idActor::Event_PlayCycle
 ////===============
 ////*/
-////void idActor::Event_PlayCycle( int channel, const char *animname ) {
+////void idActor::Event_PlayCycle( int channel, const char *animname ) :void{
 ////	animFlags_t	flags;
 ////	int			anim;
 ////	
@@ -2639,7 +2647,7 @@ idActor::Spawn
 ////idActor::Event_IdleAnim
 ////===============
 ////*/
-////void idActor::Event_IdleAnim( int channel, const char *animname ) {
+////void idActor::Event_IdleAnim( int channel, const char *animname ) :void{
 ////	int anim;
 ////	
 ////	anim = GetAnim( channel, animname );	
@@ -2746,7 +2754,7 @@ idActor::Spawn
 ////idActor::Event_SetSyncedAnimWeight
 ////================
 ////*/
-////void idActor::Event_SetSyncedAnimWeight( int channel, int anim, float weight ) {
+////void idActor::Event_SetSyncedAnimWeight( int channel, int anim, float weight ) :void{
 ////	idEntity *headEnt;
 ////
 ////	headEnt = this.head.GetEntity();
@@ -2795,7 +2803,7 @@ idActor::Spawn
 ////idActor::Event_OverrideAnim
 ////===============
 ////*/
-////void idActor::Event_OverrideAnim( int channel ) {
+////void idActor::Event_OverrideAnim( int channel ):void {
 ////	switch( channel ) {
 ////	case ANIMCHANNEL_HEAD :
 ////		headAnim.Disable();
@@ -2830,7 +2838,7 @@ idActor::Spawn
 ////idActor::Event_EnableAnim
 ////===============
 ////*/
-////void idActor::Event_EnableAnim( int channel, int blendFrames ) {
+////void idActor::Event_EnableAnim( int channel, int blendFrames ) :void{
 ////	switch( channel ) {
 ////	case ANIMCHANNEL_HEAD :
 ////		headAnim.Enable( blendFrames );
@@ -2883,7 +2891,7 @@ idActor::Spawn
 ////idActor::Event_GetBlendFrames
 ////===============
 ////*/
-////void idActor::Event_GetBlendFrames( int channel ) {
+////void idActor::Event_GetBlendFrames( int channel ) :void{
 ////	switch( channel ) {
 ////	case ANIMCHANNEL_HEAD :
 ////		idThread::ReturnInt( headAnim.animBlendFrames );
@@ -2908,7 +2916,7 @@ idActor::Spawn
 ////idActor::Event_AnimState
 ////===============
 ////*/
-////void idActor::Event_AnimState( int channel, const char *statename, int blendFrames ) {
+////void idActor::Event_AnimState( int channel, const char *statename, int blendFrames ):void {
 ////	SetAnimState( channel, statename, blendFrames );
 ////}
 ////
@@ -2917,7 +2925,7 @@ idActor::Spawn
 ////idActor::Event_GetAnimState
 ////===============
 ////*/
-////void idActor::Event_GetAnimState( int channel ) {
+////void idActor::Event_GetAnimState( int channel ):void {
 ////	const char *state;
 ////
 ////	state = GetAnimState( channel );
@@ -2929,7 +2937,7 @@ idActor::Spawn
 ////idActor::Event_InAnimState
 ////===============
 ////*/
-////void idActor::Event_InAnimState( int channel, const char *statename ) {
+////void idActor::Event_InAnimState( int channel, const char *statename ) :void{
 ////	bool instate;
 ////
 ////	instate = InAnimState( channel, statename );
@@ -2941,7 +2949,7 @@ idActor::Spawn
 ////idActor::Event_FinishAction
 ////===============
 ////*/
-////void idActor::Event_FinishAction( const char *actionname ) {
+////void idActor::Event_FinishAction( const char *actionname ):void {
 ////	if ( waitState == actionname ) {
 ////		SetWaitState( "" );
 ////	}
@@ -2952,7 +2960,7 @@ idActor::Spawn
 ////idActor::Event_AnimDone
 ////===============
 ////*/
-////void idActor::Event_AnimDone( int channel, int blendFrames ) {
+////void idActor::Event_AnimDone( int channel, int blendFrames ):void {
 ////	bool result;
 ////
 ////	switch( channel ) {
@@ -2994,7 +3002,7 @@ idActor::Spawn
 ////idActor::Event_CheckAnim
 ////================
 ////*/
-////void idActor::Event_CheckAnim( int channel, const char *animname ) {
+////void idActor::Event_CheckAnim( int channel, const char *animname ) :void{
 ////	if ( !GetAnim( channel, animname ) ) {
 ////		if ( this.animPrefix.Length() ) {
 ////			gameLocal.Error( "Can't find anim '%s_%s' for '%s'", this.animPrefix.c_str(), animname, this.name.c_str() );
@@ -3009,7 +3017,7 @@ idActor::Spawn
 ////idActor::Event_ChooseAnim
 ////================
 ////*/
-////void idActor::Event_ChooseAnim( int channel, const char *animname ) {
+////void idActor::Event_ChooseAnim( int channel, const char *animname ):void {
 ////	int anim;
 ////
 ////	anim = GetAnim( channel, animname );
@@ -3033,7 +3041,7 @@ idActor::Spawn
 ////idActor::Event_AnimLength
 ////================
 ////*/
-////void idActor::Event_AnimLength( int channel, const char *animname ) {
+////void idActor::Event_AnimLength( int channel, const char *animname ) :void{
 ////	int anim;
 ////
 ////	anim = GetAnim( channel, animname );
@@ -3057,7 +3065,7 @@ idActor::Spawn
 ////idActor::Event_AnimDistance
 ////================
 ////*/
-////void idActor::Event_AnimDistance( int channel, const char *animname ) {
+////void idActor::Event_AnimDistance( int channel, const char *animname ):void {
 ////	int anim;
 ////
 ////	anim = GetAnim( channel, animname );
@@ -3081,7 +3089,7 @@ idActor::Spawn
 ////idActor::Event_HasEnemies
 ////================
 ////*/
-////void idActor::Event_HasEnemies( ) {
+////void idActor::Event_HasEnemies( ) :void{
 ////	bool hasEnemy;
 ////
 ////	hasEnemy = HasEnemies();
@@ -3093,7 +3101,7 @@ idActor::Spawn
 ////idActor::Event_NextEnemy
 ////================
 ////*/
-////void idActor::Event_NextEnemy( ent:idEntity ) {
+////void idActor::Event_NextEnemy( ent:idEntity ):void {
 ////	idActor *actor;
 ////
 ////	if ( !ent || ( ent == this ) ) {
@@ -3124,7 +3132,7 @@ idActor::Spawn
 ////idActor::Event_ClosestEnemyToPoint
 ////================
 ////*/
-////void idActor::Event_ClosestEnemyToPoint( pos:idVec3 ) {
+////void idActor::Event_ClosestEnemyToPoint( pos:idVec3 ) :void{
 ////	idActor *bestEnt = ClosestEnemyToPoint( pos );
 ////	idThread::ReturnEntity( bestEnt );
 ////}
@@ -3134,7 +3142,7 @@ idActor::Spawn
 ////idActor::Event_StopSound
 ////================
 ////*/
-////void idActor::Event_StopSound( int channel, int netSync ) {
+////void idActor::Event_StopSound( int channel, int netSync ) :void{
 ////	if ( channel == SND_CHANNEL_VOICE ) {
 ////		idEntity *headEnt = this.head.GetEntity();
 ////		if ( headEnt ) {
@@ -3149,7 +3157,7 @@ idActor::Spawn
 ////idActor::Event_SetNextState
 ////=====================
 ////*/
-////void idActor::Event_SetNextState( name:string ) {
+////void idActor::Event_SetNextState( name:string ):void {
 ////	this.idealState = GetScriptFunction( name );
 ////	if ( this.idealState == this.state ) {
 ////		this.state = NULL;
@@ -3161,7 +3169,7 @@ idActor::Spawn
 ////idActor::Event_SetState
 ////=====================
 ////*/
-////void idActor::Event_SetState( name:string ) {
+////void idActor::Event_SetState( name:string ):void {
 ////	this.idealState = GetScriptFunction( name );
 ////	if ( this.idealState == this.state ) {
 ////		this.state = NULL;
@@ -3174,7 +3182,7 @@ idActor::Spawn
 ////idActor::Event_GetState
 ////=====================
 ////*/
-////void idActor::Event_GetState( ) {
+////void idActor::Event_GetState( ) :void{
 ////	if ( this.state ) {
 ////		idThread::ReturnString( this.state.Name() );
 ////	} else {
@@ -3187,7 +3195,7 @@ idActor::Spawn
 ////idActor::Event_GetHead
 ////=====================
 ////*/
-////void idActor::Event_GetHead( ) {
+////void idActor::Event_GetHead( ) :void{
 ////	idThread::ReturnEntity( this.head.GetEntity() );
 ////}
 

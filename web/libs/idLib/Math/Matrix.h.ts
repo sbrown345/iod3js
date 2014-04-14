@@ -493,26 +493,27 @@ class idMat3 {
 	}
 //
 //ID_INLINE idMat3 idMat3::operator*( const idMat3 &a ) const {
-//	int i, j;
-//	const float *m1Ptr, *m2Ptr;
-//	float *dstPtr;
-//	idMat3 dst;
-//
-//	m1Ptr = reinterpret_cast<const float *>(this);
-//	m2Ptr = reinterpret_cast<const float *>(&a);
-//	dstPtr = reinterpret_cast<float *>(&dst);
-//
-//	for ( i = 0; i < 3; i++ ) {
-//		for ( j = 0; j < 3; j++ ) {
-//			*dstPtr = m1Ptr[0] * m2Ptr[ 0 * 3 + j ]
-//					+ m1Ptr[1] * m2Ptr[ 1 * 3 + j ]
-//					+ m1Ptr[2] * m2Ptr[ 2 * 3 + j ];
-//			dstPtr++;
-//		}
-//		m1Ptr += 3;
-//	}
-//	return dst;
-//}
+	opMultiplication ( a: idMat3 ): idMat3 {
+		var /*int */i: number, j: number;
+		//const float *m1Ptr, *m2Ptr;
+		//float *dstPtr;
+		var dst = new idMat3;
+
+		//m1Ptr = reinterpret_cast<const float *>(this);
+		//m2Ptr = reinterpret_cast<const float *>(&a);
+		//dstPtr = reinterpret_cast<float *>(&dst);
+
+		//for ( i = 0; i < 3; i++ ) {
+		//	for ( j = 0; j < 3; j++ ) {
+		//		*dstPtr = m1Ptr[0] * m2Ptr[ 0 * 3 + j ]
+		//				+ m1Ptr[1] * m2Ptr[ 1 * 3 + j ]
+		//				+ m1Ptr[2] * m2Ptr[ 2 * 3 + j ];
+		//		dstPtr++;
+		//	}
+		//	m1Ptr += 3;
+		//}
+		return dst;
+	}
 //
 //ID_INLINE idMat3 idMat3::operator*( const float a ) const {
 //	return idMat3(

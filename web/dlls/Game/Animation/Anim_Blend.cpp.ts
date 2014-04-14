@@ -852,18 +852,18 @@ Parse( text:string, /*const int */textLength :number):boolean {
 //	return 0;
 //}
 //
-///*
-//=====================
-//idDeclModelDef::GetAnim
-//=====================
-//*/
-//const idAnim *idDeclModelDef::GetAnim( int index ) const {
-//	if ( ( index < 1 ) || ( index > this.anims.Num() ) ) {
-//		return NULL;
-//	}
-//	
-//	return this.anims[ index - 1 ];
-//}
+/*
+=====================
+idDeclModelDef::GetAnim
+=====================
+*/
+	GetAnim_index ( /*int*/ index: number ): idAnim {
+		if ( ( index < 1 ) || ( index > this.anims.Num ( ) ) ) {
+			return null;
+		}
+
+		return this.anims[index - 1];
+	}
 
 /*
 =====================
@@ -1012,14 +1012,14 @@ idDeclModelDef::GetJointName
 //	return this.channelJoints[ channel ].Ptr();
 //}
 //
-///*
-//=====================
-//idDeclModelDef::GetVisualOffset
-//=====================
-//*/
-//const idVec3 &idDeclModelDef::GetVisualOffset( ) const {
-//	return this.offset;
-//}
+/*
+=====================
+idDeclModelDef::GetVisualOffset
+=====================
+*/
+	GetVisualOffset ( ): idVec3 {
+		return this.offset;
+	}
 };
 
 

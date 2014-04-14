@@ -382,8 +382,8 @@ class idRenderModel {
 	// Returns the MD5 joints or NULL if the model is not an MD5
 	GetJoints ( ): idMD5Joint[] { throw "placeholder"; }
 
-////	// Returns the handle for the joint with the given name.
-////	virtual jointHandle_t		GetJointHandle( const char *name ) const = 0;
+	// Returns the handle for the joint with the given name.
+	GetJointHandle(name: string): jointHandle_t { throw "placeholder"; }
 
 	// Returns the name for the joint with the given handle.
 	GetJointName ( handle: jointHandle_t ): string { throw "placeholder"; }

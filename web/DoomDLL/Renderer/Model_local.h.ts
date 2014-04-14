@@ -86,7 +86,7 @@ class idRenderModelStatic extends idRenderModel {
 //////	virtual idRenderModel *		InstantiateDynamicModel( const struct renderEntity_s *ent, const struct viewDef_s *view, idRenderModel *cachedModel );
 //////	virtual int					NumJoints( void ) const;
 //////	virtual const idMD5Joint *	GetJoints( void ) const;
-//////	virtual jointHandle_t		GetJointHandle( const char *name ) const;
+//////	virtual jointHandle_t		GetJointHandle( name:string ) const;
 //////	virtual const char *		GetJointName( jointHandle_t handle ) const;
 //////	virtual const idJointQuat *	GetDefaultPose( void ) const;
 //////	virtual int					NearestJoint( int surfaceNum, int a, int b, int c ) const;
@@ -617,14 +617,14 @@ idRenderModelStatic::NumJoints
 ////	return NULL;
 ////}
 
-/////*
-////================
-////idRenderModelStatic::GetJointHandle
-////================
-////*/
-////jointHandle_t idRenderModelStatic::GetJointHandle( this.name:string ) const {
-////	return INVALID_JOINT;
-////}
+/*
+================
+idRenderModelStatic::GetJointHandle
+================
+*/
+	GetJointHandle ( name: string ): jointHandle_t {
+		return jointHandle_t.INVALID_JOINT;
+	}
 
 /////*
 ////================
@@ -2490,7 +2490,7 @@ class idRenderModelMD5 extends idRenderModelStatic {
 ////	virtual idRenderModel *		InstantiateDynamicModel( const struct renderEntity_s *ent, const struct viewDef_s *view, idRenderModel *cachedModel );
 ////	virtual int					NumJoints( void ) const;
 ////	virtual const idMD5Joint *	GetJoints( void ) const;
-////	virtual jointHandle_t		GetJointHandle( const char *name ) const;
+////	virtual jointHandle_t		GetJointHandle( name:string ) const;
 ////	virtual const char *		GetJointName( jointHandle_t handle ) const;
 ////	virtual const idJointQuat *	GetDefaultPose( void ) const;
 ////	virtual int					NearestJoint( int surfaceNum, int a, int b, int c ) const;
@@ -2826,7 +2826,7 @@ class idRenderModelMD5 extends idRenderModelStatic {
 
 	////	if ( cachedModel ) {
 	////		assert( dynamic_cast<idRenderModelStatic *>(cachedModel) != NULL );
-	////		assert( idStr::Icmp( cachedModel.Name(), MD5_SnapshotName ) == 0 );
+	////		assert( idStr.Icmp( cachedModel.Name(), MD5_SnapshotName ) == 0 );
 	////		staticModel = static_cast<idRenderModelStatic *>(cachedModel);
 	////	} else {
 	////		staticModel = new idRenderModelStatic;
@@ -2924,24 +2924,24 @@ class idRenderModelMD5 extends idRenderModelStatic {
 ////	return defaultPose.Ptr();
 ////}
 
-/////*
-////====================
-////idRenderModelMD5::GetJointHandle
-////====================
-////*/
-////jointHandle_t idRenderModelMD5::GetJointHandle( const char *name ) const {
-////	const idMD5Joint *joint;
-////	int	i;
-	
-////	joint = this.joints.Ptr();
-////	for( i = 0; i < this.joints.Num(); i++, joint++ ) {
-////		if ( idStr::Icmp( joint.name.c_str(), name ) == 0 ) {
-////			return ( jointHandle_t )i;
-////		}
-////	}
+/*
+====================
+idRenderModelMD5::GetJointHandle
+====================
+*/
+	GetJointHandle ( name: string ): jointHandle_t {
+		var joints: idList<idMD5Joint>, joint: idMD5Joint;
+		var /*int	*/i: number;
 
-////	return INVALID_JOINT;
-////}
+		joints = this.joints.Ptr ( );
+		for ( i = 0; i < this.joints.Num ( ); i++, joint = joints[i] ) {
+			if ( idStr.Icmp( joint.name.c_str ( ), name ) == 0 ) {
+				return <jointHandle_t >i;
+			}
+		}
+
+		return jointHandle_t.INVALID_JOINT;
+	}
 
 /////*
 ////=====================

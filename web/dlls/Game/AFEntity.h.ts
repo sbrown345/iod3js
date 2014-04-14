@@ -363,7 +363,7 @@ idAFAttachment::Spawn
 =====================
 */
 Spawn( ):void {
-	this.idleAnim = this.animator.GetAnim_str( "idle" );
+	this.idleAnim = this.animator.GetAnim_name( "idle" );
 }
 ////
 /////*

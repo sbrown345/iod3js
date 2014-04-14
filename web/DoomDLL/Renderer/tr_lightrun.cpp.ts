@@ -639,7 +639,7 @@ function R_FreeEntityDefDerivedData ( def: idRenderEntityLocal, keepDecals: bool
 	if ( session.readDemo ) {
 		if ( def.parms.joints ) {
 			Mem_Free16( def.parms.joints );
-			def.parms.joints = NULL;
+			def.parms.joints = null;
 		}
 		if ( def.parms.callbackData ) {
 			Mem_Free( def.parms.callbackData );

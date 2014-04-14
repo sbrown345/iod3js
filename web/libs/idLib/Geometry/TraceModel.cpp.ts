@@ -1033,12 +1033,13 @@ idTraceModel::SetupCone
 ////	this.isConvex = true;
 ////}
 ////
-/////*
-////============
-////idTraceModel::SetupPolygon
-////============
-////*/
-////void idTraceModel::SetupPolygon( const idVec3 *v, const int count ) {
+/*
+============
+idTraceModel::SetupPolygon
+============
+*/
+	SetupPolygon ( v: idVec3[], /*int */count: number ): void {
+		todoThrow ( );
 ////	int i, j;
 ////	idVec3 mid;
 ////
@@ -1084,7 +1085,7 @@ idTraceModel::SetupCone
 ////	this.bounds.opEquals( this.polys[0].bounds;
 ////	// considered non convex because the model has no volume
 ////	this.isConvex = false;
-////}
+	}
 ////
 /////*
 ////============

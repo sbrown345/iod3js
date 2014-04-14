@@ -57,14 +57,14 @@ var ANIMCHANNEL_EYELIDS		= 4;
 //class idSaveGame;
 //class idRestoreGame;
 //
-//typedef struct {
-//	int		cycleCount;	// how many times the anim has wrapped to the begining (0 for clamped anims)
-//	int		frame1;
-//	int		frame2;
-//	float	frontlerp;
-//	float	backlerp;
-//} frameBlend_t;
-//
+class frameBlend_t {
+	cycleCount :number/*int*/;	// how many times the anim has wrapped to the begining (0 for clamped anims)
+	frame1 :number/*int*/;
+	frame2 :number/*int*/;
+	frontlerp :number/*float*/;
+	backlerp :number/*float*/;
+};
+
 class jointAnimInfo_t {
 	nameIndex: number /*int*/;
 	parentNum: number /*int*/;
@@ -99,11 +99,11 @@ enum jointModTransform_t{
 };
 
 class jointMod_t {
-	//jointHandle_t			jointnum;
-	//idMat3					mat;
-	//idVec3					pos;
-	//jointModTransform_t		transform_pos;
-	// jointModTransform_t		transform_axis;
+	jointnum:jointHandle_t;
+	mat = new idMat3;
+	pos = new idVec3;
+	transform_pos:jointModTransform_t;
+	transform_axis:jointModTransform_t;
 };
 
 var	ANIM_TX				=BIT( 0 )
@@ -538,7 +538,7 @@ idMD5Anim::TotalMovementDelta
 //			totaldelta.x = componentPtr[ numAnimatedComponents * ( numFrames - 1 ) ];
 //			componentPtr++;
 //		} else {
-//			totaldelta.x = 0.0f;
+//			totaldelta.x = 0.0;
 //		}
 //		if ( jointInfo[ 0 ].animBits & ANIM_TY ) {
 //			for( i = 0; i < numFrames; i++ ) {
@@ -547,7 +547,7 @@ idMD5Anim::TotalMovementDelta
 //			totaldelta.y = componentPtr[ numAnimatedComponents * ( numFrames - 1 ) ];
 //			componentPtr++;
 //		} else {
-//			totaldelta.y = 0.0f;
+//			totaldelta.y = 0.0;
 //		}
 //		if ( jointInfo[ 0 ].animBits & ANIM_TZ ) {
 //			for( i = 0; i < numFrames; i++ ) {
@@ -555,7 +555,7 @@ idMD5Anim::TotalMovementDelta
 //			}
 //			totaldelta.z = componentPtr[ numAnimatedComponents * ( numFrames - 1 ) ];
 //		} else {
-//			totaldelta.z = 0.0f;
+//			totaldelta.z = 0.0;
 //		}
 //	}
 //	baseFrame[ 0 ].t.Zero();
@@ -601,8 +601,8 @@ idMD5Anim::NumRefs
 //*/
 //void idMD5Anim::GetFrameBlend( framenum/*int*/:number, frameBlend_t &frame ) :void {
 //	frame.cycleCount	= 0;
-//	frame.backlerp		= 0.0f;
-//	frame.frontlerp		= 1.0f;
+//	frame.backlerp		= 0.0;
+//	frame.frontlerp		= 1.0;
 //
 //	// frame 1 is first frame
 //	framenum--;
@@ -628,8 +628,8 @@ idMD5Anim::NumRefs
 //	if ( numFrames <= 1 ) {
 //		frame.frame1		= 0;
 //		frame.frame2		= 0;
-//		frame.backlerp		= 0.0f;
-//		frame.frontlerp		= 1.0f;
+//		frame.backlerp		= 0.0;
+//		frame.frontlerp		= 1.0;
 //		frame.cycleCount	= 0;
 //		return;
 //	}
@@ -637,8 +637,8 @@ idMD5Anim::NumRefs
 //	if ( time <= 0 ) {
 //		frame.frame1		= 0;
 //		frame.frame2		= 1;
-//		frame.backlerp		= 0.0f;
-//		frame.frontlerp		= 1.0f;
+//		frame.backlerp		= 0.0;
+//		frame.frontlerp		= 1.0;
 //		frame.cycleCount	= 0;
 //		return;
 //	}
@@ -651,8 +651,8 @@ idMD5Anim::NumRefs
 //		frame.cycleCount	= cyclecount - 1;
 //		frame.frame1		= numFrames - 1;
 //		frame.frame2		= frame.frame1;
-//		frame.backlerp		= 0.0f;
-//		frame.frontlerp		= 1.0f;
+//		frame.backlerp		= 0.0;
+//		frame.frontlerp		= 1.0;
 //		return;
 //	}
 //	
@@ -663,7 +663,7 @@ idMD5Anim::NumRefs
 //	}
 //
 //	frame.backlerp	= ( frameTime % 1000 ) * 0.001f;
-//	frame.frontlerp	= 1.0f - frame.backlerp;
+//	frame.frontlerp	= 1.0 - frame.backlerp;
 //}
 //
 ///*
@@ -881,7 +881,7 @@ idMD5Anim::NumRefs
 //	int						*lerpIndex;
 //
 //	// copy the baseframe
-//	SIMDProcessor->Memcpy( joints, baseFrame.Ptr(), baseFrame.Num() * sizeof( baseFrame[ 0 ] ) );
+//	SIMDProcessor.Memcpy( joints, baseFrame.Ptr(), baseFrame.Num() * sizeof( baseFrame[ 0 ] ) );
 //
 //	if ( !numAnimatedComponents ) {
 //		// just use the base frame
@@ -901,76 +901,76 @@ idMD5Anim::NumRefs
 //		blendPtr = &blendJoints[j];
 //		infoPtr = &jointInfo[j];
 //
-//		animBits = infoPtr->animBits;
+//		animBits = infoPtr.animBits;
 //		if ( animBits ) {
 //
 //			lerpIndex[numLerpJoints++] = j;
 //
-//			jointframe1 = frame1 + infoPtr->firstComponent;
-//			jointframe2 = frame2 + infoPtr->firstComponent;
+//			jointframe1 = frame1 + infoPtr.firstComponent;
+//			jointframe2 = frame2 + infoPtr.firstComponent;
 //
 //			switch( animBits & (ANIM_TX|ANIM_TY|ANIM_TZ) ) {
 //				case 0:
-//					blendPtr->t = jointPtr->t;
+//					blendPtr.t = jointPtr.t;
 //					break;
 //				case ANIM_TX:
-//					jointPtr->t.x = jointframe1[0];
-//					blendPtr->t.x = jointframe2[0];
-//					blendPtr->t.y = jointPtr->t.y;
-//					blendPtr->t.z = jointPtr->t.z;
+//					jointPtr.t.x = jointframe1[0];
+//					blendPtr.t.x = jointframe2[0];
+//					blendPtr.t.y = jointPtr.t.y;
+//					blendPtr.t.z = jointPtr.t.z;
 //					jointframe1++;
 //					jointframe2++;
 //					break;
 //				case ANIM_TY:
-//					jointPtr->t.y = jointframe1[0];
-//					blendPtr->t.y = jointframe2[0];
-//					blendPtr->t.x = jointPtr->t.x;
-//					blendPtr->t.z = jointPtr->t.z;
+//					jointPtr.t.y = jointframe1[0];
+//					blendPtr.t.y = jointframe2[0];
+//					blendPtr.t.x = jointPtr.t.x;
+//					blendPtr.t.z = jointPtr.t.z;
 //					jointframe1++;
 //					jointframe2++;
 //					break;
 //				case ANIM_TZ:
-//					jointPtr->t.z = jointframe1[0];
-//					blendPtr->t.z = jointframe2[0];
-//					blendPtr->t.x = jointPtr->t.x;
-//					blendPtr->t.y = jointPtr->t.y;
+//					jointPtr.t.z = jointframe1[0];
+//					blendPtr.t.z = jointframe2[0];
+//					blendPtr.t.x = jointPtr.t.x;
+//					blendPtr.t.y = jointPtr.t.y;
 //					jointframe1++;
 //					jointframe2++;
 //					break;
 //				case ANIM_TX|ANIM_TY:
-//					jointPtr->t.x = jointframe1[0];
-//					jointPtr->t.y = jointframe1[1];
-//					blendPtr->t.x = jointframe2[0];
-//					blendPtr->t.y = jointframe2[1];
-//					blendPtr->t.z = jointPtr->t.z;
+//					jointPtr.t.x = jointframe1[0];
+//					jointPtr.t.y = jointframe1[1];
+//					blendPtr.t.x = jointframe2[0];
+//					blendPtr.t.y = jointframe2[1];
+//					blendPtr.t.z = jointPtr.t.z;
 //					jointframe1 += 2;
 //					jointframe2 += 2;
 //					break;
 //				case ANIM_TX|ANIM_TZ:
-//					jointPtr->t.x = jointframe1[0];
-//					jointPtr->t.z = jointframe1[1];
-//					blendPtr->t.x = jointframe2[0];
-//					blendPtr->t.z = jointframe2[1];
-//					blendPtr->t.y = jointPtr->t.y;
+//					jointPtr.t.x = jointframe1[0];
+//					jointPtr.t.z = jointframe1[1];
+//					blendPtr.t.x = jointframe2[0];
+//					blendPtr.t.z = jointframe2[1];
+//					blendPtr.t.y = jointPtr.t.y;
 //					jointframe1 += 2;
 //					jointframe2 += 2;
 //					break;
 //				case ANIM_TY|ANIM_TZ:
-//					jointPtr->t.y = jointframe1[0];
-//					jointPtr->t.z = jointframe1[1];
-//					blendPtr->t.y = jointframe2[0];
-//					blendPtr->t.z = jointframe2[1];
-//					blendPtr->t.x = jointPtr->t.x;
+//					jointPtr.t.y = jointframe1[0];
+//					jointPtr.t.z = jointframe1[1];
+//					blendPtr.t.y = jointframe2[0];
+//					blendPtr.t.z = jointframe2[1];
+//					blendPtr.t.x = jointPtr.t.x;
 //					jointframe1 += 2;
 //					jointframe2 += 2;
 //					break;
 //				case ANIM_TX|ANIM_TY|ANIM_TZ:
-//					jointPtr->t.x = jointframe1[0];
-//					jointPtr->t.y = jointframe1[1];
-//					jointPtr->t.z = jointframe1[2];
-//					blendPtr->t.x = jointframe2[0];
-//					blendPtr->t.y = jointframe2[1];
-//					blendPtr->t.z = jointframe2[2];
+//					jointPtr.t.x = jointframe1[0];
+//					jointPtr.t.y = jointframe1[1];
+//					jointPtr.t.z = jointframe1[2];
+//					blendPtr.t.x = jointframe2[0];
+//					blendPtr.t.y = jointframe2[1];
+//					blendPtr.t.z = jointframe2[2];
 //					jointframe1 += 3;
 //					jointframe2 += 3;
 //					break;
@@ -978,74 +978,74 @@ idMD5Anim::NumRefs
 //
 //			switch( animBits & (ANIM_QX|ANIM_QY|ANIM_QZ) ) {
 //				case 0:
-//					blendPtr->q = jointPtr->q;
+//					blendPtr.q = jointPtr.q;
 //					break;
 //				case ANIM_QX:
-//					jointPtr->q.x = jointframe1[0];
-//					blendPtr->q.x = jointframe2[0];
-//					blendPtr->q.y = jointPtr->q.y;
-//					blendPtr->q.z = jointPtr->q.z;
-//					jointPtr->q.w = jointPtr->q.CalcW();
-//					blendPtr->q.w = blendPtr->q.CalcW();
+//					jointPtr.q.x = jointframe1[0];
+//					blendPtr.q.x = jointframe2[0];
+//					blendPtr.q.y = jointPtr.q.y;
+//					blendPtr.q.z = jointPtr.q.z;
+//					jointPtr.q.w = jointPtr.q.CalcW();
+//					blendPtr.q.w = blendPtr.q.CalcW();
 //					break;
 //				case ANIM_QY:
-//					jointPtr->q.y = jointframe1[0];
-//					blendPtr->q.y = jointframe2[0];
-//					blendPtr->q.x = jointPtr->q.x;
-//					blendPtr->q.z = jointPtr->q.z;
-//					jointPtr->q.w = jointPtr->q.CalcW();
-//					blendPtr->q.w = blendPtr->q.CalcW();
+//					jointPtr.q.y = jointframe1[0];
+//					blendPtr.q.y = jointframe2[0];
+//					blendPtr.q.x = jointPtr.q.x;
+//					blendPtr.q.z = jointPtr.q.z;
+//					jointPtr.q.w = jointPtr.q.CalcW();
+//					blendPtr.q.w = blendPtr.q.CalcW();
 //					break;
 //				case ANIM_QZ:
-//					jointPtr->q.z = jointframe1[0];
-//					blendPtr->q.z = jointframe2[0];
-//					blendPtr->q.x = jointPtr->q.x;
-//					blendPtr->q.y = jointPtr->q.y;
-//					jointPtr->q.w = jointPtr->q.CalcW();
-//					blendPtr->q.w = blendPtr->q.CalcW();
+//					jointPtr.q.z = jointframe1[0];
+//					blendPtr.q.z = jointframe2[0];
+//					blendPtr.q.x = jointPtr.q.x;
+//					blendPtr.q.y = jointPtr.q.y;
+//					jointPtr.q.w = jointPtr.q.CalcW();
+//					blendPtr.q.w = blendPtr.q.CalcW();
 //					break;
 //				case ANIM_QX|ANIM_QY:
-//					jointPtr->q.x = jointframe1[0];
-//					jointPtr->q.y = jointframe1[1];
-//					blendPtr->q.x = jointframe2[0];
-//					blendPtr->q.y = jointframe2[1];
-//					blendPtr->q.z = jointPtr->q.z;
-//					jointPtr->q.w = jointPtr->q.CalcW();
-//					blendPtr->q.w = blendPtr->q.CalcW();
+//					jointPtr.q.x = jointframe1[0];
+//					jointPtr.q.y = jointframe1[1];
+//					blendPtr.q.x = jointframe2[0];
+//					blendPtr.q.y = jointframe2[1];
+//					blendPtr.q.z = jointPtr.q.z;
+//					jointPtr.q.w = jointPtr.q.CalcW();
+//					blendPtr.q.w = blendPtr.q.CalcW();
 //					break;
 //				case ANIM_QX|ANIM_QZ:
-//					jointPtr->q.x = jointframe1[0];
-//					jointPtr->q.z = jointframe1[1];
-//					blendPtr->q.x = jointframe2[0];
-//					blendPtr->q.z = jointframe2[1];
-//					blendPtr->q.y = jointPtr->q.y;
-//					jointPtr->q.w = jointPtr->q.CalcW();
-//					blendPtr->q.w = blendPtr->q.CalcW();
+//					jointPtr.q.x = jointframe1[0];
+//					jointPtr.q.z = jointframe1[1];
+//					blendPtr.q.x = jointframe2[0];
+//					blendPtr.q.z = jointframe2[1];
+//					blendPtr.q.y = jointPtr.q.y;
+//					jointPtr.q.w = jointPtr.q.CalcW();
+//					blendPtr.q.w = blendPtr.q.CalcW();
 //					break;
 //				case ANIM_QY|ANIM_QZ:
-//					jointPtr->q.y = jointframe1[0];
-//					jointPtr->q.z = jointframe1[1];
-//					blendPtr->q.y = jointframe2[0];
-//					blendPtr->q.z = jointframe2[1];
-//					blendPtr->q.x = jointPtr->q.x;
-//					jointPtr->q.w = jointPtr->q.CalcW();
-//					blendPtr->q.w = blendPtr->q.CalcW();
+//					jointPtr.q.y = jointframe1[0];
+//					jointPtr.q.z = jointframe1[1];
+//					blendPtr.q.y = jointframe2[0];
+//					blendPtr.q.z = jointframe2[1];
+//					blendPtr.q.x = jointPtr.q.x;
+//					jointPtr.q.w = jointPtr.q.CalcW();
+//					blendPtr.q.w = blendPtr.q.CalcW();
 //					break;
 //				case ANIM_QX|ANIM_QY|ANIM_QZ:
-//					jointPtr->q.x = jointframe1[0];
-//					jointPtr->q.y = jointframe1[1];
-//					jointPtr->q.z = jointframe1[2];
-//					blendPtr->q.x = jointframe2[0];
-//					blendPtr->q.y = jointframe2[1];
-//					blendPtr->q.z = jointframe2[2];
-//					jointPtr->q.w = jointPtr->q.CalcW();
-//					blendPtr->q.w = blendPtr->q.CalcW();
+//					jointPtr.q.x = jointframe1[0];
+//					jointPtr.q.y = jointframe1[1];
+//					jointPtr.q.z = jointframe1[2];
+//					blendPtr.q.x = jointframe2[0];
+//					blendPtr.q.y = jointframe2[1];
+//					blendPtr.q.z = jointframe2[2];
+//					jointPtr.q.w = jointPtr.q.CalcW();
+//					blendPtr.q.w = blendPtr.q.CalcW();
 //					break;
 //			}
 //		}
 //	}
 //
-//	SIMDProcessor->BlendJoints( joints, blendJoints, frame.backlerp, lerpIndex, numLerpJoints );
+//	SIMDProcessor.BlendJoints( joints, blendJoints, frame.backlerp, lerpIndex, numLerpJoints );
 //
 //	if ( frame.cycleCount ) {
 //		joints[ 0 ].t += totaldelta * ( float )frame.cycleCount;
@@ -1066,7 +1066,7 @@ idMD5Anim::NumRefs
 //	const jointAnimInfo_t	*infoPtr;
 //
 //	// copy the baseframe
-//	SIMDProcessor->Memcpy( joints, baseFrame.Ptr(), baseFrame.Num() * sizeof( baseFrame[ 0 ] ) );
+//	SIMDProcessor.Memcpy( joints, baseFrame.Ptr(), baseFrame.Num() * sizeof( baseFrame[ 0 ] ) );
 //
 //	if ( ( framenum == 0 ) || !numAnimatedComponents ) {
 //		// just use the base frame
@@ -1080,41 +1080,41 @@ idMD5Anim::NumRefs
 //		jointPtr = &joints[j];
 //		infoPtr = &jointInfo[j];
 //
-//		animBits = infoPtr->animBits;
+//		animBits = infoPtr.animBits;
 //		if ( animBits ) {
 //
-//			jointframe = frame + infoPtr->firstComponent;
+//			jointframe = frame + infoPtr.firstComponent;
 //
 //			if ( animBits & (ANIM_TX|ANIM_TY|ANIM_TZ) ) {
 //
 //				if ( animBits & ANIM_TX ) {
-//					jointPtr->t.x = *jointframe++;
+//					jointPtr.t.x = *jointframe++;
 //				}
 //
 //				if ( animBits & ANIM_TY ) {
-//					jointPtr->t.y = *jointframe++;
+//					jointPtr.t.y = *jointframe++;
 //				}
 //
 //				if ( animBits & ANIM_TZ ) {
-//					jointPtr->t.z = *jointframe++;
+//					jointPtr.t.z = *jointframe++;
 //				}
 //			}
 //
 //			if ( animBits & (ANIM_QX|ANIM_QY|ANIM_QZ) ) {
 //
 //				if ( animBits & ANIM_QX ) {
-//					jointPtr->q.x = *jointframe++;
+//					jointPtr.q.x = *jointframe++;
 //				}
 //
 //				if ( animBits & ANIM_QY ) {
-//					jointPtr->q.y = *jointframe++;
+//					jointPtr.q.y = *jointframe++;
 //				}
 //
 //				if ( animBits & ANIM_QZ ) {
-//					jointPtr->q.z = *jointframe;
+//					jointPtr.q.z = *jointframe;
 //				}
 //
-//				jointPtr->q.w = jointPtr->q.CalcW();
+//				jointPtr.q.w = jointPtr.q.CalcW();
 //			}
 //		}
 //	}
@@ -1130,15 +1130,15 @@ idMD5Anim::CheckModelHierarchy
 		var /*int	*/ jointNum: number;
 		var /*int	*/ parent: number;
 		todoThrow ( );
-		//if ( jointInfo.Num() != model->NumJoints() ) {
-		//	gameLocal.Error( "Model '%s' has different # of joints than anim '%s'", model->Name(), name.c_str() );
+		//if ( jointInfo.Num() != model.NumJoints() ) {
+		//	gameLocal.Error( "Model '%s' has different # of joints than anim '%s'", model.Name(), name.c_str() );
 		//}
 
-		//const idMD5Joint *modelJoints = model->GetJoints();
+		//const idMD5Joint *modelJoints = model.GetJoints();
 		//for( i = 0; i < jointInfo.Num(); i++ ) {
 		//	jointNum = jointInfo[ i ].nameIndex;
 		//	if ( modelJoints[ i ].name != animationLib.JointName( jointNum ) ) {
-		//		gameLocal.Error( "Model '%s''s joint names don't match anim '%s''s", model->Name(), name.c_str() );
+		//		gameLocal.Error( "Model '%s''s joint names don't match anim '%s''s", model.Name(), name.c_str() );
 		//	}
 		//	if ( modelJoints[ i ].parent ) {
 		//		parent = modelJoints[ i ].parent - modelJoints;
@@ -1146,7 +1146,7 @@ idMD5Anim::CheckModelHierarchy
 		//		parent = -1;
 		//	}
 		//	if ( parent != jointInfo[ i ].parentNum ) {
-		//		gameLocal.Error( "Model '%s' has different joint hierarchy than anim '%s'", model->Name(), name.c_str() );
+		//		gameLocal.Error( "Model '%s' has different joint hierarchy than anim '%s'", model.Name(), name.c_str() );
 		//	}
 		//}
 	}
@@ -1326,19 +1326,19 @@ idAnim::FullName
 		return this.realname.data;
 	}
 //
-///*
-//=====================
-//idAnim::MD5Anim
-//
-//index 0 will never be NULL.  Any anim >= NumAnims will return NULL.
-//=====================
-//*/
-//const idMD5Anim *idAnim::MD5Anim( /*int*/num:number ) const {
-//	if ( this.anims == NULL || this.anims[0] == NULL ) { 
-//		return NULL;
-//	}
-//	return this.anims[ num ];
-//}
+/*
+=====================
+idAnim::MD5Anim
+
+index 0 will never be NULL.  Any anim >= NumAnims will return NULL.
+=====================
+*/
+	MD5Anim ( /*int*/num: number ): idMD5Anim {
+		if ( this.anims == null || this.anims[0] == null ) {
+			return null;
+		}
+		return this.anims[num];
+	}
 //
 ///*
 //=====================
@@ -1402,7 +1402,7 @@ idAnim::FullName
 //idAnim::GetOrigin
 //=====================
 //*/
-//bool idAnim::GetOrigin( idVec3 &offset, int animNum, int currentTime, int cyclecount ) const {
+//bool idAnim::GetOrigin( idVec3 &offset, animNum/*int*/:number, currentTime/*int*/:number, int cyclecount ) const {
 //	if ( !this.anims[ animNum ] ) {
 //		offset.Zero();
 //		return false;
@@ -1417,9 +1417,9 @@ idAnim::FullName
 //idAnim::GetOriginRotation
 //=====================
 //*/
-//bool idAnim::GetOriginRotation( idQuat &rotation, int animNum, int currentTime, int cyclecount ) const {
+//bool idAnim::GetOriginRotation( idQuat &rotation, animNum/*int*/:number, currentTime/*int*/:number, int cyclecount ) const {
 //	if ( !this.anims[ animNum ] ) {
-//		rotation.Set( 0.0f, 0.0f, 0.0f, 1.0f );
+//		rotation.Set( 0.0, 0.0, 0.0, 1.0 );
 //		return false;
 //	}
 //
@@ -1432,7 +1432,7 @@ idAnim::FullName
 //idAnim::GetBounds
 //=====================
 //*/
-//ID_INLINE bool idAnim::GetBounds( idBounds &bounds, int animNum, int currentTime, int cyclecount ) const {
+//ID_INLINE bool idAnim::GetBounds( idBounds &bounds, animNum/*int*/:number, currentTime/*int*/:number, int cyclecount ) const {
 //	if ( !this.anims[ animNum ] ) {
 //		return false;
 //	}
@@ -2177,33 +2177,33 @@ idAnim::GetAnimFlags
 }
 
 
-///*
-//==============================================================================================
-//
-//	idAnimBlend
-//
-//==============================================================================================
-//*/
-//
-//class idAnimBlend {
+/*
+==============================================================================================
+
+	idAnimBlend
+
+==============================================================================================
+*/
+
+class idAnimBlend {
 //private:
-//	const class idDeclModelDef	*modelDef;
-//	int							starttime;
-//	int							endtime;
-//	int							timeOffset;
-//	float						rate;
-//
-//	int							blendStartTime;
-//	int							blendDuration;
-//	float						blendStartValue;
-//	float						blendEndValue;
-//
-//	float						animWeights[ ANIM_MaxSyncedAnims ];
-//	short						cycle;
-//	short						frame;
-//	short						animNum;
-//	bool						allowMove;
-//	bool						allowFrameCommands;
+	modelDef:idDeclModelDef;
+	starttime :number/*int*/;
+	endtime:number/*int*/;
+	timeOffset:number/*int*/;
+	rate:number/*float*/;
+	
+	blendStartTime:number/*int*/;
+	blendDuration:number/*int*/;
+	blendStartValue :number/*float*/;
+	blendEndValue:number/*float*/;
+
+	animWeights = new Float32Array( ANIM_MaxSyncedAnims );
+	cycle:number/*short*/;
+	frame:number/*short*/;
+	animNum:number/*short*/;
+	allowMove:boolean;
+	allowFrameCommands:boolean;
 //
 //	friend class				idAnimator;
 //
@@ -2252,15 +2252,15 @@ idAnim::GetAnimFlags
 // Anim_Blend
 
 
-///*
-//=====================
-//idAnimBlend::idAnimBlend
-//=====================
-//*/
-//idAnimBlend::idAnimBlend( ) {
-//	Reset( NULL );
-//}
-//
+/*
+=====================
+idAnimBlend::idAnimBlend
+=====================
+*/
+	constructor ( ) {
+		this.Reset( null );
+	}
+
 ///*
 //=====================
 //idAnimBlend::Save
@@ -2272,14 +2272,14 @@ idAnim::GetAnimFlags
 //	var/*int*/i:number;
 //
 //	savefile.WriteInt( starttime );
-//	savefile.WriteInt( endtime );
+//	savefile.WriteInt( this.endtime );
 //	savefile.WriteInt( timeOffset );
 //	savefile.WriteFloat( rate );
 //
-//	savefile.WriteInt( blendStartTime );
-//	savefile.WriteInt( blendDuration );
-//	savefile.WriteFloat( blendStartValue );
-//	savefile.WriteFloat( blendEndValue );
+//	savefile.WriteInt( this.blendStartTime );
+//	savefile.WriteInt( this.blendDuration );
+//	savefile.WriteFloat( this.blendStartValue );
+//	savefile.WriteFloat( this.blendEndValue );
 //
 //	for( i = 0; i < ANIM_MaxSyncedAnims; i++ ) {
 //		savefile.WriteFloat( animWeights[ i ] );
@@ -2304,14 +2304,14 @@ idAnim::GetAnimFlags
 //	this.modelDef = modelDef;
 //
 //	savefile.ReadInt( starttime );
-//	savefile.ReadInt( endtime );
+//	savefile.ReadInt( this.endtime );
 //	savefile.ReadInt( timeOffset );
 //	savefile.ReadFloat( rate );
 //
-//	savefile.ReadInt( blendStartTime );
-//	savefile.ReadInt( blendDuration );
-//	savefile.ReadFloat( blendStartValue );
-//	savefile.ReadFloat( blendEndValue );
+//	savefile.ReadInt( this.blendStartTime );
+//	savefile.ReadInt( this.blendDuration );
+//	savefile.ReadFloat( this.blendStartValue );
+//	savefile.ReadFloat( this.blendEndValue );
 //
 //	for( i = 0; i < ANIM_MaxSyncedAnims; i++ ) {
 //		savefile.ReadFloat( animWeights[ i ] );
@@ -2329,31 +2329,31 @@ idAnim::GetAnimFlags
 //	savefile.ReadBool( allowFrameCommands );
 //}
 //
-///*
-//=====================
-//idAnimBlend::Reset
-//=====================
-//*/
-//void idAnimBlend::Reset( const idDeclModelDef *_modelDef ) {
-//	modelDef	= _modelDef;
-//	cycle		= 1;
-//	starttime	= 0;
-//	endtime		= 0;
-//	timeOffset	= 0;
-//	rate		= 1.0f;
-//	frame		= 0;
-//	allowMove	= true;
-//	allowFrameCommands = true;
-//	animNum		= 0;
-//
-//	memset( animWeights, 0, sizeof( animWeights ) );
-//
-//	blendStartValue = 0.0f;
-//	blendEndValue	= 0.0f;
-//    blendStartTime	= 0;
-//	blendDuration	= 0;
-//}
-//
+/*
+=====================
+idAnimBlend::Reset
+=====================
+*/
+	Reset ( _modelDef: idDeclModelDef ): void {
+		this.modelDef = _modelDef;
+		this.cycle = 1;
+		this.starttime = 0;
+		this.endtime = 0;
+		this.timeOffset = 0;
+		this.rate = 1.0;
+		this.frame = 0;
+		this.allowMove = true;
+		this.allowFrameCommands = true;
+		this.animNum = 0;
+
+		memset( this.animWeights, 0, sizeof( this.animWeights ) );
+
+		this.blendStartValue = 0.0;
+		this.blendEndValue = 0.0;
+		this.blendStartTime = 0;
+		this.blendDuration = 0;
+	}
+
 ///*
 //=====================
 //idAnimBlend::FullName
@@ -2410,53 +2410,53 @@ idAnim::GetAnimFlags
 //	return anim.Length();
 //}
 //
-///*
-//=====================
-//idAnimBlend::GetWeight
-//=====================
-//*/
-//float idAnimBlend::GetWeight( int currentTime ) const {
-//	int		timeDelta;
-//	float	frac;
-//	float	w;
-//
-//	timeDelta = currentTime - blendStartTime;
-//	if ( timeDelta <= 0 ) {
-//		w = blendStartValue;
-//	} else if ( timeDelta >= blendDuration ) {
-//		w = blendEndValue;
-//	} else {
-//		frac = ( float )timeDelta / ( float )blendDuration;
-//		w = blendStartValue + ( blendEndValue - blendStartValue ) * frac;
-//	}
-//
-//	return w;
-//}
-//
+/*
+=====================
+idAnimBlend::GetWeight
+=====================
+*/
+	GetWeight ( currentTime /*int*/: number ): number /*float*/ {
+		var /*int		*/timeDelta: number;
+		var frac: number /*float*/;
+		var w: number /*float*/;
+
+		timeDelta = currentTime - this.blendStartTime;
+		if ( timeDelta <= 0 ) {
+			w = this.blendStartValue;
+		} else if ( timeDelta >= this.blendDuration ) {
+			w = this.blendEndValue;
+		} else {
+			frac = timeDelta / this.blendDuration;
+			w = this.blendStartValue + ( this.blendEndValue - this.blendStartValue ) * frac;
+		}
+
+		return w;
+	}
+
 ///*
 //=====================
 //idAnimBlend::GetFinalWeight
 //=====================
 //*/
 //float idAnimBlend::GetFinalWeight( ) const {
-//	return blendEndValue;
+//	return this.blendEndValue;
 //}
-//
-///*
-//=====================
-//idAnimBlend::SetWeight
-//=====================
-//*/
-//void idAnimBlend::SetWeight( float newweight, int currentTime, int blendTime ) {
-//	blendStartValue = GetWeight( currentTime );
-//	blendEndValue = newweight;
-//    blendStartTime = currentTime - 1;
-//	blendDuration = blendTime;
-//
-//	if ( !newweight ) {
-//		endtime = currentTime + blendTime;
-//	}
-//}
+
+/*
+=====================
+idAnimBlend::SetWeight
+=====================
+*/
+SetWeight( /*float */newweight:number, currentTime/*int*/:number, blendTime/*int*/:number ) :void{
+	this.blendStartValue = this.GetWeight( currentTime );
+	this.blendEndValue = newweight;
+    this.blendStartTime = currentTime - 1;
+	this.blendDuration = blendTime;
+
+	if ( !newweight ) {
+		this.endtime = currentTime + blendTime;
+	}
+}
 //
 ///*
 //=====================
@@ -2496,8 +2496,8 @@ idAnim::GetAnimFlags
 //idAnimBlend::SetFrame
 //=====================
 //*/
-//void idAnimBlend::SetFrame( modelDef:idDeclModelDef, int _animNum, int _frame, int currentTime, int blendTime ) {
-//	Reset( modelDef );
+//void idAnimBlend::SetFrame( modelDef:idDeclModelDef, int _animNum, int _frame, currentTime/*int*/:number, blendTime/*int*/:number ) {
+//	this.Reset( modelDef );
 //	if ( !modelDef ) {
 //		return;
 //	}
@@ -2515,9 +2515,9 @@ idAnim::GetAnimFlags
 //	
 //	animNum				= _animNum;
 //	starttime			= currentTime;
-//	endtime				= -1;
+//	this.endtime				= -1;
 //	cycle				= -1;
-//	animWeights[ 0 ]	= 1.0f;
+//	animWeights[ 0 ]	= 1.0;
 //	frame				= _frame;
 //
 //	// a frame of 0 means it's not a single frame blend, so we set it to frame + 1
@@ -2528,10 +2528,10 @@ idAnim::GetAnimFlags
 //	}
 //
 //	// set up blend
-//	blendEndValue		= 1.0f;
-//	blendStartTime		= currentTime - 1;
-//	blendDuration		= blendTime;
-//	blendStartValue		= 0.0f;
+//	this.blendEndValue		= 1.0;
+//	this.blendStartTime		= currentTime - 1;
+//	this.blendDuration		= blendTime;
+//	this.blendStartValue		= 0.0;
 //}
 //
 ///*
@@ -2539,8 +2539,8 @@ idAnim::GetAnimFlags
 //idAnimBlend::CycleAnim
 //=====================
 //*/
-//void idAnimBlend::CycleAnim( modelDef:idDeclModelDef, int _animNum, int currentTime, int blendTime ) {
-//	Reset( modelDef );
+//void idAnimBlend::CycleAnim( modelDef:idDeclModelDef, int _animNum, currentTime/*int*/:number, blendTime/*int*/:number ) {
+//	this.Reset( modelDef );
 //	if ( !modelDef ) {
 //		return;
 //	}
@@ -2557,8 +2557,8 @@ idAnim::GetAnimFlags
 //	}
 //
 //	animNum				= _animNum;
-//	animWeights[ 0 ]	= 1.0f;
-//	endtime				= -1;
+//	animWeights[ 0 ]	= 1.0;
+//	this.endtime				= -1;
 //	cycle				= -1;
 //	if ( _anim.GetAnimFlags().random_cycle_start ) {
 //		// start the animation at a random time so that characters don't walk in sync
@@ -2568,10 +2568,10 @@ idAnim::GetAnimFlags
 //	}
 //
 //	// set up blend
-//	blendEndValue		= 1.0f;
-//	blendStartTime		= currentTime - 1;
-//	blendDuration		= blendTime;
-//	blendStartValue		= 0.0f;
+//	this.blendEndValue		= 1.0;
+//	this.blendStartTime		= currentTime - 1;
+//	this.blendDuration		= blendTime;
+//	this.blendStartValue		= 0.0;
 //}
 //
 ///*
@@ -2579,8 +2579,8 @@ idAnim::GetAnimFlags
 //idAnimBlend::PlayAnim
 //=====================
 //*/
-//void idAnimBlend::PlayAnim( modelDef:idDeclModelDef, int _animNum, int currentTime, int blendTime ) {
-//	Reset( modelDef );
+//void idAnimBlend::PlayAnim( modelDef:idDeclModelDef, int _animNum, currentTime/*int*/:number, blendTime/*int*/:number ) {
+//	this.Reset( modelDef );
 //	if ( !modelDef ) {
 //		return;
 //	}
@@ -2598,41 +2598,41 @@ idAnim::GetAnimFlags
 //
 //	animNum				= _animNum;
 //	starttime			= currentTime;
-//	endtime				= starttime + _anim.Length();
+//	this.endtime				= starttime + _anim.Length();
 //	cycle				= 1;
-//	animWeights[ 0 ]	= 1.0f;
+//	animWeights[ 0 ]	= 1.0;
 //
 //	// set up blend
-//	blendEndValue		= 1.0f;
-//	blendStartTime		= currentTime - 1;
-//	blendDuration		= blendTime;
-//	blendStartValue		= 0.0f;
+//	this.blendEndValue		= 1.0;
+//	this.blendStartTime		= currentTime - 1;
+//	this.blendDuration		= blendTime;
+//	this.blendStartValue		= 0.0;
 //}
-//
-///*
-//=====================
-//idAnimBlend::Clear
-//=====================
-//*/
-//void idAnimBlend::Clear( int currentTime, int clearTime ) {
-//	if ( !clearTime ) {
-//		Reset( modelDef );
-//	} else {
-//		SetWeight( 0.0f, currentTime, clearTime );
-//	}
-//}
+
+/*
+=====================
+idAnimBlend::Clear
+=====================
+*/
+Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
+	if ( !clearTime ) {
+		this.Reset( this.modelDef );
+	} else {
+		this.SetWeight( 0.0, currentTime, clearTime );
+	}
+}
 //
 ///*
 //=====================
 //idAnimBlend::IsDone
 //=====================
 //*/
-//bool idAnimBlend::IsDone( int currentTime ) const {
-//	if ( !frame && ( endtime > 0 ) && ( currentTime >= endtime ) ) {
+//bool idAnimBlend::IsDone( currentTime/*int*/:number ) const {
+//	if ( !frame && ( this.endtime > 0 ) && ( currentTime >= this.endtime ) ) {
 //		return true;
 //	}
 //
-//	if ( ( blendEndValue <= 0.0f ) && ( currentTime >= ( blendStartTime + blendDuration ) ) ) {
+//	if ( ( this.blendEndValue <= 0.0 ) && ( currentTime >= ( this.blendStartTime + this.blendDuration ) ) ) {
 //		return true;
 //	}
 //
@@ -2644,19 +2644,19 @@ idAnim::GetAnimFlags
 //idAnimBlend::FrameHasChanged
 //=====================
 //*/
-//bool idAnimBlend::FrameHasChanged( int currentTime ) const {
+//bool idAnimBlend::FrameHasChanged( currentTime/*int*/:number ) const {
 //	// if we don't have an anim, no change
 //	if ( !animNum ) {
 //		return false;
 //	}
 //
 //	// if anim is done playing, no change
-//	if ( ( endtime > 0 ) && ( currentTime > endtime ) ) {
+//	if ( ( this.endtime > 0 ) && ( currentTime > this.endtime ) ) {
 //		return false;
 //	}
 //
 //	// if our blend weight changes, we need to update
-//	if ( ( currentTime < ( blendStartTime + blendDuration ) && ( blendStartValue != blendEndValue ) ) ) {
+//	if ( ( currentTime < ( this.blendStartTime + this.blendDuration ) && ( this.blendStartValue != this.blendEndValue ) ) ) {
 //		return true;
 //	}
 //
@@ -2687,31 +2687,31 @@ idAnim::GetAnimFlags
 //
 //	if ( !anim ) {
 //		cycle = -1;
-//		endtime = 0;
+//		this.endtime = 0;
 //	} else {
 //		cycle = count;
 //		if ( cycle < 0 ) {
 //			cycle = -1;
-//			endtime	= -1;
+//			this.endtime	= -1;
 //		} else if ( cycle == 0 ) {
 //			cycle = 1;
 //
 //			// most of the time we're running at the original frame rate, so avoid the int-to-float-to-int conversion
-//			if ( rate == 1.0f ) {
-//				endtime	= starttime - timeOffset + anim.Length();
-//			} else if ( rate != 0.0f ) {
-//				endtime	= starttime - timeOffset + anim.Length() / rate;
+//			if ( rate == 1.0 ) {
+//				this.endtime	= starttime - timeOffset + anim.Length();
+//			} else if ( rate != 0.0 ) {
+//				this.endtime	= starttime - timeOffset + anim.Length() / rate;
 //			} else {
-//				endtime = -1;
+//				this.endtime = -1;
 //			}
 //		} else {
 //			// most of the time we're running at the original frame rate, so avoid the int-to-float-to-int conversion
-//			if ( rate == 1.0f ) {
-//				endtime	= starttime - timeOffset + anim.Length() * cycle;
-//			} else if ( rate != 0.0f ) {
-//				endtime	= starttime - timeOffset + ( anim.Length() * cycle ) / rate;
+//			if ( rate == 1.0 ) {
+//				this.endtime	= starttime - timeOffset + anim.Length() * cycle;
+//			} else if ( rate != 0.0 ) {
+//				this.endtime	= starttime - timeOffset + ( anim.Length() * cycle ) / rate;
 //			} else {
-//				endtime = -1;
+//				this.endtime = -1;
 //			}
 //		}
 //	}
@@ -2722,7 +2722,7 @@ idAnim::GetAnimFlags
 //idAnimBlend::SetPlaybackRate
 //=====================
 //*/
-//void idAnimBlend::SetPlaybackRate( int currentTime, float newRate ) {
+//void idAnimBlend::SetPlaybackRate( currentTime/*int*/:number, float newRate ) {
 //	int animTime;
 //
 //	if ( rate == newRate ) {
@@ -2730,7 +2730,7 @@ idAnim::GetAnimFlags
 //	}
 //
 //	animTime = AnimTime( currentTime );
-//	if ( newRate == 1.0f ) {
+//	if ( newRate == 1.0 ) {
 //		timeOffset = animTime - ( currentTime - starttime );
 //	} else {
 //		timeOffset = animTime - ( currentTime - starttime ) * newRate;
@@ -2786,7 +2786,7 @@ idAnim::GetAnimFlags
 //		return 0;
 //	}
 //
-//	return endtime;
+//	return this.endtime;
 //}
 //
 ///*
@@ -2799,11 +2799,11 @@ idAnim::GetAnimFlags
 //		return 0;
 //	}
 //
-//	if ( endtime < 0 ) {
+//	if ( this.endtime < 0 ) {
 //		return -1;
 //	}
 //
-//	return endtime - starttime + timeOffset;
+//	return this.endtime - starttime + timeOffset;
 //}
 //
 ///*
@@ -2831,11 +2831,11 @@ idAnim::GetAnimFlags
 //=====================
 //*/
 //const idAnim *idAnimBlend::Anim( ) const {
-//	if ( !modelDef ) {
+//	if ( !this.modelDef ) {
 //		return NULL;
 //	}
 //
-//	const idAnim *anim = modelDef.GetAnim( animNum );
+//	const idAnim *anim = this.modelDef.GetAnim( animNum );
 //	return anim;
 //}
 //
@@ -2853,7 +2853,7 @@ idAnim::GetAnimFlags
 //idAnimBlend::AnimTime
 //=====================
 //*/
-//int idAnimBlend::AnimTime( int currentTime ) const {
+//int idAnimBlend::AnimTime( currentTime/*int*/:number ) const {
 //	/*int*/time:number;
 //	int length;
 //	const idAnim *anim = Anim();
@@ -2864,7 +2864,7 @@ idAnim::GetAnimFlags
 //		}
 //
 //		// most of the time we're running at the original frame rate, so avoid the int-to-float-to-int conversion
-//		if ( rate == 1.0f ) {
+//		if ( rate == 1.0 ) {
 //			time = currentTime - starttime + timeOffset;
 //		} else {
 //			time = static_cast<int>( ( currentTime - starttime ) * rate ) + timeOffset;
@@ -2893,7 +2893,7 @@ idAnim::GetAnimFlags
 //idAnimBlend::GetFrameNumber
 //=====================
 //*/
-//int idAnimBlend::GetFrameNumber( int currentTime ) const {
+//int idAnimBlend::GetFrameNumber( currentTime/*int*/:number ) const {
 //	const idMD5Anim	*md5anim;
 //	frameBlend_t	frameinfo;
 //	int				animTime;
@@ -2926,7 +2926,7 @@ idAnim::GetAnimFlags
 //	int				fromFrameTime;
 //	int				toFrameTime;
 //
-//	if ( !allowFrameCommands || !ent || frame || ( ( endtime > 0 ) && ( fromtime > endtime ) ) ) {
+//	if ( !allowFrameCommands || !ent || frame || ( ( this.endtime > 0 ) && ( fromtime > this.endtime ) ) ) {
 //		return;
 //	}
 //
@@ -2964,7 +2964,7 @@ idAnim::GetAnimFlags
 //idAnimBlend::BlendAnim
 //=====================
 //*/
-//bool idAnimBlend::BlendAnim( int currentTime, int channel, int numJoints, idJointQuat *blendFrame, float &blendWeight, bool removeOriginOffset, bool overrideBlend, bool printInfo ) const {
+//bool idAnimBlend::BlendAnim( currentTime/*int*/:number, int channel, int numJoints, idJointQuat *blendFrame, float &blendWeight, bool removeOriginOffset, bool overrideBlend, bool printInfo ) const {
 //	int				i;
 //	float			lerp;
 //	float			mixWeight;
@@ -2981,16 +2981,16 @@ idAnim::GetAnimFlags
 //		return false;
 //	}
 //
-//	float weight = GetWeight( currentTime );
-//	if ( blendWeight > 0.0f ) {
-//		if ( ( endtime >= 0 ) && ( currentTime >= endtime ) ) {
+//	float weight = this.GetWeight( currentTime );
+//	if ( blendWeight > 0.0 ) {
+//		if ( ( this.endtime >= 0 ) && ( currentTime >= this.endtime ) ) {
 //			return false;
 //		}
 //		if ( !weight ) {
 //			return false;
 //		}
 //		if ( overrideBlend ) {
-//			blendWeight = 1.0f - weight;
+//			blendWeight = 1.0 - weight;
 //		}
 //	}
 //
@@ -3008,10 +3008,10 @@ idAnim::GetAnimFlags
 //	if ( numAnims == 1 ) {
 //		md5anim = anim.MD5Anim( 0 );
 //		if ( frame ) {
-//			md5anim.GetSingleFrame( frame - 1, jointFrame, modelDef.GetChannelJoints( channel ), modelDef.NumJointsOnChannel( channel ) );
+//			md5anim.GetSingleFrame( frame - 1, jointFrame, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
 //		} else {
 //			md5anim.ConvertTimeToFrame( time, cycle, frametime );
-//			md5anim.GetInterpolatedFrame( frametime, jointFrame, modelDef.GetChannelJoints( channel ), modelDef.NumJointsOnChannel( channel ) );
+//			md5anim.GetInterpolatedFrame( frametime, jointFrame, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
 //		}
 //	} else {
 //		//
@@ -3025,21 +3025,21 @@ idAnim::GetAnimFlags
 //		}
 //
 //		ptr = jointFrame;
-//		mixWeight = 0.0f;
+//		mixWeight = 0.0;
 //		for( i = 0; i < numAnims; i++ ) {
-//			if ( animWeights[ i ] > 0.0f ) {
+//			if ( animWeights[ i ] > 0.0 ) {
 //				mixWeight += animWeights[ i ];
 //				lerp = animWeights[ i ] / mixWeight;
 //				md5anim = anim.MD5Anim( i );
 //				if ( frame ) {
-//					md5anim.GetSingleFrame( frame - 1, ptr, modelDef.GetChannelJoints( channel ), modelDef.NumJointsOnChannel( channel ) );
+//					md5anim.GetSingleFrame( frame - 1, ptr, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
 //				} else {
-//					md5anim.GetInterpolatedFrame( frametime, ptr, modelDef.GetChannelJoints( channel ), modelDef.NumJointsOnChannel( channel ) );
+//					md5anim.GetInterpolatedFrame( frametime, ptr, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
 //				}
 //
 //				// only blend after the first anim is mixed in
 //				if ( ptr != jointFrame ) {
-//					SIMDProcessor.BlendJoints( jointFrame, ptr, lerp, modelDef.GetChannelJoints( channel ), modelDef.NumJointsOnChannel( channel ) );
+//					SIMDProcessor.BlendJoints( jointFrame, ptr, lerp, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
 //				}
 //
 //				ptr = mixFrame;
@@ -3054,22 +3054,22 @@ idAnim::GetAnimFlags
 //	if ( removeOriginOffset ) {
 //		if ( allowMove ) {
 //#ifdef VELOCITY_MOVE
-//			jointFrame[ 0 ].t.x = 0.0f;
+//			jointFrame[ 0 ].t.x = 0.0;
 //#else
 //			jointFrame[ 0 ].t.Zero();
 //#endif
 //		}
 //
 //		if ( anim.GetAnimFlags().anim_turn ) {
-//			jointFrame[ 0 ].q.Set( -0.70710677f, 0.0f, 0.0f, 0.70710677f );
+//			jointFrame[ 0 ].q.Set( -0.70710677f, 0.0, 0.0, 0.70710677f );
 //		}
 //	}
 //
 //	if ( !blendWeight ) {
 //		blendWeight = weight;
 //		if ( channel != ANIMCHANNEL_ALL ) {
-//			const int *index = modelDef.GetChannelJoints( channel );
-//			const /*int*/num:number = modelDef.NumJointsOnChannel( channel );
+//			const int *index = this.modelDef.GetChannelJoints( channel );
+//			const /*int*/num:number = this.modelDef.NumJointsOnChannel( channel );
 //			for( i = 0; i < num; i++ ) {
 //				int j = index[i];
 //				blendFrame[j].t = jointFrame[j].t;
@@ -3079,14 +3079,14 @@ idAnim::GetAnimFlags
 //    } else {
 //		blendWeight += weight;
 //		lerp = weight / blendWeight;
-//		SIMDProcessor.BlendJoints( blendFrame, jointFrame, lerp, modelDef.GetChannelJoints( channel ), modelDef.NumJointsOnChannel( channel ) );
+//		SIMDProcessor.BlendJoints( blendFrame, jointFrame, lerp, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
 //	}
 //
 //	if ( printInfo ) {
 //		if ( frame ) {
-//			gameLocal.Printf( "  %s: '%s', %d, %.2f%%\n", channelNames[ channel ], anim.FullName(), frame, weight * 100.0f );
+//			gameLocal.Printf( "  %s: '%s', %d, %.2f%%\n", channelNames[ channel ], anim.FullName(), frame, weight * 100.0 );
 //		} else {
-//			gameLocal.Printf( "  %s: '%s', %.3f, %.2f%%\n", channelNames[ channel ], anim.FullName(), ( float )frametime.frame1 + frametime.backlerp, weight * 100.0f );
+//			gameLocal.Printf( "  %s: '%s', %.3f, %.2f%%\n", channelNames[ channel ], anim.FullName(), ( float )frametime.frame1 + frametime.backlerp, weight * 100.0 );
 //		}
 //	}
 //
@@ -3098,7 +3098,7 @@ idAnim::GetAnimFlags
 //idAnimBlend::BlendOrigin
 //=====================
 //*/
-//void idAnimBlend::BlendOrigin( int currentTime, idVec3 &blendPos, float &blendWeight, bool removeOriginOffset ) const {
+//void idAnimBlend::BlendOrigin( currentTime/*int*/:number, idVec3 &blendPos, float &blendWeight, bool removeOriginOffset ) const {
 //	float	lerp;
 //	idVec3	animpos;
 //	idVec3	pos;
@@ -3106,7 +3106,7 @@ idAnim::GetAnimFlags
 //	int		num;
 //	int		i;
 //
-//	if ( frame || ( ( endtime > 0 ) && ( currentTime > endtime ) ) ) {
+//	if ( frame || ( ( this.endtime > 0 ) && ( currentTime > this.endtime ) ) ) {
 //		return;
 //	}
 //
@@ -3119,7 +3119,7 @@ idAnim::GetAnimFlags
 //		return;
 //	}
 //
-//	float weight = GetWeight( currentTime );
+//	float weight = this.GetWeight( currentTime );
 //	if ( !weight ) {
 //		return;
 //	}
@@ -3159,7 +3159,7 @@ idAnim::GetAnimFlags
 //	int		num;
 //	int		i;
 //	
-//	if ( frame || !allowMove || ( ( endtime > 0 ) && ( fromtime > endtime ) ) ) {
+//	if ( frame || !allowMove || ( ( this.endtime > 0 ) && ( fromtime > this.endtime ) ) ) {
 //		return;
 //	}
 //
@@ -3168,7 +3168,7 @@ idAnim::GetAnimFlags
 //		return;
 //	}
 //
-//	float weight = GetWeight( totime );
+//	float weight = this.GetWeight( totime );
 //	if ( !weight ) {
 //		return;
 //	}
@@ -3218,7 +3218,7 @@ idAnim::GetAnimFlags
 //	int		num;
 //	int		i;
 //	
-//	if ( frame || !allowMove || ( ( endtime > 0 ) && ( fromtime > endtime ) ) ) {
+//	if ( frame || !allowMove || ( ( this.endtime > 0 ) && ( fromtime > this.endtime ) ) ) {
 //		return;
 //	}
 //
@@ -3227,7 +3227,7 @@ idAnim::GetAnimFlags
 //		return;
 //	}
 //
-//	float weight = GetWeight( totime );
+//	float weight = this.GetWeight( totime );
 //	if ( !weight ) {
 //		return;
 //	}
@@ -3238,13 +3238,13 @@ idAnim::GetAnimFlags
 //		time2 += anim.Length();
 //	}
 //
-//	q1.Set( 0.0f, 0.0f, 0.0f, 1.0f );
-//	q2.Set( 0.0f, 0.0f, 0.0f, 1.0f );
+//	q1.Set( 0.0, 0.0, 0.0, 1.0 );
+//	q2.Set( 0.0, 0.0, 0.0, 1.0 );
 //
-//	mixWeight = 0.0f;
+//	mixWeight = 0.0;
 //	num = anim.NumAnims();
 //	for( i = 0; i < num; i++ ) {
-//		if ( animWeights[ i ] > 0.0f ) {
+//		if ( animWeights[ i ] > 0.0 ) {
 //			mixWeight += animWeights[ i ];
 //			if ( animWeights[ i ] == mixWeight ) {
 //				anim.GetOriginRotation( q1, i, time1, cycle );
@@ -3276,7 +3276,7 @@ idAnim::GetAnimFlags
 //idAnimBlend::AddBounds
 //=====================
 //*/
-//bool idAnimBlend::AddBounds( int currentTime, idBounds &bounds, bool removeOriginOffset ) const {
+//bool idAnimBlend::AddBounds( currentTime/*int*/:number, idBounds &bounds, bool removeOriginOffset ) const {
 //	int			i;
 //	int			num;
 //	idBounds	b;
@@ -3284,7 +3284,7 @@ idAnim::GetAnimFlags
 //	idVec3		pos;
 //	bool		addorigin;
 //
-//	if ( ( endtime > 0 ) && ( currentTime > endtime ) ) {
+//	if ( ( this.endtime > 0 ) && ( currentTime > this.endtime ) ) {
 //		return false;
 //	}
 //
@@ -3293,7 +3293,7 @@ idAnim::GetAnimFlags
 //		return false;
 //	}
 //
-//	float weight = GetWeight( currentTime );
+//	float weight = this.GetWeight( currentTime );
 //	if ( !weight ) {
 //		return false;
 //	}
@@ -3316,37 +3316,37 @@ idAnim::GetAnimFlags
 //}
 
 
-//};
-//
-///*
-//==============================================================================================
-//
-//	idAFPoseJointMod
-//
-//==============================================================================================
-//*/
-//
-//typedef enum {
-//	AF_JOINTMOD_AXIS,
-//	AF_JOINTMOD_ORIGIN,
-//	AF_JOINTMOD_BOTH
-//} AFJointModType_t;
-//
-//class idAFPoseJointMod {
+};
+
+/*
+==============================================================================================
+
+	idAFPoseJointMod
+
+==============================================================================================
+*/
+
+enum AFJointModType_t{
+	AF_JOINTMOD_AXIS,
+	AF_JOINTMOD_ORIGIN,
+	AF_JOINTMOD_BOTH
+};
+
+class idAFPoseJointMod {
 //public:
-//								idAFPoseJointMod( );
-//
-//	AFJointModType_t			mod;
-//	idMat3						axis;
-//	idVec3						origin;
-//};
-//
-//ID_INLINE idAFPoseJointMod::idAFPoseJointMod( ) {
-//	mod = AF_JOINTMOD_AXIS;
-//	axis.Identity();
-//	origin.Zero();
-//}
-//
+	//idAFPoseJointMod( );
+
+	mod: AFJointModType_t;
+	axis = new idMat3;
+	origin = new idVec3;
+
+	constructor ( ) {
+		this.mod = AFJointModType_t.AF_JOINTMOD_AXIS;
+		this.axis.Identity ( );
+		this.origin.Zero ( );
+	}
+}
+
 /*
 ==============================================================================================
 
@@ -3444,11 +3444,11 @@ class idAnimator {
 //private:
 	modelDef: idDeclModelDef;
 	entity:idEntity;
-//
-//	idAnimBlend					channels[ ANIM_NumAnimChannels ][ ANIM_MaxAnimsPerChannel ];
-//	idList<jointMod_t *>		jointMods;
+
+	channels = multiDimTypedArray<idAnimBlend>(idAnimBlend,  ANIM_NumAnimChannels , ANIM_MaxAnimsPerChannel );
+	jointMods = new idList<jointMod_t >(jointMod_t , true);
 	numJoints :number/*int*/;
-//	idJointMat *				joints;
+	joints:idJointMat;
 	
 	lastTransformTime :number/*mutable int*/;		// mutable because the value is updated in CreateFrame
 	stoppedAnimatingUpdate:/*mutable*/boolean;
@@ -3458,50 +3458,50 @@ class idAnimator {
 	frameBounds = new idBounds;
 
 	AFPoseBlendWeight:number/*float*/;
-//	idList<int>					AFPoseJoints;
-//	idList<idAFPoseJointMod>	AFPoseJointMods;
-//	idList<idJointQuat>			AFPoseJointFrame;
+	AFPoseJoints = new idList</*int*/number>(Number);
+	AFPoseJointMods = new idList<idAFPoseJointMod>(idAFPoseJointMod);
+	AFPoseJointFrame = new idList<idJointQuat>(idJointQuat);
 	AFPoseBounds = new idBounds;
 	AFPoseTime :number/*int*/;
 
 
-	///***********************************************************************
-	//
-	//	idAnimator
-	//
-	//***********************************************************************/
-	//
-	///*
-	//=====================
-	//idAnimator::idAnimator
-	//=====================
-	//*/
-	//idAnimator::idAnimator() {
-	//	int	i, j;
-	//
-	//	this.modelDef				= NULL;
-	//	entity					= NULL;
-	//	numJoints				= 0;
-	//	joints					= NULL;
-	//	lastTransformTime		= -1;
-	//	stoppedAnimatingUpdate	= false;
-	//	removeOriginOffset		= false;
-	//	forceUpdate				= false;
-	//
-	//	frameBounds.Clear();
-	//
-	//	AFPoseJoints.SetGranularity( 1 );
-	//	AFPoseJointMods.SetGranularity( 1 );
-	//	AFPoseJointFrame.SetGranularity( 1 );
-	//
-	//	ClearAFPose();
-	//
-	//	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
-	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
-	//			channels[ i ][ j ].Reset( NULL );
-	//		}
-	//	}
-	//}
+	/***********************************************************************
+	
+		idAnimator
+	
+	***********************************************************************/
+	
+	/*
+	=====================
+	idAnimator::idAnimator
+	=====================
+	*/
+	constructor ( ) {
+		var /*int	*/i: number, j: number;
+
+		this.modelDef = null;
+		this.entity = null;
+		this.numJoints = 0;
+		this.joints = null;
+		this.lastTransformTime = -1;
+		this.stoppedAnimatingUpdate = false;
+		this.removeOriginOffset = false;
+		this.forceUpdate = false;
+
+		this.frameBounds.Clear ( );
+
+		this.AFPoseJoints.SetGranularity( 1 );
+		this.AFPoseJointMods.SetGranularity( 1 );
+		this.AFPoseJointFrame.SetGranularity( 1 );
+
+		this.ClearAFPose ( );
+
+		for ( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
+			for ( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
+				this.channels[i][j].Reset( null );
+			}
+		}
+	}
 	//
 	///*
 	//=====================
@@ -3537,7 +3537,7 @@ class idAnimator {
 	//	int j;
 	//
 	//	savefile.WriteModelDef( this.modelDef );
-	//	savefile.WriteObject( entity );
+	//	savefile.WriteObject( this.entity );
 	//
 	//	savefile.WriteInt( jointMods.Num() );
 	//	for( i = 0; i < jointMods.Num(); i++ ) {
@@ -3556,9 +3556,9 @@ class idAnimator {
 	//		}
 	//	}
 	//
-	//	savefile.WriteInt( lastTransformTime );
+	//	savefile.WriteInt( this.lastTransformTime );
 	//	savefile.WriteBool( stoppedAnimatingUpdate );
-	//	savefile.WriteBool( forceUpdate );
+	//	savefile.WriteBool( this.forceUpdate );
 	//	savefile.WriteBounds( frameBounds );
 	//
 	//	savefile.WriteFloat( AFPoseBlendWeight );
@@ -3591,7 +3591,7 @@ class idAnimator {
 	//
 	//	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
 	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
-	//			channels[ i ][ j ].Save( savefile );
+	//			this.channels[ i ][ j ].Save( savefile );
 	//		}
 	//	}
 	//}
@@ -3609,7 +3609,7 @@ class idAnimator {
 	//	/*int*/num:number;
 	//
 	//	savefile.ReadModelDef( this.modelDef );
-	//	savefile.ReadObject( reinterpret_cast<idClass *&>( entity ) );
+	//	savefile.ReadObject( reinterpret_cast<idClass *&>( this.entity ) );
 	//
 	//	savefile.ReadInt( num );
 	//	jointMods.SetNum( num );
@@ -3631,9 +3631,9 @@ class idAnimator {
 	//		}
 	//	}
 	//	
-	//	savefile.ReadInt( lastTransformTime );
+	//	savefile.ReadInt( this.lastTransformTime );
 	//	savefile.ReadBool( stoppedAnimatingUpdate );
-	//	savefile.ReadBool( forceUpdate );
+	//	savefile.ReadBool( this.forceUpdate );
 	//	savefile.ReadBounds( frameBounds );
 	//
 	//	savefile.ReadFloat( AFPoseBlendWeight );
@@ -3672,7 +3672,7 @@ class idAnimator {
 	//
 	//	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
 	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
-	//			channels[ i ][ j ].Restore( savefile, this.modelDef );
+	//			this.channels[ i ][ j ].Restore( savefile, this.modelDef );
 	//		}
 	//	}
 	//}
@@ -3685,13 +3685,13 @@ class idAnimator {
 	//void idAnimator::FreeData( ) {
 	//	int	i, j;
 	//
-	//	if ( entity ) {
-	//		entity.BecomeInactive( TH_ANIMATE );
+	//	if ( this.entity ) {
+	//		this.entity.BecomeInactive( TH_ANIMATE );
 	//	}
 	//
 	//	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
 	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
-	//			channels[ i ][ j ].Reset( NULL );
+	//			this.channels[ i ][ j ].Reset( NULL );
 	//		}
 	//	}
 	//
@@ -3703,31 +3703,31 @@ class idAnimator {
 	//
 	//	this.modelDef = NULL;
 	//
-	//	ForceUpdate();
+	//	this.ForceUpdate();
 	//}
-	//
-	///*
-	//=====================
-	//idAnimator::PushAnims
-	//=====================
-	//*/
-	//void idAnimator::PushAnims( int channelNum, int currentTime, int blendTime ) {
-	//	int			i;
-	//	idAnimBlend *channel;
-	//
-	//	channel = channels[ channelNum ];
-	//	if ( !channel[ 0 ].GetWeight( currentTime ) || ( channel[ 0 ].starttime == currentTime ) ) {
-	//		return;
-	//	}
-	//
-	//	for( i = ANIM_MaxAnimsPerChannel - 1; i > 0; i-- ) {
-	//		channel[ i ] = channel[ i - 1 ];
-	//	}
-	//
-	//	channel[ 0 ].Reset( this.modelDef );
-	//	channel[ 1 ].Clear( currentTime, blendTime );
-	//	ForceUpdate();
-	//}
+	
+	/*
+	=====================
+	idAnimator::PushAnims
+	=====================
+	*/
+	PushAnims( channelNum /*int*/:number, currentTime/*int*/:number, blendTime/*int*/:number ):void {
+		var/*int			*/i:number;
+		var channel: idAnimBlend ;
+	
+		channel = this.channels[ channelNum ];
+		if ( !channel[ 0 ].GetWeight( currentTime ) || ( channel[ 0 ].starttime == currentTime ) ) {
+			return;
+		}
+	
+		for( i = ANIM_MaxAnimsPerChannel - 1; i > 0; i-- ) {
+			channel[ i ] = channel[ i - 1 ];
+		}
+	
+		channel[ 0 ].Reset( this.modelDef );
+		channel[ 1 ].Clear( currentTime, blendTime );
+		this.ForceUpdate();
+	}
 	//
 	///*
 	//=====================
@@ -3764,7 +3764,7 @@ class idAnimator {
 	//	// set the this.modelDef on all channels
 	//	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
 	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
-	//			channels[ i ][ j ].Reset( this.modelDef );
+	//			this.channels[ i ][ j ].Reset( this.modelDef );
 	//		}
 	//	}
 	//
@@ -3786,7 +3786,7 @@ class idAnimator {
 	//=====================
 	//*/
 	//void idAnimator::SetEntity( ent:idEntity ) {
-	//	entity = ent;
+	//	this.entity = ent;
 	//}
 	//
 	///*
@@ -3795,7 +3795,7 @@ class idAnimator {
 	//=====================
 	//*/
 	//idEntity *idAnimator::GetEntity( ) const {
-	//	return entity;
+	//	return this.entity;
 	//}
 	//
 	///*
@@ -3806,15 +3806,15 @@ class idAnimator {
 	//void idAnimator::RemoveOriginOffset( bool remove ) {
 	//	removeOriginOffset = remove;
 	//}
-	//
-	///*
-	//=====================
-	//idAnimator::RemoveOrigin
-	//=====================
-	//*/
-	//bool idAnimator::RemoveOrigin( ) const {
-	//	return removeOriginOffset;
-	//}
+	
+	/*
+	=====================
+	idAnimator::RemoveOrigin
+	=====================
+	*/
+	RemoveOrigin( ) :boolean {
+		return this.removeOriginOffset;
+	}
 	//
 	///*
 	//=====================
@@ -3841,24 +3841,24 @@ class idAnimator {
 	//}
 	//
 	/*
-	//=====================
-	//idAnimator::GetAnim
-	//=====================
-	//*/
-	//const idAnim *idAnimator::GetAnim_int( int index ) const {
-	//	if ( !this.modelDef ) {
-	//		return NULL;
-	//	}
-		
-	//	return this.modelDef.GetAnim( index );
-	//}
-	
+	=====================
+	idAnimator::GetAnim
+	=====================
+	*/
+	GetAnim_index ( /*int */index: number ): idAnim {
+		if ( !this.modelDef ) {
+			return null;
+		}
+
+		return this.modelDef.GetAnim_index( index );
+	}
+
 	/*
 	=====================
 	idAnimator::GetAnim
 	=====================
 	*/
-	GetAnim_str( name:string ) :number {
+	GetAnim_name( name:string ) :number {
 		if ( !this.modelDef ) {
 			return 0;
 		}
@@ -3901,54 +3901,54 @@ class idAnimator {
 		return this.modelDef.ModelHandle();
 	}
 	
-	///*
-	//=====================
-	//idAnimator::ModelDef
-	//=====================
-	//*/
-	//const idDeclModelDef *idAnimator::ModelDef( ) const {
-	//	return this.modelDef;
-	//}
+	/*
+	=====================
+	idAnimator::ModelDef
+	=====================
+	*/
+	ModelDef ( ): idDeclModelDef {
+		return this.modelDef;
+	}
 	//
 	///*
 	//=====================
 	//idAnimator::CurrentAnim
 	//=====================
 	//*/
-	//idAnimBlend *idAnimator::CurrentAnim( int channelNum ) {
+	//idAnimBlend *idAnimator::CurrentAnim( channelNum /*int*/:number ) {
 	//	if ( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) ) {
 	//		gameLocal.Error( "idAnimator::CurrentAnim : channel out of range" );
 	//	}
 	//
-	//	return &channels[ channelNum ][ 0 ];
+	//	return &this.channels[ channelNum ][ 0 ];
 	//}
 	//
-	///*
-	//=====================
-	//idAnimator::Clear
-	//=====================
-	//*/
-	//void idAnimator::Clear( int channelNum, int currentTime, int cleartime ) {
-	//	int			i;
-	//	idAnimBlend	*blend;
-	//
-	//	if ( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) ) {
-	//		gameLocal.Error( "idAnimator::Clear : channel out of range" );
-	//	}
-	//
-	//	blend = channels[ channelNum ];
-	//	for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
-	//		blend.Clear( currentTime, cleartime );
-	//	}
-	//	ForceUpdate();
-	//}
-	//
+	/*
+	=====================
+	idAnimator::Clear
+	=====================
+	*/
+	Clear ( channelNum /*int*/: number, currentTime /*int*/: number, /*int*/ cleartime: number ): void {
+		var /*int*/i: number;
+		var blend: idAnimBlend;
+
+		if ( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) ) {
+			gameLocal.Error( "idAnimator::Clear : channel out of range" );
+		}
+
+		blend = this.channels[channelNum];
+		for ( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend = this.channels[i] ) {
+			blend.Clear( currentTime, cleartime );
+		}
+		this.ForceUpdate ( );
+	}
+
 	///*
 	//=====================
 	//idAnimator::SetFrame
 	//=====================
 	//*/
-	//void idAnimator::SetFrame( int channelNum, int animNum, int frame, int currentTime, int blendTime ) {
+	//void idAnimator::SetFrame( channelNum /*int*/:number, animNum/*int*/:number, int frame, currentTime/*int*/:number, blendTime/*int*/:number ) {
 	//	if ( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) ) {
 	//		gameLocal.Error( "idAnimator::SetFrame : channel out of range" );
 	//	}
@@ -3957,40 +3957,40 @@ class idAnimator {
 	//		return;
 	//	}
 	//
-	//	PushAnims( channelNum, currentTime, blendTime );
-	//	channels[ channelNum ][ 0 ].SetFrame( this.modelDef, animNum, frame, currentTime, blendTime );
-	//	if ( entity ) {
-	//		entity.BecomeActive( TH_ANIMATE );
+	//	this.PushAnims( channelNum, currentTime, blendTime );
+	//	this.channels[ channelNum ][ 0 ].SetFrame( this.modelDef, animNum, frame, currentTime, blendTime );
+	//	if ( this.entity ) {
+	//		this.entity.BecomeActive( TH_ANIMATE );
 	//	}
 	//}
 	//
-	///*
-	//=====================
-	//idAnimator::CycleAnim
-	//=====================
-	//*/
-	//void idAnimator::CycleAnim( int channelNum, int animNum, int currentTime, int blendTime ) {
-	//	if ( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) ) {
-	//		gameLocal.Error( "idAnimator::CycleAnim : channel out of range" );
-	//	}
-	//
-	//	if ( !this.modelDef || !this.modelDef.GetAnim( animNum ) ) {
-	//		return;
-	//	}
-	//	
-	//	PushAnims( channelNum, currentTime, blendTime );
-	//	channels[ channelNum ][ 0 ].CycleAnim( this.modelDef, animNum, currentTime, blendTime );
-	//	if ( entity ) {
-	//		entity.BecomeActive( TH_ANIMATE );
-	//	}
-	//}
+	/*
+	=====================
+	idAnimator::CycleAnim
+	=====================
+	*/
+	CycleAnim ( channelNum /*int*/: number, animNum /*int*/: number, currentTime /*int*/: number, blendTime /*int*/: number ): void {
+		if ( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) ) {
+			gameLocal.Error( "idAnimator::CycleAnim : channel out of range" );
+		}
+
+		if ( !this.modelDef || !this.modelDef.GetAnim_index( animNum ) ) {
+			return;
+		}
+
+		this.PushAnims( channelNum, currentTime, blendTime );
+		this.channels[channelNum][0].CycleAnim( this.modelDef, animNum, currentTime, blendTime );
+		if ( this.entity ) {
+			this.entity.BecomeActive( TH_ANIMATE );
+		}
+	}
 	//
 	///*
 	//=====================
 	//idAnimator::PlayAnim
 	//=====================
 	//*/
-	//void idAnimator::PlayAnim( int channelNum, int animNum, int currentTime, int blendTime ) {
+	//void idAnimator::PlayAnim( channelNum /*int*/:number, animNum/*int*/:number, currentTime/*int*/:number, blendTime/*int*/:number ) {
 	//	if ( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) ) {
 	//		gameLocal.Error( "idAnimator::PlayAnim : channel out of range" );
 	//	}
@@ -3999,10 +3999,10 @@ class idAnimator {
 	//		return;
 	//	}
 	//	
-	//	PushAnims( channelNum, currentTime, blendTime );
-	//	channels[ channelNum ][ 0 ].PlayAnim( this.modelDef, animNum, currentTime, blendTime );
-	//	if ( entity ) {
-	//		entity.BecomeActive( TH_ANIMATE );
+	//	this.PushAnims( channelNum, currentTime, blendTime );
+	//	this.channels[ channelNum ][ 0 ].PlayAnim( this.modelDef, animNum, currentTime, blendTime );
+	//	if ( this.entity ) {
+	//		this.entity.BecomeActive( TH_ANIMATE );
 	//	}
 	//}
 	//
@@ -4011,28 +4011,28 @@ class idAnimator {
 	//idAnimator::SyncAnimChannels
 	//=====================
 	//*/
-	//void idAnimator::SyncAnimChannels( int channelNum, int fromChannelNum, int currentTime, int blendTime ) {
+	//void idAnimator::SyncAnimChannels( channelNum /*int*/:number, int fromChannelNum, currentTime/*int*/:number, blendTime/*int*/:number ) {
 	//	if ( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) || ( fromChannelNum < 0 ) || ( fromChannelNum >= ANIM_NumAnimChannels ) ) {
 	//		gameLocal.Error( "idAnimator::SyncToChannel : channel out of range" );
 	//	}
 	//
-	//	idAnimBlend &fromBlend = channels[ fromChannelNum ][ 0 ];
-	//	idAnimBlend &toBlend = channels[ channelNum ][ 0 ];
+	//	idAnimBlend &fromBlend = this.channels[ fromChannelNum ][ 0 ];
+	//	idAnimBlend &toBlend = this.channels[ channelNum ][ 0 ];
 	//
 	//	float weight = fromBlend.blendEndValue;
 	//	if ( ( fromBlend.Anim() != toBlend.Anim() ) || ( fromBlend.GetStartTime() != toBlend.GetStartTime() ) || ( fromBlend.GetEndTime() != toBlend.GetEndTime() ) ) {
-	//		PushAnims( channelNum, currentTime, blendTime );
+	//		this.PushAnims( channelNum, currentTime, blendTime );
 	//		toBlend = fromBlend;
-	//		toBlend.blendStartValue = 0.0f;
-	//		toBlend.blendEndValue = 0.0f;
+	//		toBlend.blendStartValue = 0.0;
+	//		toBlend.blendEndValue = 0.0;
 	//	}
 	//    toBlend.SetWeight( weight, currentTime - 1, blendTime );
 	//
 	//	// disable framecommands on the current channel so that commands aren't called twice
 	//	toBlend.AllowFrameCommands( false );
 	//
-	//	if ( entity ) {
-	//		entity.BecomeActive( TH_ANIMATE );
+	//	if ( this.entity ) {
+	//		this.entity.BecomeActive( TH_ANIMATE );
 	//	}
 	//}
 	//
@@ -4070,10 +4070,10 @@ class idAnimator {
 	//	jointMod.pos = pos;
 	//	jointMod.transform_pos = transform_type;
 	//
-	//	if ( entity ) {
-	//		entity.BecomeActive( TH_ANIMATE );
+	//	if ( this.entity ) {
+	//		this.entity.BecomeActive( TH_ANIMATE );
 	//	}
-	//	ForceUpdate();
+	//	this.ForceUpdate();
 	//}
 	//
 	///*
@@ -4110,10 +4110,10 @@ class idAnimator {
 	//	jointMod.mat = mat;
 	//	jointMod.transform_axis = transform_type;
 	//
-	//	if ( entity ) {
-	//		entity.BecomeActive( TH_ANIMATE );
+	//	if ( this.entity ) {
+	//		this.entity.BecomeActive( TH_ANIMATE );
 	//	}
-	//	ForceUpdate();
+	//	this.ForceUpdate();
 	//}
 	//
 	///*
@@ -4132,7 +4132,7 @@ class idAnimator {
 	//		if ( jointMods[ i ].jointnum == jointnum ) {
 	//			delete jointMods[ i ];
 	//			jointMods.RemoveIndex( i );
-	//			ForceUpdate();
+	//			this.ForceUpdate();
 	//			break;
 	//		} else if ( jointMods[ i ].jointnum > jointnum ) {
 	//			break;
@@ -4147,27 +4147,27 @@ class idAnimator {
 	//*/
 	//void idAnimator::ClearAllJoints( ) {
 	//	if ( jointMods.Num() ) {
-	//		ForceUpdate();
+	//		this.ForceUpdate();
 	//	}
 	//	jointMods.DeleteContents( true );
 	//}
 	//
-	///*
-	//=====================
-	//idAnimator::ClearAllAnims
-	//=====================
-	//*/
-	//void idAnimator::ClearAllAnims( int currentTime, int cleartime ) {
-	//	int	i;
-	//
-	//	for( i = 0; i < ANIM_NumAnimChannels; i++ ) {
-	//		Clear( i, currentTime, cleartime );
-	//	}
-	//
-	//	ClearAFPose();
-	//	ForceUpdate();
-	//}
-	//
+	/*
+	=====================
+	idAnimator::ClearAllAnims
+	=====================
+	*/
+	ClearAllAnims ( currentTime /*int*/: number, /*int */cleartime: number ): void {
+		var /*int	*/i: number;
+
+		for ( i = 0; i < ANIM_NumAnimChannels; i++ ) {
+			this.Clear( i, currentTime, cleartime );
+		}
+
+		this.ClearAFPose ( );
+		this.ForceUpdate ( );
+	}
+
 	///*
 	//====================
 	//idAnimator::GetDelta
@@ -4184,15 +4184,15 @@ class idAnimator {
 	//	}
 	//
 	//	delta.Zero();
-	//	blendWeight = 0.0f;
+	//	blendWeight = 0.0;
 	//
-	//	blend = channels[ ANIMCHANNEL_ALL ];
+	//	blend = this.channels[ ANIMCHANNEL_ALL ];
 	//	for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
 	//		blend.BlendDelta( fromtime, totime, delta, blendWeight );
 	//	}
 	//
 	//	if ( this.modelDef.Joints()[ 0 ].channel ) {
-	//		blend = channels[ this.modelDef.Joints()[ 0 ].channel ];
+	//		blend = this.channels[ this.modelDef.Joints()[ 0 ].channel ];
 	//		for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
 	//			blend.BlendDelta( fromtime, totime, delta, blendWeight );
 	//		}
@@ -4215,22 +4215,22 @@ class idAnimator {
 	//		return false;
 	//	}
 	//
-	//	q.Set( 0.0f, 0.0f, 0.0f, 1.0f );
-	//	blendWeight = 0.0f;
+	//	q.Set( 0.0, 0.0, 0.0, 1.0 );
+	//	blendWeight = 0.0;
 	//
-	//	blend = channels[ ANIMCHANNEL_ALL ];
+	//	blend = this.channels[ ANIMCHANNEL_ALL ];
 	//	for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
 	//		blend.BlendDeltaRotation( fromtime, totime, q, blendWeight );
 	//	}
 	//
 	//	if ( this.modelDef.Joints()[ 0 ].channel ) {
-	//		blend = channels[ this.modelDef.Joints()[ 0 ].channel ];
+	//		blend = this.channels[ this.modelDef.Joints()[ 0 ].channel ];
 	//		for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
 	//			blend.BlendDeltaRotation( fromtime, totime, q, blendWeight );
 	//		}
 	//	}
 	//
-	//	if ( blendWeight > 0.0f ) {
+	//	if ( blendWeight > 0.0 ) {
 	//		delta = q.ToMat3();
 	//		return true;
 	//	} else {
@@ -4244,7 +4244,7 @@ class idAnimator {
 	//idAnimator::GetOrigin
 	//====================
 	//*/
-	//void idAnimator::GetOrigin( int currentTime, pos:idVec3 ) const {
+	//void idAnimator::GetOrigin( currentTime/*int*/:number, pos:idVec3 ) const {
 	//	int					i;
 	//	const idAnimBlend	*blend;
 	//	float				blendWeight;
@@ -4255,17 +4255,17 @@ class idAnimator {
 	//	}
 	//
 	//	pos.Zero();
-	//	blendWeight = 0.0f;
+	//	blendWeight = 0.0;
 	//
-	//	blend = channels[ ANIMCHANNEL_ALL ];
+	//	blend = this.channels[ ANIMCHANNEL_ALL ];
 	//	for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
-	//		blend.BlendOrigin( currentTime, pos, blendWeight, removeOriginOffset );
+	//		blend.BlendOrigin( currentTime, pos, blendWeight, this.removeOriginOffset );
 	//	}
 	//
 	//	if ( this.modelDef.Joints()[ 0 ].channel ) {
-	//		blend = channels[ this.modelDef.Joints()[ 0 ].channel ];
+	//		blend = this.channels[ this.modelDef.Joints()[ 0 ].channel ];
 	//		for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
-	//			blend.BlendOrigin( currentTime, pos, blendWeight, removeOriginOffset );
+	//			blend.BlendOrigin( currentTime, pos, blendWeight, this.removeOriginOffset );
 	//		}
 	//	}
 	//
@@ -4277,7 +4277,7 @@ class idAnimator {
 	//idAnimator::GetBounds
 	//====================
 	//*/
-	//bool idAnimator::GetBounds( int currentTime, idBounds &bounds ) {
+	//bool idAnimator::GetBounds( currentTime/*int*/:number, idBounds &bounds ) {
 	//	int					i, j;
 	//	const idAnimBlend	*blend;
 	//	int					count;
@@ -4294,10 +4294,10 @@ class idAnimator {
 	//		count = 0;
 	//	}
 	//
-	//	blend = channels[ 0 ];
+	//	blend = this.channels[ 0 ];
 	//	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
 	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-	//			if ( blend.AddBounds( currentTime, bounds, removeOriginOffset ) ) {
+	//			if ( blend.AddBounds( currentTime, bounds, this.removeOriginOffset ) ) {
 	//				count++;
 	//			}
 	//		}
@@ -4317,7 +4317,7 @@ class idAnimator {
 	//
 	//	if ( g_debugBounds.GetBool() ) {
 	//		if ( bounds[1][0] - bounds[0][0] > 2048 || bounds[1][1] - bounds[0][1] > 2048 ) {
-	//			if ( entity ) {
+	//			if ( this.entity ) {
 	//				gameLocal.Warning( "big frameBounds on entity '%s' with model '%s': %f,%f", entity.name.c_str(), this.modelDef.ModelHandle().Name(), bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1] );
 	//			} else {
 	//				gameLocal.Warning( "big frameBounds on model '%s': %f,%f", this.modelDef.ModelHandle().Name(), bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1] );
@@ -4368,7 +4368,7 @@ class idAnimator {
 	//idAnimator::FinishAFPose
 	//=====================
 	//*/
-	//void idAnimator::FinishAFPose( int animNum, const idBounds &bounds, /*int*/time:number ) {
+	//void idAnimator::FinishAFPose( animNum/*int*/:number, const idBounds &bounds, /*int*/time:number ) {
 	//	int					i, j;
 	//	int					numJoints;
 	//	int					parentNum;
@@ -4401,9 +4401,9 @@ class idAnimator {
 	//	idJointQuat *jointFrame = ( idJointQuat * )_alloca16( numJoints * sizeof( *jointFrame ) );
 	//	md5anim.GetSingleFrame( 0, jointFrame, this.modelDef.GetChannelJoints( ANIMCHANNEL_ALL ), this.modelDef.NumJointsOnChannel( ANIMCHANNEL_ALL ) );
 	//
-	//	if ( removeOriginOffset ) {
+	//	if ( this.removeOriginOffset ) {
 	//#ifdef VELOCITY_MOVE
-	//		jointFrame[ 0 ].t.x = 0.0f;
+	//		jointFrame[ 0 ].t.x = 0.0;
 	//#else
 	//		jointFrame[ 0 ].t.Zero();
 	//#endif
@@ -4499,7 +4499,7 @@ class idAnimator {
 	//	AFPoseBounds = bounds;
 	//	AFPoseTime = time;
 	//
-	//	ForceUpdate();
+	//	this.ForceUpdate();
 	//}
 	//
 	///*
@@ -4526,21 +4526,21 @@ class idAnimator {
 	//
 	//	return true;
 	//}
-	//
-	///*
-	//=====================
-	//idAnimator::ClearAFPose
-	//=====================
-	//*/
-	//void idAnimator::ClearAFPose( ) {
-	//	if ( AFPoseJoints.Num() ) {
-	//		ForceUpdate();
-	//	}
-	//	AFPoseBlendWeight = 1.0f;
-	//	AFPoseJoints.SetNum( 0, false );
-	//	AFPoseBounds.Clear();
-	//	AFPoseTime = 0;
-	//}
+	
+	/*
+	=====================
+	idAnimator::ClearAFPose
+	=====================
+	*/
+	ClearAFPose ( ): void {
+		if ( this.AFPoseJoints.Num ( ) ) {
+			this.ForceUpdate ( );
+		}
+		this.AFPoseBlendWeight = 1.0;
+		this.AFPoseJoints.SetNum( 0, false );
+		this.AFPoseBounds.Clear ( );
+		this.AFPoseTime = 0;
+	}
 	//
 	///*
 	//=====================
@@ -4556,21 +4556,21 @@ class idAnimator {
 	//	}
 	//
 	//	if ( this.modelDef.ModelHandle() ) {
-	//		blend = channels[ 0 ];
+	//		blend = this.channels[ 0 ];
 	//		for( i = 0; i < ANIM_NumAnimChannels; i++ ) {
 	//			for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-	//				blend.CallFrameCommands( entity, fromtime, totime );
+	//				blend.CallFrameCommands( this.entity, fromtime, totime );
 	//			}
 	//		}
 	//	}
 	//
 	//	if ( !IsAnimating( totime ) ) {
 	//		stoppedAnimatingUpdate = true;
-	//		if ( entity ) {
-	//			entity.BecomeInactive( TH_ANIMATE );
+	//		if ( this.entity ) {
+	//			this.entity.BecomeInactive( TH_ANIMATE );
 	//
 	//			// present one more time with stopped animations so the renderer can properly recreate interactions
-	//			entity.BecomeActive( TH_UPDATEVISUALS );
+	//			this.entity.BecomeActive( TH_UPDATEVISUALS );
 	//		}
 	//	}
 	//}
@@ -4580,7 +4580,7 @@ class idAnimator {
 	//idAnimator::IsAnimating
 	//=====================
 	//*/
-	//bool idAnimator::IsAnimating( int currentTime ) const {
+	//bool idAnimator::IsAnimating( currentTime/*int*/:number ) const {
 	//	int					i, j;
 	//	const idAnimBlend	*blend;
 	//
@@ -4593,7 +4593,7 @@ class idAnimator {
 	//		return true;
 	//	}
 	//
-	//	blend = channels[ 0 ];
+	//	blend = this.channels[ 0 ];
 	//	for( i = 0; i < ANIM_NumAnimChannels; i++ ) {
 	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
 	//			if ( !blend.IsDone( currentTime ) ) {
@@ -4610,7 +4610,7 @@ class idAnimator {
 	//idAnimator::FrameHasChanged
 	//=====================
 	//*/
-	//bool idAnimator::FrameHasChanged( int currentTime ) const {
+	//bool idAnimator::FrameHasChanged( currentTime/*int*/:number ) const {
 	//	int					i, j;
 	//	const idAnimBlend	*blend;
 	//
@@ -4623,7 +4623,7 @@ class idAnimator {
 	//		return true;
 	//	}
 	//
-	//	blend = channels[ 0 ];
+	//	blend = this.channels[ 0 ];
 	//	for( i = 0; i < ANIM_NumAnimChannels; i++ ) {
 	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
 	//			if ( blend.FrameHasChanged( currentTime ) ) {
@@ -4632,7 +4632,7 @@ class idAnimator {
 	//		}
 	//	}
 	//
-	//	if ( forceUpdate && IsAnimating( currentTime ) ) {
+	//	if ( this.forceUpdate && IsAnimating( currentTime ) ) {
 	//		return true;
 	//	}
 	//
@@ -4669,20 +4669,20 @@ class idAnimator {
 		//	}
 		//
 		//	if ( !force && !r_showSkel.GetInteger() ) {
-		//		if ( lastTransformTime == currentTime ) {
+		//		if ( this.lastTransformTime == currentTime ) {
 		//			return false;
 		//		}
-		//		if ( lastTransformTime != -1 && !stoppedAnimatingUpdate && !IsAnimating( currentTime ) ) {
+		//		if ( this.lastTransformTime != -1 && !stoppedAnimatingUpdate && !IsAnimating( currentTime ) ) {
 		//			return false;
 		//		}
 		//	}
 		//
-		//	lastTransformTime = currentTime;
+		//	this.lastTransformTime = currentTime;
 		//	stoppedAnimatingUpdate = false;
 		//
-		//	if ( entity && ( ( g_debugAnim.GetInteger() == entity.entityNumber ) || ( g_debugAnim.GetInteger() == -2 ) ) ) {
+		//	if ( this.entity && ( ( g_debugAnim.GetInteger() == this.entity.entityNumber ) || ( g_debugAnim.GetInteger() == -2 ) ) ) {
 		//		debugInfo = true;
-		//		gameLocal.Printf( "---------------\n%d: entity '%s':\n", gameLocal.time, entity.GetName() );
+		//		gameLocal.Printf( "---------------\n%d: entity '%s':\n", gameLocal.time, this.entity.GetName() );
 		// 		gameLocal.Printf( "model '%s':\n", this.modelDef.GetModelName() );
 		//	} else {
 		//		debugInfo = false;
@@ -4708,19 +4708,19 @@ class idAnimator {
 		//	hasAnim = false;
 		//
 		//	// blend the all channel
-		//	baseBlend = 0.0f;
-		//	blend = channels[ ANIMCHANNEL_ALL ];
+		//	baseBlend = 0.0;
+		//	blend = this.channels[ ANIMCHANNEL_ALL ];
 		//	for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-		//		if ( blend.BlendAnim( currentTime, ANIMCHANNEL_ALL, numJoints, jointFrame, baseBlend, removeOriginOffset, false, debugInfo ) ) {
+		//		if ( blend.BlendAnim( currentTime, ANIMCHANNEL_ALL, numJoints, jointFrame, baseBlend, this.removeOriginOffset, false, debugInfo ) ) {
 		//			hasAnim = true;
-		//			if ( baseBlend >= 1.0f ) {
+		//			if ( baseBlend >= 1.0 ) {
 		//				break;
 		//			}
 		//		}
 		//	}
 		//
-		//	// only blend other channels if there's enough space to blend into
-		//	if ( baseBlend < 1.0f ) {
+		//	// only blend other this.channels if there's enough space to blend into
+		//	if ( baseBlend < 1.0 ) {
 		//		for( i = ANIMCHANNEL_ALL + 1; i < ANIM_NumAnimChannels; i++ ) {
 		//			if ( !this.modelDef.NumJointsOnChannel( i ) ) {
 		//				continue;
@@ -4730,11 +4730,11 @@ class idAnimator {
 		//				continue;
 		//			}
 		//			blendWeight = baseBlend;
-		//			blend = channels[ i ];
+		//			blend = this.channels[ i ];
 		//			for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-		//				if ( blend.BlendAnim( currentTime, i, numJoints, jointFrame, blendWeight, removeOriginOffset, false, debugInfo ) ) {
+		//				if ( blend.BlendAnim( currentTime, i, numJoints, jointFrame, blendWeight, this.removeOriginOffset, false, debugInfo ) ) {
 		//					hasAnim = true;
-		//					if ( blendWeight >= 1.0f ) {
+		//					if ( blendWeight >= 1.0 ) {
 		//						// fully blended
 		//						break;
 		//					}
@@ -4749,12 +4749,12 @@ class idAnimator {
 		//
 		//	// blend in the eyelids
 		//	if ( this.modelDef.NumJointsOnChannel( ANIMCHANNEL_EYELIDS ) ) {
-		//		blend = channels[ ANIMCHANNEL_EYELIDS ];
+		//		blend = this.channels[ ANIMCHANNEL_EYELIDS ];
 		//		blendWeight = baseBlend;
 		//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-		//			if ( blend.BlendAnim( currentTime, ANIMCHANNEL_EYELIDS, numJoints, jointFrame, blendWeight, removeOriginOffset, true, debugInfo ) ) {
+		//			if ( blend.BlendAnim( currentTime, ANIMCHANNEL_EYELIDS, numJoints, jointFrame, blendWeight, this.removeOriginOffset, true, debugInfo ) ) {
 		//				hasAnim = true;
-		//				if ( blendWeight >= 1.0f ) {
+		//				if ( blendWeight >= 1.0 ) {
 		//					// fully blended
 		//					break;
 		//				}
@@ -4885,32 +4885,32 @@ class idAnimator {
 		return true;
 	}
 
-///*
-//=====================
-//idAnimator::ForceUpdate
-//=====================
-//*/
-//void idAnimator::ForceUpdate( ) {
-//	lastTransformTime = -1;
-//	forceUpdate = true;
-//}
-//
-///*
-//=====================
-//idAnimator::ClearForceUpdate
-//=====================
-//*/
-//void idAnimator::ClearForceUpdate( ) {
-//	forceUpdate = false;
-//}
-//
+/*
+=====================
+idAnimator::ForceUpdate
+=====================
+*/
+	ForceUpdate ( ): void {
+		this.lastTransformTime = -1;
+		this.forceUpdate = true;
+	}
+
+/*
+=====================
+idAnimator::ClearForceUpdate
+=====================
+*/
+	ClearForceUpdate ( ): void {
+		this.forceUpdate = false;
+	}
+
 ///*
 //=====================
 //idAnimator::GetJointTransform>	gamex86.dll!idAnimator::ForceUpdate()  Line 4268	C++
 //
 //=====================
 //*/
-//bool idAnimator::GetJointTransform( jointHandle_t jointHandle, int currentTime, idVec3 &offset, idMat3 &axis ) {
+//bool idAnimator::GetJointTransform( jointHandle_t jointHandle, currentTime/*int*/:number, idVec3 &offset, idMat3 &axis ) {
 //	if ( !this.modelDef || ( jointHandle < 0 ) || ( jointHandle >= this.modelDef.NumJoints() ) ) {
 //		return false;
 //	}
@@ -4928,7 +4928,7 @@ class idAnimator {
 //idAnimator::GetJointLocalTransform
 //=====================
 //*/
-//bool idAnimator::GetJointLocalTransform( jointHandle_t jointHandle, int currentTime, idVec3 &offset, idMat3 &axis ) {
+//bool idAnimator::GetJointLocalTransform( jointHandle_t jointHandle, currentTime/*int*/:number, idVec3 &offset, idMat3 &axis ) {
 //	if ( !this.modelDef ) {
 //		return false;
 //	}
@@ -4955,19 +4955,19 @@ class idAnimator {
 //	return true;
 //}
 //
-///*
-//=====================
-//idAnimator::GetJointHandle
-//=====================
-//*/
-//jointHandle_t idAnimator::GetJointHandle( name:string ) const {
-//	if ( !this.modelDef || !this.modelDef.ModelHandle() ) {
-//		return INVALID_JOINT;
-//	}
-//
-//	return this.modelDef.ModelHandle().GetJointHandle( name );
-//}
-//
+/*
+=====================
+idAnimator::GetJointHandle
+=====================
+*/
+	GetJointHandle ( name: string ): jointHandle_t {
+		if ( !this.modelDef || !this.modelDef.ModelHandle ( ) ) {
+			return jointHandle_t.INVALID_JOINT;
+		}
+
+		return this.modelDef.ModelHandle ( ).GetJointHandle( name );
+	}
+
 ///*
 //=====================
 //idAnimator::GetJointName
@@ -5049,7 +5049,7 @@ class idAnimator {
 //idAnimator::GetAnimFlags
 //=====================
 //*/
-//const animFlags_t idAnimator::GetAnimFlags( int animNum ) const {
+//const animFlags_t idAnimator::GetAnimFlags( animNum/*int*/:number ) const {
 //	animFlags_t result;
 //
 //	const idAnim *anim = GetAnim( animNum );
@@ -5066,7 +5066,7 @@ class idAnimator {
 //idAnimator::NumFrames
 //=====================
 //*/
-//int	idAnimator::NumFrames( int animNum ) const {
+//int	idAnimator::NumFrames( animNum/*int*/:number ) const {
 //	const idAnim *anim = GetAnim( animNum );
 //	if ( anim ) {
 //		return anim.NumFrames();
@@ -5080,7 +5080,7 @@ class idAnimator {
 //idAnimator::NumSyncedAnims
 //=====================
 //*/
-//int	idAnimator::NumSyncedAnims( int animNum ) const {
+//int	idAnimator::NumSyncedAnims( animNum/*int*/:number ) const {
 //	const idAnim *anim = GetAnim( animNum );
 //	if ( anim ) {
 //		return anim.NumAnims();
@@ -5094,7 +5094,7 @@ class idAnimator {
 //idAnimator::AnimName
 //=====================
 //*/
-//const char *idAnimator::AnimName( int animNum ) const {
+//const char *idAnimator::AnimName( animNum/*int*/:number ) const {
 //	const idAnim *anim = GetAnim( animNum );
 //	if ( anim ) {
 //		return anim.Name();
@@ -5108,7 +5108,7 @@ class idAnimator {
 //idAnimator::AnimFullName
 //=====================
 //*/
-//const char *idAnimator::AnimFullName( int animNum ) const {
+//const char *idAnimator::AnimFullName( animNum/*int*/:number ) const {
 //	const idAnim *anim = GetAnim( animNum );
 //	if ( anim ) {
 //		return anim.FullName();
@@ -5122,7 +5122,7 @@ class idAnimator {
 //idAnimator::AnimLength
 //=====================
 //*/
-//int	idAnimator::AnimLength( int animNum ) const {
+//int	idAnimator::AnimLength( animNum/*int*/:number ) const {
 //	const idAnim *anim = GetAnim( animNum );
 //	if ( anim ) {
 //		return anim.Length();
@@ -5136,7 +5136,7 @@ class idAnimator {
 //idAnimator::TotalMovementDelta
 //=====================
 //*/
-//const idVec3 &idAnimator::TotalMovementDelta( int animNum ) const {
+//const idVec3 &idAnimator::TotalMovementDelta( animNum/*int*/:number ) const {
 //	const idAnim *anim = GetAnim( animNum );
 //	if ( anim ) {
 //		return anim.TotalMovementDelta();

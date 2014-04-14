@@ -584,20 +584,20 @@ Set( key:string, value:string ):void {
 		this.argHash.Add( this.argHash.GenerateKey( kv.GetKey(), false ), this.args.Append( kv ) );
 	}
 }
-////
-/////*
-////================
-////idDict::GetFloat
-////================
-////*/
-////bool idDict::GetFloat( key:string, defaultString:string, float &out ) const {
-////	const char	*s;
-////	bool		found;
-////
-////	found = GetString( key, defaultString, &s );
-////	out = atof( s );
-////	return found;
-////}
+
+/*
+================
+idDict::GetFloat
+================
+*/
+	GetFloat_R ( key: string, defaultString: string, /*float*/ out: R<number> ): boolean {
+		var s = new R<string> ( );
+		var found: boolean;
+
+		found = this.GetString_Rstring( key, defaultString, s );
+		out.$ = atof( s.$ );
+		return found;
+	}
 
 /*
 ================
@@ -679,7 +679,7 @@ idDict::GetVector
 ////		defaultString = "0 0";
 ////	}
 ////
-////	found = GetString( key, defaultString, &s );
+////	found = this.GetString( key, defaultString, &s );
 ////	out.Zero();
 ////	sscanf( s, "%f %f", &out.x, &out.y );
 ////	return found;
@@ -698,7 +698,7 @@ idDict::GetVector
 ////		defaultString = "0 0 0 0";
 ////	}
 ////
-////	found = GetString( key, defaultString, &s );
+////	found = this.GetString( key, defaultString, &s );
 ////	out.Zero();
 ////	sscanf( s, "%f %f %f %f", &out.x, &out.y, &out.z, &out.w );
 ////	return found;
