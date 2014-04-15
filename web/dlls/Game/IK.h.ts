@@ -41,17 +41,17 @@ var IK_ANIM		=		"ik_pose"
 
 class idIK {
 ////public:
-////							idIK( void );
-////	virtual					~idIK( void );
+////							idIK( );
+////	virtual					~idIK( );
 ////
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
-////	bool					IsInitialized( void ) const;
+////	bool					IsInitialized( ) const;
 ////
 ////	virtual bool			Init( idEntity *self, const char *anim, const idVec3 &modelOffset );
-////	virtual void			Evaluate( void );
-////	virtual void			ClearJointMods( void );
+////	virtual void			Evaluate( );
+////	virtual void			ClearJointMods( );
 ////
 ////	bool					SolveTwoBones( const idVec3 &startPos, const idVec3 &endPos, const idVec3 &dir, float len0, float len1, idVec3 &jointPos );
 ////	float					GetBoneAxis( const idVec3 &startPos, const idVec3 &endPos, const idVec3 &dir, idMat3 &axis );
@@ -65,26 +65,26 @@ class idIK {
 	modelOffset = new idVec3;
 
 
-	/////*
-	////================
-	////idIK::idIK
-	////================
-	////*/
-	////idIK::idIK( void ) {
-	////	ik_activate = false;
-	////	initialized = false;
-	////	self = NULL;
-	////	animator = NULL;
-	////	modifiedAnim = 0;
-	////	modelOffset.Zero();
-	////}
-	////
+	/*
+	================
+	idIK::idIK
+	================
+	*/
+	constructor ( ) {
+		this.ik_activate = false;
+		this.initialized = false;
+		this.self = null;
+		this.animator = null;
+		this.modifiedAnim = 0;
+		this.modelOffset.Zero ( );
+	}
+
 	/////*
 	////================
 	////idIK::~idIK
 	////================
 	////*/
-	////idIK::~idIK( void ) {
+	////idIK::~idIK( ) {
 	////}
 	////
 	/////*
@@ -96,7 +96,7 @@ class idIK {
 	////	savefile.WriteBool( initialized );
 	////	savefile.WriteBool( ik_activate );
 	////	savefile.WriteObject( self );
-	////	savefile.WriteString( animator != NULL && animator.GetAnim( modifiedAnim ) ? animator.GetAnim( modifiedAnim ).Name() : "" );
+	////	savefile.WriteString( this.animator != NULL && this.animator.GetAnim( this.modifiedAnim ) ? this.animator.GetAnim( this.modifiedAnim ).Name() : "" );
 	////	savefile.WriteVec3( modelOffset );
 	////}
 	////
@@ -115,19 +115,19 @@ class idIK {
 	////	savefile.ReadVec3( modelOffset );
 	////
 	////	if ( self ) {
-	////		animator = self.GetAnimator();
-	////		if ( animator == NULL || animator.ModelDef() == NULL ) {
+	////		this.animator = self.GetAnimator();
+	////		if ( this.animator == NULL || this.animator.ModelDef() == NULL ) {
 	////			gameLocal.Warning( "idIK::Restore: IK for entity '%s' at (%s) has no model set.",
 	////								self.name.c_str(), self.GetPhysics().GetOrigin().ToString(0) );
 	////		}
-	////		modifiedAnim = animator.GetAnim( anim );
-	////		if ( modifiedAnim == 0 ) {
+	////		this.modifiedAnim = this.animator.GetAnim( anim );
+	////		if ( this.modifiedAnim == 0 ) {
 	////			gameLocal.Warning( "idIK::Restore: IK for entity '%s' at (%s) has no modified animation.",
 	////									self.name.c_str(), self.GetPhysics().GetOrigin().ToString(0) );
 	////		}
 	////	} else {
-	////		animator = NULL;
-	////		modifiedAnim = 0;
+	////		this.animator = NULL;
+	////		this.modifiedAnim = 0;
 	////	}
 	////}
 	////
@@ -136,59 +136,59 @@ class idIK {
 	////idIK::IsInitialized
 	////================
 	////*/
-	////bool idIK::IsInitialized( void ) const {
+	////bool idIK::IsInitialized( ) const {
 	////	return initialized && ik_enable.GetBool();
 	////}
-	////
-	/////*
-	////================
-	////idIK::Init
-	////================
-	////*/
-	////bool idIK::Init( idEntity *self, const char *anim, const idVec3 &modelOffset ) {
-	////	idRenderModel *model;
-	////
-	////	if ( self == NULL ) {
-	////		return false;
-	////	}
-	////
-	////	this.self = self;
-	////
-	////	animator = self.GetAnimator();
-	////	if ( animator == NULL || animator.ModelDef() == NULL ) {
-	////		gameLocal.Warning( "idIK::Init: IK for entity '%s' at (%s) has no model set.",
-	////							self.name.c_str(), self.GetPhysics().GetOrigin().ToString(0) );
-	////		return false;
-	////	}
-	////	if ( animator.ModelDef().ModelHandle() == NULL ) {
-	////		gameLocal.Warning( "idIK::Init: IK for entity '%s' at (%s) uses default model.",
-	////							self.name.c_str(), self.GetPhysics().GetOrigin().ToString(0) );
-	////		return false;
-	////	}
-	////	model = animator.ModelHandle();
-	////	if ( model == NULL ) {
-	////		gameLocal.Warning( "idIK::Init: IK for entity '%s' at (%s) has no model set.",
-	////							self.name.c_str(), self.GetPhysics().GetOrigin().ToString(0) );
-	////		return false;
-	////	}
-	////	modifiedAnim = animator.GetAnim( anim );
-	////	if ( modifiedAnim == 0 ) {
-	////		gameLocal.Warning( "idIK::Init: IK for entity '%s' at (%s) has no modified animation.",
-	////								self.name.c_str(), self.GetPhysics().GetOrigin().ToString(0) );
-	////		return false;
-	////	}
-	////	
-	////	this.modelOffset = modelOffset;
-	////
-	////	return true;
-	////}
-	////
-	/////*
+	
+	/*
+	================
+	idIK::Init
+	================
+	*/
+	Init(self: idEntity, anim: string, modelOffset: idVec3 ):boolean {
+		var model: idRenderModel;
+	
+		if ( self == null ) {
+			return false;
+		}
+	
+		this.self = self;
+	
+		this.animator = self.GetAnimator();
+		if (this.animator == null || this.animator.ModelDef() == null ) {
+			gameLocal.Warning( "idIK::Init: IK for entity '%s' at (%s) has no model set.",
+								self.name.c_str(), self.GetPhysics().GetOrigin().ToString(0) );
+			return false;
+		}
+		if ( this.animator.ModelDef().ModelHandle() == null ) {
+			gameLocal.Warning( "idIK::Init: IK for entity '%s' at (%s) uses default model.",
+								self.name.c_str(), self.GetPhysics().GetOrigin().ToString(0) );
+			return false;
+		}
+		model = this.animator.ModelHandle();
+		if ( model == null ) {
+			gameLocal.Warning( "idIK::Init: IK for entity '%s' at (%s) has no model set.",
+								self.name.c_str(), self.GetPhysics().GetOrigin().ToString(0) );
+			return false;
+		}
+		this.modifiedAnim = this.animator.GetAnim_name( anim );
+		if ( this.modifiedAnim == 0 ) {
+			gameLocal.Warning( "idIK::Init: IK for entity '%s' at (%s) has no modified animation.",
+									self.name.c_str(), self.GetPhysics().GetOrigin().ToString(0) );
+			return false;
+		}
+		
+		this.modelOffset = modelOffset;
+	
+		return true;
+	}
+	
+	/*
 	////================
 	////idIK::Evaluate
 	////================
 	////*/
-	////void idIK::Evaluate( void ) {
+	////void idIK::Evaluate( ) {
 	////}
 	////
 	/////*
@@ -196,7 +196,7 @@ class idIK {
 	////idIK::ClearJointMods
 	////================
 	////*/
-	////void idIK::ClearJointMods( void ) {
+	////void idIK::ClearJointMods( ) {
 	////	ik_activate = false;
 	////}
 	////
@@ -261,18 +261,18 @@ class idIK {
 class idIK_Walk extends idIK {
 ////public:
 ////
-////							idIK_Walk( void );
-////	virtual					~idIK_Walk( void );
+////							idIK_Walk( );
+////	virtual					~idIK_Walk( );
 ////
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
 ////	virtual bool			Init( idEntity *self, const char *anim, const idVec3 &modelOffset );
-////	virtual void			Evaluate( void );
-////	virtual void			ClearJointMods( void );
+////	virtual void			Evaluate( );
+////	virtual void			ClearJointMods( );
 ////
-////	void					EnableAll( void );
-////	void					DisableAll( void );
+////	void					EnableAll( );
+////	void					DisableAll( );
 ////	void					EnableLeg( int num );
 ////	void					DisableLeg( int num );
 ////
@@ -544,7 +544,7 @@ idIK_Walk::Init
 		var joints = newStructArray<idJointMat>( idJointMat, numJoints ); //( idJointMat * )_alloca16( numJoints * sizeof( joints[0] ) );
 
 		// create the animation frame used to setup the IK
-		gameEdit.ANIM_CreateAnimFrame(this.animator.ModelHandle(), this.animator.GetAnim_index( this.modifiedAnim ).MD5Anim( 0 ), numJoints, joints, 1, this.animator.ModelDef ( ).GetVisualOffset ( ) + modelOffset, this.animator.RemoveOrigin ( ) );
+		gameEdit.ANIM_CreateAnimFrame(this.animator.ModelHandle(), this.animator.GetAnim_index( this.modifiedAnim ).MD5Anim( 0 ), numJoints, joints, 1, this.animator.ModelDef ( ).GetVisualOffset ( ) .opAddition( modelOffset), this.animator.RemoveOrigin ( ) );
 
 		this.enabledLegs = 0;
 
@@ -651,7 +651,7 @@ idIK_Walk::Init
 ////idIK_Walk::Evaluate
 ////================
 ////*/
-////void idIK_Walk::Evaluate( void ) {
+////void idIK_Walk::Evaluate( ) {
 ////	int i, newPivotFoot = 0;
 ////	float modelHeight, jointHeight, lowestHeight, floorHeights[idIK_Walk.MAX_LEGS];
 ////	float shift, smallestShift, newHeight, step, newPivotYaw, height, largestAnkleHeight;
@@ -867,7 +867,7 @@ idIK_Walk::Init
 ////idIK_Walk::ClearJointMods
 ////================
 ////*/
-////void idIK_Walk::ClearJointMods( void ) {
+////void idIK_Walk::ClearJointMods( ) {
 ////	var/*int*/i:number;
 ////
 ////	if ( !self || !ik_activate ) {
@@ -890,7 +890,7 @@ idIK_Walk::Init
 ////idIK_Walk::EnableAll
 ////================
 ////*/
-////void idIK_Walk::EnableAll( void ) {
+////void idIK_Walk::EnableAll( ) {
 ////	this.enabledLegs = ( 1 << this.numLegs ) - 1;
 ////	oldHeightsValid = false;
 ////}
@@ -900,7 +900,7 @@ idIK_Walk::Init
 ////idIK_Walk::DisableAll
 ////================
 ////*/
-////void idIK_Walk::DisableAll( void ) {
+////void idIK_Walk::DisableAll( ) {
 ////	this.enabledLegs = 0;
 ////	oldHeightsValid = false;
 ////}
@@ -938,15 +938,15 @@ idIK_Walk::Init
 ////class idIK_Reach extends idIK {
 ////public:
 ////
-////							idIK_Reach( void );
-////	virtual					~idIK_Reach( void );
+////							idIK_Reach( );
+////	virtual					~idIK_Reach( );
 ////
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
 ////
 ////	virtual bool			Init( idEntity *self, const char *anim, const idVec3 &modelOffset );
-////	virtual void			Evaluate( void );
-////	virtual void			ClearJointMods( void );
+////	virtual void			Evaluate( );
+////	virtual void			ClearJointMods( );
 ////
 ////private:
 ////

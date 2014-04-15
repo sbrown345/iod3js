@@ -3476,13 +3476,14 @@ idGameLocal::RegisterEntity
 ////	}
 ////}
 
-/////*
-////================
-////idGameLocal::SpawnEntityType
-////================
-////*/
-////idEntity *idGameLocal::SpawnEntityType( const idTypeInfo &classdef, const idDict *args, bool bIsClientReadSnapshot ) {
-////	idClass *obj;
+/*
+================
+idGameLocal::SpawnEntityType
+================
+*/
+	SpawnEntityType ( classdef: idTypeInfo, args: idDict=null, bIsClientReadSnapshot: boolean =false): idEntity {
+		todoThrow ( );
+		var obj: idClass;
 
 ////#if _DEBUG
 ////	if ( isClient ) {
@@ -3509,8 +3510,8 @@ idGameLocal::RegisterEntity
 ////	}
 ////	this.spawnArgs.Clear();
 
-////	return static_cast<idEntity *>(obj);
-////}
+		return static_cast<idEntity>( obj );
+	}
 
 /*
 ===================

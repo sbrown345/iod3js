@@ -208,7 +208,7 @@ class idChain extends idMultiModelAF {
 	////		physicsObj.AddBody( body );
 	////
 	////		// visual model for body
-	////		SetModelForId( physicsObj.GetBodyId( body ), spawnArgs.GetString( "model" ) );
+	////		SetModelForId( physicsObj.GetBodyId( body ), this.spawnArgs.GetString( "model" ) );
 	////
 	////		// add constraint
 	////		if ( bindToWorld ) {
@@ -254,11 +254,11 @@ class idChain extends idMultiModelAF {
 		////	bool drop;
 		////	idVec3 origin;
 		////
-		////	spawnArgs.GetBool( "drop", "0", drop );
-		////	spawnArgs.GetInt( "links", "3", numLinks );
-		////	spawnArgs.GetFloat( "length", idStr( numLinks * 32.0f ), length );
-		////	spawnArgs.GetFloat( "width", "8", linkWidth );
-		////	spawnArgs.GetFloat( "density", "0.2", density );
+		////	this.spawnArgs.GetBool( "drop", "0", drop );
+		////	this.spawnArgs.GetInt( "links", "3", numLinks );
+		////	this.spawnArgs.GetFloat( "length", idStr( numLinks * 32.0f ), length );
+		////	this.spawnArgs.GetFloat( "width", "8", linkWidth );
+		////	this.spawnArgs.GetFloat( "density", "0.2", density );
 		////	linkLength = length / numLinks;
 		////	origin = GetPhysics().GetOrigin();
 		////
@@ -365,24 +365,24 @@ idAFAttachment::Spawn
 Spawn( ):void {
 	this.idleAnim = this.animator.GetAnim_name( "idle" );
 }
-////
-/////*
-////=====================
-////idAFAttachment::SetBody
-////=====================
-////*/
-////void idAFAttachment::SetBody( idEntity *bodyEnt, const char *model, jointHandle_t attachJoint ) {
-////	bool bleed;
-////
-////	this.body = bodyEnt;
-////	this.attachJoint = attachJoint;
-////	SetModel( model );
-////	fl.takedamage = true;
-////
-////	bleed = this.body.spawnArgs.GetBool( "bleed" );
-////	spawnArgs.SetBool( "bleed", bleed );
-////}
-////
+
+/*
+=====================
+idAFAttachment::SetBody
+=====================
+*/
+	SetBody(bodyEnt: idEntity, model: string, attachJoint: jointHandle_t ):void {
+	var bleed:boolean;
+
+	this.body = bodyEnt;
+	this.attachJoint = attachJoint;
+	this.SetModel( model );
+	this.fl.takedamage = true;
+
+	bleed = this.body.spawnArgs.GetBool( "bleed" );
+	this.spawnArgs.SetBool( "bleed", bleed );
+}
+
 /*
 =====================
 idAFAttachment::ClearBody
@@ -572,7 +572,7 @@ Hide( ) :void{
 ////================
 ////*/
 ////void idAFAttachment::LinkCombat( ) {
-////	if ( fl.hidden ) {
+////	if ( this.fl.hidden ) {
 ////		return;
 ////	}
 ////
@@ -737,7 +737,7 @@ Spawn( ):void {
 ////bool idAFEntity_Base::LoadAF( ) {
 ////	idStr fileName;
 ////
-////	if ( !spawnArgs.GetString( "articulatedFigure", "*unknown*", fileName ) ) {
+////	if ( !this.spawnArgs.GetString( "articulatedFigure", "*unknown*", fileName ) ) {
 ////		return false;
 ////	}
 ////
@@ -751,7 +751,7 @@ Spawn( ):void {
 ////	af.GetPhysics().Rotate( spawnAxis.ToRotation() );
 ////	af.GetPhysics().Translate( this.spawnOrigin );
 ////
-////	LoadState( spawnArgs );
+////	LoadState( this.spawnArgs );
 ////
 ////	af.UpdateAnimation();
 ////	this.animator.CreateFrame( gameLocal.time, true );
@@ -795,22 +795,22 @@ Spawn( ):void {
 ////	af.SaveState( args );
 ////
 ////	// save all the bind constraints
-////	kv = spawnArgs.MatchPrefix( "bindConstraint ", NULL );
+////	kv = this.spawnArgs.MatchPrefix( "bindConstraint ", NULL );
 ////	while ( kv ) {
 ////		args.Set( kv.GetKey(), kv.GetValue() );
-////		kv = spawnArgs.MatchPrefix( "bindConstraint ", kv );
+////		kv = this.spawnArgs.MatchPrefix( "bindConstraint ", kv );
 ////	}
 ////
 ////	// save the bind if it exists
-////	kv = spawnArgs.FindKey( "bind" );
+////	kv = this.spawnArgs.FindKey( "bind" );
 ////	if ( kv ) {
 ////		args.Set( kv.GetKey(), kv.GetValue() );
 ////	}
-////	kv = spawnArgs.FindKey( "bindToJoint" );
+////	kv = this.spawnArgs.FindKey( "bindToJoint" );
 ////	if ( kv ) {
 ////		args.Set( kv.GetKey(), kv.GetValue() );
 ////	}
-////	kv = spawnArgs.FindKey( "bindToBody" );
+////	kv = this.spawnArgs.FindKey( "bindToBody" );
 ////	if ( kv ) {
 ////		args.Set( kv.GetKey(), kv.GetValue() );
 ////	}
@@ -982,7 +982,7 @@ Spawn( ):void {
 ////================
 ////*/
 ////void idAFEntity_Base::LinkCombat( ) {
-////	if ( fl.hidden ) {
+////	if ( this.fl.hidden ) {
 ////		return;
 ////	}
 ////	if ( this.combatModel ) {
@@ -1017,7 +1017,7 @@ Spawn( ):void {
 ////===============
 ////*/
 ////void idAFEntity_Base::ShowEditingDialog( ) {
-////	common.InitTool( EDITOR_AF, &spawnArgs );
+////	common.InitTool( EDITOR_AF, &this.spawnArgs );
 ////}
 ////
 /////*
@@ -1252,11 +1252,11 @@ idAFEntity_Gibbable::InitSkeletonModel
 ////================
 ////*/
 ////void idAFEntity_Gibbable::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir, const char *damageDefName, const float damageScale, const int location ) {
-////	if ( !fl.takedamage ) {
+////	if ( !this.fl.takedamage ) {
 ////		return;
 ////	}
 ////	idAFEntity_Base::Damage( inflictor, attacker, dir, damageDefName, damageScale, location );
-////	if ( health < -20 && spawnArgs.GetBool( "gib" ) ) {
+////	if ( health < -20 && this.spawnArgs.GetBool( "gib" ) ) {
 ////		Gib( dir, damageDefName );
 ////	}
 ////}
@@ -1462,11 +1462,11 @@ idAFEntity_Generic::Spawn
 	//SetPhysics( af.GetPhysics() );
 
 	//af.GetPhysics().PutToRest();
-	//if ( !spawnArgs.GetBool( "nodrop", "0" ) ) {
+	//if ( !this.spawnArgs.GetBool( "nodrop", "0" ) ) {
 	//	af.GetPhysics().Activate();
 	//}
 
-	//fl.takedamage = true;
+	//this.fl.takedamage = true;
 }
 ////
 /////*
@@ -1483,17 +1483,17 @@ idAFEntity_Generic::Spawn
 ////	af.GetPhysics().EnableImpact();
 ////	af.GetPhysics().Activate();
 ////
-////	spawnArgs.GetVector( "init_velocity", "0 0 0", init_velocity );
-////	spawnArgs.GetVector( "init_avelocity", "0 0 0", init_avelocity );
+////	this.spawnArgs.GetVector( "init_velocity", "0 0 0", init_velocity );
+////	this.spawnArgs.GetVector( "init_avelocity", "0 0 0", init_avelocity );
 ////
-////	delay = spawnArgs.GetFloat( "init_velocityDelay", "0" );
+////	delay = this.spawnArgs.GetFloat( "init_velocityDelay", "0" );
 ////	if ( delay == 0.0f ) {
 ////		af.GetPhysics().SetLinearVelocity( init_velocity );
 ////	} else {
 ////		PostEventSec( &EV_SetLinearVelocity, delay, init_velocity );
 ////	}
 ////
-////	delay = spawnArgs.GetFloat( "init_avelocityDelay", "0" );
+////	delay = this.spawnArgs.GetFloat( "init_avelocityDelay", "0" );
 ////	if ( delay == 0.0f ) {
 ////		af.GetPhysics().SetAngularVelocity( init_avelocity );
 ////	} else {
@@ -1588,11 +1588,11 @@ idAFEntity_WithAttachedHead::Spawn
 	//SetPhysics( af.GetPhysics() );
 
 	//af.GetPhysics().PutToRest();
-	//if ( !spawnArgs.GetBool( "nodrop", "0" ) ) {
+	//if ( !this.spawnArgs.GetBool( "nodrop", "0" ) ) {
 	//	af.GetPhysics().Activate();
 	//}
 
-	//fl.takedamage = true;
+	//this.fl.takedamage = true;
 
 	//if ( this.head.GetEntity() ) {
 	//	int anim = this.head.GetEntity().GetAnimator().GetAnim( "dead" );
@@ -1634,9 +1634,9 @@ idAFEntity_WithAttachedHead::Spawn
 ////	idVec3				origin;
 ////	idMat3				axis;
 ////
-////	headModel = spawnArgs.GetString( "def_head", "" );
+////	headModel = this.spawnArgs.GetString( "def_head", "" );
 ////	if ( headModel[ 0 ] ) {
-////		jointName = spawnArgs.GetString( "head_joint" );
+////		jointName = this.spawnArgs.GetString( "head_joint" );
 ////		joint = this.animator.GetJointHandle( jointName );
 ////		if ( joint == jointHandle_t.INVALID_JOINT ) {
 ////			gameLocal.Error( "Joint '%s' not found for 'head_joint' on '%s'", jointName.c_str(), name.c_str() );
@@ -1673,7 +1673,7 @@ idAFEntity_WithAttachedHead::Spawn
 ////void idAFEntity_WithAttachedHead::LinkCombat( ) {
 ////	idAFAttachment *headEnt;
 ////
-////	if ( fl.hidden ) {
+////	if ( this.fl.hidden ) {
 ////		return;
 ////	}
 ////
@@ -1782,17 +1782,17 @@ idAFEntity_WithAttachedHead::Spawn
 ////	af.GetPhysics().EnableImpact();
 ////	af.GetPhysics().Activate();
 ////
-////	spawnArgs.GetVector( "init_velocity", "0 0 0", init_velocity );
-////	spawnArgs.GetVector( "init_avelocity", "0 0 0", init_avelocity );
+////	this.spawnArgs.GetVector( "init_velocity", "0 0 0", init_velocity );
+////	this.spawnArgs.GetVector( "init_avelocity", "0 0 0", init_avelocity );
 ////
-////	delay = spawnArgs.GetFloat( "init_velocityDelay", "0" );
+////	delay = this.spawnArgs.GetFloat( "init_velocityDelay", "0" );
 ////	if ( delay == 0.0f ) {
 ////		af.GetPhysics().SetLinearVelocity( init_velocity );
 ////	} else {
 ////		PostEventSec( &EV_SetLinearVelocity, delay, init_velocity );
 ////	}
 ////
-////	delay = spawnArgs.GetFloat( "init_avelocityDelay", "0" );
+////	delay = this.spawnArgs.GetFloat( "init_avelocityDelay", "0" );
 ////	if ( delay == 0.0f ) {
 ////		af.GetPhysics().SetAngularVelocity( init_avelocity );
 ////	} else {
@@ -1859,8 +1859,8 @@ idAFEntity_Vehicle::idAFEntity_Vehicle
 ////*/
 	Spawn(): void {
 		todoThrow();
-////	const char *eyesJointName = spawnArgs.GetString( "eyesJoint", "eyes" );
-////	const char *steeringWheelJointName = spawnArgs.GetString( "steeringWheelJoint", "steeringWheel" );
+////	const char *eyesJointName = this.spawnArgs.GetString( "eyesJoint", "eyes" );
+////	const char *steeringWheelJointName = this.spawnArgs.GetString( "steeringWheelJoint", "steeringWheel" );
 ////
 ////	LoadAF();
 ////
@@ -1868,7 +1868,7 @@ idAFEntity_Vehicle::idAFEntity_Vehicle
 ////
 ////	SetPhysics( af.GetPhysics() );
 ////
-////	fl.takedamage = true;
+////	this.fl.takedamage = true;
 ////
 ////	if ( !eyesJointName[0] ) {
 ////		gameLocal.Error( "idAFEntity_Vehicle '%s' no eyes joint specified", name.c_str() );
@@ -1879,13 +1879,13 @@ idAFEntity_Vehicle::idAFEntity_Vehicle
 ////	}
 ////	steeringWheelJoint = this.animator.GetJointHandle( steeringWheelJointName );
 ////
-////	spawnArgs.GetFloat( "wheelRadius", "20", wheelRadius );
-////	spawnArgs.GetFloat( "steerSpeed", "5", steerSpeed ); 
+////	this.spawnArgs.GetFloat( "wheelRadius", "20", wheelRadius );
+////	this.spawnArgs.GetFloat( "steerSpeed", "5", steerSpeed ); 
 ////
 ////	player = NULL;
 ////	steerAngle = 0.0f;
 ////
-////	const char *smokeName = spawnArgs.GetString( "smoke_vehicle_dust", "muzzlesmoke" );
+////	const char *smokeName = this.spawnArgs.GetString( "smoke_vehicle_dust", "muzzlesmoke" );
 ////	if ( *smokeName != '\0' ) {
 ////		dustSmoke = static_cast<const idDeclParticle *>( declManager.FindType( DECL_PARTICLE, smokeName ) );
 ////	}
@@ -2022,7 +2022,7 @@ idAFEntity_VehicleSimple::idAFEntity_VehicleSimple
 ////	wheelModel = new idClipModel( trm );
 ////
 ////	for ( i = 0; i < 4; i++ ) {
-////		const char *wheelJointName = spawnArgs.GetString( wheelJointKeys[i], "" );
+////		const char *wheelJointName = this.spawnArgs.GetString( wheelJointKeys[i], "" );
 ////		if ( !wheelJointName[0] ) {
 ////			gameLocal.Error( "idAFEntity_VehicleSimple '%s' no '%s' specified", name.c_str(), wheelJointKeys[i] );
 ////		}
@@ -2236,7 +2236,7 @@ idAFEntity_VehicleFourWheels::idAFEntity_VehicleFourWheels
 ////	const char *wheelBodyName, *wheelJointName, *steeringHingeName;
 ////
 ////	for ( i = 0; i < 4; i++ ) {
-////		wheelBodyName = spawnArgs.GetString( wheelBodyKeys[i], "" );
+////		wheelBodyName = this.spawnArgs.GetString( wheelBodyKeys[i], "" );
 ////		if ( !wheelBodyName[0] ) {
 ////			gameLocal.Error( "idAFEntity_VehicleFourWheels '%s' no '%s' specified", name.c_str(), wheelBodyKeys[i] );
 ////		}
@@ -2244,7 +2244,7 @@ idAFEntity_VehicleFourWheels::idAFEntity_VehicleFourWheels
 ////		if ( !wheels[i] ) {
 ////			gameLocal.Error( "idAFEntity_VehicleFourWheels '%s' can't find wheel body '%s'", name.c_str(), wheelBodyName );
 ////		}
-////		wheelJointName = spawnArgs.GetString( wheelJointKeys[i], "" );
+////		wheelJointName = this.spawnArgs.GetString( wheelJointKeys[i], "" );
 ////		if ( !wheelJointName[0] ) {
 ////			gameLocal.Error( "idAFEntity_VehicleFourWheels '%s' no '%s' specified", name.c_str(), wheelJointKeys[i] );
 ////		}
@@ -2255,7 +2255,7 @@ idAFEntity_VehicleFourWheels::idAFEntity_VehicleFourWheels
 ////	}
 ////
 ////	for ( i = 0; i < 2; i++ ) {
-////		steeringHingeName = spawnArgs.GetString( steeringHingeKeys[i], "" );
+////		steeringHingeName = this.spawnArgs.GetString( steeringHingeKeys[i], "" );
 ////		if ( !steeringHingeName[0] ) {
 ////			gameLocal.Error( "idAFEntity_VehicleFourWheels '%s' no '%s' specified", name.c_str(), steeringHingeKeys[i] );
 ////		}
@@ -2441,7 +2441,7 @@ idAFEntity_VehicleSixWheels::idAFEntity_VehicleSixWheels
 ////	const char *wheelBodyName, *wheelJointName, *steeringHingeName;
 ////
 ////	for ( i = 0; i < 6; i++ ) {
-////		wheelBodyName = spawnArgs.GetString( wheelBodyKeys[i], "" );
+////		wheelBodyName = this.spawnArgs.GetString( wheelBodyKeys[i], "" );
 ////		if ( !wheelBodyName[0] ) {
 ////			gameLocal.Error( "idAFEntity_VehicleSixWheels '%s' no '%s' specified", name.c_str(), wheelBodyKeys[i] );
 ////		}
@@ -2449,7 +2449,7 @@ idAFEntity_VehicleSixWheels::idAFEntity_VehicleSixWheels
 ////		if ( !wheels[i] ) {
 ////			gameLocal.Error( "idAFEntity_VehicleSixWheels '%s' can't find wheel body '%s'", name.c_str(), wheelBodyName );
 ////		}
-////		wheelJointName = spawnArgs.GetString( wheelJointKeys[i], "" );
+////		wheelJointName = this.spawnArgs.GetString( wheelJointKeys[i], "" );
 ////		if ( !wheelJointName[0] ) {
 ////			gameLocal.Error( "idAFEntity_VehicleSixWheels '%s' no '%s' specified", name.c_str(), wheelJointKeys[i] );
 ////		}
@@ -2460,7 +2460,7 @@ idAFEntity_VehicleSixWheels::idAFEntity_VehicleSixWheels
 ////	}
 ////
 ////	for ( i = 0; i < 4; i++ ) {
-////		steeringHingeName = spawnArgs.GetString( steeringHingeKeys[i], "" );
+////		steeringHingeName = this.spawnArgs.GetString( steeringHingeKeys[i], "" );
 ////		if ( !steeringHingeName[0] ) {
 ////			gameLocal.Error( "idAFEntity_VehicleSixWheels '%s' no '%s' specified", name.c_str(), steeringHingeKeys[i] );
 ////		}
@@ -2665,11 +2665,11 @@ idAFEntity_SteamPipe::idAFEntity_SteamPipe
 ////
 ////	SetPhysics( af.GetPhysics() );
 ////
-////	fl.takedamage = true;
+////	this.fl.takedamage = true;
 ////
-////	steamBodyName = spawnArgs.GetString( "steamBody", "" );
-////	steamForce = spawnArgs.GetFloat( "steamForce", "2000" );
-////	steamUpForce = spawnArgs.GetFloat( "steamUpForce", "10" );
+////	steamBodyName = this.spawnArgs.GetString( "steamBody", "" );
+////	steamForce = this.spawnArgs.GetFloat( "steamForce", "2000" );
+////	steamUpForce = this.spawnArgs.GetFloat( "steamUpForce", "10" );
 ////	steamDir = af.GetPhysics().GetAxis( steamBody )[2];
 ////	steamBody = af.GetPhysics().GetBodyId( steamBodyName );
 ////	force.SetPosition( af.GetPhysics(), steamBody, af.GetPhysics().GetOrigin( steamBody ) );
@@ -2694,7 +2694,7 @@ idAFEntity_SteamPipe::idAFEntity_SteamPipe
 ////	steamRenderEntity.shaderParms[ SHADERPARM_GREEN ]	= 1.0f;
 ////	steamRenderEntity.shaderParms[ SHADERPARM_BLUE ]	= 1.0f;
 ////	modelDef = NULL;
-////	temp = spawnArgs.GetString ( "model_steam" );
+////	temp = this.spawnArgs.GetString ( "model_steam" );
 ////	if ( *temp != '\0' ) {
 ////		if ( !strstr( temp, "." ) ) {
 ////			modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( declType_t.DECL_MODELDEF, temp, false ) );
@@ -2837,7 +2837,7 @@ idAFEntity_ClawFourFingers::idAFEntity_ClawFourFingers
 ////	af.GetPhysics().SetForcePushable( true );
 ////	SetPhysics( af.GetPhysics() );
 ////
-////	fl.takedamage = true;
+////	this.fl.takedamage = true;
 ////
 ////	for ( i = 0; i < 4; i++ ) {
 ////		fingers[i] = static_cast<idAFConstraint_Hinge *>(af.GetPhysics().GetConstraint( clawConstraintNames[i] ));

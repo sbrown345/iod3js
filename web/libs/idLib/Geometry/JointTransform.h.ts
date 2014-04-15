@@ -99,12 +99,12 @@ class idJointMat {
 	//	this.mat[2 * 4 + 1] = m[1][2];
 	//	this.mat[2 * 4 + 2] = m[2][2];
 	//}
-	//
-	//ID_INLINE void idJointMat::SetTranslation( const idVec3 &t ) {
-	//	this.mat[0 * 4 + 3] = t[0];
-	//	this.mat[1 * 4 + 3] = t[1];
-	//	this.mat[2 * 4 + 3] = t[2];
-	//}
+
+	SetTranslation ( t: idVec3 ): void {
+		this.mat[0 * 4 + 3] = t[0];
+		this.mat[1 * 4 + 3] = t[1];
+		this.mat[2 * 4 + 3] = t[2];
+	}
 	//
 	//ID_INLINE idVec3 idJointMat::operator*( const idVec3 &v ) const {
 	//	return idVec3(	this.mat[0 * 4 + 0] * v[0] + this.mat[0 * 4 + 1] * v[1] + this.mat[0 * 4 + 2] * v[2],
@@ -119,43 +119,44 @@ class idJointMat {
 	//}
 	//
 	//ID_INLINE idJointMat &idJointMat::operator*=( const idJointMat &a ) {
-	//	float dst[3];
-	//var mat = this.mat;
-	//	dst[0] = mat[0 * 4 + 0] * a.mat[0 * 4 + 0] + mat[1 * 4 + 0] * a.mat[0 * 4 + 1] + mat[2 * 4 + 0] * a.mat[0 * 4 + 2];
-	//	dst[1] = mat[0 * 4 + 0] * a.mat[1 * 4 + 0] + mat[1 * 4 + 0] * a.mat[1 * 4 + 1] + mat[2 * 4 + 0] * a.mat[1 * 4 + 2];
-	//	dst[2] = mat[0 * 4 + 0] * a.mat[2 * 4 + 0] + mat[1 * 4 + 0] * a.mat[2 * 4 + 1] + mat[2 * 4 + 0] * a.mat[2 * 4 + 2];
-	//	mat[0 * 4 + 0] = dst[0];
-	//	mat[1 * 4 + 0] = dst[1];
-	//	mat[2 * 4 + 0] = dst[2];
-	//
-	//	dst[0] = mat[0 * 4 + 1] * a.mat[0 * 4 + 0] + mat[1 * 4 + 1] * a.mat[0 * 4 + 1] + mat[2 * 4 + 1] * a.mat[0 * 4 + 2];
-	//	dst[1] = mat[0 * 4 + 1] * a.mat[1 * 4 + 0] + mat[1 * 4 + 1] * a.mat[1 * 4 + 1] + mat[2 * 4 + 1] * a.mat[1 * 4 + 2];
-	//	dst[2] = mat[0 * 4 + 1] * a.mat[2 * 4 + 0] + mat[1 * 4 + 1] * a.mat[2 * 4 + 1] + mat[2 * 4 + 1] * a.mat[2 * 4 + 2];
-	//	mat[0 * 4 + 1] = dst[0];
-	//	mat[1 * 4 + 1] = dst[1];
-	//	mat[2 * 4 + 1] = dst[2];
-	//
-	//	dst[0] = mat[0 * 4 + 2] * a.mat[0 * 4 + 0] + mat[1 * 4 + 2] * a.mat[0 * 4 + 1] + mat[2 * 4 + 2] * a.mat[0 * 4 + 2];
-	//	dst[1] = mat[0 * 4 + 2] * a.mat[1 * 4 + 0] + mat[1 * 4 + 2] * a.mat[1 * 4 + 1] + mat[2 * 4 + 2] * a.mat[1 * 4 + 2];
-	//	dst[2] = mat[0 * 4 + 2] * a.mat[2 * 4 + 0] + mat[1 * 4 + 2] * a.mat[2 * 4 + 1] + mat[2 * 4 + 2] * a.mat[2 * 4 + 2];
-	//	mat[0 * 4 + 2] = dst[0];
-	//	mat[1 * 4 + 2] = dst[1];
-	//	mat[2 * 4 + 2] = dst[2];
-	//
-	//	dst[0] = mat[0 * 4 + 3] * a.mat[0 * 4 + 0] + mat[1 * 4 + 3] * a.mat[0 * 4 + 1] + mat[2 * 4 + 3] * a.mat[0 * 4 + 2];
-	//	dst[1] = mat[0 * 4 + 3] * a.mat[1 * 4 + 0] + mat[1 * 4 + 3] * a.mat[1 * 4 + 1] + mat[2 * 4 + 3] * a.mat[1 * 4 + 2];
-	//	dst[2] = mat[0 * 4 + 3] * a.mat[2 * 4 + 0] + mat[1 * 4 + 3] * a.mat[2 * 4 + 1] + mat[2 * 4 + 3] * a.mat[2 * 4 + 2];
-	//	mat[0 * 4 + 3] = dst[0];
-	//	mat[1 * 4 + 3] = dst[1];
-	//	mat[2 * 4 + 3] = dst[2];
-	//
-	//	mat[0 * 4 + 3] += a.mat[0 * 4 + 3];
-	//	mat[1 * 4 + 3] += a.mat[1 * 4 + 3];
-	//	mat[2 * 4 + 3] += a.mat[2 * 4 + 3];
-	//
-	//	return *this;
-	//}
-	//
+	opMultiplicationAssignment ( a: idJointMat ): idJointMat {
+		var dst = new Float32Array( 3 );
+		var mat = this.mat;
+		dst[0] = mat[0 * 4 + 0] * a.mat[0 * 4 + 0] + mat[1 * 4 + 0] * a.mat[0 * 4 + 1] + mat[2 * 4 + 0] * a.mat[0 * 4 + 2];
+		dst[1] = mat[0 * 4 + 0] * a.mat[1 * 4 + 0] + mat[1 * 4 + 0] * a.mat[1 * 4 + 1] + mat[2 * 4 + 0] * a.mat[1 * 4 + 2];
+		dst[2] = mat[0 * 4 + 0] * a.mat[2 * 4 + 0] + mat[1 * 4 + 0] * a.mat[2 * 4 + 1] + mat[2 * 4 + 0] * a.mat[2 * 4 + 2];
+		mat[0 * 4 + 0] = dst[0];
+		mat[1 * 4 + 0] = dst[1];
+		mat[2 * 4 + 0] = dst[2];
+
+		dst[0] = mat[0 * 4 + 1] * a.mat[0 * 4 + 0] + mat[1 * 4 + 1] * a.mat[0 * 4 + 1] + mat[2 * 4 + 1] * a.mat[0 * 4 + 2];
+		dst[1] = mat[0 * 4 + 1] * a.mat[1 * 4 + 0] + mat[1 * 4 + 1] * a.mat[1 * 4 + 1] + mat[2 * 4 + 1] * a.mat[1 * 4 + 2];
+		dst[2] = mat[0 * 4 + 1] * a.mat[2 * 4 + 0] + mat[1 * 4 + 1] * a.mat[2 * 4 + 1] + mat[2 * 4 + 1] * a.mat[2 * 4 + 2];
+		mat[0 * 4 + 1] = dst[0];
+		mat[1 * 4 + 1] = dst[1];
+		mat[2 * 4 + 1] = dst[2];
+
+		dst[0] = mat[0 * 4 + 2] * a.mat[0 * 4 + 0] + mat[1 * 4 + 2] * a.mat[0 * 4 + 1] + mat[2 * 4 + 2] * a.mat[0 * 4 + 2];
+		dst[1] = mat[0 * 4 + 2] * a.mat[1 * 4 + 0] + mat[1 * 4 + 2] * a.mat[1 * 4 + 1] + mat[2 * 4 + 2] * a.mat[1 * 4 + 2];
+		dst[2] = mat[0 * 4 + 2] * a.mat[2 * 4 + 0] + mat[1 * 4 + 2] * a.mat[2 * 4 + 1] + mat[2 * 4 + 2] * a.mat[2 * 4 + 2];
+		mat[0 * 4 + 2] = dst[0];
+		mat[1 * 4 + 2] = dst[1];
+		mat[2 * 4 + 2] = dst[2];
+
+		dst[0] = mat[0 * 4 + 3] * a.mat[0 * 4 + 0] + mat[1 * 4 + 3] * a.mat[0 * 4 + 1] + mat[2 * 4 + 3] * a.mat[0 * 4 + 2];
+		dst[1] = mat[0 * 4 + 3] * a.mat[1 * 4 + 0] + mat[1 * 4 + 3] * a.mat[1 * 4 + 1] + mat[2 * 4 + 3] * a.mat[1 * 4 + 2];
+		dst[2] = mat[0 * 4 + 3] * a.mat[2 * 4 + 0] + mat[1 * 4 + 3] * a.mat[2 * 4 + 1] + mat[2 * 4 + 3] * a.mat[2 * 4 + 2];
+		mat[0 * 4 + 3] = dst[0];
+		mat[1 * 4 + 3] = dst[1];
+		mat[2 * 4 + 3] = dst[2];
+
+		mat[0 * 4 + 3] += a.mat[0 * 4 + 3];
+		mat[1 * 4 + 3] += a.mat[1 * 4 + 3];
+		mat[2 * 4 + 3] += a.mat[2 * 4 + 3];
+
+		return this;
+	}
+	
 	//ID_INLINE idJointMat &idJointMat::operator/=( const idJointMat &a ) {
 	//	float dst[3];
 	//var mat = this.mat;
@@ -191,7 +192,7 @@ class idJointMat {
 	//	mat[1 * 4 + 3] = dst[1];
 	//	mat[2 * 4 + 3] = dst[2];
 	//
-	//	return *this;
+	//	return this;
 	//}
 	//
 	//ID_INLINE bool idJointMat::Compare( const idJointMat &a ) const {

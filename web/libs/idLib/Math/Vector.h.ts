@@ -970,7 +970,11 @@ class idVec3 {
 ////	return true;
 ////}
 
-	ToString ( ): string {
+	ToString ( precision = 2 ): string {
+		if ( arguments.length == 2 ) {
+			return idStr.FloatArrayToString( this.ToFloatPtr ( ), this.GetDimension ( ), precision );
+		}
+
 		return va( "x: %4.2f, y: %4.2f, z:%4.2f", this.x, this.y, this.z );
 	}
 
@@ -1109,15 +1113,6 @@ class idVec3 {
 ////	mat[2] = Cross( mat[1] );
 
 ////	return mat;
-////}
-
-/////*
-////=============
-////idVec3::ToString
-////=============
-////*/
-////const char *idVec3::ToString( int precision = 2) const {
-////	return idStr.FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
 ////}
 
 /////*

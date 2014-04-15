@@ -308,9 +308,9 @@ idMD5Anim::idMD5Anim
 //====================
 //*/
 //void idMD5Anim::Free( ) {
-//	numFrames	= 0;
-//	numJoints	= 0;
-//	frameRate	= 24;
+//	this.numFrames	= 0;
+//	this.numJoints	= 0;
+//	this.frameRate	= 24;
 //	animLength	= 0;
 //	name		= "";
 //
@@ -422,38 +422,38 @@ idMD5Anim::TotalMovementDelta
 //
 //	// parse num frames
 //	parser.ExpectTokenString( "numFrames" );
-//	numFrames = parser.ParseInt();
-//	if ( numFrames <= 0 ) {
-//		parser.Error( "Invalid number of frames: %d", numFrames );
+//	this.numFrames = parser.ParseInt();
+//	if ( this.numFrames <= 0 ) {
+//		parser.Error( "Invalid number of frames: %d", this.numFrames );
 //	}
 //
 //	// parse num joints
 //	parser.ExpectTokenString( "numJoints" );
-//	numJoints = parser.ParseInt();
-//	if ( numJoints <= 0 ) {
-//		parser.Error( "Invalid number of joints: %d", numJoints );
+//	this.numJoints = parser.ParseInt();
+//	if ( this.numJoints <= 0 ) {
+//		parser.Error( "Invalid number of joints: %d", this.numJoints );
 //	}
 //
 //	// parse frame rate
 //	parser.ExpectTokenString( "frameRate" );
-//	frameRate = parser.ParseInt();
-//	if ( frameRate < 0 ) {
-//		parser.Error( "Invalid frame rate: %d", frameRate );
+//	this.frameRate = parser.ParseInt();
+//	if ( this.frameRate < 0 ) {
+//		parser.Error( "Invalid frame rate: %d", this.frameRate );
 //	}
 //
 //	// parse number of animated components
 //	parser.ExpectTokenString( "numAnimatedComponents" );
 //	numAnimatedComponents = parser.ParseInt();
-//	if ( ( numAnimatedComponents < 0 ) || ( numAnimatedComponents > numJoints * 6 ) ) {
+//	if ( ( numAnimatedComponents < 0 ) || ( numAnimatedComponents > this.numJoints * 6 ) ) {
 //		parser.Error( "Invalid number of animated components: %d", numAnimatedComponents );
 //	}
 //
 //	// parse the hierarchy
 //	jointInfo.SetGranularity( 1 );
-//	jointInfo.SetNum( numJoints );
+//	jointInfo.SetNum( this.numJoints );
 //	parser.ExpectTokenString( "hierarchy" );
 //	parser.ExpectTokenString( "{" );
-//	for( i = 0; i < numJoints; i++ ) {
+//	for( i = 0; i < this.numJoints; i++ ) {
 //		parser.ReadToken( &token );
 //		jointInfo[ i ].nameIndex = animationLib.JointIndex( token );
 //		
@@ -486,8 +486,8 @@ idMD5Anim::TotalMovementDelta
 //	parser.ExpectTokenString( "bounds" );
 //	parser.ExpectTokenString( "{" );
 //	bounds.SetGranularity( 1 );
-//	bounds.SetNum( numFrames );
-//	for( i = 0; i < numFrames; i++ ) {
+//	bounds.SetNum( this.numFrames );
+//	for( i = 0; i < this.numFrames; i++ ) {
 //		parser.Parse1DMatrix( 3, bounds[ i ][ 0 ].ToFloatPtr() );
 //		parser.Parse1DMatrix( 3, bounds[ i ][ 1 ].ToFloatPtr() );
 //	}
@@ -495,10 +495,10 @@ idMD5Anim::TotalMovementDelta
 //
 //	// parse base frame
 //	baseFrame.SetGranularity( 1 );
-//	baseFrame.SetNum( numJoints );
+//	baseFrame.SetNum( this.numJoints );
 //	parser.ExpectTokenString( "baseframe" );
 //	parser.ExpectTokenString( "{" );
-//	for( i = 0; i < numJoints; i++ ) {
+//	for( i = 0; i < this.numJoints; i++ ) {
 //		idCQuat q;
 //		parser.Parse1DMatrix( 3, baseFrame[ i ].t.ToFloatPtr() );
 //		parser.Parse1DMatrix( 3, q.ToFloatPtr() );//baseFrame[ i ].q.ToFloatPtr() );
@@ -508,10 +508,10 @@ idMD5Anim::TotalMovementDelta
 //
 //	// parse frames
 //	componentFrames.SetGranularity( 1 );
-//	componentFrames.SetNum( numAnimatedComponents * numFrames );
+//	componentFrames.SetNum( numAnimatedComponents * this.numFrames );
 //
 //	float *componentPtr = componentFrames.Ptr();
-//	for( i = 0; i < numFrames; i++ ) {
+//	for( i = 0; i < this.numFrames; i++ ) {
 //		parser.ExpectTokenString( "frame" );
 //		num = parser.ParseInt();
 //		if ( num != i ) {
@@ -532,28 +532,28 @@ idMD5Anim::TotalMovementDelta
 //	} else {
 //		componentPtr = &componentFrames[ jointInfo[ 0 ].firstComponent ];
 //		if ( jointInfo[ 0 ].animBits & ANIM_TX ) {
-//			for( i = 0; i < numFrames; i++ ) {
+//			for( i = 0; i < this.numFrames; i++ ) {
 //				componentPtr[ numAnimatedComponents * i ] -= baseFrame[ 0 ].t.x;
 //			}
-//			totaldelta.x = componentPtr[ numAnimatedComponents * ( numFrames - 1 ) ];
+//			totaldelta.x = componentPtr[ numAnimatedComponents * ( this.numFrames - 1 ) ];
 //			componentPtr++;
 //		} else {
 //			totaldelta.x = 0.0;
 //		}
 //		if ( jointInfo[ 0 ].animBits & ANIM_TY ) {
-//			for( i = 0; i < numFrames; i++ ) {
+//			for( i = 0; i < this.numFrames; i++ ) {
 //				componentPtr[ numAnimatedComponents * i ] -= baseFrame[ 0 ].t.y;
 //			}
-//			totaldelta.y = componentPtr[ numAnimatedComponents * ( numFrames - 1 ) ];
+//			totaldelta.y = componentPtr[ numAnimatedComponents * ( this.numFrames - 1 ) ];
 //			componentPtr++;
 //		} else {
 //			totaldelta.y = 0.0;
 //		}
 //		if ( jointInfo[ 0 ].animBits & ANIM_TZ ) {
-//			for( i = 0; i < numFrames; i++ ) {
+//			for( i = 0; i < this.numFrames; i++ ) {
 //				componentPtr[ numAnimatedComponents * i ] -= baseFrame[ 0 ].t.z;
 //			}
-//			totaldelta.z = componentPtr[ numAnimatedComponents * ( numFrames - 1 ) ];
+//			totaldelta.z = componentPtr[ numAnimatedComponents * ( this.numFrames - 1 ) ];
 //		} else {
 //			totaldelta.z = 0.0;
 //		}
@@ -561,7 +561,7 @@ idMD5Anim::TotalMovementDelta
 //	baseFrame[ 0 ].t.Zero();
 //
 //	// we don't count last frame because it would cause a 1 frame pause at the end
-//	animLength = ( ( numFrames - 1 ) * 1000 + frameRate - 1 ) / frameRate;
+//	animLength = ( ( this.numFrames - 1 ) * 1000 + this.frameRate - 1 ) / this.frameRate;
 //
 //	// done
 //	return true;
@@ -608,64 +608,64 @@ idMD5Anim::NumRefs
 //	framenum--;
 //	if ( framenum < 0 ) {
 //		framenum = 0;
-//	} else if ( framenum >= numFrames ) {
-//		framenum = numFrames - 1;
+//	} else if ( framenum >= this.numFrames ) {
+//		framenum = this.numFrames - 1;
 //	}
 //
 //	frame.frame1 = framenum;
 //	frame.frame2 = framenum;
 //}
-//
-///*
-//====================
-//idMD5Anim::ConvertTimeToFrame
-//====================
-//*/
-//void idMD5Anim::ConvertTimeToFrame( /*int*/time:number, int cyclecount, frameBlend_t &frame ) const {
-//	int frameTime;
-//	int frameNum;
-//
-//	if ( numFrames <= 1 ) {
-//		frame.frame1		= 0;
-//		frame.frame2		= 0;
-//		frame.backlerp		= 0.0;
-//		frame.frontlerp		= 1.0;
-//		frame.cycleCount	= 0;
-//		return;
-//	}
-//
-//	if ( time <= 0 ) {
-//		frame.frame1		= 0;
-//		frame.frame2		= 1;
-//		frame.backlerp		= 0.0;
-//		frame.frontlerp		= 1.0;
-//		frame.cycleCount	= 0;
-//		return;
-//	}
-//	
-//	frameTime			= time * frameRate;
-//	frameNum			= frameTime / 1000;
-//	frame.cycleCount	= frameNum / ( numFrames - 1 );
-//
-//	if ( ( cyclecount > 0 ) && ( frame.cycleCount >= cyclecount ) ) {
-//		frame.cycleCount	= cyclecount - 1;
-//		frame.frame1		= numFrames - 1;
-//		frame.frame2		= frame.frame1;
-//		frame.backlerp		= 0.0;
-//		frame.frontlerp		= 1.0;
-//		return;
-//	}
-//	
-//	frame.frame1 = frameNum % ( numFrames - 1 );
-//	frame.frame2 = frame.frame1 + 1;
-//	if ( frame.frame2 >= numFrames ) {
-//		frame.frame2 = 0;
-//	}
-//
-//	frame.backlerp	= ( frameTime % 1000 ) * 0.001f;
-//	frame.frontlerp	= 1.0 - frame.backlerp;
-//}
-//
+
+/*
+====================
+idMD5Anim::ConvertTimeToFrame
+====================
+*/
+	ConvertTimeToFrame ( /*int*/time: number, /*int */cyclecount: number, frame: frameBlend_t ): void {
+		var frameTime: number /*float*/;
+		var frameNum: number /*int*/;
+
+		if ( this.numFrames <= 1 ) {
+			frame.frame1 = 0;
+			frame.frame2 = 0;
+			frame.backlerp = 0.0;
+			frame.frontlerp = 1.0;
+			frame.cycleCount = 0;
+			return;
+		}
+
+		if ( time <= 0 ) {
+			frame.frame1 = 0;
+			frame.frame2 = 1;
+			frame.backlerp = 0.0;
+			frame.frontlerp = 1.0;
+			frame.cycleCount = 0;
+			return;
+		}
+
+		frameTime = time * this.frameRate;
+		frameNum = int( frameTime / 1000 );
+		frame.cycleCount = int( frameNum / ( this.numFrames - 1 ) );
+
+		if ( ( cyclecount > 0 ) && ( frame.cycleCount >= cyclecount ) ) {
+			frame.cycleCount = cyclecount - 1;
+			frame.frame1 = this.numFrames - 1;
+			frame.frame2 = frame.frame1;
+			frame.backlerp = 0.0;
+			frame.frontlerp = 1.0;
+			return;
+		}
+
+		frame.frame1 = frameNum % ( this.numFrames - 1 );
+		frame.frame2 = frame.frame1 + 1;
+		if ( frame.frame2 >= this.numFrames ) {
+			frame.frame2 = 0;
+		}
+
+		frame.backlerp = ( frameTime % 1000 ) * 0.001;
+		frame.frontlerp = 1.0 - frame.backlerp;
+	}
+
 ///*
 //====================
 //idMD5Anim::GetOrigin
@@ -862,12 +862,13 @@ idMD5Anim::NumRefs
 //	bnds[ 1 ] -= offset;
 //}
 //
-///*
-//====================
-//idMD5Anim::GetInterpolatedFrame
-//====================
-//*/
-//void idMD5Anim::GetInterpolatedFrame( frameBlend_t &frame, idJointQuat *joints, const int *index, int numIndexes ) const {
+/*
+====================
+idMD5Anim::GetInterpolatedFrame
+====================
+*/
+	GetInterpolatedFrame ( frame: frameBlend_t, joints: idJointQuat [], index: Int32Array, /*int */numIndexes: number ): void {
+		todoThrow ( );
 //	int						i, numLerpJoints;
 //	const float				*frame1;
 //	const float				*frame2;
@@ -1050,8 +1051,8 @@ idMD5Anim::NumRefs
 //	if ( frame.cycleCount ) {
 //		joints[ 0 ].t += totaldelta * ( float )frame.cycleCount;
 //	}
-//}
-//
+	}
+
 ///*
 //====================
 //idMD5Anim::GetSingleFrame
@@ -3815,18 +3816,18 @@ class idAnimator {
 	RemoveOrigin( ) :boolean {
 		return this.removeOriginOffset;
 	}
-	//
-	///*
-	//=====================
-	//idAnimator::GetJointList
-	//=====================
-	//*/
-	//void idAnimator::GetJointList( jointnames:string, idList<jointHandle_t> &jointList ) const {
-	//	if ( this.modelDef ) {
-	//		this.modelDef.GetJointList( jointnames, jointList );
-	//	}
-	//}
-	//
+	
+	/*
+	=====================
+	idAnimator::GetJointList
+	=====================
+	*/
+	GetJointList ( jointnames: string, jointList: idList<jointHandle_t> ): void {
+		if ( this.modelDef ) {
+			this.modelDef.GetJointList( jointnames, jointList );
+		}
+	}
+
 	///*
 	//=====================
 	//idAnimator::NumAnims
@@ -3943,27 +3944,27 @@ class idAnimator {
 		this.ForceUpdate ( );
 	}
 
-	///*
-	//=====================
-	//idAnimator::SetFrame
-	//=====================
-	//*/
-	//void idAnimator::SetFrame( channelNum /*int*/:number, animNum/*int*/:number, int frame, currentTime/*int*/:number, blendTime/*int*/:number ) {
-	//	if ( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) ) {
-	//		gameLocal.Error( "idAnimator::SetFrame : channel out of range" );
-	//	}
-	//
-	//	if ( !this.modelDef || !this.modelDef.GetAnim( animNum ) ) {
-	//		return;
-	//	}
-	//
-	//	this.PushAnims( channelNum, currentTime, blendTime );
-	//	this.channels[ channelNum ][ 0 ].SetFrame( this.modelDef, animNum, frame, currentTime, blendTime );
-	//	if ( this.entity ) {
-	//		this.entity.BecomeActive( TH_ANIMATE );
-	//	}
-	//}
-	//
+	/*
+	=====================
+	idAnimator::SetFrame
+	=====================
+	*/
+	SetFrame ( channelNum /*int*/: number, animNum /*int*/: number, /*int */frame: number, currentTime /*int*/: number, blendTime /*int*/: number ): void {
+		if ( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) ) {
+			gameLocal.Error( "idAnimator::SetFrame : channel out of range" );
+		}
+
+		if ( !this.modelDef || !this.modelDef.GetAnim_index( animNum ) ) {
+			return;
+		}
+
+		this.PushAnims( channelNum, currentTime, blendTime );
+		this.channels[channelNum][0].SetFrame( this.modelDef, animNum, frame, currentTime, blendTime );
+		if ( this.entity ) {
+			this.entity.BecomeActive( TH_ANIMATE );
+		}
+	}
+
 	/*
 	=====================
 	idAnimator::CycleAnim
@@ -4980,24 +4981,24 @@ idAnimator::GetJointHandle
 //
 //	return this.modelDef.ModelHandle().GetJointName( handle );
 //}
-//
-///*
-//=====================
-//idAnimator::GetChannelForJoint
-//=====================
-//*/
-//int idAnimator::GetChannelForJoint( jointHandle_t joint ) const {
-//	if ( !this.modelDef ) {
-//		gameLocal.Error( "idAnimator::GetChannelForJoint: NULL model" );
-//	}
-//
-//	if ( ( joint < 0 ) || ( joint >= numJoints ) ) {
-//		gameLocal.Error( "idAnimator::GetChannelForJoint: invalid joint num (%d)", joint );
-//	}
-//
-//	return this.modelDef.GetJoint( joint ).channel;
-//}
-//
+
+/*
+=====================
+idAnimator::GetChannelForJoint
+=====================
+*/
+	GetChannelForJoint ( joint: jointHandle_t ): number {
+		if ( !this.modelDef ) {
+			gameLocal.Error( "idAnimator::GetChannelForJoint: NULL model" );
+		}
+
+		if ( ( joint < 0 ) || ( joint >= this.numJoints ) ) {
+			gameLocal.Error( "idAnimator::GetChannelForJoint: invalid joint num (%d)", joint );
+		}
+
+		return this.modelDef.GetJoint( joint ).channel;
+	}
+
 ///*
 //=====================
 //idAnimator::GetFirstChild

@@ -395,7 +395,7 @@ class idStr implements ITrackedObject {
 ////}
 
 ////ID_INLINE idStr::idStr( const idStr &text ) {
-////	int l;
+////	var/*int */l:number;
 
 ////	Init();
 ////	l = text.Length();
@@ -406,7 +406,7 @@ class idStr implements ITrackedObject {
 
 ////ID_INLINE idStr::idStr( const idStr &text, int start, int end ) {
 ////	var/*int*/i:number;
-////	int l;
+////	var/*int */l:number;
 
 ////	Init();
 ////	if ( end > text.Length() ) {
@@ -434,7 +434,7 @@ class idStr implements ITrackedObject {
 ////}
 
 ////ID_INLINE idStr::idStr( text:string ) {
-////	int l;
+////	var/*int */l:number;
 
 ////	Init();
 ////	if ( text ) {
@@ -492,7 +492,7 @@ class idStr implements ITrackedObject {
 
 ////ID_INLINE idStr::idStr( const int i ) {
 ////	char text[ 64 ];
-////	int l;
+////	var/*int */l:number;
 
 ////	Init();
 ////	l = sprintf( text, "%d", i );
@@ -503,7 +503,7 @@ class idStr implements ITrackedObject {
 
 ////ID_INLINE idStr::idStr( const unsigned u ) {
 ////	char text[ 64 ];
-////	int l;
+////	var/*int */l:number;
 
 ////	Init();
 ////	l = sprintf( text, "%u", u );
@@ -514,7 +514,7 @@ class idStr implements ITrackedObject {
 
 ////ID_INLINE idStr::idStr( const float f ) {
 ////	char text[ 64 ];
-////	int l;
+////	var/*int */l:number;
 
 ////	Init();
 ////	l = idStr::snPrintf( text, sizeof( text ), "%f", f );
@@ -555,7 +555,7 @@ class idStr implements ITrackedObject {
 ////}
 
 ////ID_INLINE void idStr::operator=( const idStr &text ) {
-////	int l;
+////	var/*int */l:number;
 
 ////	l = text.Length();
 ////	EnsureAlloced( l + 1, false );
@@ -1578,23 +1578,28 @@ StripLeading( $string:string ):void {
 	}
 }
 
-/////*
-////============
-////idStr::StripLeadingOnce
-////============
-////*/
-////bool idStr::StripLeadingOnce( const char *string ) {
-////	int l;
+/*
+============
+idStr::StripLeadingOnce
+============
+*/
+	StripLeadingOnce ( $string: string ): boolean {
+		var /*int */l: number;
 
-////	l = strlen( string );
-////	if ( ( l > 0 ) && !Cmpn( string, l ) ) {
-////		memmove( this.data, this.data + l, len - l + 1 );
-////		len -= l;
-////		return true;
-////	}
-////	return false;
-////}
-	
+		var data = this.data.toUint8Array();
+		debugger;
+		l = strlen( $string );
+		if ( ( l > 0 ) && !this.Cmpn( $string, l ) ) {
+			//todo memmove( data, data + l, this.len - l + 1 );
+			this.len -= l;
+			return true;
+		}
+
+
+		this.data = data.toString();
+		return false;
+	}
+
 /*
 ============
 idStr::StripLeading
@@ -1623,8 +1628,8 @@ StripTrailing( $string:string ):void {
 ////idStr::StripTrailingOnce
 ////============
 ////*/
-////bool idStr::StripTrailingOnce( const char *string ) {
-////	int l;
+////bool idStr::StripTrailingOnce( $string:string) {
+////	var/*int */l:number;
 
 ////	l = strlen( string );
 ////	if ( ( l > 0 ) && ( len >= l ) && !Cmpn( string, this.data + len - l, l ) ) {
@@ -2506,7 +2511,7 @@ or returns -1 on failure or if the buffer would be overflowed.
 ////============
 ////*/
 ////int sprintf( idStr &string, const char *fmt, ... ) {
-////	int l;
+////	var/*int */l:number;
 ////	va_list argptr;
 ////	char buffer[32000];
 
@@ -2527,7 +2532,7 @@ or returns -1 on failure or if the buffer would be overflowed.
 ////============
 ////*/
 ////int vsprintf( idStr &string, const char *fmt, va_list argptr ) {
-////	int l;
+////	var/*int */l:number;
 ////	char buffer[32000];
 
 ////	l = idStr::vsnPrintf( buffer, sizeof(buffer)-1, fmt, argptr );

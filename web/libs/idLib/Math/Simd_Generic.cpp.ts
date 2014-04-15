@@ -2330,20 +2330,20 @@ idSIMD_Generic::Memcpy
 //		joints[j].t.Lerp( joints[j].t, blendJoints[j].t, lerp );
 //	}
 //}
-//
-///*
-//============
-//idSIMD_Generic::ConvertJointQuatsToJointMats
-//============
-//*/
-//void VPCALL idSIMD_Generic::ConvertJointQuatsToJointMats( idJointMat *jointMats, const idJointQuat *jointQuats, const int numJoints ) {
-//	var/*int*/i:number;
-//
-//	for ( i = 0; i < numJoints; i++ ) {
-//		jointMats[i].SetRotation( jointQuats[i].q.ToMat3() );
-//		jointMats[i].SetTranslation( jointQuats[i].t );
-//	}
-//}
+
+/*
+============
+idSIMD_Generic::ConvertJointQuatsToJointMats
+============
+*/
+	static ConvertJointQuatsToJointMats ( jointMats: idJointMat[], jointQuats: idJointQuat [], /*int */numJoints: number ): void {
+		var /*int*/i: number;
+		todoThrow ( );
+		//for ( i = 0; i < numJoints; i++ ) {
+		//	jointMats[i].SetRotation( jointQuats[i].q.ToMat3 ( ) );
+		//	jointMats[i].SetTranslation( jointQuats[i].t );
+		//}
+	}
 //
 ///*
 //============
