@@ -1614,7 +1614,8 @@ idDeclManagerLocal.MakeNameCanonical = function ( name: string, /*char **/result
 idDeclManagerLocal::ListDecls_f
 ================
 */
-idDeclManagerLocal.prototype.ListDecls_f = function ( args: idCmdArgs ): void {
+idDeclManagerLocal.prototype.ListDecls_f = function (args: idCmdArgs): void {
+	todo ( );
 ////	int		i, j;
 ////	int		totalDecls = 0;
 ////	int		totalText = 0;

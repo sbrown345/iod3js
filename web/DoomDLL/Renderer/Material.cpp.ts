@@ -323,18 +323,17 @@ idMaterial::ParseDecalInfo
 =================
 */
 	ParseDecalInfo ( src: idLexer ): void {
-		todoThrow ( );
-		//idToken token;
+		var token = new idToken;
 
-		//decalInfo.stayTime = src.ParseFloat() * 1000;
-		//decalInfo.fadeTime = src.ParseFloat() * 1000;
-		//float	start[4], end[4];
-		//src.Parse1DMatrix( 4, start );
-		//src.Parse1DMatrix( 4, end );
-		//for ( int i = 0 ; i < 4 ; i++ ) {
-		//	decalInfo.start[i] = start[i];
-		//	decalInfo.end[i] = end[i];
-		//}
+		this.decalInfo.stayTime = src.ParseFloat ( ) * 1000;
+		this.decalInfo.fadeTime = src.ParseFloat ( ) * 1000;
+		var start = new Float32Array( 4 ), end = new Float32Array( 4 );
+		src.Parse1DMatrix( 4, start );
+		src.Parse1DMatrix( 4, end );
+		for ( var i = 0; i < 4; i++ ) {
+			this.decalInfo.start[i] = start[i];
+			this.decalInfo.end[i] = end[i];
+		}
 	}
 
 /*

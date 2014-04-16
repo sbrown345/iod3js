@@ -75,7 +75,7 @@ class idDeviceContext {
 	//	
 	//	void				Init();
 	//	void				Shutdown();
-	//	bool				Initialized() { return initialized; }
+	//	bool				Initialized() { return this.initialized; }
 	//	void				EnableLocalization();
 	//
 	//	void				GetTransformInfo(idVec3& origin, idMat3& mat );
@@ -263,22 +263,22 @@ class idDeviceContext {
 //
 //void idDeviceContext::Shutdown() {
 //	fontName.Clear();
-//	clipRects.Clear();
+//	this.clipRects.Clear();
 //	idDeviceContext.fonts.Clear();
-//	Clear();
+//	this.Clear();
 //}
 //
-//void idDeviceContext::Clear() {
-//	initialized = false;
-//	this.useFont = NULL;
-//	activeFont = NULL;
-//	mbcs = false;
-//}
-//
-//idDeviceContext::idDeviceContext() {
-//	Clear();
-//}
-//
+	Clear ( ): void {
+		this.initialized = false;
+		this.useFont = null;
+		this.activeFont = null;
+		this.mbcs = false;
+	}
+
+	constructor ( ) {
+		this.Clear ( );
+	}
+
 //void idDeviceContext::SetTransformInfo(const idVec3 &org, const idMat3 &m) {
 //	origin = org;
 //	mat = m;
@@ -292,30 +292,30 @@ class idDeviceContext {
 //	org = origin;
 //}
 //// 
-//
-//void idDeviceContext::PopClipRect() {
-//	if (clipRects.Num()) {
-//		clipRects.RemoveIndex(clipRects.Num()-1);
-//	}
-//}
-//
-//void idDeviceContext::PushClipRect(idRectangle r) {
-//	clipRects.Append(r);
-//}
-//
+
+	PopClipRect ( ): void {
+		if ( this.clipRects.Num ( ) ) {
+			this.clipRects.RemoveIndex( this.clipRects.Num ( ) - 1 );
+		}
+	}
+
+	PushClipRect ( r: idRectangle ): void {
+		this.clipRects.Append( r );
+	}
+
 //void idDeviceContext::PushClipRect(/*float */x:number, /*float */y:number, float w, float h) {
-//	clipRects.Append(idRectangle(x, y, w, h));
+//	this.clipRects.Append(idRectangle(x, y, w, h));
 //}
 //
 //bool idDeviceContext::ClippedCoords(float *x, float *y, float *w, float *h, float *s1, float *t1, float *s2, float *t2) {
 //
-//	if ( enableClipping == false || clipRects.Num() == 0 ) {
+//	if ( enableClipping == false || this.clipRects.Num() == 0 ) {
 //		return false;
 //	}
 //
-//	int c = clipRects.Num();
+//	int c = this.clipRects.Num();
 //	while( --c > 0 ) {
-//		idRectangle *clipRect = &clipRects[c];
+//		idRectangle *clipRect = &this.clipRects[c];
 // 
 //		float ox = *x;
 //		float oy = *y;

@@ -26,19 +26,26 @@
 ////===========================================================================
 ////*/
 ////
-/////*
-////===============================================================================
-////
-////	idDeclSkin
-////
-////===============================================================================
-////*/
-////
-////typedef struct {
-////	const idMaterial *		from;			// 0 == any unmatched shader
-////	const idMaterial *		to;
-////} skinMapping_t;
-////
+/*
+===============================================================================
+
+	idDeclSkin
+
+===============================================================================
+*/
+
+class skinMapping_t {
+	from: idMaterial; // 0 == any unmatched shader
+	to: idMaterial;
+
+	copy ( dest: skinMapping_t = null ): skinMapping_t {
+		dest = dest || new skinMapping_t;
+		dest.from = this.from;
+		dest.to = this.to;
+		return dest;
+	}
+}
+
 class idDeclSkin extends idDecl {
 ////public:
 ////	virtual size_t			Size( void ) const;
@@ -54,8 +61,8 @@ class idDeclSkin extends idDecl {
 ////	const char *			GetAssociatedModel( int index ) const;
 ////
 ////private:
-////	idList<skinMapping_t>	mappings;
-////	idStrList				associatedModels;
+	mappings = new 	idList<skinMapping_t>(skinMapping_t);
+	associatedModels = new idStrList;
 
 
 
@@ -79,8 +86,7 @@ idDeclSkin::FreeData
 ================
 */
 	FreeData(): void {
-		todoThrow ( );
-		//this.mappings.Clear ( );
+		this.mappings.Clear ( );
 	}
 
 /*
@@ -88,59 +94,59 @@ idDeclSkin::FreeData
 idDeclSkin::Parse
 ================
 */
-	Parse(text: string, textLength: number): boolean { todoThrow();
-////	idLexer src;
-////	idToken	token, token2;
-////
-////	src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
-////	src.SetFlags( DECL_LEXER_FLAGS );
-////	src.SkipUntilString( "{" );
-////
-////	associatedModels.Clear();
-////
-////	while (1) {
-////		if ( !src.ReadToken( &token ) ) {
-////			break;
-////		}
-////
-////		if ( !token.Icmp( "}" ) ) {
-////			break;
-////		}
-////		if ( !src.ReadToken( &token2 ) ) {
-////			src.Warning( "Unexpected end of file" );
-////			MakeDefault();
-////			return false;
-////		}
-////
-////		if ( !token.Icmp( "model" ) ) {
-////			associatedModels.Append( token2 );
-////			continue;
-////		}
-////
-////		skinMapping_t	map;
-////
-////		if ( !token.Icmp( "*" ) ) {
-////			// wildcard
-////			map.from = NULL;
-////		} else {
-////			map.from = declManager.FindMaterial( token );
-////		}
-////
-////		map.to = declManager.FindMaterial( token2 );
-////
-////		mappings.Append( map );
-////	}
-////
-	return false;
-}
+	Parse ( text: string, textLength: number ): boolean {
+		var src = new idLexer;
+		var token = new idToken, token2 = new idToken;
+
+		src.LoadMemory( text, textLength, this.GetFileName ( ), this.GetLineNum ( ) );
+		src.SetFlags( DECL_LEXER_FLAGS );
+		src.SkipUntilString( "{" );
+
+		this.associatedModels.Clear ( );
+
+		while ( 1 ) {
+			if ( !src.ReadToken( token ) ) {
+				break;
+			}
+
+			if ( !token.Icmp( "}" ) ) {
+				break;
+			}
+			if ( !src.ReadToken( token2 ) ) {
+				src.Warning( "Unexpected end of file" );
+				this.MakeDefault ( );
+				return false;
+			}
+
+			if ( !token.Icmp( "model" ) ) {
+				this.associatedModels.Append( token2 );
+				continue;
+			}
+
+			var map = new skinMapping_t;
+
+			if ( !token.Icmp( "*" ) ) {
+				// wildcard
+				map.from = null;
+			} else {
+				map.from = declManager.FindMaterial( token.data );
+			}
+
+			map.to = declManager.FindMaterial( token2.data );
+
+			this.mappings.Append( map );
+		}
+
+		return false;
+	}
 
 /*
 ================
 idDeclSkin::SetDefaultText
 ================
 */
-	SetDefaultText ( ): boolean {
-		todoThrow ( );
+	SetDefaultText(): boolean {
+		debugger;
 		// if there exists a material with the same name
 		if ( declManager.FindType( declType_t.DECL_MATERIAL, this.GetName ( ), false ) ) {
 			var generated = new Uint8Array( 2048 );
@@ -175,7 +181,7 @@ idDeclSkin::SetDefaultText
 ////================
 ////*/
 ////const int idDeclSkin::GetNumModelAssociations(void ) const {
-////	return associatedModels.Num(); 
+////	return this.associatedModels.Num(); 
 ////}
 ////
 /////*
@@ -184,8 +190,8 @@ idDeclSkin::SetDefaultText
 ////================
 ////*/
 ////const char *idDeclSkin::GetAssociatedModel( int index ) const {
-////	if ( index >= 0 && index < associatedModels.Num() ) {
-////		return associatedModels[ index ];
+////	if ( index >= 0 && index < this.associatedModels.Num() ) {
+////		return this.associatedModels[ index ];
 ////	}
 ////	return "";
 ////}
@@ -207,8 +213,8 @@ idDeclSkin::SetDefaultText
 ////		return shader;
 ////	}
 ////
-////	for ( i = 0; i < mappings.Num() ; i++ ) {
-////		const skinMapping_t	*map = &mappings[i];
+////	for ( i = 0; i < this.mappings.Num() ; i++ ) {
+////		const skinMapping_t	*map = &this.mappings[i];
 ////
 ////		// NULL = wildcard match
 ////		if ( !map.from || map.from == shader ) {

@@ -350,7 +350,7 @@ class idUserInterfaceLocal extends idUserInterface {
 
 	HandleEvent ( event: sysEvent_t, /*bool **/updateVisuals: R<boolean> ): string {
 		todoThrow ( );
-//	time = _time;
+//	this.time = _time;
 //
 //	if ( this.bindHandler && event.evType == SE_KEY && event.evValue2 == 1 ) {
 //		const char *ret = this.bindHandler.HandleEvent( event, updateVisuals );
@@ -381,18 +381,18 @@ class idUserInterfaceLocal extends idUserInterface {
 //	this.desktop.RunNamedEvent( eventName );
 //}
 //
-//void idUserInterfaceLocal::Redraw( int _time ) {
-//	if ( r_skipGuiShaders.GetInteger() > 5 ) {
-//		return;
-//	}
-//	if ( !loading && this.desktop ) {
-//		time = _time;
-//		uiManagerLocal.dc.PushClipRect( uiManagerLocal.screenRect );
-//		this.desktop.Redraw( 0, 0 );
-//		uiManagerLocal.dc.PopClipRect();
-//	}
-//}
-//
+	Redraw ( /*int*/ _time: number ): void {
+		if ( r_skipGuiShaders.GetInteger ( ) > 5 ) {
+			return;
+		}
+		if ( !this.loading && this.desktop ) {
+			this.time = _time;
+			uiManagerLocal.dc.PushClipRect( uiManagerLocal.screenRect );
+			this.desktop.Redraw( 0, 0 );
+			uiManagerLocal.dc.PopClipRect ( );
+		}
+	}
+
 //void idUserInterfaceLocal::DrawCursor() {
 //	if ( !this.desktop || this.desktop.GetFlags() & WIN_MENUGUI ) {
 //		uiManagerLocal.dc.DrawCursor(&cursorX, &cursorY, 32.0f );

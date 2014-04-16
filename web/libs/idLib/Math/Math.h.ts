@@ -57,7 +57,7 @@ function DEG2RAD(a: number): number { return a * idMath.M_DEG2RAD; }
 function RAD2DEG(a: number): number { return a * idMath.M_RAD2DEG; }
 
 function SEC2MS ( t: number ): number { return ( idMath.FtoiFast( ( t ) * idMath.M_SEC2MS ) );}
-////#define MS2SEC(t)				( (t) * idMath::M_MS2SEC )
+function MS2SEC ( t: number ): number { return t * idMath.M_MS2SEC; }
 
 ////#define	ANGLE2SHORT(x)			( idMath.FtoiFast( (x) * 65536.0 / 360.0 ) & 65535 )
 ////#define	SHORT2ANGLE(x)			( (x) * ( 360.0 / 65536.0 ) )

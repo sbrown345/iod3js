@@ -36,10 +36,10 @@ class idDeclPDA extends idDecl {
 	////
 	////	virtual size_t			Size( void ) const;
 	////	virtual const char *	DefaultDefinition( void ) const;
-	Parse ( text: string, textLength: number ): boolean {
-		todoThrow ( );
-		return false
-	}
+	//Parse ( text: string, textLength: number ): boolean {
+	//	todoThrow ( );
+	//	return false
+	//}
 	////	virtual void			FreeData( void );
 	////	virtual void			Print( void ) const;
 	////	virtual void			List( void ) const;
@@ -58,27 +58,27 @@ class idDeclPDA extends idDecl {
 	////
 	////	virtual void			SetSecurity( const char *sec ) const;
 	////
-	////	const char *			GetPdaName() const { return pdaName; }
-	////	const char *			GetSecurity() const {return security; }
-	////	const char *			GetFullName() const { return fullName; }
-	////	const char *			GetIcon() const { return icon; }
-	////	const char *			GetPost() const { return post; }
-	////	const char *			GetID() const { return id; }
-	////	const char *			GetTitle() const { return title; }
-	////
+	GetPdaName() :string { return this.pdaName.data; }
+	GetSecurity(): string { return this.security.data; }
+	GetFullName(): string { return this.fullName.data; }
+	GetIcon(): string { return this.icon.data; }
+	GetPost(): string { return this.post.data; }
+	GetID(): string { return this.id.data; }
+	GetTitle(): string { return this.title.data; }
+	
 	////private:
-	////	mutable idStrList		videos;
-	////	mutable idStrList		audios;
-	////	mutable idStrList		emails;
-	////	idStr					pdaName;
-	////	idStr					fullName;
-	////	idStr					icon;
-	////	idStr					id;
-	////	idStr					post;
-	////	idStr					title;
-	////	mutable idStr			security;
-	////	mutable	int				originalEmails;
-	////	mutable int				originalVideos;
+	videos = new /*mutable*/idStrList;
+	audios = new /*mutable*/idStrList;
+	emails = new /*mutable*/idStrList;
+	pdaName = new idStr;
+	fullName = new idStr;
+	icon = new idStr;
+	id = new idStr;
+	post = new idStr;
+	title = new idStr;
+	security = new/*mutable*/ idStr;
+	originalEmails :number/*mutable	int	*/;
+	originalVideos :number/*mutable	int	*/;
 
 /////*
 ////=================
@@ -107,105 +107,105 @@ class idDeclPDA extends idDecl {
 ////	common.Printf( "Implement me\n" );
 ////}
 ////
-/////*
-////================
-////idDeclPDA::Parse
-////================
-////*/
-////bool idDeclPDA::Parse( text:string, const int textLength ) {
-////	idLexer src;
-////	idToken token;
-////
-////	src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
-////	src.SetFlags( DECL_LEXER_FLAGS );
-////	src.SkipUntilString( "{" );
-////
-////	// scan through, identifying each individual parameter
-////	while( 1 ) {
-////		
-////		if ( !src.ReadToken( &token ) ) {
-////			break;
-////		}
-////
-////		if ( token == "}" ) {
-////			break;
-////		}
-////
-////		if ( !token.Icmp( "name") ) {
-////			src.ReadToken( &token );
-////			pdaName = token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "fullname") ) {
-////			src.ReadToken( &token );
-////			fullName = token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "icon") ) {
-////			src.ReadToken( &token );
-////			icon = token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "id") ) {
-////			src.ReadToken( &token );
-////			id = token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "post") ) {
-////			src.ReadToken( &token );
-////			post = token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "title") ) {
-////			src.ReadToken( &token );
-////			title = token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "security") ) {
-////			src.ReadToken( &token );
-////			security = token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "pda_email") ) {
-////			src.ReadToken( &token );
-////			emails.Append( token );
-////			declManager.FindType(DECL_EMAIL, token);
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "pda_audio") ) {
-////			src.ReadToken( &token );
-////			audios.Append( token );
-////			declManager.FindType(DECL_AUDIO, token);
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "pda_video") ) {
-////			src.ReadToken( &token );
-////			videos.Append( token );
-////			declManager.FindType(DECL_VIDEO, token);
-////			continue;
-////		}
-////
-////	}
-////
-////	if ( src.HadError() ) {
-////		src.Warning( "PDA decl '%s' had a parse error", GetName() );
-////		return false;
-////	}
-////
-////	originalVideos = videos.Num();
-////	originalEmails = emails.Num();
-////	return true;
-////}
-////
+/*
+================
+idDeclPDA::Parse
+================
+*/
+	Parse ( text: string, /*int */textLength: number ): boolean {
+		var src = new idLexer;
+		var token = new idToken ( );
+
+		src.LoadMemory( text, textLength, this.GetFileName ( ), this.GetLineNum ( ) );
+		src.SetFlags( DECL_LEXER_FLAGS );
+		src.SkipUntilString( "{" );
+
+		// scan through, identifying each individual parameter
+		while ( 1 ) {
+
+			if ( !src.ReadToken( token ) ) {
+				break;
+			}
+
+			if ( token.data == "}" ) {
+				break;
+			}
+
+			if ( !token.Icmp( "name" ) ) {
+				src.ReadToken( token );
+				this.pdaName.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "fullname" ) ) {
+				src.ReadToken( token );
+				this.fullName.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "icon" ) ) {
+				src.ReadToken( token );
+				this.icon.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "id" ) ) {
+				src.ReadToken( token );
+				this.id.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "post" ) ) {
+				src.ReadToken( token );
+				this.post.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "title" ) ) {
+				src.ReadToken( token );
+				this.title.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "security" ) ) {
+				src.ReadToken( token );
+				this.security.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "pda_email" ) ) {
+				src.ReadToken( token );
+				this.emails.Append( token );
+				declManager.FindType( declType_t.DECL_EMAIL, token.data );
+				continue;
+			}
+
+			if ( !token.Icmp( "pda_audio" ) ) {
+				src.ReadToken( token );
+				this.audios.Append( token );
+				declManager.FindType( declType_t.DECL_AUDIO, token.data );
+				continue;
+			}
+
+			if ( !token.Icmp( "pda_video" ) ) {
+				src.ReadToken( token );
+				this.videos.Append( token );
+				declManager.FindType( declType_t.DECL_VIDEO, token.data );
+				continue;
+			}
+
+		}
+
+		if ( src.HadError ( ) ) {
+			src.Warning( "PDA decl '%s' had a parse error", this.GetName ( ) );
+			return false;
+		}
+
+		this.originalVideos = this.videos.Num ( );
+		this.originalEmails = this.emails.Num ( );
+		return true;
+	}
+
 /*
 ===================
 idDeclPDA::DefaultDefinition
@@ -223,12 +223,11 @@ idDeclPDA::FreeData
 ===================
 */
 	FreeData(): void {
-		todoThrow ( );
-		//this.videos.Clear ( );
-		//this.audios.Clear ( );
-		//this.emails.Clear ( );
-		//this.originalEmails = 0;
-		//this.originalVideos = 0;
+		this.videos.Clear ( );
+		this.audios.Clear ( );
+		this.emails.Clear ( );
+		this.originalEmails = 0;
+		this.originalVideos = 0;
 	}
 
 /////*
@@ -237,14 +236,14 @@ idDeclPDA::FreeData
 ////=================
 ////*/
 ////void idDeclPDA::AddVideo( name:string, bool unique ) const {
-////	if ( unique && ( videos.Find( name ) != NULL ) ) {
+////	if ( unique && ( this.videos.Find( name ) != NULL ) ) {
 ////		return;
 ////	}
 ////	if ( declManager.FindType( DECL_VIDEO, name, false ) == NULL ) {
 ////		common.Printf( "Video %s not found\n", name );
 ////		return;
 ////	}
-////	videos.Append( name );
+////	this.videos.Append( name );
 ////}
 ////
 /////*
@@ -253,14 +252,14 @@ idDeclPDA::FreeData
 ////=================
 ////*/
 ////void idDeclPDA::AddAudio( name:string, bool unique ) const {
-////	if ( unique && ( audios.Find( name ) != NULL ) ) {
+////	if ( unique && ( this.audios.Find( name ) != NULL ) ) {
 ////		return;
 ////	}
 ////	if ( declManager.FindType( DECL_AUDIO, name, false ) == NULL ) {
 ////		common.Printf( "Audio log %s not found\n", name );
 ////		return;
 ////	}
-////	audios.Append( name );
+////	this.audios.Append( name );
 ////}
 ////
 /////*
@@ -269,14 +268,14 @@ idDeclPDA::FreeData
 ////=================
 ////*/
 ////void idDeclPDA::AddEmail( name:string, bool unique ) const {
-////	if ( unique && ( emails.Find( name ) != NULL ) ) {
+////	if ( unique && ( this.emails.Find( name ) != NULL ) ) {
 ////		return;
 ////	}
 ////	if ( declManager.FindType( DECL_EMAIL, name, false ) == NULL ) {
 ////		common.Printf( "Email %s not found\n", name );
 ////		return;
 ////	}
-////	emails.Append( name );
+////	this.emails.Append( name );
 ////}
 ////
 /////*
@@ -285,55 +284,55 @@ idDeclPDA::FreeData
 ////=================
 ////*/
 ////void idDeclPDA::RemoveAddedEmailsAndVideos() const {
-////	int num = emails.Num();
+////	int num = this.emails.Num();
 ////	if ( originalEmails < num ) {
 ////		while ( num && num > originalEmails ) {
-////			emails.RemoveIndex( --num );
+////			this.emails.RemoveIndex( --num );
 ////		}
 ////	}
-////	num = videos.Num();
+////	num = this.videos.Num();
 ////	if ( originalVideos < num ) {
 ////		while ( num && num > originalVideos ) {
-////			videos.RemoveIndex( --num );
+////			this.videos.RemoveIndex( --num );
 ////		}
 ////	}
 ////}
 ////
-/////*
-////=================
-////idDeclPDA::SetSecurity
-////=================
-////*/
-////void idDeclPDA::SetSecurity( const char *sec ) const {
-////	security = sec;
-////}
-////
-/////*
-////=================
-////idDeclPDA::GetNumVideos
-////=================
-////*/
-////const int idDeclPDA::GetNumVideos() const {
-////	return videos.Num();
-////}
-////
-/////*
-////=================
-////idDeclPDA::GetNumAudios
-////=================
-////*/
-////const int idDeclPDA::GetNumAudios() const {
-////	return audios.Num();
-////}
-////
-/////*
-////=================
-////idDeclPDA::GetNumEmails
-////=================
-////*/
-////const int idDeclPDA::GetNumEmails() const {
-////	return emails.Num();
-////}
+/*
+=================
+idDeclPDA::SetSecurity
+=================
+*/
+SetSecurity( sec:string ) :void {
+	this.security.equals( sec );
+}
+
+/*
+=================
+idDeclPDA::GetNumVideos
+=================
+*/
+GetNumVideos() :number {
+	return this.videos.Num();
+}
+
+/*
+=================
+idDeclPDA::GetNumAudios
+=================
+*/
+GetNumAudios() :number {
+	return this.audios.Num();
+}
+
+/*
+=================
+idDeclPDA::GetNumEmails
+=================
+*/
+GetNumEmails() :number {
+	return this.emails.Num();
+}
 ////
 /////*
 ////=================
@@ -341,8 +340,8 @@ idDeclPDA::FreeData
 ////=================
 ////*/
 ////const idDeclVideo* idDeclPDA::GetVideoByIndex( int index ) const {
-////	if ( index >= 0 && index < videos.Num() ) {
-////		return static_cast< const idDeclVideo* >( declManager.FindType( DECL_VIDEO, videos[index], false ) );
+////	if ( index >= 0 && index < this.videos.Num() ) {
+////		return static_cast< const idDeclVideo* >( declManager.FindType( DECL_VIDEO, this.videos[index], false ) );
 ////	}
 ////	return NULL;
 ////}
@@ -353,8 +352,8 @@ idDeclPDA::FreeData
 ////=================
 ////*/
 ////const idDeclAudio* idDeclPDA::GetAudioByIndex( int index ) const {
-////	if ( index >= 0 && index < audios.Num() ) {
-////		return static_cast< const idDeclAudio* >( declManager.FindType( DECL_AUDIO, audios[index], false ) );
+////	if ( index >= 0 && index < this.audios.Num() ) {
+////		return static_cast< const idDeclAudio* >( declManager.FindType( DECL_AUDIO, this.audios[index], false ) );
 ////	}
 ////	return NULL;
 ////}
@@ -365,8 +364,8 @@ idDeclPDA::FreeData
 ////=================
 ////*/
 ////const idDeclEmail* idDeclPDA::GetEmailByIndex( int index ) const {
-////	if ( index >= 0 && index < emails.Num() ) {
-////		return static_cast< const idDeclEmail* >( declManager.FindType( DECL_EMAIL, emails[index], false ) );
+////	if ( index >= 0 && index < this.emails.Num() ) {
+////		return static_cast< const idDeclEmail* >( declManager.FindType( DECL_EMAIL, this.emails[index], false ) );
 ////	}
 ////	return NULL;
 ////}
@@ -379,10 +378,7 @@ class idDeclEmail extends idDecl {
 	////
 	////	virtual size_t			Size( void ) const;
 	////	virtual const char *	DefaultDefinition( void ) const;
-	Parse ( text: string, textLength: number ): boolean {
-		todoThrow ( );
-		return false
-	}
+
 ////	virtual void			FreeData( void );
 ////	virtual void			Print( void ) const;
 ////	virtual void			List( void ) const;
@@ -395,12 +391,12 @@ class idDeclEmail extends idDecl {
 ////	const char *			GetImage() const { return image; }
 ////
 ////private:
-////	idStr					text;
-////	idStr					subject;
-////	idStr					date;
-////	idStr					to;
-////	idStr					from;
-////	idStr					image;
+	text = new idStr;
+	subject= new idStr;
+	date= new idStr;
+	to= new idStr;
+	from= new idStr;
+	image= new idStr;
 /////*
 ////=================
 ////idDeclEmail::Size
@@ -427,82 +423,82 @@ class idDeclEmail extends idDecl {
 ////void idDeclEmail::List( void ) const {
 ////	common.Printf( "Implement me\n" );
 ////}
-////
-/////*
-////================
-////idDeclEmail::Parse
-////================
-////*/
-////bool idDeclEmail::Parse( const char *_text, const int textLength ) {
-////	idLexer src;
-////	idToken token;
-////
-////	src.LoadMemory( _text, textLength, GetFileName(), GetLineNum() );
-////	src.SetFlags( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWPATHNAMES |	 lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT | lexerFlags_t.LEXFL_NOFATALERRORS );
-////	src.SkipUntilString( "{" );
-////
-////	text = "";
-////	// scan through, identifying each individual parameter
-////	while( 1 ) {
-////
-////		if ( !src.ReadToken( &token ) ) {
-////			break;
-////		}
-////
-////		if ( token == "}" ) {
-////			break;
-////		}
-////
-////		if ( !token.Icmp( "subject") ) {
-////			src.ReadToken( &token );
-////			subject = token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "to") ) {
-////			src.ReadToken( &token );
-////			to = token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "from") ) {
-////			src.ReadToken( &token );
-////			from = token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "date") ) {
-////			src.ReadToken( &token );
-////			date = token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "text") ) {
-////			src.ReadToken( &token );
-////			if ( token != "{" ) {
-////				src.Warning( "Email decl '%s' had a parse error", GetName() );
-////				return false;
-////			}
-////			while ( src.ReadToken( &token ) && token != "}" ) {
-////				text += token;
-////			}
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "image") ) {
-////			src.ReadToken( &token );
-////			image = token;
-////			continue;
-////		}
-////	}
-////
-////	if ( src.HadError() ) {
-////		src.Warning( "Email decl '%s' had a parse error", GetName() );
-////		return false;
-////	}
-////	return true;
-////}
-////
+
+/*
+================
+idDeclEmail::Parse
+================
+*/
+	Parse ( _text: string, /* int */textLength: number ): boolean {
+		var src = new idLexer;
+		var token = new idToken;
+
+		src.LoadMemory( _text, textLength, this.GetFileName ( ), this.GetLineNum ( ) );
+		src.SetFlags( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT | lexerFlags_t.LEXFL_NOFATALERRORS );
+		src.SkipUntilString( "{" );
+
+		this.text.equals( "" );
+		// scan through, identifying each individual parameter
+		while ( 1 ) {
+
+			if ( !src.ReadToken( token ) ) {
+				break;
+			}
+
+			if ( token.data == "}" ) {
+				break;
+			}
+
+			if ( !token.Icmp( "subject" ) ) {
+				src.ReadToken( token );
+				this.subject.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "to" ) ) {
+				src.ReadToken( token );
+				this.to.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "from" ) ) {
+				src.ReadToken( token );
+				this.from.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "date" ) ) {
+				src.ReadToken( token );
+				this.date.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "text" ) ) {
+				src.ReadToken( token );
+				if ( token.data != "{" ) {
+					src.Warning( "Email decl '%s' had a parse error", this.GetName ( ) );
+					return false;
+				}
+				while ( src.ReadToken( token ) && token.data != "}" ) {
+					this.text.Append( token.data );
+				}
+				continue;
+			}
+
+			if ( !token.Icmp( "image" ) ) {
+				src.ReadToken( token );
+				this.image.equals( token );
+				continue;
+			}
+		}
+
+		if ( src.HadError ( ) ) {
+			src.Warning( "Email decl '%s' had a parse error", this.GetName ( ) );
+			return false;
+		}
+		return true;
+	}
+
 /////*
 ////===================
 ////idDeclEmail::DefaultDefinition
@@ -591,49 +587,49 @@ class idDeclVideo extends idDecl {
 ////	idLexer src;
 ////	idToken token;
 ////
-////	src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
+////	src.LoadMemory( text, textLength, this.GetFileName(), this.GetLineNum() );
 ////	src.SetFlags( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWPATHNAMES |	 lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT | lexerFlags_t.LEXFL_NOFATALERRORS );
 ////	src.SkipUntilString( "{" );
 ////
 ////	// scan through, identifying each individual parameter
 ////	while( 1 ) {
 ////
-////		if ( !src.ReadToken( &token ) ) {
+////		if ( !src.ReadToken( token ) ) {
 ////			break;
 ////		}
 ////
-////		if ( token == "}" ) {
+////		if ( token.data == "}" ) {
 ////			break;
 ////		}
 ////
 ////		if ( !token.Icmp( "name") ) {
-////			src.ReadToken( &token );
-////			videoName = token;
+////			src.ReadToken( token );
+////			videoName.equals( token;
 ////			continue;
 ////		}
 ////
 ////		if ( !token.Icmp( "preview") ) {
-////			src.ReadToken( &token );
-////			preview = token;
+////			src.ReadToken( token );
+////			preview.equals( token;
 ////			continue;
 ////		}
 ////
 ////		if ( !token.Icmp( "video") ) {
-////			src.ReadToken( &token );
-////			video = token;
+////			src.ReadToken( token );
+////			video.equals( token;
 ////			declManager.FindMaterial( video );			
 ////			continue;
 ////		}
 ////
 ////		if ( !token.Icmp( "info") ) {
-////			src.ReadToken( &token );
-////			info = token;
+////			src.ReadToken( token );
+////			info.equals( token;
 ////			continue;
 ////		}
 ////
 ////		if ( !token.Icmp( "audio") ) {
-////			src.ReadToken( &token );
-////			audio = token;
+////			src.ReadToken( token );
+////			audio.equals( token;
 ////			declManager.FindSound(audio);
 ////			continue;
 ////		}
@@ -641,7 +637,7 @@ class idDeclVideo extends idDecl {
 ////	}
 ////
 ////	if ( src.HadError() ) {
-////		src.Warning( "Video decl '%s' had a parse error", GetName() );
+////		src.Warning( "Video decl '%s' had a parse error", this.GetName() );
 ////		return false;
 ////	}
 ////	return true;
@@ -728,50 +724,50 @@ idDeclAudio::Parse
 ////	idLexer src;
 ////	idToken token;
 ////
-////	src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
+////	src.LoadMemory( text, textLength, this.GetFileName(), this.GetLineNum() );
 ////	src.SetFlags( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWPATHNAMES |	 lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT | lexerFlags_t.LEXFL_NOFATALERRORS );
 ////	src.SkipUntilString( "{" );
 ////
 ////	// scan through, identifying each individual parameter
 ////	while( 1 ) {
 ////
-////		if ( !src.ReadToken( &token ) ) {
+////		if ( !src.ReadToken( token ) ) {
 ////			break;
 ////		}
 ////
-////		if ( token == "}" ) {
+////		if ( token.data == "}" ) {
 ////			break;
 ////		}
 ////
 ////		if ( !token.Icmp( "name") ) {
-////			src.ReadToken( &token );
-////			audioName = token;
+////			src.ReadToken( token );
+////			audioName.equals( token;
 ////			continue;
 ////		}
 ////
 ////		if ( !token.Icmp( "audio") ) {
-////			src.ReadToken( &token );
-////			audio = token;
+////			src.ReadToken( token );
+////			audio.equals( token;
 ////			declManager.FindSound(audio);
 ////			continue;
 ////		}
 ////
 ////		if ( !token.Icmp( "info") ) {
-////			src.ReadToken( &token );
-////			info = token;
+////			src.ReadToken( token );
+////			info.equals( token;
 ////			continue;
 ////		}
 ////
 ////		if ( !token.Icmp( "preview") ) {
-////			src.ReadToken( &token );
-////			preview = token;
+////			src.ReadToken( token );
+////			preview.equals( token;
 ////			continue;
 ////		}
 ////
 ////	}
 ////
 ////	if ( src.HadError() ) {
-////		src.Warning( "Audio decl '%s' had a parse error", GetName() );
+////		src.Warning( "Audio decl '%s' had a parse error", this.GetName() );
 ////		return false;
 ////	}
 	return true;

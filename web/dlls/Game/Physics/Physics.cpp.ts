@@ -167,8 +167,8 @@ class idPhysics extends idClass {
 	   //	virtual int					ClipContents(const idClipModel *model) const = 0;
 	   //	// disable/enable the clip models contained by this physics object
 	   //	virtual void				DisableClip() = 0;
-	   //	virtual void				EnableClip() = 0;
-	   //	// link/unlink the clip models contained by this physics object
+	EnableClip ( ): void { throw "placeholder"; }
+	//	// link/unlink the clip models contained by this physics object
 	   //	virtual void				UnlinkClip() = 0;
 	   //	virtual void				LinkClip() = 0;
 	   //	// contacts
@@ -207,7 +207,7 @@ class idPhysics extends idClass {
 	   //idPhysics::~idPhysics
 	   //================
 	   //*/
-	   //idPhysics::~idPhysics( void ) {
+	   //idPhysics::~idPhysics( ) {
 	   //}
 	   //
 	   ///*
