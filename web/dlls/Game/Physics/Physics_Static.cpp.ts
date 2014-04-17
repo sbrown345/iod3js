@@ -272,16 +272,16 @@ idPhysics_Static::idPhysics_Static
 	////	}
 	////	return gameLocal.clip.DefaultClipModel();
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::GetNumClipModels
-	////================
-	////*/
-	////int idPhysics_Static::GetNumClipModels( ) const {
-	////	return ( this.clipModel != NULL );
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_Static::GetNumClipModels
+	================
+	*/
+	GetNumClipModels ( ): number {
+		return ( this.clipModel != null ) ? 1 : 0;
+	}
+
 	/////*
 	////================
 	////idPhysics_Static::SetMass

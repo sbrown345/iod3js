@@ -3932,7 +3932,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////idAFConstraint_Suspension::Setup
 ////================
 ////*/
-////void idAFConstraint_Suspension::Setup( const char *name, idAFBody *body, const idVec3 &origin, const idMat3 &axis, idClipModel *clipModel ) {
+////void idAFConstraint_Suspension::Setup( const char *name, idAFBody *body, origin: idVec3, const idMat3 &axis, idClipModel *clipModel ) {
 ////	this.name = name;
 ////	body1 = body;
 ////	body2 = NULL;

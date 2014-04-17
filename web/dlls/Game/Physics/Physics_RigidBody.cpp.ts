@@ -828,16 +828,16 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////idClipModel *idPhysics_RigidBody::GetClipModel( /*int*/ id:number ) const {
 ////	return this.clipModel;
 ////}
-////
-/////*
-////================
-////idPhysics_RigidBody::GetNumClipModels
-////================
-////*/
-////int idPhysics_RigidBody::GetNumClipModels( ) const {
-////	return 1;
-////}
-////
+
+/*
+================
+idPhysics_RigidBody::GetNumClipModels
+================
+*/
+	GetNumClipModels ( ): number {
+		return 1;
+	}
+
 /////*
 ////================
 ////idPhysics_RigidBody::SetMass

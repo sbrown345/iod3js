@@ -60,7 +60,7 @@
 ////  rotates a point about an arbitrary axis using the tangent of half the rotation angle
 ////================
 ////*/
-////void CM_RotatePoint( idVec3 &point, const idVec3 &origin, const idVec3 &axis, const float tanHalfAngle ) {
+////void CM_RotatePoint( idVec3 &point, constorigin: idVec3, const idVec3 &axis, const float tanHalfAngle ) {
 ////	double d, t, s, c;
 ////	idVec3 proj, v1, v2;
 ////
@@ -87,7 +87,7 @@
 ////  rotates an edge about an arbitrary axis using the tangent of half the rotation angle
 ////================
 ////*/
-////void CM_RotateEdge( idVec3 &start, idVec3 &end, const idVec3 &origin, const idVec3 &axis, const float tanHalfAngle ) {
+////void CM_RotateEdge( idVec3 &start, idVec3 &end, origin: idVec3, const idVec3 &axis, const float tanHalfAngle ) {
 ////	double d, t, s, c;
 ////	idVec3 proj, v1, v2;
 ////
@@ -832,7 +832,7 @@
 ////================
 ////*/
 ////int idCollisionModelManagerLocal::RotatePointThroughEpsilonPlane( const cm_traceWork_t *tw, const idVec3 &point, const idVec3 &endPoint,
-////							const idPlane &plane, /*float*/angle:number, const idVec3 &origin,
+////							const idPlane &plane, /*float*/angle:number, origin: idVec3,
 ////							float &tanHalfAngle, idVec3 &collisionPoint, idVec3 &endDir ) {
 ////	float d, dir, startTan;
 ////	idVec3 vec, startDir;
@@ -1209,7 +1209,7 @@
 ////  only for rotations < 180 degrees
 ////================
 ////*/
-////void idCollisionModelManagerLocal::BoundsForRotation( const idVec3 &origin, const idVec3 &axis, start:idVec3, end:idVec3, idBounds &bounds ) {
+////void idCollisionModelManagerLocal::BoundsForRotation( origin: idVec3, const idVec3 &axis, start:idVec3, end:idVec3, idBounds &bounds ) {
 ////	var/*int*/i:number;
 ////	float radiusSqr;
 ////	idVec3 v1, v2;

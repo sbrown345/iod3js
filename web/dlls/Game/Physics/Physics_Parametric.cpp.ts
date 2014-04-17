@@ -646,16 +646,16 @@ idPhysics_Parametric::Activate
 //idClipModel *idPhysics_Parametric::GetClipModel( /*int*/ id:number ) const {
 //	return clipModel;
 //}
-//
-///*
-//================
-//idPhysics_Parametric::GetNumClipModels
-//================
-//*/
-//int idPhysics_Parametric::GetNumClipModels( ) const {
-//	return ( clipModel != NULL );
-//}
-//
+
+/*
+================
+idPhysics_Parametric::GetNumClipModels
+================
+*/
+	GetNumClipModels ( ): number {
+		return ( this.clipModel != null ) ? 1 : 0;
+	}
+
 ///*
 //================
 //idPhysics_Parametric::SetMass

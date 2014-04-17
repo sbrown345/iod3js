@@ -117,7 +117,7 @@ class idSession {
 //
 //	// this is used by the sound system when an OnDemand sound is loaded, so the game action
 //	// doesn't advance and get things out of sync
-//	virtual void	TimeHitch( int msec ) = 0;
+	TimeHitch ( /*int */msec: number ): void { throw "placeholder"; }
 //
 //	// read and write the cd key data to files
 //	// doesn't perform any validity checks

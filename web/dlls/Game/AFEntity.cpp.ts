@@ -602,7 +602,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////	const idMD5Joint *joints;
 ////} jointTransformData_t;
 ////
-////static bool GetJointTransform( void *model, const idJointMat *frame, const char *jointName, idVec3 &origin, idMat3 &axis ) {
+////static bool GetJointTransform( void *model, const idJointMat *frame, const char *jointName,origin: idVec3, idMat3 &axis ) {
 ////	var/*int*/i:number;
 ////	jointTransformData_t *data = reinterpret_cast<jointTransformData_t *>(model);
 ////

@@ -453,17 +453,17 @@ class idRenderWorld {
 	//NumAreas ( ): number { throw "placeholder"; }
 //	// Will return -1 if the point is not in an area, otherwise
 //	// it will return 0 <= value < NumAreas()
-//	virtual int				PointInArea( const idVec3 &point ) const = 0;
+	PointInArea ( point: idVec3 ): number /*int*/ { throw "placeholder"; }
 //
 //	// fills the *areas array with the numbers of the areas the bounds cover
 //	// returns the total number of areas the bounds cover
 //	virtual int				BoundsInAreas( const idBounds &bounds, int *areas, int maxAreas ) const = 0;
 //
 //	// Used by the sound system to do area flowing
-//	virtual	int				NumPortalsInArea( int areaNum ) = 0;
-//
+	NumPortalsInArea ( /*int */areaNum: number ): number { throw "placeholder"; }
+
 //	// returns one portal from an area
-//	virtual exitPortal_t	GetPortal( int areaNum, int portalNum ) = 0;
+	GetPortal(/*int*/ areaNum: number, /*int */portalNum: number): exitPortal_t { throw "placeholder"; }
 //
 //	//-------------- Tracing  -----------------
 //

@@ -458,7 +458,7 @@
 ////idCollisionModelManagerLocal::TransformedPointContents
 ////==================
 ////*/
-////int	idCollisionModelManagerLocal::TransformedPointContents( const idVec3 &p, cmHandle_t model, const idVec3 &origin, const idMat3 &modelAxis ) {
+////int	idCollisionModelManagerLocal::TransformedPointContents( const idVec3 &p, cmHandle_t model, origin: idVec3, const idMat3 &modelAxis ) {
 ////	idVec3 p_l;
 ////
 ////	// subtract origin offset

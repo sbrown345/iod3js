@@ -1943,7 +1943,7 @@ Event_SetCvar( name:string, value:string ) :void {
 //idThread::Event_RadiusDamage
 //================
 //*/
-//Event_RadiusDamage( const idVec3 &origin, idEntity *inflictor, idEntity *attacker, idEntity *ignore, const char *damageDefName, float dmgPower ):void {
+//Event_RadiusDamage( origin: idVec3, idEntity *inflictor, idEntity *attacker, idEntity *ignore, const char *damageDefName, float dmgPower ):void {
 //	gameLocal.RadiusDamage( origin, inflictor, attacker, ignore, ignore, damageDefName, dmgPower );
 //}
 //
@@ -2015,7 +2015,7 @@ Event_SetCvar( name:string, value:string ) :void {
 //idThread::Event_DebugCircle
 //================
 //*/
-//Event_DebugCircle( color:idVec3, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const float lifetime ):void {
+//Event_DebugCircle( color:idVec3, origin: idVec3, const idVec3 &dir, const float radius, const int numSteps, const float lifetime ):void {
 //	gameRenderWorld.DebugCircle( idVec4( color.x, color.y, color.z, 0.0 ), origin, dir, radius, numSteps, SEC2MS( lifetime ) );
 //}
 //
@@ -2033,7 +2033,7 @@ Event_SetCvar( name:string, value:string ) :void {
 //idThread::Event_DrawText
 //================
 //*/
-//Event_DrawText( text:string, const idVec3 &origin, float scale, color:idVec3, const int align, const float lifetime ) :void{
+//Event_DrawText( text:string, origin: idVec3, float scale, color:idVec3, const int align, const float lifetime ) :void{
 //	gameRenderWorld.DrawText( text, origin, scale, idVec4( color.x, color.y, color.z, 0.0 ), gameLocal.GetLocalPlayer().viewAngles.ToMat3(), align, SEC2MS( lifetime ) );
 //}
 //

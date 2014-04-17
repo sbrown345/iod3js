@@ -29,19 +29,19 @@
 ////#ifndef __SOUND__
 ////#define __SOUND__
 ////
-/////*
-////===============================================================================
-////
-////	SOUND SHADER DECL
-////
-////===============================================================================
-////*/
-////
-////// unfortunately, our minDistance / maxDistance is specified in meters, and
-////// we have far too many of them to change at this time.
-////const float DOOM_TO_METERS = 0.0254f;					// doom to meters
-////const float METERS_TO_DOOM = (1.0f/DOOM_TO_METERS);	// meters to doom
-////
+/*
+===============================================================================
+
+	SOUND SHADER DECL
+
+===============================================================================
+*/
+
+// unfortunately, our minDistance / maxDistance is specified in meters, and
+// we have far too many of them to change at this time.
+var DOOM_TO_METERS = 0.0254;					// doom to meters
+var METERS_TO_DOOM = (1.0/DOOM_TO_METERS);	// meters to doom
+
 ////class idSoundSample;
 ////
 ////// sound shader flags
@@ -72,6 +72,15 @@ class soundShaderParms_t {
 		this.shakes = 0;
 		this.soundShaderFlags = 0;
 		this.soundClass = 0;
+	}
+
+	equals ( other: soundShaderParms_t ) {
+		this.minDistance = other.minDistance;
+		this.maxDistance = other.maxDistance;
+		this.volume = other.volume;
+		this.shakes = other.shakes;
+		this.soundShaderFlags = other.soundShaderFlags;
+		this.soundClass = other.soundClass;
 	}
 };
 
@@ -107,9 +116,9 @@ class idSoundEmitter {
 ////	// reusable by the soundWorld
 ////	virtual void			Free( bool immediate ) = 0;
 ////
-////	// the parms specified will be the default overrides for all sounds started on this emitter.
-////	// NULL is acceptable for parms
-////	virtual void			UpdateEmitter( const idVec3 &origin, int listenerId, const soundShaderParms_t *parms ) = 0;
+	// the parms specified will be the default overrides for all sounds started on this emitter.
+	// NULL is acceptable for parms
+	UpdateEmitter ( origin: idVec3, /*int */listenerId: number, parms: soundShaderParms_t ): void { throw "placeholder"; }
 ////
 ////	// returns the length of the started sound in msec
 	StartSound ( shader: idSoundShader, channel: number/*s_channelType*/, /*float */diversity = 0, /*int */shaderFlags = 0, allowSlow = true ): number { throw "placeholder"; }
@@ -217,18 +226,19 @@ class idSoundWorld {
 ===============================================================================
 */
 
-////typedef struct {
-////	idStr					name;
-////	idStr					format;
-////	int						numChannels;
-////	int						numSamplesPerSecond;
-////	int						num44kHzSamples;
-////	int						numBytes;
-////	bool					looping;
-////	float					lastVolume;
-////	int						start44kHzTime;
-////	int						current44kHzTime;
-////} soundDecoderInfo_t;
+class soundDecoderInfo_t {
+	name = new idStr;
+	format = new idStr;
+	numChannels :number/*int*/;
+	numSamplesPerSecond :number/*int*/;
+	num44kHzSamples :number/*int*/;
+	numBytes :number/*int*/;
+	looping:boolean;
+	lastVolume :number/*float*/;
+	start44kHzTime :number/*int*/;
+	current44kHzTime :number/*int*/;
+}
+
 ////
 ////
 class idSoundSystem {

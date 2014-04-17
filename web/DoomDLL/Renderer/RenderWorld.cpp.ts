@@ -1980,7 +1980,7 @@ idRenderWorldLocal::DebugClearLines
 //idRenderWorldLocal::DebugWinding
 //====================
 //*/
-//void idRenderWorldLocal::DebugWinding( const idVec4 &color, const idWinding &w, const idVec3 &origin, const idMat3 &axis, const int lifetime, const bool depthTest ) {
+//void idRenderWorldLocal::DebugWinding( const idVec4 &color, const idWinding &w, constorigin: idVec3, const idMat3 &axis, const int lifetime, const bool depthTest ) {
 //	var/*int*/i:number;
 //	idVec3 point, lastPoint;
 //
@@ -2001,7 +2001,7 @@ idRenderWorldLocal::DebugClearLines
 //idRenderWorldLocal::DebugCircle
 //====================
 //*/
-//void idRenderWorldLocal::DebugCircle( const idVec4 &color, const idVec3 &origin, const idVec3 &dir, const float radius, const int numSteps, const int lifetime, const bool depthTest ) {
+//void idRenderWorldLocal::DebugCircle( const idVec4 &color, origin: idVec3, const idVec3 &dir, const float radius, const int numSteps, const int lifetime, const bool depthTest ) {
 //	var/*int*/i:number;
 //	float a;
 //	idVec3 left, up, point, lastPoint;
@@ -2174,7 +2174,7 @@ idRenderWorldLocal::DebugClearLines
 //idRenderWorldLocal::DebugAxis
 //================
 //*/
-//void idRenderWorldLocal::DebugAxis( const idVec3 &origin, const idMat3 &axis ) {
+//void idRenderWorldLocal::DebugAxis( origin: idVec3, const idMat3 &axis ) {
 //	idVec3 start = origin;
 //	idVec3 end = start + axis[0] * 20.0f;
 //	DebugArrow( colorWhite, start, end, 2 );
@@ -2262,7 +2262,7 @@ idRenderWorldLocal::DebugPolygon
 //  align can be 0-left, 1-center (default), 2-right
 //================
 //*/
-//void idRenderWorldLocal::DrawText( text:string, const idVec3 &origin, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align, const int lifetime, const bool depthTest ) {
+//void idRenderWorldLocal::DrawText( text:string, origin: idVec3, float scale, const idVec4 &color, const idMat3 &viewAxis, const int align, const int lifetime, const bool depthTest ) {
 //	RB_AddDebugText( text, origin, scale, color, viewAxis, align, lifetime, depthTest );
 //}
 //

@@ -2902,19 +2902,19 @@ idSessionLocal.prototype.GetLocalClientNum = function ( ): number /*int*/ {
 //		soundSystem.SetPlayingSoundWorld( this.sw );
 //	}
 //}
-//
-///*
-//===============
-//idSessionLocal::TimeHitch
-//
-//this is used by the sound system when an OnDemand sound is loaded, so the game action
-//doesn't advance and get things out of sync
-//===============
-//*/
-//void idSessionLocal::TimeHitch( int msec ) {
-//	this.timeHitch += msec;
-//}
-//
+
+/*
+===============
+idSessionLocal::TimeHitch
+
+this is used by the sound system when an OnDemand sound is loaded, so the game action
+doesn't advance and get things out of sync
+===============
+*/
+idSessionLocal.prototype.TimeHitch = function ( /*int*/ msec: number ): void {
+	this.timeHitch += msec;
+};
+
 ///*
 //=================
 //idSessionLocal::ReadCDKey

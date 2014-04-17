@@ -38,7 +38,7 @@
 ////idAASLocal::DrawCone
 ////============
 ////*/
-////void idAASLocal::DrawCone( const idVec3 &origin, const idVec3 &dir, float radius, const idVec4 &color ) const {
+////void idAASLocal::DrawCone( origin: idVec3, const idVec3 &dir, float radius, const idVec4 &color ) const {
 ////	var/*int*/i:number;
 ////	idMat3 axis;
 ////	idVec3 center, top, p, lastp;
@@ -241,7 +241,7 @@
 ////idAASLocal::ShowWalkPath
 ////============
 ////*/
-////void idAASLocal::ShowWalkPath( const idVec3 &origin, int goalAreaNum, const idVec3 &goalOrigin ) const {
+////void idAASLocal::ShowWalkPath( origin: idVec3, int goalAreaNum, const idVec3 &goalOrigin ) const {
 ////	int i, areaNum, curAreaNum, travelTime;
 ////	idReachability *reach;
 ////	idVec3 org, areaCenter;
@@ -287,7 +287,7 @@
 ////idAASLocal::ShowFlyPath
 ////============
 ////*/
-////void idAASLocal::ShowFlyPath( const idVec3 &origin, int goalAreaNum, const idVec3 &goalOrigin ) const {
+////void idAASLocal::ShowFlyPath( origin: idVec3, int goalAreaNum, const idVec3 &goalOrigin ) const {
 ////	int i, areaNum, curAreaNum, travelTime;
 ////	idReachability *reach;
 ////	idVec3 org, areaCenter;
@@ -357,7 +357,7 @@
 ////idAASLocal::ShowHideArea
 ////============
 ////*/
-////void idAASLocal::ShowHideArea( const idVec3 &origin, int targetAreaNum ) const {
+////void idAASLocal::ShowHideArea( origin: idVec3, int targetAreaNum ) const {
 ////	int areaNum, numObstacles;
 ////	idVec3 target;
 ////	aasGoal_t goal;
@@ -385,7 +385,7 @@
 ////idAASLocal::PullPlayer
 ////============
 ////*/
-////bool idAASLocal::PullPlayer( const idVec3 &origin, int toAreaNum ) const {
+////bool idAASLocal::PullPlayer( origin: idVec3, int toAreaNum ) const {
 ////	int areaNum;
 ////	idVec3 areaCenter, dir, vel;
 ////	idAngles delta;

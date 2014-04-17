@@ -423,19 +423,19 @@ class idPlane {
 	//	fraction = ( d1 / ( d1 - d2 ) );
 	//	return ( fraction >= 0.0 && fraction <= 1.0f );
 	//}
-	//
-	//ID_INLINE bool idPlane::RayIntersection( start:idVec3, const idVec3 &dir, float &scale ) const {
-	//	float d1, d2;
-	//
-	//	d1 = this.Normal() * start + d;
-	//	d2 = this.Normal() * dir;
-	//	if ( d2 == 0.0 ) {
-	//		return false;
-	//	}
-	//	scale = -( d1 / d2 );
-	//	return true;
-	//}
-	//
+
+	RayIntersection ( start: idVec3, dir: idVec3, /*float */scale: R<number> ): boolean {
+		var /*float */d1: number, d2: number;
+
+		d1 = this.Normal ( ).timesVec( start ) + this.d;
+		d2 = this.Normal ( ).timesVec( dir );
+		if ( d2 == 0.0 ) {
+			return false;
+		}
+		scale.$ = -( d1 / d2 );
+		return true;
+	}
+
 	GetDimension ( ): number {
 		return 4;
 	}

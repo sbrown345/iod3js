@@ -124,7 +124,7 @@ idSoundFade.prototype.Clear = function ( ) {
 ////	PermuteList_r( list, listLength, permute, maxPermute );
 ////}
 ////
-////void TestPermutations( void ) {
+////void TestPermutations( ) {
 ////	int	list[SOUND_MAX_LIST_WAVS];
 ////
 ////	for ( int len = 1 ; len < 5 ; len++ ) {
@@ -146,14 +146,14 @@ idSoundFade.prototype.Clear = function ( ) {
 
 class idSoundChannel {
 	////public:
-	////						idSoundChannel( void );
-	////						~idSoundChannel( void );
+	////						idSoundChannel( );
+	////						~idSoundChannel( );
 	////
-	////	void				Clear( void );
-	////	void				Start( void );
-	////	void				Stop( void );
+	////	void				Clear( );
+	////	void				Start( );
+	////	void				Stop( );
 	////	void				GatherChannelSamples( int sampleOffset44k, int sampleCount44k, float *dest ) const;
-	////	void				ALStop( void );			// free OpenAL resources if any
+	////	void				ALStop( );			// free OpenAL resources if any
 	////
 	triggerState: boolean;
 	trigger44kHzTime: number /*int*/; // hardware time sample the channel started
@@ -227,18 +227,18 @@ idSoundChannel::Clear
 		this.openalStreamingBuffer[0] = this.openalStreamingBuffer[1] = this.openalStreamingBuffer[2] = 0;
 		this.lastopenalStreamingBuffer[0] = this.lastopenalStreamingBuffer[1] = this.lastopenalStreamingBuffer[2] = 0;
 	}
-////
-/////*
-////===================
-////idSoundChannel::Start
-////===================
-////*/
-////void idSoundChannel::Start( void ) {
-////	triggerState = true;
-////	if ( decoder == NULL ) {
-////		decoder = idSampleDecoder::Alloc();
-////	}
-////}
+
+/*
+===================
+idSoundChannel::Start
+===================
+*/
+	Start ( ): void {
+		this.triggerState = true;
+		if ( this.decoder == NULL ) {
+			this.decoder = idSampleDecoder.Alloc ( );
+		}
+	}
 
 /*
 ===================
@@ -249,7 +249,7 @@ idSoundChannel::Stop
 		this.triggerState = false;
 		if ( this.decoder != null ) {
 			todoThrow ( );
-			//idSampleDecoder::Free( decoder );
+			//idSampleDecoder::Free( this.decoder );
 			//this.decoder = null;
 		}
 	}
@@ -327,7 +327,7 @@ idSoundChannel::ALStop
 ////		}
 ////
 ////		// decode the sample
-////		decoder.Decode( leadin, sampleOffset44k, len, dest_p );
+////		this.decoder.Decode( leadin, sampleOffset44k, len, dest_p );
 ////
 ////		dest_p += len;
 ////		sampleCount44k -= len;
@@ -361,7 +361,7 @@ idSoundChannel::ALStop
 ////		}
 ////
 ////		// decode the sample
-////		decoder.Decode( loop, sampleOffset44k, len, dest_p );
+////		this.decoder.Decode( loop, sampleOffset44k, len, dest_p );
 ////
 ////		dest_p += len;
 ////		sampleCount44k -= len;
@@ -376,8 +376,8 @@ idSoundChannel::ALStop
 class idSoundEmitterLocal extends idSoundEmitter {
 ////public:
 ////
-////						idSoundEmitterLocal( void );
-////	virtual				~idSoundEmitterLocal( void );
+////						idSoundEmitterLocal( );
+////	virtual				~idSoundEmitterLocal( );
 ////
 ////	//----------------------------------------------
 ////
@@ -399,17 +399,17 @@ class idSoundEmitterLocal extends idSoundEmitter {
 ////	virtual void		StopSound( const s_channelType channel );
 ////	virtual void		FadeSound( const s_channelType channel, float to, float over );
 ////
-////	virtual bool		CurrentlyPlaying( void ) const;
+////	virtual bool		CurrentlyPlaying( ) const;
 ////
 ////	// can pass SCHANNEL_ANY
-////	virtual	float		CurrentAmplitude( void );
+////	virtual	float		CurrentAmplitude( );
 ////
 ////	// used for save games
-////	virtual	int			Index( void ) const;
+////	virtual	int			Index( ) const;
 ////
 ////	//----------------------------------------------
 ////
-////	void				Clear( void );
+////	void				Clear( );
 ////
 ////	void				OverrideParms( const soundShaderParms_t *base, const soundShaderParms_t *over, soundShaderParms_t *out );
 ////	void				CheckForCompletion( int current44kHzTime );
@@ -439,8 +439,8 @@ class idSoundEmitterLocal extends idSoundEmitter {
 
 	// a single soundEmitter can have many channels playing from the same point
 	channels = newStructArray<idSoundChannel>( idSoundChannel, SOUND_MAX_CHANNELS );
-////
-////	idSlowChannel		slowChannels[SOUND_MAX_CHANNELS];
+
+	slowChannels = newStructArray<idSlowChannel>(idSlowChannel, SOUND_MAX_CHANNELS);
 ////
 ////	idSlowChannel		GetSlowChannel( const idSoundChannel *chan );
 ////	void				SetSlowChannel( const idSoundChannel *chan, idSlowChannel slow );
@@ -452,25 +452,26 @@ class idSoundEmitterLocal extends idSoundEmitter {
 ////	// last generated value
 	ampTime: number /*int*/;
 	amplitude: number /*float*/;
-/////*
-////===============
-////idSoundEmitterLocal::idSoundEmitterLocal
-////  
-////===============
-////*/
-////idSoundEmitterLocal::idSoundEmitterLocal( void ) {	
-////	soundWorld = NULL;
-////	Clear();
-////}
-////
-/////*
-////===============
-////idSoundEmitterLocal::~idSoundEmitterLocal
-////===============
-////*/
-////idSoundEmitterLocal::~idSoundEmitterLocal( void ) {
-////	Clear();
-////}
+/*
+===============
+idSoundEmitterLocal::idSoundEmitterLocal
+  
+===============
+*/
+	constructor ( ) {
+		super ( );
+		this.soundWorld = null;
+		this.Clear ( );
+	}
+
+/*
+===============
+idSoundEmitterLocal::~idSoundEmitterLocal
+===============
+*/
+	destructor ( ): void {
+		this.Clear ( );
+	}
 
 /*
 ===============
@@ -499,46 +500,46 @@ idSoundEmitterLocal::Clear
 
 		this.parms.memset0 ( );
 	}
-////
-/////*
-////==================
-////idSoundEmitterLocal::OverrideParms
-////==================
-////*/
-////void idSoundEmitterLocal::OverrideParms( const soundShaderParms_t *base, 
-////									  const soundShaderParms_t *over, soundShaderParms_t *out ) {
-////	if ( !over ) {
-////		*out = *base;
-////		return;
-////	}
-////	if ( over.minDistance ) {
-////		out.minDistance = over.minDistance;
-////	} else {
-////		out.minDistance = base.minDistance;
-////	}
-////	if ( over.maxDistance ) {
-////		out.maxDistance = over.maxDistance;
-////	} else {
-////		out.maxDistance = base.maxDistance;
-////	}
-////	if ( over.shakes ) {
-////		out.shakes = over.shakes;
-////	} else {
-////		out.shakes = base.shakes;
-////	}
-////	if ( over.volume ) {
-////		out.volume = over.volume;
-////	} else {
-////		out.volume = base.volume;
-////	}
-////	if ( over.soundClass ) {
-////		out.soundClass = over.soundClass;
-////	} else {
-////		out.soundClass = base.soundClass;
-////	}
-////	out.soundShaderFlags = base.soundShaderFlags | over.soundShaderFlags;
-////}
-////
+
+/*
+==================
+idSoundEmitterLocal::OverrideParms
+==================
+*/
+	OverrideParms ( base: soundShaderParms_t,
+		over: soundShaderParms_t, out: soundShaderParms_t ): void {
+		if ( !over ) {
+			out.equals( base );
+			return;
+		}
+		if ( over.minDistance ) {
+			out.minDistance = over.minDistance;
+		} else {
+			out.minDistance = base.minDistance;
+		}
+		if ( over.maxDistance ) {
+			out.maxDistance = over.maxDistance;
+		} else {
+			out.maxDistance = base.maxDistance;
+		}
+		if ( over.shakes ) {
+			out.shakes = over.shakes;
+		} else {
+			out.shakes = base.shakes;
+		}
+		if ( over.volume ) {
+			out.volume = over.volume;
+		} else {
+			out.volume = base.volume;
+		}
+		if ( over.soundClass ) {
+			out.soundClass = over.soundClass;
+		} else {
+			out.soundClass = base.soundClass;
+		}
+		out.soundShaderFlags = base.soundShaderFlags | over.soundShaderFlags;
+	}
+
 /////*
 ////==================
 ////idSoundEmitterLocal::CheckForCompletion
@@ -554,7 +555,7 @@ idSoundEmitterLocal::Clear
 ////	hasActive = false;
 ////	hasShakes = false;
 ////
-////	if ( playing ) {
+////	if ( this.playing ) {
 ////		for ( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
 ////			idSoundChannel	*chan = &this.channels[i];
 ////
@@ -575,7 +576,7 @@ idSoundEmitterLocal::Clear
 ////				}
 ////				idSlowChannel slow = GetSlowChannel( chan );
 ////
-////				if ( soundWorld.slowmoActive && slow.IsActive() ) {
+////				if ( this.soundWorld.slowmoActive && slow.IsActive() ) {
 ////					if ( slow.GetCurrentPosition().time >= chan.leadinSample.LengthIn44kHzSamples() / 2 ) {
 ////						chan.Stop();
 ////						// if this was an onDemand sound, purge the sample now
@@ -605,7 +606,7 @@ idSoundEmitterLocal::Clear
 ////
 ////			hasActive = true;
 ////
-////			if ( chan.parms.shakes > 0.0f ) {
+////			if ( chan.parms.shakes > 0.0 ) {
 ////				hasShakes = true;
 ////			}
 ////		}
@@ -613,126 +614,127 @@ idSoundEmitterLocal::Clear
 ////
 ////	// mark the entire sound emitter as non-playing if there aren't any active channels
 ////	if ( !hasActive ) {
-////		playing = false;
+////		this.playing = false;
 ////		if ( removeStatus == REMOVE_STATUS_WAITSAMPLEFINISHED ) {
 ////			// this can now be reused by the next request for a new soundEmitter
 ////			removeStatus = REMOVE_STATUS_SAMPLEFINISHED;
 ////		}
 ////	}
 ////}
-////
-/////*
-////===================
-////idSoundEmitterLocal::Spatialize
-////
-////Called once each sound frame by the main thread from idSoundWorldLocal::PlaceOrigin
-////===================
-////*/
-////void idSoundEmitterLocal::Spatialize( idVec3 listenerPos, int listenerArea, idRenderWorld *rw ) {
-////	int			i;
-////	bool		hasActive = false;
-////
-////	//
-////	// work out the maximum distance of all the playing channels
-////	//
-////	maxDistance = 0;
-////
-////	for ( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
-////		idSoundChannel	*chan = &this.channels[i];
-////
-////		if ( !chan.triggerState ) {
-////			continue;
-////		}
-////		if ( chan.parms.maxDistance > maxDistance ) {
-////			maxDistance = chan.parms.maxDistance;
-////		}
-////	}
-////
-////	//
-////	// work out where the sound comes from
-////	//
-////	idVec3 realOrigin = origin * DOOM_TO_METERS;
-////	idVec3 len = listenerPos - realOrigin;
-////	realDistance = len.LengthFast();
-////
-////	if ( realDistance >= maxDistance ) {
-////		// no way to possibly hear it
-////		distance = realDistance;
-////		return;
-////	}
-////
-////	//
-////	// work out virtual origin and distance, which may be from a portal instead of the actual origin
-////	//
-////	distance = maxDistance * METERS_TO_DOOM;
-////	if ( listenerArea == -1 ) {		// listener is outside the world
-////		return;
-////	}
-////	if ( rw ) {
-////		// we have a valid renderWorld
-////		int soundInArea = rw.PointInArea( origin );
-////		if ( soundInArea == -1 ) {
-////			if ( lastValidPortalArea == -1 ) {		// sound is outside the world
-////				distance = realDistance;
-////				spatializedOrigin = origin;			// sound is in our area
-////				return;
-////			}
-////			soundInArea = lastValidPortalArea;
-////		}
-////		lastValidPortalArea = soundInArea;
-////		if ( soundInArea == listenerArea ) {
-////			distance = realDistance;
-////			spatializedOrigin = origin;			// sound is in our area
-////			return;
-////		}
-////
-////		soundWorld.ResolveOrigin( 0, NULL, soundInArea, 0.0f, origin, this );
-////		distance /= METERS_TO_DOOM;
-////	} else {
-////		// no portals available
-////		distance = realDistance;
-////		spatializedOrigin = origin;			// sound is in our area
-////	}
-////}
-////
-/////*
-////===========================================================================================
-////
-////PUBLIC FUNCTIONS
-////
-////===========================================================================================
-////*/
-////
-/////*
-////=====================
-////idSoundEmitterLocal::UpdateEmitter
-////=====================
-////*/
-////void idSoundEmitterLocal::UpdateEmitter( const idVec3 &origin, int listenerId, const soundShaderParms_t *parms ) {
-////	if ( !parms ) {
-////		common.Error( "idSoundEmitterLocal::UpdateEmitter: NULL parms" );
-////	}
-////	if ( soundWorld && soundWorld.writeDemo ) {
-////		soundWorld.writeDemo.WriteInt( DS_SOUND );
-////		soundWorld.writeDemo.WriteInt( SCMD_UPDATE );
-////		soundWorld.writeDemo.WriteInt( index );
-////		soundWorld.writeDemo.WriteVec3( origin );
-////		soundWorld.writeDemo.WriteInt( listenerId );
-////		soundWorld.writeDemo.WriteFloat( parms.minDistance );
-////		soundWorld.writeDemo.WriteFloat( parms.maxDistance );
-////		soundWorld.writeDemo.WriteFloat( parms.volume );
-////		soundWorld.writeDemo.WriteFloat( parms.shakes );
-////		soundWorld.writeDemo.WriteInt( parms.soundShaderFlags );
-////		soundWorld.writeDemo.WriteInt( parms.soundClass );
-////	}
-////
-////	this.origin = origin;
-////	this.listenerId = listenerId;
-////	this.parms = *parms;
-////
-////	// FIXME: change values on all channels?
-////}
-////
+
+/*
+===================
+idSoundEmitterLocal::Spatialize
+
+Called once each sound frame by the main thread from idSoundWorldLocal::PlaceOrigin
+===================
+*/
+	Spatialize ( listenerPos: idVec3, /*int */listenerArea: number, rw: idRenderWorld ): void {
+		var /*int*/i: number;
+		var hasActive = false;
+
+		//
+		// work out the maximum distance of all the playing channels
+		//
+		this.maxDistance = 0;
+
+		for ( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
+			var chan: idSoundChannel = this.channels[i];
+
+			if ( !chan.triggerState ) {
+				continue;
+			}
+			if ( chan.parms.maxDistance > this.maxDistance ) {
+				this.maxDistance = chan.parms.maxDistance;
+			}
+		}
+
+		//
+		// work out where the sound comes from
+		//
+		var realOrigin = this.origin.timesFloat( DOOM_TO_METERS );
+		var len = listenerPos.opSubtraction( realOrigin );
+		this.realDistance = len.LengthFast ( );
+
+		if ( this.realDistance >= this.maxDistance ) {
+			// no way to possibly hear it
+			this.distance = this.realDistance;
+			return;
+		}
+
+		//
+		// work out virtual origin and distance, which may be from a portal instead of the actual origin
+		//
+		this.distance = this.maxDistance * METERS_TO_DOOM;
+		if ( listenerArea == -1 ) { // listener is outside the world
+			return;
+		}
+		if ( rw ) {
+			// we have a valid renderWorld
+			var soundInArea = rw.PointInArea( this.origin );
+			if ( soundInArea == -1 ) {
+				if ( this.lastValidPortalArea == -1 ) { // sound is outside the world
+					this.distance = this.realDistance;
+					this.spatializedOrigin = this.origin; // sound is in our area
+					return;
+				}
+				soundInArea = this.lastValidPortalArea;
+			}
+			this.lastValidPortalArea = soundInArea;
+			if ( soundInArea == listenerArea ) {
+				this.distance = this.realDistance;
+				this.spatializedOrigin = this.origin; // sound is in our area
+				return;
+			}
+
+			this.soundWorld.ResolveOrigin( 0, null, soundInArea, 0.0, this.origin, this );
+			this.distance /= METERS_TO_DOOM;
+		} else {
+			// no portals available
+			this.distance = this.realDistance;
+			this.spatializedOrigin = this.origin; // sound is in our area
+		}
+	}
+
+/*
+===========================================================================================
+
+PUBLIC FUNCTIONS
+
+===========================================================================================
+*/
+
+/*
+=====================
+idSoundEmitterLocal::UpdateEmitter
+=====================
+*/
+	UpdateEmitter ( origin: idVec3, /*int */listenerId: number, parms: soundShaderParms_t ): void {
+		if ( !parms ) {
+			common.Error( "idSoundEmitterLocal::UpdateEmitter: NULL parms" );
+		}
+		if ( this.soundWorld && this.soundWorld.writeDemo ) {
+			todoThrow ( );
+			//this.soundWorld.writeDemo.WriteInt( demoSystem_t.DS_SOUND );
+			//this.soundWorld.writeDemo.WriteInt( SCMD_UPDATE );
+			//this.soundWorld.writeDemo.WriteInt( this.index );
+			//this.soundWorld.writeDemo.WriteVec3( this.origin );
+			//this.soundWorld.writeDemo.WriteInt( listenerId );
+			//this.soundWorld.writeDemo.WriteFloat( parms.minDistance );
+			//this.soundWorld.writeDemo.WriteFloat( parms.maxDistance );
+			//this.soundWorld.writeDemo.WriteFloat( parms.volume );
+			//this.soundWorld.writeDemo.WriteFloat( parms.shakes );
+			//this.soundWorld.writeDemo.WriteInt( parms.soundShaderFlags );
+			//this.soundWorld.writeDemo.WriteInt( parms.soundClass );
+		}
+
+		this.origin = origin;
+		this.listenerId = listenerId;
+		this.parms.equals( parms );
+
+		// FIXME: change values on all channels?
+	}
+
 /////*
 ////=====================
 ////idSoundEmitterLocal::Free
@@ -745,20 +747,20 @@ idSoundEmitterLocal::Clear
 ////		return;
 ////	}
 ////
-////	if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-////		common.Printf( "FreeSound (%i,%i)\n",  index, (int)immediate );
+////	if ( idSoundSystemLocal.s_showStartSound.GetInteger() ) {
+////		common.Printf( "FreeSound (%i,%i)\n",  this.index, (int)immediate );
 ////	}
-////	if ( soundWorld && soundWorld.writeDemo ) {
-////		soundWorld.writeDemo.WriteInt( DS_SOUND );
-////		soundWorld.writeDemo.WriteInt( SCMD_FREE );
-////		soundWorld.writeDemo.WriteInt( index );
-////		soundWorld.writeDemo.WriteInt( immediate );
+////	if ( this.soundWorld && this.soundWorld.writeDemo ) {
+////		this.soundWorld.writeDemo.WriteInt( demoSystem_t.DS_SOUND );
+////		this.soundWorld.writeDemo.WriteInt( SCMD_FREE );
+////		this.soundWorld.writeDemo.WriteInt( this.index );
+////		this.soundWorld.writeDemo.WriteInt( immediate );
 ////	}
 ////
 ////	if ( !immediate ) {
 ////		removeStatus = REMOVE_STATUS_WAITSAMPLEFINISHED;
 ////	} else {
-////		Clear();
+////		this.Clear();
 ////	}
 ////}
 
@@ -769,222 +771,222 @@ idSoundEmitterLocal::StartSound
 returns the length of the started sound in msec
 =====================
 */
-StartSound (shader: idSoundShader, channel: number/*s_channelType*/, /*float */diversity = 0, /*int */shaderFlags = 0, allowSlow = true  ) {
-	var/*int*/i:number;
+	StartSound ( shader: idSoundShader, channel: number /*s_channelType*/, /*float */diversity = 0, /*int */soundShaderFlags = 0, allowSlow = true ) {
+		var /*int*/i: number;
 
-	if ( !shader ) {
-		return 0;
+		if ( !shader ) {
+			return 0;
+		}
+		if ( idSoundSystemLocal.s_showStartSound.GetInteger ( ) ) {
+			common.Printf( "StartSound %ims (%i,%i,%s) = ", this.soundWorld.gameMsec, this.index, channel, shader.GetName ( ) );
+		}
+
+		if ( this.soundWorld && this.soundWorld.writeDemo ) {
+			todoThrow ( );
+			//this.soundWorld.writeDemo.WriteInt( demoSystem_t.DS_SOUND );
+			//this.soundWorld.writeDemo.WriteInt( soundDemoCommand_t.SCMD_START );
+			//this.soundWorld.writeDemo.WriteInt( this.index );
+
+			//this.soundWorld.writeDemo.WriteHashString( shader.GetName() );
+
+			//this.soundWorld.writeDemo.WriteInt( channel );
+			//this.soundWorld.writeDemo.WriteFloat( diversity );
+			//this.soundWorld.writeDemo.WriteInt( soundShaderFlags );
+		}
+
+		// build the channel parameters by taking the shader parms and optionally overriding
+		var chanParms = new soundShaderParms_t;
+
+		chanParms = shader.parms;
+		this.OverrideParms( chanParms, this.parms, chanParms );
+		chanParms.soundShaderFlags |= soundShaderFlags;
+
+		if ( chanParms.shakes > 0.0 ) {
+			shader.CheckShakesAndOgg ( );
+		}
+
+		// this is the sample time it will be first mixed
+		var /*int */start44kHz: number;
+
+		if ( this.soundWorld.fpa[0] ) {
+			// if we are recording an AVI demo, don't use hardware time
+			start44kHz = this.soundWorld.lastAVI44kHz + MIXBUFFER_SAMPLES;
+		} else {
+			start44kHz = soundSystemLocal.GetCurrent44kHzTime ( ) + MIXBUFFER_SAMPLES;
+		}
+
+		//
+		// pick which sound to play from the shader
+		//
+		if ( !shader.numEntries ) {
+			if ( idSoundSystemLocal.s_showStartSound.GetInteger ( ) ) {
+				common.Printf( "no samples in sound shader\n" );
+			}
+			return 0; // no sounds
+		}
+		var /*int */ choice: number;
+
+		// pick a sound from the list based on the passed diversity
+		choice = ( int )( diversity * shader.numEntries );
+		if ( choice < 0 || choice >= shader.numEntries ) {
+			choice = 0;
+		}
+
+		// bump the choice if the exact sound was just played and we are NO_DUPS
+		if ( chanParms.soundShaderFlags & SSF_NO_DUPS ) {
+			var sample: idSoundSample;
+			if ( shader.leadins[choice] ) {
+				sample = shader.leadins[choice];
+			} else {
+				sample = shader.entries[choice];
+			}
+			for ( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
+				var chan: idSoundChannel = this.channels[i];
+				if ( chan.leadinSample == sample ) {
+					choice = ( choice + 1 ) % shader.numEntries;
+					break;
+				}
+			}
+		}
+
+		// PLAY_ONCE sounds will never be restarted while they are running
+		if ( chanParms.soundShaderFlags & SSF_PLAY_ONCE ) {
+			for ( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
+				var chan: idSoundChannel = this.channels[i];
+				if ( chan.triggerState && chan.soundShader == shader ) {
+					if ( idSoundSystemLocal.s_showStartSound.GetInteger ( ) ) {
+						common.Printf( "PLAY_ONCE not restarting\n" );
+					}
+					return 0;
+				}
+			}
+		}
+
+		// never play the same sound twice with the same starting time, even
+		// if they are on different channels
+		for ( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
+			var chan: idSoundChannel = this.channels[i];
+			if ( chan.triggerState && chan.soundShader == shader && chan.trigger44kHzTime == start44kHz ) {
+				if ( idSoundSystemLocal.s_showStartSound.GetInteger ( ) ) {
+					common.Printf( "already started this frame\n" );
+				}
+				return 0;
+			}
+		}
+
+		Sys_EnterCriticalSection ( );
+
+		// kill any sound that is currently playing on this channel
+		if ( channel != SCHANNEL_ANY ) {
+			for ( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
+				var chan: idSoundChannel = this.channels[i];
+				if ( chan.triggerState && chan.soundShader && chan.triggerChannel == channel ) {
+					if ( idSoundSystemLocal.s_showStartSound.GetInteger ( ) ) {
+						common.Printf( "(override %s)", chan.soundShader.base.GetName ( ) );
+					}
+
+					chan.Stop ( );
+
+					// if this was an onDemand sound, purge the sample now
+					if ( chan.leadinSample.onDemand ) {
+						chan.ALStop ( );
+						chan.leadinSample.PurgeSoundSample ( );
+					}
+					break;
+				}
+			}
+		}
+
+		// find a free channel to play the sound on
+		var chan: idSoundChannel;
+		for ( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
+			chan = this.channels[i];
+			if ( !chan.triggerState ) {
+				break;
+			}
+		}
+
+		if ( i == SOUND_MAX_CHANNELS ) {
+			// we couldn't find a channel for it
+			Sys_LeaveCriticalSection ( );
+			if ( idSoundSystemLocal.s_showStartSound.GetInteger ( ) ) {
+				common.Printf( "no channels available\n" );
+			}
+			return 0;
+		}
+
+		chan = this.channels[i];
+
+		if ( shader.leadins[choice] ) {
+			chan.leadinSample = shader.leadins[choice];
+		} else {
+			chan.leadinSample = shader.entries[choice];
+		}
+
+		// if the sample is onDemand (voice mails, etc), load it now
+		if ( chan.leadinSample.purged ) {
+			var /*int		*/start = Sys_Milliseconds ( );
+			chan.leadinSample.Load ( );
+			var /*int		*/end = Sys_Milliseconds ( );
+			session.TimeHitch( end - start );
+			// recalculate start44kHz, because loading may have taken a fair amount of time
+			if ( !this.soundWorld.fpa[0] ) {
+				start44kHz = soundSystemLocal.GetCurrent44kHzTime ( ) + MIXBUFFER_SAMPLES;
+			}
+		}
+
+		if ( idSoundSystemLocal.s_showStartSound.GetInteger ( ) ) {
+			common.Printf( "'%s'\n", chan.leadinSample.name.c_str ( ) );
+		}
+
+		if ( idSoundSystemLocal.s_skipHelltimeFX.GetBool ( ) ) {
+			chan.disallowSlow = true;
+		} else {
+			chan.disallowSlow = !allowSlow;
+		}
+
+		this.ResetSlowChannel( chan );
+
+		// the sound will start mixing in the next async mix block
+		chan.triggered = true;
+		chan.openalStreamingOffset = 0;
+		chan.trigger44kHzTime = start44kHz;
+		chan.parms = chanParms;
+		chan.triggerGame44kHzTime = this.soundWorld.game44kHz;
+		chan.soundShader = shader;
+		chan.triggerChannel = channel;
+		chan.Start ( );
+
+		// we need to start updating the def and mixing it in
+		this.playing = true;
+
+		// spatialize it immediately, so it will start the next mix block
+		// even if that happens before the next PlaceOrigin()
+		this.Spatialize( this.soundWorld.listenerPos, this.soundWorld.listenerArea, this.soundWorld.rw );
+
+		// return length of sound in milliseconds
+		var length = chan.leadinSample.LengthIn44kHzSamples ( );
+
+		if ( chan.leadinSample.objectInfo.nChannels == 2 ) {
+			length /= 2; // stereo samples
+		}
+
+		// adjust the start time based on diversity for looping sounds, so they don't all start
+		// at the same point
+		if ( chan.parms.soundShaderFlags & SSF_LOOPING && !chan.leadinSample.LengthIn44kHzSamples ( ) ) {
+			chan.trigger44kHzTime -= diversity * length;
+			chan.trigger44kHzTime &= ~7; // so we don't have to worry about the 22kHz and 11kHz expansions
+			// starting in fractional samples
+			chan.triggerGame44kHzTime -= diversity * length;
+			chan.triggerGame44kHzTime &= ~7;
+		}
+
+		length *= 1000 / /*(float)*/PRIMARYFREQ;
+
+		Sys_LeaveCriticalSection ( );
+
+		return length;
 	}
-todoThrow();return 999999999;
-//////	if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-//////		common.Printf( "StartSound %ims (%i,%i,%s) = ", soundWorld.gameMsec, index, (int)channel, shader.GetName() );
-//////	}
-//////
-//////	if ( soundWorld && soundWorld.writeDemo ) {
-//////		soundWorld.writeDemo.WriteInt( DS_SOUND );
-//////		soundWorld.writeDemo.WriteInt( SCMD_START );
-//////		soundWorld.writeDemo.WriteInt( index );
-//////
-//////		soundWorld.writeDemo.WriteHashString( shader.GetName() );
-//////
-//////		soundWorld.writeDemo.WriteInt( channel );
-//////		soundWorld.writeDemo.WriteFloat( diversity );
-//////		soundWorld.writeDemo.WriteInt( soundShaderFlags );
-//////	}
-//////
-//////	// build the channel parameters by taking the shader parms and optionally overriding
-//////	soundShaderParms_t	chanParms;
-//////
-//////	chanParms = shader.parms;
-//////	OverrideParms( &chanParms, &this.parms, &chanParms );
-//////	chanParms.soundShaderFlags |= soundShaderFlags;
-//////
-//////	if ( chanParms.shakes > 0.0f ) {
-//////		shader.CheckShakesAndOgg();
-//////	}
-//////
-//////	// this is the sample time it will be first mixed
-//////	int start44kHz;
-//////	
-//////	if ( soundWorld.fpa[0] ) {
-//////		// if we are recording an AVI demo, don't use hardware time
-//////		start44kHz = soundWorld.lastAVI44kHz + MIXBUFFER_SAMPLES;
-//////	} else {
-//////		start44kHz = soundSystemLocal.GetCurrent44kHzTime() + MIXBUFFER_SAMPLES;
-//////	}
-//////
-//////	//
-//////	// pick which sound to play from the shader
-//////	//
-//////	if ( !shader.numEntries ) {
-//////		if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-//////			common.Printf( "no samples in sound shader\n" );
-//////		}
-//////		return 0;				// no sounds
-//////	}
-//////	int choice;
-//////
-//////	// pick a sound from the list based on the passed diversity
-//////	choice = (int)(diversity * shader.numEntries);
-//////	if ( choice < 0 || choice >= shader.numEntries ) {
-//////		choice = 0;
-//////	}
-//////
-//////	// bump the choice if the exact sound was just played and we are NO_DUPS
-//////	if ( chanParms.soundShaderFlags & SSF_NO_DUPS ) {
-//////		idSoundSample	*sample;
-//////		if ( shader.leadins[ choice ] ) {
-//////			sample = shader.leadins[ choice ];
-//////		} else {
-//////			sample = shader.entries[ choice ];
-//////		}
-//////		for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
-//////			idSoundChannel	*chan = &this.channels[i];
-//////			if ( chan.leadinSample == sample ) {
-//////				choice = ( choice + 1 ) % shader.numEntries;
-//////				break;
-//////			}
-//////		}
-//////	}
-//////
-//////	// PLAY_ONCE sounds will never be restarted while they are running
-//////	if ( chanParms.soundShaderFlags & SSF_PLAY_ONCE ) {
-//////		for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
-//////			idSoundChannel	*chan = &this.channels[i];
-//////			if ( chan.triggerState && chan.soundShader == shader ) {
-//////				if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-//////					common.Printf( "PLAY_ONCE not restarting\n" );
-//////				}
-//////				return 0;
-//////			}
-//////		}
-//////	}
-//////
-//////	// never play the same sound twice with the same starting time, even
-//////	// if they are on different channels
-//////	for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
-//////		idSoundChannel	*chan = &this.channels[i];
-//////		if ( chan.triggerState && chan.soundShader == shader && chan.trigger44kHzTime == start44kHz ) {
-//////			if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-//////				common.Printf( "already started this frame\n" );
-//////			}
-//////			return 0;
-//////		}
-//////	}
-//////
-//////	Sys_EnterCriticalSection();
-//////
-//////	// kill any sound that is currently playing on this channel
-//////	if ( channel != SCHANNEL_ANY ) {
-//////		for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
-//////			idSoundChannel	*chan = &this.channels[i];
-//////			if ( chan.triggerState && chan.soundShader && chan.triggerChannel == channel ) {
-//////				if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-//////					common.Printf( "(override %s)", chan.soundShader.base.GetName() );
-//////				}
-//////				
-//////				chan.Stop();
-//////
-//////				// if this was an onDemand sound, purge the sample now
-//////				if ( chan.leadinSample.onDemand ) {
-//////					chan.ALStop();
-//////					chan.leadinSample.PurgeSoundSample();
-//////				}
-//////				break;
-//////			}
-//////		}
-//////	}
-//////
-//////	// find a free channel to play the sound on
-//////	idSoundChannel	*chan;
-//////	for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
-//////		chan = &this.channels[i];
-//////		if ( !chan.triggerState ) {
-//////			break;
-//////		}
-//////	}
-//////
-//////	if ( i == SOUND_MAX_CHANNELS ) {
-//////		// we couldn't find a channel for it
-//////		Sys_LeaveCriticalSection();
-//////		if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-//////			common.Printf( "no channels available\n" );
-//////		}
-//////		return 0;
-//////	}
-//////
-//////	chan = &this.channels[i];
-//////
-//////	if ( shader.leadins[ choice ] ) {
-//////		chan.leadinSample = shader.leadins[ choice ];
-//////	} else {
-//////		chan.leadinSample = shader.entries[ choice ];
-//////	}
-//////
-//////	// if the sample is onDemand (voice mails, etc), load it now
-//////	if ( chan.leadinSample.purged ) {
-//////		int		start = Sys_Milliseconds();
-//////		chan.leadinSample.Load();
-//////		int		end = Sys_Milliseconds();
-//////		session.TimeHitch( end - start );
-//////		// recalculate start44kHz, because loading may have taken a fair amount of time
-//////		if ( !soundWorld.fpa[0] ) {
-//////			start44kHz = soundSystemLocal.GetCurrent44kHzTime() + MIXBUFFER_SAMPLES;
-//////		}
-//////	}
-//////
-//////	if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-//////		common.Printf( "'%s'\n", chan.leadinSample.name.c_str() );
-//////	}
-//////
-//////	if ( idSoundSystemLocal::s_skipHelltimeFX.GetBool() ) {
-//////		chan.disallowSlow = true;
-//////	} else {
-//////		chan.disallowSlow = !allowSlow;
-//////	}
-//////
-//////	ResetSlowChannel( chan );
-//////
-//////	// the sound will start mixing in the next async mix block
-//////	chan.triggered = true;
-//////	chan.openalStreamingOffset = 0;
-//////	chan.trigger44kHzTime = start44kHz;
-//////	chan.parms = chanParms;
-//////	chan.triggerGame44kHzTime = soundWorld.game44kHz;
-//////	chan.soundShader = shader;
-//////	chan.triggerChannel = channel;
-//////	chan.Start();
-//////
-//////	// we need to start updating the def and mixing it in
-//////	playing = true;
-//////
-//////	// spatialize it immediately, so it will start the next mix block
-//////	// even if that happens before the next PlaceOrigin()
-//////	Spatialize( soundWorld.listenerPos, soundWorld.listenerArea, soundWorld.rw );
-//////
-//////	// return length of sound in milliseconds
-//////	int length = chan.leadinSample.LengthIn44kHzSamples();
-//////
-//////	if ( chan.leadinSample.objectInfo.nChannels == 2 ) {
-//////		length /= 2;	// stereo samples
-//////	}
-//////
-//////	// adjust the start time based on diversity for looping sounds, so they don't all start
-//////	// at the same point
-//////	if ( chan.parms.soundShaderFlags & SSF_LOOPING && !chan.leadinSample.LengthIn44kHzSamples() ) {
-//////		chan.trigger44kHzTime -= diversity * length;
-//////		chan.trigger44kHzTime &= ~7;		// so we don't have to worry about the 22kHz and 11kHz expansions
-//////											// starting in fractional samples
-//////		chan.triggerGame44kHzTime -= diversity * length;
-//////		chan.triggerGame44kHzTime &= ~7;
-//////	}
-//////	
-//////	length *= 1000 / (float)PRIMARYFREQ;
-//////
-//////	Sys_LeaveCriticalSection();
-//////
-	////return length;
-}
 /////*
 ////===================
 ////idSoundEmitterLocal::ModifySound
@@ -994,20 +996,20 @@ todoThrow();return 999999999;
 ////	if ( !parms ) {
 ////		common.Error( "idSoundEmitterLocal::ModifySound: NULL parms" );
 ////	}
-////	if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-////		common.Printf( "ModifySound(%i,%i)\n", index, channel );
+////	if ( idSoundSystemLocal.s_showStartSound.GetInteger() ) {
+////		common.Printf( "ModifySound(%i,%i)\n", this.index, channel );
 ////	}
-////	if ( soundWorld && soundWorld.writeDemo ) {
-////		soundWorld.writeDemo.WriteInt( DS_SOUND );
-////		soundWorld.writeDemo.WriteInt( SCMD_MODIFY );
-////		soundWorld.writeDemo.WriteInt( index );
-////		soundWorld.writeDemo.WriteInt( channel );
-////		soundWorld.writeDemo.WriteFloat( parms.minDistance );
-////		soundWorld.writeDemo.WriteFloat( parms.maxDistance );
-////		soundWorld.writeDemo.WriteFloat( parms.volume );
-////		soundWorld.writeDemo.WriteFloat( parms.shakes );
-////		soundWorld.writeDemo.WriteInt( parms.soundShaderFlags );
-////		soundWorld.writeDemo.WriteInt( parms.soundClass );
+////	if ( this.soundWorld && this.soundWorld.writeDemo ) {
+////		this.soundWorld.writeDemo.WriteInt( demoSystem_t.DS_SOUND );
+////		this.soundWorld.writeDemo.WriteInt( SCMD_MODIFY );
+////		this.soundWorld.writeDemo.WriteInt( this.index );
+////		this.soundWorld.writeDemo.WriteInt( channel );
+////		this.soundWorld.writeDemo.WriteFloat( parms.minDistance );
+////		this.soundWorld.writeDemo.WriteFloat( parms.maxDistance );
+////		this.soundWorld.writeDemo.WriteFloat( parms.volume );
+////		this.soundWorld.writeDemo.WriteFloat( parms.shakes );
+////		this.soundWorld.writeDemo.WriteInt( parms.soundShaderFlags );
+////		this.soundWorld.writeDemo.WriteInt( parms.soundClass );
 ////	}
 ////
 ////	for ( int i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
@@ -1020,9 +1022,9 @@ todoThrow();return 999999999;
 ////			continue;
 ////		}
 ////
-////		OverrideParms( &chan.parms, parms, &chan.parms );
+////		this.OverrideParms( &chan.parms, parms, &chan.parms );
 ////
-////		if ( chan.parms.shakes > 0.0f && chan.soundShader != NULL ) {
+////		if ( chan.parms.shakes > 0.0 && chan.soundShader != NULL ) {
 ////			chan.soundShader.CheckShakesAndOgg();
 ////		}
 ////	}
@@ -1039,15 +1041,15 @@ can pass SCHANNEL_ANY
 		todoThrow ( );
 		var /*int*/i: number;
 ////
-////	if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-////		common.Printf( "StopSound(%i,%i)\n", index, channel );
+////	if ( idSoundSystemLocal.s_showStartSound.GetInteger() ) {
+////		common.Printf( "StopSound(%i,%i)\n", this.index, channel );
 ////	}
 ////
-////	if ( soundWorld && soundWorld.writeDemo ) {
-////		soundWorld.writeDemo.WriteInt( DS_SOUND );
-////		soundWorld.writeDemo.WriteInt( SCMD_STOP );
-////		soundWorld.writeDemo.WriteInt( index );
-////		soundWorld.writeDemo.WriteInt( channel );
+////	if ( this.soundWorld && this.soundWorld.writeDemo ) {
+////		this.soundWorld.writeDemo.WriteInt( demoSystem_t.DS_SOUND );
+////		this.soundWorld.writeDemo.WriteInt( SCMD_STOP );
+////		this.soundWorld.writeDemo.WriteInt( this.index );
+////		this.soundWorld.writeDemo.WriteInt( channel );
 ////	}
 ////
 ////	Sys_EnterCriticalSection();
@@ -1088,26 +1090,26 @@ can pass SCHANNEL_ANY
 ////===================
 ////*/
 ////void idSoundEmitterLocal::FadeSound( const s_channelType channel, float to, float over ) {
-////	if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-////		common.Printf( "FadeSound(%i,%i,%f,%f )\n", index, channel, to, over );
+////	if ( idSoundSystemLocal.s_showStartSound.GetInteger() ) {
+////		common.Printf( "FadeSound(%i,%i,%f,%f )\n", this.index, channel, to, over );
 ////	}
-////	if ( !soundWorld ) {
+////	if ( !this.soundWorld ) {
 ////		return;
 ////	}
-////	if ( soundWorld.writeDemo ) {
-////		soundWorld.writeDemo.WriteInt( DS_SOUND );
-////		soundWorld.writeDemo.WriteInt( SCMD_FADE );
-////		soundWorld.writeDemo.WriteInt( index );
-////		soundWorld.writeDemo.WriteInt( channel );
-////		soundWorld.writeDemo.WriteFloat( to );
-////		soundWorld.writeDemo.WriteFloat( over );
+////	if ( this.soundWorld.writeDemo ) {
+////		this.soundWorld.writeDemo.WriteInt( demoSystem_t.DS_SOUND );
+////		this.soundWorld.writeDemo.WriteInt( SCMD_FADE );
+////		this.soundWorld.writeDemo.WriteInt( this.index );
+////		this.soundWorld.writeDemo.WriteInt( channel );
+////		this.soundWorld.writeDemo.WriteFloat( to );
+////		this.soundWorld.writeDemo.WriteFloat( over );
 ////	}
 ////
 ////	int	start44kHz;
 ////
-////	if ( soundWorld.fpa[0] ) {
+////	if ( this.soundWorld.fpa[0] ) {
 ////		// if we are recording an AVI demo, don't use hardware time
-////		start44kHz = soundWorld.lastAVI44kHz + MIXBUFFER_SAMPLES;
+////		start44kHz = this.soundWorld.lastAVI44kHz + MIXBUFFER_SAMPLES;
 ////	} else {
 ////		start44kHz = soundSystemLocal.GetCurrent44kHzTime() + MIXBUFFER_SAMPLES;
 ////	}
@@ -1137,25 +1139,25 @@ can pass SCHANNEL_ANY
 ////		chan.channelFade.fadeEndVolume = to;
 ////	}
 ////}
-////
-/////*
-////===================
-////idSoundEmitterLocal::CurrentlyPlaying
-////===================
-////*/
-////bool idSoundEmitterLocal::CurrentlyPlaying( void ) const {
-////	return playing;
-////}
-////
-/////*
-////===================
-////idSoundEmitterLocal::Index
-////===================
-////*/
-////int	idSoundEmitterLocal::Index( void ) const {
-////	return index;
-////}
-////
+
+/*
+===================
+idSoundEmitterLocal::CurrentlyPlaying
+===================
+*/
+	CurrentlyPlaying ( ): boolean {
+		return this.playing;
+	}
+
+/*
+===================
+idSoundEmitterLocal::Index
+===================
+*/
+	Index ( ): number {
+		return this.index;
+	}
+
 /////*
 ////===================
 ////idSoundEmitterLocal::CurrentAmplitude
@@ -1164,8 +1166,8 @@ can pass SCHANNEL_ANY
 ////to allow lights and surface flares to vary with the sound amplitude
 ////===================
 ////*/
-////float idSoundEmitterLocal::CurrentAmplitude( void ) {
-////	if ( idSoundSystemLocal::s_constantAmplitude.GetFloat() >= 0.0f ) {
+////float idSoundEmitterLocal::CurrentAmplitude( ) {
+////	if ( idSoundSystemLocal::s_constantAmplitude.GetFloat() >= 0.0 ) {
 ////		return idSoundSystemLocal::s_constantAmplitude.GetFloat();
 ////	}
 ////
@@ -1182,170 +1184,37 @@ can pass SCHANNEL_ANY
 ////
 ////	// calculate a new value
 ////	ampTime = localTime;
-////	amplitude = soundWorld.FindAmplitude( this, localTime, NULL, SCHANNEL_ANY, false );
+////	amplitude = this.soundWorld.FindAmplitude( this, localTime, NULL, SCHANNEL_ANY, false );
 ////
 ////	return amplitude;
 ////}
 ////
-/////*
-////===================
-////idSoundEmitterLocal::GetSlowChannel
-////===================
-////*/
-////idSlowChannel idSoundEmitterLocal::GetSlowChannel( const idSoundChannel *chan ) {
-////	return slowChannels[chan - this.channels];
-////}
-////
-/////*
-////===================
-////idSoundEmitterLocal::SetSlowChannel
-////===================
-////*/
-////void idSoundEmitterLocal::SetSlowChannel( const idSoundChannel *chan, idSlowChannel slow ) {
-////	slowChannels[chan - this.channels] = slow;
-////}
-////
-/////*
-////===================
-////idSoundEmitterLocal::ResetSlowChannel
-////===================
-////*/
-////void idSoundEmitterLocal::ResetSlowChannel( const idSoundChannel *chan ) {
-////	int index = chan - this.channels;
-////	slowChannels[index].Reset();
-////}
+/*
+===================
+idSoundEmitterLocal::GetSlowChannel
+===================
+*/
+	GetSlowChannel ( chan: idSoundChannel ): idSlowChannel {
+		return this.slowChannels[this.channels.indexOf( chan )];
+	}
+
+/*
+===================
+idSoundEmitterLocal::SetSlowChannel
+===================
+*/
+	SetSlowChannel ( chan: idSoundChannel, slow: idSlowChannel ): void {
+		this.slowChannels[this.channels.indexOf( chan )] = slow;
+	}
+
+/*
+===================
+idSoundEmitterLocal::ResetSlowChannel
+===================
+*/
+	ResetSlowChannel ( chan: idSoundChannel ): void {
+		var index = this.channels.indexOf( chan );
+		this.slowChannels[index].Reset ( );
+	}
 }
-/////*
-////===================
-////idSlowChannel::Reset
-////===================
-////*/
-////void idSlowChannel::Reset() {
-////	memset( this, 0, sizeof( *this ) );
-////
-////	this.chan = chan;
-////
-////	curPosition.Set( 0 );
-////	newPosition.Set( 0 );
-////
-////	curSampleOffset = -10000;
-////	newSampleOffset = -10000;
-////
-////	triggerOffset = 0;
-////}
-////
-/////*
-////===================
-////idSlowChannel::AttachSoundChannel
-////===================
-////*/
-////void idSlowChannel::AttachSoundChannel( const idSoundChannel *chan ) {
-////	this.chan = chan;
-////}
-////
-/////*
-////===================
-////idSlowChannel::GetSlowmoSpeed
-////===================
-////*/
-////float idSlowChannel::GetSlowmoSpeed() {
-////	idSoundWorldLocal *sw = static_cast<idSoundWorldLocal*>( soundSystemLocal.GetPlayingSoundWorld() );
-////
-////	if ( sw ) {
-////		return sw.slowmoSpeed;
-////	} else {
-////		return 0;
-////	}
-////}
-////
-/////*
-////===================
-////idSlowChannel::GenerateSlowChannel
-////===================
-////*/
-////void idSlowChannel::GenerateSlowChannel( FracTime& playPos, int sampleCount44k, float* finalBuffer ) {
-////	idSoundWorldLocal *sw = static_cast<idSoundWorldLocal*>( soundSystemLocal.GetPlayingSoundWorld() );
-////	float in[MIXBUFFER_SAMPLES+3], out[MIXBUFFER_SAMPLES+3], *src, *spline, slowmoSpeed;
-////	int i, neededSamples, orgTime, zeroedPos, count = 0;
-////
-////	src = in + 2;
-////	spline = out + 2;
-////
-////	if ( sw ) {
-////		slowmoSpeed = sw.slowmoSpeed;
-////	}
-////	else {
-////		slowmoSpeed = 1;
-////	}
-////
-////	neededSamples = sampleCount44k * slowmoSpeed + 4;
-////	orgTime = playPos.time;
-////
-////	// get the channel's samples
-////	chan.GatherChannelSamples( playPos.time * 2, neededSamples, src );
-////	for ( i = 0; i < neededSamples >> 1; i++ ) {
-////		spline[i] = src[i*2];
-////	}
-////
-////	// interpolate channel
-////	zeroedPos = playPos.time;
-////	playPos.time = 0;
-////
-////	for ( i = 0; i < sampleCount44k >> 1; i++, count += 2 ) {
-////		float val;
-////		val = spline[playPos.time];
-////		src[i] = val;
-////		playPos.Increment( slowmoSpeed );
-////	}
-////
-////	// lowpass filter
-////	float *in_p = in + 2, *out_p = out + 2;
-////	int numSamples = sampleCount44k >> 1;
-////
-////	lowpass.GetContinuitySamples( in_p[-1], in_p[-2], out_p[-1], out_p[-2] );
-////	lowpass.SetParms( slowmoSpeed * 15000, 1.2f );
-////
-////	for ( int i = 0, count = 0; i < numSamples; i++, count += 2 ) {
-////		lowpass.ProcessSample( in_p + i, out_p + i );
-////		finalBuffer[count] = finalBuffer[count+1] = out[i];
-////	}
-////
-////	lowpass.SetContinuitySamples( in_p[numSamples-2], in_p[numSamples-3], out_p[numSamples-2], out_p[numSamples-3] );
-////
-////	playPos.time += zeroedPos;
-////}
-////
-/////*
-////===================
-////idSlowChannel::GatherChannelSamples
-////===================
-////*/
-////void idSlowChannel::GatherChannelSamples( int sampleOffset44k, int sampleCount44k, float *dest ) {
-////	int state = 0;
-////
-////	// setup chan
-////	active = true;
-////	newSampleOffset = sampleOffset44k >> 1;
-////
-////	// set state
-////	if ( newSampleOffset < curSampleOffset ) {
-////		state = PLAYBACK_RESET;
-////	} else if ( newSampleOffset > curSampleOffset ) {
-////		state = PLAYBACK_ADVANCING;
-////	}
-////
-////	if ( state == PLAYBACK_RESET ) {
-////		curPosition.Set( newSampleOffset );
-////	}
-////
-////	// set current vars
-////	curSampleOffset = newSampleOffset;
-////	newPosition = curPosition;
-////
-////	// do the slow processing
-////	GenerateSlowChannel( newPosition, sampleCount44k, dest );
-////
-////	// finish off
-////	if ( state == PLAYBACK_ADVANCING )
-////		curPosition = newPosition;
-////}
+

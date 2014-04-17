@@ -441,7 +441,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////idEditEntities::SelectEntity
 ////=============
 ////*/
-////bool idEditEntities::SelectEntity( const idVec3 &origin, const idVec3 &dir, const idEntity *skip ) {
+////bool idEditEntities::SelectEntity( origin: idVec3, const idVec3 &dir, const idEntity *skip ) {
 ////	idVec3		end;
 ////	idEntity	*ent;
 ////

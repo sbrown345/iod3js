@@ -94,7 +94,7 @@
 ////*/
 ////size_t FS_ReadOGG( void *dest, size_t size1, size_t size2, void *fh ) {
 ////	idFile *f = reinterpret_cast<idFile *>(fh);
-////	return f->Read( dest, size1 * size2 );
+////	return f.Read( dest, size1 * size2 );
 ////}
 ////
 /////*
@@ -112,10 +112,10 @@
 ////	} else if ( type == SEEK_SET ) {
 ////		retype = FS_SEEK_SET;
 ////	} else {
-////		common->FatalError( "fs_seekOGG: seek without type\n" );
+////		common.FatalError( "fs_seekOGG: seek without type\n" );
 ////	}
 ////	idFile *f = reinterpret_cast<idFile *>(fh);
-////	return f->Seek( to, retype );
+////	return f.Seek( to, retype );
 ////}
 ////
 /////*
@@ -134,7 +134,7 @@
 ////*/
 ////long FS_TellOGG( void *fh ) {
 ////	idFile *f = reinterpret_cast<idFile *>(fh);
-////	return f->Tell();
+////	return f.Tell();
 ////}
 ////
 /////*
@@ -164,7 +164,7 @@
 ////
 ////	memset( pwfx, 0, sizeof( waveformatex_t ) );
 ////
-////	mhmmio = fileSystem->OpenFileRead( strFileName );
+////	mhmmio = fileSystem.OpenFileRead( strFileName );
 ////	if ( !mhmmio ) {
 ////		return -1;
 ////	}
@@ -176,31 +176,31 @@
 ////	if( ov_openFile( mhmmio, ov ) < 0 ) {
 ////		delete ov;
 ////		Sys_LeaveCriticalSection( CRITICAL_SECTION_ONE );
-////		fileSystem->CloseFile( mhmmio );
+////		fileSystem.CloseFile( mhmmio );
 ////		mhmmio = NULL;
 ////		return -1;
 ////	}
 ////
-////	mfileTime = mhmmio->Timestamp();
+////	mfileTime = mhmmio.Timestamp();
 ////
 ////	vorbis_info *vi = ov_info( ov, -1 );
 ////
-////	mpwfx.Format.nSamplesPerSec = vi->rate;
-////	mpwfx.Format.nChannels = vi->channels;
+////	mpwfx.Format.nSamplesPerSec = vi.rate;
+////	mpwfx.Format.nChannels = vi.channels;
 ////	mpwfx.Format.wBitsPerSample = sizeof(short) * 8;
-////	mdwSize = ov_pcm_total( ov, -1 ) * vi->channels;	// pcm samples * num channels
+////	mdwSize = ov_pcm_total( ov, -1 ) * vi.channels;	// pcm samples * num channels
 ////	mbIsReadingFromMemory = false;
 ////
 ////	if ( idSoundSystemLocal::s_realTimeDecoding.GetBool() ) {
 ////
 ////		ov_clear( ov );
-////		fileSystem->CloseFile( mhmmio );
+////		fileSystem.CloseFile( mhmmio );
 ////		mhmmio = NULL;
 ////		delete ov;
 ////
 ////		mpwfx.Format.wFormatTag = WAVE_FORMAT_TAG_OGG;
-////		mhmmio = fileSystem->OpenFileRead( strFileName );
-////		mMemSize = mhmmio->Length();
+////		mhmmio = fileSystem.OpenFileRead( strFileName );
+////		mMemSize = mhmmio.Length();
 ////
 ////	} else {
 ////
@@ -230,7 +230,7 @@
 ////	OggVorbis_File *ov = (OggVorbis_File *) ogg;
 ////
 ////	do {
-////		int ret = ov_read( ov, bufferPtr, total >= 4096 ? 4096 : total, Swap_IsBigEndian(), 2, 1, &ov->stream );
+////		int ret = ov_read( ov, bufferPtr, total >= 4096 ? 4096 : total, Swap_IsBigEndian(), 2, 1, &ov.stream );
 ////		if ( ret == 0 ) {
 ////			break;
 ////		}
@@ -255,14 +255,14 @@
 ////idWaveFile::CloseOGG
 ////====================
 ////*/
-////int idWaveFile::CloseOGG( void ) {
+////int idWaveFile::CloseOGG( ) {
 ////	OggVorbis_File *ov = (OggVorbis_File *) ogg;
 ////	if ( ov != NULL ) {
 ////		Sys_EnterCriticalSection( CRITICAL_SECTION_ONE );
 ////		ov_clear( ov );
 ////		delete ov;
 ////		Sys_LeaveCriticalSection( CRITICAL_SECTION_ONE );
-////		fileSystem->CloseFile( mhmmio );
+////		fileSystem.CloseFile( mhmmio );
 ////		mhmmio = NULL;
 ////		ogg = NULL;
 ////		return 0;
@@ -279,110 +279,50 @@
 ////===================================================================================
 ////*/
 ////
-////class idSampleDecoderLocal : public idSampleDecoder {
+var sampleDecoderAllocator = idBlockAlloc_template<idSampleDecoderLocal>( idSampleDecoderLocal, 64 );
+
+class idSampleDecoderLocal extends idSampleDecoder {
 ////public:
 ////	virtual void			Decode( idSoundSample *sample, int sampleOffset44k, int sampleCount44k, float *dest );
-////	virtual void			ClearDecoder( void );
-////	virtual idSoundSample *	GetSample( void ) const;
-////	virtual int				GetLastDecodeTime( void ) const;
+////	virtual void			ClearDecoder( );
+////	virtual idSoundSample *	GetSample( ) const;
+////	virtual int				GetLastDecodeTime( ) const;
 ////
-////	void					Clear( void );
+////	void					Clear( );
 ////	int						DecodePCM( idSoundSample *sample, int sampleOffset44k, int sampleCount44k, float *dest );
 ////	int						DecodeOGG( idSoundSample *sample, int sampleOffset44k, int sampleCount44k, float *dest );
 ////
 ////private:
-////	bool					failed;				// set if decoding failed
-////	int						lastFormat;			// last format being decoded
-////	idSoundSample *			lastSample;			// last sample being decoded
-////	int						lastSampleOffset;	// last offset into the decoded sample
-////	int						lastDecodeTime;		// last time decoding sound
+	failed: boolean; // set if decoding failed
+	lastFormat: number /*int*/; // last format being decoded
+	lastSample: idSoundSample; // last sample being decoded
+	lastSampleOffset: number /*int*/; // last offset into the decoded sample
+	lastDecodeTime: number /*int*/; // last time decoding sound
 ////	idFile_Memory			file;				// encoded file in memory
 ////
 ////	OggVorbis_File			ogg;				// OggVorbis file
 ////};
 ////
-////idBlockAlloc<idSampleDecoderLocal, 64>		sampleDecoderAllocator;
-////
-/////*
-////====================
-////idSampleDecoder::Init
-////====================
-////*/
-////void idSampleDecoder::Init( void ) {
-////	decoderMemoryAllocator.Init();
-////	decoderMemoryAllocator.SetLockMemory( true );
-////	decoderMemoryAllocator.SetFixedBlocks( idSoundSystemLocal::s_realTimeDecoding.GetBool() ? 10 : 1 );
-////}
-////
-/////*
-////====================
-////idSampleDecoder::Shutdown
-////====================
-////*/
-////void idSampleDecoder::Shutdown( void ) {
-////	decoderMemoryAllocator.Shutdown();
-////	sampleDecoderAllocator.Shutdown();
-////}
-////
-/////*
-////====================
-////idSampleDecoder::Alloc
-////====================
-////*/
-////idSampleDecoder *idSampleDecoder::Alloc( void ) {
-////	idSampleDecoderLocal *decoder = sampleDecoderAllocator.Alloc();
-////	decoder->Clear();
-////	return decoder;
-////}
-////
-/////*
-////====================
-////idSampleDecoder::Free
-////====================
-////*/
-////void idSampleDecoder::Free( idSampleDecoder *decoder ) {
-////	idSampleDecoderLocal *localDecoder = static_cast<idSampleDecoderLocal *>( decoder );
-////	localDecoder->ClearDecoder();
-////	sampleDecoderAllocator.Free( localDecoder );
-////}
-////
-/////*
-////====================
-////idSampleDecoder::GetNumUsedBlocks
-////====================
-////*/
-////int idSampleDecoder::GetNumUsedBlocks( void ) {
-////	return decoderMemoryAllocator.GetNumUsedBlocks();
-////}
-////
-/////*
-////====================
-////idSampleDecoder::GetUsedBlockMemory
-////====================
-////*/
-////int idSampleDecoder::GetUsedBlockMemory( void ) {
-////	return decoderMemoryAllocator.GetUsedBlockMemory();
-////}
-////
-/////*
-////====================
-////idSampleDecoderLocal::Clear
-////====================
-////*/
-////void idSampleDecoderLocal::Clear( void ) {
-////	failed = false;
-////	lastFormat = WAVE_FORMAT_TAG_PCM;
-////	lastSample = NULL;
-////	lastSampleOffset = 0;
-////	lastDecodeTime = 0;
-////}
-////
+
+/*
+====================
+idSampleDecoderLocal::Clear
+====================
+*/
+	Clear ( ): void {
+		this.failed = false;
+		this.lastFormat = WAVE_FORMAT_TAG_PCM;
+		this.lastSample = null;
+		this.lastSampleOffset = 0;
+		this.lastDecodeTime = 0;
+	}
+
 /////*
 ////====================
 ////idSampleDecoderLocal::ClearDecoder
 ////====================
 ////*/
-////void idSampleDecoderLocal::ClearDecoder( void ) {
+////void idSampleDecoderLocal::ClearDecoder( ) {
 ////	Sys_EnterCriticalSection( CRITICAL_SECTION_ONE );
 ////
 ////	switch( lastFormat ) {
@@ -406,7 +346,7 @@
 ////idSampleDecoderLocal::GetSample
 ////====================
 ////*/
-////idSoundSample *idSampleDecoderLocal::GetSample( void ) const {
+////idSoundSample *idSampleDecoderLocal::GetSample( ) const {
 ////	return lastSample;
 ////}
 ////
@@ -415,7 +355,7 @@
 ////idSampleDecoderLocal::GetLastDecodeTime
 ////====================
 ////*/
-////int idSampleDecoderLocal::GetLastDecodeTime( void ) const {
+////int idSampleDecoderLocal::GetLastDecodeTime( ) const {
 ////	return lastDecodeTime;
 ////}
 ////
@@ -427,7 +367,7 @@
 ////void idSampleDecoderLocal::Decode( idSoundSample *sample, int sampleOffset44k, int sampleCount44k, float *dest ) {
 ////	int readSamples44k;
 ////
-////	if ( sample->objectInfo.wFormatTag != lastFormat || sample != lastSample ) {
+////	if ( sample.objectInfo.wFormatTag != lastFormat || sample != lastSample ) {
 ////		ClearDecoder();
 ////	}
 ////
@@ -441,7 +381,7 @@
 ////	// samples can be decoded both from the sound thread and the main thread for shakes
 ////	Sys_EnterCriticalSection( CRITICAL_SECTION_ONE );
 ////
-////	switch( sample->objectInfo.wFormatTag ) {
+////	switch( sample.objectInfo.wFormatTag ) {
 ////		case WAVE_FORMAT_TAG_PCM: {
 ////			readSamples44k = DecodePCM( sample, sampleOffset44k, sampleCount44k, dest );
 ////			break;
@@ -475,17 +415,17 @@
 ////	lastFormat = WAVE_FORMAT_TAG_PCM;
 ////	lastSample = sample;
 ////
-////	int shift = 22050 / sample->objectInfo.nSamplesPerSec;
+////	int shift = 22050 / sample.objectInfo.nSamplesPerSec;
 ////	int sampleOffset = sampleOffset44k >> shift;
 ////	int sampleCount = sampleCount44k >> shift;
 ////
-////	if ( sample->nonCacheData == NULL ) {
+////	if ( sample.nonCacheData == NULL ) {
 ////		assert( false );	// this should never happen ( note: I've seen that happen with the main thread down in idGameLocal::MapClear clearing entities - TTimo )
 ////		failed = true;
 ////		return 0;
 ////	}
 ////
-////	if ( !sample->FetchFromCache( sampleOffset * sizeof( short ), &first, &pos, &size, false ) ) {
+////	if ( !sample.FetchFromCache( sampleOffset * sizeof( short ), &first, &pos, &size, false ) ) {
 ////		failed = true;
 ////		return 0;
 ////	}
@@ -497,7 +437,7 @@
 ////	}
 ////
 ////	// duplicate samples for 44kHz output
-////	SIMDProcessor->UpSamplePCMTo44kHz( dest, (const short *)(first+pos), readSamples, sample->objectInfo.nSamplesPerSec, sample->objectInfo.nChannels );
+////	SIMDProcessor.UpSamplePCMTo44kHz( dest, (const short *)(first+pos), readSamples, sample.objectInfo.nSamplesPerSec, sample.objectInfo.nChannels );
 ////
 ////	return ( readSamples << shift );
 ////}
@@ -510,7 +450,7 @@
 ////int idSampleDecoderLocal::DecodeOGG( idSoundSample *sample, int sampleOffset44k, int sampleCount44k, float *dest ) {
 ////	int readSamples, totalSamples;
 ////
-////	int shift = 22050 / sample->objectInfo.nSamplesPerSec;
+////	int shift = 22050 / sample.objectInfo.nSamplesPerSec;
 ////	int sampleOffset = sampleOffset44k >> shift;
 ////	int sampleCount = sampleCount44k >> shift;
 ////
@@ -520,12 +460,12 @@
 ////		if ( decoderMemoryAllocator.GetFreeBlockMemory() < MIN_OGGVORBIS_MEMORY ) {
 ////			return 0;
 ////		}
-////		if ( sample->nonCacheData == NULL ) {
+////		if ( sample.nonCacheData == NULL ) {
 ////			assert( false );	// this should never happen
 ////			failed = true;
 ////			return 0;
 ////		}
-////		file.SetData( (const char *)sample->nonCacheData, sample->objectMemSize );
+////		file.SetData( (const char *)sample.nonCacheData, sample.objectMemSize );
 ////		if ( ov_openFile( &file, &ogg ) < 0 ) {
 ////			failed = true;
 ////			return 0;
@@ -536,7 +476,7 @@
 ////
 ////	// seek to the right offset if necessary
 ////	if ( sampleOffset != lastSampleOffset ) {
-////		if ( ov_pcm_seek( &ogg, sampleOffset / sample->objectInfo.nChannels ) != 0 ) {
+////		if ( ov_pcm_seek( &ogg, sampleOffset / sample.objectInfo.nChannels ) != 0 ) {
 ////			failed = true;
 ////			return 0;
 ////		}
@@ -549,7 +489,7 @@
 ////	readSamples = 0;
 ////	do {
 ////		float **samples;
-////		int ret = ov_read_float( &ogg, &samples, totalSamples / sample->objectInfo.nChannels, &ogg.stream );
+////		int ret = ov_read_float( &ogg, &samples, totalSamples / sample.objectInfo.nChannels, &ogg.stream );
 ////		if ( ret == 0 ) {
 ////			failed = true;
 ////			break;
@@ -558,9 +498,9 @@
 ////			failed = true;
 ////			return 0;
 ////		}
-////		ret *= sample->objectInfo.nChannels;
+////		ret *= sample.objectInfo.nChannels;
 ////
-////		SIMDProcessor->UpSampleOGGTo44kHz( dest + ( readSamples << shift ), samples, ret, sample->objectInfo.nSamplesPerSec, sample->objectInfo.nChannels );
+////		SIMDProcessor.UpSampleOGGTo44kHz( dest + ( readSamples << shift ), samples, ret, sample.objectInfo.nSamplesPerSec, sample.objectInfo.nChannels );
 ////
 ////		readSamples += ret;
 ////		totalSamples -= ret;
@@ -570,3 +510,4 @@
 ////
 ////	return ( readSamples << shift );
 ////}
+}

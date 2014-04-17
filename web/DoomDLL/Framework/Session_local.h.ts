@@ -132,7 +132,7 @@ class idSessionLocal extends idSession {
 //	virtual void		DownloadProgressBox( backgroundDownload_t *bgl, const char *title, int progress_start = 0, int progress_end = 100 );
 //	virtual void		SetPlayingSoundWorld();
 //
-//	virtual void		TimeHitch( int msec );
+	TimeHitch( /*int */msec: number): void { throw "placeholder"; }
 //
 //	virtual void		ReadCDKey( void );
 //	virtual void		WriteCDKey( void );

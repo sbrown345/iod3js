@@ -282,16 +282,16 @@ class idPhysics_Base extends idPhysics {
 	//idClipModel *idPhysics_Base::GetClipModel( /*int*/ id:number ) const {
 	//	return NULL;
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::GetNumClipModels
-	//================
-	//*/
-	//int idPhysics_Base::GetNumClipModels( ) const {
-	//	return 0;
-	//}
-	//
+	
+	/*
+	================
+	idPhysics_Base::GetNumClipModels
+	================
+	*/
+	GetNumClipModels ( ): number {
+		return 0;
+	}
+	
 	///*
 	//================
 	//idPhysics_Base::SetMass

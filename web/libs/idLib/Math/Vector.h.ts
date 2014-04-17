@@ -37,7 +37,7 @@
 ////===============================================================================
 ////*/
 
-////#define VECTOR_EPSILON		0.001f
+var VECTOR_EPSILON = 0.001;
 
 ////class idAngles;
 ////class idPolar3;
@@ -189,7 +189,7 @@ class idVec2 {
 ////	float sqrLength;
 
 ////	sqrLength = x * x + y * y;
-////	return sqrLength * idMath::RSqrt( sqrLength );
+////	return sqrLength * idMath.RSqrt( sqrLength );
 ////}
 
 ////ID_INLINE float idVec2::LengthSqr( ) const {
@@ -210,7 +210,7 @@ class idVec2 {
 ////	float lengthSqr, invLength;
 
 ////	lengthSqr = x * x + y * y;
-////	invLength = idMath::RSqrt( lengthSqr );
+////	invLength = idMath.RSqrt( lengthSqr );
 ////	x *= invLength;
 ////	y *= invLength;
 ////	return invLength * lengthSqr;
@@ -695,7 +695,7 @@ class idVec3 {
 ////	float sqrLength, invLength;
 
 ////	sqrLength = this.x * this.x + this.y * this.y + this.z * this.z;
-////	invLength = idMath::RSqrt( sqrLength );
+////	invLength = idMath.RSqrt( sqrLength );
 ////	x *= invLength;
 ////	y *= invLength;
 ////	z *= invLength;
@@ -807,12 +807,12 @@ class idVec3 {
 ////	return ( this.x * this.x + this.y * this.y + this.z * this.z );
 ////}
 
-////ID_INLINE float idVec3::LengthFast( ) const {
-////	float sqrLength;
+	LengthFast ( ): number {
+		var /*float */sqrLength: number;
 
-////	sqrLength = this.x * this.x + this.y * this.y + this.z * this.z;
-////	return sqrLength * idMath::RSqrt( sqrLength );
-////}
+		sqrLength = this.x * this.x + this.y * this.y + this.z * this.z;
+		return sqrLength * idMath.RSqrt( sqrLength );
+	}
 
 	Normalize ( ): number {
 		var /*float*/sqrLength: number, invLength: number;
@@ -1532,7 +1532,7 @@ class idVec4 {
 ////	float sqrLength, invLength;
 
 ////	sqrLength = x * x + y * y + z * z + w * w;
-////	invLength = idMath::RSqrt( sqrLength );
+////	invLength = idMath.RSqrt( sqrLength );
 ////	x *= invLength;
 ////	y *= invLength;
 ////	z *= invLength;
@@ -2098,7 +2098,7 @@ class idVec6 {
 ////	float sqrLength, invLength;
 
 ////	sqrLength = this.p[0] * this.p[0] + this.p[1] * this.p[1] + this.p[2] * this.p[2] + this.p[3] * this.p[3] + this.p[4] * this.p[4] + this.p[5] * this.p[5];
-////	invLength = idMath::RSqrt( sqrLength );
+////	invLength = idMath.RSqrt( sqrLength );
 ////	this.p[0] *= invLength;
 ////	this.p[1] *= invLength;
 ////	this.p[2] *= invLength;

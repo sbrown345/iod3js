@@ -220,7 +220,7 @@ idSmokeParticles::Shutdown
 ////Called by game code to drop another particle into the list
 ////================
 ////*/
-////bool idSmokeParticles::EmitSmoke( const idDeclParticle *smoke, const int systemStartTime, const float diversity, const idVec3 &origin, const idMat3 &axis ) {
+////bool idSmokeParticles::EmitSmoke( const idDeclParticle *smoke, const int systemStartTime, const float diversity, origin: idVec3, const idMat3 &axis ) {
 ////	bool	continues = false;
 ////
 ////	if ( !smoke ) {

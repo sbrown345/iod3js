@@ -330,16 +330,16 @@ idPhysics_StaticMulti::idPhysics_StaticMulti
 ////	}
 ////	return gameLocal.clip.DefaultClipModel();
 ////}
-////
-/////*
-////================
-////idPhysics_StaticMulti::GetNumClipModels
-////================
-////*/
-////int idPhysics_StaticMulti::GetNumClipModels( ) const {
-////	return this.clipModels.Num();
-////}
-////
+
+/*
+================
+idPhysics_StaticMulti::GetNumClipModels
+================
+*/
+	GetNumClipModels ( ): number {
+		return this.clipModels.Num ( );
+	}
+
 /////*
 ////================
 ////idPhysics_StaticMulti::SetMass

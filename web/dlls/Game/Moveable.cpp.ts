@@ -724,7 +724,7 @@ idBarrel.Type = new idTypeInfo("idBarrel", "idMoveable",
 ////idBarrel::GetPhysicsToVisualTransform
 ////================
 ////*/
-////bool idBarrel::GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis ) {
+////bool idBarrel::GetPhysicsToVisualTransform(origin: idVec3, idMat3 &axis ) {
 ////	origin = vec3_origin;
 ////	axis = additionalAxis;
 ////	return true;

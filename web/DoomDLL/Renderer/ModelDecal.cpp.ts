@@ -178,7 +178,7 @@
 ////idRenderModelDecal::CreateProjectionInfo
 ////=================
 ////*/
-////void idRenderModelDecal::GlobalProjectionInfoToLocal( decalProjectionInfo_t &localInfo, const decalProjectionInfo_t &info, const idVec3 &origin, const idMat3 &axis ) {
+////void idRenderModelDecal::GlobalProjectionInfoToLocal( decalProjectionInfo_t &localInfo, const decalProjectionInfo_t &info, origin: idVec3, const idMat3 &axis ) {
 ////	float modelMatrix[16];
 
 ////	R_AxisToModelMatrix( axis, origin, modelMatrix );

@@ -131,7 +131,7 @@ class idMapPatch extends idMapPrimitive_idSurface_Patch //idMapPrimitive // todo
 	////							idMapPatch( );
 	////							idMapPatch( int maxPatchWidth, int maxPatchHeight );
 	////							~idMapPatch( ) { }
-	////	static idMapPatch *		Parse( idLexer &src, const idVec3 &origin, bool patchDef3 = true, float version = CURRENT_MAP_VERSION );
+	////	static idMapPatch *		Parse( idLexer &src, origin: idVec3, bool patchDef3 = true, float version = CURRENT_MAP_VERSION );
 	////	bool					Write( idFile *fp, int primitiveNum, const idVec3 &origin ) const;
 	GetMaterial ( ): string { return this.material.data; }
 	SetMaterial ( p: string ): void { this.material.equals( p ); }
@@ -350,7 +350,7 @@ class idMapBrush extends idMapPrimitive {
 		this.sides.Resize( 8, 4 );
 	}
 	destructor ( ): void { this.sides.DeleteContents( true ); }
-	////	static idMapBrush *		Parse( idLexer &src, const idVec3 &origin, bool newFormat = true, float version = CURRENT_MAP_VERSION );
+	////	static idMapBrush *		Parse( idLexer &src, origin: idVec3, bool newFormat = true, float version = CURRENT_MAP_VERSION );
 	////	static idMapBrush *		ParseQ3( idLexer &src, const idVec3 &origin );
 	////	bool					Write( idFile *fp, int primitiveNum, const idVec3 &origin ) const;
 	GetNumSides ( ): number { return this.sides.Num ( ); }

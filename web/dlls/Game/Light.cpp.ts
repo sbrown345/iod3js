@@ -923,7 +923,7 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////idLight::GetPhysicsToSoundTransform
 ////================
 ////*/
-////bool idLight::GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis ) {
+////bool idLight::GetPhysicsToSoundTransform(origin: idVec3, idMat3 &axis ) {
 ////	origin = localLightOrigin + renderLight.lightCenter;
 ////	axis = localLightAxis * GetPhysics().GetAxis();
 ////	return true;

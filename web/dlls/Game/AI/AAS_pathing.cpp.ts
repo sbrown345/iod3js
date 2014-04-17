@@ -136,7 +136,7 @@
 ////  returns true if one can walk in a straight line between origin and goalOrigin
 ////============
 ////*/
-////bool idAASLocal::WalkPathValid( int areaNum, const idVec3 &origin, int goalAreaNum, const idVec3 &goalOrigin, int travelFlags, idVec3 &endPos, int &endAreaNum ) const {
+////bool idAASLocal::WalkPathValid( int areaNum, origin: idVec3, int goalAreaNum, const idVec3 &goalOrigin, int travelFlags, idVec3 &endPos, int &endAreaNum ) const {
 ////	int curAreaNum, lastAreaNum, lastAreas[4], lastAreaIndex;
 ////	idPlane pathPlane, frontPlane, farPlane;
 ////	idReachability *reach;
@@ -249,7 +249,7 @@
 ////idAASLocal::SubSampleWalkPath
 ////============
 ////*/
-////idVec3 idAASLocal::SubSampleWalkPath( int areaNum, const idVec3 &origin, start:idVec3, end:idVec3, int travelFlags, int &endAreaNum ) const {
+////idVec3 idAASLocal::SubSampleWalkPath( int areaNum, origin: idVec3, start:idVec3, end:idVec3, int travelFlags, int &endAreaNum ) const {
 ////	int i, numSamples, curAreaNum;
 ////	idVec3 dir, point, nextPoint, endPos;
 ////
@@ -278,7 +278,7 @@
 ////  FIXME: don't stop optimizing on first failure ?
 ////============
 ////*/
-////bool idAASLocal::WalkPathToGoal( aasPath_t &path, int areaNum, const idVec3 &origin, int goalAreaNum, const idVec3 &goalOrigin, int travelFlags ) const {
+////bool idAASLocal::WalkPathToGoal( aasPath_t &path, int areaNum, origin: idVec3, int goalAreaNum, const idVec3 &goalOrigin, int travelFlags ) const {
 ////	int i, travelTime, curAreaNum, lastAreas[4], lastAreaIndex, endAreaNum;
 ////	idReachability *reach = NULL;
 ////	idVec3 endPos;
@@ -399,7 +399,7 @@
 ////  returns true if one can fly in a straight line between origin and goalOrigin
 ////============
 ////*/
-////bool idAASLocal::FlyPathValid( int areaNum, const idVec3 &origin, int goalAreaNum, const idVec3 &goalOrigin, int travelFlags, idVec3 &endPos, int &endAreaNum ) const {
+////bool idAASLocal::FlyPathValid( int areaNum, origin: idVec3, int goalAreaNum, const idVec3 &goalOrigin, int travelFlags, idVec3 &endPos, int &endAreaNum ) const {
 ////	aasTrace_t trace;
 ////
 ////	if ( file == NULL ) {
@@ -425,7 +425,7 @@
 ////idAASLocal::SubSampleFlyPath
 ////============
 ////*/
-////idVec3 idAASLocal::SubSampleFlyPath( int areaNum, const idVec3 &origin, start:idVec3, end:idVec3, int travelFlags, int &endAreaNum ) const {
+////idVec3 idAASLocal::SubSampleFlyPath( int areaNum, origin: idVec3, start:idVec3, end:idVec3, int travelFlags, int &endAreaNum ) const {
 ////	int i, numSamples, curAreaNum;
 ////	idVec3 dir, point, nextPoint, endPos;
 ////
@@ -454,7 +454,7 @@
 ////  FIXME: don't stop optimizing on first failure ?
 ////============
 ////*/
-////bool idAASLocal::FlyPathToGoal( aasPath_t &path, int areaNum, const idVec3 &origin, int goalAreaNum, const idVec3 &goalOrigin, int travelFlags ) const {
+////bool idAASLocal::FlyPathToGoal( aasPath_t &path, int areaNum, origin: idVec3, int goalAreaNum, const idVec3 &goalOrigin, int travelFlags ) const {
 ////	int i, travelTime, curAreaNum, lastAreas[4], lastAreaIndex, endAreaNum;
 ////	idReachability *reach = NULL;
 ////	idVec3 endPos;

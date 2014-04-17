@@ -1796,17 +1796,16 @@ idEntity::UpdateSound
 */
 	UpdateSound ( ): void {
 		if ( this.refSound.referenceSound ) {
-			todoThrow ( );
-			//var origin = new idVec3;
-			//var axis = new idMat3 ;
+			var origin = new idVec3;
+			var axis = new idMat3 ;
 
-			//if ( this.GetPhysicsToSoundTransform( origin, axis ) ) {
-			//	this.refSound.origin = this.GetPhysics().GetOrigin() + origin * axis;
-			//} else {
-			//	this.refSound.origin.opEquals( this.GetPhysics ( ).GetOrigin ( ) );
-			//}
+			if ( this.GetPhysicsToSoundTransform( origin, axis ) ) {
+				this.refSound.origin.equals( this.GetPhysics ( ).GetOrigin ( ).opAddition( ( origin.opMultiplicationAssignment_mat3( axis ) ) ) );
+			} else {
+				this.refSound.origin.equals( this.GetPhysics ( ).GetOrigin ( ) );
+			}
 
-			//this.refSound.referenceSound.UpdateEmitter( this.refSound.origin, this.refSound.listenerId, this.refSound.parms );
+			this.refSound.referenceSound.UpdateEmitter( this.refSound.origin, this.refSound.listenerId, this.refSound.parms );
 		}
 	}
 

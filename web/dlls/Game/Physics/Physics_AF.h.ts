@@ -2278,16 +2278,16 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////	return NULL;
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::GetNumClipModels
-	////================
-	////*/
-	////int idPhysics_AF::GetNumClipModels( ) const {
-	////	return this.bodies.Num();
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_AF::GetNumClipModels
+	================
+	*/
+	GetNumClipModels ( ): number {
+		return this.bodies.Num ( );
+	}
+
 	/////*
 	////================
 	////idPhysics_AF::SetMass

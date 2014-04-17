@@ -1707,7 +1707,7 @@ idWeapon.Type = new idTypeInfo("idWeapon", "idAnimatedEntity",
 ////The machinegun and chaingun will incrementally back up as they are being fired
 ////================
 ////*/
-////void idWeapon::MuzzleRise( idVec3 &origin, idMat3 &axis ) {
+////void idWeapon::MuzzleRise(origin: idVec3, idMat3 &axis ) {
 ////	int			time;
 ////	float		amount;
 ////	idAngles	ang;

@@ -1389,7 +1389,7 @@
 ////idAI::PathToGoal
 ////=====================
 ////*/
-////bool idAI::PathToGoal( aasPath_t &path, int areaNum, const idVec3 &origin, int goalAreaNum, const idVec3 &goalOrigin ) const {
+////bool idAI::PathToGoal( aasPath_t &path, int areaNum, origin: idVec3, int goalAreaNum, const idVec3 &goalOrigin ) const {
 ////	idVec3 org;
 ////	idVec3 goal;
 ////
