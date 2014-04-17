@@ -32,17 +32,16 @@
 
 class idDeclPDA extends idDecl {
 	////public:
-	////							idDeclPDA() { originalEmails = originalVideos = 0; };
+	constructor ( ) {
+		super ( );
+		this.originalEmails = this.originalVideos = 0;
+	}
 	////
-	////	virtual size_t			Size( void ) const;
-	////	virtual const char *	DefaultDefinition( void ) const;
-	//Parse ( text: string, textLength: number ): boolean {
-	//	todoThrow ( );
-	//	return false
-	//}
-	////	virtual void			FreeData( void );
-	////	virtual void			Print( void ) const;
-	////	virtual void			List( void ) const;
+	////	virtual size_t			Size( ) const;
+	////	virtual const char *	DefaultDefinition( ) const;
+	////	virtual void			FreeData( );
+	////	virtual void			Print( ) const;
+	////	virtual void			List( ) const;
 	////
 	////	virtual void			AddVideo( name:string, bool unique = true ) const;
 	////	virtual void			AddAudio( name:string, bool unique = true ) const;
@@ -58,14 +57,14 @@ class idDeclPDA extends idDecl {
 	////
 	////	virtual void			SetSecurity( const char *sec ) const;
 	////
-	GetPdaName() :string { return this.pdaName.data; }
-	GetSecurity(): string { return this.security.data; }
-	GetFullName(): string { return this.fullName.data; }
-	GetIcon(): string { return this.icon.data; }
-	GetPost(): string { return this.post.data; }
-	GetID(): string { return this.id.data; }
-	GetTitle(): string { return this.title.data; }
-	
+	GetPdaName ( ): string { return this.pdaName.data; }
+	GetSecurity ( ): string { return this.security.data; }
+	GetFullName ( ): string { return this.fullName.data; }
+	GetIcon ( ): string { return this.icon.data; }
+	GetPost ( ): string { return this.post.data; }
+	GetID ( ): string { return this.id.data; }
+	GetTitle ( ): string { return this.title.data; }
+
 	////private:
 	videos = new /*mutable*/idStrList;
 	audios = new /*mutable*/idStrList;
@@ -76,37 +75,37 @@ class idDeclPDA extends idDecl {
 	id = new idStr;
 	post = new idStr;
 	title = new idStr;
-	security = new/*mutable*/ idStr;
-	originalEmails :number/*mutable	int	*/;
-	originalVideos :number/*mutable	int	*/;
+	security = new /*mutable*/ idStr;
+	originalEmails: number /*mutable	int	*/;
+	originalVideos: number /*mutable	int	*/;
 
-/////*
-////=================
-////idDeclPDA::Size
-////=================
-////*/
-////size_t idDeclPDA::Size( void ) const {
-////	return sizeof( idDeclPDA );
-////}
-////
-/////*
-////===============
-////idDeclPDA::Print
-////===============
-////*/
-////void idDeclPDA::Print( void ) const {
-////	common.Printf( "Implement me\n" );
-////}
-////
-/////*
-////===============
-////idDeclPDA::List
-////===============
-////*/
-////void idDeclPDA::List( void ) const {
-////	common.Printf( "Implement me\n" );
-////}
-////
+/*
+=================
+idDeclPDA::Size
+=================
+*/
+	Size ( ): /*size_t*/number {
+		return sizeof( idDeclPDA );
+	}
+
+/*
+===============
+idDeclPDA::Print
+===============
+*/
+	Print ( ): void {
+		common.Printf( "Implement me\n" );
+	}
+
+/*
+===============
+idDeclPDA::List
+===============
+*/
+	List ( ): void {
+		common.Printf( "Implement me\n" );
+	}
+
 /*
 ================
 idDeclPDA::Parse
@@ -222,7 +221,7 @@ idDeclPDA::DefaultDefinition
 idDeclPDA::FreeData
 ===================
 */
-	FreeData(): void {
+	FreeData ( ): void {
 		this.videos.Clear ( );
 		this.audios.Clear ( );
 		this.emails.Clear ( );
@@ -235,7 +234,7 @@ idDeclPDA::FreeData
 ////idDeclPDA::AddVideo
 ////=================
 ////*/
-////void idDeclPDA::AddVideo( name:string, bool unique ) const {
+////void idDeclPDA::AddVideo( name:string, bool unique  = true) const {
 ////	if ( unique && ( this.videos.Find( name ) != NULL ) ) {
 ////		return;
 ////	}
@@ -251,7 +250,7 @@ idDeclPDA::FreeData
 ////idDeclPDA::AddAudio
 ////=================
 ////*/
-////void idDeclPDA::AddAudio( name:string, bool unique ) const {
+////void idDeclPDA::AddAudio( name:string, bool unique  = true) const {
 ////	if ( unique && ( this.audios.Find( name ) != NULL ) ) {
 ////		return;
 ////	}
@@ -267,7 +266,7 @@ idDeclPDA::FreeData
 ////idDeclPDA::AddEmail
 ////=================
 ////*/
-////void idDeclPDA::AddEmail( name:string, bool unique ) const {
+////void idDeclPDA::AddEmail( name:string, bool unique  = true) const {
 ////	if ( unique && ( this.emails.Find( name ) != NULL ) ) {
 ////		return;
 ////	}
@@ -303,36 +302,36 @@ idDeclPDA::FreeData
 idDeclPDA::SetSecurity
 =================
 */
-SetSecurity( sec:string ) :void {
-	this.security.equals( sec );
-}
+	SetSecurity ( sec: string ): void {
+		this.security.equals( sec );
+	}
 
 /*
 =================
 idDeclPDA::GetNumVideos
 =================
 */
-GetNumVideos() :number {
-	return this.videos.Num();
-}
+	GetNumVideos ( ): number {
+		return this.videos.Num ( );
+	}
 
 /*
 =================
 idDeclPDA::GetNumAudios
 =================
 */
-GetNumAudios() :number {
-	return this.audios.Num();
-}
+	GetNumAudios ( ): number {
+		return this.audios.Num ( );
+	}
 
 /*
 =================
 idDeclPDA::GetNumEmails
 =================
 */
-GetNumEmails() :number {
-	return this.emails.Num();
-}
+	GetNumEmails ( ): number {
+		return this.emails.Num ( );
+	}
 ////
 /////*
 ////=================
@@ -376,19 +375,19 @@ class idDeclEmail extends idDecl {
 	////public:
 	////							idDeclEmail() {}
 	////
-	////	virtual size_t			Size( void ) const;
-	////	virtual const char *	DefaultDefinition( void ) const;
+	////	virtual size_t			Size( ) const;
+	////	virtual const char *	DefaultDefinition( ) const;
 
-////	virtual void			FreeData( void );
-////	virtual void			Print( void ) const;
-////	virtual void			List( void ) const;
+////	virtual void			FreeData( );
+////	virtual void			Print( ) const;
+////	virtual void			List( ) const;
 ////
-////	const char *			GetFrom() const { return from; }
-////	const char *			GetBody() const { return text; }
-////	const char *			GetSubject() const { return subject; }
-////	const char *			GetDate() const { return date; }
-////	const char *			GetTo() const { return to; }
-////	const char *			GetImage() const { return image; }
+	GetFrom(): string { return this.from.data; }
+	GetBody(): string { return this.text.data; }
+	GetSubject(): string { return this.subject.data; }
+	GetDate(): string { return this.date.data; }
+	GetTo(): string { return this.to.data; }
+	GetImage(): string { return this.image.data; }
 ////
 ////private:
 	text = new idStr;
@@ -397,32 +396,32 @@ class idDeclEmail extends idDecl {
 	to= new idStr;
 	from= new idStr;
 	image= new idStr;
-/////*
-////=================
-////idDeclEmail::Size
-////=================
-////*/
-////size_t idDeclEmail::Size( void ) const {
-////	return sizeof( idDeclEmail );
-////}
-////
-/////*
-////===============
-////idDeclEmail::Print
-////===============
-////*/
-////void idDeclEmail::Print( void ) const {
-////	common.Printf( "Implement me\n" );
-////}
-////
-/////*
-////===============
-////idDeclEmail::List
-////===============
-////*/
-////void idDeclEmail::List( void ) const {
-////	common.Printf( "Implement me\n" );
-////}
+/*
+=================
+idDeclEmail::Size
+=================
+*/
+	Size(): /*size_t*/number {
+		return sizeof(idDeclEmail);
+	}
+
+/*
+===============
+idDeclEmail::Print
+===============
+*/
+Print ( ): void {
+		common.Printf( "Implement me\n" );
+	}
+
+/*
+===============
+idDeclEmail::List
+===============
+*/
+List ( ): void {
+		common.Printf( "Implement me\n" );
+	}
 
 /*
 ================
@@ -504,7 +503,7 @@ idDeclEmail::Parse
 ////idDeclEmail::DefaultDefinition
 ////===================
 ////*/
-////const char *idDeclEmail::DefaultDefinition( void ) const {
+////const char *idDeclEmail::DefaultDefinition( ) const {
 ////	return
 ////		"{\n"
 ////		"\t"	"{\n"
@@ -528,120 +527,115 @@ class idDeclVideo extends idDecl {
 	////public:
 	////							idDeclVideo() {};
 	////
-	////	virtual size_t			Size( void ) const;
-	////	virtual const char *	DefaultDefinition( void ) const;
-	Parse ( text: string, textLength: number ): boolean {
-		todoThrow ( );
-		return false
-	}
-////	virtual void			FreeData( void );
-////	virtual void			Print( void ) const;
-////	virtual void			List( void ) const;
+	////	virtual size_t			Size( ) const;
+	////	virtual const char *	DefaultDefinition( ) const;
+////	virtual void			FreeData( );
+////	virtual void			Print( ) const;
+////	virtual void			List( ) const;
 ////
-////	const char *			GetRoq() const { return video; }
-////	const char *			GetWave() const { return audio; }
-////	const char *			GetVideoName() const { return videoName; }
-////	const char *			GetInfo() const { return info; }
-////	const char *			GetPreview() const { return preview; }
+	GetRoq() :string { return this.video.data; }
+	GetWave(): string { return this.audio.data; }
+	GetVideoName(): string { return this.videoName.data; }
+	GetInfo(): string { return this.info.data; }
+	GetPreview(): string { return this.preview.data; }
 ////
 ////private:
-////	idStr					preview;
-////	idStr					video;
-////	idStr					videoName;
-////	idStr					info;
-////	idStr					audio;
+	preview = new idStr;
+	video = new idStr;
+	videoName = new idStr;
+	info = new idStr;
+	audio = new idStr;
 
-/////*
-////=================
-////idDeclVideo::Size
-////=================
-////*/
-////size_t idDeclVideo::Size( void ) const {
-////	return sizeof( idDeclVideo );
-////}
-////
-/////*
-////===============
-////idDeclVideo::Print
-////===============
-////*/
-////void idDeclVideo::Print( void ) const {
-////	common.Printf( "Implement me\n" );
-////}
-////
-/////*
-////===============
-////idDeclVideo::List
-////===============
-////*/
-////void idDeclVideo::List( void ) const {
-////	common.Printf( "Implement me\n" );
-////}
-////
-/////*
-////================
-////idDeclVideo::Parse
-////================
-////*/
-////bool idDeclVideo::Parse( text:string, const int textLength ) {
-////	idLexer src;
-////	idToken token;
-////
-////	src.LoadMemory( text, textLength, this.GetFileName(), this.GetLineNum() );
-////	src.SetFlags( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWPATHNAMES |	 lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT | lexerFlags_t.LEXFL_NOFATALERRORS );
-////	src.SkipUntilString( "{" );
-////
-////	// scan through, identifying each individual parameter
-////	while( 1 ) {
-////
-////		if ( !src.ReadToken( token ) ) {
-////			break;
-////		}
-////
-////		if ( token.data == "}" ) {
-////			break;
-////		}
-////
-////		if ( !token.Icmp( "name") ) {
-////			src.ReadToken( token );
-////			videoName.equals( token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "preview") ) {
-////			src.ReadToken( token );
-////			preview.equals( token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "video") ) {
-////			src.ReadToken( token );
-////			video.equals( token;
-////			declManager.FindMaterial( video );			
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "info") ) {
-////			src.ReadToken( token );
-////			info.equals( token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "audio") ) {
-////			src.ReadToken( token );
-////			audio.equals( token;
-////			declManager.FindSound(audio);
-////			continue;
-////		}
-////
-////	}
-////
-////	if ( src.HadError() ) {
-////		src.Warning( "Video decl '%s' had a parse error", this.GetName() );
-////		return false;
-////	}
-////	return true;
-////}
+/*
+=================
+idDeclVideo::Size
+=================
+*/
+	Size(): /*size_t*/number {
+		return sizeof(idDeclVideo);
+	}
+/*
+===============
+idDeclVideo::Print
+===============
+*/
+Print(): void {
+	common.Printf("Implement me\n");
+}
+
+/*
+===============
+idDeclVideo::List
+===============
+*/
+	List(): void {
+		common.Printf("Implement me\n");
+	}
+
+/*
+================
+idDeclVideo::Parse
+================
+*/
+	Parse ( text: string, /*int*/ textLength: number ): boolean {
+		var src = new idLexer;
+		var token = new idToken;
+
+		src.LoadMemory( text, textLength, this.GetFileName ( ), this.GetLineNum ( ) );
+		src.SetFlags( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT | lexerFlags_t.LEXFL_NOFATALERRORS );
+		src.SkipUntilString( "{" );
+
+		// scan through, identifying each individual parameter
+		while ( 1 ) {
+
+			if ( !src.ReadToken( token ) ) {
+				break;
+			}
+
+			if ( token.data == "}" ) {
+				break;
+			}
+
+			if ( !token.Icmp( "name" ) ) {
+				src.ReadToken( token );
+				this.videoName.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "preview" ) ) {
+				src.ReadToken( token );
+				this.preview.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "video" ) ) {
+				src.ReadToken( token );
+				this.video.equals( token );
+				declManager.FindMaterial( this.video.data );
+				continue;
+			}
+
+			if ( !token.Icmp( "info" ) ) {
+				src.ReadToken( token );
+				this.info.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "audio" ) ) {
+				src.ReadToken( token );
+				this.audio.equals( token );
+				declManager.FindSound( this.audio.data );
+				continue;
+			}
+
+		}
+
+		if ( src.HadError ( ) ) {
+			src.Warning( "Video decl '%s' had a parse error", this.GetName ( ) );
+			return false;
+		}
+		return true;
+	}
 
 /*
 ===================
@@ -669,109 +663,109 @@ class idDeclAudio extends idDecl {
 	////public:
 	////							idDeclAudio() {};
 	////
-	////	virtual size_t			Size( void ) const;
-	////	virtual const char *	DefaultDefinition( void ) const;
-	////	virtual void			FreeData( void );
-	////	virtual void			Print( void ) const;
-	////	virtual void			List( void ) const;
+	////	virtual size_t			Size( ) const;
+	////	virtual const char *	DefaultDefinition( ) const;
+	////	virtual void			FreeData( );
+	////	virtual void			Print( ) const;
+	////	virtual void			List( ) const;
 	////
-	////	const char *			GetAudioName() const { return audioName; }
-	////	const char *			GetWave() const { return audio; }
-	////	const char *			GetInfo() const { return info; }
-	////	const char *			GetPreview() const { return preview; }
+	GetAudioName() :string { return this.audioName.data; }
+	GetWave(): string { return this.audio.data; }
+	GetInfo(): string { return this.info.data; }
+	GetPreview(): string { return this.preview.data; }
 	////
 	////private:
-	////	idStr					audio;
-	////	idStr					audioName;
-	////	idStr					info;
-	////	idStr					preview;
+	audio = new idStr;
+	audioName = new idStr;
+	info = new idStr;
+	preview = new idStr;
 
 
-/////*
-////=================
-////idDeclAudio::Size
-////=================
-////*/
-////size_t idDeclAudio::Size( void ) const {
-////	return sizeof( idDeclAudio );
-////}
-////
-/////*
-////===============
-////idDeclAudio::Print
-////===============
-////*/
-////void idDeclAudio::Print( void ) const {
-////	common.Printf( "Implement me\n" );
-////}
-////
-/////*
-////===============
-////idDeclAudio::List
-////===============
-////*/
-////void idDeclAudio::List( void ) const {
-////	common.Printf( "Implement me\n" );
-////}
-////
+/*
+=================
+idDeclAudio::Size
+=================
+*/
+	Size(): /*size_t*/number {
+		return sizeof(idDeclAudio);
+	}
+
+/*
+===============
+idDeclAudio::Print
+===============
+*/
+	Print(): void {
+		common.Printf("Implement me\n");
+	}
+
+/*
+===============
+idDeclAudio::List
+===============
+*/
+	List(): void {
+		common.Printf("Implement me\n");
+	}
+
 /*
 ================
 idDeclAudio::Parse
 ================
 */
-	Parse(text: string, /*int */textLength: number): boolean {
+	Parse ( text: string, /*int */textLength: number ): boolean {
 		todoThrow ( );
-////	idLexer src;
-////	idToken token;
-////
-////	src.LoadMemory( text, textLength, this.GetFileName(), this.GetLineNum() );
-////	src.SetFlags( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWPATHNAMES |	 lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT | lexerFlags_t.LEXFL_NOFATALERRORS );
-////	src.SkipUntilString( "{" );
-////
-////	// scan through, identifying each individual parameter
-////	while( 1 ) {
-////
-////		if ( !src.ReadToken( token ) ) {
-////			break;
-////		}
-////
-////		if ( token.data == "}" ) {
-////			break;
-////		}
-////
-////		if ( !token.Icmp( "name") ) {
-////			src.ReadToken( token );
-////			audioName.equals( token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "audio") ) {
-////			src.ReadToken( token );
-////			audio.equals( token;
-////			declManager.FindSound(audio);
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "info") ) {
-////			src.ReadToken( token );
-////			info.equals( token;
-////			continue;
-////		}
-////
-////		if ( !token.Icmp( "preview") ) {
-////			src.ReadToken( token );
-////			preview.equals( token;
-////			continue;
-////		}
-////
-////	}
-////
-////	if ( src.HadError() ) {
-////		src.Warning( "Audio decl '%s' had a parse error", this.GetName() );
-////		return false;
-////	}
-	return true;
-}
+		var src = new idLexer;
+		var token = new idToken;
+
+		src.LoadMemory( text, textLength, this.GetFileName ( ), this.GetLineNum ( ) );
+		src.SetFlags( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT | lexerFlags_t.LEXFL_NOFATALERRORS );
+		src.SkipUntilString( "{" );
+
+		// scan through, identifying each individual parameter
+		while ( 1 ) {
+
+			if ( !src.ReadToken( token ) ) {
+				break;
+			}
+
+			if ( token.data == "}" ) {
+				break;
+			}
+
+			if ( !token.Icmp( "name" ) ) {
+				src.ReadToken( token );
+				this.audioName.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "audio" ) ) {
+				src.ReadToken( token );
+				this.audio.equals( token );
+				declManager.FindSound( this.audio.data );
+				continue;
+			}
+
+			if ( !token.Icmp( "info" ) ) {
+				src.ReadToken( token );
+				this.info.equals( token );
+				continue;
+			}
+
+			if ( !token.Icmp( "preview" ) ) {
+				src.ReadToken( token );
+				this.preview.equals( token );
+				continue;
+			}
+
+		}
+
+		if ( src.HadError ( ) ) {
+			src.Warning( "Audio decl '%s' had a parse error", this.GetName ( ) );
+			return false;
+		}
+		return true;
+	}
 
 /*
 ===================

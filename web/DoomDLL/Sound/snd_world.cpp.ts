@@ -38,7 +38,7 @@ idSoundWorldLocal::Init
 */
 idSoundWorldLocal.prototype.Init = function ( renderWorld: idRenderWorld ): void {
 	this.rw = renderWorld;
-	this.writeDemo = NULL;
+	this.writeDemo = null;
 
 	this.listenerAxis.Identity ( );
 	this.listenerPos.Zero ( );
@@ -184,27 +184,27 @@ idSoundWorldLocal.prototype.ClearAllSoundEmitters = function ( ) {
 ////	return def;
 ////}
 ////
-/////*
-////===================
-////idSoundWorldLocal::AllocSoundEmitter
-////
-////  this is called from the main thread
-////===================
-////*/
-////idSoundEmitter *idSoundWorldLocal::AllocSoundEmitter() {
-////	idSoundEmitterLocal *emitter = AllocLocalSoundEmitter();
-////
-////	if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-////		common.Printf( "AllocSoundEmitter = %i\n",  emitter.index );
-////	}
-////	if ( writeDemo ) {
-////		writeDemo.WriteInt( DS_SOUND );
-////		writeDemo.WriteInt( SCMD_ALLOC_EMITTER );
-////		writeDemo.WriteInt( emitter.index );
-////	}
-////
-////	return emitter;
-////}
+/*
+===================
+idSoundWorldLocal::AllocSoundEmitter
+
+  this is called from the main thread
+===================
+*/
+idSoundWorldLocal.prototype.AllocSoundEmitter = function ( ) {
+	var emitter: idSoundEmitterLocal = this.AllocLocalSoundEmitter ( );
+
+	if ( this.s_showStartSound.GetInteger ( ) ) {
+		common.Printf( "AllocSoundEmitter = %i\n", emitter.index );
+	}
+	if ( this.writeDemo ) {
+		this.writeDemo.WriteInt( demoSystem_t.DS_SOUND );
+		this.writeDemo.WriteInt( soundDemoCommand_t.SCMD_ALLOC_EMITTER );
+		this.writeDemo.WriteInt( emitter.index );
+	}
+
+	return emitter;
+};
 ////
 /////*
 ////===================
@@ -214,13 +214,13 @@ idSoundWorldLocal.prototype.ClearAllSoundEmitters = function ( ) {
 ////===================
 ////*/
 ////void idSoundWorldLocal::StartWritingDemo( idDemoFile *demo ) {
-////	writeDemo = demo;
+////	this.writeDemo = demo;
 ////
-////	writeDemo.WriteInt( DS_SOUND );
-////	writeDemo.WriteInt( SCMD_STATE );
+////	this.writeDemo.WriteInt( DS_SOUND );
+////	this.writeDemo.WriteInt( SCMD_STATE );
 ////
 ////	// use the normal save game code to archive all the emitters
-////	WriteToSaveGame( writeDemo );
+////	WriteToSaveGame( this.writeDemo );
 ////}
 ////
 /////*
@@ -231,7 +231,7 @@ idSoundWorldLocal.prototype.ClearAllSoundEmitters = function ( ) {
 ////===================
 ////*/
 ////void idSoundWorldLocal::StopWritingDemo() {
-////	writeDemo = NULL;
+////	this.writeDemo = null;
 ////}
 ////
 /////*
@@ -901,13 +901,13 @@ idSoundWorldLocal.prototype.AVIClose = function ( ): void {
 ////		return;
 ////	}
 ////
-////	if ( writeDemo ) {
-////		writeDemo.WriteInt( DS_SOUND );
-////		writeDemo.WriteInt( SCMD_PLACE_LISTENER );
-////		writeDemo.WriteVec3( origin );
-////		writeDemo.WriteMat3( axis );
-////		writeDemo.WriteInt( listenerId );
-////		writeDemo.WriteInt( gameTime );
+////	if ( this.writeDemo ) {
+////		this.writeDemo.WriteInt( DS_SOUND );
+////		this.writeDemo.WriteInt( SCMD_PLACE_LISTENER );
+////		this.writeDemo.WriteVec3( origin );
+////		this.writeDemo.WriteMat3( axis );
+////		this.writeDemo.WriteInt( listenerId );
+////		this.writeDemo.WriteInt( gameTime );
 ////	}
 ////
 ////	current44kHzTime = soundSystemLocal.GetCurrent44kHzTime();

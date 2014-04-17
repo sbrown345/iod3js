@@ -47,19 +47,19 @@
 ////#endif
 ////#include "../openal/include/efxlib.h"
 ////
-////// demo sound commands
-////typedef enum {
-////	SCMD_STATE,				// followed by a load game state
-////	SCMD_PLACE_LISTENER,
-////	SCMD_ALLOC_EMITTER,
-////
-////	SCMD_FREE,
-////	SCMD_UPDATE,
-////	SCMD_START,
-////	SCMD_MODIFY,
-////	SCMD_STOP,
-////	SCMD_FADE
-////} soundDemoCommand_t;
+// demo sound commands
+enum soundDemoCommand_t{
+	SCMD_STATE,				// followed by a load game state
+	SCMD_PLACE_LISTENER,
+	SCMD_ALLOC_EMITTER,
+
+	SCMD_FREE,
+	SCMD_UPDATE,
+	SCMD_START,
+	SCMD_MODIFY,
+	SCMD_STOP,
+	SCMD_FADE
+};
 
 var SOUND_MAX_CHANNELS		= 8;
 var SOUND_DECODER_FREE_DELAY	= 1000 * MIXBUFFER_SAMPLES / USERCMD_MSEC;		// four seconds
@@ -438,9 +438,9 @@ class idSoundWorldLocal extends idSoundWorld {
 	// call at each map start
 	ClearAllSoundEmitters(  ):void { throw "placeholder"; }
 	StopAllSounds(  ):void { throw "placeholder"; }
-////
-////	// get a new emitter that can play sounds in this world
-////	virtual idSoundEmitter *AllocSoundEmitter( );
+
+	// get a new emitter that can play sounds in this world
+	AllocSoundEmitter( ):idSoundEmitter {throw "placeholder";}
 ////
 ////	// for load games
 ////	virtual idSoundEmitter *EmitterForIndex( int index );

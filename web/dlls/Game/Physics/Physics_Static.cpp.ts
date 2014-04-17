@@ -783,14 +783,14 @@ GetOrigin( /*int*/ id:number  = 0) :idVec3 {
 	////	memset( &info, 0, sizeof( info ) );
 	////	return info;
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::ClearContacts
-	////================
-	////*/
-	////void idPhysics_Static::ClearContacts( ) {
-	////}
+	
+	/*
+	================
+	idPhysics_Static::ClearContacts
+	================
+	*/
+	ClearContacts ( ): void {
+	}
 	////
 	/////*
 	////================

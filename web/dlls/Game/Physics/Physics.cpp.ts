@@ -134,8 +134,8 @@ class idPhysics extends idClass {
 	   //	virtual void				GetImpactInfo(/*int*/ id:number, const idVec3 &point, impactInfo_t *info) const = 0;
 	   //	virtual void				ApplyImpulse(/*int*/ id:number, const idVec3 &point, const idVec3 &impulse) = 0;
 	   //	virtual void				AddForce(/*int*/ id:number, const idVec3 &point, const idVec3 &force) = 0;
-	   //	virtual void				Activate() = 0;
-	   //	virtual void				PutToRest() = 0;
+	   Activate():void { throw "placeholder"; }
+	  PutToRest():void { throw "placeholder"; }
 	IsAtRest ( ): boolean { throw "placeholder"; }
 	//	virtual int					GetRestStartTime() const = 0;
 	   //	virtual bool				IsPushable() const = 0;
@@ -175,7 +175,7 @@ class idPhysics extends idClass {
 	   //	virtual bool				EvaluateContacts() = 0;
 	   //	virtual int					GetNumContacts() const = 0;
 	   //	virtual const contactInfo_t &GetContact(int num) const = 0;
-	   //	virtual void				ClearContacts() = 0;
+	ClearContacts(): void { throw "placeholder"; }
 	   //	virtual void				AddContactEntity(e:idEntity) = 0;
 	RemoveContactEntity ( e: idEntity ): void { throw "placeholder"; }
 	//	// ground contacts
@@ -226,16 +226,17 @@ class idPhysics extends idClass {
 	   //void idPhysics::Restore( idRestoreGame *savefile ) {
 	   //}
 	   //
-	   ///*
-	   //================
-	   //idPhysics::SetClipBox
-	   //================
-	   //*/
-	   //void idPhysics::SetClipBox( const idBounds &bounds, float density ) {
-	   //	SetClipModel( new idClipModel( idTraceModel( bounds ) ), density );
-	   //}
-	   //
-	   ///*
+	   /*
+	   ================
+	   idPhysics::SetClipBox
+	   ================
+	   */
+	SetClipBox ( bounds: idBounds, /*float */density: number ): void {
+		todoThrow ( );
+		//this.SetClipModel( new idClipModel( new idTraceModel( bounds ) ), density );
+	}
+
+	///*
 	   //================
 	   //idPhysics::SnapTimeToPhysicsFrame
 	   //================

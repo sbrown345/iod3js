@@ -666,10 +666,10 @@ class idAFBody {
 ////
 ////	void					Init( );
 ////	const idStr &			GetName( ) const { return name; }
-////	const idVec3 &			GetWorldOrigin( ) const { return current.worldOrigin; }
-////	const idMat3 &			GetWorldAxis( ) const { return current.worldAxis; }
-////	const idVec3 &			GetLinearVelocity( ) const { return current.spatialVelocity.SubVec3(0); }
-////	const idVec3 &			GetAngularVelocity( ) const { return current.spatialVelocity.SubVec3(1); }
+////	const idVec3 &			GetWorldOrigin( ) const { return this.current.worldOrigin; }
+////	const idMat3 &			GetWorldAxis( ) const { return this.current.worldAxis; }
+////	const idVec3 &			GetLinearVelocity( ) const { return this.current.spatialVelocity.SubVec3(0); }
+////	const idVec3 &			GetAngularVelocity( ) const { return this.current.spatialVelocity.SubVec3(1); }
 ////	idVec3					GetPointVelocity( const idVec3 &point ) const;
 ////	const idVec3 &			GetCenterOfMass( ) const { return centerOfMass; }
 ////	void					SetClipModel( idClipModel *clipModel );
@@ -677,17 +677,17 @@ class idAFBody {
 ////	void					SetClipMask( const int mask ) { clipMask = mask; fl.clipMaskSet = true; }
 ////	int						GetClipMask( ) const { return clipMask; }
 ////	void					SetSelfCollision( const bool enable ) { fl.selfCollision = enable; }
-////	void					SetWorldOrigin( const idVec3 &origin ) { current.worldOrigin = origin; }
-////	void					SetWorldAxis( const idMat3 &axis ) { current.worldAxis = axis; }
-////	void					SetLinearVelocity( const idVec3 &linear ) const { current.spatialVelocity.SubVec3(0) = linear; }
-////	void					SetAngularVelocity( const idVec3 &angular ) const { current.spatialVelocity.SubVec3(1) = angular; }
+////	void					SetWorldOrigin( const idVec3 &origin ) { this.current.worldOrigin = origin; }
+////	void					SetWorldAxis( const idMat3 &axis ) { this.current.worldAxis = axis; }
+////	void					SetLinearVelocity( const idVec3 &linear ) const { this.current.spatialVelocity.SubVec3(0) = linear; }
+////	void					SetAngularVelocity( const idVec3 &angular ) const { this.current.spatialVelocity.SubVec3(1) = angular; }
 ////	void					SetFriction( float linear, float angular, float contact );
 ////	float					GetContactFriction( ) const { return contactFriction; }
 ////	void					SetBouncyness( float bounce );
 ////	float					GetBouncyness( ) const { return bouncyness; }
 ////	void					SetDensity( float density, const idMat3 &inertiaScale = mat3_identity );
 ////	float					GetInverseMass( ) const { return invMass; }
-////	idMat3					GetInverseWorldInertia( ) const { return current.worldAxis.Transpose() * inverseInertiaTensor * current.worldAxis; }
+////	idMat3					GetInverseWorldInertia( ) const { return this.current.worldAxis.Transpose() * inverseInertiaTensor * this.current.worldAxis; }
 ////
 ////	void					SetFrictionDirection( const idVec3 &dir );
 ////	bool					GetFrictionDirection( idVec3 &dir ) const;
@@ -785,30 +785,30 @@ class idAFTree {
 ////	void					DebugDraw( const idVec4 &color ) const;
 ////
 ////private:
-////	idList<idAFBody *>		sortedBodies;
+	sortedBodies = new idList<idAFBody>(idAFBody, true);
 };
-////
-////
-//////===============================================================
-//////
-//////	idPhysics_AF
-//////
-//////===============================================================
-////
-////typedef struct AFPState_s {
-////	int						atRest;						// >= 0 if articulated figure is at rest
-////	float					noMoveTime;					// time the articulated figure is hardly moving
-////	float					activateTime;				// time since last activation
-////	float					lastTimeStep;				// last time step
-////	idVec6					pushVelocity;				// velocity with which the af is pushed
-////} AFPState_t;
-////
-////typedef struct AFCollision_s {
-////	trace_t					trace;
-////	idAFBody *				body;
-////} AFCollision_t;
-////
-////
+
+
+//===============================================================
+//
+//	idPhysics_AF
+//
+//===============================================================
+
+class AFPState_t {
+	atRest: number /*int*/;						// >= 0 if articulated figure is at rest
+	noMoveTime: number /*float*/;					// time the articulated figure is hardly moving
+	activateTime: number /*float*/;				// time since last activation
+	lastTimeStep: number /*float*/;				// last time step
+	pushVelocity = new idVec6();				// velocity with which the af is pushed
+}
+
+class AFCollision_t{
+	trace = new trace_t;
+	body: idAFBody;
+}
+
+
 class idPhysics_AF extends idPhysics_Base {
 ////
 ////public:
@@ -1009,11 +1009,11 @@ class idPhysics_AF extends idPhysics_Base {
 ////	bool					worldConstraintsLocked;			// if true world constraints cannot be moved
 ////	bool					forcePushable;					// if true can be pushed even when bound to a master
 ////
-////							// physics state
-////	AFPState_t				current;
-////	AFPState_t				saved;
-////
-////	idAFBody *				masterBody;						// master body
+	// physics state
+	current = new AFPState_t;
+	saved = new AFPState_t;
+
+	masterBody:idAFBody;						// master body
 ////	idLCP *					lcp;							// linear complementarity problem solver
 ////
 ////private:
@@ -1060,7 +1060,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	idAFBody *body;
 	////	idAFConstraint *c;
 	////
-	////	invTimeStep = 1.0f / timeStep;
+	////	invTimeStep = 1.0 / timeStep;
 	////
 	////	// setup the constraint equations for the current position and orientation of the bodies
 	////	for ( i = 0; i < primaryConstraints.Num(); i++ ) {
@@ -1173,28 +1173,28 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////
 	////	if ( jointFrictionDentStart < MS2SEC( endTimeMSec ) && jointFrictionDentEnd > MS2SEC( endTimeMSec ) ) {
-	////		float halfTime = ( jointFrictionDentEnd - jointFrictionDentStart ) * 0.5f;
+	////		float halfTime = ( jointFrictionDentEnd - jointFrictionDentStart ) * 0.f;
 	////		if ( jointFrictionDentStart + halfTime > MS2SEC( endTimeMSec ) ) {
-	////			jointFrictionDentScale = 1.0f - ( 1.0f - jointFrictionDent ) * ( MS2SEC( endTimeMSec ) - jointFrictionDentStart ) / halfTime;
+	////			jointFrictionDentScale = 1.0 - ( 1.0 - jointFrictionDent ) * ( MS2SEC( endTimeMSec ) - jointFrictionDentStart ) / halfTime;
 	////		} else {
-	////			jointFrictionDentScale = jointFrictionDent + ( 1.0f - jointFrictionDent ) * ( MS2SEC( endTimeMSec ) - jointFrictionDentStart - halfTime ) / halfTime;
+	////			jointFrictionDentScale = jointFrictionDent + ( 1.0 - jointFrictionDent ) * ( MS2SEC( endTimeMSec ) - jointFrictionDentStart - halfTime ) / halfTime;
 	////		}
 	////	} else {
-	////		jointFrictionDentScale = 0.0f;
+	////		jointFrictionDentScale = 0.0;
 	////	}
 	////
 	////	if ( contactFrictionDentStart < MS2SEC( endTimeMSec ) && contactFrictionDentEnd > MS2SEC( endTimeMSec ) ) {
-	////		float halfTime = ( contactFrictionDentEnd - contactFrictionDentStart ) * 0.5f;
+	////		float halfTime = ( contactFrictionDentEnd - contactFrictionDentStart ) * 0.f;
 	////		if ( contactFrictionDentStart + halfTime > MS2SEC( endTimeMSec ) ) {
-	////			contactFrictionDentScale = 1.0f - ( 1.0f - contactFrictionDent ) * ( MS2SEC( endTimeMSec ) - contactFrictionDentStart ) / halfTime;
+	////			contactFrictionDentScale = 1.0 - ( 1.0 - contactFrictionDent ) * ( MS2SEC( endTimeMSec ) - contactFrictionDentStart ) / halfTime;
 	////		} else {
-	////			contactFrictionDentScale = contactFrictionDent + ( 1.0f - contactFrictionDent ) * ( MS2SEC( endTimeMSec ) - contactFrictionDentStart - halfTime ) / halfTime;
+	////			contactFrictionDentScale = contactFrictionDent + ( 1.0 - contactFrictionDent ) * ( MS2SEC( endTimeMSec ) - contactFrictionDentStart - halfTime ) / halfTime;
 	////		}
 	////	} else {
-	////		contactFrictionDentScale = 0.0f;
+	////		contactFrictionDentScale = 0.0;
 	////	}
 	////
-	////	invTimeStep = 1.0f / timeStep;
+	////	invTimeStep = 1.0 / timeStep;
 	////
 	////	for ( i = 0; i < primaryConstraints.Num(); i++ ) {
 	////		primaryConstraints[i].ApplyFriction( invTimeStep );
@@ -1321,7 +1321,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////			s = af_useSymmetry.GetBool() ? k + 1 : numAuxConstraints;
 	////			for ( l = n = 0, m = index[n]; n < constraint.body1.numResponses && m < s; n++, m = index[n] ) {
 	////				while( l < m ) {
-	////					dstPtr[l++] = 0.0f;
+	////					dstPtr[l++] = 0.0;
 	////				}
 	////				dstPtr[l++] = j1[0] * ptr[0] + j1[1] * ptr[1] + j1[2] * ptr[2] +
 	////								j1[3] * ptr[3] + j1[4] * ptr[4] + j1[5] * ptr[5];
@@ -1329,7 +1329,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////			}
 	////
 	////			while( l < s ) {
-	////				dstPtr[l++] = 0.0f;
+	////				dstPtr[l++] = 0.0;
 	////			}
 	////
 	////			if ( constraint.body2 ) {
@@ -1358,7 +1358,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		}
 	////	}
 	////
-	////	invStep = 1.0f / timeStep;
+	////	invStep = 1.0 / timeStep;
 	////
 	////	// calculate body acceleration
 	////	for ( i = 0; i < bodies.Num(); i++ ) {
@@ -1485,7 +1485,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		normalVelocity = ( velocity * contact.normal ) * contact.normal;
 	////
 	////		// if moving towards the surface at the contact point
-	////		if ( normalVelocity * contact.normal < 0.0f ) {
+	////		if ( normalVelocity * contact.normal < 0.0 ) {
 	////			// calculate impulse
 	////			normal = -normalVelocity;
 	////			impulseNumerator = normal.Normalize();
@@ -1505,7 +1505,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	for ( i = 0; i < contactConstraints.Num(); i++ ) {
 	////		body = contactConstraints[i].body1;
 	////		normal = contactConstraints[i].GetContact().normal;
-	////		if ( normal * body.next.spatialVelocity.SubVec3(0) <= 0.0f ) {
+	////		if ( normal * body.next.spatialVelocity.SubVec3(0) <= 0.0 ) {
 	////			body.next.spatialVelocity.SubVec3(0) -= 1.0001f * (normal * body.next.spatialVelocity.SubVec3(0)) * normal;
 	////		}
 	////		body = contactConstraints[i].body2;
@@ -1513,7 +1513,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////			continue;
 	////		}
 	////		normal = -normal;
-	////		if ( normal * body.next.spatialVelocity.SubVec3(0) <= 0.0f ) {
+	////		if ( normal * body.next.spatialVelocity.SubVec3(0) <= 0.0 ) {
 	////			body.next.spatialVelocity.SubVec3(0) -= 1.0001f * (normal * body.next.spatialVelocity.SubVec3(0)) * normal;
 	////		}
 	////	}
@@ -1544,7 +1544,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		body.InverseWorldSpatialInertiaMultiply( body.acceleration, body.totalForce.ToFloatPtr() );
 	////		body.next.spatialVelocity = body.current.spatialVelocity + timeStep * body.acceleration.SubVec6(0);
 	////
-	////		if ( maxLinearVelocity > 0.0f ) {
+	////		if ( maxLinearVelocity > 0.0 ) {
 	////			// cap the linear velocity
 	////			vSqr = body.next.spatialVelocity.SubVec3(0).LengthSqr();
 	////			if ( vSqr > Square( maxLinearVelocity ) ) {
@@ -1552,7 +1552,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////			}
 	////		}
 	////
-	////		if ( maxAngularVelocity > 0.0f ) {
+	////		if ( maxAngularVelocity > 0.0 ) {
 	////			// cap the angular velocity
 	////			vSqr = body.next.spatialVelocity.SubVec3(1).LengthSqr();
 	////			if ( vSqr > Square( maxAngularVelocity ) ) {
@@ -1604,12 +1604,12 @@ class idPhysics_AF extends idPhysics_Base {
 	////	idEntity *ent;
 	////
 	////	ent = gameLocal.entities[collision.c.entityNum];
-	////	if ( ent == self ) {
+	////	if ( ent == this.self ) {
 	////		return false;
 	////	}
 	////
 	////	// get info from other entity involved
-	////	ent.GetImpactInfo( self, collision.c.id, collision.c.point, &info );
+	////	ent.GetImpactInfo( this.self, collision.c.id, collision.c.point, &info );
 	////	// collision point relative to the body center of mass
 	////	r = collision.c.point - (body.current.worldOrigin + body.centerOfMass * body.current.worldAxis);
 	////	// the velocity at the collision point
@@ -1617,11 +1617,11 @@ class idPhysics_AF extends idPhysics_Base {
 	////	// subtract velocity of other entity
 	////	velocity -= info.velocity;
 	////	// never stick
-	////	if ( velocity * collision.c.normal > 0.0f ) {
+	////	if ( velocity * collision.c.normal > 0.0 ) {
 	////		velocity = collision.c.normal;
 	////	}
 	////	inverseWorldInertiaTensor = body.current.worldAxis.Transpose() * body.inverseInertiaTensor * body.current.worldAxis;
-	////	impulseNumerator = -( 1.0f + body.bouncyness ) * ( velocity * collision.c.normal );
+	////	impulseNumerator = -( 1.0 + body.bouncyness ) * ( velocity * collision.c.normal );
 	////	impulseDenominator = body.invMass + ( ( inverseWorldInertiaTensor * r.Cross( collision.c.normal ) ).Cross( r ) * collision.c.normal );
 	////	if ( info.invMass ) {
 	////		impulseDenominator += info.invMass + ( ( info.invInertiaTensor * info.position.Cross( collision.c.normal ) ).Cross( info.position ) * collision.c.normal );
@@ -1629,10 +1629,10 @@ class idPhysics_AF extends idPhysics_Base {
 	////	impulse = (impulseNumerator / impulseDenominator) * collision.c.normal;
 	////
 	////	// apply impact to other entity
-	////	ent.ApplyImpulse( self, collision.c.id, collision.c.point, -impulse );
+	////	ent.ApplyImpulse( this.self, collision.c.id, collision.c.point, -impulse );
 	////
 	////	// callback to self to let the entity know about the impact
-	////	return self.Collide( collision, velocity );
+	////	return this.self.Collide( collision, velocity );
 	////}
 	////
 	/////*
@@ -1791,7 +1791,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////#endif
 	////		}
 	////
-	////		body.clipModel.Link( gameLocal.clip, self, body.clipModel.GetId(), body.next.worldOrigin, body.next.worldAxis );
+	////		body.clipModel.Link( gameLocal.clip, this.self, body.clipModel.GetId(), body.next.worldOrigin, body.next.worldAxis );
 	////	}
 	////}
 	////
@@ -1808,7 +1808,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	idVecX dir( 6, VECX_ALLOCA( 6 ) );
 	////
 	////	// evaluate bodies
-	////	EvaluateBodies( current.lastTimeStep );
+	////	EvaluateBodies( this.current.lastTimeStep );
 	////
 	////	// remove all existing contacts
 	////	ClearContacts();
@@ -1830,11 +1830,11 @@ class idPhysics_AF extends idPhysics_Base {
 	////		passEntity = SetupCollisionForBody( body );
 	////
 	////		body.InverseWorldSpatialInertiaMultiply( dir, body.current.externalForce.ToFloatPtr() );
-	////		dir.SubVec6(0) = body.current.spatialVelocity + current.lastTimeStep * dir.SubVec6(0);
+	////		dir.SubVec6(0) = body.current.spatialVelocity + this.current.lastTimeStep * dir.SubVec6(0);
 	////		dir.SubVec3(0).Normalize();
 	////		dir.SubVec3(1).Normalize();
 	////
-	////		numContacts = gameLocal.clip.Contacts( contactInfo, 10, body.current.worldOrigin, dir.SubVec6(0), 2.0f, //CONTACT_EPSILON,
+	////		numContacts = gameLocal.clip.Contacts( contactInfo, 10, body.current.worldOrigin, dir.SubVec6(0), 2.0, //CONTACT_EPSILON,
 	////						body.clipModel, body.current.worldAxis, body.clipMask, passEntity );
 	////
 	////#if 1
@@ -1848,7 +1848,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////					if ( ( contacts[k].id == i && contactInfo[j].id == contactBodies[k] ) ||
 	////							( contactBodies[k] == i && contacts[k].id == contactInfo[j].id ) ) {
 	////
-	////						if ( ( contacts[k].point - contactInfo[j].point ).LengthSqr() < Square( 2.0f ) ) {
+	////						if ( ( contacts[k].point - contactInfo[j].point ).LengthSqr() < Square( 2.0 ) ) {
 	////							break;
 	////						}
 	////						if ( idMath::Fabs( contacts[k].normal * contactInfo[j].normal ) > 0.9f ) {
@@ -1895,7 +1895,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	for ( i = 0; i < contacts.Num(); i++ ) {
 	////		// add contact constraint
 	////		contactConstraints[i].physics = this;
-	////		if ( contacts[i].entityNum == self.entityNumber ) {
+	////		if ( contacts[i].entityNum == this.self.entityNumber ) {
 	////			contactConstraints[i].Setup( bodies[contactBodies[i]], bodies[ contacts[i].id ], contacts[i] );
 	////		}
 	////		else {
@@ -1925,7 +1925,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////			continue;
 	////		}
 	////		force.Zero();
-	////		ent.AddForce( self, contact.id, contact.point, force );
+	////		ent.AddForce( this.self, contact.id, contact.point, force );
 	////	}
 	////#endif
 	////}
@@ -1947,23 +1947,24 @@ class idPhysics_AF extends idPhysics_Base {
 	////		body.next.externalForce.Zero();
 	////	}
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::AddGravity
-	////================
-	////*/
-	////void idPhysics_AF::AddGravity( ) {
-	////	var/*int*/i:number;
-	////	idAFBody *body;
-	////
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		body = bodies[i];
-	////		// add gravitational force
-	////		body.current.externalForce.SubVec3( 0 ) += body.mass * gravityVector;
-	////	}
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_AF::AddGravity
+	================
+	*/
+	AddGravity( ):void {
+		var/*int*/i:number;
+		var body: idAFBody ;
+	
+		for ( i = 0; i < this.bodies.Num(); i++ ) {
+			body = this.bodies[i];
+			// add gravitational force
+			todoThrow ( );
+			//body.current.externalForce.SubVec3( 0 ) += body.mass * gravityVector;
+		}
+	}
+	
 	/////*
 	////================
 	////idPhysics_AF::SwapStates
@@ -1974,9 +1975,9 @@ class idPhysics_AF extends idPhysics_Base {
 	////	idAFBody *body;
 	////	AFBodyPState_t *swap;
 	////
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////
-	////		body = bodies[i];
+	////		body = this.bodies[i];
 	////
 	////		// swap the current and next state for next simulation step
 	////		swap = body.current;
@@ -1994,9 +1995,9 @@ class idPhysics_AF extends idPhysics_Base {
 	////	var/*int*/i:number;
 	////	idAFBody *body;
 	////
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		body = bodies[i];
-	////		body.clipModel.Link( gameLocal.clip, self, body.clipModel.GetId(), body.current.worldOrigin, body.current.worldAxis );
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		body = this.bodies[i];
+	////		body.clipModel.Link( gameLocal.clip, this.self, body.clipModel.GetId(), body.current.worldOrigin, body.current.worldAxis );
 	////	}
 	////}
 	////
@@ -2058,14 +2059,14 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////float idPhysics_AF::GetJointFrictionScale( ) const {
-	////	if ( jointFrictionDentScale > 0.0f ) {
+	////	if ( jointFrictionDentScale > 0.0 ) {
 	////		return jointFrictionDentScale;
-	////	} else if ( jointFrictionScale > 0.0f ) {
+	////	} else if ( jointFrictionScale > 0.0 ) {
 	////		return jointFrictionScale;
-	////	} else if ( af_jointFrictionScale.GetFloat() > 0.0f ) {
+	////	} else if ( af_jointFrictionScale.GetFloat() > 0.0 ) {
 	////		return af_jointFrictionScale.GetFloat();
 	////	}
-	////	return 1.0f;
+	////	return 1.0;
 	////}
 	////
 	/////*
@@ -2085,14 +2086,14 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////float idPhysics_AF::GetContactFrictionScale( ) const {
-	////	if ( contactFrictionDentScale > 0.0f ) {
+	////	if ( contactFrictionDentScale > 0.0 ) {
 	////		return contactFrictionDentScale;
-	////	} else if ( contactFrictionScale > 0.0f ) {
+	////	} else if ( contactFrictionScale > 0.0 ) {
 	////		return contactFrictionScale;
-	////	} else if ( af_contactFrictionScale.GetFloat() > 0.0f ) {
+	////	} else if ( af_contactFrictionScale.GetFloat() > 0.0 ) {
 	////		return af_contactFrictionScale.GetFloat();
 	////	}
-	////	return 1.0f;
+	////	return 1.0;
 	////}
 	////
 	/////*
@@ -2105,37 +2106,37 @@ class idPhysics_AF extends idPhysics_Base {
 	////	float translationSqr, maxTranslationSqr, rotation, maxRotation;
 	////	idAFBody *body;
 	////
-	////	if ( current.atRest >= 0 ) {
+	////	if ( this.current.atRest >= 0 ) {
 	////		return true;
 	////	}
 	////
-	////	current.activateTime += timeStep;
+	////	this.current.activateTime += timeStep;
 	////
 	////	// if the simulation should never be suspended before a certaint amount of time passed
-	////	if ( minMoveTime > 0.0f && current.activateTime < minMoveTime ) {
+	////	if ( minMoveTime > 0.0 && this.current.activateTime < minMoveTime ) {
 	////		return false;
 	////	}
 	////
 	////	// if the simulation should always be suspended after a certain amount time passed
-	////	if ( maxMoveTime > 0.0f && current.activateTime > maxMoveTime ) {
+	////	if ( maxMoveTime > 0.0 && this.current.activateTime > maxMoveTime ) {
 	////		return true;
 	////	}
 	////
 	////	// test if all bodies hardly moved over a period of time
-	////	if ( current.noMoveTime == 0.0f ) {
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
-	////			body = bodies[i];
+	////	if ( this.current.noMoveTime == 0.0 ) {
+	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////			body = this.bodies[i];
 	////			body.atRestOrigin = body.current.worldOrigin;
 	////			body.atRestAxis = body.current.worldAxis;
 	////		}
-	////		current.noMoveTime += timeStep;
+	////		this.current.noMoveTime += timeStep;
 	////	}
-	////	else if ( current.noMoveTime > noMoveTime ) {
-	////		current.noMoveTime = 0.0f;
-	////		maxTranslationSqr = 0.0f;
-	////		maxRotation = 0.0f;
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
-	////			body = bodies[i];
+	////	else if ( this.current.noMoveTime > noMoveTime ) {
+	////		this.current.noMoveTime = 0.0;
+	////		maxTranslationSqr = 0.0;
+	////		maxRotation = 0.0;
+	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////			body = this.bodies[i];
 	////
 	////			translationSqr = ( body.current.worldOrigin - body.atRestOrigin ).LengthSqr();
 	////			if ( translationSqr > maxTranslationSqr ) {
@@ -2152,12 +2153,12 @@ class idPhysics_AF extends idPhysics_Base {
 	////			return true;
 	////		}
 	////	} else {
-	////		current.noMoveTime += timeStep;
+	////		this.current.noMoveTime += timeStep;
 	////	}
 	////
 	////	// test if the velocity or acceleration of any body is still too large to come to rest
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		body = bodies[i];
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		body = this.bodies[i];
 	////
 	////		if ( body.current.spatialVelocity.SubVec3(0).LengthSqr() > Square( suspendVelocity[0] ) ) {
 	////			return false;
@@ -2177,53 +2178,53 @@ class idPhysics_AF extends idPhysics_Base {
 	////	return true;
 	////}
 	////
-	/////*
-	////================
-	////idPhysics_AF::Rest
-	////================
-	////*/
-	////void idPhysics_AF::Rest( ) {
-	////	var/*int*/i:number;
-	////
-	////	current.atRest = gameLocal.time;
-	////
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		bodies[i].current.spatialVelocity.Zero();
-	////		bodies[i].current.externalForce.Zero();
-	////	}
-	////
-	////	self.BecomeInactive( TH_PHYSICS );
-	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::Activate
-	////================
-	////*/
-	////void idPhysics_AF::Activate( ) {
-	////	// if the articulated figure was at rest
-	////	if ( current.atRest >= 0 ) {
-	////		// normally gravity is added at the end of a simulation frame
-	////		// if the figure was at rest add gravity here so it is applied this simulation frame
-	////		AddGravity();
-	////		// reset the active time for the max move time
-	////		current.activateTime = 0.0f;
-	////	}
-	////	current.atRest = -1;
-	////	current.noMoveTime = 0.0f;
-	////	self.BecomeActive( TH_PHYSICS );
-	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::PutToRest
-	////
-	////  put to rest untill something collides with this physics object
-	////================
-	////*/
-	////void idPhysics_AF::PutToRest( ) {
-	////	Rest();
-	////}
+	/*
+	================
+	idPhysics_AF::Rest
+	================
+	*/
+	Rest( ) :void{
+		var/*int*/i:number;
+	
+		this.current.atRest = gameLocal.time;
+	
+		for ( i = 0; i < this.bodies.Num(); i++ ) {
+			this.bodies[i].current.spatialVelocity.Zero();
+			this.bodies[i].current.externalForce.Zero();
+		}
+	
+		this.self.BecomeInactive( TH_PHYSICS );
+	}
+	
+	/*
+	================
+	idPhysics_AF::Activate
+	================
+	*/
+	Activate( ):void {
+		// if the articulated figure was at rest
+		if ( this.current.atRest >= 0 ) {
+			// normally gravity is added at the end of a simulation frame
+			// if the figure was at rest add gravity here so it is applied this simulation frame
+			this.AddGravity();
+			// reset the active time for the max move time
+			this.current.activateTime = 0.0;
+		}
+		this.current.atRest = -1;
+		this.current.noMoveTime = 0.0;
+		this.self.BecomeActive( TH_PHYSICS );
+	}
+	
+	/*
+	================
+	idPhysics_AF::PutToRest
+	
+	  put to rest untill something collides with this physics object
+	================
+	*/
+	PutToRest( ):void {
+		this.Rest();
+	}
 	////
 	/////*
 	////================
@@ -2252,8 +2253,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	var/*int*/i:number;
 	////
 	////	if ( pushVelocity != vec6_origin ) {
-	////		for ( i = 0; i < bodies.Num(); i++ ) {
-	////			bodies[i].current.spatialVelocity += pushVelocity;
+	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////			this.bodies[i].current.spatialVelocity += pushVelocity;
 	////		}
 	////	}
 	////}
@@ -2272,8 +2273,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////idClipModel *idPhysics_AF::GetClipModel( /*int*/ id:number ) const {
-	////	if ( id >= 0 && id < bodies.Num() ) {
-	////		return bodies[id].GetClipModel();
+	////	if ( id >= 0 && id < this.bodies.Num() ) {
+	////		return this.bodies[id].GetClipModel();
 	////	}
 	////	return NULL;
 	////}
@@ -2284,7 +2285,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////int idPhysics_AF::GetNumClipModels( ) const {
-	////	return bodies.Num();
+	////	return this.bodies.Num();
 	////}
 	////
 	/////*
@@ -2293,7 +2294,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////void idPhysics_AF::SetMass( float mass, /*int*/ id:number ) {
-	////	if ( id >= 0 && id < bodies.Num() ) {
+	////	if ( id >= 0 && id < this.bodies.Num() ) {
 	////	}
 	////	else {
 	////		forceTotalMass = mass;
@@ -2307,8 +2308,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////float idPhysics_AF::GetMass( /*int*/ id:number ) const {
-	////	if ( id >= 0 && id < bodies.Num() ) {
-	////		return bodies[id].mass;
+	////	if ( id >= 0 && id < this.bodies.Num() ) {
+	////		return this.bodies[id].mass;
 	////	}
 	////	return totalMass;
 	////}
@@ -2415,12 +2416,12 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	if ( timeScaleRampStart < MS2SEC( endTimeMSec ) && timeScaleRampEnd > MS2SEC( endTimeMSec ) ) {
 	////		timeStep = MS2SEC( timeStepMSec ) * ( MS2SEC( endTimeMSec ) - timeScaleRampStart ) / ( timeScaleRampEnd - timeScaleRampStart );
-	////	} else if ( af_timeScale.GetFloat() != 1.0f ) {
+	////	} else if ( af_timeScale.GetFloat() != 1.0 ) {
 	////		timeStep = MS2SEC( timeStepMSec ) * af_timeScale.GetFloat();
 	////	} else {
 	////		timeStep = MS2SEC( timeStepMSec ) * timeScale;
 	////	}
-	////	current.lastTimeStep = timeStep;
+	////	this.current.lastTimeStep = timeStep;
 	////
 	////
 	////	// if the articulated figure changed
@@ -2434,8 +2435,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	if ( masterBody ) {
 	////		idVec3 masterOrigin;
 	////		idMat3 masterAxis;
-	////		self.GetMasterPosition( masterOrigin, masterAxis );
-	////		if ( current.atRest >= 0 && ( masterBody.current.worldOrigin != masterOrigin || masterBody.current.worldAxis != masterAxis ) ) {
+	////		this.self.GetMasterPosition( masterOrigin, masterAxis );
+	////		if ( this.current.atRest >= 0 && ( masterBody.current.worldOrigin != masterOrigin || masterBody.current.worldAxis != masterAxis ) ) {
 	////			Activate();
 	////		}
 	////		masterBody.current.worldOrigin = masterOrigin;
@@ -2443,7 +2444,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////
 	////	// if the simulation is suspended because the figure is at rest
-	////	if ( current.atRest >= 0 || timeStep <= 0.0f ) {
+	////	if ( this.current.atRest >= 0 || timeStep <= 0.0 ) {
 	////		DebugDraw();
 	////		return false;
 	////	}
@@ -2543,28 +2544,28 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	// apply collision impulses
 	////	if ( ApplyCollisions( timeStep ) ) {
-	////		current.atRest = gameLocal.time;
+	////		this.current.atRest = gameLocal.time;
 	////		comeToRest = true;
 	////	}
 	////
 	////	// test if the simulation can be suspended because the whole figure is at rest
 	////	if ( comeToRest && TestIfAtRest( timeStep ) ) {
-	////		Rest();
+	////		this.Rest();
 	////	} else {
 	////		ActivateContactEntities();
 	////	}
 	////
 	////	// add gravitational force
-	////	AddGravity();
+	////	this.AddGravity();
 	////
 	////	// move the af velocity back into the world frame
-	////	AddPushVelocity( current.pushVelocity );
-	////	current.pushVelocity.Zero();
+	////	AddPushVelocity( this.current.pushVelocity );
+	////	this.current.pushVelocity.Zero();
 	////
 	////	if ( IsOutsideWorld() ) {
 	////		gameLocal.Warning( "articulated figure moved outside world bounds for entity '%s' type '%s' at (%s)",
-	////							self.name.c_str(), self.GetType().classname, this.bodies[0].current.worldOrigin.ToString(0) );
-	////		Rest();
+	////							this.self.name.c_str(), this.self.GetType().classname, this.bodies[0].current.worldOrigin.ToString(0) );
+	////		this.Rest();
 	////	}
 	////
 	////#ifdef AF_TIMINGS
@@ -2572,7 +2573,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	if ( af_showTimings.GetInteger() == 1 ) {
 	////		gameLocal.Printf( "%12s: t %1.4f pc %2d, %1.4f ac %2d %1.4f lcp %1.4f cd %1.4f\n",
-	////						self.name.c_str(),
+	////						this.self.name.c_str(),
 	////						timer_total.Milliseconds(),
 	////						numPrimary, timer_pc.Milliseconds(),
 	////						numAuxiliary, timer_ac.Milliseconds() - timer_lcp.Milliseconds(),
@@ -2659,20 +2660,20 @@ class idPhysics_AF extends idPhysics_Base {
 	////		if ( constraint ) {
 	////			constraint.GetCenter( center );
 	////			axis = gameLocal.GetLocalPlayer().viewAngles.ToMat3();
-	////			gameRenderWorld.DebugCone( colorYellow, center, (axis[2] - axis[1]) * 4.0f, 0.0f, 1.0f, 0 );
+	////			gameRenderWorld.DebugCone( colorYellow, center, (axis[2] - axis[1]) * 4.0, 0.0, 1.0, 0 );
 	////
 	////			if ( af_showConstrainedBodies.GetBool() ) {
 	////				cvarSystem.SetCVarString( "cm_drawColor", colorCyan.ToString( 0 ) );
 	////				constrainedBody1 = constraint.body1;
 	////				if ( constrainedBody1 ) {
 	////					collisionModelManager.DrawModel( constrainedBody1.clipModel.Handle(), constrainedBody1.clipModel.GetOrigin(),
-	////											constrainedBody1.clipModel.GetAxis(), vec3_origin, 0.0f );
+	////											constrainedBody1.clipModel.GetAxis(), vec3_origin, 0.0 );
 	////				}
 	////				cvarSystem.SetCVarString( "cm_drawColor", colorBlue.ToString( 0 ) );
 	////				constrainedBody2 = constraint.body2;
 	////				if ( constrainedBody2 ) {
 	////					collisionModelManager.DrawModel( constrainedBody2.clipModel.Handle(), constrainedBody2.clipModel.GetOrigin(),
-	////											constrainedBody2.clipModel.GetAxis(), vec3_origin, 0.0f );
+	////											constrainedBody2.clipModel.GetAxis(), vec3_origin, 0.0 );
 	////				}
 	////				cvarSystem.SetCVarString( "cm_drawColor", colorRed.ToString( 0 ) );
 	////			}
@@ -2684,7 +2685,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		if ( highlightBody ) {
 	////			cvarSystem.SetCVarString( "cm_drawColor", colorYellow.ToString( 0 ) );
 	////			collisionModelManager.DrawModel( highlightBody.clipModel.Handle(), highlightBody.clipModel.GetOrigin(),
-	////									highlightBody.clipModel.GetAxis(), vec3_origin, 0.0f );
+	////									highlightBody.clipModel.GetAxis(), vec3_origin, 0.0 );
 	////			cvarSystem.SetCVarString( "cm_drawColor", colorRed.ToString( 0 ) );
 	////		}
 	////	}
@@ -2699,7 +2700,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////				continue;
 	////			}
 	////			collisionModelManager.DrawModel( body.clipModel.Handle(), body.clipModel.GetOrigin(),
-	////										body.clipModel.GetAxis(), vec3_origin, 0.0f );
+	////										body.clipModel.GetAxis(), vec3_origin, 0.0 );
 	////			//DrawTraceModelSilhouette( gameLocal.GetLocalPlayer().GetEyePosition(), body.clipModel );
 	////		}
 	////	}
@@ -2714,13 +2715,13 @@ class idPhysics_AF extends idPhysics_Base {
 	////	if ( af_showMass.GetBool() ) {
 	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////			body = this.bodies[i];
-	////			gameRenderWorld.DrawText( va( "\n%1.2f", 1.0f / body.GetInverseMass() ), body.GetWorldOrigin(), 0.08f, colorCyan, gameLocal.GetLocalPlayer().viewAngles.ToMat3(), 1 );
+	////			gameRenderWorld.DrawText( va( "\n%1.2f", 1.0 / body.GetInverseMass() ), body.GetWorldOrigin(), 0.08f, colorCyan, gameLocal.GetLocalPlayer().viewAngles.ToMat3(), 1 );
 	////		}
 	////	}
 	////
 	////	if ( af_showTotalMass.GetBool() ) {
 	////		axis = gameLocal.GetLocalPlayer().viewAngles.ToMat3();
-	////		gameRenderWorld.DrawText( va( "\n%1.2f", totalMass ), this.bodies[0].GetWorldOrigin() + axis[2] * 8.0f, 0.15f, colorCyan, axis, 1 );
+	////		gameRenderWorld.DrawText( va( "\n%1.2f", totalMass ), this.bodies[0].GetWorldOrigin() + axis[2] * 8.0, 0.15f, colorCyan, axis, 1 );
 	////	}
 	////
 	////	if ( af_showInertia.GetBool() ) {
@@ -2737,7 +2738,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	if ( af_showVelocity.GetBool() ) {
 	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
-	////			DrawVelocity( this.bodies[i].clipModel.GetId(), 0.1f, 4.0f );
+	////			DrawVelocity( this.bodies[i].clipModel.GetId(), 0.1f, 4.0 );
 	////		}
 	////	}
 	////
@@ -2769,7 +2770,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		}
 	////	}
 	////
-	////	if ( af_showTrees.GetBool() || ( af_showActive.GetBool() && current.atRest < 0 ) ) {
+	////	if ( af_showTrees.GetBool() || ( af_showActive.GetBool() && this.current.atRest < 0 ) ) {
 	////		for ( i = 0; i < trees.Num(); i++ ) {
 	////			trees[i].DebugDraw( idStr::ColorForIndex( i+3 ) );
 	////		}
@@ -2795,17 +2796,17 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	lcp = idLCP::AllocSymmetric();
 	////
-	////	memset( &current, 0, sizeof( current ) );
-	////	current.atRest = -1;
-	////	current.lastTimeStep = USERCMD_MSEC;
-	////	saved = current;
+	////	memset( &current, 0, sizeof( this.current ) );
+	////	this.current.atRest = -1;
+	////	this.current.lastTimeStep = USERCMD_MSEC;
+	////	saved = this.current;
 	////
 	////	linearFriction = 0.005f;
 	////	angularFriction = 0.005f;
 	////	contactFriction = 0.8f;
 	////	bouncyness = 0.4f;
-	////	totalMass = 0.0f;
-	////	forceTotalMass = -1.0f;
+	////	totalMass = 0.0;
+	////	forceTotalMass = -1.0;
 	////
 	////	suspendVelocity.Set( SUSPEND_LINEAR_VELOCITY, SUSPEND_ANGULAR_VELOCITY );
 	////	suspendAcceleration.Set( SUSPEND_LINEAR_ACCELERATION, SUSPEND_LINEAR_ACCELERATION );
@@ -2816,21 +2817,21 @@ class idPhysics_AF extends idPhysics_Base {
 	////	maxMoveTime = MAX_MOVE_TIME;
 	////	impulseThreshold = IMPULSE_THRESHOLD;
 	////
-	////	timeScale = 1.0f;
-	////	timeScaleRampStart = 0.0f;
-	////	timeScaleRampEnd = 0.0f;
+	////	timeScale = 1.0;
+	////	timeScaleRampStart = 0.0;
+	////	timeScaleRampEnd = 0.0;
 	////
-	////	jointFrictionScale = 0.0f;
-	////	jointFrictionDent = 0.0f;
-	////	jointFrictionDentStart = 0.0f;
-	////	jointFrictionDentEnd = 0.0f;
-	////	jointFrictionDentScale = 0.0f;
+	////	jointFrictionScale = 0.0;
+	////	jointFrictionDent = 0.0;
+	////	jointFrictionDentStart = 0.0;
+	////	jointFrictionDentEnd = 0.0;
+	////	jointFrictionDentScale = 0.0;
 	////
-	////	contactFrictionScale = 0.0f;
-	////	contactFrictionDent = 0.0f;
-	////	contactFrictionDentStart = 0.0f;
-	////	contactFrictionDentEnd = 0.0f;
-	////	contactFrictionDentScale = 0.0f;
+	////	contactFrictionScale = 0.0;
+	////	contactFrictionDent = 0.0;
+	////	contactFrictionDentStart = 0.0;
+	////	contactFrictionDentEnd = 0.0;
+	////	contactFrictionDentScale = 0.0;
 	////
 	////	enableCollision = true;
 	////	selfCollision = true;
@@ -2911,7 +2912,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	// the articulated figure structure is handled by the owner
 	////
-	////	idPhysics_AF_SavePState( saveFile, current );
+	////	idPhysics_AF_SavePState( saveFile, this.current );
 	////	idPhysics_AF_SavePState( saveFile, saved );
 	////
 	////	saveFile.WriteInt( this.bodies.Num() );
@@ -2984,7 +2985,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	// the articulated figure structure should have already been restored
 	////
-	////	idPhysics_AF_RestorePState( saveFile, current );
+	////	idPhysics_AF_RestorePState( saveFile, this.current );
 	////	idPhysics_AF_RestorePState( saveFile, saved );
 	////
 	////	saveFile.ReadInt( num );
@@ -3082,7 +3083,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	auxiliaryConstraints.Clear();
 	////	trees.DeleteContents( true );
 	////
-	////	totalMass = 0.0f;
+	////	totalMass = 0.0;
 	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////		b = this.bodies[i];
 	////		b.parent = NULL;
@@ -3093,12 +3094,12 @@ class idPhysics_AF extends idPhysics_Base {
 	////		totalMass += b.mass;
 	////	}
 	////
-	////	if ( forceTotalMass > 0.0f ) {
+	////	if ( forceTotalMass > 0.0 ) {
 	////		scale = forceTotalMass / totalMass;
 	////		for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////			b = this.bodies[i];
 	////			b.mass *= scale;
-	////			b.invMass = 1.0f / b.mass;
+	////			b.invMass = 1.0 / b.mass;
 	////			b.inertiaTensor *= scale;
 	////			b.inverseInertiaTensor = b.inertiaTensor.Inverse();
 	////		}
@@ -3153,7 +3154,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////		if ( trees.Num() > 1 ) {
 	////			gameLocal.Warning( "Articulated figure has multiple seperate tree structures for entity '%s' type '%s'.",
-	////								self.name.c_str(), self.GetType().classname );
+	////								this.self.name.c_str(), this.self.GetType().classname );
 	////		}
 	////
 	////		// sort bodies in each tree to make sure parents come first
@@ -3211,12 +3212,12 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	id = this.bodies.Num();
 	////	body.clipModel.SetId( id );
-	////	if ( body.linearFriction < 0.0f ) {
+	////	if ( body.linearFriction < 0.0 ) {
 	////		body.linearFriction = linearFriction;
 	////		body.angularFriction = angularFriction;
 	////		body.contactFriction = contactFriction;
 	////	}
-	////	if ( body.bouncyness < 0.0f ) {
+	////	if ( body.bouncyness < 0.0 ) {
 	////		body.bouncyness = bouncyness;
 	////	}
 	////	if ( !body.fl.clipMaskSet ) {
@@ -3451,7 +3452,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	if ( i >= this.bodies.Num() ) {
 	////		gameLocal.Warning( "DeleteBody: no body found in the articulated figure with the name '%s' for entity '%s' type '%s'.",
-	////							bodyName, self.name.c_str(), self.GetType().classname );
+	////							bodyName, this.self.name.c_str(), this.self.GetType().classname );
 	////		return;
 	////	}
 	////
@@ -3509,7 +3510,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	if ( i >= constraints.Num() ) {
 	////		gameLocal.Warning( "DeleteConstraint: no constriant found in the articulated figure with the name '%s' for entity '%s' type '%s'.",
-	////							constraintName, self.name.c_str(), self.GetType().classname );
+	////							constraintName, this.self.name.c_str(), this.self.GetType().classname );
 	////		return;
 	////	}
 	////
@@ -3569,9 +3570,9 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////void idPhysics_AF::SetDefaultFriction( float linear, float angular, float contact ) {
-	////	if (	linear < 0.0f || linear > 1.0f ||
-	////			angular < 0.0f || angular > 1.0f ||
-	////			contact < 0.0f || contact > 1.0f ) {
+	////	if (	linear < 0.0 || linear > 1.0 ||
+	////			angular < 0.0 || angular > 1.0 ||
+	////			contact < 0.0 || contact > 1.0 ) {
 	////		return;
 	////	}
 	////	linearFriction = linear;
@@ -3589,7 +3590,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		memset( info, 0, sizeof( *info ) );
 	////		return;
 	////	}
-	////	info.invMass = 1.0f / this.bodies[id].mass;
+	////	info.invMass = 1.0 / this.bodies[id].mass;
 	////	info.invInertiaTensor = this.bodies[id].current.worldAxis.Transpose() * this.bodies[id].inverseInertiaTensor * this.bodies[id].current.worldAxis;
 	////	info.position = point - this.bodies[id].current.worldOrigin;
 	////	info.velocity = this.bodies[id].current.spatialVelocity.SubVec3(0) + this.bodies[id].current.spatialVelocity.SubVec3(1).Cross( info.position );
@@ -3636,7 +3637,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////bool idPhysics_AF::IsAtRest( ) const {
-	////	return current.atRest >= 0;
+	////	return this.current.atRest >= 0;
 	////}
 	////
 	/////*
@@ -3645,7 +3646,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////int idPhysics_AF::GetRestStartTime( ) const {
-	////	return current.atRest;
+	////	return this.current.atRest;
 	////}
 	////
 	/////*
@@ -3665,7 +3666,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////void idPhysics_AF::SaveState( ) {
 	////	var/*int*/i:number;
 	////
-	////	saved = current;
+	////	saved = this.current;
 	////
 	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////		memcpy( &this.bodies[i].saved, this.bodies[i].current, sizeof( AFBodyPState_t ) );
@@ -3680,7 +3681,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////void idPhysics_AF::RestoreState( ) {
 	////	var/*int*/i:number;
 	////
-	////	current = saved;
+	////	this.current = saved;
 	////
 	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////		*(this.bodies[i].current) = this.bodies[i].saved;
@@ -3871,7 +3872,7 @@ class idPhysics_AF extends idPhysics_Base {
 ////	idAFBody *body;
 ////	trace_t bodyResults;
 ////
-////	results.fraction = 1.0f;
+////	results.fraction = 1.0;
 ////
 ////	for ( i = 0; i < this.bodies.Num(); i++ ) {
 ////		body = this.bodies[i];
@@ -3884,7 +3885,7 @@ class idPhysics_AF extends idPhysics_Base {
 ////			}
 ////			else {
 ////				gameLocal.clip.Translation( bodyResults, body.current.worldOrigin, body.current.worldOrigin + translation,
-////									body.clipModel, body.current.worldAxis, body.clipMask, self );
+////									body.clipModel, body.current.worldAxis, body.clipMask, this.self );
 ////			}
 ////			if ( bodyResults.fraction < results.fraction ) {
 ////				results = bodyResults;
@@ -3907,7 +3908,7 @@ class idPhysics_AF extends idPhysics_Base {
 ////	trace_t bodyResults;
 ////	idRotation partialRotation;
 ////
-////	results.fraction = 1.0f;
+////	results.fraction = 1.0;
 ////
 ////	for ( i = 0; i < this.bodies.Num(); i++ ) {
 ////		body = this.bodies[i];
@@ -3920,7 +3921,7 @@ class idPhysics_AF extends idPhysics_Base {
 ////			}
 ////			else {
 ////				gameLocal.clip.Rotation( bodyResults, body.current.worldOrigin, rotation,
-////									body.clipModel, body.current.worldAxis, body.clipMask, self );
+////									body.clipModel, body.current.worldAxis, body.clipMask, this.self );
 ////			}
 ////			if ( bodyResults.fraction < results.fraction ) {
 ////				results = bodyResults;
@@ -4025,8 +4026,8 @@ class idPhysics_AF extends idPhysics_Base {
 ////		rotation = ( body.saved.worldAxis.Transpose() * body.current.worldAxis ).ToRotation();
 ////
 ////		// velocity with which the af is pushed
-////		current.pushVelocity.SubVec3(0) += ( body.current.worldOrigin - body.saved.worldOrigin ) / ( deltaTime * idMath::M_MS2SEC );
-////		current.pushVelocity.SubVec3(1) += rotation.GetVec() * -DEG2RAD( rotation.GetAngle() ) / ( deltaTime * idMath::M_MS2SEC );
+////		this.current.pushVelocity.SubVec3(0) += ( body.current.worldOrigin - body.saved.worldOrigin ) / ( deltaTime * idMath::M_MS2SEC );
+////		this.current.pushVelocity.SubVec3(1) += rotation.GetVec() * -DEG2RAD( rotation.GetAngle() ) / ( deltaTime * idMath::M_MS2SEC );
 ////	}
 ////}
 ////
@@ -4036,7 +4037,7 @@ class idPhysics_AF extends idPhysics_Base {
 ////================
 ////*/
 ////const idVec3 &idPhysics_AF::GetPushedLinearVelocity( const /*int*/ id:number ) const {
-////	return current.pushVelocity.SubVec3(0);
+////	return this.current.pushVelocity.SubVec3(0);
 ////}
 ////
 /////*
@@ -4045,7 +4046,7 @@ class idPhysics_AF extends idPhysics_Base {
 ////================
 ////*/
 ////const idVec3 &idPhysics_AF::GetPushedAngularVelocity( const /*int*/ id:number ) const {
-////	return current.pushVelocity.SubVec3(1);
+////	return this.current.pushVelocity.SubVec3(1);
 ////}
 ////
 /////*
@@ -4062,7 +4063,7 @@ class idPhysics_AF extends idPhysics_Base {
 ////	idRotation rotation;
 ////
 ////	if ( master ) {
-////		self.GetMasterPosition( masterOrigin, masterAxis );
+////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////		if ( !masterBody ) {
 ////			masterBody = new idAFBody();
 ////			// translate and rotate all the constraints with body2 == NULL from world space to master space
@@ -4114,15 +4115,15 @@ class idPhysics_AF extends idPhysics_Base {
 ////	var/*int*/i:number;
 ////	idCQuat quat;
 ////
-////	msg.WriteLong( current.atRest );
-////	msg.WriteFloat( current.noMoveTime );
-////	msg.WriteFloat( current.activateTime );
-////	msg.WriteDeltaFloat( 0.0f, current.pushVelocity[0], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, current.pushVelocity[1], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, current.pushVelocity[2], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, current.pushVelocity[3], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, current.pushVelocity[4], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, current.pushVelocity[5], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////	msg.WriteLong( this.current.atRest );
+////	msg.WriteFloat( this.current.noMoveTime );
+////	msg.WriteFloat( this.current.activateTime );
+////	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[0], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[1], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[2], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[3], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[4], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[5], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
 ////
 ////	msg.WriteByte( this.bodies.Num() );
 ////
@@ -4136,18 +4137,18 @@ class idPhysics_AF extends idPhysics_Base {
 ////		msg.WriteFloat( quat.x );
 ////		msg.WriteFloat( quat.y );
 ////		msg.WriteFloat( quat.z );
-////		msg.WriteDeltaFloat( 0.0f, state.spatialVelocity[0], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////		msg.WriteDeltaFloat( 0.0f, state.spatialVelocity[1], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////		msg.WriteDeltaFloat( 0.0f, state.spatialVelocity[2], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////		msg.WriteDeltaFloat( 0.0f, state.spatialVelocity[3], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////		msg.WriteDeltaFloat( 0.0f, state.spatialVelocity[4], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////		msg.WriteDeltaFloat( 0.0f, state.spatialVelocity[5], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-/////*		msg.WriteDeltaFloat( 0.0f, state.externalForce[0], AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
-////		msg.WriteDeltaFloat( 0.0f, state.externalForce[1], AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
-////		msg.WriteDeltaFloat( 0.0f, state.externalForce[2], AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
-////		msg.WriteDeltaFloat( 0.0f, state.externalForce[3], AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
-////		msg.WriteDeltaFloat( 0.0f, state.externalForce[4], AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
-////		msg.WriteDeltaFloat( 0.0f, state.externalForce[5], AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
+////		msg.WriteDeltaFloat( 0.0, state.spatialVelocity[0], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////		msg.WriteDeltaFloat( 0.0, state.spatialVelocity[1], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////		msg.WriteDeltaFloat( 0.0, state.spatialVelocity[2], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////		msg.WriteDeltaFloat( 0.0, state.spatialVelocity[3], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////		msg.WriteDeltaFloat( 0.0, state.spatialVelocity[4], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////		msg.WriteDeltaFloat( 0.0, state.spatialVelocity[5], AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+/////*		msg.WriteDeltaFloat( 0.0, state.externalForce[0], AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
+////		msg.WriteDeltaFloat( 0.0, state.externalForce[1], AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
+////		msg.WriteDeltaFloat( 0.0, state.externalForce[2], AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
+////		msg.WriteDeltaFloat( 0.0, state.externalForce[3], AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
+////		msg.WriteDeltaFloat( 0.0, state.externalForce[4], AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
+////		msg.WriteDeltaFloat( 0.0, state.externalForce[5], AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
 ////*/
 ////	}
 ////}
@@ -4161,15 +4162,15 @@ class idPhysics_AF extends idPhysics_Base {
 ////	int i, num;
 ////	idCQuat quat;
 ////
-////	current.atRest = msg.ReadLong();
-////	current.noMoveTime = msg.ReadFloat();
-////	current.activateTime = msg.ReadFloat();
-////	current.pushVelocity[0] = msg.ReadDeltaFloat( 0.0f, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////	current.pushVelocity[1] = msg.ReadDeltaFloat( 0.0f, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////	current.pushVelocity[2] = msg.ReadDeltaFloat( 0.0f, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////	current.pushVelocity[3] = msg.ReadDeltaFloat( 0.0f, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////	current.pushVelocity[4] = msg.ReadDeltaFloat( 0.0f, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////	current.pushVelocity[5] = msg.ReadDeltaFloat( 0.0f, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////	this.current.atRest = msg.ReadLong();
+////	this.current.noMoveTime = msg.ReadFloat();
+////	this.current.activateTime = msg.ReadFloat();
+////	this.current.pushVelocity[0] = msg.ReadDeltaFloat( 0.0, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////	this.current.pushVelocity[1] = msg.ReadDeltaFloat( 0.0, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////	this.current.pushVelocity[2] = msg.ReadDeltaFloat( 0.0, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////	this.current.pushVelocity[3] = msg.ReadDeltaFloat( 0.0, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////	this.current.pushVelocity[4] = msg.ReadDeltaFloat( 0.0, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////	this.current.pushVelocity[5] = msg.ReadDeltaFloat( 0.0, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
 ////
 ////	num = msg.ReadByte();
 ////	assert( num == this.bodies.Num() );
@@ -4183,18 +4184,18 @@ class idPhysics_AF extends idPhysics_Base {
 ////		quat.x = msg.ReadFloat();
 ////		quat.y = msg.ReadFloat();
 ////		quat.z = msg.ReadFloat();
-////		state.spatialVelocity[0] = msg.ReadDeltaFloat( 0.0f, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////		state.spatialVelocity[1] = msg.ReadDeltaFloat( 0.0f, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////		state.spatialVelocity[2] = msg.ReadDeltaFloat( 0.0f, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////		state.spatialVelocity[3] = msg.ReadDeltaFloat( 0.0f, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////		state.spatialVelocity[4] = msg.ReadDeltaFloat( 0.0f, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-////		state.spatialVelocity[5] = msg.ReadDeltaFloat( 0.0f, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
-/////*		state.externalForce[0] = msg.ReadDeltaFloat( 0.0f, AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
-////		state.externalForce[1] = msg.ReadDeltaFloat( 0.0f, AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
-////		state.externalForce[2] = msg.ReadDeltaFloat( 0.0f, AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
-////		state.externalForce[3] = msg.ReadDeltaFloat( 0.0f, AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
-////		state.externalForce[4] = msg.ReadDeltaFloat( 0.0f, AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
-////		state.externalForce[5] = msg.ReadDeltaFloat( 0.0f, AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
+////		state.spatialVelocity[0] = msg.ReadDeltaFloat( 0.0, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////		state.spatialVelocity[1] = msg.ReadDeltaFloat( 0.0, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////		state.spatialVelocity[2] = msg.ReadDeltaFloat( 0.0, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////		state.spatialVelocity[3] = msg.ReadDeltaFloat( 0.0, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////		state.spatialVelocity[4] = msg.ReadDeltaFloat( 0.0, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+////		state.spatialVelocity[5] = msg.ReadDeltaFloat( 0.0, AF_VELOCITY_EXPONENT_BITS, AF_VELOCITY_MANTISSA_BITS );
+/////*		state.externalForce[0] = msg.ReadDeltaFloat( 0.0, AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
+////		state.externalForce[1] = msg.ReadDeltaFloat( 0.0, AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
+////		state.externalForce[2] = msg.ReadDeltaFloat( 0.0, AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
+////		state.externalForce[3] = msg.ReadDeltaFloat( 0.0, AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
+////		state.externalForce[4] = msg.ReadDeltaFloat( 0.0, AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
+////		state.externalForce[5] = msg.ReadDeltaFloat( 0.0, AF_FORCE_EXPONENT_BITS, AF_FORCE_MANTISSA_BITS );
 ////*/
 ////		state.worldAxis = quat.ToMat3();
 ////	}

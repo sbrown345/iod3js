@@ -294,7 +294,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////
 ////	// get info from other entity involved
 ////	ent = gameLocal.entities[collision.c.entityNum];
-////	ent.GetImpactInfo( self, collision.c.id, collision.c.point, &info );
+////	ent.GetImpactInfo( this.self, collision.c.id, collision.c.point, &info );
 ////
 ////	// collision point relative to the body center of mass
 ////	r = collision.c.point - ( this.current.i.position + centerOfMass * this.current.i.orientation );
@@ -332,7 +332,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	}
 ////
 ////	// callback to self to let the entity know about the collision
-////	return self.Collide( collision, velocity );
+////	return this.self.Collide( collision, velocity );
 ////}
 ////
 /////*
@@ -351,7 +351,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////
 ////#ifdef TEST_COLLISION_DETECTION
 ////	bool startsolid;
-////	if ( gameLocal.clip.Contents( this.current.i.position, this.clipModel, this.current.i.orientation, clipMask, self ) ) {
+////	if ( gameLocal.clip.Contents( this.current.i.position, this.clipModel, this.current.i.orientation, clipMask, this.self ) ) {
 ////		startsolid = true;
 ////	}
 ////#endif
@@ -361,7 +361,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	rotation.SetOrigin( this.current.i.position );
 ////
 ////	// if there was a collision
-////	if ( gameLocal.clip.Motion( collision, this.current.i.position, next.i.position, rotation, this.clipModel, this.current.i.orientation, clipMask, self ) ) {
+////	if ( gameLocal.clip.Motion( collision, this.current.i.position, next.i.position, rotation, this.clipModel, this.current.i.orientation, clipMask, this.self ) ) {
 ////		// set the next state to the state at the moment of impact
 ////		next.i.position = collision.endpos;
 ////		next.i.orientation = collision.endAxis;
@@ -371,7 +371,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	}
 ////
 ////#ifdef TEST_COLLISION_DETECTION
-////	if ( gameLocal.clip.Contents( next.i.position, this.clipModel, next.i.orientation, clipMask, self ) ) {
+////	if ( gameLocal.clip.Contents( next.i.position, this.clipModel, next.i.orientation, clipMask, this.self ) ) {
 ////		if ( !startsolid ) {
 ////			int bah = 1;
 ////		}
@@ -539,9 +539,9 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////
 ////		testSolid = false;
 ////
-////		if ( gameLocal.clip.Contents( this.current.i.position, this.clipModel, this.current.i.orientation, clipMask, self ) ) {
+////		if ( gameLocal.clip.Contents( this.current.i.position, this.clipModel, this.current.i.orientation, clipMask, this.self ) ) {
 ////			gameLocal.DWarning( "rigid body in solid for entity '%s' type '%s' at (%s)",
-////								self.name.c_str(), self.GetType().classname, this.current.i.position.ToString(0) );
+////								this.self.name.c_str(), this.self.GetType().classname, this.current.i.position.ToString(0) );
 ////			Rest();
 ////			dropToFloor = false;
 ////			return;
@@ -550,9 +550,9 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////
 ////	// put the body on the floor
 ////	down = this.current.i.position + gravityNormal * 128.0f;
-////	gameLocal.clip.Translation( tr, this.current.i.position, down, this.clipModel, this.current.i.orientation, clipMask, self );
+////	gameLocal.clip.Translation( tr, this.current.i.position, down, this.clipModel, this.current.i.orientation, clipMask, this.self );
 ////	this.current.i.position = tr.endpos;
-////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), tr.endpos, this.current.i.orientation );
+////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), tr.endpos, this.current.i.orientation );
 ////
 ////	// if on the floor already
 ////	if ( tr.fraction == 0.0f ) {
@@ -560,13 +560,13 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////		EvaluateContacts();
 ////		if ( !TestIfAtRest() ) {
 ////			gameLocal.DWarning( "rigid body not at rest for entity '%s' type '%s' at (%s)",
-////								self.name.c_str(), self.GetType().classname, this.current.i.position.ToString(0) );
+////								this.self.name.c_str(), this.self.GetType().classname, this.current.i.position.ToString(0) );
 ////		}
 ////		Rest();
 ////		dropToFloor = false;
 ////	} else if ( IsOutsideWorld() ) {
 ////		gameLocal.Warning( "rigid body outside world bounds for entity '%s' type '%s' at (%s)",
-////							self.name.c_str(), self.GetType().classname, this.current.i.position.ToString(0) );
+////							this.self.name.c_str(), this.self.GetType().classname, this.current.i.position.ToString(0) );
 ////		Rest();
 ////		dropToFloor = false;
 ////	}
@@ -774,7 +774,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	int minIndex;
 ////	idMat3 inertiaScale;
 ////
-////	assert( self );
+////	assert( this.self );
 ////	assert( model );					// we need a clip model
 ////	assert( model.IsTraceModel() );	// and it should be a trace model
 ////	assert( density > 0.0f );			// density should be valid
@@ -783,7 +783,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////		delete this.clipModel;
 ////	}
 ////	this.clipModel = model;
-////	this.clipModel.Link( gameLocal.clip, self, 0, this.current.i.position, this.current.i.orientation );
+////	this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.i.position, this.current.i.orientation );
 ////
 ////	// get mass properties from the trace model
 ////	this.clipModel.GetMassProperties( density, mass, centerOfMass, inertiaTensor );
@@ -791,7 +791,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	// check whether or not the clip model has valid mass properties
 ////	if ( mass <= 0.0f || FLOAT_IS_NAN( mass ) ) {
 ////		gameLocal.Warning( "idPhysics_RigidBody::SetClipModel: invalid mass for entity '%s' type '%s'",
-////							self.name.c_str(), self.GetType().classname );
+////							this.self.name.c_str(), this.self.GetType().classname );
 ////		mass = 1.0f;
 ////		centerOfMass.Zero();
 ////		inertiaTensor.Identity();
@@ -806,7 +806,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////
 ////	if ( inertiaScale[0][0] > MAX_INERTIA_SCALE || inertiaScale[1][1] > MAX_INERTIA_SCALE || inertiaScale[2][2] > MAX_INERTIA_SCALE ) {
 ////		gameLocal.DWarning( "idPhysics_RigidBody::SetClipModel: unbalanced inertia tensor for entity '%s' type '%s'",
-////							self.name.c_str(), self.GetType().classname );
+////							this.self.name.c_str(), this.self.GetType().classname );
 ////		float min = inertiaTensor[minIndex][minIndex] * MAX_INERTIA_SCALE;
 ////		inertiaScale[(minIndex+1)%3][(minIndex+1)%3] = min / inertiaTensor[(minIndex+1)%3][(minIndex+1)%3];
 ////		inertiaScale[(minIndex+2)%3][(minIndex+2)%3] = min / inertiaTensor[(minIndex+2)%3][(minIndex+2)%3];
@@ -888,18 +888,18 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	bouncyness = b;
 ////}
 ////
-/////*
-////================
-////idPhysics_RigidBody::Rest
-////================
-////*/
-////void idPhysics_RigidBody::Rest( ) {
-////	this.current.atRest = gameLocal.time;
-////	this.current.i.linearMomentum.Zero();
-////	this.current.i.angularMomentum.Zero();
-////	self.BecomeInactive( TH_PHYSICS );
-////}
-////
+/*
+================
+idPhysics_RigidBody::Rest
+================
+*/
+	Rest ( ): void {
+		this.current.atRest = gameLocal.time;
+		this.current.i.linearMomentum.Zero ( );
+		this.current.i.angularMomentum.Zero ( );
+		this.self.BecomeInactive( TH_PHYSICS );
+	}
+
 /////*
 ////================
 ////idPhysics_RigidBody::DropToFloor
@@ -919,27 +919,27 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	noContact = true;
 ////}
 ////
-/////*
-////================
-////idPhysics_RigidBody::Activate
-////================
-////*/
-////void idPhysics_RigidBody::Activate( ) {
-////	this.current.atRest = -1;
-////	self.BecomeActive( TH_PHYSICS );
-////}
-////
-/////*
-////================
-////idPhysics_RigidBody::PutToRest
-////
-////  put to rest untill something collides with this physics object
-////================
-////*/
-////void idPhysics_RigidBody::PutToRest( ) {
-////	Rest();
-////}
-////
+/*
+================
+idPhysics_RigidBody::Activate
+================
+*/
+Activate( ):void {
+	this.current.atRest = -1;
+	this.self.BecomeActive( TH_PHYSICS );
+}
+
+/*
+================
+idPhysics_RigidBody::PutToRest
+
+  put to rest untill something collides with this physics object
+================
+*/
+	PutToRest ( ): void {
+		this.Rest ( );
+	}
+
 /////*
 ////================
 ////idPhysics_RigidBody::EnableImpact
@@ -1020,7 +1020,7 @@ idPhysics_RigidBody::SetContents
 ////	if ( hasMaster ) {
 ////		oldOrigin = this.current.i.position;
 ////		oldAxis = this.current.i.orientation;
-////		self.GetMasterPosition( masterOrigin, masterAxis );
+////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////		this.current.i.position = masterOrigin + this.current.localOrigin * masterAxis;
 ////		if ( isOrientated ) {
 ////			this.current.i.orientation = this.current.localAxis * masterAxis;
@@ -1028,7 +1028,7 @@ idPhysics_RigidBody::SetContents
 ////		else {
 ////			this.current.i.orientation = this.current.localAxis;
 ////		}
-////		this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
+////		this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////		this.current.i.linearMomentum = mass * ( ( this.current.i.position - oldOrigin ) / timeStep );
 ////		this.current.i.angularMomentum = inertiaTensor * ( ( this.current.i.orientation * oldAxis.Transpose() ).ToAngularVelocity() / timeStep );
 ////		this.current.externalForce.Zero();
@@ -1088,7 +1088,7 @@ idPhysics_RigidBody::SetContents
 ////	}
 ////
 ////	// update the position of the clip model
-////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
+////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////
 ////	DebugDraw();
 ////
@@ -1124,7 +1124,7 @@ idPhysics_RigidBody::SetContents
 ////		ent = gameLocal.entities[collision.c.entityNum];
 ////		if ( ent && ( !cameToRest || !ent.IsAtRest() ) ) {
 ////			// apply impact to other entity
-////			ent.ApplyImpulse( self, collision.c.id, collision.c.point, -impulse );
+////			ent.ApplyImpulse( this.self, collision.c.id, collision.c.point, -impulse );
 ////		}
 ////	}
 ////
@@ -1139,7 +1139,7 @@ idPhysics_RigidBody::SetContents
 ////
 ////	if ( IsOutsideWorld() ) {
 ////		gameLocal.Warning( "rigid body moved outside world bounds for entity '%s' type '%s' at (%s)",
-////					self.name.c_str(), self.GetType().classname, this.current.i.position.ToString(0) );
+////					this.self.name.c_str(), this.self.GetType().classname, this.current.i.position.ToString(0) );
 ////		Rest();
 ////	}
 ////
@@ -1148,7 +1148,7 @@ idPhysics_RigidBody::SetContents
 ////
 ////	if ( rb_showTimings.integer == 1 ) {
 ////		gameLocal.Printf( "%12s: t %1.4f cd %1.4f\n",
-////						self.name.c_str(),
+////						this.self.name.c_str(),
 ////						timer_total.Milliseconds(), timer_collision.Milliseconds() );
 ////		lastTimerReset = 0;
 ////	}
@@ -1279,7 +1279,7 @@ idPhysics_RigidBody::SetContents
 ////void idPhysics_RigidBody::RestoreState( ) {
 ////	this.current = this.saved;
 ////
-////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
+////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////
 ////	EvaluateContacts();
 ////}
@@ -1295,14 +1295,14 @@ idPhysics_RigidBody::SetContents
 ////
 ////	this.current.localOrigin = newOrigin;
 ////	if ( hasMaster ) {
-////		self.GetMasterPosition( masterOrigin, masterAxis );
+////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////		this.current.i.position = masterOrigin + newOrigin * masterAxis;
 ////	}
 ////	else {
 ////		this.current.i.position = newOrigin;
 ////	}
 ////
-////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.clipModel.GetAxis() );
+////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.clipModel.GetAxis() );
 ////
 ////	Activate();
 ////}
@@ -1318,14 +1318,14 @@ idPhysics_RigidBody::SetContents
 ////
 ////	this.current.localAxis = newAxis;
 ////	if ( hasMaster && isOrientated ) {
-////		self.GetMasterPosition( masterOrigin, masterAxis );
+////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////		this.current.i.orientation = newAxis * masterAxis;
 ////	}
 ////	else {
 ////		this.current.i.orientation = newAxis;
 ////	}
 ////
-////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.clipModel.GetOrigin(), this.current.i.orientation );
+////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.clipModel.GetOrigin(), this.current.i.orientation );
 ////
 ////	Activate();
 ////}
@@ -1340,7 +1340,7 @@ idPhysics_RigidBody::SetContents
 ////	this.current.localOrigin += translation;
 ////	this.current.i.position += translation;
 ////
-////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.clipModel.GetAxis() );
+////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.clipModel.GetAxis() );
 ////
 ////	Activate();
 ////}
@@ -1358,7 +1358,7 @@ idPhysics_RigidBody::SetContents
 ////	this.current.i.position *= rotation;
 ////
 ////	if ( hasMaster ) {
-////		self.GetMasterPosition( masterOrigin, masterAxis );
+////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////		this.current.localAxis *= rotation.ToMat3();
 ////		this.current.localOrigin = ( this.current.i.position - masterOrigin ) * masterAxis.Transpose();
 ////	}
@@ -1367,7 +1367,7 @@ idPhysics_RigidBody::SetContents
 ////		this.current.localOrigin = this.current.i.position;
 ////	}
 ////
-////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
+////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////
 ////	Activate();
 ////}
@@ -1448,7 +1448,7 @@ idPhysics_RigidBody::GetAxis
 ////	}
 ////	else {
 ////		gameLocal.clip.Translation( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,
-////											this.clipModel, this.clipModel.GetAxis(), clipMask, self );
+////											this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 ////	}
 ////}
 ////
@@ -1465,7 +1465,7 @@ idPhysics_RigidBody::GetAxis
 ////	}
 ////	else {
 ////		gameLocal.clip.Rotation( results, this.clipModel.GetOrigin(), rotation,
-////											this.clipModel, this.clipModel.GetAxis(), clipMask, self );
+////											this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 ////	}
 ////}
 ////
@@ -1517,7 +1517,7 @@ idPhysics_RigidBody::GetAxis
 ////================
 ////*/
 ////void idPhysics_RigidBody::LinkClip( ) {
-////	this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
+////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////}
 ////
 /////*
@@ -1538,7 +1538,7 @@ idPhysics_RigidBody::GetAxis
 ////	dir.SubVec3(0).Normalize();
 ////	dir.SubVec3(1).Normalize();
 ////	num = gameLocal.clip.Contacts( &contacts[0], 10, this.clipModel.GetOrigin(),
-////					dir, CONTACT_EPSILON, this.clipModel, this.clipModel.GetAxis(), clipMask, self );
+////					dir, CONTACT_EPSILON, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 ////	contacts.SetNum( num, false );
 ////
 ////	AddContactEntitiesForContacts();
@@ -1591,7 +1591,7 @@ idPhysics_RigidBody::GetAxis
 ////	if ( master ) {
 ////		if ( !hasMaster ) {
 ////			// transform from world space to master space
-////			self.GetMasterPosition( masterOrigin, masterAxis );
+////			this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////			this.current.localOrigin = ( this.current.i.position - masterOrigin ) * masterAxis.Transpose();
 ////			if ( orientated ) {
 ////				this.current.localAxis = this.current.i.orientation * masterAxis.Transpose();
@@ -1707,7 +1707,7 @@ idPhysics_RigidBody::GetAxis
 ////	this.current.localAxis = localQuat.ToMat3();
 ////
 ////	if ( this.clipModel ) {
-////		this.clipModel.Link( gameLocal.clip, self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
+////		this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////	}
 ////}
 }

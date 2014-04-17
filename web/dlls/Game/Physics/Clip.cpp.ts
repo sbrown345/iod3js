@@ -490,27 +490,27 @@ idClipModel::LoadModel
 		this.traceModelIndex = this.AllocTraceModel( trm );
 		this.bounds.opEquals( trm.bounds );
 	}
-//
-///*
-//================
-//idClipModel::LoadModel
-//================
-//*/
-//void idClipModel::LoadModel( const int renderModelHandle ) {
-//	this.collisionModelHandle = 0;
-//	this.renderModelHandle = renderModelHandle;
-//	if ( renderModelHandle != -1 ) {
-//		const renderEntity_t *renderEntity = gameRenderWorld.GetRenderEntity( renderModelHandle );
-//		if ( renderEntity ) {
-//			this.bounds = renderEntity.bounds;
-//		}
-//	}
-//	if ( this.traceModelIndex != -1 ) {
-//		idClipModel.FreeTraceModel( this.traceModelIndex );
-//		this.traceModelIndex = -1;
-//	}
-//}
-//
+
+/*
+================
+idClipModel::LoadModel
+================
+*/
+	LoadModel_handle ( /* int */renderModelHandle: number ): void {
+		this.collisionModelHandle = 0;
+		this.renderModelHandle = renderModelHandle;
+		if ( renderModelHandle != -1 ) {
+			var renderEntity = gameRenderWorld.GetRenderEntity( renderModelHandle );
+			if ( renderEntity ) {
+				this.bounds = renderEntity.bounds;
+			}
+		}
+		if ( this.traceModelIndex != -1 ) {
+			idClipModel.FreeTraceModel( this.traceModelIndex );
+			this.traceModelIndex = -1;
+		}
+	}
+
 /*
 ================
 idClipModel::Init
@@ -536,6 +536,7 @@ idClipModel::Init
 
 	constructor ( )
 	constructor ( name: string )
+	constructor ( name: number )
 	constructor ( trm: idTraceModel )
 	constructor ( trm: idClipModel )
 	constructor ( a1?: any ) {
@@ -551,7 +552,8 @@ idClipModel::Init
 			break;
 
 		case "number":
-			todoThrow ( );
+			var renderModelHandle = <number>a1;
+			this.constructor_handle( renderModelHandle );
 			break;
 
 		case "object":
@@ -598,17 +600,17 @@ idClipModel::idClipModel
 		this.LoadModel( trm );
 	}
 
-/////*
-////================
-////idClipModel::idClipModel
-////================
-////*/
-////idClipModel::idClipModel( const int renderModelHandle ) {
-////	this.Init();
-////	this.contents = CONTENTS_RENDERMODEL;
-////	this.LoadModel( renderModelHandle );
-////}
-////
+/*
+================
+idClipModel::idClipModel
+================
+*/
+	private constructor_handle ( /*int */renderModelHandle: number ): void {
+		this.Init ( );
+		this.contents = contentsFlags_t.CONTENTS_RENDERMODEL;
+		this.LoadModel_handle( renderModelHandle );
+	}
+
 /////*
 ////================
 ////idClipModel::idClipModel

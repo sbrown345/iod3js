@@ -1910,7 +1910,7 @@ class idVec6 {
 ////	const char *	ToString( int precision = 2 ) const;
 
 ////private:
-////	float			p[6];
+	p = new Float32Array(6);
 ////};
 
 ////extern idVec6 vec6_origin;
@@ -1921,37 +1921,37 @@ class idVec6 {
 ////}
 
 ////ID_INLINE idVec6::idVec6( const float *a ) {
-////	memcpy( p, a, 6 * sizeof( float ) );
+////	memcpy( this.p, a, 6 * sizeof( float ) );
 ////}
 
 ////ID_INLINE idVec6::idVec6( const float a1, const float a2, const float a3, const float a4, const float a5, const float a6 ) {
-////	p[0] = a1;
-////	p[1] = a2;
-////	p[2] = a3;
-////	p[3] = a4;
-////	p[4] = a5;
-////	p[5] = a6;
+////	this.p[0] = a1;
+////	this.p[1] = a2;
+////	this.p[2] = a3;
+////	this.p[3] = a4;
+////	this.p[4] = a5;
+////	this.p[5] = a6;
 ////}
 
 ////ID_INLINE idVec6 idVec6::operator-() const {
-////	return idVec6( -p[0], -p[1], -p[2], -p[3], -p[4], -p[5] );
+////	return idVec6( -this.p[0], -this.p[1], -this.p[2], -this.p[3], -this.p[4], -this.p[5] );
 ////}
 
 	[index: number]: number;
 ////ID_INLINE float idVec6::operator[]( const int index ) const {
-////	return p[index];
+////	return this.p[index];
 ////}
 
 ////ID_INLINE float &idVec6::operator[]( const int index ) {
-////	return p[index];
+////	return this.p[index];
 ////}
 
 ////ID_INLINE idVec6 idVec6::operator*( /*const float */a :number ) const {
-////	return idVec6( p[0]*a, p[1]*a, p[2]*a, p[3]*a, p[4]*a, p[5]*a );
+////	return idVec6( this.p[0]*a, this.p[1]*a, this.p[2]*a, this.p[3]*a, this.p[4]*a, this.p[5]*a );
 ////}
 
 ////ID_INLINE float idVec6::operator*( const idVec6 &a ) const {
-////	return p[0] * a[0] + p[1] * a[1] + p[2] * a[2] + p[3] * a[3] + p[4] * a[4] + p[5] * a[5];
+////	return this.p[0] * a[0] + this.p[1] * a[1] + this.p[2] * a[2] + this.p[3] * a[3] + this.p[4] * a[4] + this.p[5] * a[5];
 ////}
 
 ////ID_INLINE idVec6 idVec6::operator/( /*const float */a :number ) const {
@@ -1959,24 +1959,24 @@ class idVec6 {
 
 ////	assert( a != 0.0 );
 ////	inva = 1.0 / a;
-////	return idVec6( p[0]*inva, p[1]*inva, p[2]*inva, p[3]*inva, p[4]*inva, p[5]*inva );
+////	return idVec6( this.p[0]*inva, this.p[1]*inva, this.p[2]*inva, this.p[3]*inva, this.p[4]*inva, this.p[5]*inva );
 ////}
 
 ////ID_INLINE idVec6 idVec6::operator+( const idVec6 &a ) const {
-////	return idVec6( p[0] + a[0], p[1] + a[1], p[2] + a[2], p[3] + a[3], p[4] + a[4], p[5] + a[5] );
+////	return idVec6( this.p[0] + a[0], this.p[1] + a[1], this.p[2] + a[2], this.p[3] + a[3], this.p[4] + a[4], this.p[5] + a[5] );
 ////}
 
 ////ID_INLINE idVec6 idVec6::operator-( const idVec6 &a ) const {
-////	return idVec6( p[0] - a[0], p[1] - a[1], p[2] - a[2], p[3] - a[3], p[4] - a[4], p[5] - a[5] );
+////	return idVec6( this.p[0] - a[0], this.p[1] - a[1], this.p[2] - a[2], this.p[3] - a[3], this.p[4] - a[4], this.p[5] - a[5] );
 ////}
 
 ////ID_INLINE idVec6 &idVec6::operator*=( /*const float */a :number ) {
-////	p[0] *= a;
-////	p[1] *= a;
-////	p[2] *= a;
-////	p[3] *= a;
-////	p[4] *= a;
-////	p[5] *= a;
+////	this.p[0] *= a;
+////	this.p[1] *= a;
+////	this.p[2] *= a;
+////	this.p[3] *= a;
+////	this.p[4] *= a;
+////	this.p[5] *= a;
 ////	return this
 ////}
 
@@ -1985,32 +1985,32 @@ class idVec6 {
 
 ////	assert( a != 0.0 );
 ////	inva = 1.0 / a;
-////	p[0] *= inva;
-////	p[1] *= inva;
-////	p[2] *= inva;
-////	p[3] *= inva;
-////	p[4] *= inva;
-////	p[5] *= inva;
+////	this.p[0] *= inva;
+////	this.p[1] *= inva;
+////	this.p[2] *= inva;
+////	this.p[3] *= inva;
+////	this.p[4] *= inva;
+////	this.p[5] *= inva;
 ////	return this
 ////}
 
 ////ID_INLINE idVec6 &idVec6::operator+=( const idVec6 &a ) {
-////	p[0] += a[0];
-////	p[1] += a[1];
-////	p[2] += a[2];
-////	p[3] += a[3];
-////	p[4] += a[4];
-////	p[5] += a[5];
+////	this.p[0] += a[0];
+////	this.p[1] += a[1];
+////	this.p[2] += a[2];
+////	this.p[3] += a[3];
+////	this.p[4] += a[4];
+////	this.p[5] += a[5];
 ////	return this
 ////}
 
 ////ID_INLINE idVec6 &idVec6::operator-=( const idVec6 &a ) {
-////	p[0] -= a[0];
-////	p[1] -= a[1];
-////	p[2] -= a[2];
-////	p[3] -= a[3];
-////	p[4] -= a[4];
-////	p[5] -= a[5];
+////	this.p[0] -= a[0];
+////	this.p[1] -= a[1];
+////	this.p[2] -= a[2];
+////	this.p[3] -= a[3];
+////	this.p[4] -= a[4];
+////	this.p[5] -= a[5];
 ////	return this
 ////}
 
@@ -2019,32 +2019,32 @@ class idVec6 {
 ////}
 
 ////ID_INLINE bool idVec6::Compare( const idVec6 &a ) const {
-////	return ( ( p[0] == a[0] ) && ( p[1] == a[1] ) && ( p[2] == a[2] ) &&
-////			( p[3] == a[3] ) && ( p[4] == a[4] ) && ( p[5] == a[5] ) );
+////	return ( ( this.p[0] == a[0] ) && ( this.p[1] == a[1] ) && ( this.p[2] == a[2] ) &&
+////			( this.p[3] == a[3] ) && ( this.p[4] == a[4] ) && ( this.p[5] == a[5] ) );
 ////}
 
 ////ID_INLINE bool idVec6::Compare( const idVec6 &a, const float epsilon ) const {
-////	if ( idMath.Fabs( p[0] - a[0] ) > epsilon ) {
+////	if ( idMath.Fabs( this.p[0] - a[0] ) > epsilon ) {
 ////		return false;
 ////	}
 			
-////	if ( idMath.Fabs( p[1] - a[1] ) > epsilon ) {
+////	if ( idMath.Fabs( this.p[1] - a[1] ) > epsilon ) {
 ////		return false;
 ////	}
 
-////	if ( idMath.Fabs( p[2] - a[2] ) > epsilon ) {
+////	if ( idMath.Fabs( this.p[2] - a[2] ) > epsilon ) {
 ////		return false;
 ////	}
 
-////	if ( idMath.Fabs( p[3] - a[3] ) > epsilon ) {
+////	if ( idMath.Fabs( this.p[3] - a[3] ) > epsilon ) {
 ////		return false;
 ////	}
 
-////	if ( idMath.Fabs( p[4] - a[4] ) > epsilon ) {
+////	if ( idMath.Fabs( this.p[4] - a[4] ) > epsilon ) {
 ////		return false;
 ////	}
 
-////	if ( idMath.Fabs( p[5] - a[5] ) > epsilon ) {
+////	if ( idMath.Fabs( this.p[5] - a[5] ) > epsilon ) {
 ////		return false;
 ////	}
 
@@ -2060,51 +2060,51 @@ class idVec6 {
 ////}
 
 ////ID_INLINE void idVec6::Set( const float a1, const float a2, const float a3, const float a4, const float a5, const float a6 ) {
-////	p[0] = a1;
-////	p[1] = a2;
-////	p[2] = a3;
-////	p[3] = a4;
-////	p[4] = a5;
-////	p[5] = a6;
+////	this.p[0] = a1;
+////	this.p[1] = a2;
+////	this.p[2] = a3;
+////	this.p[3] = a4;
+////	this.p[4] = a5;
+////	this.p[5] = a6;
 ////}
 
-////ID_INLINE void idVec6::Zero( ) {
-////	p[0] = p[1] = p[2] = p[3] = p[4] = p[5] = 0.0;
-////}
+	Zero ( ): void {
+		this.p[0] = this.p[1] = this.p[2] = this.p[3] = this.p[4] = this.p[5] = 0.0;
+	}
 
 ////ID_INLINE float idVec6::Length( ) const {
-////	return ( float )idMath::Sqrt( p[0] * p[0] + p[1] * p[1] + p[2] * p[2] + p[3] * p[3] + p[4] * p[4] + p[5] * p[5] );
+////	return ( float )idMath::Sqrt( this.p[0] * this.p[0] + this.p[1] * this.p[1] + this.p[2] * this.p[2] + this.p[3] * this.p[3] + this.p[4] * this.p[4] + this.p[5] * this.p[5] );
 ////}
 
 ////ID_INLINE float idVec6::LengthSqr( ) const {
-////	return ( p[0] * p[0] + p[1] * p[1] + p[2] * p[2] + p[3] * p[3] + p[4] * p[4] + p[5] * p[5] );
+////	return ( this.p[0] * this.p[0] + this.p[1] * this.p[1] + this.p[2] * this.p[2] + this.p[3] * this.p[3] + this.p[4] * this.p[4] + this.p[5] * this.p[5] );
 ////}
 
 ////ID_INLINE float idVec6::Normalize( ) {
 ////	float sqrLength, invLength;
 
-////	sqrLength = p[0] * p[0] + p[1] * p[1] + p[2] * p[2] + p[3] * p[3] + p[4] * p[4] + p[5] * p[5];
+////	sqrLength = this.p[0] * this.p[0] + this.p[1] * this.p[1] + this.p[2] * this.p[2] + this.p[3] * this.p[3] + this.p[4] * this.p[4] + this.p[5] * this.p[5];
 ////	invLength = idMath.InvSqrt( sqrLength );
-////	p[0] *= invLength;
-////	p[1] *= invLength;
-////	p[2] *= invLength;
-////	p[3] *= invLength;
-////	p[4] *= invLength;
-////	p[5] *= invLength;
+////	this.p[0] *= invLength;
+////	this.p[1] *= invLength;
+////	this.p[2] *= invLength;
+////	this.p[3] *= invLength;
+////	this.p[4] *= invLength;
+////	this.p[5] *= invLength;
 ////	return invLength * sqrLength;
 ////}
 
 ////ID_INLINE float idVec6::NormalizeFast( ) {
 ////	float sqrLength, invLength;
 
-////	sqrLength = p[0] * p[0] + p[1] * p[1] + p[2] * p[2] + p[3] * p[3] + p[4] * p[4] + p[5] * p[5];
+////	sqrLength = this.p[0] * this.p[0] + this.p[1] * this.p[1] + this.p[2] * this.p[2] + this.p[3] * this.p[3] + this.p[4] * this.p[4] + this.p[5] * this.p[5];
 ////	invLength = idMath::RSqrt( sqrLength );
-////	p[0] *= invLength;
-////	p[1] *= invLength;
-////	p[2] *= invLength;
-////	p[3] *= invLength;
-////	p[4] *= invLength;
-////	p[5] *= invLength;
+////	this.p[0] *= invLength;
+////	this.p[1] *= invLength;
+////	this.p[2] *= invLength;
+////	this.p[3] *= invLength;
+////	this.p[4] *= invLength;
+////	this.p[5] *= invLength;
 ////	return invLength * sqrLength;
 ////}
 
@@ -2113,19 +2113,19 @@ class idVec6 {
 ////}
 
 ////ID_INLINE const idVec3 &idVec6::SubVec3( int index ) const {
-////	return *reinterpret_cast<const idVec3 *>(p + index * 3);
+////	return *reinterpret_cast<const idVec3 *>(this.p + index * 3);
 ////}
 
 ////ID_INLINE idVec3 &idVec6::SubVec3( int index ) {
-////	return *reinterpret_cast<idVec3 *>(p + index * 3);
+////	return *reinterpret_cast<idVec3 *>(this.p + index * 3);
 ////}
 
 ////ID_INLINE const float *idVec6::ToFloatPtr( ) const {
-////	return p;
+////	return this.p;
 ////}
 
 ////ID_INLINE float *idVec6::ToFloatPtr( ) {
-////	return p;
+////	return this.p;
 ////}
 
 /////*
@@ -2156,7 +2156,7 @@ class idVec6 {
 
 ////#define VECX_MAX_TEMP		1024
 ////#define VECX_QUAD( x )		( ( ( ( x ) + 3 ) & ~3 ) * sizeof( float ) )
-////#define VECX_CLEAREND()		int s = size; while( s < ( ( s + 3) & ~3 ) ) { p[s++] = 0.0; }
+////#define VECX_CLEAREND()		int s = size; while( s < ( ( s + 3) & ~3 ) ) { this.p[s++] = 0.0; }
 ////#define VECX_ALLOCA( n )	( (float *) _alloca16( VECX_QUAD( n ) ) )
 ////#define VECX_SIMD
 

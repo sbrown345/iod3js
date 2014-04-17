@@ -74,7 +74,7 @@ class idAF {
 ////	bool					IsActive( ) const { return isActive; }
 ////	void					SetConstraintPosition( name:string, pos:idVec3 );
 ////
-////	idPhysics_AF *			GetPhysics( ) { return &physicsObj; }
+	GetPhysics ( ): idPhysics_AF { return this.physicsObj; }
 ////	const idPhysics_AF *	GetPhysics( ) const { return &physicsObj; }
 ////	idBounds				GetBounds( ) const;
 ////	bool					UpdateAnimation( );
@@ -1195,13 +1195,14 @@ class idAF {
 ////		args.Set( key, value );
 ////	}
 ////}
-////
-/////*
-////================
-////idAF::LoadState
-////================
-////*/
-////void idAF::LoadState( const idDict &args ) {
+
+/*
+================
+idAF::LoadState
+================
+*/
+	LoadState(args: idDict): void {
+		todoThrow ( );
 ////	const idKeyValue *kv;
 ////	idStr name;
 ////	idAFBody *body;
@@ -1226,7 +1227,7 @@ class idAF {
 ////	}
 ////
 ////	physicsObj.UpdateClipModels();
-////}
+	}
 ////
 /////*
 ////================

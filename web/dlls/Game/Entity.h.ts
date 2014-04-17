@@ -1715,39 +1715,39 @@ idEntity::StartSoundShader
 		if ( !gameLocal.isNewFrame ) {
 			return true;
 		}
-		todoThrow ( );
-		//if ( gameLocal.isServer && broadcast ) {
-		//	idBitMsg	msg;
-		//	byte		msgBuf[MAX_EVENT_PARAM_SIZE];
+		if ( gameLocal.isServer && broadcast ) {
+			todoThrow();
+			//idBitMsg	msg;
+			//byte		msgBuf[MAX_EVENT_PARAM_SIZE];
 
-		//	msg.Init( msgBuf, sizeof( msgBuf ) );
-		//	msg.BeginWriting();
-		//	msg.WriteLong( gameLocal.ServerRemapDecl( -1, DECL_SOUND, shader.Index() ) );
-		//	msg.WriteByte( channel );
-		//	ServerSendEvent( EVENT_STARTSOUNDSHADER, &msg, false, -1 );
-		//}
+			//msg.Init( msgBuf, sizeof( msgBuf ) );
+			//msg.BeginWriting();
+			//msg.WriteLong( gameLocal.ServerRemapDecl( -1, DECL_SOUND, shader.Index() ) );
+			//msg.WriteByte( channel );
+			//ServerSendEvent( EVENT_STARTSOUNDSHADER, &msg, false, -1 );
+		}
 
-		//// set a random value for diversity unless one was parsed from the entity
-		//if ( this.refSound.diversity < 0.0 ) {
-		//	diversity = gameLocal.random.RandomFloat();
-		//} else {
-		//	diversity = this.refSound.diversity;
-		//}
+		// set a random value for diversity unless one was parsed from the entity
+		if ( this.refSound.diversity < 0.0 ) {
+			diversity = gameLocal.random.RandomFloat();
+		} else {
+			diversity = this.refSound.diversity;
+		}
 
-		//// if we don't have a soundEmitter allocated yet, get one now
-		//if ( !this.refSound.referenceSound ) {
-		//	this.refSound.referenceSound = gameSoundWorld.AllocSoundEmitter();
-		//}
+		// if we don't have a soundEmitter allocated yet, get one now
+		if ( !this.refSound.referenceSound ) {
+			this.refSound.referenceSound = gameSoundWorld.AllocSoundEmitter();
+		}
 
-		//this.UpdateSound();
+		this.UpdateSound();
 
-		//len = this.refSound.referenceSound.StartSound( shader, channel, diversity, soundShaderFlags );
-		//if ( length ) {
-		//	length.$ = len;
-		//}
+		len = this.refSound.referenceSound.StartSound( shader, channel, diversity, soundShaderFlags );
+		if ( length ) {
+			length.$ = len;
+		}
 
-		//// set reference to the sound for shader synced effects
-		//this.renderEntity.referenceSound = this.refSound.referenceSound;
+		// set reference to the sound for shader synced effects
+		this.renderEntity.referenceSound = this.refSound.referenceSound;
 
 		return true;
 	}
@@ -2615,28 +2615,29 @@ idEntity::InitDefaultPhysics
 		this.physics = this.defaultPhysicsObj;
 	}
 
-/////*
-////================
-////idEntity::SetPhysics
-////================
-////*/
-////SetPhysics( idPhysics *phys ) {
-////	// clear any contacts the current physics object has
-////	if ( this.physics ) {
-////		this.physics.ClearContacts();
-////	}
-////	// set new physics object or set the default physics if NULL
-////	if ( phys != NULL ) {
-////		this.defaultPhysicsObj.SetClipModel( NULL, 1.0 );
-////		this.physics = phys;
-////		this.physics.Activate();
-////	} else {
-////		this.physics = &this.defaultPhysicsObj;
-////	}
-////	this.physics.UpdateTime( gameLocal.time );
-////	this.physics.SetMaster( this.bindMaster, this.fl.bindOrientated );
-////}
-////
+/*
+================
+idEntity::SetPhysics
+================
+*/
+	SetPhysics ( phys: idPhysics ): void {
+		// clear any contacts the current physics object has
+		if ( this.physics ) {
+			this.physics.ClearContacts ( );
+		}
+		// set new physics object or set the default physics if NULL
+		if ( phys != null ) {
+			this.defaultPhysicsObj.SetClipModel( null, 1.0 );
+			this.physics = phys;
+			this.physics.Activate ( );
+		} else {
+			this.physics = this.defaultPhysicsObj;
+		}
+		todoThrow ( );
+		//this.physics.UpdateTime( gameLocal.time );
+		//this.physics.SetMaster( this.bindMaster, this.fl.bindOrientated );
+	}
+
 /////*
 ////================
 ////idEntity::RestorePhysics

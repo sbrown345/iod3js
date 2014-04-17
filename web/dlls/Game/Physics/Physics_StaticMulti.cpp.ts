@@ -30,10 +30,10 @@
 ////#pragma hdrstop
 ////
 ////#include "../Game_local.h"
-////
-////
-////staticPState_t defaultState;
-////
+
+
+var defaultState = new staticPState_t;
+
 ////
 ////#ifndef __PHYSICS_STATICMULTI_H__
 ////#define __PHYSICS_STATICMULTI_H__
@@ -166,28 +166,29 @@ class idPhysics_StaticMulti extends idPhysics {
 ////
 ////#endif /* !__PHYSICS_STATICMULTI_H__ */
 ////
-////
-/////*
-////================
-////idPhysics_StaticMulti::idPhysics_StaticMulti
-////================
-////*/
-////idPhysics_StaticMulti::idPhysics_StaticMulti( ) {
-////	self = NULL;
-////	hasMaster = false;
-////	isOrientated = false;
-////
-////	defaultState.origin.Zero();
-////	defaultState.axis.Identity();
-////	defaultState.localOrigin.Zero();
-////	defaultState.localAxis.Identity();
-////
-////	this.current.SetNum( 1 );
-////	this.current[0] = defaultState;
-////	this.clipModels.SetNum( 1 );
-////	this.clipModels[0] = NULL;
-////}
-////
+
+/*
+================
+idPhysics_StaticMulti::idPhysics_StaticMulti
+================
+*/
+	constructor() {
+		super ( );
+		this.self = null;
+		this.hasMaster = false;
+		this.isOrientated = false;
+
+		defaultState.origin.Zero ( );
+		defaultState.axis.Identity ( );
+		defaultState.localOrigin.Zero ( );
+		defaultState.localAxis.Identity ( );
+
+		this.current.SetNum( 1 );
+		this.current[0] = defaultState;
+		this.clipModels.SetNum( 1 );
+		this.clipModels[0] = null;
+	}
+
 /////*
 ////================
 ////idPhysics_StaticMulti::~idPhysics_StaticMulti
@@ -547,22 +548,22 @@ idPhysics_StaticMulti::SetContents
 ////void idPhysics_StaticMulti::AddForce( /*int*/ id:number, const idVec3 &point, const idVec3 &force ) {
 ////}
 ////
-/////*
-////================
-////idPhysics_StaticMulti::Activate
-////================
-////*/
-////void idPhysics_StaticMulti::Activate( ) {
-////}
-////
-/////*
-////================
-////idPhysics_StaticMulti::PutToRest
-////================
-////*/
-////void idPhysics_StaticMulti::PutToRest( ) {
-////}
-////
+/*
+================
+idPhysics_StaticMulti::Activate
+================
+*/
+	Activate(): void {
+	}
+
+/*
+================
+idPhysics_StaticMulti::PutToRest
+================
+*/
+	PutToRest(): void {
+	}
+
 /////*
 ////================
 ////idPhysics_StaticMulti::IsAtRest
@@ -972,13 +973,13 @@ idPhysics_StaticMulti::GetAxis
 ////	return info;
 ////}
 ////
-/////*
-////================
-////idPhysics_StaticMulti::ClearContacts
-////================
-////*/
-////void idPhysics_StaticMulti::ClearContacts( ) {
-////}
+/*
+================
+idPhysics_StaticMulti::ClearContacts
+================
+*/
+	ClearContacts(): void {
+	}
 ////
 /////*
 ////================

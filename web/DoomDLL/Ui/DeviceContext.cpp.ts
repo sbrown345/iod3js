@@ -147,7 +147,7 @@ class idDeviceContext {
 	//
 	cursor: number;								  //	int					
 	//
-	clipRects:idList<idRectangle>;
+	clipRects: idList<idRectangle> = new idList<idRectangle>(idRectangle);
 										  
 	static fonts: idList<fontInfoEx_t> = new idList<fontInfoEx_t>(fontInfoEx_t);
 	fontLang:idStr;

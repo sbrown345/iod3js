@@ -173,13 +173,13 @@ class idPhysics_Parametric extends idPhysics_Base {
 	clipModel:idClipModel;
 	pushFlags :number/*int*/;
 //
-//	// results of last evaluate
-//	trace_t					pushResults;
-//	bool					isBlocked;
+	// results of last evaluate
+	pushResults = new trace_t;
+	isBlocked:boolean;
 //
-//	// master
-//	bool					hasMaster;
-//	bool					isOrientated;
+	// master
+	hasMaster:boolean;
+	isOrientated:boolean;
 //
 //private:
 //	bool					TestIfAtRest(void) const;
@@ -189,22 +189,22 @@ class idPhysics_Parametric extends idPhysics_Base {
 //#endif /* !__PHYSICS_PARAMETRIC_H__ */
 //
 //
-///*
-//================
-//idPhysics_Parametric::Activate
-//================
-//*/
-//void idPhysics_Parametric::Activate( void ) {
-//	this.current.atRest = -1;
-//	self.BecomeActive( TH_PHYSICS );
-//}
+/*
+================
+idPhysics_Parametric::Activate
+================
+*/
+	Activate ( ) {
+		this.current.atRest = -1;
+		this.self.BecomeActive( TH_PHYSICS );
+	}
 //
 ///*
 //================
 //idPhysics_Parametric::TestIfAtRest
 //================
 //*/
-//bool idPhysics_Parametric::TestIfAtRest( void ) const {
+//bool idPhysics_Parametric::TestIfAtRest( ) const {
 //
 //	if ( ( this.current.linearExtrapolation.GetExtrapolationType() & ~EXTRAPOLATION_NOSTOP ) == EXTRAPOLATION_NONE &&
 //			( this.current.angularExtrapolation.GetExtrapolationType() & ~EXTRAPOLATION_NOSTOP ) == EXTRAPOLATION_NONE &&
@@ -242,9 +242,9 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::Rest
 //================
 //*/
-//void idPhysics_Parametric::Rest( void ) {
+//void idPhysics_Parametric::Rest( ) {
 //	this.current.atRest = gameLocal.time;
-//	self.BecomeInactive( TH_PHYSICS );
+//	this.self.BecomeInactive( TH_PHYSICS );
 //}
 //
 ///*
@@ -252,7 +252,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::idPhysics_Parametric
 //================
 //*/
-//idPhysics_Parametric::idPhysics_Parametric( void ) {
+//idPhysics_Parametric::idPhysics_Parametric( ) {
 //
 //	this.current.time = gameLocal.time;
 //	this.current.atRest = -1;
@@ -286,7 +286,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::~idPhysics_Parametric
 //================
 //*/
-//idPhysics_Parametric::~idPhysics_Parametric( void ) {
+//idPhysics_Parametric::~idPhysics_Parametric( ) {
 //	if ( clipModel != NULL ) {
 //		delete clipModel;
 //		clipModel = NULL;
@@ -476,7 +476,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::IsPusher
 //================
 //*/
-//bool idPhysics_Parametric::IsPusher( void ) const {
+//bool idPhysics_Parametric::IsPusher( ) const {
 //	return isPusher;
 //}
 //
@@ -509,7 +509,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::GetLinearExtrapolationType
 //================
 //*/
-//extrapolation_t idPhysics_Parametric::GetLinearExtrapolationType( void ) const {
+//extrapolation_t idPhysics_Parametric::GetLinearExtrapolationType( ) const {
 //	return this.current.linearExtrapolation.GetExtrapolationType();
 //}
 //
@@ -518,7 +518,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::GetAngularExtrapolationType
 //================
 //*/
-//extrapolation_t idPhysics_Parametric::GetAngularExtrapolationType( void ) const {
+//extrapolation_t idPhysics_Parametric::GetAngularExtrapolationType( ) const {
 //	return this.current.angularExtrapolation.GetExtrapolationType();
 //}
 //
@@ -572,7 +572,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::GetSpline
 //================
 //*/
-//idCurve_Spline<idVec3> *idPhysics_Parametric::GetSpline( void ) const {
+//idCurve_Spline<idVec3> *idPhysics_Parametric::GetSpline( ) const {
 //	return this.current.spline;
 //}
 //
@@ -581,7 +581,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::GetSplineAcceleration
 //================
 //*/
-//int idPhysics_Parametric::GetSplineAcceleration( void ) const {
+//int idPhysics_Parametric::GetSplineAcceleration( ) const {
 //	return this.current.splineInterpolate.GetAcceleration();
 //}
 //
@@ -590,7 +590,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::GetSplineDeceleration
 //================
 //*/
-//int idPhysics_Parametric::GetSplineDeceleration( void ) const {
+//int idPhysics_Parametric::GetSplineDeceleration( ) const {
 //	return this.current.splineInterpolate.GetDeceleration();
 //}
 //
@@ -599,7 +599,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::UsingSplineAngles
 //================
 //*/
-//bool idPhysics_Parametric::UsingSplineAngles( void ) const {
+//bool idPhysics_Parametric::UsingSplineAngles( ) const {
 //	return this.current.useSplineAngles;
 //}
 //
@@ -628,14 +628,14 @@ class idPhysics_Parametric extends idPhysics_Base {
 //*/
 //void idPhysics_Parametric::SetClipModel( idClipModel *model, float density, /*int*/ id:number, bool freeOld ) {
 //
-//	assert( self );
+//	assert( this.self );
 //	assert( model );
 //
 //	if ( clipModel && clipModel != model && freeOld ) {
 //		delete clipModel;
 //	}
 //	clipModel = model;
-//	clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
+//	clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
 //}
 //
 ///*
@@ -652,7 +652,7 @@ class idPhysics_Parametric extends idPhysics_Base {
 //idPhysics_Parametric::GetNumClipModels
 //================
 //*/
-//int idPhysics_Parametric::GetNumClipModels( void ) const {
+//int idPhysics_Parametric::GetNumClipModels( ) const {
 //	return ( clipModel != NULL );
 //}
 //
@@ -765,7 +765,7 @@ idPhysics_Parametric::SetClipMask
 //	this.current.axis = this.current.localAngles.ToMat3();
 //
 //	if ( hasMaster ) {
-//		self.GetMasterPosition( masterOrigin, masterAxis );
+//		this.self.GetMasterPosition( masterOrigin, masterAxis );
 //		if ( masterAxis.IsRotated() ) {
 //			this.current.origin = this.current.origin * masterAxis + masterOrigin;
 //			if ( isOrientated ) {
@@ -780,9 +780,9 @@ idPhysics_Parametric::SetClipMask
 //
 //	if ( isPusher ) {
 //
-//		gameLocal.push.ClipPush( pushResults, self, pushFlags, oldOrigin, oldAxis, this.current.origin, this.current.axis );
+//		gameLocal.push.ClipPush( pushResults, this.self, pushFlags, oldOrigin, oldAxis, this.current.origin, this.current.axis );
 //		if ( pushResults.fraction < 1.0f ) {
-//			this.clipModel.Link( gameLocal.clip, self, 0, oldOrigin, oldAxis );
+//			this.clipModel.Link( gameLocal.clip, this.self, 0, oldOrigin, oldAxis );
 //			this.current.localOrigin = oldLocalOrigin;
 //			this.current.origin = oldOrigin;
 //			this.current.localAngles = oldLocalAngles;
@@ -796,7 +796,7 @@ idPhysics_Parametric::SetClipMask
 //	}
 //
 //	if ( this.clipModel ) {
-//		this.clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
+//		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
 //	}
 //
 //	this.current.time = endTimeMSec;
@@ -833,7 +833,7 @@ idPhysics_Parametric::SetClipMask
 //idPhysics_Parametric::GetTime
 //================
 //*/
-//int idPhysics_Parametric::GetTime( void ) const {
+//int idPhysics_Parametric::GetTime( ) const {
 //	return this.current.time;
 //}
 //
@@ -842,7 +842,7 @@ idPhysics_Parametric::SetClipMask
 //idPhysics_Parametric::IsAtRest
 //================
 //*/
-//bool idPhysics_Parametric::IsAtRest( void ) const {
+//bool idPhysics_Parametric::IsAtRest( ) const {
 //	return this.current.atRest >= 0;
 //}
 //
@@ -851,7 +851,7 @@ idPhysics_Parametric::SetClipMask
 //idPhysics_Parametric::GetRestStartTime
 //================
 //*/
-//int idPhysics_Parametric::GetRestStartTime( void ) const {
+//int idPhysics_Parametric::GetRestStartTime( ) const {
 //	return this.current.atRest;
 //}
 //
@@ -860,7 +860,7 @@ idPhysics_Parametric::SetClipMask
 //idPhysics_Parametric::IsPushable
 //================
 //*/
-//bool idPhysics_Parametric::IsPushable( void ) const {
+//bool idPhysics_Parametric::IsPushable( ) const {
 //	return false;
 //}
 //
@@ -869,7 +869,7 @@ idPhysics_Parametric::SetClipMask
 //idPhysics_Parametric::SaveState
 //================
 //*/
-//void idPhysics_Parametric::SaveState( void ) {
+//void idPhysics_Parametric::SaveState( ) {
 //	saved = this.current;
 //}
 //
@@ -878,12 +878,12 @@ idPhysics_Parametric::SetClipMask
 //idPhysics_Parametric::RestoreState
 //================
 //*/
-//void idPhysics_Parametric::RestoreState( void ) {
+//void idPhysics_Parametric::RestoreState( ) {
 //
 //	this.current = saved;
 //
 //	if ( this.clipModel ) {
-//		this.clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
+//		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
 //	}
 //}
 //
@@ -901,14 +901,14 @@ idPhysics_Parametric::SetClipMask
 //
 //	this.current.localOrigin = this.current.linearExtrapolation.GetCurrentValue( this.current.time );
 //	if ( hasMaster ) {
-//		self.GetMasterPosition( masterOrigin, masterAxis );
+//		this.self.GetMasterPosition( masterOrigin, masterAxis );
 //		this.current.origin = masterOrigin + this.current.localOrigin * masterAxis;
 //	}
 //	else {
 //		this.current.origin = this.current.localOrigin;
 //	}
 //	if ( this.clipModel ) {
-//		this.clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
+//		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
 //	}
 //	Activate();
 //}
@@ -929,7 +929,7 @@ idPhysics_Parametric::SetClipMask
 //
 //	this.current.localAngles = this.current.angularExtrapolation.GetCurrentValue( this.current.time );
 //	if ( hasMaster && isOrientated ) {
-//		self.GetMasterPosition( masterOrigin, masterAxis );
+//		this.self.GetMasterPosition( masterOrigin, masterAxis );
 //		this.current.axis = this.current.localAngles.ToMat3() * masterAxis;
 //		this.current.angles = this.current.axis.ToAngles();
 //	}
@@ -938,7 +938,7 @@ idPhysics_Parametric::SetClipMask
 //		this.current.angles = this.current.localAngles;
 //	}
 //	if ( this.clipModel ) {
-//		this.clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
+//		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
 //	}
 //	Activate();
 //}
@@ -1047,7 +1047,7 @@ idPhysics_Parametric::GetAxis
 //idPhysics_Parametric::DisableClip
 //================
 //*/
-//void idPhysics_Parametric::DisableClip( void ) {
+//void idPhysics_Parametric::DisableClip( ) {
 //	if ( this.clipModel ) {
 //		this.clipModel.Disable();
 //	}
@@ -1058,7 +1058,7 @@ idPhysics_Parametric::GetAxis
 //idPhysics_Parametric::EnableClip
 //================
 //*/
-//void idPhysics_Parametric::EnableClip( void ) {
+//void idPhysics_Parametric::EnableClip( ) {
 //	if ( this.clipModel ) {
 //		this.clipModel.Enable();
 //	}
@@ -1069,7 +1069,7 @@ idPhysics_Parametric::GetAxis
 //idPhysics_Parametric::UnlinkClip
 //================
 //*/
-//void idPhysics_Parametric::UnlinkClip( void ) {
+//void idPhysics_Parametric::UnlinkClip( ) {
 //	if ( this.clipModel ) {
 //		this.clipModel.Unlink();
 //	}
@@ -1080,9 +1080,9 @@ idPhysics_Parametric::GetAxis
 //idPhysics_Parametric::LinkClip
 //================
 //*/
-//void idPhysics_Parametric::LinkClip( void ) {
+//void idPhysics_Parametric::LinkClip( ) {
 //	if ( this.clipModel ) {
-//		this.clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
+//		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
 //	}
 //}
 //
@@ -1091,7 +1091,7 @@ idPhysics_Parametric::GetAxis
 //idPhysics_Parametric::GetBlockingInfo
 //================
 //*/
-//const trace_t *idPhysics_Parametric::GetBlockingInfo( void ) const {
+//const trace_t *idPhysics_Parametric::GetBlockingInfo( ) const {
 //	return ( isBlocked ? &pushResults : NULL );
 //}
 //
@@ -1100,7 +1100,7 @@ idPhysics_Parametric::GetAxis
 //idPhysics_Parametric::GetBlockingEntity
 //================
 //*/
-//idEntity *idPhysics_Parametric::GetBlockingEntity( void ) const {
+//idEntity *idPhysics_Parametric::GetBlockingEntity( ) const {
 //	if ( isBlocked ) {
 //		return gameLocal.entities[ pushResults.c.entityNum ];
 //	}
@@ -1120,7 +1120,7 @@ idPhysics_Parametric::GetAxis
 //		if ( !hasMaster ) {
 //
 //			// transform from world space to master space
-//			self.GetMasterPosition( masterOrigin, masterAxis );
+//			this.self.GetMasterPosition( masterOrigin, masterAxis );
 //			this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
 //			if ( orientated ) {
 //				this.current.localAngles = ( this.current.axis * masterAxis.Transpose() ).ToAngles();
@@ -1152,7 +1152,7 @@ idPhysics_Parametric::GetAxis
 //idPhysics_Parametric::GetLinearEndTime
 //================
 //*/
-//int idPhysics_Parametric::GetLinearEndTime( void ) const {
+//int idPhysics_Parametric::GetLinearEndTime( ) const {
 //	if ( this.current.spline != NULL ) {
 //		if ( this.current.spline.GetBoundaryType() != idCurve_Spline<idVec3>::BT_CLOSED ) {
 //			return this.current.spline.GetTime( this.current.spline.GetNumValues() - 1 );
@@ -1171,7 +1171,7 @@ idPhysics_Parametric::GetAxis
 //idPhysics_Parametric::GetAngularEndTime
 //================
 //*/
-//int idPhysics_Parametric::GetAngularEndTime( void ) const {
+//int idPhysics_Parametric::GetAngularEndTime( ) const {
 //	if ( this.current.angularInterpolation.GetDuration() != 0 ) {
 //		return this.current.angularInterpolation.GetEndTime();
 //	} else {
@@ -1330,7 +1330,7 @@ idPhysics_Parametric::GetAxis
 //	this.current.axis = this.current.angles.ToMat3();
 //
 //	if ( this.clipModel ) {
-//		this.clipModel.Link( gameLocal.clip, self, 0, this.current.origin, this.current.axis );
+//		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
 //	}
 //}
 }

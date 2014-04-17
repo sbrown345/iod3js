@@ -761,230 +761,230 @@ idSoundEmitterLocal::Clear
 ////		Clear();
 ////	}
 ////}
-////
-/////*
-////=====================
-////idSoundEmitterLocal::StartSound
-////
-////returns the length of the started sound in msec
-////=====================
-////*/
-////int idSoundEmitterLocal::StartSound( const idSoundShader *shader, const s_channelType channel, float diversity, int soundShaderFlags, bool allowSlow ) {
-////	var/*int*/i:number;
-////
-////	if ( !shader ) {
-////		return 0;
-////	}
-////
-////	if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-////		common.Printf( "StartSound %ims (%i,%i,%s) = ", soundWorld.gameMsec, index, (int)channel, shader.GetName() );
-////	}
-////
-////	if ( soundWorld && soundWorld.writeDemo ) {
-////		soundWorld.writeDemo.WriteInt( DS_SOUND );
-////		soundWorld.writeDemo.WriteInt( SCMD_START );
-////		soundWorld.writeDemo.WriteInt( index );
-////
-////		soundWorld.writeDemo.WriteHashString( shader.GetName() );
-////
-////		soundWorld.writeDemo.WriteInt( channel );
-////		soundWorld.writeDemo.WriteFloat( diversity );
-////		soundWorld.writeDemo.WriteInt( soundShaderFlags );
-////	}
-////
-////	// build the channel parameters by taking the shader parms and optionally overriding
-////	soundShaderParms_t	chanParms;
-////
-////	chanParms = shader.parms;
-////	OverrideParms( &chanParms, &this.parms, &chanParms );
-////	chanParms.soundShaderFlags |= soundShaderFlags;
-////
-////	if ( chanParms.shakes > 0.0f ) {
-////		shader.CheckShakesAndOgg();
-////	}
-////
-////	// this is the sample time it will be first mixed
-////	int start44kHz;
-////	
-////	if ( soundWorld.fpa[0] ) {
-////		// if we are recording an AVI demo, don't use hardware time
-////		start44kHz = soundWorld.lastAVI44kHz + MIXBUFFER_SAMPLES;
-////	} else {
-////		start44kHz = soundSystemLocal.GetCurrent44kHzTime() + MIXBUFFER_SAMPLES;
-////	}
-////
-////	//
-////	// pick which sound to play from the shader
-////	//
-////	if ( !shader.numEntries ) {
-////		if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-////			common.Printf( "no samples in sound shader\n" );
-////		}
-////		return 0;				// no sounds
-////	}
-////	int choice;
-////
-////	// pick a sound from the list based on the passed diversity
-////	choice = (int)(diversity * shader.numEntries);
-////	if ( choice < 0 || choice >= shader.numEntries ) {
-////		choice = 0;
-////	}
-////
-////	// bump the choice if the exact sound was just played and we are NO_DUPS
-////	if ( chanParms.soundShaderFlags & SSF_NO_DUPS ) {
-////		idSoundSample	*sample;
-////		if ( shader.leadins[ choice ] ) {
-////			sample = shader.leadins[ choice ];
-////		} else {
-////			sample = shader.entries[ choice ];
-////		}
-////		for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
-////			idSoundChannel	*chan = &this.channels[i];
-////			if ( chan.leadinSample == sample ) {
-////				choice = ( choice + 1 ) % shader.numEntries;
-////				break;
-////			}
-////		}
-////	}
-////
-////	// PLAY_ONCE sounds will never be restarted while they are running
-////	if ( chanParms.soundShaderFlags & SSF_PLAY_ONCE ) {
-////		for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
-////			idSoundChannel	*chan = &this.channels[i];
-////			if ( chan.triggerState && chan.soundShader == shader ) {
-////				if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-////					common.Printf( "PLAY_ONCE not restarting\n" );
-////				}
-////				return 0;
-////			}
-////		}
-////	}
-////
-////	// never play the same sound twice with the same starting time, even
-////	// if they are on different channels
-////	for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
-////		idSoundChannel	*chan = &this.channels[i];
-////		if ( chan.triggerState && chan.soundShader == shader && chan.trigger44kHzTime == start44kHz ) {
-////			if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-////				common.Printf( "already started this frame\n" );
-////			}
-////			return 0;
-////		}
-////	}
-////
-////	Sys_EnterCriticalSection();
-////
-////	// kill any sound that is currently playing on this channel
-////	if ( channel != SCHANNEL_ANY ) {
-////		for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
-////			idSoundChannel	*chan = &this.channels[i];
-////			if ( chan.triggerState && chan.soundShader && chan.triggerChannel == channel ) {
-////				if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-////					common.Printf( "(override %s)", chan.soundShader.base.GetName() );
-////				}
-////				
-////				chan.Stop();
-////
-////				// if this was an onDemand sound, purge the sample now
-////				if ( chan.leadinSample.onDemand ) {
-////					chan.ALStop();
-////					chan.leadinSample.PurgeSoundSample();
-////				}
-////				break;
-////			}
-////		}
-////	}
-////
-////	// find a free channel to play the sound on
-////	idSoundChannel	*chan;
-////	for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
-////		chan = &this.channels[i];
-////		if ( !chan.triggerState ) {
-////			break;
-////		}
-////	}
-////
-////	if ( i == SOUND_MAX_CHANNELS ) {
-////		// we couldn't find a channel for it
-////		Sys_LeaveCriticalSection();
-////		if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-////			common.Printf( "no channels available\n" );
-////		}
-////		return 0;
-////	}
-////
-////	chan = &this.channels[i];
-////
-////	if ( shader.leadins[ choice ] ) {
-////		chan.leadinSample = shader.leadins[ choice ];
-////	} else {
-////		chan.leadinSample = shader.entries[ choice ];
-////	}
-////
-////	// if the sample is onDemand (voice mails, etc), load it now
-////	if ( chan.leadinSample.purged ) {
-////		int		start = Sys_Milliseconds();
-////		chan.leadinSample.Load();
-////		int		end = Sys_Milliseconds();
-////		session.TimeHitch( end - start );
-////		// recalculate start44kHz, because loading may have taken a fair amount of time
-////		if ( !soundWorld.fpa[0] ) {
-////			start44kHz = soundSystemLocal.GetCurrent44kHzTime() + MIXBUFFER_SAMPLES;
-////		}
-////	}
-////
-////	if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
-////		common.Printf( "'%s'\n", chan.leadinSample.name.c_str() );
-////	}
-////
-////	if ( idSoundSystemLocal::s_skipHelltimeFX.GetBool() ) {
-////		chan.disallowSlow = true;
-////	} else {
-////		chan.disallowSlow = !allowSlow;
-////	}
-////
-////	ResetSlowChannel( chan );
-////
-////	// the sound will start mixing in the next async mix block
-////	chan.triggered = true;
-////	chan.openalStreamingOffset = 0;
-////	chan.trigger44kHzTime = start44kHz;
-////	chan.parms = chanParms;
-////	chan.triggerGame44kHzTime = soundWorld.game44kHz;
-////	chan.soundShader = shader;
-////	chan.triggerChannel = channel;
-////	chan.Start();
-////
-////	// we need to start updating the def and mixing it in
-////	playing = true;
-////
-////	// spatialize it immediately, so it will start the next mix block
-////	// even if that happens before the next PlaceOrigin()
-////	Spatialize( soundWorld.listenerPos, soundWorld.listenerArea, soundWorld.rw );
-////
-////	// return length of sound in milliseconds
-////	int length = chan.leadinSample.LengthIn44kHzSamples();
-////
-////	if ( chan.leadinSample.objectInfo.nChannels == 2 ) {
-////		length /= 2;	// stereo samples
-////	}
-////
-////	// adjust the start time based on diversity for looping sounds, so they don't all start
-////	// at the same point
-////	if ( chan.parms.soundShaderFlags & SSF_LOOPING && !chan.leadinSample.LengthIn44kHzSamples() ) {
-////		chan.trigger44kHzTime -= diversity * length;
-////		chan.trigger44kHzTime &= ~7;		// so we don't have to worry about the 22kHz and 11kHz expansions
-////											// starting in fractional samples
-////		chan.triggerGame44kHzTime -= diversity * length;
-////		chan.triggerGame44kHzTime &= ~7;
-////	}
-////	
-////	length *= 1000 / (float)PRIMARYFREQ;
-////
-////	Sys_LeaveCriticalSection();
-////
-////	return length;
-////}
+
+/*
+=====================
+idSoundEmitterLocal::StartSound
+
+returns the length of the started sound in msec
+=====================
+*/
+StartSound (shader: idSoundShader, channel: number/*s_channelType*/, /*float */diversity = 0, /*int */shaderFlags = 0, allowSlow = true  ) {
+	var/*int*/i:number;
+
+	if ( !shader ) {
+		return 0;
+	}
+todoThrow();return 999999999;
+//////	if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
+//////		common.Printf( "StartSound %ims (%i,%i,%s) = ", soundWorld.gameMsec, index, (int)channel, shader.GetName() );
+//////	}
+//////
+//////	if ( soundWorld && soundWorld.writeDemo ) {
+//////		soundWorld.writeDemo.WriteInt( DS_SOUND );
+//////		soundWorld.writeDemo.WriteInt( SCMD_START );
+//////		soundWorld.writeDemo.WriteInt( index );
+//////
+//////		soundWorld.writeDemo.WriteHashString( shader.GetName() );
+//////
+//////		soundWorld.writeDemo.WriteInt( channel );
+//////		soundWorld.writeDemo.WriteFloat( diversity );
+//////		soundWorld.writeDemo.WriteInt( soundShaderFlags );
+//////	}
+//////
+//////	// build the channel parameters by taking the shader parms and optionally overriding
+//////	soundShaderParms_t	chanParms;
+//////
+//////	chanParms = shader.parms;
+//////	OverrideParms( &chanParms, &this.parms, &chanParms );
+//////	chanParms.soundShaderFlags |= soundShaderFlags;
+//////
+//////	if ( chanParms.shakes > 0.0f ) {
+//////		shader.CheckShakesAndOgg();
+//////	}
+//////
+//////	// this is the sample time it will be first mixed
+//////	int start44kHz;
+//////	
+//////	if ( soundWorld.fpa[0] ) {
+//////		// if we are recording an AVI demo, don't use hardware time
+//////		start44kHz = soundWorld.lastAVI44kHz + MIXBUFFER_SAMPLES;
+//////	} else {
+//////		start44kHz = soundSystemLocal.GetCurrent44kHzTime() + MIXBUFFER_SAMPLES;
+//////	}
+//////
+//////	//
+//////	// pick which sound to play from the shader
+//////	//
+//////	if ( !shader.numEntries ) {
+//////		if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
+//////			common.Printf( "no samples in sound shader\n" );
+//////		}
+//////		return 0;				// no sounds
+//////	}
+//////	int choice;
+//////
+//////	// pick a sound from the list based on the passed diversity
+//////	choice = (int)(diversity * shader.numEntries);
+//////	if ( choice < 0 || choice >= shader.numEntries ) {
+//////		choice = 0;
+//////	}
+//////
+//////	// bump the choice if the exact sound was just played and we are NO_DUPS
+//////	if ( chanParms.soundShaderFlags & SSF_NO_DUPS ) {
+//////		idSoundSample	*sample;
+//////		if ( shader.leadins[ choice ] ) {
+//////			sample = shader.leadins[ choice ];
+//////		} else {
+//////			sample = shader.entries[ choice ];
+//////		}
+//////		for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
+//////			idSoundChannel	*chan = &this.channels[i];
+//////			if ( chan.leadinSample == sample ) {
+//////				choice = ( choice + 1 ) % shader.numEntries;
+//////				break;
+//////			}
+//////		}
+//////	}
+//////
+//////	// PLAY_ONCE sounds will never be restarted while they are running
+//////	if ( chanParms.soundShaderFlags & SSF_PLAY_ONCE ) {
+//////		for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
+//////			idSoundChannel	*chan = &this.channels[i];
+//////			if ( chan.triggerState && chan.soundShader == shader ) {
+//////				if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
+//////					common.Printf( "PLAY_ONCE not restarting\n" );
+//////				}
+//////				return 0;
+//////			}
+//////		}
+//////	}
+//////
+//////	// never play the same sound twice with the same starting time, even
+//////	// if they are on different channels
+//////	for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
+//////		idSoundChannel	*chan = &this.channels[i];
+//////		if ( chan.triggerState && chan.soundShader == shader && chan.trigger44kHzTime == start44kHz ) {
+//////			if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
+//////				common.Printf( "already started this frame\n" );
+//////			}
+//////			return 0;
+//////		}
+//////	}
+//////
+//////	Sys_EnterCriticalSection();
+//////
+//////	// kill any sound that is currently playing on this channel
+//////	if ( channel != SCHANNEL_ANY ) {
+//////		for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
+//////			idSoundChannel	*chan = &this.channels[i];
+//////			if ( chan.triggerState && chan.soundShader && chan.triggerChannel == channel ) {
+//////				if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
+//////					common.Printf( "(override %s)", chan.soundShader.base.GetName() );
+//////				}
+//////				
+//////				chan.Stop();
+//////
+//////				// if this was an onDemand sound, purge the sample now
+//////				if ( chan.leadinSample.onDemand ) {
+//////					chan.ALStop();
+//////					chan.leadinSample.PurgeSoundSample();
+//////				}
+//////				break;
+//////			}
+//////		}
+//////	}
+//////
+//////	// find a free channel to play the sound on
+//////	idSoundChannel	*chan;
+//////	for( i = 0; i < SOUND_MAX_CHANNELS; i++ ) {
+//////		chan = &this.channels[i];
+//////		if ( !chan.triggerState ) {
+//////			break;
+//////		}
+//////	}
+//////
+//////	if ( i == SOUND_MAX_CHANNELS ) {
+//////		// we couldn't find a channel for it
+//////		Sys_LeaveCriticalSection();
+//////		if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
+//////			common.Printf( "no channels available\n" );
+//////		}
+//////		return 0;
+//////	}
+//////
+//////	chan = &this.channels[i];
+//////
+//////	if ( shader.leadins[ choice ] ) {
+//////		chan.leadinSample = shader.leadins[ choice ];
+//////	} else {
+//////		chan.leadinSample = shader.entries[ choice ];
+//////	}
+//////
+//////	// if the sample is onDemand (voice mails, etc), load it now
+//////	if ( chan.leadinSample.purged ) {
+//////		int		start = Sys_Milliseconds();
+//////		chan.leadinSample.Load();
+//////		int		end = Sys_Milliseconds();
+//////		session.TimeHitch( end - start );
+//////		// recalculate start44kHz, because loading may have taken a fair amount of time
+//////		if ( !soundWorld.fpa[0] ) {
+//////			start44kHz = soundSystemLocal.GetCurrent44kHzTime() + MIXBUFFER_SAMPLES;
+//////		}
+//////	}
+//////
+//////	if ( idSoundSystemLocal::s_showStartSound.GetInteger() ) {
+//////		common.Printf( "'%s'\n", chan.leadinSample.name.c_str() );
+//////	}
+//////
+//////	if ( idSoundSystemLocal::s_skipHelltimeFX.GetBool() ) {
+//////		chan.disallowSlow = true;
+//////	} else {
+//////		chan.disallowSlow = !allowSlow;
+//////	}
+//////
+//////	ResetSlowChannel( chan );
+//////
+//////	// the sound will start mixing in the next async mix block
+//////	chan.triggered = true;
+//////	chan.openalStreamingOffset = 0;
+//////	chan.trigger44kHzTime = start44kHz;
+//////	chan.parms = chanParms;
+//////	chan.triggerGame44kHzTime = soundWorld.game44kHz;
+//////	chan.soundShader = shader;
+//////	chan.triggerChannel = channel;
+//////	chan.Start();
+//////
+//////	// we need to start updating the def and mixing it in
+//////	playing = true;
+//////
+//////	// spatialize it immediately, so it will start the next mix block
+//////	// even if that happens before the next PlaceOrigin()
+//////	Spatialize( soundWorld.listenerPos, soundWorld.listenerArea, soundWorld.rw );
+//////
+//////	// return length of sound in milliseconds
+//////	int length = chan.leadinSample.LengthIn44kHzSamples();
+//////
+//////	if ( chan.leadinSample.objectInfo.nChannels == 2 ) {
+//////		length /= 2;	// stereo samples
+//////	}
+//////
+//////	// adjust the start time based on diversity for looping sounds, so they don't all start
+//////	// at the same point
+//////	if ( chan.parms.soundShaderFlags & SSF_LOOPING && !chan.leadinSample.LengthIn44kHzSamples() ) {
+//////		chan.trigger44kHzTime -= diversity * length;
+//////		chan.trigger44kHzTime &= ~7;		// so we don't have to worry about the 22kHz and 11kHz expansions
+//////											// starting in fractional samples
+//////		chan.triggerGame44kHzTime -= diversity * length;
+//////		chan.triggerGame44kHzTime &= ~7;
+//////	}
+//////	
+//////	length *= 1000 / (float)PRIMARYFREQ;
+//////
+//////	Sys_LeaveCriticalSection();
+//////
+	////return length;
+}
 /////*
 ////===================
 ////idSoundEmitterLocal::ModifySound

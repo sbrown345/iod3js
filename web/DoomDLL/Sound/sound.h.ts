@@ -112,7 +112,7 @@ class idSoundEmitter {
 ////	virtual void			UpdateEmitter( const idVec3 &origin, int listenerId, const soundShaderParms_t *parms ) = 0;
 ////
 ////	// returns the length of the started sound in msec
-////	virtual int				StartSound( const idSoundShader *shader, const s_channelType channel, float diversity = 0, int shaderFlags = 0, bool allowSlow = true ) = 0;
+	StartSound ( shader: idSoundShader, channel: number/*s_channelType*/, /*float */diversity = 0, /*int */shaderFlags = 0, allowSlow = true ): number { throw "placeholder"; }
 ////
 ////	// pass SCHANNEL_ANY to effect all channels
 ////	virtual void			ModifySound( const s_channelType channel, const soundShaderParms_t *parms ) = 0;
@@ -154,7 +154,7 @@ class idSoundWorld {
 ////	virtual void			StopAllSounds( ) = 0;
 ////
 ////	// get a new emitter that can play sounds in this world
-////	virtual idSoundEmitter *AllocSoundEmitter( ) = 0;
+	AllocSoundEmitter( ) :idSoundEmitter {throw "placeholder";}
 ////
 ////	// for load games, index 0 will return NULL
 ////	virtual idSoundEmitter *EmitterForIndex( int index ) = 0;

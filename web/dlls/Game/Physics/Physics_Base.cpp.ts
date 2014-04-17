@@ -413,21 +413,21 @@ class idPhysics_Base extends idPhysics {
 	//void idPhysics_Base::AddForce( /*int*/ id:number, const idVec3 &point, const idVec3 &force ) {
 	//}
 	//
-	///*
-	//================
-	//idPhysics_Base::Activate
-	//================
-	//*/
-	//void idPhysics_Base::Activate( ) {
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::PutToRest
-	//================
-	//*/
-	//void idPhysics_Base::PutToRest( ) {
-	//}
+	/*
+	================
+	idPhysics_Base::Activate
+	================
+	*/
+	Activate( ):void {
+	}
+	
+	/*
+	================
+	idPhysics_Base::PutToRest
+	================
+	*/
+	PutToRest ( ): void {
+	}
 	//
 	///*
 	//================
