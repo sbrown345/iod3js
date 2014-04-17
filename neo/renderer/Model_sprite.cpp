@@ -43,7 +43,7 @@ static const char *sprite_SnapshotName = "_sprite_Snapshot_";
 
 /*
 ===============
-idRenderModelBeam::IsDynamicModel
+idRenderModelSprite::IsDynamicModel
 ===============
 */
 dynamicModel_t idRenderModelSprite::IsDynamicModel() const {
@@ -52,7 +52,7 @@ dynamicModel_t idRenderModelSprite::IsDynamicModel() const {
 
 /*
 ===============
-idRenderModelBeam::IsLoaded
+idRenderModelSprite::IsLoaded
 ===============
 */
 bool idRenderModelSprite::IsLoaded() const {
