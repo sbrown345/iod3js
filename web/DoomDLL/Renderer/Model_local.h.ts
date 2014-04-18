@@ -113,15 +113,15 @@ class idRenderModelStatic extends idRenderModel {
 ////	bool						FindSurfaceWithId( int id, int &surfaceNum );
 
 //public:
-	surfaces:idList<modelSurface_t>;
-	bounds:idBounds;
+	surfaces = new idList<modelSurface_t>(modelSurface_t);
+	bounds = new idBounds;
 	overlaysAdded:number;//	int							
 
 //protected:
 	lastModifiedFrame:number;//	int							
 	lastArchivedFrame:number;//	int							
 
-	name:idStr;
+	name = new idStr;
 	shadowHull: srfTriangles_t;
 
 	isStaticWorldModel:boolean;
@@ -140,8 +140,7 @@ class idRenderModelStatic extends idRenderModel {
 
 	constructor ( ) {
 		super ( );
-		this.name = new idStr("<undefined>");
-		this.bounds = new idBounds ( );
+		this.name.equals("<undefined>");
 		this.bounds.Clear ( );
 		this.lastModifiedFrame = 0;
 		this.lastArchivedFrame = 0;
@@ -154,8 +153,6 @@ class idRenderModelStatic extends idRenderModel {
 		this.reloadable = true;
 		this.levelLoadReferenced = false;
 		this.timeStamp = 0;
-
-		this.surfaces = new idList<modelSurface_t>( modelSurface_t );
 	}
 
 

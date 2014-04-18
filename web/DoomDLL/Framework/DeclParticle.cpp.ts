@@ -98,72 +98,72 @@ class idDeclParticle extends idDecl {
 idDeclParticle::GetStageBounds
 =====================
 */
-	GetStageBounds(stage: idParticleStage ):void {
+	GetStageBounds ( stage: idParticleStage ): void {
 
-	stage.bounds.Clear();
+		stage.bounds.Clear ( );
 
-	// this isn't absolutely guaranteed, but it should be close
+		// this isn't absolutely guaranteed, but it should be close
 
-		var g = new particleGen_t ;
+		var g = new particleGen_t;
 
 		var renderEntity = new renderEntity_t;
-		renderEntity.memset0 ( );//memset( &renderEntity, 0, sizeof( renderEntity ) );
-	renderEntity.axis = mat3_identity;
+		renderEntity.memset0 ( ); //memset( &renderEntity, 0, sizeof( renderEntity ) );
+		renderEntity.axis.equals(mat3_identity);
 
 		var renderView = new renderView_t;
-renderView.	memset0();
-	renderView.viewaxis = mat3_identity;
+		renderView.memset0 ( );
+		renderView.viewaxis.equals( mat3_identity );
 
-	g.renderEnt = renderEntity;
-	g.renderView = renderView;
-	g.origin.Zero();
-	g.axis = mat3_identity;
+		g.renderEnt = renderEntity;
+		g.renderView = renderView;
+		g.origin.Zero ( );
+		g.axis.equals( mat3_identity );
 
 		var steppingRandom = new idRandom;
-	steppingRandom.SetSeed( 0 );
+		steppingRandom.SetSeed( 0 );
 
-	// just step through a lot of possible particles as a representative sampling
-	for ( var i = 0 ; i < 1000 ; i++ ) {
-		g.random.seed = g.originalRandom.seed = steppingRandom.seed;
+		// just step through a lot of possible particles as a representative sampling
+		for ( var i = 0; i < 1000; i++ ) {
+			g.random.seed = g.originalRandom.seed = steppingRandom.seed;
 
-		var	maxMsec = stage.particleLife * 1000;
-		for ( var inCycleTime = 0 ; inCycleTime < maxMsec ; inCycleTime += 16 ) {
+			var maxMsec = stage.particleLife * 1000;
+			for ( var inCycleTime = 0; inCycleTime < maxMsec; inCycleTime += 16 ) {
 
-			// make sure we get the very last tic, which may make up an extreme edge
-			if ( inCycleTime + 16 > maxMsec ) {
-				inCycleTime = maxMsec - 1;
+				// make sure we get the very last tic, which may make up an extreme edge
+				if ( inCycleTime + 16 > maxMsec ) {
+					inCycleTime = maxMsec - 1;
+				}
+
+				g.frac = /*(float)*/inCycleTime / ( stage.particleLife * 1000 );
+				g.age = inCycleTime * 0.001;
+
+				// if the particle doesn't get drawn because it is faded out or beyond a kill region,
+				// don't increment the verts
+
+				var origin = new idVec3;
+				stage.ParticleOrigin( g, origin );
+				stage.bounds.AddPoint( origin );
 			}
-
-			g.frac = /*(float)*/inCycleTime / ( stage.particleLife * 1000 );
-			g.age = inCycleTime * 0.001;
-
-			// if the particle doesn't get drawn because it is faded out or beyond a kill region,
-			// don't increment the verts
-
-			var origin = new idVec3	;
-			stage.ParticleOrigin( g, origin );			
-			stage.bounds.AddPoint( origin );
 		}
+
+		// find the max size
+		var /*float*/maxSize = 0.0;
+
+		for ( var /*float*/ f = 0; f <= 1.0; f += 1.0 / 64 ) {
+			var /*float */size = stage.size.Eval( f, steppingRandom );
+			var /*float */aspect = stage.aspect.Eval( f, steppingRandom );
+			if ( aspect > 1 ) {
+				size *= aspect;
+			}
+			if ( size > maxSize ) {
+				maxSize = size;
+			}
+		}
+
+		maxSize += 8; // just for good measure
+		// users can specify a per-stage bounds expansion to handle odd cases
+		stage.bounds.ExpandSelf( maxSize + stage.boundsExpansion );
 	}
-
-	// find the max size
-	var/*float*/maxSize = 0.0;
-
-	for ( var/*float*/ f = 0; f <= 1.0; f += 1.0 / 64 ) {
-		var/*float */size = stage.size.Eval( f, steppingRandom );
-		var/*float */aspect = stage.aspect.Eval( f, steppingRandom );
-		if ( aspect > 1 ) {
-			size *= aspect;
-		}
-		if ( size > maxSize ) {
-			maxSize = size;
-		}
-	}
-
-	maxSize += 8;	// just for good measure
-	// users can specify a per-stage bounds expansion to handle odd cases
-	stage.bounds.ExpandSelf( maxSize + stage.boundsExpansion );
-}
 
 /*
 ================

@@ -91,6 +91,16 @@ class idRectangle {
 			this.values = ixOrArray;
 		}
 	}
+
+	copy ( dest: idRectangle = null ): idRectangle {
+		dest = dest || new idRectangle;
+		dest.x = this.x;
+		dest.y = this.y;
+		dest.w = this.w;
+		dest.h = this.h;
+		return dest;
+	}
+
 	Bottom() :number/*float*/{ return this.y + this.h; }
 	Right(): number /*float*/{ return this.x + this.w; }
 	Offset ( /*float */x: number, /*float */y: number ): void {
