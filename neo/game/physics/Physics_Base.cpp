@@ -172,7 +172,7 @@ void idPhysics_Base::SetContents( int contents, int id ) {
 
 /*
 ================
-idPhysics_Base::SetClipMask
+idPhysics_Base::GetContents
 ================
 */
 int idPhysics_Base::GetContents( int id ) const {

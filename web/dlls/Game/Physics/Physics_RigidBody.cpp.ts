@@ -964,16 +964,16 @@ idPhysics_RigidBody::PutToRest
 idPhysics_RigidBody::SetContents
 ================
 */
-	SetContents(/*int*/ contents: number, /*int*/ id: number  = -1) :void{
-	this.clipModel.SetContents( contents );
-}
+	SetContents ( /*int*/ contents: number, /*int*/ id: number = -1 ): void {
+		this.clipModel.SetContents( contents );
+	}
 
 /////*
 ////================
 ////idPhysics_RigidBody::GetContents
 ////================
 ////*/
-////int idPhysics_RigidBody::GetContents( /*int*/ id:number ) const {
+////int idPhysics_RigidBody::GetContents( /*int*/ id:number  = -1) const {
 ////	return this.clipModel.GetContents();
 ////}
 
@@ -982,16 +982,16 @@ idPhysics_RigidBody::SetContents
 idPhysics_RigidBody::GetBounds
 ================
 */
-const idBounds &idPhysics_RigidBody::GetBounds( /*int*/ id:number ) const {
-	return this.clipModel.GetBounds();
-}
+	GetBounds( /*int*/ id: number  = -1): idBounds {
+		return this.clipModel.GetBounds ( );
+	}
 
 /////*
 ////================
 ////idPhysics_RigidBody::GetAbsBounds
 ////================
 ////*/
-////const idBounds &idPhysics_RigidBody::GetAbsBounds( /*int*/ id:number ) const {
+////const idBounds &idPhysics_RigidBody::GetAbsBounds( /*int*/ id:number  = -1) const {
 ////	return this.clipModel.GetAbsBounds();
 ////}
 ////

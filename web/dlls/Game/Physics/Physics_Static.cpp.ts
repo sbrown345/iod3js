@@ -344,13 +344,13 @@ idPhysics_Static::idPhysics_Static
 	idPhysics_Static::GetBounds
 	================
 	*/
-	const idBounds &idPhysics_Static::GetBounds( /*int*/ id:number = -1  ) const {
+	GetBounds ( /*int*/ id: number = -1 ): idBounds {
 		if ( this.clipModel ) {
-			return this.clipModel.GetBounds();
+			return this.clipModel.GetBounds ( );
 		}
 		return bounds_zero;
 	}
-	
+
 	/////*
 	////================
 	////idPhysics_Static::GetAbsBounds

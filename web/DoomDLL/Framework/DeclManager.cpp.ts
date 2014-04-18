@@ -637,7 +637,6 @@ External users will always cause the decl to be parsed before returning
 
 		if ( !name /*|| !name[0] */ ) {
 			name = "_emptyName";
-			todoThrow ( );
 			//common.Warning( "idDeclManager::FindType: empty %s name", GetDeclType( (int)type ).typeName.c_str() );
 		}
 

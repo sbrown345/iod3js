@@ -2337,7 +2337,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////idPhysics_AF::GetContents
 	////================
 	////*/
-	////int idPhysics_AF::GetContents( /*int*/ id:number ) const {
+	////int idPhysics_AF::GetContents( /*int*/ id:number  = -1) const {
 	////	int i, contents;
 	////
 	////	if ( id >= 0 && id < this.bodies.Num() ) {
@@ -2357,36 +2357,36 @@ class idPhysics_AF extends idPhysics_Base {
 	idPhysics_AF::GetBounds
 	================
 	*/
-	const idBounds &idPhysics_AF::GetBounds( /*int*/ id:number ) const {
-		var/*int*/i:number;
-		static idBounds relBounds;
-	
-		if ( id >= 0 && id < this.bodies.Num() ) {
-			return this.bodies[id].GetClipModel().GetBounds();
-		}
-		else if ( !this.bodies.Num() ) {
-			relBounds.Zero();
-			return relBounds;
-		}
-		else {
-			relBounds = this.bodies[0].GetClipModel().GetBounds();
-			for ( i = 1; i < this.bodies.Num(); i++ ) {
-				idBounds bounds;
-				idVec3 origin = ( this.bodies[i].GetWorldOrigin() - this.bodies[0].GetWorldOrigin() ) * this.bodies[0].GetWorldAxis().Transpose();
-				idMat3 axis = this.bodies[i].GetWorldAxis() * this.bodies[0].GetWorldAxis().Transpose();
-				bounds.FromTransformedBounds( this.bodies[i].GetClipModel().GetBounds(), origin, axis );
-				relBounds += bounds;
+	static relBounds = new idBounds;
+	GetBounds( /*int*/ id: number  = -1): idBounds {
+		var /*int*/i: number;
+		//static idBounds relBounds;
+
+		if ( id >= 0 && id < this.bodies.Num ( ) ) {
+			return this.bodies[id].GetClipModel ( ).GetBounds ( );
+		} else if ( !this.bodies.Num ( ) ) {
+			idPhysics_AF.relBounds.Zero ( );
+			return idPhysics_AF.relBounds;
+		} else {
+			idPhysics_AF.relBounds.opEquals( this.bodies[0].GetClipModel ( ).GetBounds ( ) );
+			for ( i = 1; i < this.bodies.Num ( ); i++ ) {
+				todoThrow ( );
+				//var bounds = new idBounds;
+				//idVec3 origin = ( this.bodies[i].GetWorldOrigin() - this.bodies[0].GetWorldOrigin() ) * this.bodies[0].GetWorldAxis().Transpose();
+				//idMat3 axis = this.bodies[i].GetWorldAxis() * this.bodies[0].GetWorldAxis().Transpose();
+				//bounds.FromTransformedBounds( this.bodies[i].GetClipModel().GetBounds(), origin, axis );
+				//idPhysics_AF.relBounds += bounds;
 			}
-			return relBounds;
+			return idPhysics_AF.relBounds;
 		}
 	}
-	////
+	
 	/////*
 	////================
 	////idPhysics_AF::GetAbsBounds
 	////================
 	////*/
-	////const idBounds &idPhysics_AF::GetAbsBounds( /*int*/ id:number ) const {
+	////const idBounds &idPhysics_AF::GetAbsBounds( /*int*/ id:number  = -1) const {
 	////	var/*int*/i:number;
 	////	static idBounds absBounds;
 	////

@@ -689,7 +689,7 @@ idPhysics_Parametric::SetClipMask
 //idPhysics_Parametric::SetClipMask
 //================
 //*/
-//int idPhysics_Parametric::GetContents( /*int*/ id:number ) const {
+//int idPhysics_Parametric::GetContents( /*int*/ id:number  = -1) const {
 //	if ( this.clipModel ) {
 //		return this.clipModel.GetContents();
 //	}
@@ -701,19 +701,19 @@ idPhysics_Parametric::SetClipMask
 idPhysics_Parametric::GetBounds
 ================
 */
-const idBounds &idPhysics_Parametric::GetBounds( /*int*/ id:number ) const {
-	if ( this.clipModel ) {
-		return this.clipModel.GetBounds();
+	GetBounds ( /*int*/ id: number = -1 ): idBounds {
+		if ( this.clipModel ) {
+			return this.clipModel.GetBounds ( );
+		}
+		return super.GetBounds ( );
 	}
-	return idPhysics_Base::GetBounds();
-}
 
 ///*
 //================
 //idPhysics_Parametric::GetAbsBounds
 //================
 //*/
-//const idBounds &idPhysics_Parametric::GetAbsBounds( /*int*/ id:number ) const {
+//const idBounds &idPhysics_Parametric::GetAbsBounds( /*int*/ id:number  = -1) const {
 //	if ( this.clipModel ) {
 //		return this.clipModel.GetAbsBounds();
 //	}

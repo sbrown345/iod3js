@@ -306,7 +306,7 @@ class idPhysics_Base extends idPhysics {
 	//================
 	//*/
 	//float idPhysics_Base::GetMass( /*int*/ id:number ) const {
-	//	return 0.0f;
+	//	return 0.0;
 	//}
 	//
 	/*
@@ -319,10 +319,10 @@ class idPhysics_Base extends idPhysics {
 	//
 	///*
 	//================
-	//idPhysics_Base::SetClipMask
+	//idPhysics_Base::GetContents
 	//================
 	//*/
-	//int idPhysics_Base::GetContents( /*int*/ id:number ) const {
+	//int idPhysics_Base::GetContents( /*int*/ id:number  = -1) const {
 	//	return 0;
 	//}
 	//
@@ -331,7 +331,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::SetClipMask
 	//================
 	//*/
-	//void idPhysics_Base::SetClipMask( int mask, /*int*/ id:number ) {
+	//void idPhysics_Base::SetClipMask( int mask, /*int*/ id:number = -1 ) {
 	//	clipMask = mask;
 	//}
 	//
@@ -340,7 +340,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetClipMask
 	//================
 	//*/
-	//int idPhysics_Base::GetClipMask( /*int*/ id:number ) const {
+	//int idPhysics_Base::GetClipMask( /*int*/ id:number  = -1) const {
 	//	return clipMask;
 	//}
 	
@@ -349,7 +349,7 @@ class idPhysics_Base extends idPhysics {
 	idPhysics_Base::GetBounds
 	================
 	*/
-	const idBounds &idPhysics_Base::GetBounds( /*int*/ id:number ) const {
+	GetBounds( /*int*/ id: number = -1): idBounds {
 		return bounds_zero;
 	}
 	//
@@ -358,7 +358,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetAbsBounds
 	//================
 	//*/
-	//const idBounds &idPhysics_Base::GetAbsBounds( /*int*/ id:number ) const {
+	//const idBounds &idPhysics_Base::GetAbsBounds( /*int*/ id:number  = -1) const {
 	//	return bounds_zero;
 	//}
 	//
@@ -744,7 +744,7 @@ class idPhysics_Base extends idPhysics {
 	//	var/*int*/i:number;
 	//
 	//	for ( i = 0; i < this.contacts.Num(); i++ ) {
-	//		if ( this.contacts[i].normal * -gravityNormal > 0.0f ) {
+	//		if ( this.contacts[i].normal * -gravityNormal > 0.0 ) {
 	//			return true;
 	//		}
 	//	}
@@ -760,7 +760,7 @@ class idPhysics_Base extends idPhysics {
 	//	var/*int*/i:number;
 	//
 	//	for ( i = 0; i < this.contacts.Num(); i++ ) {
-	//		if ( this.contacts[i].entityNum == entityNum && ( this.contacts[i].normal * -gravityNormal > 0.0f ) ) {
+	//		if ( this.contacts[i].entityNum == entityNum && ( this.contacts[i].normal * -gravityNormal > 0.0 ) ) {
 	//			return true;
 	//		}
 	//	}
@@ -776,7 +776,7 @@ class idPhysics_Base extends idPhysics {
 	//	var/*int*/i:number;
 	//
 	//	for ( i = 0; i < this.contacts.Num(); i++ ) {
-	//		if ( this.contacts[i].entityNum == entityNum && this.contacts[i].id == id && ( this.contacts[i].normal * -gravityNormal > 0.0f ) ) {
+	//		if ( this.contacts[i].entityNum == entityNum && this.contacts[i].id == id && ( this.contacts[i].normal * -gravityNormal > 0.0 ) ) {
 	//			return true;
 	//		}
 	//	}
@@ -914,7 +914,7 @@ class idPhysics_Base extends idPhysics {
 	//================
 	//*/
 	//bool idPhysics_Base::IsOutsideWorld( ) const {
-	//	if ( !gameLocal.clip.GetWorldBounds().Expand( 128.0f ).IntersectsBounds( GetAbsBounds() ) ) {
+	//	if ( !gameLocal.clip.GetWorldBounds().Expand( 128.0 ).IntersectsBounds( GetAbsBounds() ) ) {
 	//		return true;
 	//	}
 	//	return false;
@@ -933,7 +933,7 @@ class idPhysics_Base extends idPhysics {
 	//	dir = GetLinearVelocity( id );
 	//	dir *= linearScale;
 	//	if ( dir.LengthSqr() > Square( 0.1f ) ) {
-	//		dir.Truncate( 10.0f );
+	//		dir.Truncate( 10.0 );
 	//		org = GetOrigin( id );
 	//		gameRenderWorld.DebugArrow( colorRed, org, org + dir, 1 );
 	//	}
@@ -942,11 +942,11 @@ class idPhysics_Base extends idPhysics {
 	//	length = dir.Normalize();
 	//	length *= angularScale;
 	//	if ( length > 0.1f ) {
-	//		if ( length < 60.0f ) {
-	//			length = 60.0f;
+	//		if ( length < 60.0 ) {
+	//			length = 60.0;
 	//		}
-	//		else if ( length > 360.0f ) {
-	//			length = 360.0f;
+	//		else if ( length > 360.0 ) {
+	//			length = 360.0;
 	//		}
 	//		axis = GetAxis( id );
 	//		vec = axis[2];
@@ -955,9 +955,9 @@ class idPhysics_Base extends idPhysics {
 	//		}
 	//		vec -= vec * dir * vec;
 	//		vec.Normalize();
-	//		vec *= 4.0f;
+	//		vec *= 4.0;
 	//		start = org + vec;
-	//		for ( a = 20.0f; a < length; a += 20.0f ) {
+	//		for ( a = 20.0; a < length; a += 20.0 ) {
 	//			end = org + idRotation( vec3_origin, dir, -a ).ToMat3() * vec;
 	//			gameRenderWorld.DebugLine( colorBlue, start, end, 1 );
 	//			start = end;

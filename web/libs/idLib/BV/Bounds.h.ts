@@ -440,7 +440,6 @@ Zero( ):void {
 //// Bounds.cpp:
 
 
-////idBounds bounds_zero(vec3_zero, vec3_zero);
 
 ///*
 //============
@@ -837,24 +836,26 @@ idBounds::FromTransformedBounds
 //}
 }
 
-Object.defineProperty(idBounds.prototype, "0", {
-	get: function (): idVec3 {
+Object.defineProperty( idBounds.prototype, "0", {
+	get: function ( ): idVec3 {
 		return this.b[0];
 	},
-	set: function (value: number): void {
+	set: function ( value: number ): void {
 		todoThrow ( );
 	},
 	enumerable: false,
 	configurable: false
-});
+} );
 
-Object.defineProperty(idBounds.prototype, "1", {
-	get: function (): idVec3 {
+Object.defineProperty( idBounds.prototype, "1", {
+	get: function ( ): idVec3 {
 		return this.b[1];
 	},
-	set: function (value: number): void {
+	set: function ( value: number ): void {
 		todoThrow ( );
 	},
 	enumerable: false,
 	configurable: false
-});
+} );
+
+var bounds_zero = new idBounds(vec3_zero, vec3_zero);

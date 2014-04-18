@@ -733,7 +733,7 @@ idWinding::Reverse
 		w = new idWinding( this.numPoints );
 		w.numPoints = this.numPoints;
 		for ( i = 0; i < this.numPoints; i++ ) {
-			w.p[this.numPoints - i - 1] = this.p[i];
+			w.p[this.numPoints - i - 1].equals( this.p[i] );
 		}
 		return w;
 	}
@@ -746,12 +746,11 @@ idWinding::ReverseSelf
 	ReverseSelf ( ): void {
 		var v = new idVec5;
 		var /*int */i: number;
-		todoThrow ( );
-		//for ( i = 0; i < ( this.numPoints >> 1 ); i++ ) {
-		//	v.equals( this.p[i] );;// todo: equals??
-		//	this.p[i] .equals( this.p[this.numPoints - i - 1]);// todo: .equals??
-		//	this.p[this.numPoints - i - 1].equals( v );// todo: .equals??
-		//}
+		for ( i = 0; i < ( this.numPoints >> 1 ); i++ ) {
+			v.equals( this.p[i] );
+			this.p[i] .equals( this.p[this.numPoints - i - 1]);
+			this.p[this.numPoints - i - 1].equals( v );
+		}
 	}
 
 ///*
