@@ -343,15 +343,15 @@ class idPhysics_Base extends idPhysics {
 	//int idPhysics_Base::GetClipMask( /*int*/ id:number ) const {
 	//	return clipMask;
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::GetBounds
-	//================
-	//*/
-	//const idBounds &idPhysics_Base::GetBounds( /*int*/ id:number ) const {
-	//	return bounds_zero;
-	//}
+	
+	/*
+	================
+	idPhysics_Base::GetBounds
+	================
+	*/
+	const idBounds &idPhysics_Base::GetBounds( /*int*/ id:number ) const {
+		return bounds_zero;
+	}
 	//
 	///*
 	//================

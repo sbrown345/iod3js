@@ -416,40 +416,40 @@ idPhysics_StaticMulti::SetContents
 ////int idPhysics_StaticMulti::GetClipMask( /*int*/ id:number ) const {
 ////	return 0;
 ////}
-////
-/////*
-////================
-////idPhysics_StaticMulti::GetBounds
-////================
-////*/
-////const idBounds &idPhysics_StaticMulti::GetBounds( /*int*/ id:number ) const {
-////	var/*int*/i:number;
-////	static idBounds bounds;
-////
-////	if ( id >= 0 && id < this.clipModels.Num() ) {
-////		if ( this.clipModels[id] ) {
-////			return this.clipModels[id].GetBounds();
-////		}
-////	}
-////	if ( id == -1 ) {
-////		bounds.Clear();
-////		for ( i = 0; i < this.clipModels.Num(); i++ ) {
-////			if ( this.clipModels[i] ) {
-////				bounds.AddBounds( this.clipModels[i].GetAbsBounds() );
-////			}
-////		}
-////		for ( i = 0; i < this.clipModels.Num(); i++ ) {
-////			if ( this.clipModels[i] ) {
-////				bounds[0] -= this.clipModels[i].GetOrigin();
-////				bounds[1] -= this.clipModels[i].GetOrigin();
-////				break;
-////			}
-////		}
-////		return bounds;
-////	}
-////	return bounds_zero;
-////}
-////
+
+/*
+================
+idPhysics_StaticMulti::GetBounds
+================
+*/
+const idBounds &idPhysics_StaticMulti::GetBounds( /*int*/ id:number ) const {
+	var/*int*/i:number;
+	static idBounds bounds;
+
+	if ( id >= 0 && id < this.clipModels.Num() ) {
+		if ( this.clipModels[id] ) {
+			return this.clipModels[id].GetBounds();
+		}
+	}
+	if ( id == -1 ) {
+		bounds.Clear();
+		for ( i = 0; i < this.clipModels.Num(); i++ ) {
+			if ( this.clipModels[i] ) {
+				bounds.AddBounds( this.clipModels[i].GetAbsBounds() );
+			}
+		}
+		for ( i = 0; i < this.clipModels.Num(); i++ ) {
+			if ( this.clipModels[i] ) {
+				bounds[0] -= this.clipModels[i].GetOrigin();
+				bounds[1] -= this.clipModels[i].GetOrigin();
+				break;
+			}
+		}
+		return bounds;
+	}
+	return bounds_zero;
+}
+
 /////*
 ////================
 ////idPhysics_StaticMulti::GetAbsBounds

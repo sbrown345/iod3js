@@ -242,9 +242,9 @@ class idIK {
 		axis[0].equals( endPos.opSubtraction( startPos ) );
 		length = axis[0].Normalize();
 		debugger;//check line below:
-		axis[1].equals(dir.opSubtraction(axis[0].opMultiplication_Vec(dir.opMultiplicationAssignment(axis[0])))); //axis[1] = dir - axis[0] * dir * axis[0];
+		axis[1].equals(dir.opSubtraction(axis[0].timesFloat(dir.timesVec(axis[0])))); //axis[1] = dir - axis[0] * dir * axis[0];
 		axis[1].Normalize();
-		axis[2].Cross(axis[1], axis[0]);
+		axis[2].Cross_2(axis[1], axis[0]);
 		return length;
 	}
 };
@@ -435,7 +435,7 @@ idIK_Walk::idIK_Walk
 ////	savefile.WriteInt( pivotFoot );
 ////	savefile.WriteFloat( pivotYaw );
 ////	savefile.WriteVec3( pivotPos );
-////	savefile.WriteBool( oldHeightsValid );
+////	savefile.WriteBool( this.oldHeightsValid );
 ////	savefile.WriteFloat( oldWaistHeight );
 ////	for ( i = 0; i < idIK_Walk.MAX_LEGS; i++ ) {
 ////		savefile.WriteFloat( oldAnkleHeights[i] );
@@ -498,7 +498,7 @@ idIK_Walk::idIK_Walk
 ////	savefile.ReadInt( pivotFoot );
 ////	savefile.ReadFloat( pivotYaw );
 ////	savefile.ReadVec3( pivotPos );
-////	savefile.ReadBool( oldHeightsValid );
+////	savefile.ReadBool( this.oldHeightsValid );
 ////	savefile.ReadFloat( oldWaistHeight );
 ////	for ( i = 0; i < idIK_Walk.MAX_LEGS; i++ ) {
 ////		savefile.ReadFloat( oldAnkleHeights[i] );
@@ -764,7 +764,7 @@ idIK_Walk::Init
 ////
 ////		height = jointOrigins[i] * normal;
 ////
-////		if ( oldHeightsValid && !onPlat ) {
+////		if ( this.oldHeightsValid && !onPlat ) {
 ////			step = height + shift - oldAnkleHeights[i];
 ////			shift -= smoothing * step;
 ////		}
@@ -804,7 +804,7 @@ idIK_Walk::Init
 ////		}
 ////	}
 ////
-////	if ( oldHeightsValid ) {
+////	if ( this.oldHeightsValid ) {
 ////		// smoothly adjust height of waist
 ////		newHeight = ( waistOrigin + waistOffset ) * normal;
 ////		step = newHeight - oldWaistHeight;
@@ -814,8 +814,8 @@ idIK_Walk::Init
 ////	// save height of waist for smoothing
 ////	oldWaistHeight = ( waistOrigin + waistOffset ) * normal;
 ////
-////	if ( !oldHeightsValid ) {
-////		oldHeightsValid = true;
+////	if ( !this.oldHeightsValid ) {
+////		this.oldHeightsValid = true;
 ////		return;
 ////	}
 ////
@@ -884,46 +884,46 @@ idIK_Walk::Init
 ////
 ////	ik_activate = false;
 ////}
-////
-/////*
-////================
-////idIK_Walk::EnableAll
-////================
-////*/
-////void idIK_Walk::EnableAll( ) {
-////	this.enabledLegs = ( 1 << this.numLegs ) - 1;
-////	oldHeightsValid = false;
-////}
-////
-/////*
-////================
-////idIK_Walk::DisableAll
-////================
-////*/
-////void idIK_Walk::DisableAll( ) {
-////	this.enabledLegs = 0;
-////	oldHeightsValid = false;
-////}
-////
-/////*
-////================
-////idIK_Walk::EnableLeg
-////================
-////*/
-////void idIK_Walk::EnableLeg( int num ) {
-////	this.enabledLegs |= 1 << num;
-////}
-////
-/////*
-////================
-////idIK_Walk::DisableLeg
-////================
-////*/
-////void idIK_Walk::DisableLeg( int num ) {
-////	this.enabledLegs &= ~( 1 << num );
-////}
-////
-////
+
+/*
+================
+idIK_Walk::EnableAll
+================
+*/
+	EnableAll ( ): void {
+		this.enabledLegs = ( 1 << this.numLegs ) - 1;
+		this.oldHeightsValid = false;
+	}
+
+/*
+================
+idIK_Walk::DisableAll
+================
+*/
+	DisableAll ( ): void {
+		this.enabledLegs = 0;
+		this.oldHeightsValid = false;
+	}
+
+/*
+================
+idIK_Walk::EnableLeg
+================
+*/
+	EnableLeg ( /*int*/ num: number ): void {
+		this.enabledLegs |= 1 << num;
+	}
+
+/*
+================
+idIK_Walk::DisableLeg
+================
+*/
+	DisableLeg ( /*int*/ num: number ): void {
+		this.enabledLegs &= ~( 1 << num );
+	}
+
+
 };
 ////
 ////

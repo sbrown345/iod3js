@@ -71,7 +71,8 @@ class rigidBodyIState_t {
 	angularMomentum = new idVec3;			// rotational momentum relative to center of mass
 }
 
-class rigidBodyPState_t {
+
+class rigidBodyPState_t {
 	atRest :number/*int*/;						// set when simulation is suspended
 	lastTimeStep :number/*float*/;				// length of last time step
 	localOrigin = new idVec3;				// origin relative to master
@@ -975,16 +976,16 @@ idPhysics_RigidBody::SetContents
 ////int idPhysics_RigidBody::GetContents( /*int*/ id:number ) const {
 ////	return this.clipModel.GetContents();
 ////}
-////
-/////*
-////================
-////idPhysics_RigidBody::GetBounds
-////================
-////*/
-////const idBounds &idPhysics_RigidBody::GetBounds( /*int*/ id:number ) const {
-////	return this.clipModel.GetBounds();
-////}
-////
+
+/*
+================
+idPhysics_RigidBody::GetBounds
+================
+*/
+const idBounds &idPhysics_RigidBody::GetBounds( /*int*/ id:number ) const {
+	return this.clipModel.GetBounds();
+}
+
 /////*
 ////================
 ////idPhysics_RigidBody::GetAbsBounds

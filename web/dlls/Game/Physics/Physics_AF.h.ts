@@ -2352,34 +2352,34 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////}
 	////
-	/////*
-	////================
-	////idPhysics_AF::GetBounds
-	////================
-	////*/
-	////const idBounds &idPhysics_AF::GetBounds( /*int*/ id:number ) const {
-	////	var/*int*/i:number;
-	////	static idBounds relBounds;
-	////
-	////	if ( id >= 0 && id < this.bodies.Num() ) {
-	////		return this.bodies[id].GetClipModel().GetBounds();
-	////	}
-	////	else if ( !this.bodies.Num() ) {
-	////		relBounds.Zero();
-	////		return relBounds;
-	////	}
-	////	else {
-	////		relBounds = this.bodies[0].GetClipModel().GetBounds();
-	////		for ( i = 1; i < this.bodies.Num(); i++ ) {
-	////			idBounds bounds;
-	////			idVec3 origin = ( this.bodies[i].GetWorldOrigin() - this.bodies[0].GetWorldOrigin() ) * this.bodies[0].GetWorldAxis().Transpose();
-	////			idMat3 axis = this.bodies[i].GetWorldAxis() * this.bodies[0].GetWorldAxis().Transpose();
-	////			bounds.FromTransformedBounds( this.bodies[i].GetClipModel().GetBounds(), origin, axis );
-	////			relBounds += bounds;
-	////		}
-	////		return relBounds;
-	////	}
-	////}
+	/*
+	================
+	idPhysics_AF::GetBounds
+	================
+	*/
+	const idBounds &idPhysics_AF::GetBounds( /*int*/ id:number ) const {
+		var/*int*/i:number;
+		static idBounds relBounds;
+	
+		if ( id >= 0 && id < this.bodies.Num() ) {
+			return this.bodies[id].GetClipModel().GetBounds();
+		}
+		else if ( !this.bodies.Num() ) {
+			relBounds.Zero();
+			return relBounds;
+		}
+		else {
+			relBounds = this.bodies[0].GetClipModel().GetBounds();
+			for ( i = 1; i < this.bodies.Num(); i++ ) {
+				idBounds bounds;
+				idVec3 origin = ( this.bodies[i].GetWorldOrigin() - this.bodies[0].GetWorldOrigin() ) * this.bodies[0].GetWorldAxis().Transpose();
+				idMat3 axis = this.bodies[i].GetWorldAxis() * this.bodies[0].GetWorldAxis().Transpose();
+				bounds.FromTransformedBounds( this.bodies[i].GetClipModel().GetBounds(), origin, axis );
+				relBounds += bounds;
+			}
+			return relBounds;
+		}
+	}
 	////
 	/////*
 	////================

@@ -338,19 +338,19 @@ idPhysics_Static::idPhysics_Static
 	////int idPhysics_Static::GetClipMask( /*int*/ id:number  = -1 ) const {
 	////	return 0;
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::GetBounds
-	////================
-	////*/
-	////const idBounds &idPhysics_Static::GetBounds( /*int*/ id:number = -1  ) const {
-	////	if ( this.clipModel ) {
-	////		return this.clipModel.GetBounds();
-	////	}
-	////	return bounds_zero;
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_Static::GetBounds
+	================
+	*/
+	const idBounds &idPhysics_Static::GetBounds( /*int*/ id:number = -1  ) const {
+		if ( this.clipModel ) {
+			return this.clipModel.GetBounds();
+		}
+		return bounds_zero;
+	}
+	
 	/////*
 	////================
 	////idPhysics_Static::GetAbsBounds

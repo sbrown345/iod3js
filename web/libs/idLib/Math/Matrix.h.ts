@@ -467,7 +467,9 @@ class idMat3 {
 //ID_INLINE idMat3::idMat3( const float src[ 3 ][ 3 ] ) {
 //	memcpy( this.mat, src, 3 * 3 * sizeof( float ) );
 //}
-//
+
+	[index: number]: idVec3;
+
 //ID_INLINE const idVec3 &idMat3::operator[]( int index ) const {
 //	//assert( ( index >= 0 ) && ( index < 3 ) );
 //	return this.mat[ index ];

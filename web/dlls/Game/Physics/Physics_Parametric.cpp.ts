@@ -695,19 +695,19 @@ idPhysics_Parametric::SetClipMask
 //	}
 //	return 0;
 //}
-//
-///*
-//================
-//idPhysics_Parametric::GetBounds
-//================
-//*/
-//const idBounds &idPhysics_Parametric::GetBounds( /*int*/ id:number ) const {
-//	if ( this.clipModel ) {
-//		return this.clipModel.GetBounds();
-//	}
-//	return idPhysics_Base::GetBounds();
-//}
-//
+
+/*
+================
+idPhysics_Parametric::GetBounds
+================
+*/
+const idBounds &idPhysics_Parametric::GetBounds( /*int*/ id:number ) const {
+	if ( this.clipModel ) {
+		return this.clipModel.GetBounds();
+	}
+	return idPhysics_Base::GetBounds();
+}
+
 ///*
 //================
 //idPhysics_Parametric::GetAbsBounds

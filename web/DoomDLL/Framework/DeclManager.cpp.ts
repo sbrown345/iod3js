@@ -216,49 +216,49 @@ class idDeclFile {
 class idDeclManagerLocal extends idDeclManager {
 ////	friend class idDeclLocal;
 
-//public:
-    Init( ):void{throw "placeholder";}
-///*virtual void				*/Shutdown( ):void{throw "placeholder";}
-///*virtual void				*/Reload( force:boolean ):void{throw "placeholder";}
-	BeginLevelLoad ( ): void { throw "placeholder"; }
-///*virtual void				*/EndLevelLoad():void{throw "placeholder";}
-    RegisterDeclType( typeName:string, type:declType_t , allocator: ()=> idDecl ):void{throw "placeholder";}
-    RegisterDeclFolder( folder:string, extension:string, defaultType:declType_t ):void{throw "placeholder";}
-///*virtual int				*/	GetChecksum( ) :number{throw "placeholder";}
-///*virtual int				*/	GetNumDeclTypes( ) :number{throw "placeholder";}
-///*virtual int				*/	GetNumDecls( type:declType_t ):number{throw "placeholder";}
-/*virtual const char *		*/  GetDeclNameFromType( type:declType_t ) :string{throw "placeholder";}
-    GetDeclTypeFromName( typeName:string ):declType_t { throw "placeholder"; }
-/*	virtual const idDecl *		*/FindType( type: declType_t, name:string, makeDefault:boolean = true ):idDecl { throw "placeholder"; }
-	DeclByIndex ( type: declType_t, /*int */index: number, forceParse = true ): idDecl { throw "placeholder"; }
+////public:
+//    Init( ):void{throw "placeholder";}
+/////*virtual void				*/Shutdown( ):void{throw "placeholder";}
+/////*virtual void				*/Reload( force:boolean ):void{throw "placeholder";}
+//	BeginLevelLoad ( ): void { throw "placeholder"; }
+/////*virtual void				*/EndLevelLoad():void{throw "placeholder";}
+//    RegisterDeclType( typeName:string, type:declType_t , allocator: ()=> idDecl ):void{throw "placeholder";}
+//    RegisterDeclFolder( folder:string, extension:string, defaultType:declType_t ):void{throw "placeholder";}
+/////*virtual int				*/	GetChecksum( ) :number{throw "placeholder";}
+/////*virtual int				*/	GetNumDeclTypes( ) :number{throw "placeholder";}
+/////*virtual int				*/	GetNumDecls( type:declType_t ):number{throw "placeholder";}
+///*virtual const char *		*/  GetDeclNameFromType( type:declType_t ) :string{throw "placeholder";}
+//    GetDeclTypeFromName( typeName:string ):declType_t { throw "placeholder"; }
+///*	virtual const idDecl *		*/FindType( type: declType_t, name:string, makeDefault:boolean = true ):idDecl { throw "placeholder"; }
+//	DeclByIndex ( type: declType_t, /*int */index: number, forceParse = true ): idDecl { throw "placeholder"; }
 
-//	virtual const idDecl*		FindDeclWithoutParsing( declType_t type, name:string, bool makeDefault = true ):idDecl{throw "placeholder";}
-//	virtual void				ReloadFile( const char* filename, bool force ):void{throw "placeholder";}
+////	virtual const idDecl*		FindDeclWithoutParsing( declType_t type, name:string, bool makeDefault = true ):idDecl{throw "placeholder";}
+////	virtual void				ReloadFile( const char* filename, bool force ):void{throw "placeholder";}
 
-	ListType ( args: idCmdArgs, type: declType_t ): void { throw "placeholder"; }
-	PrintType ( args: idCmdArgs, type: declType_t ): void { throw "placeholder"; }
+//	ListType ( args: idCmdArgs, type: declType_t ): void { throw "placeholder"; }
+//	PrintType ( args: idCmdArgs, type: declType_t ): void { throw "placeholder"; }
 
-//	virtual idDecl *			CreateNewDecl( declType_t type, name:string, const char *fileName ):idDecl{throw "placeholder";}
+////	virtual idDecl *			CreateNewDecl( declType_t type, name:string, const char *fileName ):idDecl{throw "placeholder";}
 
-//	//BSM Added for the material editors rename capabilities
-//	virtual bool				RenameDecl( type:declType_t, oldName:string, newName:string ):boolean{throw "placeholder";}
+////	//BSM Added for the material editors rename capabilities
+////	virtual bool				RenameDecl( type:declType_t, oldName:string, newName:string ):boolean{throw "placeholder";}
 
-    MediaPrint( fmt:string, ...args:any[] ) /*id_attribute((format(printf,2,3)))*/:void{throw "placeholder";}
-//	virtual void				WritePrecacheCommands( idFile *f ):void{throw "placeholder";}
+//    MediaPrint( fmt:string, ...args:any[] ) /*id_attribute((format(printf,2,3)))*/:void{throw "placeholder";}
+////	virtual void				WritePrecacheCommands( idFile *f ):void{throw "placeholder";}
 
-	FindMaterial( name:string, makeDefault:boolean = true):idMaterial{ throw "placeholder";}
-	FindSkin ( name: string, makeDefault = true ): idDeclSkin { throw "placeholder"; }
-	FindSound ( name: string, makeDefault = true ): idSoundShader { throw "placeholder"; }
+//	FindMaterial( name:string, makeDefault:boolean = true):idMaterial{ throw "placeholder";}
+//	FindSkin ( name: string, makeDefault = true ): idDeclSkin { throw "placeholder"; }
+//	FindSound ( name: string, makeDefault = true ): idSoundShader { throw "placeholder"; }
 
-/*virtual const idMaterial *		*/MaterialByIndex(/* int */index:number, forceParse = true ):idMaterial{throw "placeholder";}
-///*virtual const idDeclSkin *		*/SkinByIndex(/* int */index:number, forceParse = true ):idDeclSkin{throw "placeholder";}
-///*virtual const idSoundShader *	    */SoundByIndex(/* int */index:number, forceParse = true ):idSoundShader{throw "placeholder";}
+///*virtual const idMaterial *		*/MaterialByIndex(/* int */index:number, forceParse = true ):idMaterial{throw "placeholder";}
+/////*virtual const idDeclSkin *		*/SkinByIndex(/* int */index:number, forceParse = true ):idDeclSkin{throw "placeholder";}
+/////*virtual const idSoundShader *	    */SoundByIndex(/* int */index:number, forceParse = true ):idSoundShader{throw "placeholder";}
 
-//public:
-	static MakeNameCanonical( name:string, result:Uint8Array, maxLength:number ):void{throw "placeholder";}
-	FindTypeWithoutParsing( type:declType_t, name:string, makeDefault:boolean = true ):idDeclLocal { throw "placeholder"; }
+////public:
+//	static MakeNameCanonical( name:string, result:Uint8Array, maxLength:number ):void{throw "placeholder";}
+//	FindTypeWithoutParsing( type:declType_t, name:string, makeDefault:boolean = true ):idDeclLocal { throw "placeholder"; }
 
-	GetDeclType( /*int */type:number ):idDeclType { return this.declTypes[type]; }
+	GetDeclType ( /*int */type: number ): idDeclType { return this.declTypes[type]; }
 	GetImplicitDeclFile ( ): idDeclFile { return this.implicitDecls; }
 
 //private:
@@ -291,9 +291,981 @@ class idDeclManagerLocal extends idDeclManager {
     }
 
 //private:
-    ListDecls_f( args:idCmdArgs  ):void { throw "placeholder"; }
-    ReloadDecls_f( args:idCmdArgs  ):void { throw "placeholder"; }
-    TouchDecl_f( args:idCmdArgs  ):void { throw "placeholder"; }
+    //ListDecls_f( args:idCmdArgs  ):void { throw "placeholder"; }
+    //ReloadDecls_f( args:idCmdArgs  ):void { throw "placeholder"; }
+	//TouchDecl_f(args: idCmdArgs): void { throw "placeholder"; }
+
+
+
+
+
+
+
+/*
+===================
+idDeclManagerLocal::Init
+===================
+*/
+ Init  (): void {
+
+		common.Printf("----- Initializing Decls -----\n");
+
+		this.checksum = 0;
+
+		//#ifdef USE_COMPRESSED_DECLS
+		//	SetupHuffman();
+		//#endif
+
+		//#ifdef GET_HUFFMAN_FREQUENCIES
+		//	ClearHuffmanFrequencies();
+		//#endif
+
+		// decls used throughout the engine
+		this.RegisterDeclType("table", declType_t.DECL_TABLE, idDeclAllocator<idDeclTable>(idDeclTable));
+		this.RegisterDeclType("material", declType_t.DECL_MATERIAL, idDeclAllocator<idMaterial>(idMaterial));
+		this.RegisterDeclType("skin", declType_t.DECL_SKIN, idDeclAllocator<idDeclSkin>(idDeclSkin));
+		this.RegisterDeclType("sound", declType_t.DECL_SOUND, idDeclAllocator<idSoundShader>(idSoundShader));
+
+		this.RegisterDeclType("entityDef", declType_t.DECL_ENTITYDEF, idDeclAllocator<idDeclEntityDef>(idDeclEntityDef));
+		this.RegisterDeclType("mapDef", declType_t.DECL_MAPDEF, idDeclAllocator<idDeclEntityDef>(idDeclEntityDef));
+		this.RegisterDeclType("fx", declType_t.DECL_FX, idDeclAllocator<idDeclFX>(idDeclFX));
+		this.RegisterDeclType("particle", declType_t.DECL_PARTICLE, idDeclAllocator<idDeclParticle>(idDeclParticle));
+		this.RegisterDeclType("articulatedFigure", declType_t.DECL_AF, idDeclAllocator<idDeclAF>(idDeclAF));
+		this.RegisterDeclType("pda", declType_t.DECL_PDA, idDeclAllocator<idDeclPDA>(idDeclPDA));
+		this.RegisterDeclType("email", declType_t.DECL_EMAIL, idDeclAllocator<idDeclEmail>(idDeclEmail));
+		this.RegisterDeclType("video", declType_t.DECL_VIDEO, idDeclAllocator<idDeclVideo>(idDeclVideo));
+		this.RegisterDeclType("audio", declType_t.DECL_AUDIO, idDeclAllocator<idDeclAudio>(idDeclAudio));
+
+		this.RegisterDeclFolder("materials", ".mtr", declType_t.DECL_MATERIAL);
+		this.RegisterDeclFolder("skins", ".skin", declType_t.DECL_SKIN);
+		this.RegisterDeclFolder("sound", ".sndshd", declType_t.DECL_SOUND);
+
+		// add console commands
+		cmdSystem.AddCommand("listDecls", this.ListDecls_f, cmdFlags_t.CMD_FL_SYSTEM, "lists all decls");
+
+		cmdSystem.AddCommand("reloadDecls", this.ReloadDecls_f, cmdFlags_t.CMD_FL_SYSTEM, "reloads decls");
+		cmdSystem.AddCommand("touch", this.TouchDecl_f, cmdFlags_t.CMD_FL_SYSTEM, "touches a decl");
+
+		todo("list decals");
+		//cmdSystem.AddCommand( "listTables", idListDecls_f<DECL_TABLE>, cmdFlags_t.CMD_FL_SYSTEM, "lists tables", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+		//cmdSystem.AddCommand( "listMaterials", idListDecls_f<DECL_MATERIAL>, cmdFlags_t.CMD_FL_SYSTEM, "lists materials", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+		//cmdSystem.AddCommand( "listSkins", idListDecls_f<DECL_SKIN>, cmdFlags_t.CMD_FL_SYSTEM, "lists skins", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+		//cmdSystem.AddCommand( "listSoundShaders", idListDecls_f<DECL_SOUND>, cmdFlags_t.CMD_FL_SYSTEM, "lists sound shaders", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+
+		//cmdSystem.AddCommand( "listEntityDefs", idListDecls_f<DECL_ENTITYDEF>, cmdFlags_t.CMD_FL_SYSTEM, "lists entity defs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+		//cmdSystem.AddCommand( "listFX", idListDecls_f<DECL_FX>, cmdFlags_t.CMD_FL_SYSTEM, "lists FX systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+		//cmdSystem.AddCommand( "listParticles", idListDecls_f<DECL_PARTICLE>, cmdFlags_t.CMD_FL_SYSTEM, "lists particle systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+		//cmdSystem.AddCommand( "listAF", idListDecls_f<DECL_AF>, cmdFlags_t.CMD_FL_SYSTEM, "lists articulated figures", idCmdSystem::ArgCompletion_String<listDeclStrings>);
+
+		//cmdSystem.AddCommand( "listPDAs", idListDecls_f<DECL_PDA>, cmdFlags_t.CMD_FL_SYSTEM, "lists PDAs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+		//cmdSystem.AddCommand( "listEmails", idListDecls_f<DECL_EMAIL>, cmdFlags_t.CMD_FL_SYSTEM, "lists Emails", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+		//cmdSystem.AddCommand( "listVideos", idListDecls_f<DECL_VIDEO>, cmdFlags_t.CMD_FL_SYSTEM, "lists Videos", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+		//cmdSystem.AddCommand( "listAudios", idListDecls_f<DECL_AUDIO>, cmdFlags_t.CMD_FL_SYSTEM, "lists Audios", idCmdSystem::ArgCompletion_String<listDeclStrings> );
+
+		//cmdSystem.AddCommand( "printTable", idPrintDecls_f<DECL_TABLE>, cmdFlags_t.CMD_FL_SYSTEM, "prints a table", idCmdSystem::ArgCompletion_Decl<DECL_TABLE> );
+		//cmdSystem.AddCommand( "printMaterial", idPrintDecls_f<DECL_MATERIAL>, cmdFlags_t.CMD_FL_SYSTEM, "prints a material", idCmdSystem::ArgCompletion_Decl<DECL_MATERIAL> );
+		//cmdSystem.AddCommand( "printSkin", idPrintDecls_f<DECL_SKIN>, cmdFlags_t.CMD_FL_SYSTEM, "prints a skin", idCmdSystem::ArgCompletion_Decl<DECL_SKIN> );
+		//cmdSystem.AddCommand( "printSoundShader", idPrintDecls_f<DECL_SOUND>, cmdFlags_t.CMD_FL_SYSTEM, "prints a sound shader", idCmdSystem::ArgCompletion_Decl<DECL_SOUND> );
+
+		//cmdSystem.AddCommand( "printEntityDef", idPrintDecls_f<DECL_ENTITYDEF>, cmdFlags_t.CMD_FL_SYSTEM, "prints an entity def", idCmdSystem::ArgCompletion_Decl<DECL_ENTITYDEF> );
+		//cmdSystem.AddCommand( "printFX", idPrintDecls_f<DECL_FX>, cmdFlags_t.CMD_FL_SYSTEM, "prints an FX system", idCmdSystem::ArgCompletion_Decl<DECL_FX> );
+		//cmdSystem.AddCommand( "printParticle", idPrintDecls_f<DECL_PARTICLE>, cmdFlags_t.CMD_FL_SYSTEM, "prints a particle system", idCmdSystem::ArgCompletion_Decl<DECL_PARTICLE> );
+		//cmdSystem.AddCommand( "printAF", idPrintDecls_f<DECL_AF>, cmdFlags_t.CMD_FL_SYSTEM, "prints an articulated figure", idCmdSystem::ArgCompletion_Decl<DECL_AF> );
+
+		//cmdSystem.AddCommand( "printPDA", idPrintDecls_f<DECL_PDA>, cmdFlags_t.CMD_FL_SYSTEM, "prints an PDA", idCmdSystem::ArgCompletion_Decl<DECL_PDA> );
+		//cmdSystem.AddCommand( "printEmail", idPrintDecls_f<DECL_EMAIL>, cmdFlags_t.CMD_FL_SYSTEM, "prints an Email", idCmdSystem::ArgCompletion_Decl<DECL_EMAIL> );
+		//cmdSystem.AddCommand( "printVideo", idPrintDecls_f<DECL_VIDEO>, cmdFlags_t.CMD_FL_SYSTEM, "prints a Audio", idCmdSystem::ArgCompletion_Decl<DECL_VIDEO> );
+		//cmdSystem.AddCommand( "printAudio", idPrintDecls_f<DECL_AUDIO>, cmdFlags_t.CMD_FL_SYSTEM, "prints an Video", idCmdSystem::ArgCompletion_Decl<DECL_AUDIO> );
+
+		//cmdSystem.AddCommand( "listHuffmanFrequencies", ListHuffmanFrequencies_f, cmdFlags_t.CMD_FL_SYSTEM, "lists decl text character frequencies" );
+
+		common.Printf("------------------------------\n");
+	}
+
+/////*
+////===================
+////idDeclManagerLocal::Shutdown
+////===================
+////*/
+////void idDeclManagerLocal::Shutdown( ) {
+////	int			i, j;
+////	idDeclLocal *decl;
+
+////	// free decls
+////	for ( i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
+////		for ( j = 0; j < this.linearLists[i].Num(); j++ ) {
+////			decl = this.linearLists[i][j];
+////			if ( decl.self != NULL ) {
+////				decl.self.FreeData();
+////				delete decl.self;
+////			}
+////			if ( decl.textSource ) {
+////				Mem_Free( decl.textSource );
+////				decl.textSource = NULL;
+////			}
+////			delete decl;
+////		}
+////		this.linearLists[i].Clear();
+////		this.hashTables[i].Free();
+////	}
+
+////	// free decl files
+////	this.loadedFiles.DeleteContents( true );
+
+////	// free the decl types and folders
+////	this.declTypes.DeleteContents( true );
+////	this.declFolders.DeleteContents( true );
+
+////#ifdef USE_COMPRESSED_DECLS
+////	ShutdownHuffman();
+////#endif
+////}
+
+/////*
+////===================
+////idDeclManagerLocal::Reload
+////===================
+////*/
+////void idDeclManagerLocal::Reload( bool force ) {
+////	for ( int i = 0; i < this.loadedFiles.Num(); i++ ) {
+////		this.loadedFiles[i].Reload( force );
+////	}
+////}
+
+/*
+===================
+idDeclManagerLocal::BeginLevelLoad
+===================
+*/
+ BeginLevelLoad  (): void {
+		this.insideLevelLoad = true;
+
+		// clear all the referencedThisLevel flags and purge all the data
+		// so the next reference will cause a reparse
+		for (var i = 0; i < declType_t.DECL_MAX_TYPES; i++) {
+			var num = this.linearLists[i].Num();
+			for (var j = 0; j < num; j++) {
+				var decl: idDeclLocal = this.linearLists[i][j];
+				decl.Purge();
+			}
+		}
+	}
+
+/////*
+////===================
+////idDeclManagerLocal::EndLevelLoad
+////===================
+////*/
+////void idDeclManagerLocal::EndLevelLoad() {
+////	this.insideLevelLoad = false;
+
+////	// we don't need to do anything here, but the image manager, model manager,
+////	// and sound sample manager will need to free media that was not referenced
+////}
+
+/*
+===================
+idDeclManagerLocal::RegisterDeclType
+===================
+*/
+ RegisterDeclType  (typeName: string, type: declType_t, allocator: () => idDecl): void {
+		var declType: idDeclType;
+
+		if (type < this.declTypes.Num() && this.declTypes[ /*(int)*/type]) {
+			common.Warning("idDeclManager::RegisterDeclType: type '%s' already exists", typeName);
+			return;
+		}
+
+		declType = new idDeclType;
+		declType.typeName = new idStr(typeName);
+		declType.type = type;
+		declType.allocator = allocator;
+
+		if ( /*(int)*/type + 1 > this.declTypes.Num()) {
+			this.declTypes.AssureSize( /*(int)*/type + 1, null);
+		}
+		this.declTypes[type] = declType;
+	}
+
+/*
+===================
+idDeclManagerLocal::RegisterDeclFolder
+===================
+*/
+ RegisterDeclFolder  (folder: string, extension: string, defaultType: declType_t) {
+		var /*int*/ i: number, j: number;
+		var fileName = new idStr;
+		var declFolder: idDeclFolder;
+		var fileList: idFileList;
+		var df: idDeclFile;
+
+		// check whether this folder / extension combination already exists
+		for (i = 0; i < this.declFolders.Num(); i++) {
+			if (this.declFolders[i].folder.Icmp(folder) == 0 && this.declFolders[i].extension.Icmp(extension) == 0) {
+				break;
+			}
+		}
+		if (i < this.declFolders.Num()) {
+			declFolder = this.declFolders[i];
+		} else {
+			declFolder = new idDeclFolder;
+			declFolder.folder = new idStr(folder);
+			declFolder.extension = new idStr(extension);
+			declFolder.defaultType = defaultType;
+			this.declFolders.Append(declFolder);
+		}
+
+		// scan for decl files
+		fileList = fileSystem.ListFiles(declFolder.folder.c_str(), declFolder.extension.c_str(), true);
+
+		// load and parse decl files
+		for (i = 0; i < fileList.GetNumFiles(); i++) {
+			fileName.equals(declFolder.folder + "/" + fileList.GetFile(i));
+
+			dlog(DEBUG_RegisterDeclFolder, "fileName: %s\n", fileName);
+			// check whether this file has already been loaded
+			for (j = 0; j < this.loadedFiles.Num(); j++) {
+				if (fileName.Icmp(this.loadedFiles[j].fileName) == 0) {
+					break;
+				}
+			}
+			if (j < this.loadedFiles.Num()) {
+				df = this.loadedFiles[j];
+			} else {
+				df = new idDeclFile(fileName.c_str(), defaultType);
+				this.loadedFiles.Append(df);
+			}
+			df.LoadAndParse();
+		}
+
+		fileSystem.FreeFileList(fileList);
+	}
+
+/////*
+////===================
+////idDeclManagerLocal::GetChecksum
+////===================
+////*/
+////int idDeclManagerLocal::GetChecksum( ) const {
+////	int i, j, total, num;
+////	int *checksumData;
+
+////	// get the total number of decls
+////	total = 0;
+////	for ( i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
+////		total += this.linearLists[i].Num();
+////	}
+
+////	checksumData = (int *) _alloca16( total * 2 * sizeof( int ) );
+
+////	total = 0;
+////	for ( i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
+////		declType_t type = (declType_t) i;
+
+////		// FIXME: not particularly pretty but PDAs and associated decls are localized and should not be checksummed
+////		if ( type == DECL_PDA || type == DECL_VIDEO || type == DECL_AUDIO || type == DECL_EMAIL ) {
+////			continue;
+////		}
+
+////		num = this.linearLists[i].Num();
+////		for ( j = 0; j < num; j++ ) {
+////			idDeclLocal *decl = this.linearLists[i][j];
+
+////			if ( decl.sourceFile == &implicitDecls ) {
+////				continue;
+////			}
+
+////			checksumData[total*2+0] = total;
+////			checksumData[total*2+1] = decl.checksum;
+////			total++;
+////		}
+////	}
+
+////	LittleRevBytes( checksumData, sizeof(int), total * 2 );
+////	return MD5_BlockChecksum( checksumData, total * 2 * sizeof( int ) );
+////}
+
+/*
+===================
+idDeclManagerLocal::GetNumDeclTypes
+===================
+*/
+/*int */
+ GetNumDeclTypes  (): number {
+		return this.declTypes.Num();
+	}
+
+/*
+===================
+idDeclManagerLocal::GetDeclNameFromType
+===================
+*/
+ GetDeclNameFromType  (type: declType_t): string {
+		var /*int */typeIndex = /*(int)*/type;
+
+		if (typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == null) {
+			common.FatalError("idDeclManager::GetDeclNameFromType: bad type: %i", typeIndex);
+		}
+		return this.declTypes[typeIndex].typeName.data;
+	}
+
+/*
+===================
+idDeclManagerLocal::GetDeclTypeFromName
+===================
+*/
+ GetDeclTypeFromName  (typeName: string): declType_t {
+		var i: number;
+
+		for (i = 0; i < this.declTypes.Num(); i++) {
+			if (this.declTypes[i] && this.declTypes[i].typeName.Icmp(typeName) == 0) {
+				return /*(declType_t)*/this.declTypes[i].type;
+			}
+		}
+		return declType_t.DECL_MAX_TYPES;
+	}
+
+/*
+=================
+idDeclManagerLocal::FindType
+
+External users will always cause the decl to be parsed before returning
+=================
+*/
+	FindType ( type: declType_t, name: string, makeDefault: boolean = true ): idDecl {
+		var decl: idDeclLocal;
+
+		if ( !name /*|| !name[0] */ ) {
+			name = "_emptyName";
+			todoThrow ( );
+			//common.Warning( "idDeclManager::FindType: empty %s name", GetDeclType( (int)type ).typeName.c_str() );
+		}
+
+		decl = this.FindTypeWithoutParsing( type, name, makeDefault );
+		if ( !decl ) {
+			return null;
+		}
+
+		decl.AllocateSelf ( );
+
+		// if it hasn't been parsed yet, parse it now
+		if ( decl.declState == declState_t.DS_UNPARSED ) {
+			decl.ParseLocal ( );
+		}
+
+		// mark it as referenced
+		decl.referencedThisLevel = true;
+		decl.everReferenced = true;
+		if ( this.insideLevelLoad ) {
+			decl.parsedOutsideLevelLoad = false;
+		}
+
+		return decl.self;
+	}
+
+/////*
+////===============
+////idDeclManagerLocal::FindDeclWithoutParsing
+////===============
+////*/
+////const idDecl* idDeclManagerLocal::FindDeclWithoutParsing( declType_t type, name:string, bool makeDefault) {
+////	idDeclLocal* decl;
+////	decl = FindTypeWithoutParsing(type, name, makeDefault);
+////	if(decl) {
+////		return decl.self;
+////	}
+////	return NULL;
+////}
+
+/////*
+////===============
+////idDeclManagerLocal::ReloadFile
+////===============
+////*/
+////void idDeclManagerLocal::ReloadFile( const char* filename, bool force ) {
+////	for ( int i = 0; i < this.loadedFiles.Num(); i++ ) {
+////		if(!this.loadedFiles[i].fileName.Icmp(filename)) {
+////			checksum ^= this.loadedFiles[i].checksum;
+////			this.loadedFiles[i].Reload( force );
+////			checksum ^= this.loadedFiles[i].checksum;
+////		}
+////	}
+////}
+
+/*
+===================
+idDeclManagerLocal::GetNumDecls
+===================
+*/
+ GetNumDecls  (type: declType_t): number /*int*/ {
+		var /*int */typeIndex = /*(int)*/type;
+
+		if (typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == null) {
+			common.FatalError("idDeclManager::GetNumDecls: bad type: %i", typeIndex);
+		}
+		return this.linearLists[typeIndex].Num();
+	}
+
+/*
+===================
+idDeclManagerLocal::DeclByIndex
+===================
+*/
+ DeclByIndex  (type: declType_t, /*int */index: number, forceParse = true): idDecl {
+		var typeIndex = /*(int)*/type;
+
+		if (typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == null) {
+			common.FatalError("idDeclManager::DeclByIndex: bad type: %i", typeIndex);
+		}
+		if (index < 0 || index >= this.linearLists[typeIndex].Num()) {
+			common.Error("idDeclManager::DeclByIndex: out of range");
+		}
+		var decl = this.linearLists[typeIndex][index];
+
+		decl.AllocateSelf();
+
+		if (forceParse && decl.declState == declState_t.DS_UNPARSED) {
+			decl.ParseLocal();
+		}
+
+		return decl.self;
+	}
+
+/*
+===================
+idDeclManagerLocal::ListType
+
+list*
+Lists decls currently referenced
+
+list* ever
+Lists decls that have been referenced at least once since app launched
+
+list* all
+Lists every decl declared, even if it hasn't been referenced or parsed
+
+FIXME: alphabetized, wildcards?
+===================
+*/
+ ListType  (args: idCmdArgs, type: declType_t): void {
+		todoThrow();
+		////	bool all, ever;
+
+		////	if ( !idStr::Icmp( args.Argv( 1 ), "all" ) ) {
+		////		all = true;
+		////	} else {
+		////		all = false;
+		////	}
+		////	if ( !idStr::Icmp( args.Argv( 1 ), "ever" ) ) {
+		////		ever = true;
+		////	} else {
+		////		ever = false;
+		////	}
+
+		////	common.Printf( "--------------------\n" );
+		////	int printed = 0;
+		////	int	count = this.linearLists[ (int)type ].Num();
+		////	for ( int i = 0 ; i < count ; i++ ) {
+		////		idDeclLocal *decl = this.linearLists[ (int)type ][ i ];
+
+		////		if ( !all && decl.declState == declState_t.DS_UNPARSED ) {
+		////			continue;
+		////		}
+
+		////		if ( !all && !ever && !decl.referencedThisLevel ) {
+		////			continue;
+		////		}
+
+		////		if ( decl.referencedThisLevel ) {
+		////			common.Printf( "*" );
+		////		} else if ( decl.everReferenced ) {
+		////			common.Printf( "." );
+		////		} else {
+		////			common.Printf( " " );
+		////		}
+		////		if ( decl.declState == declState_t.DS_DEFAULTED ) {
+		////			common.Printf( "D" );
+		////		} else {
+		////			common.Printf( " " );
+		////		}
+		////		common.Printf( "%4i: ", decl.index );
+		////		printed++;
+		////		if ( decl.declState == declState_t.DS_UNPARSED ) {
+		////			// doesn't have any type specific data yet
+		////			common.Printf( "%s\n", decl.GetName() );
+		////		} else {
+		////			decl.self.List();
+		////		}
+		////	}
+
+		////	common.Printf( "--------------------\n" );
+		////	common.Printf( "%i of %i %s\n", printed, count, this.declTypes[type].typeName.c_str() );
+	}
+
+/*
+===================
+idDeclManagerLocal::PrintType
+===================
+*/
+ PrintType  (args: idCmdArgs, type: declType_t): void {
+		todoThrow();
+		////	// individual decl types may use additional command parameters
+		////	if ( args.Argc() < 2 ) {
+		////		common.Printf( "USAGE: Print<decl type> <decl name> [type specific parms]\n" );
+		////		return;
+		////	}
+
+		////	// look it up, skipping the public path so it won't parse or reference
+		////	idDeclLocal *decl = FindTypeWithoutParsing( type, args.Argv( 1 ), false );
+		////	if ( !decl ) {
+		////		common.Printf( "%s '%s' not found.\n", this.declTypes[ type ].typeName.c_str(), args.Argv( 1 ) );
+		////		return;
+		////	}
+
+		////	// print information common to all decls
+		////	common.Printf( "%s %s:\n", this.declTypes[ type ].typeName.c_str(), decl.name.c_str() );
+		////	common.Printf( "source: %s:%i\n", decl.sourceFile.fileName.c_str(), decl.sourceLine );
+		////	common.Printf( "----------\n" );
+		////	if ( decl.textSource != NULL ) {
+		////		char *declText = (char *)_alloca( decl.textLength + 1 );
+		////		decl.GetText( declText );
+		////		common.Printf( "%s\n", declText );
+		////	} else {
+		////		common.Printf( "NO SOURCE\n" );
+		////	}
+		////	common.Printf( "----------\n" );
+		////	switch( decl.declState ) {
+		////		case declState_t.DS_UNPARSED:
+		////			common.Printf( "Unparsed.\n" );
+		////			break;
+		////		case declState_t.DS_DEFAULTED:
+		////			common.Printf( "<DEFAULTED>\n" );
+		////			break;
+		////		case declState_t.DS_PARSED:
+		////			common.Printf( "Parsed.\n" );
+		////			break;
+		////	}
+
+		////	if ( decl.referencedThisLevel ) {
+		////		common.Printf( "Currently referenced this level.\n" );
+		////	} else if ( decl.everReferenced ) {
+		////		common.Printf( "Referenced in a previous level.\n" );
+		////	} else {
+		////		common.Printf( "Never referenced.\n" );
+		////	}
+
+		////	// allow type-specific data to be printed
+		////	if ( decl.self != NULL ) {
+		////		decl.self.Print();
+		////	}
+
+	}
+
+/////*
+////===================
+////idDeclManagerLocal::CreateNewDecl
+////===================
+////*/
+////idDecl *idDeclManagerLocal::CreateNewDecl( declType_t type, name:string, const char *_fileName ) {
+////	int typeIndex = (int)type;
+////	int i, hash;
+
+////	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == NULL ) {
+////		common.FatalError( "idDeclManager::CreateNewDecl: bad type: %i", typeIndex );
+////	}
+
+////	char  canonicalName[MAX_STRING_CHARS];
+
+////	idDeclManagerLocal.MakeNameCanonical( name, canonicalName, sizeof( canonicalName ) );
+
+////	idStr fileName = _fileName;
+////	fileName.BackSlashesToSlashes();
+
+////	// see if it already exists
+////	hash = this.hashTables[typeIndex].GenerateKey( canonicalName, false );
+////	for ( i = this.hashTables[typeIndex].First( hash ); i >= 0; i = this.hashTables[typeIndex].Next( i ) ) {
+////		if ( this.linearLists[typeIndex][i].name.Icmp( canonicalName ) == 0 ) {
+////			this.linearLists[typeIndex][i].AllocateSelf();
+////			return this.linearLists[typeIndex][i].self;
+////		}
+////	}
+
+////	idDeclFile *sourceFile;
+
+////	// find existing source file or create a new one
+////	for ( i = 0; i < this.loadedFiles.Num(); i++ ) {
+////		if ( this.loadedFiles[i].fileName.Icmp( fileName ) == 0 ) {
+////			break;
+////		}
+////	}
+////	if ( i < this.loadedFiles.Num() ) {
+////		sourceFile = this.loadedFiles[i];
+////	} else {
+////		sourceFile = new idDeclFile( fileName, type );
+////		this.loadedFiles.Append( sourceFile );
+////	}
+
+////	idDeclLocal *decl = new idDeclLocal;
+////	decl.name = canonicalName;
+////	decl.type = type;
+////	decl.declState = declState_t.DS_UNPARSED;
+////	decl.AllocateSelf();
+////	idStr header = this.declTypes[typeIndex].typeName;
+////	idStr defaultText = decl.self.DefaultDefinition();
+
+
+////	int size = header.Length() + 1 + idStr::Length( canonicalName ) + 1 + defaultText.Length();
+////	char *declText = ( char * ) _alloca( size + 1 );
+
+////	memcpy( declText, header, header.Length() );
+////	declText[header.Length()] = ' ';
+////	memcpy( declText + header.Length() + 1, canonicalName, idStr::Length( canonicalName ) );
+////	declText[header.Length() + 1 + idStr::Length( canonicalName )] = ' ';
+////	memcpy( declText + header.Length() + 1 + idStr::Length( canonicalName ) + 1, defaultText, defaultText.Length() + 1 );
+
+////	decl.SetTextLocal( declText, size );
+////	decl.sourceFile = sourceFile;
+////	decl.sourceTextOffset = sourceFile.fileSize;
+////	decl.sourceTextLength = 0;
+////	decl.sourceLine = sourceFile.numLines;
+
+////	decl.ParseLocal();
+
+////	// add this decl to the source file list
+////	decl.nextInFile = sourceFile.decls;
+////	sourceFile.decls = decl;
+
+////	// add it to the hash table and linear list
+////	decl.index = this.linearLists[typeIndex].Num();
+////	this.hashTables[typeIndex].Add( hash, this.linearLists[typeIndex].Append( decl ) );
+
+////	return decl.self;
+////}
+
+/////*
+////===============
+////idDeclManagerLocal::RenameDecl
+////===============
+////*/
+////bool idDeclManagerLocal::RenameDecl( declType_t type, const char* oldName, const char* newName ) {
+
+////	char canonicalOldName[MAX_STRING_CHARS];
+////	idDeclManagerLocal.MakeNameCanonical( oldName, canonicalOldName, sizeof( canonicalOldName ));
+
+////	char canonicalNewName[MAX_STRING_CHARS];
+////	idDeclManagerLocal.MakeNameCanonical( newName, canonicalNewName, sizeof( canonicalNewName ) );
+
+////	idDeclLocal	*decl = NULL;
+
+////	// make sure it already exists
+////	int typeIndex = (int)type;
+////	int i, hash;
+////	hash = this.hashTables[typeIndex].GenerateKey( canonicalOldName, false );
+////	for ( i = this.hashTables[typeIndex].First( hash ); i >= 0; i = this.hashTables[typeIndex].Next( i ) ) {
+////		if ( this.linearLists[typeIndex][i].name.Icmp( canonicalOldName ) == 0 ) {
+////			decl = this.linearLists[typeIndex][i];
+////			break;
+////		}
+////	}
+////	if(!decl)
+////		return false;
+
+////	//if ( !this.hashTables[(int)type].Get( canonicalOldName, &declPtr ) )
+////	//	return false;
+
+////	//decl = *declPtr;
+
+////	//Change the name
+////	decl.name = canonicalNewName;
+
+
+////	// add it to the hash table
+////	//this.hashTables[(int)decl.type].Set( decl.name, decl );
+////	int newhash = this.hashTables[typeIndex].GenerateKey( canonicalNewName, false );
+////	this.hashTables[typeIndex].Add( newhash, decl.index );
+
+////	//Remove the old hash item
+////	this.hashTables[typeIndex].Remove(hash, decl.index);
+
+////	return true;
+////}
+
+/*
+===================
+idDeclManagerLocal::MediaPrint
+
+This is just used to nicely indent media caching prints
+===================
+*/
+ MediaPrint  (fmt: string, ...args: any[]): void {
+		if (!idDeclManagerLocal.decl_show.GetInteger()) {
+			return;
+		}
+
+		var output = "";
+
+		for (var/*int */i = 0; i < this.indent; i++) {
+			common.Printf("    ");
+			output += "    ";//
+		}
+
+		output += vsprintf(fmt, args);
+
+		common.Printf("%s", output);
+	}
+
+/////*
+////===================
+////idDeclManagerLocal::WritePrecacheCommands
+////===================
+////*/
+////void idDeclManagerLocal::WritePrecacheCommands( idFile *f ) {
+////	for ( int i = 0; i < this.declTypes.Num(); i++ ) {
+////		int num;
+
+////		if ( this.declTypes[i] == NULL ) {
+////			continue;
+////		}
+
+////		num = this.linearLists[i].Num();
+
+////		for ( int j = 0 ; j < num ; j++ ) {
+////			idDeclLocal *decl = this.linearLists[i][j];
+
+////			if ( !decl.referencedThisLevel ) {
+////				continue;
+////			}
+
+////			char	str[1024];
+////			sprintf( str, "touch %s %s\n", this.declTypes[i].typeName.c_str(), decl.GetName() );
+////			common.Printf( "%s", str );
+////			f.Printf( "%s", str );
+////		}
+////	}
+////}
+
+/////********************************************************************/
+
+	FindMaterial(name: string, makeDefault: boolean = true): idMaterial {
+		return <idMaterial>this.FindType( declType_t.DECL_MATERIAL, name, makeDefault );;
+		//	return static_cast<const idMaterial *>( this.FindType( declType_t.DECL_MATERIAL, name, makeDefault ) );
+	}
+
+////const idMaterial *idDeclManagerLocal::MaterialByIndex( int index, bool forceParse ) {
+////	return static_cast<const idMaterial *>( DeclByIndex( declType_t.DECL_MATERIAL, index, forceParse ) );
+////}
+
+/////********************************************************************/
+
+	FindSkin ( name: string, makeDefault = true ): idDeclSkin {
+		return static_cast<idDeclSkin>( this.FindType( declType_t.DECL_SKIN, name, makeDefault ) );
+	}
+
+////const idDeclSkin *idDeclManagerLocal::SkinByIndex( int index, bool forceParse ) {
+////	return static_cast<const idDeclSkin *>( DeclByIndex( DECL_SKIN, index, forceParse ) );
+////}
+
+/////********************************************************************/
+
+ FindSound  (name: string, makeDefault= true): idSoundShader {
+		return static_cast<idSoundShader>(this.FindType(declType_t.DECL_SOUND, name, makeDefault));
+	}
+
+////const idSoundShader *idDeclManagerLocal::SoundByIndex( int index, bool forceParse ) {
+////	return static_cast<const idSoundShader *>( DeclByIndex( declType_t.DECL_SOUND, index, forceParse ) );
+////}
+
+/*
+===================
+idDeclManagerLocal::MakeNameCanonical
+===================
+*/
+	static MakeNameCanonical ( name: string, /*char **/result: Uint8Array, /*int */maxLength: number ): void {
+		var /*int */i: number, lastDot: number;
+
+		lastDot = -1;
+		for ( i = 0; i < maxLength && i < name.length /*name[i] != '\0'*/; i++ ) {
+			var c = name[i];
+			if ( c == '\\' ) {
+				result[i] = '/'.charCodeAt( 0 );
+			} else if ( c == '.' ) {
+				lastDot = i;
+				result[i] = c.charCodeAt( 0 );
+			} else {
+				result[i] = idStr.ToLower( c ).charCodeAt( 0 );
+			}
+		}
+		if ( lastDot != -1 ) {
+			result[lastDot] = 0;
+		} else {
+			result[i] = 0;
+		}
+	}
+
+/*
+================
+idDeclManagerLocal::ListDecls_f
+================
+*/
+ ListDecls_f  (args: idCmdArgs): void {
+		todo();
+		////	int		i, j;
+		////	int		totalDecls = 0;
+		////	int		totalText = 0;
+		////	int		totalStructs = 0;
+
+		////	for ( i = 0; i < declManagerLocal.declTypes.Num(); i++ ) {
+		////		int size, num;
+
+		////		if ( declManagerLocal.declTypes[i] == NULL ) {
+		////			continue;
+		////		}
+
+		////		num = declManagerLocal.linearLists[i].Num();
+		////		totalDecls += num;
+
+		////		size = 0;
+		////		for ( j = 0; j < num; j++ ) {
+		////			size += declManagerLocal.linearLists[i][j].Size();
+		////			if ( declManagerLocal.linearLists[i][j].self != NULL ) {
+		////				size += declManagerLocal.linearLists[i][j].self.Size();
+		////			}
+		////		}
+		////		totalStructs += size;
+
+		////		common.Printf( "%4ik %4i %s\n", size >> 10, num, declManagerLocal.declTypes[i].typeName.c_str() );
+		////	}
+
+		////	for ( i = 0 ; i < declManagerLocal.loadedFiles.Num() ; i++ ) {
+		////		idDeclFile	*df = declManagerLocal.loadedFiles[i];
+		////		totalText += df.fileSize;
+		////	}
+
+		////	common.Printf( "%i total decls is %i decl files\n", totalDecls, declManagerLocal.loadedFiles.Num() );
+		////	common.Printf( "%iKB in text, %iKB in structures\n", totalText >> 10, totalStructs >> 10 );
+	}
+
+/*
+===================
+idDeclManagerLocal::ReloadDecls_f
+
+Reload will not find any new files created in the directories, it
+will only reload existing files.
+
+A reload will never cause anything to be purged.
+===================
+*/
+	ReloadDecls_f ( args: idCmdArgs ): void {
+		todoThrow ( );
+		//bool	force;
+
+		//if ( !idStr::Icmp( args.Argv( 1 ), "all" ) ) {
+		//	force = true;
+		//	common.Printf( "reloading all decl files:\n" );
+		//} else {
+		//	force = false;
+		//	common.Printf( "reloading changed decl files:\n" );
+		//}
+
+		//soundSystem.SetMute( true );
+
+		//declManagerLocal.Reload( force );
+
+		//soundSystem.SetMute( false );
+	}
+
+/*
+===================
+idDeclManagerLocal::TouchDecl_f
+===================
+*/
+	TouchDecl_f ( args: idCmdArgs ): void {
+		todoThrow ( );
+////	int	i;
+
+////	if ( args.Argc() != 3 ) {
+////		common.Printf( "usage: touch <type> <name>\n" );
+////		common.Printf( "valid types: " );
+////		for ( int i = 0 ; i < declManagerLocal.declTypes.Num() ; i++ ) {
+////			if ( declManagerLocal.declTypes[i] ) {
+////				common.Printf( "%s ", declManagerLocal.declTypes[i].typeName.c_str() );
+////			}
+////		}
+////		common.Printf( "\n" );
+////		return;
+////	}
+
+////	for ( i = 0; i < declManagerLocal.declTypes.Num(); i++ ) {
+////		if ( declManagerLocal.declTypes[i] && declManagerLocal.declTypes[i].typeName.Icmp( args.Argv( 1 ) ) == 0 ) {
+////			break;
+////		}
+////	}
+////	if ( i >= declManagerLocal.declTypes.Num() ) {
+////		common.Printf( "unknown decl type '%s'\n", args.Argv( 1 ) );
+////		return;
+////	}
+
+////	const idDecl *decl = declManagerLocal.FindType( (declType_t)i, args.Argv( 2 ), false );
+////	if ( !decl ) {
+////		common.Printf( "%s '%s' not found\n", declManagerLocal.declTypes[i].typeName.c_str(), args.Argv( 2 ) );
+////	}
+	}
+
+/*
+===================
+idDeclManagerLocal::FindTypeWithoutParsing
+
+This finds or creats the decl, but does not cause a parse.  This is only used internally.
+===================
+*/
+FindTypeWithoutParsing (type: declType_t, name: string, makeDefault: boolean = true): idDeclLocal {
+		var /*int */typeIndex = int(type);
+		var /*int */i: number, hash: number;
+
+		if (typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == null) {
+			common.FatalError("idDeclManager::FindTypeWithoutParsing: bad type: %i", typeIndex);
+		}
+
+		var canonicalNameArray = new Uint8Array(MAX_STRING_CHARS);
+
+		idDeclManagerLocal.MakeNameCanonical(name, canonicalNameArray, sizeof(canonicalNameArray));
+		var canonicalName = canonicalNameArray.toString();
+
+		// see if it already exists
+		hash = this.hashTables[typeIndex].GenerateKey(canonicalName, false);
+		for (i = this.hashTables[typeIndex].First(hash); i >= 0; i = this.hashTables[typeIndex].Next(i)) {
+			if (this.linearLists[typeIndex][i].name.Icmp(canonicalName) == 0) {
+				// only print these when decl_show is set to 2, because it can be a lot of clutter
+				if (idDeclManagerLocal.decl_show.GetInteger() > 1) {
+					this.MediaPrint("referencing %s %s\n", this.declTypes[type].typeName.c_str(), name);
+				}
+				return this.linearLists[typeIndex][i];
+			}
+		}
+
+		if (!makeDefault) {
+			return /*NULL*/null;
+		}
+
+		var decl = new idDeclLocal;
+		decl.self = /*NULL*/null;
+		decl.name.equals(canonicalName.toString());
+		decl.type = type;
+		decl.declState = declState_t.DS_UNPARSED;
+		decl.textSource = /*NULL*/null;
+		decl.textLength = 0;
+		decl.sourceFile = this.implicitDecls;
+		decl.referencedThisLevel = false;
+		decl.everReferenced = false;
+		decl.parsedOutsideLevelLoad = !this.insideLevelLoad;
+
+		// add it to the linear list and hash table
+		decl.index = this.linearLists[typeIndex].Num();
+		this.hashTables[typeIndex].Add(hash, this.linearLists[typeIndex].Append(decl));
+
+		return decl;
+	}
+
 };
 
 var declManagerLocal = new idDeclManagerLocal();
@@ -808,968 +1780,6 @@ idDeclFile.prototype.LoadAndParse = function ( ): number {
 ////*/
 
 ////const char *listDeclStrings[] = { "current", "all", "ever", NULL };
-
-/*
-===================
-idDeclManagerLocal::Init
-===================
-*/
-idDeclManagerLocal.prototype.Init = function( ):void {
-
-	common.Printf( "----- Initializing Decls -----\n" );
-    
-	this.checksum = 0;
-
-//#ifdef USE_COMPRESSED_DECLS
-//	SetupHuffman();
-//#endif
-
-//#ifdef GET_HUFFMAN_FREQUENCIES
-//	ClearHuffmanFrequencies();
-//#endif
-
-	// decls used throughout the engine
-	this.RegisterDeclType( "table",				declType_t.DECL_TABLE,			idDeclAllocator<idDeclTable>(idDeclTable) );
-	this.RegisterDeclType( "material",			declType_t.DECL_MATERIAL,		idDeclAllocator<idMaterial>(idMaterial) );
-	this.RegisterDeclType( "skin",				declType_t.DECL_SKIN,			idDeclAllocator<idDeclSkin>(idDeclSkin) );
-	this.RegisterDeclType( "sound",				declType_t.DECL_SOUND,			idDeclAllocator<idSoundShader>(idSoundShader) );
-
-	this.RegisterDeclType( "entityDef",			declType_t.DECL_ENTITYDEF,		idDeclAllocator<idDeclEntityDef>(idDeclEntityDef) );
-	this.RegisterDeclType( "mapDef",			declType_t.DECL_MAPDEF,		    idDeclAllocator<idDeclEntityDef>(idDeclEntityDef) );
-	this.RegisterDeclType( "fx",				declType_t.DECL_FX,			    idDeclAllocator<idDeclFX>(idDeclFX) );
-	this.RegisterDeclType( "particle",			declType_t.DECL_PARTICLE,		idDeclAllocator<idDeclParticle>(idDeclParticle) );
-	this.RegisterDeclType( "articulatedFigure",	declType_t.DECL_AF,			    idDeclAllocator<idDeclAF>(idDeclAF) );
-	this.RegisterDeclType( "pda",				declType_t.DECL_PDA,			idDeclAllocator<idDeclPDA>(idDeclPDA) );
-	this.RegisterDeclType( "email",				declType_t.DECL_EMAIL,			idDeclAllocator<idDeclEmail>(idDeclEmail) );
-	this.RegisterDeclType( "video",				declType_t.DECL_VIDEO,			idDeclAllocator<idDeclVideo>(idDeclVideo) );
-	this.RegisterDeclType( "audio",				declType_t.DECL_AUDIO,			idDeclAllocator<idDeclAudio>(idDeclAudio) );
-
-	this.RegisterDeclFolder( "materials", ".mtr", declType_t.DECL_MATERIAL );
-	this.RegisterDeclFolder( "skins", ".skin", declType_t.DECL_SKIN );
-	this.RegisterDeclFolder("sound", ".sndshd", declType_t.DECL_SOUND);
-
-	// add console commands
-	cmdSystem.AddCommand("listDecls", this.ListDecls_f, cmdFlags_t.CMD_FL_SYSTEM, "lists all decls" );
-
-	cmdSystem.AddCommand("reloadDecls", this.ReloadDecls_f, cmdFlags_t.CMD_FL_SYSTEM, "reloads decls" );
-	cmdSystem.AddCommand("touch", this.TouchDecl_f, cmdFlags_t.CMD_FL_SYSTEM, "touches a decl" );
-	
-    todo( "list decals" );
-	//cmdSystem.AddCommand( "listTables", idListDecls_f<DECL_TABLE>, cmdFlags_t.CMD_FL_SYSTEM, "lists tables", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listMaterials", idListDecls_f<DECL_MATERIAL>, cmdFlags_t.CMD_FL_SYSTEM, "lists materials", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listSkins", idListDecls_f<DECL_SKIN>, cmdFlags_t.CMD_FL_SYSTEM, "lists skins", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listSoundShaders", idListDecls_f<DECL_SOUND>, cmdFlags_t.CMD_FL_SYSTEM, "lists sound shaders", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-
-	//cmdSystem.AddCommand( "listEntityDefs", idListDecls_f<DECL_ENTITYDEF>, cmdFlags_t.CMD_FL_SYSTEM, "lists entity defs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listFX", idListDecls_f<DECL_FX>, cmdFlags_t.CMD_FL_SYSTEM, "lists FX systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listParticles", idListDecls_f<DECL_PARTICLE>, cmdFlags_t.CMD_FL_SYSTEM, "lists particle systems", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listAF", idListDecls_f<DECL_AF>, cmdFlags_t.CMD_FL_SYSTEM, "lists articulated figures", idCmdSystem::ArgCompletion_String<listDeclStrings>);
-
-	//cmdSystem.AddCommand( "listPDAs", idListDecls_f<DECL_PDA>, cmdFlags_t.CMD_FL_SYSTEM, "lists PDAs", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listEmails", idListDecls_f<DECL_EMAIL>, cmdFlags_t.CMD_FL_SYSTEM, "lists Emails", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listVideos", idListDecls_f<DECL_VIDEO>, cmdFlags_t.CMD_FL_SYSTEM, "lists Videos", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-	//cmdSystem.AddCommand( "listAudios", idListDecls_f<DECL_AUDIO>, cmdFlags_t.CMD_FL_SYSTEM, "lists Audios", idCmdSystem::ArgCompletion_String<listDeclStrings> );
-
-	//cmdSystem.AddCommand( "printTable", idPrintDecls_f<DECL_TABLE>, cmdFlags_t.CMD_FL_SYSTEM, "prints a table", idCmdSystem::ArgCompletion_Decl<DECL_TABLE> );
-	//cmdSystem.AddCommand( "printMaterial", idPrintDecls_f<DECL_MATERIAL>, cmdFlags_t.CMD_FL_SYSTEM, "prints a material", idCmdSystem::ArgCompletion_Decl<DECL_MATERIAL> );
-	//cmdSystem.AddCommand( "printSkin", idPrintDecls_f<DECL_SKIN>, cmdFlags_t.CMD_FL_SYSTEM, "prints a skin", idCmdSystem::ArgCompletion_Decl<DECL_SKIN> );
-	//cmdSystem.AddCommand( "printSoundShader", idPrintDecls_f<DECL_SOUND>, cmdFlags_t.CMD_FL_SYSTEM, "prints a sound shader", idCmdSystem::ArgCompletion_Decl<DECL_SOUND> );
-
-	//cmdSystem.AddCommand( "printEntityDef", idPrintDecls_f<DECL_ENTITYDEF>, cmdFlags_t.CMD_FL_SYSTEM, "prints an entity def", idCmdSystem::ArgCompletion_Decl<DECL_ENTITYDEF> );
-	//cmdSystem.AddCommand( "printFX", idPrintDecls_f<DECL_FX>, cmdFlags_t.CMD_FL_SYSTEM, "prints an FX system", idCmdSystem::ArgCompletion_Decl<DECL_FX> );
-	//cmdSystem.AddCommand( "printParticle", idPrintDecls_f<DECL_PARTICLE>, cmdFlags_t.CMD_FL_SYSTEM, "prints a particle system", idCmdSystem::ArgCompletion_Decl<DECL_PARTICLE> );
-	//cmdSystem.AddCommand( "printAF", idPrintDecls_f<DECL_AF>, cmdFlags_t.CMD_FL_SYSTEM, "prints an articulated figure", idCmdSystem::ArgCompletion_Decl<DECL_AF> );
-
-	//cmdSystem.AddCommand( "printPDA", idPrintDecls_f<DECL_PDA>, cmdFlags_t.CMD_FL_SYSTEM, "prints an PDA", idCmdSystem::ArgCompletion_Decl<DECL_PDA> );
-	//cmdSystem.AddCommand( "printEmail", idPrintDecls_f<DECL_EMAIL>, cmdFlags_t.CMD_FL_SYSTEM, "prints an Email", idCmdSystem::ArgCompletion_Decl<DECL_EMAIL> );
-	//cmdSystem.AddCommand( "printVideo", idPrintDecls_f<DECL_VIDEO>, cmdFlags_t.CMD_FL_SYSTEM, "prints a Audio", idCmdSystem::ArgCompletion_Decl<DECL_VIDEO> );
-	//cmdSystem.AddCommand( "printAudio", idPrintDecls_f<DECL_AUDIO>, cmdFlags_t.CMD_FL_SYSTEM, "prints an Video", idCmdSystem::ArgCompletion_Decl<DECL_AUDIO> );
-
-	//cmdSystem.AddCommand( "listHuffmanFrequencies", ListHuffmanFrequencies_f, cmdFlags_t.CMD_FL_SYSTEM, "lists decl text character frequencies" );
-
-	common.Printf( "------------------------------\n" );
-};
-
-/////*
-////===================
-////idDeclManagerLocal::Shutdown
-////===================
-////*/
-////void idDeclManagerLocal::Shutdown( ) {
-////	int			i, j;
-////	idDeclLocal *decl;
-
-////	// free decls
-////	for ( i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
-////		for ( j = 0; j < this.linearLists[i].Num(); j++ ) {
-////			decl = this.linearLists[i][j];
-////			if ( decl.self != NULL ) {
-////				decl.self.FreeData();
-////				delete decl.self;
-////			}
-////			if ( decl.textSource ) {
-////				Mem_Free( decl.textSource );
-////				decl.textSource = NULL;
-////			}
-////			delete decl;
-////		}
-////		this.linearLists[i].Clear();
-////		this.hashTables[i].Free();
-////	}
-
-////	// free decl files
-////	this.loadedFiles.DeleteContents( true );
-
-////	// free the decl types and folders
-////	this.declTypes.DeleteContents( true );
-////	this.declFolders.DeleteContents( true );
-
-////#ifdef USE_COMPRESSED_DECLS
-////	ShutdownHuffman();
-////#endif
-////}
-
-/////*
-////===================
-////idDeclManagerLocal::Reload
-////===================
-////*/
-////void idDeclManagerLocal::Reload( bool force ) {
-////	for ( int i = 0; i < this.loadedFiles.Num(); i++ ) {
-////		this.loadedFiles[i].Reload( force );
-////	}
-////}
-
-/*
-===================
-idDeclManagerLocal::BeginLevelLoad
-===================
-*/
-idDeclManagerLocal.prototype.BeginLevelLoad = function ( ): void {
-	this.insideLevelLoad = true;
-
-	// clear all the referencedThisLevel flags and purge all the data
-	// so the next reference will cause a reparse
-	for ( var i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
-		var num = this.linearLists[i].Num ( );
-		for ( var j = 0; j < num; j++ ) {
-			var decl: idDeclLocal = this.linearLists[i][j];
-			decl.Purge ( );
-		}
-	}
-};
-
-/////*
-////===================
-////idDeclManagerLocal::EndLevelLoad
-////===================
-////*/
-////void idDeclManagerLocal::EndLevelLoad() {
-////	this.insideLevelLoad = false;
-
-////	// we don't need to do anything here, but the image manager, model manager,
-////	// and sound sample manager will need to free media that was not referenced
-////}
-
-/*
-===================
-idDeclManagerLocal::RegisterDeclType
-===================
-*/
-idDeclManagerLocal.prototype.RegisterDeclType = function ( typeName: string, type: declType_t, allocator: ( ) => idDecl ): void {
-    var declType: idDeclType;
-
-    if ( type < this.declTypes.Num ( ) && this.declTypes[ /*(int)*/type] ) {
-        common.Warning( "idDeclManager::RegisterDeclType: type '%s' already exists", typeName );
-        return;
-    }
-
-    declType = new idDeclType;
-    declType.typeName = new idStr( typeName );
-    declType.type = type;
-    declType.allocator = allocator;
-
-    if ( /*(int)*/type + 1 > this.declTypes.Num ( ) ) {
-        this.declTypes.AssureSize( /*(int)*/type + 1, null );
-    }
-    this.declTypes[type] = declType;
-};
-
-/*
-===================
-idDeclManagerLocal::RegisterDeclFolder
-===================
-*/
-idDeclManagerLocal.prototype.RegisterDeclFolder = function ( folder: string, extension: string, defaultType: declType_t ) {
-    var /*int*/ i: number, j: number;
-    var fileName = new idStr;
-    var declFolder: idDeclFolder;
-    var fileList: idFileList;
-    var df:idDeclFile;
-
-    // check whether this folder / extension combination already exists
-    for ( i = 0; i < this.declFolders.Num ( ); i++ ) {
-        if ( this.declFolders[i].folder.Icmp( folder ) == 0 && this.declFolders[i].extension.Icmp( extension ) == 0 ) {
-            break;
-        }
-    }
-    if ( i < this.declFolders.Num ( ) ) {
-        declFolder = this.declFolders[i];
-    } else {
-        declFolder = new idDeclFolder;
-        declFolder.folder = new idStr( folder );
-        declFolder.extension = new idStr( extension );
-        declFolder.defaultType = defaultType;
-        this.declFolders.Append( declFolder );
-    }
-
-    // scan for decl files
-    fileList = fileSystem.ListFiles( declFolder.folder.c_str ( ), declFolder.extension.c_str ( ), true );
-
-    // load and parse decl files
-    for ( i = 0; i < fileList.GetNumFiles ( ); i++ ) {
-	    fileName.equals( declFolder.folder + "/" + fileList.GetFile( i ) );
-
-		dlog(DEBUG_RegisterDeclFolder, "fileName: %s\n", fileName);
-        // check whether this file has already been loaded
-        for ( j = 0; j < this.loadedFiles.Num ( ); j++ ) {
-            if ( fileName.Icmp( this.loadedFiles[j].fileName ) == 0 ) {
-                break;
-            }
-        }
-        if ( j < this.loadedFiles.Num ( ) ) {
-            df = this.loadedFiles[j];
-        } else {
-            df = new idDeclFile( fileName.c_str ( ), defaultType );
-            this.loadedFiles.Append( df );
-        }
-        df.LoadAndParse ( );
-    }
-
-    fileSystem.FreeFileList( fileList );
-};
-
-/////*
-////===================
-////idDeclManagerLocal::GetChecksum
-////===================
-////*/
-////int idDeclManagerLocal::GetChecksum( ) const {
-////	int i, j, total, num;
-////	int *checksumData;
-
-////	// get the total number of decls
-////	total = 0;
-////	for ( i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
-////		total += this.linearLists[i].Num();
-////	}
-
-////	checksumData = (int *) _alloca16( total * 2 * sizeof( int ) );
-
-////	total = 0;
-////	for ( i = 0; i < declType_t.DECL_MAX_TYPES; i++ ) {
-////		declType_t type = (declType_t) i;
-
-////		// FIXME: not particularly pretty but PDAs and associated decls are localized and should not be checksummed
-////		if ( type == DECL_PDA || type == DECL_VIDEO || type == DECL_AUDIO || type == DECL_EMAIL ) {
-////			continue;
-////		}
- 
-////		num = this.linearLists[i].Num();
-////		for ( j = 0; j < num; j++ ) {
-////			idDeclLocal *decl = this.linearLists[i][j];
-
-////			if ( decl.sourceFile == &implicitDecls ) {
-////				continue;
-////			}
-
-////			checksumData[total*2+0] = total;
-////			checksumData[total*2+1] = decl.checksum;
-////			total++;
-////		}
-////	}
-
-////	LittleRevBytes( checksumData, sizeof(int), total * 2 );
-////	return MD5_BlockChecksum( checksumData, total * 2 * sizeof( int ) );
-////}
-
-/*
-===================
-idDeclManagerLocal::GetNumDeclTypes
-===================
-*/
-/*int */
-idDeclManagerLocal.prototype.GetNumDeclTypes = function ( ):number {
-	return this.declTypes.Num ( );
-};
-
-/*
-===================
-idDeclManagerLocal::GetDeclNameFromType
-===================
-*/
-idDeclManagerLocal.prototype.GetDeclNameFromType = function ( type: declType_t ): string {
-	var /*int */typeIndex = /*(int)*/type;
-
-	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num ( ) || this.declTypes[typeIndex] == null ) {
-		common.FatalError( "idDeclManager::GetDeclNameFromType: bad type: %i", typeIndex );
-	}
-	return this.declTypes[typeIndex].typeName;
-};
-
-/*
-===================
-idDeclManagerLocal::GetDeclTypeFromName
-===================
-*/
-idDeclManagerLocal.prototype.GetDeclTypeFromName = function( typeName:string ):declType_t {
-	var i:number;
-
-	for ( i = 0; i < this.declTypes.Num(); i++ ) {
-		if ( this.declTypes[i] && this.declTypes[i].typeName.Icmp( typeName ) == 0 ) {
-			return /*(declType_t)*/this.declTypes[i].type;
-		}
-	}
-	return declType_t.DECL_MAX_TYPES;
-};
-
-/*
-=================
-idDeclManagerLocal::FindType
-
-External users will always cause the decl to be parsed before returning
-=================
-*/
-idDeclManagerLocal.prototype.FindType = function ( type: declType_t, name: string, makeDefault: boolean = true ): idDecl {
-    var decl: idDeclLocal;
-
-    if ( !name || !name[0] ) {
-        name = "_emptyName";
-        //common.Warning( "idDeclManager::FindType: empty %s name", GetDeclType( (int)type ).typeName.c_str() );
-    }
-
-    decl = this.FindTypeWithoutParsing( type, name, makeDefault );
-    if ( !decl ) {
-        return null;
-    }
-
-    decl.AllocateSelf ( );
-
-    // if it hasn't been parsed yet, parse it now
-    if ( decl.declState == declState_t.DS_UNPARSED ) {
-        decl.ParseLocal ( );
-    }
-
-    // mark it as referenced
-    decl.referencedThisLevel = true;
-    decl.everReferenced = true;
-    if ( this.insideLevelLoad ) {
-        decl.parsedOutsideLevelLoad = false;
-    }
-
-    return decl.self;
-};
-
-/////*
-////===============
-////idDeclManagerLocal::FindDeclWithoutParsing
-////===============
-////*/
-////const idDecl* idDeclManagerLocal::FindDeclWithoutParsing( declType_t type, name:string, bool makeDefault) {
-////	idDeclLocal* decl;
-////	decl = FindTypeWithoutParsing(type, name, makeDefault);
-////	if(decl) {
-////		return decl.self;
-////	}
-////	return NULL;
-////}
-
-/////*
-////===============
-////idDeclManagerLocal::ReloadFile
-////===============
-////*/
-////void idDeclManagerLocal::ReloadFile( const char* filename, bool force ) {
-////	for ( int i = 0; i < this.loadedFiles.Num(); i++ ) {
-////		if(!this.loadedFiles[i].fileName.Icmp(filename)) {
-////			checksum ^= this.loadedFiles[i].checksum;
-////			this.loadedFiles[i].Reload( force );
-////			checksum ^= this.loadedFiles[i].checksum;
-////		}
-////	}
-////}
-
-/*
-===================
-idDeclManagerLocal::GetNumDecls
-===================
-*/
-idDeclManagerLocal.prototype.GetNumDecls = function ( type: declType_t ): number /*int*/ {
-	var /*int */typeIndex = /*(int)*/type;
-
-	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num ( ) || this.declTypes[typeIndex] == null ) {
-		common.FatalError( "idDeclManager::GetNumDecls: bad type: %i", typeIndex );
-	}
-	return this.linearLists[typeIndex].Num ( );
-};
-
-/*
-===================
-idDeclManagerLocal::DeclByIndex
-===================
-*/
-idDeclManagerLocal.prototype.DeclByIndex = function (type: declType_t, /*int */index:number, forceParse = true ):idDecl {
-	var typeIndex = /*(int)*/type;
-
-	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == null ) {
-		common.FatalError( "idDeclManager::DeclByIndex: bad type: %i", typeIndex );
-	}
-	if ( index < 0 || index >= this.linearLists[ typeIndex ].Num() ) {
-		common.Error( "idDeclManager::DeclByIndex: out of range" );
-	}
-	var decl = this.linearLists[ typeIndex ][ index ];
-
-	decl.AllocateSelf();
-
-	if ( forceParse && decl.declState == declState_t.DS_UNPARSED ) {
-		decl.ParseLocal();
-	}
-
-	return decl.self;
-}
-
-/*
-===================
-idDeclManagerLocal::ListType
-
-list*
-Lists decls currently referenced
-
-list* ever
-Lists decls that have been referenced at least once since app launched
-
-list* all
-Lists every decl declared, even if it hasn't been referenced or parsed
-
-FIXME: alphabetized, wildcards?
-===================
-*/
-idDeclManagerLocal.prototype.ListType = function ( args: idCmdArgs, type: declType_t ): void {
-	todoThrow ( );
-////	bool all, ever;
-
-////	if ( !idStr::Icmp( args.Argv( 1 ), "all" ) ) {
-////		all = true;
-////	} else {
-////		all = false;
-////	}
-////	if ( !idStr::Icmp( args.Argv( 1 ), "ever" ) ) {
-////		ever = true;
-////	} else {
-////		ever = false;
-////	}
-
-////	common.Printf( "--------------------\n" );
-////	int printed = 0;
-////	int	count = this.linearLists[ (int)type ].Num();
-////	for ( int i = 0 ; i < count ; i++ ) {
-////		idDeclLocal *decl = this.linearLists[ (int)type ][ i ];
-
-////		if ( !all && decl.declState == declState_t.DS_UNPARSED ) {
-////			continue;
-////		}
-
-////		if ( !all && !ever && !decl.referencedThisLevel ) {
-////			continue;
-////		}
-
-////		if ( decl.referencedThisLevel ) {
-////			common.Printf( "*" );
-////		} else if ( decl.everReferenced ) {
-////			common.Printf( "." );
-////		} else {
-////			common.Printf( " " );
-////		}
-////		if ( decl.declState == declState_t.DS_DEFAULTED ) {
-////			common.Printf( "D" );
-////		} else {
-////			common.Printf( " " );
-////		}
-////		common.Printf( "%4i: ", decl.index );
-////		printed++;
-////		if ( decl.declState == declState_t.DS_UNPARSED ) {
-////			// doesn't have any type specific data yet
-////			common.Printf( "%s\n", decl.GetName() );
-////		} else {
-////			decl.self.List();
-////		}
-////	}
-
-////	common.Printf( "--------------------\n" );
-////	common.Printf( "%i of %i %s\n", printed, count, this.declTypes[type].typeName.c_str() );
-};
-
-/*
-===================
-idDeclManagerLocal::PrintType
-===================
-*/
-idDeclManagerLocal.prototype.PrintType = function ( args: idCmdArgs, type: declType_t ): void {
-	todoThrow ( );
-////	// individual decl types may use additional command parameters
-////	if ( args.Argc() < 2 ) {
-////		common.Printf( "USAGE: Print<decl type> <decl name> [type specific parms]\n" );
-////		return;
-////	}
-
-////	// look it up, skipping the public path so it won't parse or reference
-////	idDeclLocal *decl = FindTypeWithoutParsing( type, args.Argv( 1 ), false );
-////	if ( !decl ) {
-////		common.Printf( "%s '%s' not found.\n", this.declTypes[ type ].typeName.c_str(), args.Argv( 1 ) );
-////		return;
-////	}
-
-////	// print information common to all decls
-////	common.Printf( "%s %s:\n", this.declTypes[ type ].typeName.c_str(), decl.name.c_str() );
-////	common.Printf( "source: %s:%i\n", decl.sourceFile.fileName.c_str(), decl.sourceLine );
-////	common.Printf( "----------\n" );
-////	if ( decl.textSource != NULL ) {
-////		char *declText = (char *)_alloca( decl.textLength + 1 );
-////		decl.GetText( declText );
-////		common.Printf( "%s\n", declText );
-////	} else {
-////		common.Printf( "NO SOURCE\n" );
-////	}
-////	common.Printf( "----------\n" );
-////	switch( decl.declState ) {
-////		case declState_t.DS_UNPARSED:
-////			common.Printf( "Unparsed.\n" );
-////			break;
-////		case declState_t.DS_DEFAULTED:
-////			common.Printf( "<DEFAULTED>\n" );
-////			break;
-////		case declState_t.DS_PARSED:
-////			common.Printf( "Parsed.\n" );
-////			break;
-////	}
-
-////	if ( decl.referencedThisLevel ) {
-////		common.Printf( "Currently referenced this level.\n" );
-////	} else if ( decl.everReferenced ) {
-////		common.Printf( "Referenced in a previous level.\n" );
-////	} else {
-////		common.Printf( "Never referenced.\n" );
-////	}
-
-////	// allow type-specific data to be printed
-////	if ( decl.self != NULL ) {
-////		decl.self.Print();
-////	}
-
-};
-
-/////*
-////===================
-////idDeclManagerLocal::CreateNewDecl
-////===================
-////*/
-////idDecl *idDeclManagerLocal::CreateNewDecl( declType_t type, name:string, const char *_fileName ) {
-////	int typeIndex = (int)type;
-////	int i, hash;
-
-////	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == NULL ) {
-////		common.FatalError( "idDeclManager::CreateNewDecl: bad type: %i", typeIndex );
-////	}
-
-////	char  canonicalName[MAX_STRING_CHARS];
-
-////	idDeclManagerLocal.MakeNameCanonical( name, canonicalName, sizeof( canonicalName ) );
-
-////	idStr fileName = _fileName;
-////	fileName.BackSlashesToSlashes();
-
-////	// see if it already exists
-////	hash = this.hashTables[typeIndex].GenerateKey( canonicalName, false );
-////	for ( i = this.hashTables[typeIndex].First( hash ); i >= 0; i = this.hashTables[typeIndex].Next( i ) ) {
-////		if ( this.linearLists[typeIndex][i].name.Icmp( canonicalName ) == 0 ) {
-////			this.linearLists[typeIndex][i].AllocateSelf();
-////			return this.linearLists[typeIndex][i].self;
-////		}
-////	}
-
-////	idDeclFile *sourceFile;
-
-////	// find existing source file or create a new one
-////	for ( i = 0; i < this.loadedFiles.Num(); i++ ) {
-////		if ( this.loadedFiles[i].fileName.Icmp( fileName ) == 0 ) {
-////			break;
-////		}
-////	}
-////	if ( i < this.loadedFiles.Num() ) {
-////		sourceFile = this.loadedFiles[i];
-////	} else {
-////		sourceFile = new idDeclFile( fileName, type );
-////		this.loadedFiles.Append( sourceFile );
-////	}
-
-////	idDeclLocal *decl = new idDeclLocal;
-////	decl.name = canonicalName;
-////	decl.type = type;
-////	decl.declState = declState_t.DS_UNPARSED;
-////	decl.AllocateSelf();
-////	idStr header = this.declTypes[typeIndex].typeName;
-////	idStr defaultText = decl.self.DefaultDefinition();
-
-
-////	int size = header.Length() + 1 + idStr::Length( canonicalName ) + 1 + defaultText.Length();
-////	char *declText = ( char * ) _alloca( size + 1 );
-
-////	memcpy( declText, header, header.Length() );
-////	declText[header.Length()] = ' ';
-////	memcpy( declText + header.Length() + 1, canonicalName, idStr::Length( canonicalName ) );
-////	declText[header.Length() + 1 + idStr::Length( canonicalName )] = ' ';
-////	memcpy( declText + header.Length() + 1 + idStr::Length( canonicalName ) + 1, defaultText, defaultText.Length() + 1 );
-
-////	decl.SetTextLocal( declText, size );
-////	decl.sourceFile = sourceFile;
-////	decl.sourceTextOffset = sourceFile.fileSize;
-////	decl.sourceTextLength = 0;
-////	decl.sourceLine = sourceFile.numLines;
-
-////	decl.ParseLocal();
-
-////	// add this decl to the source file list
-////	decl.nextInFile = sourceFile.decls;
-////	sourceFile.decls = decl;
-
-////	// add it to the hash table and linear list
-////	decl.index = this.linearLists[typeIndex].Num();
-////	this.hashTables[typeIndex].Add( hash, this.linearLists[typeIndex].Append( decl ) );
-
-////	return decl.self;
-////}
-
-/////*
-////===============
-////idDeclManagerLocal::RenameDecl
-////===============
-////*/
-////bool idDeclManagerLocal::RenameDecl( declType_t type, const char* oldName, const char* newName ) {
-
-////	char canonicalOldName[MAX_STRING_CHARS];
-////	idDeclManagerLocal.MakeNameCanonical( oldName, canonicalOldName, sizeof( canonicalOldName ));
-
-////	char canonicalNewName[MAX_STRING_CHARS];
-////	idDeclManagerLocal.MakeNameCanonical( newName, canonicalNewName, sizeof( canonicalNewName ) );
-
-////	idDeclLocal	*decl = NULL;
-
-////	// make sure it already exists
-////	int typeIndex = (int)type;
-////	int i, hash;
-////	hash = this.hashTables[typeIndex].GenerateKey( canonicalOldName, false );
-////	for ( i = this.hashTables[typeIndex].First( hash ); i >= 0; i = this.hashTables[typeIndex].Next( i ) ) {
-////		if ( this.linearLists[typeIndex][i].name.Icmp( canonicalOldName ) == 0 ) {
-////			decl = this.linearLists[typeIndex][i];
-////			break;
-////		}
-////	}
-////	if(!decl)
-////		return false;
-
-////	//if ( !this.hashTables[(int)type].Get( canonicalOldName, &declPtr ) )
-////	//	return false;
-
-////	//decl = *declPtr;
-
-////	//Change the name
-////	decl.name = canonicalNewName;
-
-
-////	// add it to the hash table
-////	//this.hashTables[(int)decl.type].Set( decl.name, decl );
-////	int newhash = this.hashTables[typeIndex].GenerateKey( canonicalNewName, false );
-////	this.hashTables[typeIndex].Add( newhash, decl.index );
-
-////	//Remove the old hash item
-////	this.hashTables[typeIndex].Remove(hash, decl.index);
-
-////	return true;
-////}
-
-/*
-===================
-idDeclManagerLocal::MediaPrint
-
-This is just used to nicely indent media caching prints
-===================
-*/
-idDeclManagerLocal.prototype.MediaPrint = function ( fmt:string, ...args: any[] ): void {
-	if (!idDeclManagerLocal.decl_show.GetInteger() ) {
-    	return;
-	}
-
-	var output = "";
-
-    for ( var/*int */i = 0 ; i < this.indent ; i++ ) {
-		common.Printf("    ");
-	    output += "    ";//
-	}
-
-	output += vsprintf( fmt, args );
-
-	common.Printf("%s", output );
-};
-
-/////*
-////===================
-////idDeclManagerLocal::WritePrecacheCommands
-////===================
-////*/
-////void idDeclManagerLocal::WritePrecacheCommands( idFile *f ) {
-////	for ( int i = 0; i < this.declTypes.Num(); i++ ) {
-////		int num;
-
-////		if ( this.declTypes[i] == NULL ) {
-////			continue;
-////		}
-
-////		num = this.linearLists[i].Num();
-
-////		for ( int j = 0 ; j < num ; j++ ) {
-////			idDeclLocal *decl = this.linearLists[i][j];
-
-////			if ( !decl.referencedThisLevel ) {
-////				continue;
-////			}
-
-////			char	str[1024];
-////			sprintf( str, "touch %s %s\n", this.declTypes[i].typeName.c_str(), decl.GetName() );
-////			common.Printf( "%s", str );
-////			f.Printf( "%s", str );
-////		}
-////	}
-////}
-
-/////********************************************************************/
-
-idDeclManagerLocal.prototype.FindMaterial = function ( name: string, makeDefault: boolean = true ): idMaterial {
-    return this.FindType( declType_t.DECL_MATERIAL, name, makeDefault );
-//	return static_cast<const idMaterial *>( FindType( declType_t.DECL_MATERIAL, name, makeDefault ) );
-};
-
-////const idMaterial *idDeclManagerLocal::MaterialByIndex( int index, bool forceParse ) {
-////	return static_cast<const idMaterial *>( DeclByIndex( declType_t.DECL_MATERIAL, index, forceParse ) );
-////}
-
-/////********************************************************************/
-
-////const idDeclSkin *idDeclManagerLocal::FindSkin( name:string, bool makeDefault=true ) {
-////	return static_cast<const idDeclSkin *>( FindType( DECL_SKIN, name, makeDefault ) );
-////}
-
-////const idDeclSkin *idDeclManagerLocal::SkinByIndex( int index, bool forceParse ) {
-////	return static_cast<const idDeclSkin *>( DeclByIndex( DECL_SKIN, index, forceParse ) );
-////}
-
-/////********************************************************************/
-
-idDeclManagerLocal.prototype.FindSound = function ( name: string, makeDefault=true ): idSoundShader {
-	return static_cast<idSoundShader>( this.FindType( declType_t.DECL_SOUND, name, makeDefault ) );
-};
-
-////const idSoundShader *idDeclManagerLocal::SoundByIndex( int index, bool forceParse ) {
-////	return static_cast<const idSoundShader *>( DeclByIndex( declType_t.DECL_SOUND, index, forceParse ) );
-////}
-
-/*
-===================
-idDeclManagerLocal::MakeNameCanonical
-===================
-*/
-idDeclManagerLocal.MakeNameCanonical = function ( name: string, /*char **/result: Uint8Array, /*int */maxLength: number ): void {
-    var /*int */i: number, lastDot: number;
-
-    lastDot = -1;
-    for ( i = 0; i < maxLength && i < name.length /*name[i] != '\0'*/; i++ ) {
-        var c = name[i];
-        if ( c == '\\' ) {
-            result[i] = '/'.charCodeAt( 0 );
-        } else if ( c == '.' ) {
-            lastDot = i;
-            result[i] = c.charCodeAt(0);
-        } else {
-            result[i] = idStr.ToLower( c ).charCodeAt( 0 );
-        }
-    }
-    if ( lastDot != -1 ) {
-        result[lastDot] = 0;
-    } else {
-        result[i] = 0;
-    }
-};
-
-/*
-================
-idDeclManagerLocal::ListDecls_f
-================
-*/
-idDeclManagerLocal.prototype.ListDecls_f = function (args: idCmdArgs): void {
-	todo ( );
-////	int		i, j;
-////	int		totalDecls = 0;
-////	int		totalText = 0;
-////	int		totalStructs = 0;
-
-////	for ( i = 0; i < declManagerLocal.declTypes.Num(); i++ ) {
-////		int size, num;
-
-////		if ( declManagerLocal.declTypes[i] == NULL ) {
-////			continue;
-////		}
-
-////		num = declManagerLocal.linearLists[i].Num();
-////		totalDecls += num;
-
-////		size = 0;
-////		for ( j = 0; j < num; j++ ) {
-////			size += declManagerLocal.linearLists[i][j].Size();
-////			if ( declManagerLocal.linearLists[i][j].self != NULL ) {
-////				size += declManagerLocal.linearLists[i][j].self.Size();
-////			}
-////		}
-////		totalStructs += size;
-
-////		common.Printf( "%4ik %4i %s\n", size >> 10, num, declManagerLocal.declTypes[i].typeName.c_str() );
-////	}
-
-////	for ( i = 0 ; i < declManagerLocal.loadedFiles.Num() ; i++ ) {
-////		idDeclFile	*df = declManagerLocal.loadedFiles[i];
-////		totalText += df.fileSize;
-////	}
-
-////	common.Printf( "%i total decls is %i decl files\n", totalDecls, declManagerLocal.loadedFiles.Num() );
-////	common.Printf( "%iKB in text, %iKB in structures\n", totalText >> 10, totalStructs >> 10 );
-};
-
-/////*
-////===================
-////idDeclManagerLocal::ReloadDecls_f
-
-////Reload will not find any new files created in the directories, it
-////will only reload existing files.
-
-////A reload will never cause anything to be purged.
-////===================
-////*/
-////void idDeclManagerLocal::ReloadDecls_f( const idCmdArgs &args ) {
-////	bool	force;
-
-////	if ( !idStr::Icmp( args.Argv( 1 ), "all" ) ) {
-////		force = true;
-////		common.Printf( "reloading all decl files:\n" );
-////	} else {
-////		force = false;
-////		common.Printf( "reloading changed decl files:\n" );
-////	}
-
-////	soundSystem.SetMute( true );
-
-////	declManagerLocal.Reload( force );
-
-////	soundSystem.SetMute( false );
-////}
-
-/////*
-////===================
-////idDeclManagerLocal::TouchDecl_f
-////===================
-////*/
-////void idDeclManagerLocal::TouchDecl_f( const idCmdArgs &args ) {
-////	int	i;
-
-////	if ( args.Argc() != 3 ) {
-////		common.Printf( "usage: touch <type> <name>\n" );
-////		common.Printf( "valid types: " );
-////		for ( int i = 0 ; i < declManagerLocal.declTypes.Num() ; i++ ) {
-////			if ( declManagerLocal.declTypes[i] ) {
-////				common.Printf( "%s ", declManagerLocal.declTypes[i].typeName.c_str() );
-////			}
-////		}
-////		common.Printf( "\n" );
-////		return;
-////	}
-
-////	for ( i = 0; i < declManagerLocal.declTypes.Num(); i++ ) {
-////		if ( declManagerLocal.declTypes[i] && declManagerLocal.declTypes[i].typeName.Icmp( args.Argv( 1 ) ) == 0 ) {
-////			break;
-////		}
-////	}
-////	if ( i >= declManagerLocal.declTypes.Num() ) {
-////		common.Printf( "unknown decl type '%s'\n", args.Argv( 1 ) );
-////		return;
-////	}
-
-////	const idDecl *decl = declManagerLocal.FindType( (declType_t)i, args.Argv( 2 ), false );
-////	if ( !decl ) {
-////		common.Printf( "%s '%s' not found\n", declManagerLocal.declTypes[i].typeName.c_str(), args.Argv( 2 ) );
-////	}
-////}
-
-/*
-===================
-idDeclManagerLocal::FindTypeWithoutParsing
-
-This finds or creats the decl, but does not cause a parse.  This is only used internally.
-===================
-*/
-idDeclManagerLocal.prototype.FindTypeWithoutParsing = function ( type: declType_t, name: string, makeDefault: boolean = true ): idDeclLocal {
-    var /*int */typeIndex = int( type );
-    var /*int */i: number, hash: number;
-
-    if ( typeIndex < 0 || typeIndex >= this.declTypes.Num ( ) || this.declTypes[typeIndex] == null ) {
-        common.FatalError( "idDeclManager::FindTypeWithoutParsing: bad type: %i", typeIndex );
-    }
-
-    var canonicalNameArray = new Uint8Array( MAX_STRING_CHARS );
-
-	idDeclManagerLocal.MakeNameCanonical(name, canonicalNameArray, sizeof(canonicalNameArray));
-	var canonicalName = canonicalNameArray.toString ( );
-
-    // see if it already exists
-    hash = this.hashTables[typeIndex].GenerateKey( canonicalName, false );
-    for ( i = this.hashTables[typeIndex].First( hash ); i >= 0; i = this.hashTables[typeIndex].Next( i ) ) {
-        if ( this.linearLists[typeIndex][i].name.Icmp( canonicalName ) == 0 ) {
-            // only print these when decl_show is set to 2, because it can be a lot of clutter
-            if ( idDeclManagerLocal.decl_show.GetInteger ( ) > 1 ) {
-                this.MediaPrint( "referencing %s %s\n", this.declTypes[this.type].typeName.c_str ( ), name );
-            }
-            return this.linearLists[typeIndex][i];
-        }
-    }
-
-    if ( !makeDefault ) {
-        return /*NULL*/null;
-    }
-
-    var decl = new idDeclLocal;
-    decl.self = /*NULL*/null;
-	decl.name.equals( canonicalName.toString ( ) );
-    decl.type = type;
-    decl.declState = declState_t.DS_UNPARSED;
-    decl.textSource = /*NULL*/null;
-    decl.textLength = 0;
-    decl.sourceFile = this.implicitDecls;
-    decl.referencedThisLevel = false;
-    decl.everReferenced = false;
-    decl.parsedOutsideLevelLoad = !this.insideLevelLoad;
-
-    // add it to the linear list and hash table
-    decl.index = this.linearLists[typeIndex].Num ( );
-    this.hashTables[typeIndex].Add( hash, this.linearLists[typeIndex].Append( decl ) );
-
-    return decl;
-};
 
 
 /*
