@@ -512,37 +512,37 @@ idHashIndex::Free
 idHashIndex::ResizeIndex
 ================
 */
-    ResizeIndex ( /*const int */newIndexSize: number ): void {
-		var /*int **/oldIndexChain:Int32Array, mod: number, newSize: number;
+	ResizeIndex ( /*const int */newIndexSize: number ): void {
+		var /*int **/oldIndexChain: Int32Array, mod: number, newSize: number;
 
-        if ( newIndexSize <= this.indexSize ) {
-        	return;
-        }
+		if ( newIndexSize <= this.indexSize ) {
+			return;
+		}
 
-		dlog(DEBUG_HASHINDEX, "idHashIndex::ResizeIndex %i\n", newIndexSize);
-        mod = newIndexSize % this.granularity;
-        if ( !mod ) {
-        	newSize = newIndexSize;
-        } else {
+		dlog( DEBUG_HASHINDEX, "idHashIndex::ResizeIndex %i\n", newIndexSize );
+		mod = newIndexSize % this.granularity;
+		if ( !mod ) {
+			newSize = newIndexSize;
+		} else {
 			newSize = newIndexSize + this.granularity - mod;
-        }
+		}
 
-        if ( this.indexChain == idHashIndex.INVALID_INDEX ) {
-         this.indexSize = newSize;
-        	return;
-        }
+		if ( this.indexChain == idHashIndex.INVALID_INDEX ) {
+			this.indexSize = newSize;
+			return;
+		}
 
-        oldIndexChain = this.indexChain;
-        this.indexChain = new Int32Array(newSize);
-        memcpy( this.indexChain, oldIndexChain, this.indexSize * sizeof(int) );
-	    memsetP( new P( this.indexChain.buffer, this.indexSize * sizeof( int ) ), 0xff, ( newSize - this.indexSize ) * sizeof( int ) ); //memset( indexChain + indexSize, 0xff, (newSize - indexSize) * sizeof(int) );
-		
+		oldIndexChain = this.indexChain;
+		this.indexChain = new Int32Array( newSize );
+		memcpy( this.indexChain, oldIndexChain, this.indexSize * sizeof( int ) );
+		memset( this.indexChain.subarray( this.indexSize ), 0xff, ( newSize - this.indexSize ) * sizeof( int ) );
+
 		this.indexSize = newSize;
 
-		for (var i = 0; i < newSize; i++ ) {
-			dlog(DEBUG_HASHINDEX, "%i: %i\n", i, this.indexChain[i]);
-	    }
-    }
+		for ( var i = 0; i < newSize; i++ ) {
+			dlog( DEBUG_HASHINDEX, "%i: %i\n", i, this.indexChain[i] );
+		}
+	}
 
 /////*
 ////================

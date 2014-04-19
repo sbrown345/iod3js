@@ -143,11 +143,11 @@ function memcpy ( destination: Uint8Array /* any*/, source: Uint8Array /*any*/, 
 		destination = new Uint8Array( destination.buffer, destination.byteOffset );
 	}
 
-	if ( !( destination instanceof Uint8Array ) ) {
+	if ( !( source instanceof Uint8Array ) ) {
 		source = new Uint8Array( source.buffer, source.byteOffset );
 	}
 
-	destination.set( source.subarray( num ) );
+	destination.set( source.subarray( 0, num ) );
 }
 
 function zeroArray ( array: ArrayBufferView ): void;
