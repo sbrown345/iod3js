@@ -2258,26 +2258,26 @@ class idPhysics_AF extends idPhysics_Base {
 	////		}
 	////	}
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::SetClipModel
-	////================
-	////*/
-	////void idPhysics_AF::SetClipModel( idClipModel *model, float density, /*int*/ id:number, bool freeOld ) {
-	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::GetClipModel
-	////================
-	////*/
-	////idClipModel *idPhysics_AF::GetClipModel( /*int*/ id:number ) const {
-	////	if ( id >= 0 && id < this.bodies.Num() ) {
-	////		return this.bodies[id].GetClipModel();
-	////	}
-	////	return NULL;
-	////}
+	
+	/*
+	================
+	idPhysics_AF::SetClipModel
+	================
+	*/
+	SetClipModel(model: idClipModel, /*float*/ density: number, /*int*/ id: number = 0, freeOld = true): void {
+	}
+	
+	/*
+	================
+	idPhysics_AF::GetClipModel
+	================
+	*/
+	GetClipModel( /*int*/ id: number = 0): idClipModel {
+		if ( id >= 0 && id < this.bodies.Num() ) {
+			return this.bodies[id].GetClipModel();
+		}
+		return null;
+	}
 	
 	/*
 	================

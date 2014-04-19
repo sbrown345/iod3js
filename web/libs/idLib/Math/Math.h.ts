@@ -79,7 +79,7 @@ function float2uint(v: number): number {
 function INTSIGNBITSET ( i: number ): number { return i >>> 31; } ///	(((const unsigned long)(i)) >> 31)
 function INTSIGNBITNOTSET ( i: number ): number { return ( ~( /*(const unsigned long)*/( i ) ) ) >>> 31; }
 
-////#define	FLOAT_IS_NAN(x)			(((*(const unsigned long *)&x) & 0x7f800000) == 0x7f800000)
+var FLOAT_IS_NAN = isNaN;////#define	FLOAT_IS_NAN(x)			(((*(const unsigned long *)&x) & 0x7f800000) == 0x7f800000)
 ////#define FLOAT_IS_INF(x)			(((*(const unsigned long *)&x) & 0x7fffffff) == 0x7f800000)
 ////#define FLOAT_IS_IND(x)			((*(const unsigned long *)&x) == 0xffc00000)
 function FLOAT_IS_DENORMAL(x:number):boolean {return ((float2uint(x) & 0x7f800000) == 0x00000000 && 
@@ -106,7 +106,7 @@ var IEEE_DBLE_SIGN_BIT		=79
 ////template<class T> ID_INLINE T	Max3( T x, T y, T z ) { return ( x > y ) ? ( ( x > z ) ? x : z ) : ( ( y > z ) ? y : z ); }
 ////template<class T> ID_INLINE T	Min3( T x, T y, T z ) { return ( x < y ) ? ( ( x < z ) ? x : z ) : ( ( y < z ) ? y : z ); }
 ////template<class T> ID_INLINE int	Max3Index( T x, T y, T z ) { return ( x > y ) ? ( ( x > z ) ? 0 : 2 ) : ( ( y > z ) ? 1 : 2 ); }
-////template<class T> ID_INLINE int	Min3Index( T x, T y, T z ) { return ( x < y ) ? ( ( x < z ) ? 0 : 2 ) : ( ( y < z ) ? 1 : 2 ); }
+function Min3Index<T> ( x: T, y: T, z: T ): number { return ( x < y ) ? ( ( x < z ) ? 0 : 2 ) : ( ( y < z ) ? 1 : 2 ); }
 
 ////template<class T> ID_INLINE T	Sign( T f ) { return ( f > 0 ) ? 1 : ( ( f < 0 ) ? -1 : 0 ); }
 function Square<T> ( /*T*/ x: number ): number { return x * x; }

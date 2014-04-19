@@ -1251,36 +1251,37 @@ class idTrigger_Touch extends idTrigger {
 ////	void				TouchEntities( );
 ////
 ////private:
-////	idClipModel *		clipModel;
-////
+	clipModel:idClipModel;
+
 	Event_Trigger(activator: idEntity): void { throw "placeholder"; }
 
 	
-/////*
-////================
-////idTrigger_Touch::idTrigger_Touch
-////================
-////*/
-////idTrigger_Touch::idTrigger_Touch( ) {
-////	clipModel = NULL;
-////}
-////
-/////*
-////================
-////idTrigger_Touch::Spawn
-////================
-////*/
-////void idTrigger_Touch::Spawn( ) {
-////	// get the clip model
-////	clipModel = new idClipModel( this.GetPhysics().GetClipModel() );
-////
-////	// remove the collision model from the physics object
-////	this.GetPhysics().SetClipModel( NULL, 1.0 );
-////
-////	if ( this.spawnArgs.GetBool( "start_on" ) ) {
-////		BecomeActive( TH_THINK );
-////	}
-////}
+/*
+================
+idTrigger_Touch::idTrigger_Touch
+================
+*/
+	constructor() {
+		super ( );
+	this.clipModel = null;
+}
+
+/*
+================
+idTrigger_Touch::Spawn
+================
+*/
+	Spawn ( ): void {
+		// get the clip model
+		this.clipModel = new idClipModel( this.GetPhysics ( ).GetClipModel ( ) );
+
+		// remove the collision model from the physics object
+		this.GetPhysics ( ).SetClipModel( null, 1.0 );
+
+		if ( this.spawnArgs.GetBool( "start_on" ) ) {
+			this.BecomeActive( TH_THINK );
+		}
+	}
 ////
 /////*
 ////================
@@ -1288,7 +1289,7 @@ class idTrigger_Touch extends idTrigger {
 ////================
 ////*/
 ////void idTrigger_Touch::Save( idSaveGame *savefile ) {
-////	savefile.WriteClipModel( clipModel );
+////	savefile.WriteClipModel( this.clipModel );
 ////}
 ////
 /////*
@@ -1297,7 +1298,7 @@ class idTrigger_Touch extends idTrigger {
 ////================
 ////*/
 ////void idTrigger_Touch::Restore( idRestoreGame *savefile ) {
-////	savefile.ReadClipModel( clipModel );
+////	savefile.ReadClipModel( this.clipModel );
 ////}
 ////
 /////*
@@ -1310,11 +1311,11 @@ class idTrigger_Touch extends idTrigger {
 ////	idBounds bounds;
 ////	idClipModel *cm, *clipModelList[ MAX_GENTITIES ];
 ////
-////	if ( clipModel == NULL || scriptFunction == NULL ) {
+////	if ( this.clipModel == NULL || scriptFunction == NULL ) {
 ////		return;
 ////	}
 ////
-////	bounds.FromTransformedBounds( clipModel.GetBounds(), clipModel.GetOrigin(), clipModel.GetAxis() );
+////	bounds.FromTransformedBounds( this.clipModel.GetBounds(), this.clipModel.GetOrigin(), this.clipModel.GetAxis() );
 ////	numClipModels = gameLocal.clip.ClipModelsTouchingBounds( bounds, -1, clipModelList, MAX_GENTITIES );
 ////
 ////	for ( i = 0; i < numClipModels; i++ ) {
@@ -1331,7 +1332,7 @@ class idTrigger_Touch extends idTrigger {
 ////		}
 ////		
 ////		if ( !gameLocal.clip.ContentsModel( cm.GetOrigin(), cm, cm.GetAxis(), -1,
-////									clipModel.Handle(), clipModel.GetOrigin(), clipModel.GetAxis() ) ) {
+////									this.clipModel.Handle(), this.clipModel.GetOrigin(), this.clipModel.GetAxis() ) ) {
 ////			continue;
 ////		}
 ////

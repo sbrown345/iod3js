@@ -620,32 +620,32 @@ idPhysics_Parametric::Activate
 //void idPhysics_Parametric::GetLocalAngles( idAngles &curAngles ) const {
 //	curAngles = this.current.localAngles;
 //}
-//
-///*
-//================
-//idPhysics_Parametric::SetClipModel
-//================
-//*/
-//void idPhysics_Parametric::SetClipModel( idClipModel *model, float density, /*int*/ id:number, bool freeOld ) {
-//
-//	assert( this.self );
-//	assert( model );
-//
-//	if ( clipModel && clipModel != model && freeOld ) {
-//		delete clipModel;
-//	}
-//	clipModel = model;
-//	clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
-//}
-//
-///*
-//================
-//idPhysics_Parametric::GetClipModel
-//================
-//*/
-//idClipModel *idPhysics_Parametric::GetClipModel( /*int*/ id:number ) const {
-//	return clipModel;
-//}
+
+/*
+================
+idPhysics_Parametric::SetClipModel
+================
+*/
+	SetClipModel ( model: idClipModel, /*float*/ density: number, /*int*/ id: number = 0, freeOld = true ): void {
+
+		assert( this.self );
+		assert( model );
+
+		if ( this.clipModel && this.clipModel != model && freeOld ) {
+			delete this.clipModel;
+		}
+		this.clipModel = model;
+		this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
+	}
+
+/*
+================
+idPhysics_Parametric::GetClipModel
+================
+*/
+	GetClipModel( /*int*/ id: number  = 0): idClipModel {
+		return this.clipModel;
+	}
 
 /*
 ================
@@ -964,9 +964,9 @@ idPhysics_Parametric::GetBounds
 idPhysics_Parametric::GetOrigin
 ================
 */
-GetOrigin( /*int*/ id: number = 0): idVec3 {
-	return this.current.origin;
-}
+	GetOrigin ( /*int*/ id: number = 0 ): idVec3 {
+		return this.current.origin;
+	}
 
 /*
 ================

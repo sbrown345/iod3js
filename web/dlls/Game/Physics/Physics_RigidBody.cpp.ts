@@ -33,7 +33,7 @@
 ////
 
 ////
-////const float STOP_SPEED		= 10.0f;
+////const float STOP_SPEED		= 10.0;
 ////
 ////
 ////#undef RB_TIMINGS
@@ -259,7 +259,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	idVec3 position;
 ////
 ////	position = this.current.i.position;
-////	this.current.i.position += centerOfMass * this.current.i.orientation;
+////	this.current.i.position += this.centerOfMass * this.current.i.orientation;
 ////
 ////	this.current.i.orientation.TransposeSelf();
 ////
@@ -267,13 +267,13 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	next.i.orientation.OrthoNormalizeSelf();
 ////
 ////	// apply gravity
-////	next.i.linearMomentum += deltaTime * gravityVector * mass;
+////	next.i.linearMomentum += deltaTime * gravityVector * this.mass;
 ////
 ////	this.current.i.orientation.TransposeSelf();
 ////	next.i.orientation.TransposeSelf();
 ////
 ////	this.current.i.position = position;
-////	next.i.position -= centerOfMass * next.i.orientation;
+////	next.i.position -= this.centerOfMass * next.i.orientation;
 ////
 ////	next.atRest = this.current.atRest;
 ////}
@@ -298,9 +298,9 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	ent.GetImpactInfo( this.self, collision.c.id, collision.c.point, &info );
 ////
 ////	// collision point relative to the body center of mass
-////	r = collision.c.point - ( this.current.i.position + centerOfMass * this.current.i.orientation );
+////	r = collision.c.point - ( this.current.i.position + this.centerOfMass * this.current.i.orientation );
 ////	// the velocity at the collision point
-////	linearVelocity = inverseMass * this.current.i.linearMomentum;
+////	linearVelocity = this.inverseMass * this.current.i.linearMomentum;
 ////	inverseWorldInertiaTensor = this.current.i.orientation.Transpose() * inverseInertiaTensor * this.current.i.orientation;
 ////	angularVelocity = inverseWorldInertiaTensor * this.current.i.angularMomentum;
 ////	velocity = linearVelocity + angularVelocity.Cross(r);
@@ -314,9 +314,9 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////		impulseNumerator = STOP_SPEED;
 ////	}
 ////	else {
-////		impulseNumerator = -( 1.0f + bouncyness ) * vel;
+////		impulseNumerator = -( 1.0 + bouncyness ) * vel;
 ////	}
-////	impulseDenominator = inverseMass + ( ( inverseWorldInertiaTensor * r.Cross( collision.c.normal ) ).Cross( r ) * collision.c.normal );
+////	impulseDenominator = this.inverseMass + ( ( inverseWorldInertiaTensor * r.Cross( collision.c.normal ) ).Cross( r ) * collision.c.normal );
 ////	if ( info.invMass ) {
 ////		impulseDenominator += info.invMass + ( ( info.invInertiaTensor * info.position.Cross( collision.c.normal ) ).Cross( info.position ) * collision.c.normal );
 ////	}
@@ -396,16 +396,16 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	idVec3 linearVelocity, angularVelocity;
 ////	idVec3 massCenter, r, velocity, normal, impulse, normalVelocity;
 ////
-////	inverseWorldInertiaTensor = this.current.i.orientation.Transpose() * inverseInertiaTensor * this.current.i.orientation;
+////	inverseWorldInertiaTensor = this.current.i.orientation.Transpose() * this.inverseInertiaTensor * this.current.i.orientation;
 ////
-////	massCenter = this.current.i.position + centerOfMass * this.current.i.orientation;
+////	massCenter = this.current.i.position + this.centerOfMass * this.current.i.orientation;
 ////
 ////	for ( i = 0; i < contacts.Num(); i++ ) {
 ////
 ////		r = contacts[i].point - massCenter;
 ////
 ////		// calculate velocity at contact point
-////		linearVelocity = inverseMass * this.current.i.linearMomentum;
+////		linearVelocity = this.inverseMass * this.current.i.linearMomentum;
 ////		angularVelocity = inverseWorldInertiaTensor * this.current.i.angularMomentum;
 ////		velocity = linearVelocity + angularVelocity.Cross(r);
 ////
@@ -416,7 +416,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////		normal = -( velocity - normalVelocity );
 ////		magnitude = normal.Normalize();
 ////		impulseNumerator = contactFriction * magnitude;
-////		impulseDenominator = inverseMass + ( ( inverseWorldInertiaTensor * r.Cross( normal ) ).Cross( r ) * normal );
+////		impulseDenominator = this.inverseMass + ( ( inverseWorldInertiaTensor * r.Cross( normal ) ).Cross( r ) * normal );
 ////		impulse = (impulseNumerator / impulseDenominator) * normal;
 ////
 ////		// apply friction impulse
@@ -424,11 +424,11 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////		this.current.i.angularMomentum += r.Cross(impulse);
 ////
 ////		// if moving towards the surface at the contact point
-////		if ( normalVelocity * contacts[i].normal < 0.0f ) {
+////		if ( normalVelocity * contacts[i].normal < 0.0 ) {
 ////			// calculate impulse
 ////			normal = -normalVelocity;
 ////			impulseNumerator = normal.Normalize();
-////			impulseDenominator = inverseMass + ( ( inverseWorldInertiaTensor * r.Cross( normal ) ).Cross( r ) * normal );
+////			impulseDenominator = this.inverseMass + ( ( inverseWorldInertiaTensor * r.Cross( normal ) ).Cross( r ) * normal );
 ////			impulse = (impulseNumerator / impulseDenominator) * normal;
 ////
 ////			// apply impulse
@@ -489,7 +489,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	}
 ////
 ////	// center of mass in world space
-////	point = this.current.i.position + centerOfMass * this.current.i.orientation;
+////	point = this.current.i.position + this.centerOfMass * this.current.i.orientation;
 ////	point -= (point * gravityNormal) * gravityNormal;
 ////
 ////	// if the point is not inside the winding
@@ -498,7 +498,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	}
 ////
 ////	// linear velocity of body
-////	v = inverseMass * this.current.i.linearMomentum;
+////	v = this.inverseMass * this.current.i.linearMomentum;
 ////	// linear velocity in gravity direction
 ////	gv = v * gravityNormal;
 ////	// linear velocity orthogonal to gravity direction
@@ -509,12 +509,12 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////		return false;
 ////	}
 ////	// if too much velocity in gravity direction
-////	if ( gv > 2.0f * STOP_SPEED || gv < -2.0f * STOP_SPEED ) {
+////	if ( gv > 2.0 * STOP_SPEED || gv < -2.0 * STOP_SPEED ) {
 ////		return false;
 ////	}
 ////
 ////	// calculate rotational velocity
-////	inverseWorldInertiaTensor = this.current.i.orientation * inverseInertiaTensor * this.current.i.orientation.Transpose();
+////	inverseWorldInertiaTensor = this.current.i.orientation * this.inverseInertiaTensor * this.current.i.orientation.Transpose();
 ////	av = inverseWorldInertiaTensor * this.current.i.angularMomentum;
 ////
 ////	// if too much rotational velocity
@@ -550,13 +550,13 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	}
 ////
 ////	// put the body on the floor
-////	down = this.current.i.position + gravityNormal * 128.0f;
+////	down = this.current.i.position + gravityNormal * 128.0;
 ////	gameLocal.clip.Translation( tr, this.current.i.position, down, this.clipModel, this.current.i.orientation, clipMask, this.self );
 ////	this.current.i.position = tr.endpos;
 ////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), tr.endpos, this.current.i.orientation );
 ////
 ////	// if on the floor already
-////	if ( tr.fraction == 0.0f ) {
+////	if ( tr.fraction == 0.0 ) {
 ////		// test if we are really at rest
 ////		EvaluateContacts();
 ////		if ( !TestIfAtRest() ) {
@@ -581,15 +581,15 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////void idPhysics_RigidBody::DebugDraw( ) {
 ////
 ////	if ( rb_showBodies.GetBool() || ( rb_showActive.GetBool() && this.current.atRest < 0 ) ) {
-////		collisionModelManager.DrawModel( this.clipModel.Handle(), this.clipModel.GetOrigin(), this.clipModel.GetAxis(), vec3_origin, 0.0f );
+////		collisionModelManager.DrawModel( this.clipModel.Handle(), this.clipModel.GetOrigin(), this.clipModel.GetAxis(), vec3_origin, 0.0 );
 ////	}
 ////
 ////	if ( rb_showMass.GetBool() ) {
-////		gameRenderWorld.DrawText( va( "\n%1.2f", mass ), this.current.i.position, 0.08f, colorCyan, gameLocal.GetLocalPlayer().viewAngles.ToMat3(), 1 );
+////		gameRenderWorld.DrawText( va( "\n%1.2f", this.mass ), this.current.i.position, 0.08f, colorCyan, gameLocal.GetLocalPlayer().viewAngles.ToMat3(), 1 );
 ////	}
 ////
 ////	if ( rb_showInertia.GetBool() ) {
-////		idMat3 &I = inertiaTensor;
+////		idMat3 &I = this.inertiaTensor;
 ////		gameRenderWorld.DrawText( va( "\n\n\n( %.1f %.1f %.1f )\n( %.1f %.1f %.1f )\n( %.1f %.1f %.1f )",
 ////									I[0].x, I[0].y, I[0].z,
 ////									I[1].x, I[1].y, I[1].z,
@@ -598,7 +598,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	}
 ////
 ////	if ( rb_showVelocity.GetBool() ) {
-////		DrawVelocity( this.clipModel.GetId(), 0.1f, 4.0f );
+////		DrawVelocity( this.clipModel.GetId(), 0.1, 4.0 );
 ////	}
 ////}
 ////
@@ -612,7 +612,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	// set default rigid body properties
 ////	SetClipMask( MASK_SOLID );
 ////	SetBouncyness( 0.6f );
-////	SetFriction( 0.6f, 0.6f, 0.0f );
+////	SetFriction( 0.6f, 0.6f, 0.0 );
 ////	this.clipModel = NULL;
 ////
 ////	memset( &current, 0, sizeof( this.current ) );
@@ -628,11 +628,11 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////
 ////	this.saved = this.current;
 ////
-////	mass = 1.0f;
-////	inverseMass = 1.0f;
-////	centerOfMass.Zero();
-////	inertiaTensor.Identity();
-////	inverseInertiaTensor.Identity();
+////	this.mass = 1.0;
+////	this.inverseMass = 1.0;
+////	this.centerOfMass.Zero();
+////	this.inertiaTensor.Identity();
+////	this.inverseInertiaTensor.Identity();
 ////
 ////	// use the least expensive euler integrator
 ////	integrator = new idODE_Euler( sizeof(rigidBodyIState_t) / sizeof(float), RigidBodyDerivatives, this );
@@ -718,11 +718,11 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	savefile.WriteFloat( bouncyness );
 ////	savefile.WriteClipModel( this.clipModel );
 ////
-////	savefile.WriteFloat( mass );
-////	savefile.WriteFloat( inverseMass );
-////	savefile.WriteVec3( centerOfMass );
-////	savefile.WriteMat3( inertiaTensor );
-////	savefile.WriteMat3( inverseInertiaTensor );
+////	savefile.WriteFloat( this.mass );
+////	savefile.WriteFloat( this.inverseMass );
+////	savefile.WriteVec3( this.centerOfMass );
+////	savefile.WriteMat3( this.inertiaTensor );
+////	savefile.WriteMat3( this.inverseInertiaTensor );
 ////
 ////	savefile.WriteBool( dropToFloor );
 ////	savefile.WriteBool( testSolid );
@@ -749,11 +749,11 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	savefile.ReadFloat( bouncyness );
 ////	savefile.ReadClipModel( this.clipModel );
 ////
-////	savefile.ReadFloat( mass );
-////	savefile.ReadFloat( inverseMass );
-////	savefile.ReadVec3( centerOfMass );
-////	savefile.ReadMat3( inertiaTensor );
-////	savefile.ReadMat3( inverseInertiaTensor );
+////	savefile.ReadFloat( this.mass );
+////	savefile.ReadFloat( this.inverseMass );
+////	savefile.ReadVec3( this.centerOfMass );
+////	savefile.ReadMat3( this.inertiaTensor );
+////	savefile.ReadMat3( this.inverseInertiaTensor );
 ////
 ////	savefile.ReadBool( dropToFloor );
 ////	savefile.ReadBool( testSolid );
@@ -763,72 +763,75 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	savefile.ReadBool( hasMaster );
 ////	savefile.ReadBool( isOrientated );
 ////}
-////
-/////*
-////================
-////idPhysics_RigidBody::SetClipModel
-////================
-////*/
-////#define MAX_INERTIA_SCALE		10.0f
-////
-////void idPhysics_RigidBody::SetClipModel( idClipModel *model, const float density, /*int*/ id:number, bool freeOld ) {
-////	int minIndex;
-////	idMat3 inertiaScale;
-////
-////	assert( this.self );
-////	assert( model );					// we need a clip model
-////	assert( model.IsTraceModel() );	// and it should be a trace model
-////	assert( density > 0.0f );			// density should be valid
-////
-////	if ( this.clipModel && this.clipModel != model && freeOld ) {
-////		delete this.clipModel;
-////	}
-////	this.clipModel = model;
-////	this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.i.position, this.current.i.orientation );
-////
-////	// get mass properties from the trace model
-////	this.clipModel.GetMassProperties( density, mass, centerOfMass, inertiaTensor );
-////
-////	// check whether or not the clip model has valid mass properties
-////	if ( mass <= 0.0f || FLOAT_IS_NAN( mass ) ) {
-////		gameLocal.Warning( "idPhysics_RigidBody::SetClipModel: invalid mass for entity '%s' type '%s'",
-////							this.self.name.c_str(), this.self.GetType().classname );
-////		mass = 1.0f;
-////		centerOfMass.Zero();
-////		inertiaTensor.Identity();
-////	}
-////
-////	// check whether or not the inertia tensor is balanced
-////	minIndex = Min3Index( inertiaTensor[0][0], inertiaTensor[1][1], inertiaTensor[2][2] );
-////	inertiaScale.Identity();
-////	inertiaScale[0][0] = inertiaTensor[0][0] / inertiaTensor[minIndex][minIndex];
-////	inertiaScale[1][1] = inertiaTensor[1][1] / inertiaTensor[minIndex][minIndex];
-////	inertiaScale[2][2] = inertiaTensor[2][2] / inertiaTensor[minIndex][minIndex];
-////
-////	if ( inertiaScale[0][0] > MAX_INERTIA_SCALE || inertiaScale[1][1] > MAX_INERTIA_SCALE || inertiaScale[2][2] > MAX_INERTIA_SCALE ) {
-////		gameLocal.DWarning( "idPhysics_RigidBody::SetClipModel: unbalanced inertia tensor for entity '%s' type '%s'",
-////							this.self.name.c_str(), this.self.GetType().classname );
-////		float min = inertiaTensor[minIndex][minIndex] * MAX_INERTIA_SCALE;
-////		inertiaScale[(minIndex+1)%3][(minIndex+1)%3] = min / inertiaTensor[(minIndex+1)%3][(minIndex+1)%3];
-////		inertiaScale[(minIndex+2)%3][(minIndex+2)%3] = min / inertiaTensor[(minIndex+2)%3][(minIndex+2)%3];
-////		inertiaTensor *= inertiaScale;
-////	}
-////
-////	inverseMass = 1.0f / mass;
-////	inverseInertiaTensor = inertiaTensor.Inverse() * ( 1.0f / 6.0f );
-////
-////	this.current.i.linearMomentum.Zero();
-////	this.current.i.angularMomentum.Zero();
-////}
-////
-/////*
-////================
-////idPhysics_RigidBody::GetClipModel
-////================
-////*/
-////idClipModel *idPhysics_RigidBody::GetClipModel( /*int*/ id:number ) const {
-////	return this.clipModel;
-////}
+
+/*
+================
+idPhysics_RigidBody::SetClipModel
+================
+*/
+static MAX_INERTIA_SCALE		= 10.0;
+
+SetClipModel(model: idClipModel, /*float*/ density: number, /*int*/ id: number = 0, freeOld = true ):void {
+	var /*int */minIndex:number;
+	var inertiaScale = new idMat3;
+
+	assert( this.self );
+	assert( model );					// we need a clip model
+	assert( model.IsTraceModel() );	// and it should be a trace model
+	assert( density > 0.0 );			// density should be valid
+
+	if ( this.clipModel && this.clipModel != model && freeOld ) {
+		delete this.clipModel;
+	}
+	this.clipModel = model;
+	this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.current.i.position, this.current.i.orientation );
+
+	// get mass properties from the trace model
+	var $mass = new R(this.mass );
+	this.clipModel.GetMassProperties(density, $mass, this.centerOfMass, this.inertiaTensor);
+	this.mass = $mass.$;
+
+	// check whether or not the clip model has valid mass properties
+	if ( this.mass <= 0.0 || FLOAT_IS_NAN( this.mass ) ) {
+		gameLocal.Warning( "idPhysics_RigidBody::SetClipModel: invalid mass for entity '%s' type '%s'",
+							this.self.name.c_str(), this.self.GetType().classname );
+		this.mass = 1.0;
+		this.centerOfMass.Zero();
+		this.inertiaTensor.Identity();
+	}
+
+	// check whether or not the inertia tensor is balanced
+	minIndex = Min3Index( this.inertiaTensor[0][0], this.inertiaTensor[1][1], this.inertiaTensor[2][2] );
+	inertiaScale.Identity();
+	inertiaScale[0][0] = this.inertiaTensor[0][0] / this.inertiaTensor[minIndex][minIndex];
+	inertiaScale[1][1] = this.inertiaTensor[1][1] / this.inertiaTensor[minIndex][minIndex];
+	inertiaScale[2][2] = this.inertiaTensor[2][2] / this.inertiaTensor[minIndex][minIndex];
+
+	if (inertiaScale[0][0] > idPhysics_RigidBody.MAX_INERTIA_SCALE || inertiaScale[1][1] > idPhysics_RigidBody.MAX_INERTIA_SCALE || inertiaScale[2][2] > idPhysics_RigidBody.MAX_INERTIA_SCALE ) {
+		gameLocal.DWarning( "idPhysics_RigidBody::SetClipModel: unbalanced inertia tensor for entity '%s' type '%s'",
+							this.self.name.c_str(), this.self.GetType().classname );
+		var/*float */min = this.inertiaTensor[minIndex][minIndex] * idPhysics_RigidBody.MAX_INERTIA_SCALE;
+		inertiaScale[(minIndex+1)%3][(minIndex+1)%3] = min / this.inertiaTensor[(minIndex+1)%3][(minIndex+1)%3];
+		inertiaScale[(minIndex+2)%3][(minIndex+2)%3] = min / this.inertiaTensor[(minIndex+2)%3][(minIndex+2)%3];
+		this.inertiaTensor.opMultiplicationAssignment( inertiaScale );
+	}
+
+	this.inverseMass = 1.0 / this.mass;
+	todoThrow ( );
+	//this.inverseInertiaTensor = this.inertiaTensor.Inverse() * ( 1.0 / 6.0 );
+
+	//this.current.i.linearMomentum.Zero();
+	//this.current.i.angularMomentum.Zero();
+}
+
+/*
+================
+idPhysics_RigidBody::GetClipModel
+================
+*/
+	GetClipModel( /*int*/ id: number  = 0): idClipModel {
+	return this.clipModel;
+}
 
 /*
 ================
@@ -845,11 +848,11 @@ idPhysics_RigidBody::GetNumClipModels
 ////================
 ////*/
 ////void idPhysics_RigidBody::SetMass( float mass, /*int*/ id:number ) {
-////	assert( mass > 0.0f );
-////	inertiaTensor *= mass / this.mass;
-////	inverseInertiaTensor = inertiaTensor.Inverse() * (1.0f / 6.0f);
+////	assert( mass > 0.0 );
+////	this.inertiaTensor *= mass / this.mass;
+////	this.inverseInertiaTensor = this.inertiaTensor.Inverse() * (1.0 / 6.0);
 ////	this.mass = mass;
-////	inverseMass = 1.0f / mass;
+////	this.inverseMass = 1.0 / mass;
 ////}
 ////
 /////*
@@ -858,7 +861,7 @@ idPhysics_RigidBody::GetNumClipModels
 ////================
 ////*/
 ////float idPhysics_RigidBody::GetMass( /*int*/ id:number ) const {
-////	return mass;
+////	return this.mass;
 ////}
 ////
 /////*
@@ -867,9 +870,9 @@ idPhysics_RigidBody::GetNumClipModels
 ////================
 ////*/
 ////void idPhysics_RigidBody::SetFriction( const float linear, const float angular, const float contact ) {
-////	if (	linear < 0.0f || linear > 1.0f ||
-////			angular < 0.0f || angular > 1.0f ||
-////			contact < 0.0f || contact > 1.0f ) {
+////	if (	linear < 0.0 || linear > 1.0 ||
+////			angular < 0.0 || angular > 1.0 ||
+////			contact < 0.0 || contact > 1.0 ) {
 ////		return;
 ////	}
 ////	linearFriction = linear;
@@ -883,7 +886,7 @@ idPhysics_RigidBody::GetNumClipModels
 ////================
 ////*/
 ////void idPhysics_RigidBody::SetBouncyness( const float b ) {
-////	if ( b < 0.0f || b > 1.0f ) {
+////	if ( b < 0.0 || b > 1.0 ) {
 ////		return;
 ////	}
 ////	bouncyness = b;
@@ -1030,8 +1033,8 @@ idPhysics_RigidBody::GetBounds
 ////			this.current.i.orientation = this.current.localAxis;
 ////		}
 ////		this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
-////		this.current.i.linearMomentum = mass * ( ( this.current.i.position - oldOrigin ) / timeStep );
-////		this.current.i.angularMomentum = inertiaTensor * ( ( this.current.i.orientation * oldAxis.Transpose() ).ToAngularVelocity() / timeStep );
+////		this.current.i.linearMomentum = this.mass * ( ( this.current.i.position - oldOrigin ) / timeStep );
+////		this.current.i.angularMomentum = this.inertiaTensor * ( ( this.current.i.orientation * oldAxis.Transpose() ).ToAngularVelocity() / timeStep );
 ////		this.current.externalForce.Zero();
 ////		this.current.externalTorque.Zero();
 ////
@@ -1039,7 +1042,7 @@ idPhysics_RigidBody::GetBounds
 ////	}
 ////
 ////	// if the body is at rest
-////	if ( this.current.atRest >= 0 || timeStep <= 0.0f ) {
+////	if ( this.current.atRest >= 0 || timeStep <= 0.0 ) {
 ////		DebugDraw();
 ////		return false;
 ////	}
@@ -1057,8 +1060,8 @@ idPhysics_RigidBody::GetBounds
 ////#endif
 ////
 ////	// move the rigid body velocity into the frame of a pusher
-//////	this.current.i.linearMomentum -= this.current.pushVelocity.SubVec3( 0 ) * mass;
-//////	this.current.i.angularMomentum -= this.current.pushVelocity.SubVec3( 1 ) * inertiaTensor;
+//////	this.current.i.linearMomentum -= this.current.pushVelocity.SubVec3( 0 ) * this.mass;
+//////	this.current.i.angularMomentum -= this.current.pushVelocity.SubVec3( 1 ) * this.inertiaTensor;
 ////
 ////	this.clipModel.Unlink();
 ////
@@ -1130,8 +1133,8 @@ idPhysics_RigidBody::GetBounds
 ////	}
 ////
 ////	// move the rigid body velocity back into the world frame
-//////	this.current.i.linearMomentum += this.current.pushVelocity.SubVec3( 0 ) * mass;
-//////	this.current.i.angularMomentum += this.current.pushVelocity.SubVec3( 1 ) * inertiaTensor;
+//////	this.current.i.linearMomentum += this.current.pushVelocity.SubVec3( 0 ) * this.mass;
+//////	this.current.i.angularMomentum += this.current.pushVelocity.SubVec3( 1 ) * this.inertiaTensor;
 ////	this.current.pushVelocity.Zero();
 ////
 ////	this.current.lastTimeStep = timeStep;
@@ -1198,13 +1201,13 @@ idPhysics_RigidBody::GetBounds
 ////	idVec3 linearVelocity, angularVelocity;
 ////	idMat3 inverseWorldInertiaTensor;
 ////
-////	linearVelocity = inverseMass * this.current.i.linearMomentum;
-////	inverseWorldInertiaTensor = this.current.i.orientation.Transpose() * inverseInertiaTensor * this.current.i.orientation;
+////	linearVelocity = this.inverseMass * this.current.i.linearMomentum;
+////	inverseWorldInertiaTensor = this.current.i.orientation.Transpose() * this.inverseInertiaTensor * this.current.i.orientation;
 ////	angularVelocity = inverseWorldInertiaTensor * this.current.i.angularMomentum;
 ////
-////	info.invMass = inverseMass;
+////	info.invMass = this.inverseMass;
 ////	info.invInertiaTensor = inverseWorldInertiaTensor;
-////	info.position = point - ( this.current.i.position + centerOfMass * this.current.i.orientation );
+////	info.position = point - ( this.current.i.position + this.centerOfMass * this.current.i.orientation );
 ////	info.velocity = linearVelocity + angularVelocity.Cross( info.position );
 ////}
 ////
@@ -1218,7 +1221,7 @@ idPhysics_RigidBody::GetBounds
 ////		return;
 ////	}
 ////	this.current.i.linearMomentum += impulse;
-////	this.current.i.angularMomentum += ( point - ( this.current.i.position + centerOfMass * this.current.i.orientation ) ).Cross( impulse );
+////	this.current.i.angularMomentum += ( point - ( this.current.i.position + this.centerOfMass * this.current.i.orientation ) ).Cross( impulse );
 ////	Activate();
 ////}
 ////
@@ -1232,7 +1235,7 @@ idPhysics_RigidBody::GetBounds
 ////		return;
 ////	}
 ////	this.current.externalForce += force;
-////	this.current.externalTorque += ( point - ( this.current.i.position + centerOfMass * this.current.i.orientation ) ).Cross( force );
+////	this.current.externalTorque += ( point - ( this.current.i.position + this.centerOfMass * this.current.i.orientation ) ).Cross( force );
 ////	Activate();
 ////}
 ////
@@ -1397,7 +1400,7 @@ idPhysics_RigidBody::GetAxis
 ////================
 ////*/
 ////void idPhysics_RigidBody::SetLinearVelocity( const idVec3 &newLinearVelocity, /*int*/ id:number ) {
-////	this.current.i.linearMomentum = newLinearVelocity * mass;
+////	this.current.i.linearMomentum = newLinearVelocity * this.mass;
 ////	Activate();
 ////}
 ////
@@ -1407,7 +1410,7 @@ idPhysics_RigidBody::GetAxis
 ////================
 ////*/
 ////void idPhysics_RigidBody::SetAngularVelocity( const idVec3 &newAngularVelocity, /*int*/ id:number ) {
-////	this.current.i.angularMomentum = newAngularVelocity * inertiaTensor;
+////	this.current.i.angularMomentum = newAngularVelocity * this.inertiaTensor;
 ////	Activate();
 ////}
 ////
@@ -1418,7 +1421,7 @@ idPhysics_RigidBody::GetAxis
 ////*/
 ////const idVec3 &idPhysics_RigidBody::GetLinearVelocity( /*int*/ id:number ) const {
 ////	static idVec3 curLinearVelocity;
-////	curLinearVelocity = this.current.i.linearMomentum * inverseMass;
+////	curLinearVelocity = this.current.i.linearMomentum * this.inverseMass;
 ////	return curLinearVelocity;
 ////}
 ////
@@ -1431,7 +1434,7 @@ idPhysics_RigidBody::GetAxis
 ////	static idVec3 curAngularVelocity;
 ////	idMat3 inverseWorldInertiaTensor;
 ////
-////	inverseWorldInertiaTensor = this.current.i.orientation.Transpose() * inverseInertiaTensor * this.current.i.orientation;
+////	inverseWorldInertiaTensor = this.current.i.orientation.Transpose() * this.inverseInertiaTensor * this.current.i.orientation;
 ////	curAngularVelocity = inverseWorldInertiaTensor * this.current.i.angularMomentum;
 ////	return curAngularVelocity;
 ////}
@@ -1534,7 +1537,7 @@ idPhysics_RigidBody::GetAxis
 ////
 ////	contacts.SetNum( 10, false );
 ////
-////	dir.SubVec3(0) = this.current.i.linearMomentum + this.current.lastTimeStep * gravityVector * mass;
+////	dir.SubVec3(0) = this.current.i.linearMomentum + this.current.lastTimeStep * gravityVector * this.mass;
 ////	dir.SubVec3(1) = this.current.i.angularMomentum;
 ////	dir.SubVec3(0).Normalize();
 ////	dir.SubVec3(1).Normalize();
@@ -1656,15 +1659,15 @@ idPhysics_RigidBody::GetAxis
 ////	msg.WriteDeltaFloat( quat.x, localQuat.x );
 ////	msg.WriteDeltaFloat( quat.y, localQuat.y );
 ////	msg.WriteDeltaFloat( quat.z, localQuat.z );
-////	msg.WriteDeltaFloat( 0.0f, this.current.pushVelocity[0], RB_VELOCITY_EXPONENT_BITS, RB_VELOCITY_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, this.current.pushVelocity[1], RB_VELOCITY_EXPONENT_BITS, RB_VELOCITY_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, this.current.pushVelocity[2], RB_VELOCITY_EXPONENT_BITS, RB_VELOCITY_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, this.current.externalForce[0], RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, this.current.externalForce[1], RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, this.current.externalForce[2], RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, this.current.externalTorque[0], RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, this.current.externalTorque[1], RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
-////	msg.WriteDeltaFloat( 0.0f, this.current.externalTorque[2], RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[0], RB_VELOCITY_EXPONENT_BITS, RB_VELOCITY_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[1], RB_VELOCITY_EXPONENT_BITS, RB_VELOCITY_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[2], RB_VELOCITY_EXPONENT_BITS, RB_VELOCITY_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.externalForce[0], RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.externalForce[1], RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.externalForce[2], RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.externalTorque[0], RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.externalTorque[1], RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
+////	msg.WriteDeltaFloat( 0.0, this.current.externalTorque[2], RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
 ////}
 ////
 /////*
@@ -1694,15 +1697,15 @@ idPhysics_RigidBody::GetAxis
 ////	localQuat.x = msg.ReadDeltaFloat( quat.x );
 ////	localQuat.y = msg.ReadDeltaFloat( quat.y );
 ////	localQuat.z = msg.ReadDeltaFloat( quat.z );
-////	this.current.pushVelocity[0] = msg.ReadDeltaFloat( 0.0f, RB_VELOCITY_EXPONENT_BITS, RB_VELOCITY_MANTISSA_BITS );
-////	this.current.pushVelocity[1] = msg.ReadDeltaFloat( 0.0f, RB_VELOCITY_EXPONENT_BITS, RB_VELOCITY_MANTISSA_BITS );
-////	this.current.pushVelocity[2] = msg.ReadDeltaFloat( 0.0f, RB_VELOCITY_EXPONENT_BITS, RB_VELOCITY_MANTISSA_BITS );
-////	this.current.externalForce[0] = msg.ReadDeltaFloat( 0.0f, RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
-////	this.current.externalForce[1] = msg.ReadDeltaFloat( 0.0f, RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
-////	this.current.externalForce[2] = msg.ReadDeltaFloat( 0.0f, RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
-////	this.current.externalTorque[0] = msg.ReadDeltaFloat( 0.0f, RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
-////	this.current.externalTorque[1] = msg.ReadDeltaFloat( 0.0f, RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
-////	this.current.externalTorque[2] = msg.ReadDeltaFloat( 0.0f, RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
+////	this.current.pushVelocity[0] = msg.ReadDeltaFloat( 0.0, RB_VELOCITY_EXPONENT_BITS, RB_VELOCITY_MANTISSA_BITS );
+////	this.current.pushVelocity[1] = msg.ReadDeltaFloat( 0.0, RB_VELOCITY_EXPONENT_BITS, RB_VELOCITY_MANTISSA_BITS );
+////	this.current.pushVelocity[2] = msg.ReadDeltaFloat( 0.0, RB_VELOCITY_EXPONENT_BITS, RB_VELOCITY_MANTISSA_BITS );
+////	this.current.externalForce[0] = msg.ReadDeltaFloat( 0.0, RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
+////	this.current.externalForce[1] = msg.ReadDeltaFloat( 0.0, RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
+////	this.current.externalForce[2] = msg.ReadDeltaFloat( 0.0, RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
+////	this.current.externalTorque[0] = msg.ReadDeltaFloat( 0.0, RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
+////	this.current.externalTorque[1] = msg.ReadDeltaFloat( 0.0, RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
+////	this.current.externalTorque[2] = msg.ReadDeltaFloat( 0.0, RB_FORCE_EXPONENT_BITS, RB_FORCE_MANTISSA_BITS );
 ////
 ////	this.current.i.orientation = quat.ToMat3();
 ////	this.current.localAxis = localQuat.ToMat3();

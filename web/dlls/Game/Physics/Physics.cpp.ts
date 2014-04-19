@@ -108,9 +108,9 @@ class idPhysics extends idClass {
 	   //	// set pointer to entity using physics
 	   //	virtual void				SetSelf(e:idEntity) = 0;
 	   //	// clip models
-	   //	virtual void				SetClipModel(idClipModel *model, float density, /*int*/ id:number = 0, bool freeOld = true) = 0;
+	SetClipModel(model:idClipModel, /*float*/ density:number, /*int*/ id:number = 0, freeOld = true) :void { throw "placeholder"; }
 	   //	virtual void				SetClipBox(const idBounds &bounds, float density);
-	   //	virtual idClipModel *		GetClipModel(/*int*/ id:number = 0) const = 0;
+	GetClipModel ( /*int*/ id: number = 0 ): idClipModel { throw "placeholder"; }
 	GetNumClipModels ( ): number { throw "placeholder"; }
 	//	// get/set the mass of a specific clip model or the whole physics object
 	   //	virtual void				SetMass(float mass, /*int*/ id:number = -1) = 0;

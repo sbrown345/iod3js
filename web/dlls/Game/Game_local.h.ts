@@ -1160,20 +1160,20 @@ idGameLocal::Warning
 		}
 	}
 
-/////*
-////============
-////idGameLocal::DWarning
-////============
-////*/
-////DWarning( const char *fmt, ... ) :void  {
+/*
+============
+idGameLocal::DWarning
+============
+*/
+	DWarning ( fmt: string, ...args: any[] ): void {
 ////	va_list		argptr;
 ////	char		text[MAX_STRING_CHARS];
 ////	idThread *	thread;
 
-////	if ( !developer.GetBool() ) {
-////		return;
-////	}
-
+		if ( !developer.GetBool ( ) ) {
+			return;
+		}
+		todoThrow ( );
 ////	va_start( argptr, fmt );
 ////	idStr::vsnPrintf( text, sizeof( text ), fmt, argptr );
 ////	va_end( argptr );
@@ -1184,7 +1184,7 @@ idGameLocal::Warning
 ////	} else {
 ////		common.DWarning( "%s", text );
 ////	}
-////}
+	}
 
 /*
 ============

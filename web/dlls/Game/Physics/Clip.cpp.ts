@@ -750,23 +750,23 @@ idClipModel::~idClipModel
 ////		return 0;
 ////	}
 ////}
-////
-/////*
-////================
-////idClipModel::GetMassProperties
-////================
-////*/
-////void idClipModel::GetMassProperties( const float density, float &mass, idVec3 &centerOfMass, idMat3 &inertiaTensor ) const {
-////	if ( this.traceModelIndex == -1 ) {
-////		gameLocal.Error( "idClipModel::GetMassProperties: clip model %d on '%s' is not a trace model\n", this.id, entity.name.c_str() );
-////	}
-////
-////	trmCache_t *entry = traceModelCache[this.traceModelIndex];
-////	mass = entry.volume * density;
-////	centerOfMass = entry.centerOfMass;
-////	inertiaTensor = density * entry.inertiaTensor;
-////}
-////
+
+/*
+================
+idClipModel::GetMassProperties
+================
+*/
+	GetMassProperties ( /*float */density: number, /*float */ mass: R<number>, centerOfMass: idVec3, inertiaTensor: idMat3 ): void {
+		if ( this.traceModelIndex == -1 ) {
+			gameLocal.Error( "idClipModel::GetMassProperties: clip model %d on '%s' is not a trace model\n", this.id, this.entity.name.c_str ( ) );
+		}
+
+		var entry = traceModelCache[this.traceModelIndex];
+		mass.$ = entry.volume * density;
+		centerOfMass.equals( entry.centerOfMass );
+		inertiaTensor.equals( idMat3.opMultiplication_floatMat( density, entry.inertiaTensor ) );
+	}
+
 /*
 ===============
 idClipModel::Unlink
@@ -990,15 +990,15 @@ class idClip {
 ////	Translation( results, start, end, &this.temporaryClipModel, mat3_identity, contentMask, passEntity );
 ////	return ( results.fraction < 1.0 );
 ////}
-////
-////ID_INLINE const idBounds & idClip::GetWorldBounds( ) const {
-////	return this.worldBounds;
-////}
-////
-////ID_INLINE idClipModel *idClip::DefaultClipModel( ) {
-////	return &defaultClipModel;
-////}
-////
+
+	GetWorldBounds ( ): idBounds {
+		return this.worldBounds;
+	}
+
+	DefaultClipModel ( ): idClipModel {
+		return this.defaultClipModel;
+	}
+
 /*
 ===============
 idClip::idClip

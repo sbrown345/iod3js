@@ -667,7 +667,7 @@ idSIMD_Generic::MinMax
 idSIMD_Generic::Memcpy
 ================
 */
-	static Memcpy ( dst: ArrayBufferView, src: ArrayBufferView, count: number ): void {
+	static Memcpy(dst: Uint8Array, src: Uint8Array, count: number ): void {
 		memcpy( dst, src, count );
 	}
 

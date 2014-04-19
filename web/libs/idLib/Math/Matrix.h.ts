@@ -518,12 +518,13 @@ class idMat3 {
 	}
 //
 //ID_INLINE idMat3 idMat3::operator*( const float a ) const {
-//	return idMat3(
-//		this.mat[0].x * a, this.mat[0].y * a, this.mat[0].z * a,
-//		this.mat[1].x * a, this.mat[1].y * a, this.mat[1].z * a,
-//		this.mat[2].x * a, this.mat[2].y * a, this.mat[2].z * a );
-//}
-//
+	opMultiplication_float ( a: number /*float*/ ): idMat3 {
+		return new idMat3(
+			this.mat[0].x * a, this.mat[0].y * a, this.mat[0].z * a,
+			this.mat[1].x * a, this.mat[1].y * a, this.mat[1].z * a,
+			this.mat[2].x * a, this.mat[2].y * a, this.mat[2].z * a );
+	}
+
 //ID_INLINE idMat3 idMat3::operator+( const idMat3 &a ) const {
 //	return idMat3(
 //		this.mat[0].x + a[0].x, this.mat[0].y + a[0].y, this.mat[0].z + a[0].z,
@@ -590,8 +591,9 @@ class idMat3 {
 	}
 //
 //ID_INLINE idMat3 operator*( const float a, mat:idMat3  ) {
-//	return this.mat * a;
-//}
+	static opMultiplication_floatMat(a: number /*float*/, mat: idMat3): idMat3 {
+		return mat.opMultiplication_float( a );
+	}
 //
 	//ID_INLINE idVec3 &operator*=( vec:idVec3, mat:idMat3  ) {
 	static opMultiplicationAssignment_vec3_mat3 ( vec: idVec3, mat: idMat3 ): idVec3 {

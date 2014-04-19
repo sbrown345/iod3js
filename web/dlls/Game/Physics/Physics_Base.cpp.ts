@@ -266,23 +266,23 @@ class idPhysics_Base extends idPhysics {
 	//	this.self = e;
 	//}
 	//
-	///*
-	//================
-	//idPhysics_Base::SetClipModel
-	//================
-	//*/
-	//void idPhysics_Base::SetClipModel( idClipModel *model, float density, /*int*/ id:number, bool freeOld ) {
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::GetClipModel
-	//================
-	//*/
-	//idClipModel *idPhysics_Base::GetClipModel( /*int*/ id:number ) const {
-	//	return NULL;
-	//}
-	
+	/*
+	================
+	idPhysics_Base::SetClipModel
+	================
+	*/
+	SetClipModel ( model: idClipModel, /*float*/ density: number, /*int*/ id: number = 0, freeOld = true ): void {
+	}
+
+	/*
+	================
+	idPhysics_Base::GetClipModel
+	================
+	*/
+	GetClipModel( /*int*/ id: number  = 0): idClipModel {
+		return null;
+	}
+
 	/*
 	================
 	idPhysics_Base::GetNumClipModels
