@@ -118,7 +118,6 @@ function toupper(s: string): string {
 	return s.toUpperCase();
 }
 
-// don't use subarray!
 function memcpy2d ( destination: Int32Array[], source: Int32Array[] ): void {
 	for ( var i = 0; i < destination.length; i++ ) {
 		var subArrayDest = destination[i];
@@ -129,33 +128,27 @@ function memcpy2d ( destination: Int32Array[], source: Int32Array[] ): void {
 	}
 }
 
-// don't use subarray!
-function memcpy(destination: ArrayBufferView, source: ArrayBufferView, count: number): void {
+function memcpy ( destination: Uint8Array, source: Uint8Array, num: number ): void
+function memcpy ( destination: Int8Array, source: Int8Array, num: number ): void
+function memcpy ( destination: Uint16Array, source: Uint16Array, num: number ): void
+function memcpy ( destination: Int16Array, source: Int16Array, num: number ): void
+function memcpy ( destination: Uint32Array, source: Uint32Array, num: number ): void
+function memcpy ( destination: Int32Array, source: Int32Array, num: number ): void
+function memcpy ( destination: Uint8Array /* any*/, source: Uint8Array /*any*/, num: number ): void {
 	if ( !destination ) {
 		return;
 	}
-	// todo: use uint32 arrays instead - less operations
-	var sourceArray = new Uint8Array(destination.buffer);
-	var destArray = new Uint8Array(source.buffer);
-	for (var i = 0; i < count; i++) {
-		sourceArray[i] = destArray[i];
-	}
-}
 
-// _can_ use subarray
-function memcpyUint8Array(destination: ArrayBufferView, source: Uint8Array, count: number): void {
-	for (var i = 0; i < count; i++) {
-		destination[i] = source[i];
+	if ( !( destination instanceof Uint8Array ) ) {
+		destination = new Uint8Array( destination.buffer, destination.byteOffset );
 	}
-}
 
-//function memcpy(destination: P, source: P, count: number): void {
-//	for (var i = 0; i < count; i++) {
-//		destination.s(source.v());
-//		destination.incr();
-//		source.incr();
-//	}
-//}
+	if ( !( destination instanceof Uint8Array ) ) {
+		source = new Uint8Array( source.buffer, source.byteOffset );
+	}
+
+	destination.set( source.subarray( num ) );
+}
 
 function zeroArray ( array: ArrayBufferView ): void;
 function zeroArray ( array: number[] ): void;
@@ -204,15 +197,7 @@ function memsetP ( ptr: P, value: number, num: number ): void {
 	}
 }
 
-function memmove ( destination: Uint8Array /*any*/, source: Uint8Array /*any*/, num: /*size_t*/ number ): void {
-	if ( !( destination instanceof Uint8Array ) ) {
-		destination = new Uint8Array( destination.buffer, destination.byteOffset );
-	}
-	if ( !( destination instanceof Uint8Array ) ) {
-		source = new Uint8Array( source.buffer, source.byteOffset );
-	}
-	destination.set( source.subarray( num ) );
-}
+var memmove = memcpy;
 
 function dynamic_cast<T> ( obj: any, type: any ): T {
 	if ( obj instanceof type ) {

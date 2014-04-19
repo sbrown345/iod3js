@@ -962,28 +962,29 @@ class idTrigger_Count extends idTrigger {
 	Save(savefile:idSaveGame):void{throw "placeholder";}
 	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
-	Spawn():void{throw "placeholder";}
+	//Spawn():void{throw "placeholder";}
 ////
 ////private:
-////	int					goal;
-////	int					count;
-////	float				delay;
-////
+	goal :number/*int*/;
+	count :number/*int*/;
+	delay :number/*float*/;
+
 	Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
 	Event_TriggerAction(activator: idEntity): void { throw "placeholder"; }
 
 	
-/////*
-////================
-////idTrigger_Count::idTrigger_Count
-////================
-////*/
-////idTrigger_Count::idTrigger_Count( ) {
-////	goal = 0;
-////	count = 0;
-////	delay = 0.0;
-////}
-////
+/*
+================
+idTrigger_Count::idTrigger_Count
+================
+*/
+	constructor ( ) {
+		super ( );
+		this.goal = 0;
+		this.count = 0;
+		this.delay = 0.0;
+	}
+
 /////*
 ////================
 ////idTrigger_Count::Save
@@ -1005,18 +1006,24 @@ class idTrigger_Count extends idTrigger {
 ////	savefile.ReadInt( count );
 ////	savefile.ReadFloat( delay );
 ////}
-////
-/////*
-////================
-////idTrigger_Count::Spawn
-////================
-////*/
-////void idTrigger_Count::Spawn( ) {
-////	this.spawnArgs.GetInt( "count", "1", goal );
-////	this.spawnArgs.GetFloat( "delay", "0", delay );
-////	count = 0;
-////}
-////
+
+/*
+================
+idTrigger_Count::Spawn
+================
+*/
+	Spawn ( ): void {
+		var $goal = new R( this.goal );
+		this.spawnArgs.GetInt_R( "count", "1", $goal );
+		this.goal = $goal.$;
+		var $delay = new R( this.delay );
+		this.spawnArgs.GetFloat_R( "delay", "0", $delay );
+		this.delay = $delay.$;
+
+
+		this.count = 0;
+	}
+
 /////*
 ////================
 ////idTrigger_Count::Event_Trigger
@@ -1025,10 +1032,10 @@ class idTrigger_Count extends idTrigger {
 ////void idTrigger_Count::Event_Trigger( activator:idEntity ) {
 ////	// goal of -1 means trigger has been exhausted
 ////	if (goal >= 0) {
-////		count++;
-////		if ( count >= goal ) {
+////		this.count++;
+////		if ( this.count >= goal ) {
 ////			if (this.spawnArgs.GetBool("repeat")) {
-////				count = 0;
+////				this.count = 0;
 ////			} else {
 ////				goal = -1;
 ////			}

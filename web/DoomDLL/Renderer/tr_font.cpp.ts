@@ -367,7 +367,7 @@ idRenderSystem.prototype.RegisterFont = function( fontName:string, font :fontInf
 			outFont.glyphs[i].t2			= readFloat();
 			var/*int */junk /* font.glyphs[i].glyph */		= readInt();
 			//FIXME: the +6, -6 skips the embedded fonts/ 
-			memcpyUint8Array( outFont.glyphs[i].shaderName, fdFile.subarray(fdOffset + 6), 32 - 6 );
+			memcpy( outFont.glyphs[i].shaderName, fdFile.subarray(fdOffset + 6), 32 - 6 );
 			fdOffset += 32;
 		}
 		outFont.glyphScale = readFloat();

@@ -622,7 +622,7 @@ idEditField::Draw
 			common.Error( "drawLen >= MAX_EDIT_LINE" );
 		}
 
-		memcpyUint8Array( str, this.buffer.substr( prestep ).toUint8Array ( ), drawLen );
+		memcpy( str, this.buffer.substr( prestep ).toUint8Array ( ), drawLen );
 		str[drawLen] = 0;
 
 		// draw it

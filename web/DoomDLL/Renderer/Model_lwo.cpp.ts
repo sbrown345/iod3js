@@ -1300,7 +1300,7 @@ function /*unsigned int */sgetU4 ( /*unsigned char **bp */bp: P ): number {
 	var /*unsigned  int*/i = new Uint32Array( 1 );
 
 	if ( flen == FLEN_ERROR ) return 0;
-	memcpyUint8Array( new Uint8Array( i.buffer ), bp.subarray ( ), 4 );
+	memcpy( new Uint8Array( i.buffer ), bp.subarray ( ), 4 );
 	BigRevBytes( i, 4, 1 );
 	flen += 4;
 	bp.incrBy( 4 );
@@ -1331,7 +1331,7 @@ function /*float */sgetF4 ( /*unsigned char ***/bp: P ): number {
 	var f = new Float32Array( 1 );
 
 	if ( flen == FLEN_ERROR ) return 0.0;
-	memcpyUint8Array( new Uint8Array( f.buffer ), bp.subarray ( ), 4 );
+	memcpy( new Uint8Array( f.buffer ), bp.subarray ( ), 4 );
 	BigRevBytes( f, 4, 1 );
 	flen += 4;
 	bp.incrBy( 4 );
@@ -1363,7 +1363,7 @@ function sgetS0 ( /*unsigned char ***/bp: P ): string {
 		return null;
 	}
 
-	memcpyUint8Array( s, buf.subarray ( ), len );
+	memcpy( s, buf.subarray ( ), len );
 	flen += len;
 	bp.incrBy( len );
 	return s.toString();
