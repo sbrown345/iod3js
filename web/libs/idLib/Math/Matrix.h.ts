@@ -28,18 +28,18 @@
 //
 //#ifndef __MATH_MATRIX_H__
 //#define __MATH_MATRIX_H__
-//
-///*
-//===============================================================================
-//
-//  Matrix classes, all matrices are row-major except idMat3
-//
-//===============================================================================
-//*/
-//
-//#define MATRIX_INVERSE_EPSILON		1e-14
-//#define MATRIX_EPSILON				1e-6
-//
+
+/*
+===============================================================================
+
+  Matrix classes, all matrices are row-major except idMat3
+
+===============================================================================
+*/
+
+var MATRIX_INVERSE_EPSILON	=	1e-14
+var MATRIX_EPSILON			=	1e-6
+
 //class idAngles;
 //class idQuat;
 //class idCQuat;
@@ -610,15 +610,15 @@ class idMat3 {
 		return false;
 	}
 
-//ID_INLINE bool idMat3::Compare( const idMat3 &a, const float epsilon ) const {
-//	if ( this.mat[0].this.Compare( a[0], epsilon ) &&
-//		this.mat[1].this.Compare( a[1], epsilon ) &&
-//		this.mat[2].this.Compare( a[2], epsilon ) ) {
-//		return true;
-//	}
-//	return false;
-//}
-//
+	Compare_epsilon ( a: idMat3, /*float */epsilon: number ): boolean {
+		if ( this.mat[0].Compare_epsilon( a[0], epsilon ) &&
+			this.mat[1].Compare_epsilon( a[1], epsilon ) &&
+			this.mat[2].Compare_epsilon( a[2], epsilon ) ) {
+			return true;
+		}
+		return false;
+	}
+
 //ID_INLINE bool idMat3::operator==( const idMat3 &a ) const {
 //	return this.Compare( a );
 //}
@@ -637,11 +637,11 @@ class idMat3 {
 	Identity ( ): void {
 		this.equals( mat3_identity );
 	}
-//
-//ID_INLINE bool idMat3::IsIdentity( const float epsilon ) const {
-//	return this.Compare( mat3_identity, epsilon );
-//}
-//
+
+	IsIdentity ( /*float */epsilon:number = MATRIX_EPSILON ): boolean {
+		return this.Compare_epsilon( mat3_identity, epsilon );
+	}
+
 //ID_INLINE bool idMat3::IsSymmetric( const float epsilon ) const {
 //	if ( idMath::Fabs( this.mat[0][1] - this.mat[1][0] ) > epsilon ) {
 //		return false;

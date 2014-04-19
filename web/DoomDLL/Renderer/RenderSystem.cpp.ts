@@ -2530,7 +2530,7 @@ SetColor4
 DrawStretchPic
 =============
 */
-	DrawStretchPic ( verts: idDrawVert[], /*const glIndex_t **/indexes: Int32Array, /*int */vertCount: number, /*int */indexCount: number, material: idMaterial,
+	DrawStretchPic ( verts: idDrawVert[], /*const glIndex_t **/indexes: Int16Array, /*int */vertCount: number, /*int */indexCount: number, material: idMaterial,
 		clip: boolean, /* float */min_x: number, /*float */min_y: number, /*float */max_x: number, /*float */max_y: number ): void {
 		this.guiModel.DrawStretchPic( verts, indexes, vertCount, indexCount, material,
 			clip, min_x, min_y, max_x, max_y );

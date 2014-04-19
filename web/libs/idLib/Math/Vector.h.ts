@@ -1795,17 +1795,17 @@ class idVec5 {
 ////}
 
 ////ID_INLINE idVec5 &idVec5::operator=( /*const idVec3 &a*/a:idVec3 ) { 
-	equals(other: idVec5): idVec5
-	equals(other: idVec3): idVec5
-	equals(other: any): idVec5 {
+	equals ( other: idVec5 ): idVec5
+	equals ( other: idVec3 ): idVec5
+	equals ( other: any ): idVec5 {
 		this.x = other.x;
 		this.y = other.y;
 		this.z = other.z;
 
-		if (other instanceof idVec5) {
+		if ( other instanceof idVec3 ) {
 			this.s = other.s;
 			this.t = other.t;
-		} else if (other instanceof idVec3) {
+		} else if ( other instanceof idVec5 ) {
 			this.s = this.t = 0;
 		}
 

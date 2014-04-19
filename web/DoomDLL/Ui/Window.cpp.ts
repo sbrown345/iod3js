@@ -472,7 +472,7 @@ idWindow::CommonInit
 ////size_t idWindow::Allocated() {
 ////	int i, c;
 ////	int sz = this.name.Allocated();
-////	sz += text.Size();
+////	sz += this.text.Size();
 ////	sz += this.backGroundName.Size();
 ////
 ////	c = this.definedVars.Num();
@@ -620,37 +620,36 @@ idWindow::GetMaxCharWidth
 		return this.dc.MaxCharWidth( this.textScale.data );
 	}
 
-/////*
-////================
-////idWindow::Draw
-////================
-////*/
-	Draw( /*int*/ time: number, /*float */x: number, /*float */y: number): void {
-		todoThrow ( );
-////	if ( text.Length() == 0 ) {
-////		return;
-////	}
-////	if ( this.textShadow ) {
-////		idStr shadowText = text;
-////		idRectangle shadowRect = this.textRect;
-////
-////		shadowText.RemoveColors();
-////		shadowRect.x += this.textShadow;
-////		shadowRect.y += this.textShadow;
-////
-////		this.dc.DrawText( shadowText, textScale, this.textAlign, colorBlack, shadowRect, !( this.flags & WIN_NOWRAP ), -1 );
-////	}
-////	this.dc.DrawText( text, textScale, this.textAlign, foreColor, this.textRect, !( this.flags & WIN_NOWRAP ), -1 );
-////
-////	if ( gui_edit.GetBool() ) {
-////		this.dc.EnableClipping( false );
-////		this.dc.DrawText( va( "x: %i  y: %i", ( int )rect.x(), ( int )rect.y() ), 0.25, 0, this.dc.colorWhite, idRectangle( this.rect.x(), this.rect.y() - 15, 100, 20 ), false );
-////		this.dc.DrawText( va( "w: %i  h: %i", ( int )rect.w(), ( int )rect.h() ), 0.25, 0, this.dc.colorWhite, idRectangle( this.rect.x() + this.rect.w(), this.rect.w() + this.rect.h() + 5, 100, 20 ), false );
-////		this.dc.EnableClipping( true );
-////	}
-////
+/*
+================
+idWindow::Draw
+================
+*/
+	Draw ( /*int*/ time: number, /*float */x: number, /*float */y: number ): void {
+		if ( this.text.Length ( ) == 0 ) {
+			return;
+		}
+		if ( this.textShadow ) {
+			var shadowText = new idStr( this.text.data );
+			var shadowRect = new idRectangle;
+			shadowRect.equals( this.textRect );
+
+			shadowText.RemoveColors ( );
+			shadowRect.x += this.textShadow;
+			shadowRect.y += this.textShadow;
+
+			this.dc.DrawText_text( shadowText.data, this.textScale.data, this.textAlign, colorBlack, shadowRect, !( this.flags & WIN_NOWRAP ), -1 );
+		}
+		this.dc.DrawText_text( this.text.data.data, this.textScale.data, this.textAlign, this.foreColor.data, this.textRect, !( this.flags & WIN_NOWRAP ), -1 );
+
+		if ( idWindow.gui_edit.GetBool ( ) ) {
+			this.dc.EnableClipping( false );
+			this.dc.DrawText_text( va( "x: %i  y: %i", int( this.rect.x ( ) ), int( this.rect.y ( ) ) ), 0.25, 0, /*this.dc.*/colorWhite, new idRectangle( this.rect.x ( ), this.rect.y ( ) - 15, 100, 20 ), false );
+			this.dc.DrawText_text( va( "w: %i  h: %i", int( this.rect.w ( ) ), int( this.rect.h ( ) ) ), 0.25, 0, /*this.dc.*/colorWhite, new idRectangle( this.rect.x ( ) + this.rect.w ( ), this.rect.w ( ) + this.rect.h ( ) + 5, 100, 20 ), false );
+			this.dc.EnableClipping( true );
+		}
 	}
-////
+
 /////*
 ////================
 ////idWindow::BringToTop
@@ -894,43 +893,43 @@ idWindow::UpdateWinVars
 		}
 	}
 
-/////*
-////================
-////idWindow::RunTimeEvents
-////================
-////*/
-////bool idWindow::RunTimeEvents(int time) {
-////
-////	if ( time - lastTimeRun < USERCMD_MSEC ) {
-////		//common.Printf("Skipping gui time events at %i\n", time);
-////		return false;
-////	}
-////
-////	lastTimeRun = time;
-////
-////	UpdateWinVars();
-////
-////	if (this.expressionRegisters.Num() && this.ops.Num()) {
-////		this.EvalRegs();
-////	}
-////
-////	if ( this.flags & WIN_INTRANSITION ) {
-////		Transition();
-////	}
-////
-////	Time();
-////
-////	// renamed ON_EVENT to ON_FRAME
-////	RunScript(ON_FRAME);
-////
-////	var c = this.children.Num();
-////	for (var i = 0; i < c; i++) {
-////		this.children[i].RunTimeEvents(time);
-////	}
-////
-////	return true;
-////}
-////
+/*
+================
+idWindow::RunTimeEvents
+================
+*/
+	RunTimeEvents ( /*int */time: number ): boolean {
+
+		if ( time - this.lastTimeRun < USERCMD_MSEC ) {
+			//common.Printf("Skipping gui time events at %i\n", time);
+			return false;
+		}
+
+		this.lastTimeRun = time;
+
+		this.UpdateWinVars ( );
+
+		if ( this.expressionRegisters.Num ( ) && this.ops.Num ( ) ) {
+			this.EvalRegs ( );
+		}
+		todoThrow ( );
+		//if ( this.flags & WIN_INTRANSITION ) {
+		//	this.Transition ( );
+		//}
+
+		//this.Time ( );
+
+		//// renamed ON_EVENT to ON_FRAME
+		//this.RunScript( ON_FRAME );
+
+		//var c = this.children.Num ( );
+		//for ( var i = 0; i < c; i++ ) {
+		//	this.children[i].RunTimeEvents( time );
+		//}
+
+		return true;
+	}
+
 /////*
 ////================
 ////idWindow::RunNamedEvent
@@ -1062,7 +1061,7 @@ idWindow::Contains
 ////							}
 ////						}
 ////						if (child.Contains(child.clientRect, this.gui.CursorX(), this.gui.CursorY())) {
-////							//if ((gui_edit.GetBool() && (child.flags & WIN_SELECTED)) || (!gui_edit.GetBool() && (child.flags & WIN_MOVABLE))) {
+////							//if ((idWindow.gui_edit.GetBool() && (child.flags & WIN_SELECTED)) || (!idWindow.gui_edit.GetBool() && (child.flags & WIN_MOVABLE))) {
 ////							//	SetCapture(child);
 ////							//}
 ////							SetFocus(child);
@@ -1077,7 +1076,7 @@ idWindow::Contains
 ////							if (event.evValue2) {
 ////								SetFocus(child);
 ////								bool capture = true;
-////								if (capture && ((child.flags & WIN_MOVABLE) || gui_edit.GetBool())) {
+////								if (capture && ((child.flags & WIN_MOVABLE) || idWindow.gui_edit.GetBool())) {
 ////									SetCapture(child);
 ////								}
 ////								return "";
@@ -1108,7 +1107,7 @@ idWindow::Contains
 ////							SetFocus(child);
 ////						}
 ////						if (child.Contains(child.clientRect,this.gui.CursorX(), this.gui.CursorY()) || GetCaptureChild() == child) {
-////							if ((gui_edit.GetBool() && (child.flags & WIN_SELECTED)) || (!gui_edit.GetBool() && (child.flags & WIN_MOVABLE))) {
+////							if ((idWindow.gui_edit.GetBool() && (child.flags & WIN_SELECTED)) || (!idWindow.gui_edit.GetBool() && (child.flags & WIN_MOVABLE))) {
 ////								SetCapture(child);
 ////							}
 ////							const char *childRet = child.HandleEvent(event, updateVisuals);
@@ -1122,7 +1121,7 @@ idWindow::Contains
 ////					}
 ////				}
 ////			} else if (event.evValue == K_MOUSE3) {
-////				if (gui_edit.GetBool()) {
+////				if (idWindow.gui_edit.GetBool()) {
 ////					var c = this.children.Num();
 ////					for (var i = 0; i < c; i++) {
 ////						if (children[i].drawRect.Contains(this.gui.CursorX(), this.gui.CursorY())) {
@@ -1271,12 +1270,12 @@ idWindow::Contains
 ////	static char buff[16384];
 ////	if (this.dc) {
 ////		this.dc.EnableClipping(false);
-////		if (gui_debug.GetInteger() == 1) {
+////		if (idWindow.gui_debug.GetInteger() == 1) {
 ////			this.dc.DrawRect(this.drawRect.x, this.drawRect.y, this.drawRect.w, this.drawRect.h, 1, idDeviceContext::colorRed);
-////		} else if (gui_debug.GetInteger() == 2) {
+////		} else if (idWindow.gui_debug.GetInteger() == 2) {
 ////			char out[1024];
 ////			idStr str;
-////			str = text.c_str();
+////			str = this.text.c_str();
 ////			
 ////			if (str.Length()) {
 ////				sprintf(buff, "%s\n", str.c_str());
@@ -1295,7 +1294,7 @@ idWindow::Contains
 ////			//idRectangle tempRect = this.textRect;
 ////			//tempRect.x += offsetX;
 ////			//this.drawRect.y += offsetY;
-////			this.dc.DrawText(buff, textScale, this.textAlign, foreColor, this.textRect, true);
+////			this.dc.DrawText(buff, this.textScale, this.textAlign, foreColor, this.textRect, true);
 ////		} 
 ////		this.dc.EnableClipping(true);
 ////	}
@@ -1390,7 +1389,7 @@ idWindow::EvalRegs
 	private static regs = new Float32Array(MAX_EXPRESSION_REGISTERS);
 	private static lastEval: idWindow= null;
 
-	EvalRegs ( /*int */test = -1, force = false ): number /*float */ {
+EvalRegs ( /*int */test = -1, force = false ): number /*float */ {
 
 
 		if (!force && test >= 0 && test < MAX_EXPRESSION_REGISTERS && idWindow.lastEval == this) {
@@ -1411,72 +1410,74 @@ idWindow::EvalRegs
 
 		return 0.0;
 	}
-////
-/////*
-////================
-////idWindow::DrawBackground
-////================
-////*/
-////DrawBackground(const idRectangle &drawRect):void {
-////	if ( backColor.w() ) {
-////		this.dc.DrawFilledRect(drawRect.x, drawRect.y, drawRect.w, drawRect.h, backColor);
-////	}
-////
-////	if ( this.background && matColor.w() ) {
-////		float scalex, scaley;
-////		if ( this.flags & WIN_NATURALMAT ) {
-////			scalex = drawRect.w / this.background.GetImageWidth();
-////			scaley = drawRect.h / this.background.GetImageHeight();
-////		} else {
-////			scalex = this.matScalex;
-////			scaley = this.matScaley;
-////		}
-////		this.dc.DrawMaterial(drawRect.x, drawRect.y, drawRect.w, drawRect.h, this.background, matColor, scalex, scaley);
-////	}
-////}
-////
-/////*
-////================
-////idWindow::DrawBorderAndCaption
-////================
-////*/
-////DrawBorderAndCaption(const idRectangle &drawRect):void {
-////	if ( this.flags & WIN_BORDER && this.borderSize && borderColor.w() ) {
-////		this.dc.DrawRect(drawRect.x, drawRect.y, drawRect.w, drawRect.h, this.borderSize, borderColor);
-////	}
-////}
-////
-/////*
-////================
-////idWindow::SetupTransforms
-////================
-////*/
-////SetupTransforms(/*float */x:number, /*float */y:number):void {
-////	static idMat3 trans;
-////	static idVec3 org;
-////	
-////	trans.Identity();
-////	org.Set( this.origin.x + x, this.origin.y + y, 0 );
-////
-////	if ( rotate ) {
-////		static idRotation rot;
-////		static idVec3 vec(0, 0, 1);
-////		rot.Set( org, vec, rotate );
-////		trans = rot.ToMat3();
-////	}
-////
-////	if ( this.shear.x || this.shear.y ) {
-////		static idMat3 smat;
-////		smat.Identity();
-////		smat[0][1] = this.shear.x;
-////		smat[1][0] = this.shear.y;
-////		trans *= smat;
-////	}
-////
-////	if ( !trans.IsIdentity() ) {
-////		this.dc.SetTransformInfo( org, trans );
-////	}
-////}
+
+/*
+================
+idWindow::DrawBackground
+================
+*/
+	DrawBackground ( drawRect: idRectangle ): void {
+		if ( this.backColor.w ( ) ) {
+			this.dc.DrawFilledRect( drawRect.x, drawRect.y, drawRect.w, drawRect.h, this.backColor.data );
+		}
+
+		if ( this.background && this.matColor.w ( ) ) {
+			var /*float */scalex: number, scaley: number;
+			if ( this.flags & WIN_NATURALMAT ) {
+				scalex = drawRect.w / this.background.GetImageWidth ( );
+				scaley = drawRect.h / this.background.GetImageHeight ( );
+			} else {
+				scalex = this.matScalex;
+				scaley = this.matScaley;
+			}
+			this.dc.DrawMaterial( drawRect.x, drawRect.y, drawRect.w, drawRect.h, this.background, this.matColor, scalex, scaley );
+		}
+	}
+
+/*
+================
+idWindow::DrawBorderAndCaption
+================
+*/
+	DrawBorderAndCaption ( drawRect: idRectangle ): void {
+		if ( this.flags & WIN_BORDER && this.borderSize && this.borderColor.w ( ) ) {
+			this.dc.DrawRect( drawRect.x, drawRect.y, drawRect.w, drawRect.h, this.borderSize, this.borderColor );
+		}
+	}
+
+/*
+================
+idWindow::SetupTransforms
+================
+*/
+	private static trans= new idMat3;	
+	private static org = new idVec3;
+	private static smat = new idMat3;
+	private	static rot = new idRotation;
+	private	static vec = new idVec3(0, 0, 1);
+	SetupTransforms ( /*float */x: number, /*float */y: number ): void {
+
+
+		idWindow.trans.Identity ( );
+		idWindow.org.Set( this.origin.x + x, this.origin.y + y, 0 );
+
+		if ( this.rotate.data ) {
+			idWindow.rot.Set( idWindow.org, idWindow.vec, this.rotate );
+			idWindow.trans = idWindow.rot.ToMat3 ( );
+		}
+
+		if ( this.shear.x || this.shear.y ) {
+
+			idWindow.smat.Identity ( );
+			idWindow.smat[0][1] = this.shear.x;
+			idWindow.smat[1][0] = this.shear.y;
+			idWindow.trans.opMultiplicationAssignment( idWindow.smat );
+		}
+
+		if ( !idWindow.trans.IsIdentity ( ) ) {
+			this.dc.SetTransformInfo( idWindow.org, idWindow.trans );
+		}
+	}
 
 /*
 ================
@@ -1510,100 +1511,103 @@ idWindow::Redraw
 		if ( r_skipGuiShaders.GetInteger ( ) == 1 || this.dc == null ) {
 			return;
 		}
-		todoThrow ( );
-////	int time = this.gui.GetTime();
-////
-////	if ( this.flags & WIN_DESKTOP && r_skipGuiShaders.GetInteger() != 3 ) {
-////		RunTimeEvents( time );
-////	}
-////
-////	if ( r_skipGuiShaders.GetInteger() == 2 ) {
-////		return;
-////	}
-////
-////	if ( this.flags & WIN_SHOWTIME ) {
-////		this.dc.DrawText(va(" %0.1f seconds\n%s", (float)(time - timeLine) / 1000, this.gui.State().GetString("name")), 0.35f, 0, this.dc.colorWhite, idRectangle(100, 0, 80, 80), false);
-////	}
-////
-////	if ( this.flags & WIN_SHOWCOORDS ) {
-////		this.dc.EnableClipping(false);
-////		sprintf(str, "x: %i y: %i  cursorx: %i cursory: %i", (int)rect.x(), (int)rect.y(), (int)this.gui.CursorX(), (int)this.gui.CursorY());
-////		this.dc.DrawText(str, 0.25f, 0, this.dc.colorWhite, idRectangle(0, 0, 100, 20), false);
-////		this.dc.EnableClipping(true);
-////	}
-////
-////	if (!this.visible) {
-////		return;
-////	}
-////
-////	this.CalcClientRect(0, 0);
-////
-////	SetFont();
-////	//if (flags & WIN_DESKTOP) {
-////		// see if this window forces a new aspect ratio
-////		this.dc.SetSize(this.forceAspectWidth, this.forceAspectHeight);
-////	//}
-////
-////	//FIXME: go to screen coord tracking
-////	this.drawRect.Offset(x, y);
-////	this.clientRect.Offset(x, y);
-////	this.textRect.Offset(x, y);
-////	this.actualX = this.drawRect.x;
-////	this.actualY = this.drawRect.y;
-////
-////	idVec3	oldOrg;
-////	idMat3	oldTrans;
-////		
-////	this.dc.GetTransformInfo( oldOrg, oldTrans );
-////
-////	SetupTransforms(x, y);
-////	DrawBackground(this.drawRect);
-////	DrawBorderAndCaption(this.drawRect);
-////
-////	if ( !( this.flags & WIN_NOCLIP) ) {
-////		this.dc.PushClipRect(this.clientRect);
-////	} 
-////
-////	if ( r_skipGuiShaders.GetInteger() < 5 ) {
-////		Draw(time, x, y);
-////	}
-////
-////	if ( gui_debug.GetInteger() ) {
-////		DebugDraw(time, x, y);
-////	}
-////
-////	int c = this.drawWindows.Num();
-////	for ( var i = 0; i < c; i++ ) {
-////		if ( this.drawWindows[i].win ) {
-////			this.drawWindows[i].win.Redraw( this.clientRect.x + xOffset, this.clientRect.y + yOffset );
-////		} else {
-////			this.drawWindows[i].simp.Redraw( this.clientRect.x + xOffset, this.clientRect.y + yOffset );
-////		}
-////	}
-////
-////	// Put transforms back to what they were before the children were processed
-////	this.dc.SetTransformInfo(oldOrg, oldTrans);
-////
-////	if ( ! ( this.flags & WIN_NOCLIP ) ) {
-////		this.dc.PopClipRect();
-////	} 
-////
-////	if (gui_edit.GetBool()  || (flags & WIN_DESKTOP && !( this.flags & WIN_NOCURSOR )  && !hideCursor && (this.gui.Active() || ( this.flags & WIN_MENUGUI ) ))) {
-////		this.dc.SetTransformInfo(vec3_origin, mat3_identity);
-////		this.gui.DrawCursor();
-////	}
-////
-////	if (gui_debug.GetInteger() && this.flags & WIN_DESKTOP) {
-////		this.dc.EnableClipping(false);
-////		sprintf(str, "x: %1.f y: %1.f",  this.gui.CursorX(), this.gui.CursorY());
-////		this.dc.DrawText(str, 0.25, 0, this.dc.colorWhite, idRectangle(0, 0, 100, 20), false);
-////		this.dc.DrawText(this.gui.GetSourceFile(), 0.25, 0, this.dc.colorWhite, idRectangle(0, 20, 300, 20), false);
-////		this.dc.EnableClipping(true);
-////	}
-////
-////	this.drawRect.Offset(-x, -y);
-////	this.clientRect.Offset(-x, -y);
-////	this.textRect.Offset(-x, -y);
+		var /*int */time = this.gui.GetTime ( );
+
+		if ( this.flags & WIN_DESKTOP && r_skipGuiShaders.GetInteger ( ) != 3 ) {
+			this.RunTimeEvents( time );
+		}
+
+		if ( r_skipGuiShaders.GetInteger ( ) == 2 ) {
+			return;
+		}
+
+		if ( this.flags & WIN_SHOWTIME ) {
+			this.dc.DrawText( va( " %0.1f seconds\n%s", /*(float)*/( time - timeLine ) / 1000, this.gui.State ( ).GetString( "name" ) ), 0.35, 0, /*this.dc.*/colorWhite, new idRectangle( 100, 0, 80, 80 ), false );
+		}
+
+		if ( this.flags & WIN_SHOWCOORDS ) {
+			todoThrow ( );
+			//this.dc.EnableClipping(false);
+			//sprintf(str, "x: %i y: %i  cursorx: %i cursory: %i", int(this.rect.x()), int(this.rect.y()), int(this.gui.CursorX()), int(this.gui.CursorY()));
+			//this.dc.DrawText_text(str.data, 0.25, 0, /*this.dc.*/colorWhite, new idRectangle(0, 0, 100, 20), false);
+			//this.dc.EnableClipping(true);
+		}
+
+		if ( !this.visible ) {
+			return;
+		}
+
+		this.CalcClientRect( 0, 0 );
+
+		this.SetFont ( );
+		//if (flags & WIN_DESKTOP) {
+		// see if this window forces a new aspect ratio
+		this.dc.SetSize( this.forceAspectWidth, this.forceAspectHeight );
+		//}
+
+		//FIXME: go to screen coord tracking
+		this.drawRect.Offset( x, y );
+		this.clientRect.Offset( x, y );
+		this.textRect.Offset( x, y );
+		this.actualX = this.drawRect.x;
+		this.actualY = this.drawRect.y;
+
+		var oldOrg = new idVec3;
+		var oldTrans = new idMat3;
+
+		this.dc.GetTransformInfo( oldOrg, oldTrans );
+
+		this.SetupTransforms( x, y );
+		this.DrawBackground( this.drawRect );
+		this.DrawBorderAndCaption( this.drawRect );
+
+		if ( !( this.flags & WIN_NOCLIP ) ) {
+			this.dc.PushClipRect( this.clientRect );
+		}
+
+		if ( r_skipGuiShaders.GetInteger ( ) < 5 ) {
+			this.Draw( time, x, y );
+		}
+
+		if ( idWindow.gui_debug.GetInteger ( ) ) {
+			todoThrow ( );
+			//this.DebugDraw(time, x, y);
+		}
+
+		var c = this.drawWindows.Num ( );
+		for ( var i = 0; i < c; i++ ) {
+			if ( this.drawWindows[i].win ) {
+				this.drawWindows[i].win.Redraw( this.clientRect.x + this.xOffset, this.clientRect.y + this.yOffset );
+			} else {
+				this.drawWindows[i].simp.Redraw( this.clientRect.x + this.xOffset, this.clientRect.y + this.yOffset );
+			}
+		}
+
+		// Put transforms back to what they were before the children were processed
+		this.dc.SetTransformInfo( oldOrg, oldTrans );
+
+		if ( ! ( this.flags & WIN_NOCLIP ) ) {
+			this.dc.PopClipRect ( );
+		}
+
+		if ( idWindow.gui_edit.GetBool ( ) || ( this.flags & WIN_DESKTOP && !( this.flags & WIN_NOCURSOR ) && !this.hideCursor.data && ( this.gui.Active ( ) || ( this.flags & WIN_MENUGUI ) ) ) ) {
+			todoThrow ( );
+			//this.dc.SetTransformInfo( vec3_origin, mat3_identity );
+			//this.gui.DrawCursor ( );
+		}
+
+		if ( idWindow.gui_debug.GetInteger ( ) && this.flags & WIN_DESKTOP ) {
+			todoThrow ( );
+			//this.dc.EnableClipping(false);
+			//sprintf(str, "x: %1.f y: %1.f",  this.gui.CursorX(), this.gui.CursorY());
+			//this.dc.DrawText(str, 0.25, 0, this.dc.colorWhite, new idRectangle(0, 0, 100, 20), false);
+			//this.dc.DrawText(this.gui.GetSourceFile(), 0.25, 0,/* this.dc.*/colorWhite, new idRectangle(0, 20, 300, 20), false);
+			//this.dc.EnableClipping(true);
+		}
+
+		this.drawRect.Offset( -x, -y );
+		this.clientRect.Offset( -x, -y );
+		this.textRect.Offset( -x, -y );
 	}
 
 /*
@@ -2039,11 +2043,11 @@ PostParse():void {
 ////		ret = (int)&( ( idWindow * ) 0 ).rect;
 ////	}
 ////
-////	if ( wv == &backColor ) {
+////	if ( wv == &this.backColor ) {
 ////		ret = (int)&( ( idWindow * ) 0 ).backColor;
 ////	}
 ////
-////	if ( wv == &matColor ) {
+////	if ( wv == &this.matColor ) {
 ////		ret = (int)&( ( idWindow * ) 0 ).matColor;
 ////	}
 ////
@@ -2055,11 +2059,11 @@ PostParse():void {
 ////		ret = (int)&( ( idWindow * ) 0 ).hoverColor;
 ////	}
 ////
-////	if ( wv == &borderColor ) {
+////	if ( wv == &this.borderColor ) {
 ////		ret = (int)&( ( idWindow * ) 0 ).borderColor;
 ////	}
 ////
-////	if ( wv == &textScale ) {
+////	if ( wv == &this.textScale ) {
 ////		ret = (int)&( ( idWindow * ) 0 ).textScale;
 ////	}
 ////
@@ -3499,7 +3503,7 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////	f.ReadUnsignedChar( this.cursor );
 ////	f.ReadUnsignedInt( this.flags );
 ////	f.ReadInt( timeLine );
-////	f.ReadInt( lastTimeRun );
+////	f.ReadInt( this.lastTimeRun );
 ////	idRectangle rct = this.rect;
 ////	f.ReadFloat( rct.x );
 ////	f.ReadFloat( rct.y );
@@ -3517,8 +3521,8 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////	f.ReadFloat( this.textRect.y );
 ////	f.ReadFloat( this.textRect.w );
 ////	f.ReadFloat( this.textRect.h );
-////	f.ReadFloat( xOffset);
-////	f.ReadFloat( yOffset);
+////	f.ReadFloat( this.xOffset);
+////	f.ReadFloat( this.yOffset);
 ////	int i, c;
 ////
 ////	idStr work;
@@ -3648,7 +3652,7 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////	f.WriteUnsignedChar( this.cursor );
 ////	f.WriteUnsignedInt( this.flags );
 ////	f.WriteInt( timeLine );
-////	f.WriteInt( lastTimeRun );
+////	f.WriteInt( this.lastTimeRun );
 ////	idRectangle rct = this.rect;
 ////	f.WriteFloat( rct.x );
 ////	f.WriteFloat( rct.y );
@@ -3666,8 +3670,8 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////	f.WriteFloat( this.textRect.y );
 ////	f.WriteFloat( this.textRect.w );
 ////	f.WriteFloat( this.textRect.h );
-////	f.WriteFloat( xOffset );
-////	f.WriteFloat( yOffset );
+////	f.WriteFloat( this.xOffset );
+////	f.WriteFloat( this.yOffset );
 ////	idStr work;
 ////	f.SetLog(true, work);
 ////
@@ -3790,14 +3794,14 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////	savefile.Write( &this.actualY, sizeof( this.actualY ) );
 ////	savefile.Write( &childID, sizeof( childID ) );
 ////	savefile.Write( &flags, sizeof( this.flags ) );
-////	savefile.Write( &lastTimeRun, sizeof( lastTimeRun ) );
+////	savefile.Write( &this.lastTimeRun, sizeof( this.lastTimeRun ) );
 ////	savefile.Write( &this.drawRect, sizeof( this.drawRect ) );
 ////	savefile.Write( &this.clientRect, sizeof( this.clientRect ) );
 ////	savefile.Write( &this.origin, sizeof( this.origin ) );
 ////	savefile.Write( &this.fontNum, sizeof( this.fontNum ) );
 ////	savefile.Write( &timeLine, sizeof( timeLine ) );
-////	savefile.Write( &xOffset, sizeof( xOffset ) );
-////	savefile.Write( &yOffset, sizeof( yOffset ) );
+////	savefile.Write( &this.xOffset, sizeof( this.xOffset ) );
+////	savefile.Write( &this.yOffset, sizeof( this.yOffset ) );
 ////	savefile.Write( &this.cursor, sizeof( this.cursor ) );
 ////	savefile.Write( &this.forceAspectWidth, sizeof( this.forceAspectWidth ) );
 ////	savefile.Write( &this.forceAspectHeight, sizeof( this.forceAspectHeight ) );
@@ -3818,16 +3822,16 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////	this.visible.WriteToSaveGame( savefile );
 ////	rect.WriteToSaveGame( savefile );
 ////	backColor.WriteToSaveGame( savefile );
-////	matColor.WriteToSaveGame( savefile );
+////	this.matColor.WriteToSaveGame( savefile );
 ////	foreColor.WriteToSaveGame( savefile );
 ////	hoverColor.WriteToSaveGame( savefile );
-////	borderColor.WriteToSaveGame( savefile );
-////	textScale.WriteToSaveGame( savefile );
+////	this.borderColor.WriteToSaveGame( savefile );
+////	this.textScale.WriteToSaveGame( savefile );
 ////	noEvents.WriteToSaveGame( savefile );
 ////	rotate.WriteToSaveGame( savefile );
-////	text.WriteToSaveGame( savefile );
+////	this.text.WriteToSaveGame( savefile );
 ////	this.backGroundName.WriteToSaveGame( savefile );
-////	hideCursor.WriteToSaveGame(savefile);
+////	this.hideCursor.WriteToSaveGame(savefile);
 ////
 ////	// Defined Vars
 ////	for ( i = 0; i < this.definedVars.Num(); i++ ) {
@@ -3935,14 +3939,14 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////	savefile.Read( &this.actualY, sizeof( this.actualY ) );
 ////	savefile.Read( &childID, sizeof( childID ) );
 ////	savefile.Read( &flags, sizeof( this.flags ) );
-////	savefile.Read( &lastTimeRun, sizeof( lastTimeRun ) );
+////	savefile.Read( &this.lastTimeRun, sizeof( this.lastTimeRun ) );
 ////	savefile.Read( &this.drawRect, sizeof( this.drawRect ) );
 ////	savefile.Read( &this.clientRect, sizeof( this.clientRect ) );
 ////	savefile.Read( &this.origin, sizeof( this.origin ) );
 ////	savefile.Read( &this.fontNum, sizeof( this.fontNum ) );
 ////	savefile.Read( &timeLine, sizeof( timeLine ) );
-////	savefile.Read( &xOffset, sizeof( xOffset ) );
-////	savefile.Read( &yOffset, sizeof( yOffset ) );
+////	savefile.Read( &this.xOffset, sizeof( this.xOffset ) );
+////	savefile.Read( &this.yOffset, sizeof( this.yOffset ) );
 ////	savefile.Read( &this.cursor, sizeof( this.cursor ) );
 ////	savefile.Read( &this.forceAspectWidth, sizeof( this.forceAspectWidth ) );
 ////	savefile.Read( &this.forceAspectHeight, sizeof( this.forceAspectHeight ) );
@@ -3963,20 +3967,20 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////	this.visible.ReadFromSaveGame( savefile );
 ////	rect.ReadFromSaveGame( savefile );
 ////	backColor.ReadFromSaveGame( savefile );
-////	matColor.ReadFromSaveGame( savefile );
+////	this.matColor.ReadFromSaveGame( savefile );
 ////	foreColor.ReadFromSaveGame( savefile );
 ////	hoverColor.ReadFromSaveGame( savefile );
-////	borderColor.ReadFromSaveGame( savefile );
-////	textScale.ReadFromSaveGame( savefile );
+////	this.borderColor.ReadFromSaveGame( savefile );
+////	this.textScale.ReadFromSaveGame( savefile );
 ////	noEvents.ReadFromSaveGame( savefile );
 ////	rotate.ReadFromSaveGame( savefile );
-////	text.ReadFromSaveGame( savefile );
+////	this.text.ReadFromSaveGame( savefile );
 ////	this.backGroundName.ReadFromSaveGame( savefile );
 ////
 ////	if ( session.GetSaveGameVersion() >= 17 ) {
-////		hideCursor.ReadFromSaveGame(savefile);
+////		this.hideCursor.ReadFromSaveGame(savefile);
 ////	} else {
-////		hideCursor = false;
+////		this.hideCursor = false;
 ////	}
 ////
 ////	// Defined Vars
@@ -4487,15 +4491,15 @@ idWindow::ClientToScreen
 ////	this.textAlignx = 0;
 ////	this.textAligny = 0;
 ////	noEvents = false;
-////	rotate = 0;
+////	this.rotate = 0;
 ////	this.shear.Zero();
-////	textScale = 0.35f;
-////	backColor.Zero();
+////	this.textScale = 0.35f;
+////	this.backColor.Zero();
 ////	foreColor = idVec4(1, 1, 1, 1);
 ////	hoverColor = idVec4(1, 1, 1, 1);
-////	matColor = idVec4(1, 1, 1, 1);
-////	borderColor.Zero();
-////	text = "";	
+////	this.matColor = idVec4(1, 1, 1, 1);
+////	this.borderColor.Zero();
+////	this.text = "";	
 ////
 ////	this.background = NULL;
 ////	this.backGroundName = "";

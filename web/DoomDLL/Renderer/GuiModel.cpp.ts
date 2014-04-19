@@ -364,7 +364,7 @@ SetColor
 DrawStretchPic
 =============
 */
-	DrawStretchPic ( dverts: idDrawVert[], /*const glIndex_t **/dindexes: Int32Array, /*int */vertCount: number, /*int */indexCount: number, hShader: idMaterial,
+	DrawStretchPic ( dverts: idDrawVert[], /*const glIndex_t **/dindexes: Int16Array, /*int */vertCount: number, /*int */indexCount: number, hShader: idMaterial,
 		clip: boolean, /*float */min_x: number, /*float */min_y: number, /*float */max_x: number, /*float */max_y: number ): void {
 		if ( !glConfig.isInitialized ) {
 			return;

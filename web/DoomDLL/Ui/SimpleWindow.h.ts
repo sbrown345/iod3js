@@ -289,82 +289,82 @@ class idSimpleWindow {
 	////	origin.Set(this.rect.x() + (this.rect.w() / 2), this.rect.y() + (this.rect.h() / 2));
 	////
 	////}
-	////
-	////
-	////void idSimpleWindow::Redraw(/*float */x:number, /*float */y:number) {
-	////
-	////	if (!this.visible) {
-	////		return;
-	////	}
-	////
-	////	CalcClientRect(0, 0);
-	////	dc.SetFont(fontNum);
-	////	drawRect.Offset(x, y);
-	////	clientRect.Offset(x, y);
-	////	textRect.Offset(x, y);
-	////	SetupTransforms(x, y);
-	////	if (flags & WIN_NOCLIP) {
-	////		dc.EnableClipping(false);
-	////	}
-	////	DrawBackground(drawRect);
-	////	DrawBorderAndCaption(drawRect);
-	////	if (textShadow) {
-	////		idStr shadowText = this.text;
-	////		idRectangle shadowRect = textRect;
-	////
-	////		shadowText.RemoveColors();
-	////		shadowRect.x += textShadow;
-	////		shadowRect.y += textShadow;
-	////
-	////		dc.DrawText(shadowText, this.textScale, textAlign, colorBlack, shadowRect, !(flags & WIN_NOWRAP), -1);
-	////	}
-	////	dc.DrawText(this.text, this.textScale, textAlign, this.foreColor, textRect, !(flags & WIN_NOWRAP), -1);
-	////	dc.SetTransformInfo(vec3_origin, mat3_identity);
-	////	if (flags & WIN_NOCLIP) {
-	////		dc.EnableClipping(true);
-	////	}
-	////	drawRect.Offset(-x, -y);
-	////	clientRect.Offset(-x, -y);
-	////	textRect.Offset(-x, -y);
-	////}
-	////
-	////int idSimpleWindow::GetWinVarOffset(idWinVar *wv, drawWin_t* owner) {
-	////	int ret = -1;
-	////
-	////	if (wv == &this.rect) {
-	////		ret = (int)&((idSimpleWindow *)0).rect;
-	////	}
-	////
-	////	if (wv == &this.backColor) {
-	////		ret = (int)&((idSimpleWindow *)0).backColor;
-	////	}
-	////
-	////	if (wv == &this.matColor) {
-	////		ret = (int)&((idSimpleWindow *)0).matColor;
-	////	}
-	////
-	////	if (wv == &this.foreColor) {
-	////		ret = (int)&((idSimpleWindow *)0).foreColor;
-	////	}
-	////
-	////	if (wv == &this.borderColor) {
-	////		ret = (int)&((idSimpleWindow *)0).borderColor;
-	////	}
-	////
-	////	if (wv == &this.textScale) {
-	////		ret = (int)&((idSimpleWindow *)0).textScale;
-	////	}
-	////
-	////	if (wv == &this.rotate) {
-	////		ret = (int)&((idSimpleWindow *)0).rotate;
-	////	}
-	////
-	////	if (ret != -1) {
-	////		owner.simp = this;
-	////	}
-	////	return ret;
-	////}
-	////
+	
+	
+	Redraw(/*float */x:number, /*float */y:number) :void{
+	
+		if (!this.visible) {
+			return;
+		}
+todoThrow ( );
+		//CalcClientRect(0, 0);
+		//dc.SetFont(fontNum);
+		//drawRect.Offset(x, y);
+		//clientRect.Offset(x, y);
+		//textRect.Offset(x, y);
+		//SetupTransforms(x, y);
+		//if (flags & WIN_NOCLIP) {
+		//	dc.EnableClipping(false);
+		//}
+		//DrawBackground(drawRect);
+		//DrawBorderAndCaption(drawRect);
+		//if (textShadow) {
+		//	idStr shadowText = this.text;
+		//	idRectangle shadowRect = textRect;
+	
+		//	shadowText.RemoveColors();
+		//	shadowRect.x += textShadow;
+		//	shadowRect.y += textShadow;
+	
+		//	dc.DrawText(shadowText, this.textScale, textAlign, colorBlack, shadowRect, !(flags & WIN_NOWRAP), -1);
+		//}
+		//dc.DrawText(this.text, this.textScale, textAlign, this.foreColor, textRect, !(flags & WIN_NOWRAP), -1);
+		//dc.SetTransformInfo(vec3_origin, mat3_identity);
+		//if (flags & WIN_NOCLIP) {
+		//	dc.EnableClipping(true);
+		//}
+		//drawRect.Offset(-x, -y);
+		//clientRect.Offset(-x, -y);
+		//textRect.Offset(-x, -y);
+	}
+	
+	//int idSimpleWindow::GetWinVarOffset(idWinVar *wv, drawWin_t* owner) {
+	//	int ret = -1;
+	
+	//	if (wv == &this.rect) {
+	//		ret = (int)&((idSimpleWindow *)0).rect;
+	//	}
+	
+	//	if (wv == &this.backColor) {
+	//		ret = (int)&((idSimpleWindow *)0).backColor;
+	//	}
+	
+	//	if (wv == &this.matColor) {
+	//		ret = (int)&((idSimpleWindow *)0).matColor;
+	//	}
+	
+	//	if (wv == &this.foreColor) {
+	//		ret = (int)&((idSimpleWindow *)0).foreColor;
+	//	}
+	
+	//	if (wv == &this.borderColor) {
+	//		ret = (int)&((idSimpleWindow *)0).borderColor;
+	//	}
+	
+	//	if (wv == &this.textScale) {
+	//		ret = (int)&((idSimpleWindow *)0).textScale;
+	//	}
+	
+	//	if (wv == &this.rotate) {
+	//		ret = (int)&((idSimpleWindow *)0).rotate;
+	//	}
+	
+	//	if (ret != -1) {
+	//		owner.simp = this;
+	//	}
+	//	return ret;
+	//}
+	
 	GetWinVarByName ( _name: string ): idWinVar {
 		var retVar: idWinVar = null;
 		if ( idStr.Icmp( _name, "background" ) == 0 ) {

@@ -116,13 +116,13 @@ class idDeviceContext {
 	//	void				PushClipRect(float x, float y, float w, float h);
 	//	void				PushClipRect(idRectangle r);
 	//	void				PopClipRect();
-	//
-	//	void				EnableClipping(bool b) { enableClipping = b; };
+
+	EnableClipping ( b: boolean ): void { this.enableClipping = b; }
 	//	void				SetFont( int num );
-	//
-	//	void				SetOverStrike(bool b) { overStrikeMode = b; }
-	//
-	//	bool				GetOverStrike() { return overStrikeMode; }
+
+	SetOverStrike ( b: boolean ): void { this.overStrikeMode = b; }
+
+	GetOverStrike ( ): boolean { return this.overStrikeMode; }
 	//
 	//	void				DrawEditCursor(float x, float y, float scale);
 
@@ -279,19 +279,18 @@ class idDeviceContext {
 		this.Clear ( );
 	}
 
-//void idDeviceContext::SetTransformInfo(const idVec3 &org, const idMat3 &m) {
-//	origin = org;
-//	mat = m;
-//}
-//
-//// 
-////  added method
-//void idDeviceContext::GetTransformInfo(idVec3& org, idMat3& m )
-//{
-//	m = mat;
-//	org = origin;
-//}
-//// 
+	SetTransformInfo ( org: idVec3, m: idMat3 ): void {
+		this.origin.equals( org );
+		this.mat.equals( m );
+	}
+
+
+//  added method
+	GetTransformInfo ( org: idVec3, m: idMat3 ) {
+		m.equals( this.mat );
+		org.equals( this.origin );
+	}
+
 
 	PopClipRect ( ): void {
 		if ( this.clipRects.Num ( ) ) {
@@ -303,185 +302,185 @@ class idDeviceContext {
 		this.clipRects.Append( r );
 	}
 
-//void idDeviceContext::PushClipRect(/*float */x:number, /*float */y:number, float w, float h) {
+//void idDeviceContext::PushClipRect(/*float */x:number, /*float */y:number, /*float*/ w:number, /*float*/ h:number) {
 //	this.clipRects.Append(idRectangle(x, y, w, h));
 //}
-//
-//bool idDeviceContext::ClippedCoords(float *x, float *y, float *w, float *h, float *s1, float *t1, float *s2, float *t2) {
-//
-//	if ( enableClipping == false || this.clipRects.Num() == 0 ) {
-//		return false;
-//	}
-//
-//	int c = this.clipRects.Num();
-//	while( --c > 0 ) {
-//		idRectangle *clipRect = &this.clipRects[c];
-// 
-//		float ox = *x;
-//		float oy = *y;
-//		float ow = *w;
-//		float oh = *h;
-//
-//		if ( ow <= 0.0 || oh <= 0.0 ) {
-//			break;
-//		}
-//
-//		if (*x < clipRect.x) {
-//			*w -= clipRect.x - *x;
-//			*x = clipRect.x;
-//		} else if (*x > clipRect.x + clipRect.w) {
-//			*x = *w = *y = *h = 0;
-//		}
-//		if (*y < clipRect.y) {
-//			*h -= clipRect.y - *y;
-//			*y = clipRect.y;
-//		} else if (*y > clipRect.y + clipRect.h) {
-//			*x = *w = *y = *h = 0;
-//		}
-//		if (*w > clipRect.w) {
-//			*w = clipRect.w - *x + clipRect.x;
-//		} else if (*x + *w > clipRect.x + clipRect.w) {
-//			*w = clipRect.Right() - *x;
-//		}
-//		if (*h > clipRect.h) {
-//			*h = clipRect.h - *y + clipRect.y;
-//		} else if (*y + *h > clipRect.y + clipRect.h) {
-//			*h = clipRect.Bottom() - *y;
-//		}
-//
-//		if ( s1 && s2 && t1 && t2 && ow > 0.0 ) {
-//			float ns1, ns2, nt1, nt2;
-//			// upper left
-//			float u = ( *x - ox ) / ow;
-//			ns1 = *s1 * ( 1.0f - u ) + *s2 * ( u );
-//
-//			// upper right
-//			u = ( *x + *w - ox ) / ow;
-//			ns2 = *s1 * ( 1.0f - u ) + *s2 * ( u );
-//
-//			// lower left
-//			u = ( *y - oy ) / oh;
-//			nt1 = *t1 * ( 1.0f - u ) + *t2 * ( u );
-//
-//			// lower right
-//			u = ( *y + *h - oy ) / oh;
-//			nt2 = *t1 * ( 1.0f - u ) + *t2 * ( u );
-//
-//			// set values
-//			*s1 = ns1;
-//			*s2 = ns2;
-//			*t1 = nt1;
-//			*t2 = nt2;
-//		}
-//	}
-//
-//	return (*w == 0 || *h == 0) ? true : false;
-//}
-//
-//
-//void idDeviceContext::AdjustCoords(float *x, float *y, float *w, float *h) {
-//	if (x) {
-//		*x *= this.xScale;
-//	}
-//	if (y) {
-//		*y *= this.yScale;
-//	}
-//	if (w) {
-//		*w *= this.xScale;
-//	}
-//	if (h) {
-//		*h *= this.yScale;
-//	}
-//}
-//
-//void idDeviceContext::DrawStretchPic(/*float */x:number, /*float */y:number, float w, float h, float s1, float t1, float s2, float t2, const idMaterial *shader) {
-//	idDrawVert verts[4];
-//	glIndex_t indexes[6];
-//	indexes[0] = 3;
-//	indexes[1] = 0;
-//	indexes[2] = 2;
-//	indexes[3] = 2;
-//	indexes[4] = 0;
-//	indexes[5] = 1;
-//	verts[0].xyz[0] = x;
-//	verts[0].xyz[1] = y;
-//	verts[0].xyz[2] = 0;
-//	verts[0].st[0] = s1;
-//	verts[0].st[1] = t1;
-//	verts[0].normal[0] = 0;
-//	verts[0].normal[1] = 0;
-//	verts[0].normal[2] = 1;
-//	verts[0].tangents[0][0] = 1;
-//	verts[0].tangents[0][1] = 0;
-//	verts[0].tangents[0][2] = 0;
-//	verts[0].tangents[1][0] = 0;
-//	verts[0].tangents[1][1] = 1;
-//	verts[0].tangents[1][2] = 0;
-//	verts[1].xyz[0] = x + w;
-//	verts[1].xyz[1] = y;
-//	verts[1].xyz[2] = 0;
-//	verts[1].st[0] = s2;
-//	verts[1].st[1] = t1;
-//	verts[1].normal[0] = 0;
-//	verts[1].normal[1] = 0;
-//	verts[1].normal[2] = 1;
-//	verts[1].tangents[0][0] = 1;
-//	verts[1].tangents[0][1] = 0;
-//	verts[1].tangents[0][2] = 0;
-//	verts[1].tangents[1][0] = 0;
-//	verts[1].tangents[1][1] = 1;
-//	verts[1].tangents[1][2] = 0;
-//	verts[2].xyz[0] = x + w;
-//	verts[2].xyz[1] = y + h;
-//	verts[2].xyz[2] = 0;
-//	verts[2].st[0] = s2;
-//	verts[2].st[1] = t2;
-//	verts[2].normal[0] = 0;
-//	verts[2].normal[1] = 0;
-//	verts[2].normal[2] = 1;
-//	verts[2].tangents[0][0] = 1;
-//	verts[2].tangents[0][1] = 0;
-//	verts[2].tangents[0][2] = 0;
-//	verts[2].tangents[1][0] = 0;
-//	verts[2].tangents[1][1] = 1;
-//	verts[2].tangents[1][2] = 0;
-//	verts[3].xyz[0] = x;
-//	verts[3].xyz[1] = y + h;
-//	verts[3].xyz[2] = 0;
-//	verts[3].st[0] = s1;
-//	verts[3].st[1] = t2;
-//	verts[3].normal[0] = 0;
-//	verts[3].normal[1] = 0;
-//	verts[3].normal[2] = 1;
-//	verts[3].tangents[0][0] = 1;
-//	verts[3].tangents[0][1] = 0;
-//	verts[3].tangents[0][2] = 0;
-//	verts[3].tangents[1][0] = 0;
-//	verts[3].tangents[1][1] = 1;
-//	verts[3].tangents[1][2] = 0;
-//	
-//	bool ident = !mat.IsIdentity();
-//	if ( ident ) {
-//		verts[0].xyz -= origin;
-//		verts[0].xyz *= mat;
-//		verts[0].xyz += origin;
-//		verts[1].xyz -= origin;
-//		verts[1].xyz *= mat;
-//		verts[1].xyz += origin;
-//		verts[2].xyz -= origin;
-//		verts[2].xyz *= mat;
-//		verts[2].xyz += origin;
-//		verts[3].xyz -= origin;
-//		verts[3].xyz *= mat;
-//		verts[3].xyz += origin;
-//	}
-//
-//	renderSystem.DrawStretchPic( &verts[0], &indexes[0], 4, 6, shader, ident );
-//	
-//}
-//
-//
-//void idDeviceContext::DrawMaterial(/*float */x:number, /*float */y:number, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex, float scaley) {
+
+	ClippedCoords ( /*float **/x: R<number>, /*float **/y: R<number>, /*float **/w: R<number>, /*float **/h: R<number>, /*float **/s1: R<number>, /*float **/t1: R<number>, /*float **/s2: R<number>, /*float **/t2: R<number> ): boolean {
+
+		if ( this.enableClipping == false || this.clipRects.Num ( ) == 0 ) {
+			return false;
+		}
+
+		var c = this.clipRects.Num ( );
+		while ( --c > 0 ) {
+			var clipRect: idRectangle = this.clipRects[c];
+
+			var /*float*/ ox = x.$;
+			var /*float*/ oy = y.$;
+			var /*float*/ ow = w.$;
+			var /*float*/ oh = h.$;
+
+			if ( ow <= 0.0 || oh <= 0.0 ) {
+				break;
+			}
+
+			if ( x.$ < clipRect.x ) {
+				w.$ -= clipRect.x - x.$;
+				x.$ = clipRect.x;
+			} else if ( x.$ > clipRect.x + clipRect.w ) {
+				x.$ = w.$ = y.$ = h.$ = 0;
+			}
+			if ( y.$ < clipRect.y ) {
+				h.$ -= clipRect.y - y.$;
+				y.$ = clipRect.y;
+			} else if ( y.$ > clipRect.y + clipRect.h ) {
+				x.$ = w.$ = y.$ = h.$ = 0;
+			}
+			if ( w.$ > clipRect.w ) {
+				w.$ = clipRect.w - x.$ + clipRect.x;
+			} else if ( x.$ + w.$ > clipRect.x + clipRect.w ) {
+				w.$ = clipRect.Right ( ) - x.$;
+			}
+			if ( h.$ > clipRect.h ) {
+				h.$ = clipRect.h - y.$ + clipRect.y;
+			} else if ( y.$ + h.$ > clipRect.y + clipRect.h ) {
+				h.$ = clipRect.Bottom ( ) - y.$;
+			}
+
+			if ( s1 && s2 && t1 && t2 && ow > 0.0 ) {
+				var /*float */ns1: number, ns2: number, nt1: number, nt2: number;
+				// upper left
+				var /*float */u = ( x.$ - ox ) / ow;
+				ns1 = s1.$ * ( 1.0 - u ) + s2.$ * ( u );
+
+				// upper right
+				u = ( x.$ + w.$ - ox ) / ow;
+				ns2 = s1.$ * ( 1.0 - u ) + s2.$ * ( u );
+
+				// lower left
+				u = ( y.$ - oy ) / oh;
+				nt1 = t1.$ * ( 1.0 - u ) + t2.$ * ( u );
+
+				// lower right
+				u = ( y.$ + h.$ - oy ) / oh;
+				nt2 = t1.$ * ( 1.0 - u ) + t2.$ * ( u );
+
+				// set values
+				s1.$ = ns1;
+				s2.$ = ns2;
+				t1.$ = nt1;
+				t2.$ = nt2;
+			}
+		}
+
+		return ( w.$ == 0 || h.$ == 0 ) ? true : false;
+	}
+
+
+	AdjustCoords ( /*float */x: R<number>, /*float **/y: R<number>, /*float **/w: R<number>, /*float **/h: R<number> ): void {
+		if ( x ) {
+			x.$ *= this.xScale;
+		}
+		if ( y ) {
+			y.$ *= this.yScale;
+		}
+		if ( w ) {
+			w.$ *= this.xScale;
+		}
+		if ( h ) {
+			h.$ *= this.yScale;
+		}
+	}
+
+	DrawStretchPic ( /*float */x: number, /*float */y: number, /*float*/ w: number, /*float*/ h: number, /*float */s1: number, /*float */t1: number, /*float */s2: number, /*float */t2: number, shader: idMaterial ): void {
+		var verts = newStructArray<idDrawVert>( idDrawVert, 4 );
+		var indexes = new Int16Array( 6 );
+		indexes[0] = 3;
+		indexes[1] = 0;
+		indexes[2] = 2;
+		indexes[3] = 2;
+		indexes[4] = 0;
+		indexes[5] = 1;
+		verts[0].xyz[0] = x;
+		verts[0].xyz[1] = y;
+		verts[0].xyz[2] = 0;
+		verts[0].st[0] = s1;
+		verts[0].st[1] = t1;
+		verts[0].normal[0] = 0;
+		verts[0].normal[1] = 0;
+		verts[0].normal[2] = 1;
+		verts[0].tangents[0][0] = 1;
+		verts[0].tangents[0][1] = 0;
+		verts[0].tangents[0][2] = 0;
+		verts[0].tangents[1][0] = 0;
+		verts[0].tangents[1][1] = 1;
+		verts[0].tangents[1][2] = 0;
+		verts[1].xyz[0] = x + w;
+		verts[1].xyz[1] = y;
+		verts[1].xyz[2] = 0;
+		verts[1].st[0] = s2;
+		verts[1].st[1] = t1;
+		verts[1].normal[0] = 0;
+		verts[1].normal[1] = 0;
+		verts[1].normal[2] = 1;
+		verts[1].tangents[0][0] = 1;
+		verts[1].tangents[0][1] = 0;
+		verts[1].tangents[0][2] = 0;
+		verts[1].tangents[1][0] = 0;
+		verts[1].tangents[1][1] = 1;
+		verts[1].tangents[1][2] = 0;
+		verts[2].xyz[0] = x + w;
+		verts[2].xyz[1] = y + h;
+		verts[2].xyz[2] = 0;
+		verts[2].st[0] = s2;
+		verts[2].st[1] = t2;
+		verts[2].normal[0] = 0;
+		verts[2].normal[1] = 0;
+		verts[2].normal[2] = 1;
+		verts[2].tangents[0][0] = 1;
+		verts[2].tangents[0][1] = 0;
+		verts[2].tangents[0][2] = 0;
+		verts[2].tangents[1][0] = 0;
+		verts[2].tangents[1][1] = 1;
+		verts[2].tangents[1][2] = 0;
+		verts[3].xyz[0] = x;
+		verts[3].xyz[1] = y + h;
+		verts[3].xyz[2] = 0;
+		verts[3].st[0] = s1;
+		verts[3].st[1] = t2;
+		verts[3].normal[0] = 0;
+		verts[3].normal[1] = 0;
+		verts[3].normal[2] = 1;
+		verts[3].tangents[0][0] = 1;
+		verts[3].tangents[0][1] = 0;
+		verts[3].tangents[0][2] = 0;
+		verts[3].tangents[1][0] = 0;
+		verts[3].tangents[1][1] = 1;
+		verts[3].tangents[1][2] = 0;
+
+		var ident = !this.mat.IsIdentity ( );
+		if ( ident ) {
+			verts[0].xyz.opSubtractionAssignment( this.origin );
+			verts[0].xyz.opMultiplicationAssignment_mat3( this.mat );
+			verts[0].xyz.opAdditionAssignment( this.origin );
+			verts[1].xyz.opSubtractionAssignment( this.origin );
+			verts[1].xyz.opMultiplicationAssignment_mat3( this.mat );
+			verts[1].xyz.opAdditionAssignment( this.origin );
+			verts[2].xyz.opSubtractionAssignment( this.origin );
+			verts[2].xyz.opMultiplicationAssignment_mat3( this.mat );
+			verts[2].xyz.opAdditionAssignment( this.origin );
+			verts[3].xyz.opSubtractionAssignment( this.origin );
+			verts[3].xyz.opMultiplicationAssignment_mat3( this.mat );
+			verts[3].xyz.opAdditionAssignment( this.origin );
+		}
+
+		renderSystem.DrawStretchPic( verts, indexes, 4, 6, shader, ident );
+
+	}
+
+
+//void idDeviceContext::DrawMaterial(/*float */x:number, /*float */y:number, /*float*/ w:number, /*float*/ h:number, const idMaterial *mat, const idVec4 &color, float scalex, float scaley) {
 //
 //	renderSystem.SetColor(color);
 //
@@ -528,7 +527,7 @@ class idDeviceContext {
 //	DrawStretchPic( x, y, w, h, s0, t0, s1, t1, mat);
 //}
 //
-//void idDeviceContext::DrawMaterialRotated(/*float */x:number, /*float */y:number, float w, float h, const idMaterial *mat, const idVec4 &color, float scalex, float scaley, /*float*/angle:number) {
+//void idDeviceContext::DrawMaterialRotated(/*float */x:number, /*float */y:number, /*float*/ w:number, /*float*/ h:number, const idMaterial *mat, const idVec4 &color, float scalex, float scaley, /*float*/angle:number) {
 //	
 //	renderSystem.SetColor(color);
 //
@@ -575,7 +574,7 @@ class idDeviceContext {
 //	DrawStretchPicRotated( x, y, w, h, s0, t0, s1, t1, mat, angle);
 //}
 //
-//void idDeviceContext::DrawStretchPicRotated(/*float */x:number, /*float */y:number, float w, float h, float s1, float t1, float s2, float t2, const idMaterial *shader, /*float*/angle:number) {
+//void idDeviceContext::DrawStretchPicRotated(/*float */x:number, /*float */y:number, /*float*/ w:number, /*float*/ h:number, float s1, float t1, float s2, float t2, const idMaterial *shader, /*float*/angle:number) {
 //	
 //	idDrawVert verts[4];
 //	glIndex_t indexes[6];
@@ -644,18 +643,18 @@ class idDeviceContext {
 //
 //	bool ident = !mat.IsIdentity();
 //	if ( ident ) {
-//		verts[0].xyz -= origin;
+//		verts[0].xyz -= this.origin;
 //		verts[0].xyz *= mat;
-//		verts[0].xyz += origin;
-//		verts[1].xyz -= origin;
+//		verts[0].xyz += this.origin;
+//		verts[1].xyz -= this.origin;
 //		verts[1].xyz *= mat;
-//		verts[1].xyz += origin;
-//		verts[2].xyz -= origin;
+//		verts[1].xyz += this.origin;
+//		verts[2].xyz -= this.origin;
 //		verts[2].xyz *= mat;
-//		verts[2].xyz += origin;
-//		verts[3].xyz -= origin;
+//		verts[2].xyz += this.origin;
+//		verts[3].xyz -= this.origin;
 //		verts[3].xyz *= mat;
-//		verts[3].xyz += origin;
+//		verts[3].xyz += this.origin;
 //	}
 //
 //	//Generate a translation so we can translate to the center of the image rotate and draw
@@ -675,7 +674,7 @@ class idDeviceContext {
 //	rotz[1][0] = -sinAng;
 //	rotz[1][1] = cosAng;
 //	for(int i = 0; i < 4; i++) {
-//		//Translate to origin
+//		//Translate to this.origin
 //		verts[i].xyz -= origTrans;
 //
 //		//Rotate
@@ -689,7 +688,33 @@ class idDeviceContext {
 //	renderSystem.DrawStretchPic( &verts[0], &indexes[0], 4, 6, shader, (angle == 0.0) ? false : true );
 //}
 //
-//void idDeviceContext::DrawFilledRect( /*float */x:number, /*float */y:number, float w, float h, const idVec4 &color) {
+	DrawFilledRect ( /*float */x: number, /*float */y: number, /*float*/ w: number, /*float*/ h: number, color: idVec4 ): void {
+
+		if ( color.w == 0.0 ) {
+			return;
+		}
+
+		renderSystem.SetColor( color );
+
+		var $x = new R( x );
+		var $y = new R( y );
+		var $w = new R( w );
+		var $h = new R( h );
+		var retVal = this.ClippedCoords( $x, $y, $w, $h, null, null, null, null );
+		if ( retVal ) {
+			return;
+		}
+
+		this.AdjustCoords( $x, $y, $w, $h );
+		x = $x.$;
+		y = $y.$;
+		w = $w.$;
+		h = $h.$;
+		this.DrawStretchPic( x, y, w, h, 0, 0, 0, 0, this.whiteImage );
+	}
+
+//
+//void idDeviceContext::DrawRect( /*float */x:number, /*float */y:number, /*float*/ w:number, /*float*/ h:number, float size, const idVec4 &color) {
 //
 //	if ( color.w == 0.0 ) {
 //		return;
@@ -702,30 +727,13 @@ class idDeviceContext {
 //	}
 //
 //	AdjustCoords(&x, &y, &w, &h);
-//	DrawStretchPic( x, y, w, h, 0, 0, 0, 0, whiteImage);
+//	DrawStretchPic( x, y, size, h, 0, 0, 0, 0, this.whiteImage );
+//	DrawStretchPic( x + w - size, y, size, h, 0, 0, 0, 0, this.whiteImage );
+//	DrawStretchPic( x, y, w, size, 0, 0, 0, 0, this.whiteImage );
+//	DrawStretchPic( x, y + h - size, w, size, 0, 0, 0, 0, this.whiteImage );
 //}
 //
-//
-//void idDeviceContext::DrawRect( /*float */x:number, /*float */y:number, float w, float h, float size, const idVec4 &color) {
-//
-//	if ( color.w == 0.0 ) {
-//		return;
-//	}
-//
-//	renderSystem.SetColor(color);
-//	
-//	if (ClippedCoords(&x, &y, &w, &h, NULL, NULL, NULL, NULL)) {
-//		return;
-//	}
-//
-//	AdjustCoords(&x, &y, &w, &h);
-//	DrawStretchPic( x, y, size, h, 0, 0, 0, 0, whiteImage );
-//	DrawStretchPic( x + w - size, y, size, h, 0, 0, 0, 0, whiteImage );
-//	DrawStretchPic( x, y, w, size, 0, 0, 0, 0, whiteImage );
-//	DrawStretchPic( x, y + h - size, w, size, 0, 0, 0, 0, whiteImage );
-//}
-//
-//void idDeviceContext::DrawMaterialRect( /*float */x:number, /*float */y:number, float w, float h, float size, const idMaterial *mat, const idVec4 &color) {
+//void idDeviceContext::DrawMaterialRect( /*float */x:number, /*float */y:number, /*float*/ w:number, /*float*/ h:number, float size, const idMaterial *mat, const idVec4 &color) {
 //
 //	if ( color.w == 0.0 ) {
 //		return;
@@ -744,25 +752,25 @@ class idDeviceContext {
 //}
 //
 //void idDeviceContext::DrawCursor(float *x, float *y, float size) {
-//	if (*x < 0) {
-//		*x = 0;
+//	if (x.$ < 0) {
+//		x.$ = 0;
 //	}
 //
-//	if (*x >= this.vidWidth) {
-//		*x = this.vidWidth;
+//	if (x.$ >= this.vidWidth) {
+//		x.$ = this.vidWidth;
 //	}
 //
-//	if (*y < 0) {
-//		*y = 0;
+//	if (y.$ < 0) {
+//		y.$ = 0;
 //	}
 //
-//	if (*y >= this.vidHeight) {
-//		*y = this.vidHeight;
+//	if (y.$ >= this.vidHeight) {
+//		y.$ = this.vidHeight;
 //	}
 //
 //	renderSystem.SetColor(colorWhite);
 //	AdjustCoords(x, y, &size, &size);
-//	DrawStretchPic( *x, *y, size, size, 0, 0, 1, 1, cursorImages[cursor]);
+//	DrawStretchPic( x.$, y.$, size, size, 0, 0, 1, 1, cursorImages[cursor]);
 //}
 ///*
 // =======================================================================================================================
@@ -838,9 +846,9 @@ class idDeviceContext {
 //					newColor[3] = color[3];
 //				}
 //				if (cursor == count || cursor == count+1) {
-//					float partialSkip = ((glyph.xSkip * useScale) + adjust) / 5.0f;
+//					float partialSkip = ((glyph.xSkip * useScale) + adjust) / 5.0;
 //					if ( cursor == count ) {
-//						partialSkip *= 2.0f;
+//						partialSkip *= 2.0;
 //					} else {
 //						renderSystem.SetColor(newColor);
 //					}

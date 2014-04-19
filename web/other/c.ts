@@ -348,18 +348,29 @@ class FILE {
 }
 
 function fseek ( stream: FILE, /*long int */offset: number, /*int */origin: number ): number {
-	if ( origin !== SEEK_SET ) todoThrow ( );
-
 	if ( stream.ptr > stream.arrayBuffer.byteLength ) {
 		console.error( "tried to seek to a offset (%i) out of the bounds of the ArrayBuffer (byteLength :%i)", offset, stream.arrayBuffer.byteLength );
 		return 1;
 	}
+
 	if ( stream.ptr < 0 ) {
 		console.error( "tried to seek to a offset (%i) less than 0", offset );
 		return 2;
 	}
 
-	stream.ptr = offset;
+	switch ( origin ) {
+	case SEEK_CUR:
+		stream.ptr += offset;
+		break;
+	case SEEK_END:
+		todoThrow ( );
+		break;
+	case SEEK_SET:
+		stream.ptr = offset;
+		break;
+
+	default:
+	}
 
 	return 0;
 }
