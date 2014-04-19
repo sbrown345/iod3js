@@ -2531,7 +2531,7 @@ DrawStretchPic
 =============
 */
 	DrawStretchPic ( verts: idDrawVert[], /*const glIndex_t **/indexes: Int16Array, /*int */vertCount: number, /*int */indexCount: number, material: idMaterial,
-		clip: boolean, /* float */min_x: number, /*float */min_y: number, /*float */max_x: number, /*float */max_y: number ): void {
+		clip: boolean, /* float */min_x: number = 0.0, /*float */min_y: number = 0.0, /*float */max_x: number= 640.0, /*float */max_y: number = 0.0 ): void {
 		this.guiModel.DrawStretchPic( verts, indexes, vertCount, indexCount, material,
 			clip, min_x, min_y, max_x, max_y );
 	}

@@ -218,48 +218,48 @@ class idDeviceContext {
 	}
 
 
-	Init():void {
-	this.xScale = 0.0;
-	this.SetSize(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
-	this.whiteImage = declManager.FindMaterial("guis/assets/white.tga");
-	this.whiteImage.SetSort( materialSort_t.SS_GUI );
-	this.mbcs = false;
-	this.SetupFonts();
-	this.activeFont = idDeviceContext.fonts[0];
-	colorPurple = new idVec4(1, 0, 1, 1);
-	colorOrange = new idVec4(1, 1, 0, 1);
-	colorYellow = new idVec4(0, 1, 1, 1);
-	colorGreen = new idVec4(0, 1, 0, 1);
-	colorBlue = new idVec4(0, 0, 1, 1);
-	colorRed = new idVec4(1, 0, 0, 1);
-	colorWhite = new idVec4(1, 1, 1, 1);
-	colorBlack = new idVec4(0, 0, 0, 1);
-	colorNone = new idVec4(0, 0, 0, 0);
-	this.cursorImages[CURSOR_ARROW] = declManager.FindMaterial("ui/assets/guicursor_arrow.tga");
-	this.cursorImages[CURSOR_HAND] = declManager.FindMaterial("ui/assets/guicursor_hand.tga");
-	this.scrollBarImages[SCROLLBAR_HBACK] = declManager.FindMaterial("ui/assets/scrollbarh.tga");
-	this.scrollBarImages[SCROLLBAR_VBACK] = declManager.FindMaterial("ui/assets/scrollbarv.tga");
-	this.scrollBarImages[SCROLLBAR_THUMB] = declManager.FindMaterial("ui/assets/scrollbar_thumb.tga");
-	this.scrollBarImages[SCROLLBAR_RIGHT] = declManager.FindMaterial("ui/assets/scrollbar_right.tga");
-	this.scrollBarImages[SCROLLBAR_LEFT] = declManager.FindMaterial("ui/assets/scrollbar_left.tga");
-	this.scrollBarImages[SCROLLBAR_UP] = declManager.FindMaterial("ui/assets/scrollbar_up.tga");
-	this.scrollBarImages[SCROLLBAR_DOWN] = declManager.FindMaterial("ui/assets/scrollbar_down.tga");
-	this.cursorImages[CURSOR_ARROW].SetSort( materialSort_t.SS_GUI );
-	this.cursorImages[CURSOR_HAND].SetSort( materialSort_t.SS_GUI );
-	this.scrollBarImages[SCROLLBAR_HBACK].SetSort( materialSort_t.SS_GUI );
-	this.scrollBarImages[SCROLLBAR_VBACK].SetSort( materialSort_t.SS_GUI );
-	this.scrollBarImages[SCROLLBAR_THUMB].SetSort( materialSort_t.SS_GUI );
-	this.scrollBarImages[SCROLLBAR_RIGHT].SetSort( materialSort_t.SS_GUI );
-	this.scrollBarImages[SCROLLBAR_LEFT].SetSort( materialSort_t.SS_GUI );
-	this.scrollBarImages[SCROLLBAR_UP].SetSort( materialSort_t.SS_GUI );
-	this.scrollBarImages[SCROLLBAR_DOWN].SetSort( materialSort_t.SS_GUI );
-	this.cursor = CURSOR_ARROW;
-	this.enableClipping = true;
-	this.overStrikeMode = true;
-	this.mat.Identity();
-	this.origin.Zero();
-	this.initialized = true;
-}
+	Init ( ): void {
+		this.xScale = 0.0;
+		this.SetSize( VIRTUAL_WIDTH, VIRTUAL_HEIGHT );
+		this.whiteImage = declManager.FindMaterial( "guis/assets/white.tga" );
+		this.whiteImage.SetSort( materialSort_t.SS_GUI );
+		this.mbcs = false;
+		this.SetupFonts ( );
+		this.activeFont = idDeviceContext.fonts[0];
+		colorPurple = new idVec4( 1, 0, 1, 1 );
+		colorOrange = new idVec4( 1, 1, 0, 1 );
+		colorYellow = new idVec4( 0, 1, 1, 1 );
+		colorGreen = new idVec4( 0, 1, 0, 1 );
+		colorBlue = new idVec4( 0, 0, 1, 1 );
+		colorRed = new idVec4( 1, 0, 0, 1 );
+		colorWhite = new idVec4( 1, 1, 1, 1 );
+		colorBlack = new idVec4( 0, 0, 0, 1 );
+		colorNone = new idVec4( 0, 0, 0, 0 );
+		this.cursorImages[CURSOR_ARROW] = declManager.FindMaterial( "ui/assets/guicursor_arrow.tga" );
+		this.cursorImages[CURSOR_HAND] = declManager.FindMaterial( "ui/assets/guicursor_hand.tga" );
+		this.scrollBarImages[SCROLLBAR_HBACK] = declManager.FindMaterial( "ui/assets/scrollbarh.tga" );
+		this.scrollBarImages[SCROLLBAR_VBACK] = declManager.FindMaterial( "ui/assets/scrollbarv.tga" );
+		this.scrollBarImages[SCROLLBAR_THUMB] = declManager.FindMaterial( "ui/assets/scrollbar_thumb.tga" );
+		this.scrollBarImages[SCROLLBAR_RIGHT] = declManager.FindMaterial( "ui/assets/scrollbar_right.tga" );
+		this.scrollBarImages[SCROLLBAR_LEFT] = declManager.FindMaterial( "ui/assets/scrollbar_left.tga" );
+		this.scrollBarImages[SCROLLBAR_UP] = declManager.FindMaterial( "ui/assets/scrollbar_up.tga" );
+		this.scrollBarImages[SCROLLBAR_DOWN] = declManager.FindMaterial( "ui/assets/scrollbar_down.tga" );
+		this.cursorImages[CURSOR_ARROW].SetSort( materialSort_t.SS_GUI );
+		this.cursorImages[CURSOR_HAND].SetSort( materialSort_t.SS_GUI );
+		this.scrollBarImages[SCROLLBAR_HBACK].SetSort( materialSort_t.SS_GUI );
+		this.scrollBarImages[SCROLLBAR_VBACK].SetSort( materialSort_t.SS_GUI );
+		this.scrollBarImages[SCROLLBAR_THUMB].SetSort( materialSort_t.SS_GUI );
+		this.scrollBarImages[SCROLLBAR_RIGHT].SetSort( materialSort_t.SS_GUI );
+		this.scrollBarImages[SCROLLBAR_LEFT].SetSort( materialSort_t.SS_GUI );
+		this.scrollBarImages[SCROLLBAR_UP].SetSort( materialSort_t.SS_GUI );
+		this.scrollBarImages[SCROLLBAR_DOWN].SetSort( materialSort_t.SS_GUI );
+		this.cursor = CURSOR_ARROW;
+		this.enableClipping = true;
+		this.overStrikeMode = true;
+		this.mat.Identity ( );
+		this.origin.Zero ( );
+		this.initialized = true;
+	}
 //
 //void idDeviceContext::Shutdown() {
 //	fontName.Clear();
@@ -480,53 +480,57 @@ class idDeviceContext {
 	}
 
 
-//void idDeviceContext::DrawMaterial(/*float */x:number, /*float */y:number, /*float*/ w:number, /*float*/ h:number, const idMaterial *mat, const idVec4 &color, float scalex, float scaley) {
-//
-//	renderSystem.SetColor(color);
-//
-//	float	s0, s1, t0, t1;
-//// 
-////  handle negative scales as well	
-//	if ( scalex < 0 )
-//	{
-//		w *= -1;
-//		scalex *= -1;
-//	}
-//	if ( scaley < 0 )
-//	{
-//		h *= -1;
-//		scaley *= -1;
-//	}
-//// 
-//	if( w < 0 ) {	// flip about vertical
-//		w  = -w;
-//		s0 = 1 * scalex;
-//		s1 = 0;
-//	}
-//	else {
-//		s0 = 0;
-//		s1 = 1 * scalex;
-//	}
-//
-//	if( h < 0 ) {	// flip about horizontal
-//		h  = -h;
-//		t0 = 1 * scaley;
-//		t1 = 0;
-//	}
-//	else {
-//		t0 = 0;
-//		t1 = 1 * scaley;
-//	}
-//
-//	if ( ClippedCoords( &x, &y, &w, &h, &s0, &t0, &s1, &t1 ) ) {
-//		return;
-//	}
-//
-//	AdjustCoords(&x, &y, &w, &h);
-//
-//	DrawStretchPic( x, y, w, h, s0, t0, s1, t1, mat);
-//}
-//
+	DrawMaterial ( /*float */x: number, /*float */y: number, /*float*/ w: number, /*float*/ h: number, mat: idMaterial, color: idVec4, /*float*/ scalex: number, /*float */scaley: number ): void {
+
+		renderSystem.SetColor( color );
+
+		var /*float	*/s0: number, s1: number, t0: number, t1: number;
+// 
+//  handle negative scales as well	
+		if ( scalex < 0 ) {
+			w *= -1;
+			scalex *= -1;
+		}
+		if ( scaley < 0 ) {
+			h *= -1;
+			scaley *= -1;
+		}
+// 
+		if ( w < 0 ) { // flip about vertical
+			w = -w;
+			s0 = 1 * scalex;
+			s1 = 0;
+		} else {
+			s0 = 0;
+			s1 = 1 * scalex;
+		}
+
+		if ( h < 0 ) { // flip about horizontal
+			h = -h;
+			t0 = 1 * scaley;
+			t1 = 0;
+		} else {
+			t0 = 0;
+			t1 = 1 * scaley;
+		}
+
+		var $x = new R( x );
+		var $y = new R( y );
+		var $w = new R( w );
+		var $h = new R( h );
+		var $s0 = new R( s0 );
+		var $t0 = new R( t0 );
+		var $s1 = new R( s1 );
+		var $t1 = new R( t1 );
+		if ( this.ClippedCoords( $x, $y, $w, $h, $s0, $t0, $s1, $t1 ) ) {
+			return;
+		}
+
+		this.AdjustCoords( $x, $y, $w, $h );
+
+		this.DrawStretchPic( x, y, w, h, s0, t0, s1, t1, mat );
+	}
+
 //void idDeviceContext::DrawMaterialRotated(/*float */x:number, /*float */y:number, /*float*/ w:number, /*float*/ h:number, const idMaterial *mat, const idVec4 &color, float scalex, float scaley, /*float*/angle:number) {
 //	
 //	renderSystem.SetColor(color);
@@ -565,11 +569,11 @@ class idDeviceContext {
 //		t1 = 1 * scaley;
 //	}
 //
-//	if ( angle == 0.0 && ClippedCoords( &x, &y, &w, &h, &s0, &t0, &s1, &t1 ) ) {
+//	if ( angle == 0.0 && this.ClippedCoords( &x, &y, &w, &h, &s0, &t0, &s1, &t1 ) ) {
 //		return;
 //	}
 //
-//	AdjustCoords(&x, &y, &w, &h);
+//	this.AdjustCoords(&x, &y, &w, &h);
 //
 //	DrawStretchPicRotated( x, y, w, h, s0, t0, s1, t1, mat, angle);
 //}
@@ -713,27 +717,29 @@ class idDeviceContext {
 		this.DrawStretchPic( x, y, w, h, 0, 0, 0, 0, this.whiteImage );
 	}
 
-//
-//void idDeviceContext::DrawRect( /*float */x:number, /*float */y:number, /*float*/ w:number, /*float*/ h:number, float size, const idVec4 &color) {
-//
-//	if ( color.w == 0.0 ) {
-//		return;
-//	}
-//
-//	renderSystem.SetColor(color);
-//	
-//	if (ClippedCoords(&x, &y, &w, &h, NULL, NULL, NULL, NULL)) {
-//		return;
-//	}
-//
-//	AdjustCoords(&x, &y, &w, &h);
-//	DrawStretchPic( x, y, size, h, 0, 0, 0, 0, this.whiteImage );
-//	DrawStretchPic( x + w - size, y, size, h, 0, 0, 0, 0, this.whiteImage );
-//	DrawStretchPic( x, y, w, size, 0, 0, 0, 0, this.whiteImage );
-//	DrawStretchPic( x, y + h - size, w, size, 0, 0, 0, 0, this.whiteImage );
-//}
-//
-//void idDeviceContext::DrawMaterialRect( /*float */x:number, /*float */y:number, /*float*/ w:number, /*float*/ h:number, float size, const idMaterial *mat, const idVec4 &color) {
+	DrawRect ( /*float */x: number, /*float */y: number, /*float*/ w: number, /*float*/ h: number, /*float*/ size: number, color: idVec4 ) {
+
+		if ( color.w == 0.0 ) {
+			return;
+		}
+
+		renderSystem.SetColor( color );
+
+		var $x = new R( x );
+		var $y = new R( y );
+		var $w = new R( w );
+		var $h = new R( h );
+		if ( this.ClippedCoords( $x, $y, $w, $h, null, null, null, null ) ) {
+			return;
+		}
+
+		this.AdjustCoords( $x, $y, $w, $h );
+		this.DrawStretchPic( x, y, size, h, 0, 0, 0, 0, this.whiteImage );
+		this.DrawStretchPic( x + w - size, y, size, h, 0, 0, 0, 0, this.whiteImage );
+		this.DrawStretchPic( x, y, w, size, 0, 0, 0, 0, this.whiteImage );
+		this.DrawStretchPic( x, y + h - size, w, size, 0, 0, 0, 0, this.whiteImage );
+	}
+//void idDeviceContext::DrawMaterialRect( /*float */x:number, /*float */y:number, /*float*/ w:number, /*float*/ h:number, /*float*/ size:number, const idMaterial *mat, const idVec4 &color) {
 //
 //	if ( color.w == 0.0 ) {
 //		return;
@@ -751,7 +757,7 @@ class idDeviceContext {
 //	cursor = (n < CURSOR_ARROW || n >= CURSOR_COUNT) ? CURSOR_ARROW : n;
 //}
 //
-//void idDeviceContext::DrawCursor(float *x, float *y, float size) {
+//void idDeviceContext::DrawCursor(float *x, float *y, /*float*/ size:number) {
 //	if (x.$ < 0) {
 //		x.$ = 0;
 //	}
@@ -769,8 +775,8 @@ class idDeviceContext {
 //	}
 //
 //	renderSystem.SetColor(colorWhite);
-//	AdjustCoords(x, y, &size, &size);
-//	DrawStretchPic( x.$, y.$, size, size, 0, 0, 1, 1, cursorImages[cursor]);
+//	this.AdjustCoords(x, y, &size, &size);
+//	this.DrawStretchPic( x.$, y.$, size, size, 0, 0, 1, 1, cursorImages[cursor]);
 //}
 ///*
 // =======================================================================================================================
@@ -782,12 +788,12 @@ class idDeviceContext {
 //	w = width * scale;
 //	h = height * scale;
 //
-//	if (ClippedCoords(&x, &y, &w, &h, &s, &t, &s2, &t2)) {
+//	if (this.ClippedCoords(&x, &y, &w, &h, &s, &t, &s2, &t2)) {
 //		return;
 //	}
 //
-//	AdjustCoords(&x, &y, &w, &h);
-//	DrawStretchPic(x, y, w, h, s, t, s2, t2, hShader);
+//	this.AdjustCoords(&x, &y, &w, &h);
+//	this.DrawStretchPic(x, y, w, h, s, t, s2, t2, hShader);
 //}
 
 

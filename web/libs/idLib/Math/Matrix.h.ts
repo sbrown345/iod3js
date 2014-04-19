@@ -547,24 +547,26 @@ class idMat3 {
 //}
 //
 //ID_INLINE idMat3 &idMat3::operator*=( const idMat3 &a ) {
-//	int i, j;
-//	const float *m2Ptr;
-//	float *m1Ptr, dst[3];
-//
-//	m1Ptr = reinterpret_cast<float *>(this);
-//	m2Ptr = reinterpret_cast<const float *>(&a);
-//
-//	for ( i = 0; i < 3; i++ ) {
-//		for ( j = 0; j < 3; j++ ) {
-//			dst[j]  = m1Ptr[0] * m2Ptr[ 0 * 3 + j ]
-//					+ m1Ptr[1] * m2Ptr[ 1 * 3 + j ]
-//					+ m1Ptr[2] * m2Ptr[ 2 * 3 + j ];
-//		}
-//		m1Ptr[0] = dst[0]; m1Ptr[1] = dst[1]; m1Ptr[2] = dst[2];
-//		m1Ptr += 3;
-//	}
-//	return *this;
-//}
+	opMultiplicationAssignment ( a: idMat3 ): idMat3 {
+		var /*int */i: number, j: number;
+		todoThrow ( );
+		//const float *m2Ptr;
+		//float *m1Ptr, dst[3];
+
+		//m1Ptr = reinterpret_cast<float *>(this);
+		//m2Ptr = reinterpret_cast<const float *>(&a);
+
+		//for ( i = 0; i < 3; i++ ) {
+		//	for ( j = 0; j < 3; j++ ) {
+		//		dst[j]  = m1Ptr[0] * m2Ptr[ 0 * 3 + j ]
+		//				+ m1Ptr[1] * m2Ptr[ 1 * 3 + j ]
+		//				+ m1Ptr[2] * m2Ptr[ 2 * 3 + j ];
+		//	}
+		//	m1Ptr[0] = dst[0]; m1Ptr[1] = dst[1]; m1Ptr[2] = dst[2];
+		//	m1Ptr += 3;
+		//}
+		return this;
+	}
 //
 //ID_INLINE idMat3 &idMat3::operator+=( const idMat3 &a ) {
 //	this.mat[0].x += a[0].x; this.mat[0].y += a[0].y; this.mat[0].z += a[0].z;

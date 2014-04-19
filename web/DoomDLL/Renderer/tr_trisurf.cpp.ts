@@ -1912,14 +1912,13 @@ function R_RemoveDegenerateTriangles ( tri: srfTriangles_t ): void {
 		a = tri.silIndexes[i];
 		b = tri.silIndexes[i + 1];
 		c = tri.silIndexes[i + 2];
-		dlog(DEBUG_RENDERWORLD_LOAD, "R_CleanupTriangles tri abc:%i %i %i\n", a, b, c);
+		dlog( DEBUG_RENDERWORLD_LOAD, "R_CleanupTriangles tri abc:%i %i %i\n", a, b, c );
 		if ( a == b || a == c || b == c ) {
 			c_removed++;
-			todoThrow ( );
-			//memmove( tri.indexes + i, tri.indexes + i + 3, ( tri.numIndexes - i - 3 ) * sizeof( tri.indexes[0] ) );
-			//if ( tri.silIndexes ) {
-			//	memmove( tri.silIndexes + i, tri.silIndexes + i + 3, ( tri.numIndexes - i - 3 ) * sizeof( tri.silIndexes[0] ) );
-			//}
+			memmove( tri.indexes.subarray( i ), tri.indexes.subarray( i + 3 ), ( tri.numIndexes - i - 3 ) * sizeofSingleItem( tri.indexes ) );
+			if ( tri.silIndexes ) {
+				memmove( tri.silIndexes.subarray( i ), tri.silIndexes.subarray( i + 3 ), ( tri.numIndexes - i - 3 ) * sizeofSingleItem( tri.silIndexes ) );
+			}
 			tri.numIndexes -= 3;
 			i -= 3;
 		}

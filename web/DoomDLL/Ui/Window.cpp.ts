@@ -1361,8 +1361,8 @@ idWindow::Contains
 ////		return;
 ////	}
 ////
-////	if ( timeLine == -1 ) {
-////		timeLine = this.gui.GetTime();
+////	if ( this.timeLine == -1 ) {
+////		this.timeLine = this.gui.GetTime();
 ////	}
 ////
 ////	cmd = "";
@@ -1370,7 +1370,7 @@ idWindow::Contains
 ////	int c = this.timeLineEvents.Num();
 ////	if ( c > 0 ) {
 ////		for (var i = 0; i < c; i++) {
-////			if ( this.timeLineEvents[i].pending && this.gui.GetTime() - timeLine >= this.timeLineEvents[i].time ) {
+////			if ( this.timeLineEvents[i].pending && this.gui.GetTime() - this.timeLine >= this.timeLineEvents[i].time ) {
 ////				this.timeLineEvents[i].pending = false;
 ////				RunScriptList( this.timeLineEvents[i].event );
 ////			}
@@ -1389,22 +1389,22 @@ idWindow::EvalRegs
 	private static regs = new Float32Array(MAX_EXPRESSION_REGISTERS);
 	private static lastEval: idWindow= null;
 
-EvalRegs ( /*int */test = -1, force = false ): number /*float */ {
+	EvalRegs ( /*int */test = -1, force = false ): number /*float */ {
 
 
-		if (!force && test >= 0 && test < MAX_EXPRESSION_REGISTERS && idWindow.lastEval == this) {
+		if ( !force && test >= 0 && test < MAX_EXPRESSION_REGISTERS && idWindow.lastEval == this ) {
 			return idWindow.regs[test];
 		}
 
 		idWindow.lastEval = this;
 
-		if (this.expressionRegisters.Num()) {
-			this.regList.SetToRegs(idWindow.regs);
-			this.EvaluateRegisters(idWindow.regs);
-			this.regList.GetFromRegs(idWindow.regs);
+		if ( this.expressionRegisters.Num ( ) ) {
+			this.regList.SetToRegs( idWindow.regs );
+			this.EvaluateRegisters( idWindow.regs );
+			this.regList.GetFromRegs( idWindow.regs );
 		}
 
-		if (test >= 0 && test < MAX_EXPRESSION_REGISTERS) {
+		if ( test >= 0 && test < MAX_EXPRESSION_REGISTERS ) {
 			return idWindow.regs[test];
 		}
 
@@ -1430,7 +1430,7 @@ idWindow::DrawBackground
 				scalex = this.matScalex;
 				scaley = this.matScaley;
 			}
-			this.dc.DrawMaterial( drawRect.x, drawRect.y, drawRect.w, drawRect.h, this.background, this.matColor, scalex, scaley );
+			this.dc.DrawMaterial( drawRect.x, drawRect.y, drawRect.w, drawRect.h, this.background, this.matColor.data, scalex, scaley );
 		}
 	}
 
@@ -1441,7 +1441,7 @@ idWindow::DrawBorderAndCaption
 */
 	DrawBorderAndCaption ( drawRect: idRectangle ): void {
 		if ( this.flags & WIN_BORDER && this.borderSize && this.borderColor.w ( ) ) {
-			this.dc.DrawRect( drawRect.x, drawRect.y, drawRect.w, drawRect.h, this.borderSize, this.borderColor );
+			this.dc.DrawRect( drawRect.x, drawRect.y, drawRect.w, drawRect.h, this.borderSize, this.borderColor .data);
 		}
 	}
 
@@ -1462,8 +1462,8 @@ idWindow::SetupTransforms
 		idWindow.org.Set( this.origin.x + x, this.origin.y + y, 0 );
 
 		if ( this.rotate.data ) {
-			idWindow.rot.Set( idWindow.org, idWindow.vec, this.rotate );
-			idWindow.trans = idWindow.rot.ToMat3 ( );
+			idWindow.rot.Set( idWindow.org, idWindow.vec, this.rotate.data );
+			idWindow.trans.equals( idWindow.rot.ToMat3 ( ) );
 		}
 
 		if ( this.shear.x || this.shear.y ) {
@@ -1522,7 +1522,7 @@ idWindow::Redraw
 		}
 
 		if ( this.flags & WIN_SHOWTIME ) {
-			this.dc.DrawText( va( " %0.1f seconds\n%s", /*(float)*/( time - timeLine ) / 1000, this.gui.State ( ).GetString( "name" ) ), 0.35, 0, /*this.dc.*/colorWhite, new idRectangle( 100, 0, 80, 80 ), false );
+			this.dc.DrawText_text( va( " %0.1f seconds\n%s", /*(float)*/( time - this.timeLine ) / 1000, this.gui.State ( ).GetString( "name" ) ), 0.35, 0, /*this.dc.*/colorWhite, new idRectangle( 100, 0, 80, 80 ), false );
 		}
 
 		if ( this.flags & WIN_SHOWCOORDS ) {
@@ -1609,6 +1609,7 @@ idWindow::Redraw
 		this.clientRect.Offset( -x, -y );
 		this.textRect.Offset( -x, -y );
 	}
+
 
 /*
 ================
@@ -2963,7 +2964,7 @@ idWindow::FindChildByName
 ////*/
 ////ResetTime(int t):void {
 ////
-////	timeLine = gui.GetTime() - t;
+////	this.timeLine = gui.GetTime() - t;
 ////
 ////	int i, c = this.timeLineEvents.Num();
 ////	for ( i = 0; i < c; i++ ) {
@@ -3502,7 +3503,7 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////	}
 ////	f.ReadUnsignedChar( this.cursor );
 ////	f.ReadUnsignedInt( this.flags );
-////	f.ReadInt( timeLine );
+////	f.ReadInt( this.timeLine );
 ////	f.ReadInt( this.lastTimeRun );
 ////	idRectangle rct = this.rect;
 ////	f.ReadFloat( rct.x );
@@ -3651,7 +3652,7 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////	f.SetLog(true, this.backGroundName);
 ////	f.WriteUnsignedChar( this.cursor );
 ////	f.WriteUnsignedInt( this.flags );
-////	f.WriteInt( timeLine );
+////	f.WriteInt( this.timeLine );
 ////	f.WriteInt( this.lastTimeRun );
 ////	idRectangle rct = this.rect;
 ////	f.WriteFloat( rct.x );
@@ -3799,7 +3800,7 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////	savefile.Write( &this.clientRect, sizeof( this.clientRect ) );
 ////	savefile.Write( &this.origin, sizeof( this.origin ) );
 ////	savefile.Write( &this.fontNum, sizeof( this.fontNum ) );
-////	savefile.Write( &timeLine, sizeof( timeLine ) );
+////	savefile.Write( &this.timeLine, sizeof( this.timeLine ) );
 ////	savefile.Write( &this.xOffset, sizeof( this.xOffset ) );
 ////	savefile.Write( &this.yOffset, sizeof( this.yOffset ) );
 ////	savefile.Write( &this.cursor, sizeof( this.cursor ) );
@@ -3944,7 +3945,7 @@ EvaluateRegisters(/*float **/registers:Float32Array):void {
 ////	savefile.Read( &this.clientRect, sizeof( this.clientRect ) );
 ////	savefile.Read( &this.origin, sizeof( this.origin ) );
 ////	savefile.Read( &this.fontNum, sizeof( this.fontNum ) );
-////	savefile.Read( &timeLine, sizeof( timeLine ) );
+////	savefile.Read( &this.timeLine, sizeof( this.timeLine ) );
 ////	savefile.Read( &this.xOffset, sizeof( this.xOffset ) );
 ////	savefile.Read( &this.yOffset, sizeof( this.yOffset ) );
 ////	savefile.Read( &this.cursor, sizeof( this.cursor ) );

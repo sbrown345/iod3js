@@ -204,6 +204,16 @@ function memsetP ( ptr: P, value: number, num: number ): void {
 	}
 }
 
+function memmove ( destination: Uint8Array /*any*/, source: Uint8Array /*any*/, num: /*size_t*/ number ): void {
+	if ( !( destination instanceof Uint8Array ) ) {
+		destination = new Uint8Array( destination.buffer, destination.byteOffset );
+	}
+	if ( !( destination instanceof Uint8Array ) ) {
+		source = new Uint8Array( source.buffer, source.byteOffset );
+	}
+	destination.set( source.subarray( num ) );
+}
+
 function dynamic_cast<T> ( obj: any, type: any ): T {
 	if ( obj instanceof type ) {
 		return <T>obj;
