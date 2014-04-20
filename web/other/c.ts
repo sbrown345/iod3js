@@ -211,6 +211,10 @@ function static_cast<T> ( obj: any ): T {
 	return <T>obj;
 }
 
+function reinterpret_cast<T> ( obj: any ): T {
+	return <T>obj;
+}
+
 function short ( buf: Uint8Array, ptr: number ): number {
 	return buf[ptr] + ( buf[ptr + 1] << 8 );
 }

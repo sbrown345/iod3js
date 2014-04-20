@@ -566,7 +566,7 @@ function R_SkyboxTexGen(surf: drawSurf_t, viewOrg: idVec3):void {
 //======================
 //*/
 //idScreenRect R_ClippedLightScissorRectangle( viewLight_t *vLight ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	const idRenderLightLocal *light = vLight.lightDef;
 //	idScreenRect r;
 //	idFixedWinding w;

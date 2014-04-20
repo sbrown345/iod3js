@@ -115,7 +115,7 @@ var SHARD_FADE_START	= 2000;
 ////================
 ////*/
 ////void idBrittleFracture::Save( idSaveGame *savefile ) const {
-////	int i, j;
+////	var /*int */i:number, j:number;
 
 ////	savefile->WriteInt( health );
 ////	entityFlags_s flags = fl;

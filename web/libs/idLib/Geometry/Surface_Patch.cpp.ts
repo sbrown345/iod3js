@@ -175,7 +175,7 @@ idSurface_Patch::SetSize
 ////=================
 ////*/
 ////void idSurface_Patch::PutOnCurve( void ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	idDrawVert prev, next;
 ////
 ////	assert( this.expanded == true );
@@ -275,7 +275,7 @@ idSurface_Patch::SetSize
 ////================
 ////*/
 ////void idSurface_Patch::ResizeExpanded( int newHeight, int newWidth ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////
 ////	assert( this.expanded == true );
 ////	if ( newHeight <= this.maxHeight && newWidth <= this.maxWidth ) {
@@ -300,7 +300,7 @@ idSurface_Patch::SetSize
 ////================
 ////*/
 ////void idSurface_Patch::Collapse( void ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////
 ////	if ( !this.expanded ) {
 ////		idLib::common.FatalError("idSurface_Patch::Collapse: patch not expanded");
@@ -322,7 +322,7 @@ idSurface_Patch::SetSize
 ////================
 ////*/
 ////void idSurface_Patch::Expand( void ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////
 ////	if ( this.expanded ) {
 ////		idLib::common.FatalError("idSurface_Patch::Expand: patch alread expanded");

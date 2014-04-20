@@ -83,10 +83,10 @@
 ////	bool					negate;
 ////};
 ////
-////class idDeclAF_Body {
+class idDeclAF_Body {
 ////public:
-////	idStr					name;
-////	idStr					jointName;
+	name = new idStr;
+	jointName = new idStr;
 ////	declAFJointMod_t		jointMod;
 ////	int						modelType;
 ////	idAFVector				v1, v2;
@@ -107,9 +107,9 @@
 ////	idAFVector				contactMotorDirection;
 ////public:
 ////	void					SetDefault( const idDeclAF *file );
-////};
-////
-////class idDeclAF_Constraint {
+};
+
+class idDeclAF_Constraint {
 ////public:
 ////	idStr					name;
 ////	idStr					body1;
@@ -136,8 +136,8 @@
 ////
 ////public:
 ////	void					SetDefault( const idDeclAF *file );
-////};
-////
+};
+
 class idDeclAF extends idDecl {
 ////	friend class idAFFileManager;
 ////public:
@@ -168,26 +168,26 @@ class idDeclAF extends idDecl {
 ////	static const char *		JointModToString( declAFJointMod_t jointMod );
 ////
 ////public:
-////	bool					modified;
-////	idStr					model;
-////	idStr					skin;
-////	float					defaultLinearFriction;
-////	float					defaultAngularFriction;
-////	float					defaultContactFriction;
-////	float					defaultConstraintFriction;
-////	float					totalMass;
-////	idVec2					suspendVelocity;
-////	idVec2					suspendAcceleration;
-////	float					noMoveTime;
-////	float					noMoveTranslation;
-////	float					noMoveRotation;
-////	float					minMoveTime;
-////	float					maxMoveTime;
-////	int						contents;
-////	int						clipMask;
-////	bool					selfCollision;
-////	idList<idDeclAF_Body *>			bodies;
-////	idList<idDeclAF_Constraint *>	constraints;
+	modified:boolean;
+	model = new idStr;
+	skin = new idStr;
+	defaultLinearFriction :number/*float*/;
+	defaultAngularFriction :number/*float*/;
+	defaultContactFriction :number/*float*/;
+	defaultConstraintFriction :number/*float*/;
+	totalMass :number/*float*/;
+	suspendVelocity = new idVec2;
+	suspendAcceleration= new idVec2;
+	noMoveTime :number/*float*/;
+	noMoveTranslation :number/*float*/;
+	noMoveRotation :number/*float*/;
+	minMoveTime :number/*float*/;
+	maxMoveTime :number/*float*/;
+	contents :number/*int*/;
+	clipMask :number/*int*/;
+	selfCollision:boolean;
+	bodies = new idList<idDeclAF_Body>(idDeclAF_Body, true);
+	constraints = new idList<idDeclAF_Constraint>(idDeclAF_Constraint, true);
 ////
 ////private:
 ////	bool					ParseContents( idLexer &src, int &c ) const;
@@ -522,14 +522,14 @@ class idDeclAF extends idDecl {
 	////						"\tDo not edit directly but launch the game and type 'editAFs' on the console.\n"
 	////						"*/\n" );
 	////
-	////	f.WriteFloatString( "\narticulatedFigure %s {\n", GetName() );
+	////	f.WriteFloatString( "\narticulatedFigure %s {\n", this.GetName() );
 	////
 	////	if ( !WriteSettings( &f ) ) {
 	////		return false;
 	////	}
 	////
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		if ( !WriteBody( &f, *bodies[i] ) ) {
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		if ( !WriteBody( &f, *this.bodies[i] ) ) {
 	////			return false;
 	////		}
 	////	}
@@ -710,7 +710,7 @@ class idDeclAF extends idDecl {
 	////	idAFVector angles;
 	////	idDeclAF_Body *body = new idDeclAF_Body;
 	////
-	////	bodies.Alloc() = body;
+	////	this.bodies.Alloc() = body;
 	////
 	////	body.SetDefault( this );
 	////
@@ -1342,7 +1342,7 @@ class idDeclAF extends idDecl {
 	////================
 	////*/
 	////bool idDeclAF::Parse( text:string, const int textLength ) {
-	////	int i, j;
+	////	var /*int */i:number, j:number;
 	////	idLexer src;
 	////	idToken token;
 	////
@@ -1392,11 +1392,11 @@ class idDeclAF extends idDecl {
 	////		}
 	////	}
 	////
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////		// check for multiple bodies with the same name
-	////		for ( j = i+1; j < bodies.Num(); j++ ) {
-	////			if ( bodies[i].name == bodies[j].name ) {
-	////				src.Error( "two bodies with the same name \"%s\"", bodies[i].name.c_str() );
+	////		for ( j = i+1; j < this.bodies.Num(); j++ ) {
+	////			if ( this.bodies[i].name == this.bodies[j].name ) {
+	////				src.Error( "two bodies with the same name \"%s\"", this.bodies[i].name.c_str() );
 	////			}
 	////		}
 	////	}
@@ -1418,12 +1418,12 @@ class idDeclAF extends idDecl {
 	////	}
 	////
 	////	// make sure the body which modifies the origin comes first
-	////	for ( i = 0; i < bodies.Num(); i++ ) {
-	////		if ( bodies[i].jointName == "origin" ) {
+	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+	////		if ( this.bodies[i].jointName == "origin" ) {
 	////			if ( i != 0 ) {
-	////				idDeclAF_Body *b = bodies[0];
-	////				bodies[0] = bodies[i];
-	////				bodies[i] = b;
+	////				idDeclAF_Body *b = this.bodies[0];
+	////				this.bodies[0] = this.bodies[i];
+	////				this.bodies[i] = b;
 	////			}
 	////			break;
 	////		}
@@ -1491,39 +1491,39 @@ class idDeclAF extends idDecl {
 ////	selfCollision = true;
 ////	contents = CONTENTS_CORPSE;
 ////	clipMask = CONTENTS_SOLID | CONTENTS_CORPSE;
-////	bodies.DeleteContents( true );
+////	this.bodies.DeleteContents( true );
 ////	constraints.DeleteContents( true );
 ////}
-////
-/////*
-////================
-////idDeclAF::Finish
-////================
-////*/
-////void idDeclAF::Finish( const getJointTransform_t GetJointTransform, const idJointMat *frame, void *model ) const {
-////	var/*int*/i:number;
-////
-////	name:string = GetName();
-////	for ( i = 0; i < bodies.Num(); i++ ) {
-////		idDeclAF_Body *body = bodies[i];
-////		body.v1.Finish( name, GetJointTransform, frame, model );
-////		body.v2.Finish( name, GetJointTransform, frame, model );
-////		body.origin.Finish( name, GetJointTransform, frame, model );
-////		body.frictionDirection.Finish( name, GetJointTransform, frame, model );
-////		body.contactMotorDirection.Finish( name, GetJointTransform, frame, model );
-////	}
-////	for ( i = 0; i < constraints.Num(); i++ ) {
-////		idDeclAF_Constraint *constraint = constraints[i];
-////		constraint.anchor.Finish( name, GetJointTransform, frame, model );
-////		constraint.anchor2.Finish( name, GetJointTransform, frame, model );
-////		constraint.shaft[0].Finish( name, GetJointTransform, frame, model );
-////		constraint.shaft[1].Finish( name, GetJointTransform, frame, model );
-////		constraint.axis.Finish( name, GetJointTransform, frame, model );
-////		constraint.limitAxis.Finish( name, GetJointTransform, frame, model );
-////	}
-////}
-////
-/////*
+
+/*
+================
+idDeclAF::Finish
+================
+*/
+	Finish ( GetJointTransform: /*getJointTransform_t*/ ( model: any, frame: idJointMat, jointName: string, origin: idVec3, axis: idMat3 ) => boolean, frame: idJointMat, /*void **/model: any ): void {
+		var /*int*/i: number;
+
+		var name: string = this.GetName ( );
+		for ( i = 0; i < this.bodies.Num ( ); i++ ) {
+			var body: idDeclAF_Body = this.bodies[i];
+			body.v1.Finish( name, GetJointTransform, frame, model );
+			body.v2.Finish( name, GetJointTransform, frame, model );
+			body.origin.Finish( name, GetJointTransform, frame, model );
+			body.frictionDirection.Finish( name, GetJointTransform, frame, model );
+			body.contactMotorDirection.Finish( name, GetJointTransform, frame, model );
+		}
+		for ( i = 0; i < constraints.Num ( ); i++ ) {
+			var constraint: idDeclAF_Constraint = this.constraints[i];
+			constraint.anchor.Finish( name, GetJointTransform, frame, model );
+			constraint.anchor2.Finish( name, GetJointTransform, frame, model );
+			constraint.shaft[0].Finish( name, GetJointTransform, frame, model );
+			constraint.shaft[1].Finish( name, GetJointTransform, frame, model );
+			constraint.axis.Finish( name, GetJointTransform, frame, model );
+			constraint.limitAxis.Finish( name, GetJointTransform, frame, model );
+		}
+	}
+
+/*
 ////================
 ////idDeclAF::NewBody
 ////================
@@ -1534,7 +1534,7 @@ class idDeclAF extends idDecl {
 ////	body = new idDeclAF_Body();
 ////	body.SetDefault( this );
 ////	body.name = name;
-////	bodies.Append( body );
+////	this.bodies.Append( body );
 ////}
 ////
 /////*
@@ -1548,9 +1548,9 @@ class idDeclAF extends idDecl {
 ////void idDeclAF::RenameBody( const char *oldName, const char *newName ) {
 ////	var/*int*/i:number;
 ////
-////	for ( i = 0; i < bodies.Num(); i++ ) {
-////		if ( bodies[i].name.Icmp( oldName ) == 0 ) {
-////			bodies[i].name = newName;
+////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+////		if ( this.bodies[i].name.Icmp( oldName ) == 0 ) {
+////			this.bodies[i].name = newName;
 ////			break;
 ////		}
 ////	}
@@ -1574,10 +1574,10 @@ class idDeclAF extends idDecl {
 ////void idDeclAF::DeleteBody( name:string ) {
 ////	var/*int*/i:number;
 ////
-////	for ( i = 0; i < bodies.Num(); i++ ) {
-////		if ( bodies[i].name.Icmp( name ) == 0 ) {
-////			delete bodies[i];
-////			bodies.RemoveIndex( i );
+////	for ( i = 0; i < this.bodies.Num(); i++ ) {
+////		if ( this.bodies[i].name.Icmp( name ) == 0 ) {
+////			delete this.bodies[i];
+////			this.bodies.RemoveIndex( i );
 ////			break;
 ////		}
 ////	}
@@ -1653,7 +1653,7 @@ class idDeclAF extends idDecl {
 ////================
 ////*/
 ////idDeclAF::~idDeclAF( void ) {
-////	bodies.DeleteContents( true );
+////	this.bodies.DeleteContents( true );
 ////	constraints.DeleteContents( true );
 ////}
 }

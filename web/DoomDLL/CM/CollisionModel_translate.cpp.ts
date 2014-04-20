@@ -707,7 +707,7 @@
 ////================
 ////*/
 ////void idCollisionModelManagerLocal::SetupTrm( cm_traceWork_t *tw, const idTraceModel *trm ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////
 ////	// vertices
 ////	tw->numVerts = trm->numVerts;
@@ -767,7 +767,7 @@
 ////										const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
 ////										cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) {
 ////
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	float dist;
 ////	bool model_rotated, trm_rotated;
 ////	idVec3 dir1, dir2, dir;

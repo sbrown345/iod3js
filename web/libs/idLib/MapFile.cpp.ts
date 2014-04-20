@@ -291,7 +291,7 @@ idMapPatch::Parse
 ////============
 ////*/
 ////bool idMapPatch::Write( idFile *fp, int primitiveNum, const idVec3 &origin ) const {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	const idDrawVert *v;
 ////
 ////	if ( GetExplicitlySubdivided() ) {

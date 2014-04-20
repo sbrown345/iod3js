@@ -279,7 +279,7 @@ class idPush {
 //============
 //*/
 //void idPush::AddEntityToPushedGroup( idEntity *ent, float fraction, bool groundContact ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //
 //	for ( i = 0; i < pushedGroupSize; i++ ) {
 //		if ( ent == pushedGroup[i].ent ) {

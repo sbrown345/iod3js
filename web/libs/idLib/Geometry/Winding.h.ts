@@ -981,7 +981,7 @@ idWinding::GetBounds
 //=============
 //*/
 //void idWinding::RemoveEqualPoints(const float epsilon) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //
 //	for (i = 0; i < this.numPoints; i++) {
 //		if ((this.p[i].ToVec3() - this.p[(i + this.numPoints - 1) % this.numPoints].ToVec3()).LengthSqr() >= Square(epsilon)) {
@@ -1001,7 +1001,7 @@ idWinding::GetBounds
 //=============
 //*/
 //void idWinding::RemoveColinearPoints(const idVec3 &normal, const float epsilon) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	idVec3 edgeNormal;
 //	float dist;
 //

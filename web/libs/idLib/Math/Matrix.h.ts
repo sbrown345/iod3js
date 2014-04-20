@@ -1510,7 +1510,7 @@ class idMat4 {
 //}
 //
 //ID_INLINE idMat4 idMat4::operator*( const idMat4 &a ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	const float *m1Ptr, *m2Ptr;
 //	float *dstPtr;
 //	idMat4 dst;
@@ -1835,7 +1835,7 @@ var mat4_default = mat4_identity;
 //}
 //
 //ID_INLINE idMat5 idMat5::operator*( const idMat5 &a ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	const float *m1Ptr, *m2Ptr;
 //	float *dstPtr;
 //	idMat5 dst;
@@ -2150,7 +2150,7 @@ var mat4_default = mat4_identity;
 //}
 //
 //ID_INLINE idMat6 idMat6::operator*( const idMat6 &a ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	const float *m1Ptr, *m2Ptr;
 //	float *dstPtr;
 //	idMat6 dst;
@@ -2637,7 +2637,7 @@ var mat4_default = mat4_identity;
 //}
 //
 //ID_INLINE void idMatX::Set( const idMat3 &m1, const idMat3 &m2 ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //
 //	SetSize( 3, 6 );
 //	for ( i = 0; i < 3; i++ ) {
@@ -2649,7 +2649,7 @@ var mat4_default = mat4_identity;
 //}
 //
 //ID_INLINE void idMatX::Set( const idMat3 &m1, const idMat3 &m2, const idMat3 &m3, const idMat3 &m4 ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //
 //	SetSize( 6, 6 );
 //	for ( i = 0; i < 3; i++ ) {
@@ -3051,7 +3051,7 @@ var mat4_default = mat4_identity;
 //}
 //
 //ID_INLINE float idMatX::MaxDifference( const idMatX &m ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	float diff, maxDiff;
 //
 //	assert( numRows == m.numRows && numColumns == m.numColumns );
@@ -3177,7 +3177,7 @@ var mat4_default = mat4_identity;
 //
 //ID_INLINE idMatX idMatX::Transpose( ) const {
 //	idMatX transpose;
-//	int i, j;
+//	var /*int */i:number, j:number;
 //
 //	transpose.SetTempSize( numColumns, numRows );
 //
@@ -3334,7 +3334,7 @@ var mat4_default = mat4_identity;
 //#ifdef MATX_SIMD
 //	SIMDProcessor->MatX_MultiplyVecX( dst, *this, vec );
 //#else
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	const float *mPtr, *vPtr;
 //	float *dstPtr;
 //
@@ -3356,7 +3356,7 @@ var mat4_default = mat4_identity;
 //#ifdef MATX_SIMD
 //	SIMDProcessor->MatX_MultiplyAddVecX( dst, *this, vec );
 //#else
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	const float *mPtr, *vPtr;
 //	float *dstPtr;
 //
@@ -3378,7 +3378,7 @@ var mat4_default = mat4_identity;
 //#ifdef MATX_SIMD
 //	SIMDProcessor->MatX_MultiplySubVecX( dst, *this, vec );
 //#else
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	const float *mPtr, *vPtr;
 //	float *dstPtr;
 //
@@ -3400,7 +3400,7 @@ var mat4_default = mat4_identity;
 //#ifdef MATX_SIMD
 //	SIMDProcessor->MatX_TransposeMultiplyVecX( dst, *this, vec );
 //#else
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	const float *mPtr, *vPtr;
 //	float *dstPtr;
 //
@@ -3422,7 +3422,7 @@ var mat4_default = mat4_identity;
 //#ifdef MATX_SIMD
 //	SIMDProcessor->MatX_TransposeMultiplyAddVecX( dst, *this, vec );
 //#else
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	const float *mPtr, *vPtr;
 //	float *dstPtr;
 //
@@ -3444,7 +3444,7 @@ var mat4_default = mat4_identity;
 //#ifdef MATX_SIMD
 //	SIMDProcessor->MatX_TransposeMultiplySubVecX( dst, *this, vec );
 //#else
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	const float *mPtr, *vPtr;
 //	float *dstPtr;
 //

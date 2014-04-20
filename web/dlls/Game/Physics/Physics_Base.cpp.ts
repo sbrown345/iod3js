@@ -325,24 +325,24 @@ class idPhysics_Base extends idPhysics {
 	//int idPhysics_Base::GetContents( /*int*/ id:number  = -1) const {
 	//	return 0;
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::SetClipMask
-	//================
-	//*/
-	//void idPhysics_Base::SetClipMask( int mask, /*int*/ id:number = -1 ) {
-	//	clipMask = mask;
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::GetClipMask
-	//================
-	//*/
-	//int idPhysics_Base::GetClipMask( /*int*/ id:number  = -1) const {
-	//	return clipMask;
-	//}
+	
+	/*
+	================
+	idPhysics_Base::SetClipMask
+	================
+	*/
+	void idPhysics_Base::SetClipMask( int mask, /*int*/ id:number = -1 ) {
+		clipMask = mask;
+	}
+	
+	/*
+	================
+	idPhysics_Base::GetClipMask
+	================
+	*/
+	int idPhysics_Base::GetClipMask( /*int*/ id:number  = -1) const {
+		return clipMask;
+	}
 	
 	/*
 	================

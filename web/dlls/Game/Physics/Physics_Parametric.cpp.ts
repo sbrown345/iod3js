@@ -683,18 +683,18 @@ idPhysics_Parametric::SetClipMask
 		this.clipModel.SetContents( contents );
 	}
 }
-//
-///*
-//================
-//idPhysics_Parametric::SetClipMask
-//================
-//*/
-//int idPhysics_Parametric::GetContents( /*int*/ id:number  = -1) const {
-//	if ( this.clipModel ) {
-//		return this.clipModel.GetContents();
-//	}
-//	return 0;
-//}
+
+/*
+================
+idPhysics_Parametric::SetClipMask
+================
+*/
+int idPhysics_Parametric::GetContents( /*int*/ id:number  = -1) const {
+	if ( this.clipModel ) {
+		return this.clipModel.GetContents();
+	}
+	return 0;
+}
 
 /*
 ================

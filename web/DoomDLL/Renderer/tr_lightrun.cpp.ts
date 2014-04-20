@@ -754,7 +754,7 @@ function R_FreeEntityDefDerivedData ( def: idRenderEntityLocal, keepDecals: bool
 //===================
 //*/
 //void R_FreeDerivedData( void ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	idRenderWorldLocal *rw;
 //	idRenderEntityLocal *def;
 //	idRenderLightLocal *light;
@@ -816,7 +816,7 @@ function R_CheckForEntityDefsUsingModel ( model: idRenderModel ): void {
 //===================
 //*/
 //void R_ReCreateWorldReferences( void ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	idRenderWorldLocal *rw;
 //	idRenderEntityLocal *def;
 //	idRenderLightLocal *light;

@@ -1875,7 +1875,7 @@ idSIMD_Generic::Memcpy
 //
 //	lptr = L[skip];
 //
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	register double s0, s1, s2, s3;
 //
 //	for ( i = skip; i < n; i++ ) {
@@ -1916,7 +1916,7 @@ idSIMD_Generic::Memcpy
 //
 //#else
 //
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	const float *lptr;
 //	double sum;
 //
@@ -2001,7 +2001,7 @@ idSIMD_Generic::Memcpy
 //		return;
 //	}
 //
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	register double s0, s1, s2, s3;
 //	float *xptr;
 //
@@ -2392,7 +2392,7 @@ idSIMD_Generic::ConvertJointQuatsToJointMats
 //============
 //*/
 //void VPCALL idSIMD_Generic::TransformVerts( idDrawVert *verts, const int numVerts, const idJointMat *joints, const idVec4 *weights, const int *index, int numWeights ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	const byte *jointsPtr = (byte *)joints;
 //
 //	for( j = i = 0; i < numVerts; i++ ) {

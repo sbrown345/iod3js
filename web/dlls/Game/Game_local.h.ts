@@ -4235,7 +4235,7 @@ Returns the entity whose name matches the specified string.
 ////==============
 ////*/
 ////RadiusPushClipModel( const idVec3 &origin, const float push, const idClipModel *clipModel ):void  {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	float dot, dist, area;
 ////	const idTraceModel *trm;
 ////	const traceModelPoly_t *poly;
@@ -4613,7 +4613,7 @@ prepare for a sequence of initial player spawns
 	RandomizeInitialSpawns(): void {
 		todoThrow ( );
 ////	spawnSpot_t	spot;
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	var ent:idEntity
 
 ////	if ( !isMultiplayer || isClient ) {

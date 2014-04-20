@@ -4499,7 +4499,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idAFTree::Factor( ) const {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	idAFBody *body;
 ////	idAFConstraint *child;
 ////	idMatX childI;
@@ -4554,7 +4554,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idAFTree::Solve( int auxiliaryIndex ) const {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	idAFBody *body, *child;
 ////	idAFConstraint *primaryConstraint;
 ////
@@ -4621,7 +4621,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idAFTree::Response( const idAFConstraint *constraint, int row, int auxiliaryIndex ) const {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	idAFBody *body;
 ////	idAFConstraint *child, *primaryConstraint;
 ////	idVecX v;
@@ -4729,7 +4729,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idAFTree::CalculateForces( float timeStep ) const {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	float invStep;
 ////	idAFBody *body;
 ////	idAFConstraint *child, *c, *primaryConstraint;
@@ -4790,7 +4790,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idAFTree::SetMaxSubTreeAuxiliaryIndex( ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	idAFBody *body, *child;
 ////
 ////	// from the leaves up towards the root

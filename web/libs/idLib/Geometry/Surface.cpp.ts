@@ -888,7 +888,7 @@ class idSurface {
 ////=============
 ////*/
 ////bool idSurface::IsPolytope( const float epsilon ) const {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	idPlane plane;
 ////
 ////	if ( !IsClosed() ) {

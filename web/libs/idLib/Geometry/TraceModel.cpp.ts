@@ -1040,7 +1040,7 @@ idTraceModel::SetupPolygon
 */
 	SetupPolygon ( v: idVec3[], /*int */count: number ): void {
 		todoThrow ( );
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	idVec3 mid;
 ////
 ////	this.type = traceModel_t.TRM_POLYGON;

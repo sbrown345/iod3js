@@ -4411,7 +4411,7 @@
 ////================
 ////*/
 ////void idAI::PushWithAF( void ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	afTouch_t touchList[ MAX_GENTITIES ];
 ////	idEntity *pushed_ents[ MAX_GENTITIES ];
 ////	var ent:idEntity

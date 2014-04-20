@@ -401,22 +401,22 @@ idPhysics_StaticMulti::SetContents
 ////	return contents;
 ////}
 ////
-/////*
-////================
-////idPhysics_StaticMulti::SetClipMask
-////================
-////*/
-////void idPhysics_StaticMulti::SetClipMask( int mask, /*int*/ id:number ) {
-////}
-////
-/////*
-////================
-////idPhysics_StaticMulti::GetClipMask
-////================
-////*/
-////int idPhysics_StaticMulti::GetClipMask( /*int*/ id:number ) const {
-////	return 0;
-////}
+/*
+================
+idPhysics_StaticMulti::SetClipMask
+================
+*/
+void idPhysics_StaticMulti::SetClipMask( int mask, /*int*/ id:number ) {
+}
+
+/*
+================
+idPhysics_StaticMulti::GetClipMask
+================
+*/
+int idPhysics_StaticMulti::GetClipMask( /*int*/ id:number ) const {
+	return 0;
+}
 
 /*
 ================

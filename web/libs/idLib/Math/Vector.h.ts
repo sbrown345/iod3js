@@ -164,6 +164,12 @@ class idVec2 {
 ////	return true;
 ////}
 
+	opEquals ( other: idVec2 ): idVec2 {
+		this.x = a.x;
+		this.y = a.y;
+		return this;
+	}
+
 	opEqualTo ( a: idVec2 ): boolean {
 		return this.Compare( a );
 	}

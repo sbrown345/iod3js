@@ -2665,7 +2665,7 @@
 //============
 //*/
 //bool idMatX::IsPMatrix( const float epsilon ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	float d;
 //	idMatX m;
 //
@@ -2720,7 +2720,7 @@
 //============
 //*/
 //bool idMatX::IsZMatrix( const float epsilon ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //
 //	if ( !IsSquare() ) {
 //		return false;
@@ -2968,7 +2968,7 @@
 //============
 //*/
 //void idMatX::Update_RankOne( const idVecX &v, const idVecX &w, float alpha ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	float s;
 //
 //	assert( v.GetSize() >= numRows );
@@ -2990,7 +2990,7 @@
 //============
 //*/
 //void idMatX::Update_RankOneSymmetric( const idVecX &v, float alpha ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	float s;
 //
 //	assert( numRows == numColumns );
@@ -3227,7 +3227,7 @@
 //============
 //*/
 //bool idMatX::Inverse_UpdateRankOne( const idVecX &v, const idVecX &w, float alpha ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	float beta, s;
 //	idVecX y, z;
 //
@@ -3688,7 +3688,7 @@
 //============
 //*/
 //bool idMatX::LU_UpdateIncrement( const idVecX &v, const idVecX &w, int *index ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	float sum;
 //
 //	assert( numRows == numColumns );
@@ -3826,7 +3826,7 @@
 //============
 //*/
 //void idMatX::LU_Solve( idVecX &x, const idVecX &b, const int *index ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	double sum;
 //
 //	assert( x.GetSize() == numColumns && b.GetSize() == numRows );
@@ -3862,7 +3862,7 @@
 //============
 //*/
 //void idMatX::LU_Inverse( idMatX &inv, const int *index ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	idVecX x, b;
 //
 //	assert( numRows == numColumns );
@@ -3891,7 +3891,7 @@
 //============
 //*/
 //void idMatX::LU_UnpackFactors( idMatX &L, idMatX &U ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //
 //	L.Zero( numRows, numColumns );
 //	U.Zero( numRows, numColumns );
@@ -4212,7 +4212,7 @@
 //============
 //*/
 //void idMatX::QR_Solve( idVecX &x, const idVecX &b, const idVecX &c, const idVecX &d ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	double sum, t;
 //
 //	assert( numRows == numColumns );
@@ -4255,7 +4255,7 @@
 //============
 //*/
 //void idMatX::QR_Solve( idVecX &x, const idVecX &b, const idMatX &R ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	double sum;
 //
 //	assert( numRows == numColumns );
@@ -4282,7 +4282,7 @@
 //============
 //*/
 //void idMatX::QR_Inverse( idMatX &inv, const idVecX &c, const idVecX &d ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	idVecX x, b;
 //
 //	assert( numRows == numColumns );
@@ -4703,7 +4703,7 @@
 //============
 //*/
 //void idMatX::SVD_Solve( idVecX &x, const idVecX &b, const idVecX &w, const idMatX &V ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	double sum;
 //	idVecX tmp;
 //
@@ -4855,7 +4855,7 @@
 //============
 //*/
 //bool idMatX::Cholesky_UpdateRankOne( const idVecX &v, float alpha, int offset ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	float *y;
 //	double diag, invDiag, diagSqr, newDiag, newDiagSqr, beta, p, d;
 //
@@ -4910,7 +4910,7 @@
 //============
 //*/
 //bool idMatX::Cholesky_UpdateRowColumn( const idVecX &v, int r ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	double sum;
 //	float *original, *y;
 //	idVecX addSub;
@@ -5092,7 +5092,7 @@
 //============
 //*/
 //bool idMatX::Cholesky_UpdateIncrement( const idVecX &v ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	float *x;
 //	double sum;
 //
@@ -5175,7 +5175,7 @@
 //============
 //*/
 //void idMatX::Cholesky_Solve( idVecX &x, const idVecX &b ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	double sum;
 //
 //	assert( numRows == numColumns );
@@ -5208,7 +5208,7 @@
 //============
 //*/
 //void idMatX::Cholesky_Inverse( idMatX &inv ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	idVecX x, b;
 //
 //	assert( numRows == numColumns );
@@ -5313,7 +5313,7 @@
 //============
 //*/
 //bool idMatX::LDLT_UpdateRankOne( const idVecX &v, float alpha, int offset ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	float *y;
 //	double diag, newDiag, beta, p, d;
 //
@@ -5365,7 +5365,7 @@
 //============
 //*/
 //bool idMatX::LDLT_UpdateRowColumn( const idVecX &v, int r ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	double sum;
 //	float *original, *y;
 //	idVecX addSub;
@@ -5559,7 +5559,7 @@
 //============
 //*/
 //bool idMatX::LDLT_UpdateIncrement( const idVecX &v ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	float *x;
 //	double sum, d;
 //
@@ -5642,7 +5642,7 @@
 //============
 //*/
 //void idMatX::LDLT_Solve( idVecX &x, const idVecX &b ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	double sum;
 //
 //	assert( numRows == numColumns );
@@ -5680,7 +5680,7 @@
 //============
 //*/
 //void idMatX::LDLT_Inverse( idMatX &inv ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	idVecX x, b;
 //
 //	assert( numRows == numColumns );
@@ -5709,7 +5709,7 @@
 //============
 //*/
 //void idMatX::LDLT_UnpackFactors( idMatX &L, idMatX &D ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //
 //	L.Zero( numRows, numColumns );
 //	D.Zero( numRows, numColumns );
@@ -5765,7 +5765,7 @@
 //============
 //*/
 //void idMatX::TriDiagonal_ClearTriangles( void ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //
 //	assert( numRows == numColumns );
 //	for ( i = 0; i < numRows-2; i++ ) {
@@ -5822,7 +5822,7 @@
 //============
 //*/
 //void idMatX::TriDiagonal_Inverse( idMatX &inv ) const {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //	idVecX x, b;
 //
 //	assert( numRows == numColumns );

@@ -753,7 +753,7 @@ idEntity::~idEntity
 ////================
 ////*/
 ////Save( idSaveGame *savefile ) const {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////
 ////	savefile.WriteInt( this.entityNumber );
 ////	savefile.WriteInt( this.entityDefNumber );

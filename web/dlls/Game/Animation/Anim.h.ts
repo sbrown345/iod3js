@@ -3736,7 +3736,7 @@ class idAnimator {
 	//=====================
 	//*/
 	//idRenderModel *idAnimator::SetModel( const char *modelname ) {
-	//	int i, j;
+	//	var /*int */i:number, j:number;
 	//
 	//	FreeData();
 	//

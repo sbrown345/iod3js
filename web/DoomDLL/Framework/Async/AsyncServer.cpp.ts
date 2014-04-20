@@ -248,7 +248,7 @@ class idAsyncServer {
 //==================
 //*/
 //void idAsyncServer::Kill( ) {
-//	int i, j;
+//	var /*int */i:number, j:number;
 //
 //	if ( !active ) {
 //		return;

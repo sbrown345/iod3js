@@ -1850,7 +1850,7 @@ idMultiplayerGame::Reset
 ////		return NULL;
 ////	}
 
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	if ( currentMenu ) {
 ////		currentMenu = 0;
 ////		cvarSystem.SetCVarBool( "ui_chat", false );
@@ -2402,7 +2402,7 @@ idMultiplayerGame::Reset
 ////===============
 ////*/
 ////void idMultiplayerGame::DrawChat() {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	if ( guiChat ) {
 ////		if ( gameLocal.time - lastChatLineTime > CHAT_FADE_TIME ) {
 ////			if ( chatHistorySize > 0 ) {

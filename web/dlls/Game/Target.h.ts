@@ -1148,7 +1148,7 @@ idTarget_SetInfluence::Spawn
 ////================
 ////*/
 ////void idTarget_SetInfluence::Event_Activate( activator:idEntity ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	var ent:idEntity
 ////	idLight *light;
 ////	idSound *sound;
@@ -1326,7 +1326,7 @@ idTarget_SetInfluence::Spawn
 ////================
 ////*/
 ////void idTarget_SetInfluence::Event_RestoreInfluence() {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	var ent:idEntity
 ////	idLight *light;
 ////	idSound *sound;

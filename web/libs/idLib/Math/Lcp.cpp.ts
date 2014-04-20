@@ -164,7 +164,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////*/
 ////void idLCP_Square::SolveClamped( idVecX &x, const float *b ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	float sum;
 ////
 ////	// solve L
@@ -217,7 +217,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////*/
 ////void idLCP_Square::AddClamped( int r ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	float sum;
 ////
 ////	assert( r >= numClamped );
@@ -256,7 +256,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////*/
 ////void idLCP_Square::RemoveClamped( int r ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	float *y0, *y1, *z0, *z1;
 ////	double diag, beta0, beta1, p0, p1, q0, q1, d;
 ////

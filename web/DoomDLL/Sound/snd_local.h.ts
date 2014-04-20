@@ -1079,7 +1079,7 @@ idSoundWorldLocal::AllocSoundEmitter
 ////===================
 ////*/
 ////void idSoundWorldLocal::MixLoop( int current44kHz, int numSpeakers, float *finalMixBuffer ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	idSoundEmitterLocal *sound;
 ////
 ////	// if noclip flying outside the world, leave silence
@@ -1730,7 +1730,7 @@ static  MAX_PORTAL_TRACE_DEPTH = 10;
 ////===================
 ////*/
 ////void idSoundWorldLocal::OffsetSoundTime( int offset44kHz ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////
 ////	for ( i = 0; i < this.emitters.Num(); i++ ) {
 ////		if ( this.emitters[i] == NULL ) {
@@ -3522,7 +3522,7 @@ class idSoundSystemLocal extends idSoundSystem {
 ////*/
 ////cinData_t idSoundSystemLocal::ImageForTime( const int milliseconds, const bool waveform ) {
 ////	cinData_t ret;
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////
 ////	if ( !this.isInitialized || !this.snd_audio_hw ) {
 ////		memset( &ret, 0, sizeof( ret ) );

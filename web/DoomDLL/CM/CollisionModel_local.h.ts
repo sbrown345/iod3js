@@ -1453,7 +1453,7 @@ idCollisionModelManagerLocal::SetupTrmModelStructure
 ////================
 ////*/
 ////cmHandle_t idCollisionModelManagerLocal::SetupTrmModel( const idTraceModel &trm, material:idMaterial  ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	cm_vertex_t *vertex;
 ////	cm_edge_t *edge;
 ////	cm_polygon_t *poly;
@@ -3173,7 +3173,7 @@ idCollisionModelManagerLocal::PolygonFromWinding
 ////=================
 ////*/
 ////void idCollisionModelManagerLocal::CreatePatchPolygons( model: cm_model_t, idSurface_Patch &mesh, material:idMaterial , /*int*/ primitiveNum:number  ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	float dot;
 ////	int v1, v2, v3, v4;
 ////	idFixedWinding w;
@@ -3298,7 +3298,7 @@ idCollisionModelManagerLocal::PolygonFromWinding
 ////================
 ////*/
 ////void idCollisionModelManagerLocal::ConvertBrushSides( model: cm_model_t, const idMapBrush *mapBrush, /*int*/ primitiveNum:number  ) {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	idMapBrushSide *mapSide;
 ////	idFixedWinding w;
 ////	idPlane *planes;

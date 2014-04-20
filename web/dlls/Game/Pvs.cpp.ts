@@ -1160,7 +1160,7 @@ idPVS::Shutdown
 ////================
 ////*/
 ////pvsHandle_t idPVS::SetupCurrentPVS( const int *sourceAreas, const int numSourceAreas, const pvsType_t type ) const {
-////	int i, j;
+////	var /*int */i:number, j:number;
 ////	unsigned int h;
 ////	long *vis, *pvs;
 ////	pvsHandle_t handle;

@@ -1593,7 +1593,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////		// there may be empty tokens for paks the server couldn't pinpoint - the order matters
 ////		idStr reply = "2;";
 ////		idStrList dlTable, pakList;
-////		int i, j;
+////		var /*int */i:number, j:number;
 ////
 ////		Tokenize( dlTable, cvarSystem.GetCVarString( "net_serverDlTable" ) );
 ////		Tokenize( pakList, paks );
