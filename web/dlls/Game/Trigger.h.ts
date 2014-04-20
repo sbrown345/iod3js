@@ -64,12 +64,12 @@ class idTrigger extends idEntity {
 ////protected:
 ////	void				CallScript( ) const;
 ////
-	Event_Enable( ): void { throw "placeholder"; }
-	Event_Disable( ): void { throw "placeholder"; }
+	Event_Enable ( ): void { throw "placeholder"; }
+	Event_Disable ( ): void { throw "placeholder"; }
 ////
-////	const function_t *	scriptFunction;
+	scriptFunction: function_t;
 
-	
+
 /////*
 ////================
 ////idTrigger::DrawDebugInfo
@@ -90,7 +90,7 @@ class idTrigger extends idEntity {
 ////	viewTextBounds.ExpandSelf( 128.0 );
 ////	viewBounds.ExpandSelf( 512.0 );
 ////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
-////		if ( ent.GetPhysics().GetContents() & ( CONTENTS_TRIGGER | CONTENTS_FLASHLIGHT_TRIGGER ) ) {
+////		if ( ent.GetPhysics().GetContents() & ( contentsFlags_t.CONTENTS_TRIGGER | contentsFlags_t.CONTENTS_FLASHLIGHT_TRIGGER ) ) {
 ////			show = viewBounds.IntersectsBounds( ent.GetPhysics().GetAbsBounds() );
 ////			if ( !show ) {
 ////				for( i = 0; i < ent.targets.Num(); i++ ) {
@@ -164,8 +164,8 @@ idTrigger::Enable
 ////void idTrigger::CallScript( ) const {
 ////	idThread *thread;
 ////
-////	if ( scriptFunction ) {
-////		thread = new idThread( scriptFunction );
+////	if ( this.scriptFunction ) {
+////		thread = new idThread( this.scriptFunction );
 ////		thread.DelayedStart( 0 );
 ////	}
 ////}
@@ -176,7 +176,7 @@ idTrigger::Enable
 ////================
 ////*/
 ////const function_t *idTrigger::GetScriptFunction( ) const {
-////	return scriptFunction;
+////	return this.scriptFunction;
 ////}
 ////
 /////*
@@ -185,8 +185,8 @@ idTrigger::Enable
 ////================
 ////*/
 ////void idTrigger::Save( idSaveGame *savefile ) const {
-////	if ( scriptFunction ) {
-////		savefile.WriteString( scriptFunction.Name() );
+////	if ( this.scriptFunction ) {
+////		savefile.WriteString( this.scriptFunction.Name() );
 ////	} else {
 ////		savefile.WriteString( "" );
 ////	}
@@ -201,12 +201,12 @@ idTrigger::Enable
 ////	idStr funcname;
 ////	savefile.ReadString( funcname );
 ////	if ( funcname.Length() ) {
-////		scriptFunction = gameLocal.program.FindFunction( funcname );
-////		if ( scriptFunction == NULL ) {
-////			gameLocal.Warning( "idTrigger_Multi '%s' at (%s) calls unknown function '%s'", name.c_str(), this.GetPhysics().GetOrigin().ToString(0), funcname.c_str() );
+////		this.scriptFunction = gameLocal.program.FindFunction( funcname );
+////		if ( this.scriptFunction == NULL ) {
+////			gameLocal.Warning( "idTrigger_Multi '%s' at (%s) calls unknown function '%s'", this.name.c_str(), this.GetPhysics().GetOrigin().ToString(0), funcname.c_str() );
 ////		}
 ////	} else {
-////		scriptFunction = NULL;
+////		this.scriptFunction = NULL;
 ////	}
 ////}
 ////
@@ -227,36 +227,37 @@ idTrigger::Enable
 ////void idTrigger::Event_Disable( ) {
 ////	Disable();
 ////}
-////
-/////*
-////================
-////idTrigger::idTrigger
-////================
-////*/
-////idTrigger::idTrigger() {
-////	scriptFunction = NULL;
-////}
-////
-/////*
-////================
-////idTrigger::Spawn
-////================
-////*/
-////void idTrigger::Spawn( ) {
-////	this.GetPhysics().SetContents( CONTENTS_TRIGGER );
-////
-////	idStr funcname = this.spawnArgs.GetString( "call", "" );
-////	if ( funcname.Length() ) {
-////		scriptFunction = gameLocal.program.FindFunction( funcname );
-////		if ( scriptFunction == NULL ) {
-////			gameLocal.Warning( "trigger '%s' at (%s) calls unknown function '%s'", name.c_str(), this.GetPhysics().GetOrigin().ToString(0), funcname.c_str() );
-////		}
-////	} else {
-////		scriptFunction = NULL;
-////	}
-////}
 
-};
+/*
+================
+idTrigger::idTrigger
+================
+*/
+	constructor ( ) {
+		super ( );
+		this.scriptFunction = null;
+	}
+
+/*
+================
+idTrigger::Spawn
+================
+*/
+	Spawn ( ): void {
+		this.GetPhysics ( ).SetContents( contentsFlags_t.CONTENTS_TRIGGER );
+
+		var funcname = new idStr( this.spawnArgs.GetString( "call", "" ) );
+		if ( funcname.Length ( ) ) {
+			this.scriptFunction = gameLocal.program.FindFunction( funcname.data );
+			if ( this.scriptFunction == null ) {
+				gameLocal.Warning( "trigger '%s' at (%s) calls unknown function '%s'", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ), funcname.c_str ( ) );
+			}
+		} else {
+			this.scriptFunction = null;
+		}
+	}
+
+}
 
 
 /*
@@ -283,18 +284,18 @@ class idTrigger_Multi extends idTrigger {
 ////	Restore(savefile:idRestoreGame):void{throw "placeholder";}
 ////
 ////private:
-////	float				wait;
-////	float				random;
-////	float				delay;
-////	float				random_delay;
-////	int					nextTriggerTime;
-////	idStr				requires;
-////	int					removeItem;
-////	bool				touchClient;
-////	bool				touchOther;
-////	bool				triggerFirst;
-////	bool				triggerWithSelf;
-////
+	wait :number/*float*/;
+	random :number/*float*/;
+	delay :number/*float*/;
+	random_delay :number/*float*/;
+	nextTriggerTime :number/*int*/;
+	requires = new idStr;
+	removeItem :number/*int*/;
+	touchClient:boolean;
+	touchOther:boolean;
+	triggerFirst:boolean;
+	triggerWithSelf:boolean;
+
 	CheckFacing( activator:idEntity ): boolean { throw "placeholder"; }
 	TriggerAction( activator:idEntity ): void { throw "placeholder"; }
 	Event_TriggerAction( activator:idEntity ): void { throw "placeholder"; }
@@ -302,42 +303,43 @@ class idTrigger_Multi extends idTrigger {
 	Event_Touch(other: idEntity, trace: trace_t): void { throw "placeholder"; }
 
 	
-////
-/////*
-////================
-////idTrigger_Multi::idTrigger_Multi
-////================
-////*/
-////idTrigger_Multi::idTrigger_Multi( ) {
-////	wait = 0.0;
-////	random = 0.0;
-////	delay = 0.0;
-////	random_delay = 0.0;
-////	nextTriggerTime = 0;
-////	removeItem = 0;
-////	touchClient = false;
-////	touchOther = false;
-////	triggerFirst = false;
-////	triggerWithSelf = false;
-////}
-////
+
+/*
+================
+idTrigger_Multi::idTrigger_Multi
+================
+*/
+	constructor ( ) {
+		super ( );
+		this.wait = 0.0;
+		this.random = 0.0;
+		this.delay = 0.0;
+		this.random_delay = 0.0;
+		this.nextTriggerTime = 0;
+		this.removeItem = 0;
+		this.touchClient = false;
+		this.touchOther = false;
+		this.triggerFirst = false;
+		this.triggerWithSelf = false;
+	}
+
 /////*
 ////================
 ////idTrigger_Multi::Save
 ////================
 ////*/
 ////void idTrigger_Multi::Save( idSaveGame *savefile ) const {
-////	savefile.WriteFloat( wait );
-////	savefile.WriteFloat( random );
-////	savefile.WriteFloat( delay );
-////	savefile.WriteFloat( random_delay );
-////	savefile.WriteInt( nextTriggerTime );
-////	savefile.WriteString( requires );
-////	savefile.WriteInt( removeItem );
-////	savefile.WriteBool( touchClient );
-////	savefile.WriteBool( touchOther );
-////	savefile.WriteBool( triggerFirst );
-////	savefile.WriteBool( triggerWithSelf );
+////	savefile.WriteFloat( this.wait );
+////	savefile.WriteFloat( this.random );
+////	savefile.WriteFloat( this.delay );
+////	savefile.WriteFloat( this.random_delay );
+////	savefile.WriteInt( this.nextTriggerTime );
+////	savefile.WriteString( this.requires );
+////	savefile.WriteInt( this.removeItem );
+////	savefile.WriteBool( this.touchClient );
+////	savefile.WriteBool( this.touchOther );
+////	savefile.WriteBool( this.triggerFirst );
+////	savefile.WriteBool( this.triggerWithSelf );
 ////}
 ////
 /////*
@@ -346,74 +348,81 @@ class idTrigger_Multi extends idTrigger {
 ////================
 ////*/
 ////void idTrigger_Multi::Restore( idRestoreGame *savefile ) {
-////	savefile.ReadFloat( wait );
-////	savefile.ReadFloat( random );
-////	savefile.ReadFloat( delay );
-////	savefile.ReadFloat( random_delay );
-////	savefile.ReadInt( nextTriggerTime );
-////	savefile.ReadString( requires );
-////	savefile.ReadInt( removeItem );
-////	savefile.ReadBool( touchClient );
-////	savefile.ReadBool( touchOther );
-////	savefile.ReadBool( triggerFirst );
-////	savefile.ReadBool( triggerWithSelf );
+////	savefile.ReadFloat( this.wait );
+////	savefile.ReadFloat( this.random );
+////	savefile.ReadFloat( this.delay );
+////	savefile.ReadFloat( this.random_delay );
+////	savefile.ReadInt( this.nextTriggerTime );
+////	savefile.ReadString( this.requires );
+////	savefile.ReadInt( this.removeItem );
+////	savefile.ReadBool( this.touchClient );
+////	savefile.ReadBool( this.touchOther );
+////	savefile.ReadBool( this.triggerFirst );
+////	savefile.ReadBool( this.triggerWithSelf );
 ////}
 ////
-/////*
-////================
-////idTrigger_Multi::Spawn
-////
-////"wait" : Seconds between triggerings, 0.5 default, -1 = one time only.
-////"call" : Script function to call when triggered
-////"random"	wait variance, default is 0
-////Variable sized repeatable trigger.  Must be targeted at one or more entities.
-////so, the basic time between firing is a random time between
-////(wait - random) and (wait + random)
-////================
-////*/
-////void idTrigger_Multi::Spawn( ) {
-////	this.spawnArgs.GetFloat( "wait", "0.5", wait );
-////	this.spawnArgs.GetFloat( "random", "0", random );
-////	this.spawnArgs.GetFloat( "delay", "0", delay );
-////	this.spawnArgs.GetFloat( "random_delay", "0", random_delay );
-////	
-////	if ( random && ( random >= wait ) && ( wait >= 0 ) ) {
-////		random = wait - 1;
-////		gameLocal.Warning( "idTrigger_Multi '%s' at (%s) has random >= wait", name.c_str(), this.GetPhysics().GetOrigin().ToString(0) );
-////	}
-////
-////	if ( random_delay && ( random_delay >= delay ) && ( delay >= 0 ) ) {
-////		random_delay = delay - 1;
-////		gameLocal.Warning( "idTrigger_Multi '%s' at (%s) has random_delay >= delay", name.c_str(), this.GetPhysics().GetOrigin().ToString(0) );
-////	}
-////
-////	this.spawnArgs.GetString( "requires", "", requires );
-////	this.spawnArgs.GetInt( "removeItem", "0", removeItem );
-////	this.spawnArgs.GetBool( "triggerFirst", "0", triggerFirst );
-////	this.spawnArgs.GetBool( "triggerWithSelf", "0", triggerWithSelf );
-////
-////	if ( this.spawnArgs.GetBool( "anyTouch" ) ) {
-////		touchClient = true;
-////		touchOther = true;
-////	} else if ( this.spawnArgs.GetBool( "noTouch" ) ) {
-////		touchClient = false;
-////		touchOther = false;
-////	} else if ( this.spawnArgs.GetBool( "noClient" ) ) {
-////		touchClient = false;
-////		touchOther = true;
-////	} else {
-////		touchClient = true;
-////		touchOther = false;
-////	}
-////
-////	nextTriggerTime = 0;
-////
-////	if ( this.spawnArgs.GetBool( "flashlight_trigger" ) ) {
-////		this.GetPhysics().SetContents( CONTENTS_FLASHLIGHT_TRIGGER );
-////	} else {
-////		this.GetPhysics().SetContents( CONTENTS_TRIGGER );
-////	}
-////}
+/*
+================
+idTrigger_Multi::Spawn
+
+"wait" : Seconds between triggerings, 0.5 default, -1 = one time only.
+"call" : Script function to call when triggered
+"random"	wait variance, default is 0
+Variable sized repeatable trigger.  Must be targeted at one or more entities.
+so, the basic time between firing is a random time between
+(wait - random) and (wait + random)
+================
+*/
+	Spawn ( ): void {
+		var $wait = new R( this.wait );
+		this.spawnArgs.GetFloat_R( "wait", "0.5", $wait ), this.wait = $wait.$;
+		var $random = new R( this.random );
+		this.spawnArgs.GetFloat_R( "random", "0", $random ), this.random = $random.$;
+		var $delay = new R( this.delay );
+		this.spawnArgs.GetFloat_R( "delay", "0", $delay ), this.delay = $delay.$;
+		var $random_delay = new R( this.random_delay );
+		this.spawnArgs.GetFloat_R( "random_delay", "0", $random_delay ), this.random_delay = $random_delay.$;
+
+		if ( this.random && ( this.random >= this.wait ) && ( this.wait >= 0 ) ) {
+			this.random = this.wait - 1;
+			gameLocal.Warning( "idTrigger_Multi '%s' at (%s) has random >= wait", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ) );
+		}
+
+		if ( this.random_delay && ( this.random_delay >= this.delay ) && ( this.delay >= 0 ) ) {
+			this.random_delay = this.delay - 1;
+			gameLocal.Warning( "idTrigger_Multi '%s' at (%s) has random_delay >= delay", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ) );
+		}
+
+		this.spawnArgs.GetString_RidStr( "requires", "", this.requires );
+		var $removeItem = new R( this.removeItem );
+		this.spawnArgs.GetInt_R( "removeItem", "0", $removeItem ), this.removeItem = $removeItem.$;
+		var $triggerFirst = new R( this.triggerFirst );
+		this.spawnArgs.GetBool_R( "triggerFirst", "0", $triggerFirst ), this.triggerFirst = $triggerFirst.$;
+		var $triggerWithSelf = new R( this.triggerWithSelf );
+		this.spawnArgs.GetBool_R( "triggerWithSelf", "0", $triggerWithSelf ), this.triggerWithSelf = $triggerWithSelf.$;
+
+		if ( this.spawnArgs.GetBool( "anyTouch" ) ) {
+			this.touchClient = true;
+			this.touchOther = true;
+		} else if ( this.spawnArgs.GetBool( "noTouch" ) ) {
+			this.touchClient = false;
+			this.touchOther = false;
+		} else if ( this.spawnArgs.GetBool( "noClient" ) ) {
+			this.touchClient = false;
+			this.touchOther = true;
+		} else {
+			this.touchClient = true;
+			this.touchOther = false;
+		}
+
+		this.nextTriggerTime = 0;
+
+		if ( this.spawnArgs.GetBool( "flashlight_trigger" ) ) {
+			this.GetPhysics ( ).SetContents( contentsFlags_t.CONTENTS_FLASHLIGHT_TRIGGER );
+		} else {
+			this.GetPhysics ( ).SetContents( contentsFlags_t.CONTENTS_TRIGGER );
+		}
+	}
 ////
 /////*
 ////================
@@ -442,15 +451,15 @@ class idTrigger_Multi extends idTrigger {
 ////================
 ////*/
 ////void idTrigger_Multi::TriggerAction( activator:idEntity ) {
-////	ActivateTargets( triggerWithSelf ? this : activator );
+////	ActivateTargets( this.triggerWithSelf ? this : activator );
 ////	CallScript();
 ////
-////	if ( wait >= 0 ) {
-////		nextTriggerTime = gameLocal.time + SEC2MS( wait + random * gameLocal.random.CRandomFloat() );
+////	if ( this.wait >= 0 ) {
+////		this.nextTriggerTime = gameLocal.time + SEC2MS( this.wait + this.random * gameLocal.random.CRandomFloat() );
 ////	} else {
 ////		// we can't just remove (this) here, because this is a touch function
 ////		// called while looping through area links...
-////		nextTriggerTime = gameLocal.time + 1;
+////		this.nextTriggerTime = gameLocal.time + 1;
 ////		PostEventMS( &EV_Remove, 0 );
 ////	}
 ////}
@@ -475,13 +484,13 @@ class idTrigger_Multi extends idTrigger {
 ////================
 ////*/
 ////void idTrigger_Multi::Event_Trigger( activator:idEntity ) {
-////	if ( nextTriggerTime > gameLocal.time ) {
+////	if ( this.nextTriggerTime > gameLocal.time ) {
 ////		// can't retrigger until the wait is over
 ////		return;
 ////	}
 ////
 ////	// see if this trigger requires an item
-////	if ( !gameLocal.RequirementMet( activator, requires, removeItem ) ) {
+////	if ( !gameLocal.RequirementMet( activator, this.requires, this.removeItem ) ) {
 ////		return;
 ////	}
 ////
@@ -489,18 +498,18 @@ class idTrigger_Multi extends idTrigger {
 ////		return;
 ////	}
 ////
-////	if ( triggerFirst ) {
-////		triggerFirst = false;
+////	if ( this.triggerFirst ) {
+////		this.triggerFirst = false;
 ////		return;
 ////	}
 ////
 ////	// don't allow it to trigger twice in a single frame
-////	nextTriggerTime = gameLocal.time + 1;
+////	this.nextTriggerTime = gameLocal.time + 1;
 ////
-////	if ( delay > 0 ) {
+////	if ( this.delay > 0 ) {
 ////		// don't allow it to trigger again until our delay has passed
-////		nextTriggerTime += SEC2MS( delay + random_delay * gameLocal.random.CRandomFloat() );
-////		PostEventSec( &EV_TriggerAction, delay, activator );
+////		this.nextTriggerTime += SEC2MS( this.delay + this.random_delay * gameLocal.random.CRandomFloat() );
+////		PostEventSec( &EV_TriggerAction, this.delay, activator );
 ////	} else {
 ////		TriggerAction( activator );
 ////	}
@@ -512,29 +521,29 @@ class idTrigger_Multi extends idTrigger {
 ////================
 ////*/
 ////void idTrigger_Multi::Event_Touch( other:idEntity, trace:trace_t ) {
-////	if( triggerFirst ) {
+////	if( this.triggerFirst ) {
 ////		return;
 ////	}
 ////
 ////	bool player = other.IsType( idPlayer::Type );
 ////	if ( player ) {
-////		if ( !touchClient ) {
+////		if ( !this.touchClient ) {
 ////			return;
 ////		}
 ////		if ( static_cast< idPlayer * >( other ).spectating ) {
 ////			return;
 ////		}
-////	} else if ( !touchOther ) {
+////	} else if ( !this.touchOther ) {
 ////		return;
 ////	}
 ////
-////	if ( nextTriggerTime > gameLocal.time ) {
+////	if ( this.nextTriggerTime > gameLocal.time ) {
 ////		// can't retrigger until the wait is over
 ////		return;
 ////	}
 ////
 ////	// see if this trigger requires an item
-////	if ( !gameLocal.RequirementMet( other, requires, removeItem ) ) {
+////	if ( !gameLocal.RequirementMet( other, this.requires, this.removeItem ) ) {
 ////		return;
 ////	}
 ////
@@ -543,14 +552,14 @@ class idTrigger_Multi extends idTrigger {
 ////	}
 ////
 ////	if ( this.spawnArgs.GetBool( "toggleTriggerFirst" ) ) {
-////		triggerFirst = true;
+////		this.triggerFirst = true;
 ////	}
 ////
-////	nextTriggerTime = gameLocal.time + 1;
-////	if ( delay > 0 ) {
+////	this.nextTriggerTime = gameLocal.time + 1;
+////	if ( this.delay > 0 ) {
 ////		// don't allow it to trigger again until our delay has passed
-////		nextTriggerTime += SEC2MS( delay + random_delay * gameLocal.random.CRandomFloat() );
-////		PostEventSec( &EV_TriggerAction, delay, other );
+////		this.nextTriggerTime += SEC2MS( this.delay + this.random_delay * gameLocal.random.CRandomFloat() );
+////		PostEventSec( &EV_TriggerAction, this.delay, other );
 ////	} else {
 ////		TriggerAction( other );
 ////	}
@@ -576,39 +585,40 @@ class idTrigger_EntityName extends idTrigger {
 ////
 ////						idTrigger_EntityName( );
 ////
-	Save(savefile:idSaveGame):void{throw "placeholder";}
-	Restore(savefile:idRestoreGame):void{throw "placeholder";}
+	Save ( savefile: idSaveGame ): void { throw "placeholder"; }
+	Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 ////
 ////	Spawn():void{throw "placeholder";}
 ////
 ////private:
-////	float				wait;
-////	float				random;
-////	float				delay;
-////	float				random_delay;
-////	int					nextTriggerTime;
-////	bool				triggerFirst;
-////	idStr				entityName;
-////
-	TriggerAction( activator:idEntity ): void { throw "placeholder"; }
-	Event_TriggerAction( activator:idEntity ): void { throw "placeholder"; }
-	Event_Trigger( activator:idEntity ): void { throw "placeholder"; }
-	Event_Touch(other: idEntity, trace: trace_t): void { throw "placeholder"; }
+	wait: number /*float*/;
+	random: number /*float*/;
+	delay: number /*float*/;
+	random_delay: number /*float*/;
+	nextTriggerTime: number /*int*/;
+	triggerFirst: boolean;
+	entityName = new idStr;
 
-	
-/////*
-////================
-////idTrigger_EntityName::idTrigger_EntityName
-////================
-////*/
-////idTrigger_EntityName::idTrigger_EntityName( ) {
-////	wait = 0.0;
-////	random = 0.0;
-////	delay = 0.0;
-////	random_delay = 0.0;
-////	nextTriggerTime = 0;
-////	triggerFirst = false;
-////}
+	TriggerAction ( activator: idEntity ): void { throw "placeholder"; }
+	Event_TriggerAction ( activator: idEntity ): void { throw "placeholder"; }
+	Event_Trigger ( activator: idEntity ): void { throw "placeholder"; }
+	Event_Touch ( other: idEntity, trace: trace_t ): void { throw "placeholder"; }
+
+
+/*
+================
+idTrigger_EntityName::idTrigger_EntityName
+================
+*/
+	constructor ( ) {
+		super ( );
+		this.wait = 0.0;
+		this.random = 0.0;
+		this.delay = 0.0;
+		this.random_delay = 0.0;
+		this.nextTriggerTime = 0;
+		this.triggerFirst = false;
+	}
 ////
 /////*
 ////================
@@ -616,13 +626,13 @@ class idTrigger_EntityName extends idTrigger {
 ////================
 ////*/
 ////void idTrigger_EntityName::Save( idSaveGame *savefile ) const {
-////	savefile.WriteFloat( wait );
-////	savefile.WriteFloat( random );
-////	savefile.WriteFloat( delay );
-////	savefile.WriteFloat( random_delay );
-////	savefile.WriteInt( nextTriggerTime );
-////	savefile.WriteBool( triggerFirst );
-////	savefile.WriteString( entityName );
+////	savefile.WriteFloat( this.wait );
+////	savefile.WriteFloat( this.random );
+////	savefile.WriteFloat( this.delay );
+////	savefile.WriteFloat( this.random_delay );
+////	savefile.WriteInt( this.nextTriggerTime );
+////	savefile.WriteBool( this.triggerFirst );
+////	savefile.WriteString( this.entityName );
 ////}
 ////
 /////*
@@ -631,49 +641,54 @@ class idTrigger_EntityName extends idTrigger {
 ////================
 ////*/
 ////void idTrigger_EntityName::Restore( idRestoreGame *savefile ) {
-////	savefile.ReadFloat( wait );
-////	savefile.ReadFloat( random );
-////	savefile.ReadFloat( delay );
-////	savefile.ReadFloat( random_delay );
-////	savefile.ReadInt( nextTriggerTime );
-////	savefile.ReadBool( triggerFirst );
-////	savefile.ReadString( entityName );
+////	savefile.ReadFloat( this.wait );
+////	savefile.ReadFloat( this.random );
+////	savefile.ReadFloat( this.delay );
+////	savefile.ReadFloat( this.random_delay );
+////	savefile.ReadInt( this.nextTriggerTime );
+////	savefile.ReadBool( this.triggerFirst );
+////	savefile.ReadString( this.entityName );
 ////}
 ////
-/////*
-////================
-////idTrigger_EntityName::Spawn
-////================
-////*/
-////void idTrigger_EntityName::Spawn( ) {
-////	this.spawnArgs.GetFloat( "wait", "0.5", wait );
-////	this.spawnArgs.GetFloat( "random", "0", random );
-////	this.spawnArgs.GetFloat( "delay", "0", delay );
-////	this.spawnArgs.GetFloat( "random_delay", "0", random_delay );
-////	
-////	if ( random && ( random >= wait ) && ( wait >= 0 ) ) {
-////		random = wait - 1;
-////		gameLocal.Warning( "idTrigger_EntityName '%s' at (%s) has random >= wait", name.c_str(), this.GetPhysics().GetOrigin().ToString(0) );
-////	}
-////
-////	if ( random_delay && ( random_delay >= delay ) && ( delay >= 0 ) ) {
-////		random_delay = delay - 1;
-////		gameLocal.Warning( "idTrigger_EntityName '%s' at (%s) has random_delay >= delay", name.c_str(), this.GetPhysics().GetOrigin().ToString(0) );
-////	}
-////
-////	this.spawnArgs.GetBool( "triggerFirst", "0", triggerFirst );
-////
-////	entityName = this.spawnArgs.GetString( "entityname" );
-////	if ( !entityName.Length() ) {
-////		gameLocal.Error( "idTrigger_EntityName '%s' at (%s) doesn't have 'entityname' key specified", name.c_str(), this.GetPhysics().GetOrigin().ToString(0) );
-////	}
-////
-////	nextTriggerTime = 0;
-////
-////	if ( !this.spawnArgs.GetBool( "noTouch" ) ) {
-////		this.GetPhysics().SetContents( CONTENTS_TRIGGER );
-////	}
-////}
+/*
+================
+idTrigger_EntityName::Spawn
+================
+*/
+	Spawn ( ): void {
+		var $wait = new R( this.wait );
+		this.spawnArgs.GetFloat_R( "wait", "0.5", $wait ), this.wait = $wait.$;
+		var $random = new R( this.random );
+		this.spawnArgs.GetFloat_R( "random", "0", $random ), this.random = $random.$;
+		var $delay = new R( this.delay );
+		this.spawnArgs.GetFloat_R( "delay", "0", $delay ), this.delay = $delay.$;
+		var $random_delay = new R( this.random_delay );
+		this.spawnArgs.GetFloat_R( "random_delay", "0", $random_delay ), this.random_delay = $random_delay.$;
+
+		if ( this.random && ( this.random >= this.wait ) && ( this.wait >= 0 ) ) {
+			this.random = this.wait - 1;
+			gameLocal.Warning( "idTrigger_EntityName '%s' at (%s) has random >= wait", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ) );
+		}
+
+		if ( this.random_delay && ( this.random_delay >= this.delay ) && ( this.delay >= 0 ) ) {
+			this.random_delay = this.delay - 1;
+			gameLocal.Warning( "idTrigger_EntityName '%s' at (%s) has random_delay >= delay", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ) );
+		}
+
+		var $triggerFirst = new R( this.triggerFirst );
+		this.spawnArgs.GetBool_R( "triggerFirst", "0", $triggerFirst ), this.triggerFirst = $triggerFirst.$;
+
+		this.entityName.equals( this.spawnArgs.GetString( "entityname" ) );
+		if ( !this.entityName.Length ( ) ) {
+			gameLocal.Error( "idTrigger_EntityName '%s' at (%s) doesn't have 'entityname' key specified", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ) );
+		}
+
+		this.nextTriggerTime = 0;
+
+		if ( !this.spawnArgs.GetBool( "noTouch" ) ) {
+			this.GetPhysics ( ).SetContents( contentsFlags_t.CONTENTS_TRIGGER );
+		}
+	}
 ////
 /////*
 ////================
@@ -684,12 +699,12 @@ class idTrigger_EntityName extends idTrigger {
 ////	ActivateTargets( activator );
 ////	CallScript();
 ////
-////	if ( wait >= 0 ) {
-////		nextTriggerTime = gameLocal.time + SEC2MS( wait + random * gameLocal.random.CRandomFloat() );
+////	if ( this.wait >= 0 ) {
+////		this.nextTriggerTime = gameLocal.time + SEC2MS( this.wait + this.random * gameLocal.random.CRandomFloat() );
 ////	} else {
 ////		// we can't just remove (this) here, because this is a touch function
 ////		// called while looping through area links...
-////		nextTriggerTime = gameLocal.time + 1;
+////		this.nextTriggerTime = gameLocal.time + 1;
 ////		PostEventMS( &EV_Remove, 0 );
 ////	}
 ////}
@@ -709,32 +724,32 @@ class idTrigger_EntityName extends idTrigger {
 ////
 ////the trigger was just activated
 ////activated should be the entity that originated the activation sequence (ie. the original target)
-////activator should be set to the activator so it can be held through a delay
-////so wait for the delay time before firing
+////activator should be set to the activator so it can be held through a this.delay
+////so wait for the this.delay time before firing
 ////================
 ////*/
 ////void idTrigger_EntityName::Event_Trigger( activator:idEntity ) {
-////	if ( nextTriggerTime > gameLocal.time ) {
+////	if ( this.nextTriggerTime > gameLocal.time ) {
 ////		// can't retrigger until the wait is over
 ////		return;
 ////	}
 ////
-////	if ( !activator || ( activator.name != entityName ) ) {
+////	if ( !activator || ( activator.name != this.entityName ) ) {
 ////		return;
 ////	}
 ////
-////	if ( triggerFirst ) {
-////		triggerFirst = false;
+////	if ( this.triggerFirst ) {
+////		this.triggerFirst = false;
 ////		return;
 ////	}
 ////
 ////	// don't allow it to trigger twice in a single frame
-////	nextTriggerTime = gameLocal.time + 1;
+////	this.nextTriggerTime = gameLocal.time + 1;
 ////
-////	if ( delay > 0 ) {
-////		// don't allow it to trigger again until our delay has passed
-////		nextTriggerTime += SEC2MS( delay + random_delay * gameLocal.random.CRandomFloat() );
-////		PostEventSec( &EV_TriggerAction, delay, activator );
+////	if ( this.delay > 0 ) {
+////		// don't allow it to trigger again until our this.delay has passed
+////		this.nextTriggerTime += SEC2MS( this.delay + this.random_delay * gameLocal.random.CRandomFloat() );
+////		PostEventSec( &EV_TriggerAction, this.delay, activator );
 ////	} else {
 ////		TriggerAction( activator );
 ////	}
@@ -746,30 +761,30 @@ class idTrigger_EntityName extends idTrigger {
 ////================
 ////*/
 ////void idTrigger_EntityName::Event_Touch( other:idEntity, trace:trace_t ) {
-////	if( triggerFirst ) {
+////	if( this.triggerFirst ) {
 ////		return;
 ////	}
 ////
-////	if ( nextTriggerTime > gameLocal.time ) {
+////	if ( this.nextTriggerTime > gameLocal.time ) {
 ////		// can't retrigger until the wait is over
 ////		return;
 ////	}
 ////
-////	if ( !other || ( other.name != entityName ) ) {
+////	if ( !other || ( other.name != this.entityName ) ) {
 ////		return;
 ////	}
 ////
-////	nextTriggerTime = gameLocal.time + 1;
-////	if ( delay > 0 ) {
+////	this.nextTriggerTime = gameLocal.time + 1;
+////	if ( this.this.delay > 0 ) {
 ////		// don't allow it to trigger again until our delay has passed
-////		nextTriggerTime += SEC2MS( delay + random_delay * gameLocal.random.CRandomFloat() );
-////		PostEventSec( &EV_TriggerAction, delay, other );
+////		this.nextTriggerTime += SEC2MS( this.delay + this.random_delay * gameLocal.random.CRandomFloat() );
+////		PostEventSec( &EV_TriggerAction, this.delay, other );
 ////	} else {
 ////		TriggerAction( other );
 ////	}
 ////}
 ////
-};
+}
 
 /*
 ===============================================================================
@@ -798,28 +813,29 @@ class idTrigger_Timer extends idTrigger {
 ////	virtual void		Disable( );
 ////
 ////private:
-////	float				random;
-////	float				wait;
-////	bool				on;
-////	float				delay;
-////	idStr				onName;
-////	idStr				offName;
-////
+	random :number/*float*/;
+	wait :number/*float*/;
+	on:boolean;
+	delay :number/*float*/; 
+	onName = new idStr;
+	offName = new idStr;
+
 	Event_Timer( ): void { throw "placeholder"; }
 	Event_Use(activator: idEntity): void { throw "placeholder"; }
 
 	
-/////*
-////================
-////idTrigger_Timer::idTrigger_Timer
-////================
-////*/
-////idTrigger_Timer::idTrigger_Timer( ) {
-////	random = 0.0;
-////	wait = 0.0;
-////	on = false;
-////	delay = 0.0;
-////}
+/*
+================
+idTrigger_Timer::idTrigger_Timer
+================
+*/
+	constructor() {
+		super ( );
+	this.random = 0.0;
+	this.wait = 0.0;
+	this.on = false;
+	this.delay = 0.0;
+}
 ////
 /////*
 ////================
@@ -827,12 +843,12 @@ class idTrigger_Timer extends idTrigger {
 ////================
 ////*/
 ////void idTrigger_Timer::Save( idSaveGame *savefile ) const {
-////	savefile.WriteFloat( random );
-////	savefile.WriteFloat( wait );
-////	savefile.WriteBool( on );
-////	savefile.WriteFloat( delay );
-////	savefile.WriteString( onName );
-////	savefile.WriteString( offName );
+////	savefile.WriteFloat( this.random );
+////	savefile.WriteFloat( this.wait );
+////	savefile.WriteBool( this.on );
+////	savefile.WriteFloat( this.delay );
+////	savefile.WriteString( this.onName );
+////	savefile.WriteString( this.offName );
 ////}
 ////
 /////*
@@ -841,40 +857,45 @@ class idTrigger_Timer extends idTrigger {
 ////================
 ////*/
 ////void idTrigger_Timer::Restore( idRestoreGame *savefile ) {
-////	savefile.ReadFloat( random );
-////	savefile.ReadFloat( wait );
-////	savefile.ReadBool( on );
-////	savefile.ReadFloat( delay );
-////	savefile.ReadString( onName );
-////	savefile.ReadString( offName );
+////	savefile.ReadFloat( this.random );
+////	savefile.ReadFloat( this.wait );
+////	savefile.ReadBool( this.on );
+////	savefile.ReadFloat( this.delay );
+////	savefile.ReadString( this.onName );
+////	savefile.ReadString( this.offName );
 ////}
 ////
-/////*
-////================
-////idTrigger_Timer::Spawn
-////
-////Repeatedly fires its targets.
-////Can be turned on or off by using.
-////================
-////*/
-////void idTrigger_Timer::Spawn( ) {
-////	this.spawnArgs.GetFloat( "random", "1", random );
-////	this.spawnArgs.GetFloat( "wait", "1", wait );
-////	this.spawnArgs.GetBool( "start_on", "0", on );
-////	this.spawnArgs.GetFloat( "delay", "0", delay );
-////	onName = this.spawnArgs.GetString( "onName" );
-////	offName = this.spawnArgs.GetString( "offName" );
-////
-////	if ( random >= wait && wait >= 0 ) {
-////		random = wait - 0.001;
-////		gameLocal.Warning( "idTrigger_Timer '%s' at (%s) has random >= wait", name.c_str(), this.GetPhysics().GetOrigin().ToString(0) );
-////	}
-////
-////	if ( on ) {
-////		PostEventSec( &EV_Timer, delay );
-////	}
-////}
-////
+/*
+================
+idTrigger_Timer::Spawn
+
+Repeatedly fires its targets.
+Can be turned on or off by using.
+================
+*/
+	Spawn ( ): void {
+		var $random = new R( this.random );
+		this.spawnArgs.GetFloat_R( "random", "1", $random ), this.random = $random.$;
+		var $wait = new R( this.wait );
+		this.spawnArgs.GetFloat_R( "wait", "1", $wait ), this.wait = $wait.$;
+		var $on = new R( this.on );
+		this.spawnArgs.GetBool_R( "start_on", "0", $on ), this.on = $on.$;
+		var $delay = new R( this.delay );
+		this.spawnArgs.GetFloat_R( "delay", "0", $delay ), this.delay = $delay.$;
+		this.onName.equals( this.spawnArgs.GetString( "onName" ) );
+		this.offName.equals( this.spawnArgs.GetString( "offName" ) );
+
+		if ( this.random >= this.wait && this.wait >= 0 ) {
+			this.random = this.wait - 0.001;
+			gameLocal.Warning( "idTrigger_Timer '%s' at (%s) has random >= wait", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ) );
+		}
+
+		if (this.on) {
+			todoThrow ( );
+			//this.PostEventSec( EV_Timer, this.delay );
+		}
+	}
+
 /////*
 ////================
 ////idTrigger_Timer::Enable
@@ -882,9 +903,9 @@ class idTrigger_Timer extends idTrigger {
 ////*/
 ////void idTrigger_Timer::Enable( ) {
 ////	// if off, turn it on
-////	if ( !on ) {
-////		on = true;
-////		PostEventSec( &EV_Timer, delay );
+////	if ( !this.on ) {
+////		this.on = true;
+////		PostEventSec( &EV_Timer, this.delay );
 ////	}
 ////}
 ////
@@ -895,8 +916,8 @@ class idTrigger_Timer extends idTrigger {
 ////*/
 ////void idTrigger_Timer::Disable( ) {
 ////	// if on, turn it off
-////	if ( on ) {
-////		on = false;
+////	if ( this.on ) {
+////		this.on = false;
 ////		CancelEvents( &EV_Timer );
 ////	}
 ////}
@@ -910,8 +931,8 @@ class idTrigger_Timer extends idTrigger {
 ////	ActivateTargets( this );
 ////
 ////	// set time before next firing
-////	if ( wait >= 0.0 ) {
-////		PostEventSec( &EV_Timer, wait + gameLocal.random.CRandomFloat() * random );
+////	if ( this.wait >= 0.0 ) {
+////		PostEventSec( &EV_Timer, this.wait + gameLocal.random.CRandomFloat() * this.random );
 ////	}
 ////}
 ////
@@ -922,19 +943,19 @@ class idTrigger_Timer extends idTrigger {
 ////*/
 ////void idTrigger_Timer::Event_Use( activator:idEntity ) {
 ////	// if on, turn it off
-////	if ( on ) {
-////		if ( offName.Length() && offName.Icmp( activator.GetName() ) ) {
+////	if ( this.on ) {
+////		if ( this.offName.Length() && this.offName.Icmp( activator.GetName() ) ) {
 ////			return;
 ////		}
-////		on = false;
+////		this.on = false;
 ////		CancelEvents( &EV_Timer );
 ////	} else {
 ////		// turn it on
-////		if ( onName.Length() && onName.Icmp( activator.GetName() ) ) {
+////		if ( this.onName.Length() && this.onName.Icmp( activator.GetName() ) ) {
 ////			return;
 ////		}
-////		on = true;
-////		PostEventSec( &EV_Timer, delay );
+////		this.on = true;
+////		PostEventSec( &EV_Timer, this.delay );
 ////	}
 ////}
 ////
@@ -993,7 +1014,7 @@ idTrigger_Count::idTrigger_Count
 ////void idTrigger_Count::Save( idSaveGame *savefile ) const {
 ////	savefile.WriteInt( goal );
 ////	savefile.WriteInt( count );
-////	savefile.WriteFloat( delay );
+////	savefile.WriteFloat( this.delay );
 ////}
 ////
 /////*
@@ -1004,7 +1025,7 @@ idTrigger_Count::idTrigger_Count
 ////void idTrigger_Count::Restore( idRestoreGame *savefile ) {
 ////	savefile.ReadInt( goal );
 ////	savefile.ReadInt( count );
-////	savefile.ReadFloat( delay );
+////	savefile.ReadFloat( this.delay );
 ////}
 
 /*
@@ -1039,7 +1060,7 @@ idTrigger_Count::Spawn
 ////			} else {
 ////				goal = -1;
 ////			}
-////			PostEventSec( &EV_TriggerAction, delay, activator );
+////			PostEventSec( &EV_TriggerAction, this.delay, activator );
 ////		}
 ////	}
 ////}
@@ -1111,8 +1132,8 @@ idTrigger_Hurt::idTrigger_Hurt
 ////================
 ////*/
 ////void idTrigger_Hurt::Save( idSaveGame *savefile ) const {
-////	savefile.WriteBool( on );
-////	savefile.WriteFloat( delay );
+////	savefile.WriteBool( this.on );
+////	savefile.WriteFloat( this.delay );
 ////	savefile.WriteInt( this.nextTime );
 ////}
 ////
@@ -1122,8 +1143,8 @@ idTrigger_Hurt::idTrigger_Hurt
 ////================
 ////*/
 ////void idTrigger_Hurt::Restore( idRestoreGame *savefile ) {
-////	savefile.ReadBool( on );
-////	savefile.ReadFloat( delay );
+////	savefile.ReadBool( this.on );
+////	savefile.ReadFloat( this.delay );
 ////	savefile.ReadInt( this.nextTime );
 ////}
 
@@ -1154,14 +1175,14 @@ idTrigger_Hurt::Spawn
 ////void idTrigger_Hurt::Event_Touch( other:idEntity, trace:trace_t ) {
 ////	const char *damage;
 ////
-////	if ( on && other && gameLocal.time >= this.nextTime ) {
+////	if ( this.on && other && gameLocal.time >= this.nextTime ) {
 ////		damage = this.spawnArgs.GetString( "def_damage", "damage_painTrigger" );
 ////		other.Damage( NULL, NULL, vec3_origin, damage, 1.0, INVALID_JOINT );
 ////
 ////		ActivateTargets( other );
 ////		CallScript();
 ////
-////		this.nextTime = gameLocal.time + SEC2MS( delay );
+////		this.nextTime = gameLocal.time + SEC2MS( this.delay );
 ////	}
 ////}
 ////
@@ -1171,7 +1192,7 @@ idTrigger_Hurt::Spawn
 ////================
 ////*/
 ////void idTrigger_Hurt::Event_Toggle( activator:idEntity ) {
-////	on = !on;
+////	this.on = !this.on;
 ////}
 ////
 };
@@ -1261,10 +1282,10 @@ class idTrigger_Touch extends idTrigger {
 idTrigger_Touch::idTrigger_Touch
 ================
 */
-	constructor() {
+	constructor ( ) {
 		super ( );
-	this.clipModel = null;
-}
+		this.clipModel = null;
+	}
 
 /*
 ================
@@ -1311,7 +1332,7 @@ idTrigger_Touch::Spawn
 ////	idBounds bounds;
 ////	idClipModel *cm, *clipModelList[ MAX_GENTITIES ];
 ////
-////	if ( this.clipModel == NULL || scriptFunction == NULL ) {
+////	if ( this.clipModel == NULL || this.scriptFunction == NULL ) {
 ////		return;
 ////	}
 ////
@@ -1339,7 +1360,7 @@ idTrigger_Touch::Spawn
 ////		ActivateTargets( entity );
 ////
 ////		idThread *thread = new idThread();
-////		thread.CallFunction( entity, scriptFunction, false );
+////		thread.CallFunction( entity, this.scriptFunction, false );
 ////		thread.DelayedStart( 0 );
 ////	}
 ////}
