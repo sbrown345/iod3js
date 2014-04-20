@@ -69,7 +69,7 @@ var PREVIEW_HEIGHT = 298;
 //=================
 //*/
 //void Session_RescanSI_f( args:idCmdArgs ) {
-//	sessLocal.mapSpawnData.serverInfo .equals(cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO ));
+//	sessLocal.mapSpawnData.serverInfo .opEquals(cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO ));
 //	if ( game && idAsyncNetwork.server.IsActive() ) {
 //		game.SetServerInfo( sessLocal.mapSpawnData.serverInfo );
 //	}
@@ -88,7 +88,7 @@ function Session_Map_f ( args: idCmdArgs ): void {
 	var ff: findFile_t;
 	var rl_args = new idCmdArgs;
 
-	map.equals( args.Argv( 1 ).toString ( ) );
+	map.opEquals( args.Argv( 1 ).toString ( ) );
 	if ( !map.Length ( ) ) {
 		return;
 	}
@@ -97,7 +97,7 @@ function Session_Map_f ( args: idCmdArgs ): void {
 	// make sure the level exists before trying to change, so that
 	// a typo at the server console won't end the game
 	// handle addon packs through reloadEngine
-	$string.equals( sprintf( "maps/%s.map", map.c_str ( ) ) );
+	$string.opEquals( sprintf( "maps/%s.map", map.c_str ( ) ) );
 	ff = fileSystem.FindFile( $string.toString ( ), true );
 	switch ( ff ) {
 	case findFile_t.FIND_NO:
@@ -2046,13 +2046,13 @@ idSessionLocal.prototype.SaveGame = function (saveName: string, autosave = false
 //		// Start loading map
 //		this.mapSpawnData.serverInfo.Clear();
 //
-//		this.mapSpawnData.serverInfo .equals(cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO ));
+//		this.mapSpawnData.serverInfo .opEquals(cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO ));
 //		this.mapSpawnData.serverInfo.Set( "si_gameType", "singleplayer" );
 //
 //		this.mapSpawnData.serverInfo.Set( "si_map", saveMap );
 //
 //		this.mapSpawnData.syncedCVars.Clear();
-//		this.mapSpawnData.syncedCVars .equals(cvarSystem.MoveCVarsToDict( CVAR_NETWORKSYNC ));
+//		this.mapSpawnData.syncedCVars .opEquals(cvarSystem.MoveCVarsToDict( CVAR_NETWORKSYNC ));
 //
 //		this.mapSpawnData.mapSpawnUsercmd[0] = usercmdGen.TicCmd( latchedTicNumber );
 //		// make sure no buttons are pressed

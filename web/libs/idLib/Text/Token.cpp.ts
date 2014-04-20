@@ -137,16 +137,16 @@ class idToken extends idStr {
 		return dest;
 	}
 
-	equals ( token: idToken ): void
-	equals ( token: idStr ): void
-	equals ( text: string ): void
-	equals ( arg: any ): void {
+	opEquals ( token: idToken ): void
+	opEquals ( token: idStr ): void
+	opEquals ( text: string ): void
+	opEquals ( arg: any ): void {
 		if ( typeof arg === "string" ) {
-			super.equals( arg );
+			super.opEquals( arg );
 		} else if ( arg instanceof idToken ) {
 			arg.copy( this );
 		} else if ( arg instanceof idStr ) {
-			super.equals( arg.data );
+			super.opEquals( arg.data );
 		} else {
 			todoThrow ( );
 		}

@@ -1109,7 +1109,7 @@ idGameLocal::SetPersistentPlayerInfo
 ============
 */
 SetPersistentPlayerInfo ( /*int */clientNum: number, playerInfo: idDict): void {
-		this.persistentPlayerInfo[clientNum].equals(playerInfo);
+		this.persistentPlayerInfo[clientNum].opEquals(playerInfo);
 	}
 
 /*
@@ -1246,7 +1246,7 @@ SetUserInfo ( /*int */clientNum: number, userInfo: idDict, isClient: boolean, ca
 		this.isClient = isClient;
 
 		if (clientNum >= 0 && clientNum < MAX_CLIENTS) {
-			this.userInfo[clientNum].equals( userInfo );
+			this.userInfo[clientNum].opEquals( userInfo );
 
 			// server sanity
 			if (canModify) {
@@ -1285,7 +1285,7 @@ SetUserInfo ( /*int */clientNum: number, userInfo: idDict, isClient: boolean, ca
 
 		if (modifiedInfo) {
 			assert(canModify);
-			this.newInfo.equals(this.userInfo[clientNum]);
+			this.newInfo.opEquals(this.userInfo[clientNum]);
 			return this.newInfo;
 		}
 		return null;
@@ -1311,7 +1311,7 @@ idGameLocal::SetServerInfo
 SetServerInfo (_serverInfo: idDict): void {
 		var outMsg = new idBitMsg;
 		var msgBuf = new Uint8Array(MAX_GAME_MESSAGE_SIZE);
-		this.serverInfo.equals(_serverInfo);
+		this.serverInfo.opEquals(_serverInfo);
 		this.UpdateServerInfoFlags();
 
 		if (!this.isClient) {
@@ -1354,7 +1354,7 @@ Initializes all map variables common to both save games and spawned games.
 				this.Error( "Couldn't load %s", mapName );
 			}
 		}
-		this.mapFileName.equals( this.mapFile.GetName ( ) );
+		this.mapFileName.opEquals( this.mapFile.GetName ( ) );
 
 		// load the collision map
 		collisionModelManager.LoadMap( this.mapFile );
@@ -1402,7 +1402,7 @@ Initializes all map variables common to both save games and spawned games.
 		this.previousTime = 0;
 		this.time = 0;
 		this.framenum = 0;
-		this.sessionCommand.equals( "" );
+		this.sessionCommand.opEquals( "" );
 		this.nextGibTime = 0;
 
 		this.vacuumAreaNum = -1; // if an info_vacuum is spawned, it will set this
@@ -3536,7 +3536,7 @@ returning false if not found
 		this.spawnArgs = args;
 
 		if ( this.spawnArgs.GetString_Rstring( "name", "", name ) ) {
-			error.equals( sprintf( " on '%s'", name.$ ) );
+			error.opEquals( sprintf( " on '%s'", name.$ ) );
 		}
 
 		this.spawnArgs.GetString_Rstring( "classname", null, classname );
@@ -3720,7 +3720,7 @@ Parses textual entity definitions out of an entstring and spawns gentities.
 		// the worldspawn is a special that performs any global setup
 		// needed by a level
 		mapEnt = this.mapFile.GetEntity( 0 );
-		args.equals( mapEnt.epairs );
+		args.opEquals( mapEnt.epairs );
 		args.SetInt( "spawn_entnum", ENTITYNUM_WORLD );
 		if ( !this.SpawnEntityDef( args ) || !this.entities[ENTITYNUM_WORLD] || !this.entities[ENTITYNUM_WORLD].IsType( idWorldspawn.Type ) ) {
 			this.Error( "Problem spawning world entity" );
@@ -3731,7 +3731,7 @@ Parses textual entity definitions out of an entstring and spawns gentities.
 
 		for ( i = 1; i < numEntities; i++ ) {
 			mapEnt = this.mapFile.GetEntity( i );
-			args.equals( mapEnt.epairs );
+			args.opEquals( mapEnt.epairs );
 
 			if ( !this.InhibitEntitySpawn( args ) ) {
 				// precache any media specified in the map entity

@@ -3506,8 +3506,8 @@ idFileSystemLocal::OpenFileWrite
 
 		idFileSystemLocal.tempFilesForWriting[relativePath] = "";
 		var f = new idFile_Permanent ( );
-		f.name.equals( relativePath );
-		f.fullPath.equals( relativePath ); //this.OSpath;
+		f.name.opEquals( relativePath );
+		f.fullPath.opEquals( relativePath ); //this.OSpath;
 		f.mode = ( 1 << fsMode_t.FS_WRITE );
 		f.handleSync = false;
 		f.fileSize = 0;

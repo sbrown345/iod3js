@@ -75,7 +75,7 @@ class idVec2 {
 	}
 
 
-	equals ( a: idVec2 ): idVec2 {
+	opEquals ( a: idVec2 ): idVec2 {
 		this.x = a.x;
 		this.y = a.y;
 
@@ -163,13 +163,7 @@ class idVec2 {
 
 ////	return true;
 ////}
-
-	opEquals ( other: idVec2 ): idVec2 {
-		this.x = other.x;
-		this.y = other.y;
-		return this;
-	}
-
+	
 	opEqualTo ( a: idVec2 ): boolean {
 		return this.Compare( a );
 	}
@@ -1322,7 +1316,7 @@ class idVec4 {
 		}
 	}
 
-	equals ( other: idVec4 ) {
+	opEquals ( other: idVec4 ) {
 		this.x = other.x;
 		this.y = other.y;
 		this.z = other.z;
@@ -1801,9 +1795,9 @@ class idVec5 {
 ////}
 
 ////ID_INLINE idVec5 &idVec5::operator=( /*const idVec3 &a*/a:idVec3 ) { 
-	equals ( other: idVec5 ): idVec5
-	equals ( other: idVec3 ): idVec5
-	equals ( other: any ): idVec5 {
+	opEquals ( other: idVec5 ): idVec5
+	opEquals ( other: idVec3 ): idVec5
+	opEquals ( other: any ): idVec5 {
 		this.x = other.x;
 		this.y = other.y;
 		this.z = other.z;

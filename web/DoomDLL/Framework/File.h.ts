@@ -296,12 +296,10 @@ Properly handles partial reads
 		//    buf += read;
 		//}
 
-		var source = new Uint8Array(this.o.arrayBuffer, this.o.ptr);
+		var source = new Uint8Array(this.o.arrayBuffer, this.o.ptr, len);
 		var dest = new Uint8Array(buffer);
-		for (var i = 0; i < len; i++) {
-			dest[i] = source[i];
-			this.o.ptr++;
-		}
+		dest.set( source );
+		this.o.ptr += len;
 
 		fileSystem.AddToReadCount(len);
 		return len;

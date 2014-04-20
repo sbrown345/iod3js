@@ -92,9 +92,9 @@ class idFXSingleAction {
 		dest.type = this.type;
 		dest.sibling = this.sibling;
 
-		dest.data.equals( this.data );
-		dest.name.equals( this.name );
-		dest.fire.equals( this.fire );
+		dest.data.opEquals( this.data );
+		dest.name.opEquals( this.name );
+		dest.fire.opEquals( this.fire );
 
 		dest.delay = this.delay;
 		dest.duration = this.duration;
@@ -113,7 +113,7 @@ class idFXSingleAction {
 
 		dest.lightColor.opEquals( this.lightColor );
 		dest.offset.opEquals( this.offset );
-		dest.axis.equals( this.axis );
+		dest.axis.opEquals( this.axis );
 
 		dest.soundStarted = this.soundStarted;
 		dest.shakeStarted = this.shakeStarted;
@@ -216,9 +216,9 @@ idDeclFX::ParseSingleFXAction
 	FXAction.type = -1;
 	FXAction.sibling = -1;
 
-	FXAction.data .equals( "<none>");
-	FXAction.name .equals( "<none>");
-	FXAction.fire .equals( "<none>");
+	FXAction.data .opEquals( "<none>");
+	FXAction.name .opEquals( "<none>");
+	FXAction.fire .opEquals( "<none>");
 
 	FXAction.delay = 0.0;
 	FXAction.duration = 0.0;
@@ -239,7 +239,7 @@ idDeclFX::ParseSingleFXAction
 
 		FXAction.lightColor.opEquals( vec3_origin );
 		FXAction.offset.opEquals(  vec3_origin);
-		FXAction.axis.equals(  mat3_identity);
+		FXAction.axis.opEquals(  mat3_identity);
 
 	FXAction.bindParticles = false;
 	FXAction.explicitAxis = false;
@@ -541,7 +541,7 @@ idDeclFX::Parse
 
 			if ( !token.Icmp( "bindto" ) ) {
 				src.ReadToken( token );
-				this.joint.equals( token );
+				this.joint.opEquals( token );
 				continue;
 			}
 

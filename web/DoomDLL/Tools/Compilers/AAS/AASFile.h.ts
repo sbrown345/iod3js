@@ -1017,7 +1017,7 @@ idAASFileLocal::Load
 		var /*int */depth: number;
 		var /*unsigned int */c: number;
 
-		this.name.equals( fileName );
+		this.name.opEquals( fileName );
 		this.crc = mapFileCRC;
 
 		common.Printf( "[Load AAS]\n" );

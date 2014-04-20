@@ -351,7 +351,7 @@ idTraceModel::InitBox
 ////		InitOctahedron();
 ////	}
 ////
-////	this.offset.equals( ( octBounds[0] + octBounds[1] ) * 0.5;
+////	this.offset.opEquals( ( octBounds[0] + octBounds[1] ) * 0.5;
 ////	v[0] = octBounds[1][0] - this.offset[0];
 ////	v[1] = octBounds[1][1] - this.offset[1];
 ////	v[2] = octBounds[1][2] - this.offset[2];
@@ -382,7 +382,7 @@ idTraceModel::InitBox
 ////	}
 ////
 ////	// trm bounds
-////	this.bounds.opEquals( octBounds;
+////	this.bounds.opEquals( octBounds );
 ////
 ////	this.GenerateEdgeNormals();
 ////}
@@ -508,7 +508,7 @@ idTraceModel::InitBox
 ////	b[2] *= s;
 ////	c[2] *= s;
 ////
-////	this.offset.equals( ( dodBounds[0] + dodBounds[1] ) * 0.5;
+////	this.offset.opEquals( ( dodBounds[0] + dodBounds[1] ) * 0.5;
 ////
 ////	// set vertices
 ////	this.verts[ 0].Set( this.offset.x + a[0], this.offset.y + a[1], this.offset.z + a[2] );
@@ -556,7 +556,7 @@ idTraceModel::InitBox
 ////	}
 ////
 ////	// trm bounds
-////	this.bounds.opEquals( dodBounds;
+////	this.bounds.opEquals( dodBounds );
 ////
 ////	this.GenerateEdgeNormals();
 ////}
@@ -1080,9 +1080,9 @@ idTraceModel::SetupPolygon
 ////	}
 ////	this.polys[1].bounds = this.polys[0].bounds;
 ////	// offset to center
-////	this.offset.equals( mid * (1.0 / this.numVerts);
+////	this.offset.opEquals( mid * (1.0 / this.numVerts) );
 ////	// total bounds
-////	this.bounds.opEquals( this.polys[0].bounds;
+////	this.bounds.opEquals( this.polys[0].bounds );
 ////	// considered non convex because the model has no volume
 ////	this.isConvex = false;
 	}

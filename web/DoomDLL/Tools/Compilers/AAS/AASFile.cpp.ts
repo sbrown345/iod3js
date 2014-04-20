@@ -182,7 +182,7 @@ idAASSettings::idAASSettings
 		this.noOptimize = false;
 		this.allowSwimReachabilities = false;
 		this.allowFlyReachabilities = false;
-		this.fileExtension.equals( "aas48" );
+		this.fileExtension.opEquals( "aas48" );
 		// physics settings
 		this.gravity.opEquals( new idVec3( 0, 0, -1066 ) );
 		this.gravityDir.opEquals( this.gravity );
@@ -340,7 +340,7 @@ idAASSettings::FromParser
 			} else if ( token.data == "fileExtension" ) {
 				src.ExpectTokenString( "=" );
 				src.ExpectTokenType( TT_STRING, 0, token );
-				this.fileExtension.equals( token );
+				this.fileExtension.opEquals( token );
 			} else if ( token.data == "gravity" ) {
 				this.ParseVector( src, this.gravity );
 				this.gravityDir.opEquals( this.gravity );
@@ -488,7 +488,7 @@ idAASSettings::FromParser
 ////	if ( !dict.GetVector( "gravity", "0 0 -1066", this.gravity ) ) {
 ////		common.Error( "Missing 'gravity' in entityDef '%s'", name );
 ////	}
-////	this.gravityDir.equals( this.gravity);
+////	this.gravityDir.opEquals( this.gravity);
 ////	gravityValue = this.gravityDir.Normalize();
 ////	invGravityDir = -this.gravityDir;
 ////

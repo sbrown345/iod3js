@@ -126,7 +126,7 @@ class idStrPool {
 		}
 
 		poolStr = new idPoolStr;
-		( <idStr>( poolStr ) ).equals( $string );
+		( <idStr>( poolStr ) ).opEquals( $string );
 		poolStr.pool = this;
 		poolStr.numUsers = 1;
 		this.poolHash.Add( hash, this.pool.Append( poolStr ) );

@@ -184,7 +184,7 @@ EmitSurface
 		tri.verts = R_FrameAllocStructArray<idDrawVert>( idDrawVert, tri.numVerts );
 		//memcpy( tri->verts, &verts[surf->firstVert], tri->numVerts * sizeof( tri->verts[0] ) );
 		for ( var j = 0; j < tri.numVerts; j++ ) {
-			tri.verts[j].equals( this.verts[surf.firstVert + j] );
+			tri.verts[j].opEquals( this.verts[surf.firstVert + j] );
 		}
 		// move the verts to the vertex cache
 		var dataBuffer = idDrawVert.toArrayBuffer(tri.verts, tri.numVerts); // attempt to get data ready for "return (void *)buffer->offset;" in idVertexCache::Position
@@ -467,7 +467,7 @@ DrawStretchPic
 				if ( !this.verts[numVerts + k] ) {
 					this.verts[numVerts + k] = new idDrawVert ( );
 				}
-				this.verts[numVerts + k].equals( dverts[k] );
+				this.verts[numVerts + k].opEquals( dverts[k] );
 			}
 		}
 	}

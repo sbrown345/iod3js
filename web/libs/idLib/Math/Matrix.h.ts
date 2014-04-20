@@ -453,7 +453,7 @@ class idMat3 {
 		}
 	}
 
-	equals ( other: idMat3 ) {
+	opEquals ( other: idMat3 ) {
 		this.mat[0].opEquals( other.mat[0] );
 		this.mat[1].opEquals( other.mat[1] );
 		this.mat[2].opEquals( other.mat[2] );
@@ -639,7 +639,7 @@ class idMat3 {
 	}
 
 	Identity ( ): void {
-		this.equals( mat3_identity );
+		this.opEquals( mat3_identity );
 	}
 
 	IsIdentity ( /*float */epsilon:number = MATRIX_EPSILON ): boolean {
@@ -826,33 +826,32 @@ idMat3::ToAngles
 ============
 */
 	ToAngles ( ): idAngles {
-		todoThrow ( );
 		var angles = new idAngles;
-		//double		theta;
-		//double		cp;
-		//float		sp;
+		var /*double*/ theta: number;
+		var /*double*/ cp: number;
+		var /*float*/ sp: number;
 
-		//sp = mat[ 0 ][ 2 ];
+		sp = this.mat[0][2];
 
-		//// cap off our sin value so that we don't get any NANs
-		//if ( sp > 1.0 ) {
-		//	sp = 1.0;
-		//} else if ( sp < -1.0 ) {
-		//	sp = -1.0;
-		//}
+		// cap off our sin value so that we don't get any NANs
+		if ( sp > 1.0 ) {
+			sp = 1.0;
+		} else if ( sp < -1.0 ) {
+			sp = -1.0;
+		}
 
-		//theta = -asin( sp );
-		//cp = cos( theta );
+		theta = -asin( sp );
+		cp = cos( theta );
 
-		//if ( cp > 8192.0 * idMath::FLT_EPSILON ) {
-		//	angles.pitch	= RAD2DEG( theta );
-		//	angles.yaw		= RAD2DEG( atan2( mat[ 0 ][ 1 ], mat[ 0 ][ 0 ] ) );
-		//	angles.roll		= RAD2DEG( atan2( mat[ 1 ][ 2 ], mat[ 2 ][ 2 ] ) );
-		//} else {
-		//	angles.pitch	= RAD2DEG( theta );
-		//	angles.yaw		= RAD2DEG( -atan2( mat[ 1 ][ 0 ], mat[ 1 ][ 1 ] ) );
-		//	angles.roll		= 0;
-		//}
+		if ( cp > 8192.0 * idMath.FLT_EPSILON ) {
+			angles.pitch = RAD2DEG( theta );
+			angles.yaw = RAD2DEG( atan2( this.mat[0][1], this.mat[0][0] ) );
+			angles.roll = RAD2DEG( atan2( this.mat[1][2], this.mat[2][2] ) );
+		} else {
+			angles.pitch = RAD2DEG( theta );
+			angles.yaw = RAD2DEG( -atan2( this.mat[1][0], this.mat[1][1] ) );
+			angles.roll = 0;
+		}
 		return angles;
 	}
 //
@@ -872,7 +871,7 @@ idMat3::ToAngles
 //
 //	static int 	next[ 3 ] = { 1, 2, 0 };
 //
-//	trace = mat[ 0 ][ 0 ] + mat[ 1 ][ 1 ] + mat[ 2 ][ 2 ];
+//	trace = this.mat[ 0 ][ 0 ] + this.mat[ 1 ][ 1 ] + this.mat[ 2 ][ 2 ];
 //
 //	if ( trace > 0.0 ) {
 //
@@ -880,29 +879,29 @@ idMat3::ToAngles
 //		s = idMath::InvSqrt( t ) * 0.5f;
 //
 //		q[3] = s * t;
-//		q[0] = ( mat[ 2 ][ 1 ] - mat[ 1 ][ 2 ] ) * s;
-//		q[1] = ( mat[ 0 ][ 2 ] - mat[ 2 ][ 0 ] ) * s;
-//		q[2] = ( mat[ 1 ][ 0 ] - mat[ 0 ][ 1 ] ) * s;
+//		q[0] = ( this.mat[ 2 ][ 1 ] - this.mat[ 1 ][ 2 ] ) * s;
+//		q[1] = ( this.mat[ 0 ][ 2 ] - this.mat[ 2 ][ 0 ] ) * s;
+//		q[2] = ( this.mat[ 1 ][ 0 ] - this.mat[ 0 ][ 1 ] ) * s;
 //
 //	} else {
 //
 //		i = 0;
-//		if ( mat[ 1 ][ 1 ] > mat[ 0 ][ 0 ] ) {
+//		if ( this.mat[ 1 ][ 1 ] > this.mat[ 0 ][ 0 ] ) {
 //			i = 1;
 //		}
-//		if ( mat[ 2 ][ 2 ] > mat[ i ][ i ] ) {
+//		if ( this.mat[ 2 ][ 2 ] > this.mat[ i ][ i ] ) {
 //			i = 2;
 //		}
 //		j = next[ i ];
 //		k = next[ j ];
 //
-//		t = ( mat[ i ][ i ] - ( mat[ j ][ j ] + mat[ k ][ k ] ) ) + 1.0;
+//		t = ( this.mat[ i ][ i ] - ( this.mat[ j ][ j ] + this.mat[ k ][ k ] ) ) + 1.0;
 //		s = idMath::InvSqrt( t ) * 0.5f;
 //
 //		q[i] = s * t;
-//		q[3] = ( mat[ k ][ j ] - mat[ j ][ k ] ) * s;
-//		q[j] = ( mat[ j ][ i ] + mat[ i ][ j ] ) * s;
-//		q[k] = ( mat[ k ][ i ] + mat[ i ][ k ] ) * s;
+//		q[3] = ( this.mat[ k ][ j ] - this.mat[ j ][ k ] ) * s;
+//		q[j] = ( this.mat[ j ][ i ] + this.mat[ i ][ j ] ) * s;
+//		q[k] = ( this.mat[ k ][ i ] + this.mat[ i ][ k ] ) * s;
 //	}
 //	return q;
 //}
@@ -935,36 +934,36 @@ idMat3::ToRotation
 ////	int			k;
 ////	static int 	next[ 3 ] = { 1, 2, 0 };
 
-////	trace = mat[ 0 ][ 0 ] + mat[ 1 ][ 1 ] + mat[ 2 ][ 2 ];
+////	trace = this.mat[ 0 ][ 0 ] + this.mat[ 1 ][ 1 ] + this.mat[ 2 ][ 2 ];
 ////	if ( trace > 0.0 ) {
 
 ////		t = trace + 1.0;
 ////		s = idMath::InvSqrt( t ) * 0.5f;
     
 ////		r.angle = s * t;
-////		r.vec[0] = ( mat[ 2 ][ 1 ] - mat[ 1 ][ 2 ] ) * s;
-////		r.vec[1] = ( mat[ 0 ][ 2 ] - mat[ 2 ][ 0 ] ) * s;
-////		r.vec[2] = ( mat[ 1 ][ 0 ] - mat[ 0 ][ 1 ] ) * s;
+////		r.vec[0] = ( this.mat[ 2 ][ 1 ] - this.mat[ 1 ][ 2 ] ) * s;
+////		r.vec[1] = ( this.mat[ 0 ][ 2 ] - this.mat[ 2 ][ 0 ] ) * s;
+////		r.vec[2] = ( this.mat[ 1 ][ 0 ] - this.mat[ 0 ][ 1 ] ) * s;
 
 ////	} else {
 
 ////		i = 0;
-////		if ( mat[ 1 ][ 1 ] > mat[ 0 ][ 0 ] ) {
+////		if ( this.mat[ 1 ][ 1 ] > this.mat[ 0 ][ 0 ] ) {
 ////			i = 1;
 ////		}
-////		if ( mat[ 2 ][ 2 ] > mat[ i ][ i ] ) {
+////		if ( this.mat[ 2 ][ 2 ] > this.mat[ i ][ i ] ) {
 ////			i = 2;
 ////		}
 ////		j = next[ i ];  
 ////		k = next[ j ];
     
-////		t = ( mat[ i ][ i ] - ( mat[ j ][ j ] + mat[ k ][ k ] ) ) + 1.0;
+////		t = ( this.mat[ i ][ i ] - ( this.mat[ j ][ j ] + this.mat[ k ][ k ] ) ) + 1.0;
 ////		s = idMath::InvSqrt( t ) * 0.5f;
     
 ////		r.vec[i]	= s * t;
-////		r.angle		= ( mat[ k ][ j ] - mat[ j ][ k ] ) * s;
-////		r.vec[j]	= ( mat[ j ][ i ] + mat[ i ][ j ] ) * s;
-////		r.vec[k]	= ( mat[ k ][ i ] + mat[ i ][ k ] ) * s;
+////		r.angle		= ( this.mat[ k ][ j ] - this.mat[ j ][ k ] ) * s;
+////		r.vec[j]	= ( this.mat[ j ][ i ] + this.mat[ i ][ j ] ) * s;
+////		r.vec[k]	= ( this.mat[ k ][ i ] + this.mat[ i ][ k ] ) * s;
 ////	}
 ////	r.angle = idMath::ACos( r.angle );
 ////	if ( idMath::Fabs( r.angle ) < 1e-10f ) {
@@ -1422,10 +1421,10 @@ class idMat4 {
 	constructor ( x: idVec4, y: idVec4, z: idVec4, w: idVec4 )
 	constructor ( x?: idVec4, y?: idVec4, z?: idVec4, w?: idVec4 ) {
 		if ( x && y && z && w ) {
-			this.mat[0].equals( x );
-			this.mat[1].equals( y );
-			this.mat[2].equals( z );
-			this.mat[3].equals( w );
+			this.mat[0].opEquals( x );
+			this.mat[1].opEquals( y );
+			this.mat[2].opEquals( z );
+			this.mat[3].opEquals( w );
 		}
 	}
 

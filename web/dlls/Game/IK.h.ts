@@ -613,11 +613,11 @@ idIK_Walk::Init
 
 			// conversion from upper leg bone axis to hip joint axis
 			this.upperLegLength[i] = this.GetBoneAxis( hipOrigin, kneeOrigin, dir, axis );
-			this.upperLegToHipJoint[i].equals( hipAxis.opMultiplication(axis.Transpose ( )));
+			this.upperLegToHipJoint[i].opEquals( hipAxis.opMultiplication(axis.Transpose ( )));
 
 			// conversion from lower leg bone axis to knee joint axis
 			this.lowerLegLength[i] = this.GetBoneAxis( kneeOrigin, ankleOrigin, dir, axis );
-			this.lowerLegToKneeJoint[i].equals( kneeAxis.opMultiplication( axis.Transpose ( ) ) );
+			this.lowerLegToKneeJoint[i].opEquals( kneeAxis.opMultiplication( axis.Transpose ( ) ) );
 		}
 
 		this.smoothing = self.spawnArgs.GetFloat( "ik_smoothing", "0.75" );

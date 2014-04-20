@@ -140,7 +140,7 @@ class fontInfo_t {
 		memset( this.name, 0, this.name.length );
 	}
 
-	equals ( other: fontInfo_t ): fontInfo_t {
+	opEquals ( other: fontInfo_t ): fontInfo_t {
 		this.glyphs = other.glyphs; // note: copy by ref prolly okay
 		this.glyphScale = other.glyphScale;
 		memcpy( this.name, other.name, sizeof( this.name ) );
@@ -180,9 +180,9 @@ class fontInfoEx_t {
 
 	copy ( dest: fontInfoEx_t = null ): fontInfoEx_t {
 		dest = dest || new fontInfoEx_t;
-		dest.fontInfoSmall.equals( this.fontInfoSmall );
-		dest.fontInfoMedium.equals( this.fontInfoMedium );
-		dest.fontInfoLarge.equals( this.fontInfoLarge );
+		dest.fontInfoSmall.opEquals( this.fontInfoSmall );
+		dest.fontInfoMedium.opEquals( this.fontInfoMedium );
+		dest.fontInfoLarge.opEquals( this.fontInfoLarge );
 		dest.maxHeight = this.maxHeight;
 		dest.maxWidth = this.maxWidth;
 		dest.maxHeightSmall = this.maxHeightSmall;

@@ -248,10 +248,10 @@ class idDict {
 	GetString_RidStr ( key: string, defaultString: string, out: idStr ): boolean {
 		var kv = this.FindKey( key );
 		if ( kv ) {
-			out.equals( kv.GetValue ( ) );
+			out.opEquals( kv.GetValue ( ) );
 			return true;
 		}
-		out.equals( defaultString );
+		out.opEquals( defaultString );
 		return false;
 	}
 
@@ -326,7 +326,7 @@ idDict::operator=
 ================
 */
 
-	equals ( other: idDict ): idDict {
+	opEquals ( other: idDict ): idDict {
 		var /*int */i: number;
 
 		// check for assignment to self
@@ -349,7 +349,7 @@ idDict::operator=
 
 	// for idList::Append
 	copy(dest: idDict = null): idDict {
-		return this.equals( dest );
+		return this.opEquals( dest );
 	}
 
 /////*
@@ -386,8 +386,8 @@ idDict::operator=
 ////			this.args[found[i]].value = idDict.globalValues.CopyString( other.args[i].value );
 ////			globalValues.FreeString( oldValue );
 ////		} else {
-////			kv.key .equals( idDict.globalKeys.CopyString( other.args[i].key ));
-////			kv.value .equals( idDict.globalValues.CopyString( other.args[i].value ));
+////			kv.key .opEquals( idDict.globalKeys.CopyString( other.args[i].key ));
+////			kv.value .opEquals( idDict.globalValues.CopyString( other.args[i].value ));
 ////			this.argHash.Add( this.argHash.GenerateKey( kv.GetKey(), false ), this.args.Append( kv ) );
 ////		}
 ////	}
@@ -907,8 +907,8 @@ idDict::MatchPrefix
 ////	f.Read( &c, sizeof( c ) );
 ////	c = LittleLong( c );
 ////	for ( int i = 0; i < c; i++ ) {
-////		key .equals( ReadString( f ));
-////		val .equals(ReadString( f ));
+////		key .opEquals( ReadString( f ));
+////		val .opEquals(ReadString( f ));
 ////		this.Set( key, val );
 ////	}
 ////}

@@ -785,7 +785,7 @@ idPlayer::idPlayer
 		this.maxRespawnTime = 0;
 
 		this.firstPersonViewOrigin.opEquals( vec3_zero );
-		this.firstPersonViewAxis.equals( mat3_identity );
+		this.firstPersonViewAxis.opEquals( mat3_identity );
 
 		this.hipJoint = jointHandle_t.INVALID_JOINT;
 		this.chestJoint = jointHandle_t.INVALID_JOINT;
@@ -819,7 +819,7 @@ idPlayer::idPlayer
 
 		this.skin = null;
 		this.powerUpSkin = null;
-		this.baseSkinName.equals( "" );
+		this.baseSkinName.opEquals( "" );
 
 		this.numProjectilesFired = 0;
 		this.numProjectileHits = 0;
@@ -860,9 +860,9 @@ idPlayer::idPlayer
 		this.oldMouseX = 0;
 		this.oldMouseY = 0;
 
-		this.pdaAudio.equals( "" );
-		this.pdaVideo.equals( "" );
-		this.pdaVideoWave.equals( "" );
+		this.pdaAudio.opEquals( "" );
+		this.pdaVideo.opEquals( "" );
+		this.pdaVideoWave.opEquals( "" );
 
 		this.lastDamageDef = 0;
 		this.lastDamageDir.opEquals( vec3_zero );
@@ -2116,19 +2116,19 @@ idPlayer::GetUserInfo
 ////	}
 ////	if ( gameLocal.gameType == GAME_TDM ) {
 ////		if ( team ) {
-////			this.baseSkinName.equals("skins/characters/player/marine_mp_blue");
+////			this.baseSkinName.opEquals("skins/characters/player/marine_mp_blue");
 ////		} else {
-////			this.baseSkinName .equals( "skins/characters/player/marine_mp_red");
+////			this.baseSkinName .opEquals( "skins/characters/player/marine_mp_red");
 ////		}
 ////		if ( !gameLocal.isClient && team != latchedTeam ) {
 ////			gameLocal.mpGame.SwitchToTeam( this.entityNumber, latchedTeam, team );
 ////		}
 ////		latchedTeam = team;
 ////	} else {
-////		this.baseSkinName .equals( GetUserInfo().GetString( "ui_skin" ));
+////		this.baseSkinName .opEquals( GetUserInfo().GetString( "ui_skin" ));
 ////	}
 ////	if ( !this.baseSkinName.Length() ) {
-////		this.baseSkinName .equals( "skins/characters/player/marine_mp");
+////		this.baseSkinName .opEquals( "skins/characters/player/marine_mp");
 ////	}
 ////	skin = declManager.FindSkin( this.baseSkinName, false );
 ////	assert( skin );
@@ -5000,9 +5000,9 @@ idPlayer::UserInfoChanged
 ////		this.inventory.pdasViewed[currentPDA >> 5] |= 1 << (currentPDA & 31);
 ////	}
 ////
-////	pdaAudio .equals( "");
-////	pdaVideo .equals("");
-////	pdaVideoWave .equals( "");
+////	pdaAudio .opEquals( "");
+////	pdaVideo .opEquals("");
+////	pdaVideoWave .opEquals( "");
 ////	idStr name, data, preview, info, wave;
 ////	for ( j = 0; j < MAX_PDAS; j++ ) {
 ////		this.objectiveSystem.SetStateString( va( "listPDA_item_%i", j ), "" );
@@ -5067,7 +5067,7 @@ idPlayer::UserInfoChanged
 ////				}
 ////				if ( vid ) {
 ////					pdaVideo = vid.GetRoq();
-////					pdaVideoWave .equals( vid.GetWave());
+////					pdaVideoWave .opEquals( vid.GetWave());
 ////					this.objectiveSystem.SetStateString( "PDAVideoTitle", vid.GetVideoName() );
 ////					this.objectiveSystem.SetStateString( "PDAVideoVid", vid.GetRoq() );
 ////					this.objectiveSystem.SetStateString( "PDAVideoIcon", vid.GetPreview() );
@@ -5097,7 +5097,7 @@ idPlayer::UserInfoChanged
 ////					aud = pda.GetAudioByIndex( sel );
 ////				}
 ////				if ( aud ) {
-////					pdaAudio.equals( aud.GetWave());
+////					pdaAudio.opEquals( aud.GetWave());
 ////					this.objectiveSystem.SetStateString( "PDAAudioTitle", aud.GetAudioName() );
 ////					this.objectiveSystem.SetStateString( "PDAAudioIcon", aud.GetPreview() );
 ////					this.objectiveSystem.SetStateString( "PDAAudioInfo", aud.GetInfo() );

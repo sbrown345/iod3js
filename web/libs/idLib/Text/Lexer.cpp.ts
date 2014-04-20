@@ -889,7 +889,7 @@ class idLexer {
 		// if there is a token available (from unreadToken)
 		if ( this.tokenavailable ) {
 			this.tokenavailable = 0;
-			token.equals( this.token );
+			token.opEquals( this.token );
 			return 1;
 		}
 		// save script pointer
@@ -1015,12 +1015,12 @@ class idLexer {
 
 		if (token.type != type ) {
 			switch( type ) {
-				case TT_STRING: str.equals("string"); break;
-				case TT_LITERAL: str.equals("literal"); break;
-				case TT_NUMBER: str.equals("number"); break;
-				case TT_NAME: str.equals("name"); break;
-				case TT_PUNCTUATION: str.equals("punctuation"); break;
-				default: str.equals("unknown type"); break;
+				case TT_STRING: str.opEquals("string"); break;
+				case TT_LITERAL: str.opEquals("literal"); break;
+				case TT_NUMBER: str.opEquals("number"); break;
+				case TT_NAME: str.opEquals("name"); break;
+				case TT_PUNCTUATION: str.opEquals("punctuation"); break;
+				default: str.opEquals("unknown type"); break;
 			}
 			this.Error( "expected a %s but found '%s'", str.c_str(), token.c_str() );
 			return 0;
@@ -1028,10 +1028,10 @@ class idLexer {
 		if (token.type == TT_NUMBER ) {
 			if ((token.subtype & subtype) != subtype ) {
 				str.Clear();
-				if (subtype & TT_DECIMAL) str.equals("decimal ");
-				if (subtype & TT_HEX) str.equals("hex ");
-				if (subtype & TT_OCTAL) str.equals("octal ");
-				if (subtype & TT_BINARY) str.equals("binary ");
+				if (subtype & TT_DECIMAL) str.opEquals("decimal ");
+				if (subtype & TT_HEX) str.opEquals("hex ");
+				if (subtype & TT_OCTAL) str.opEquals("octal ");
+				if (subtype & TT_BINARY) str.opEquals("binary ");
 				if (subtype & TT_UNSIGNED) str.Append("unsigned ");
 				if (subtype & TT_LONG) str.Append("long ");
 				if (subtype & TT_FLOAT) str.Append("float ");
@@ -1102,7 +1102,7 @@ class idLexer {
 		}
 		// if the type matches
 		if (tok.type == type && (tok.subtype & subtype) == subtype) {
-			token.equals( tok );
+			token.opEquals( tok );
 			return 1;
 		}
 		// unread token
@@ -1231,7 +1231,7 @@ class idLexer {
 		if ( this.tokenavailable ) {
 			common.FatalError( "idLexer::unreadToken, unread token twice\n" );
 		}
-		this.token.equals(token);
+		this.token.opEquals(token);
 		this.tokenavailable = 1;
 	}
 
@@ -1250,7 +1250,7 @@ class idLexer {
 		}
 		// if no lines were crossed before this token
 		if ( !tok.linesCrossed ) {
-			token.equals(tok);
+			token.opEquals(tok);
 			return 1;
 		}
 		// restore our position
@@ -1671,9 +1671,9 @@ class idLexer {
 		}
 
 		//if ( !OSPath && ( baseFolder[0] != '\0' ) ) {// TODO: WATCH OUT HERE
-		//	pathname.equals( va( "%s/%s", this.baseFolder, filename ));
+		//	pathname.opEquals( va( "%s/%s", this.baseFolder, filename ));
 		//} else {
-		//	pathname .equals(filename);
+		//	pathname .opEquals(filename);
 		//}
 		//if ( OSPath ) {
 		//	fp = fileSystem.OpenExplicitFileRead( pathname );
@@ -1688,7 +1688,7 @@ class idLexer {
 		//buf[length] = '\0';// TODO: WATCH OUT HERE
 		//fp.Read( buf, length );
 		//this.fileTime = fp.Timestamp();
-		this.filename.equals(filename);//fp.GetFullPath();
+		this.filename.opEquals(filename);//fp.GetFullPath();
 		//idLib::fileSystem.CloseFile( fp );
 
 
@@ -1731,7 +1731,7 @@ class idLexer {
 
 		assert( typeof ptr === "string" );
 
-		this.filename.equals( name );
+		this.filename.opEquals( name );
 		this.buffer = ptr;
 		this.fileTime = 0;
 		this.length = length;
@@ -1787,7 +1787,7 @@ FreeSource( ):void {
 	constructor ( a1?: any, a2?: any, a3?: any, a4?: any ) {
 		if ( arguments.length == 0 ) {
 			this.loaded = 0 /*false*/;
-			this.filename.equals( "" );
+			this.filename.opEquals( "" );
 			this.flags = 0;
 			this.SetPunctuations( null );
 			this.allocated = 0;
@@ -1796,13 +1796,13 @@ FreeSource( ):void {
 			this.line = 0;
 			this.lastline = 0;
 			this.tokenavailable = 0;
-			this.token.equals( "" );
+			this.token.opEquals( "" );
 			this.next = null;
 			this.hadError = false;
 		} else if ( arguments.length == 1 && typeof a1 === "number" ) {
 			var flags = a1;
 			this.loaded = 0 /*false*/;
-			this.filename.equals( "" );
+			this.filename.opEquals( "" );
 			this.flags = flags;
 			this.SetPunctuations( null );
 			this.allocated = 0;
@@ -1811,7 +1811,7 @@ FreeSource( ):void {
 			this.line = 0;
 			this.lastline = 0;
 			this.tokenavailable = 0;
-			this.token.equals( "" );
+			this.token.opEquals( "" );
 			this.next = null;
 			this.hadError = false;
 		} else if ( typeof a2 === "number" && typeof a3 === "string" && ( arguments.length == 3 || arguments.length == 4 ) ) {
@@ -1820,7 +1820,7 @@ FreeSource( ):void {
 			this.flags = flags;
 			this.SetPunctuations( null );
 			this.allocated = 0;
-			this.token.equals( "" );
+			this.token.opEquals( "" );
 			this.next = null;
 			this.hadError = false;
 			this.LoadMemory( ptr, length, name );
@@ -1830,7 +1830,7 @@ FreeSource( ):void {
 			this.flags = flags;
 			this.SetPunctuations( null );
 			this.allocated = 0;
-			this.token.equals( "" );
+			this.token.opEquals( "" );
 			this.next = null;
 			this.hadError = false;
 			this.LoadFile( filename, OSPath );

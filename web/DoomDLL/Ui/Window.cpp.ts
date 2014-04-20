@@ -431,7 +431,7 @@ idWindow::CommonInit
 		this.matColor.equalsVec4( new idVec4( 1, 1, 1, 1 ) );
 		this.borderColor.Zero ( );
 		this.background = null;
-		this.backGroundName.equalsStr( new idStr( "" ) );
+		this.backGroundName.opEqualsStr( new idStr( "" ) );
 		this.focusedChild = null;
 		this.captureChild = null;
 		this.overChild = null;
@@ -632,7 +632,7 @@ idWindow::Draw
 		if ( this.textShadow ) {
 			var shadowText = new idStr( this.text.data );
 			var shadowRect = new idRectangle;
-			shadowRect.equals( this.textRect );
+			shadowRect.opEquals( this.textRect );
 
 			shadowText.RemoveColors ( );
 			shadowRect.x += this.textShadow;
@@ -973,7 +973,7 @@ idWindow::Contains
 */
 	Contains_Rect ( sr: idRectangle, /*float */x: number, /*float */y: number ): boolean {
 		var r = new idRectangle;
-		r.equals(sr);
+		r.opEquals(sr);
 		r.x += this.actualX - this.drawRect.x;
 		r.y += this.actualY - this.drawRect.y;
 		return r.Contains( x, y );
@@ -986,7 +986,7 @@ idWindow::Contains
 */
 	Contains ( /*float */x: number, /*float */y: number ): boolean {
 		var r = new idRectangle();
-		r.equals(this.drawRect);
+		r.opEquals(this.drawRect);
 		r.x = this.actualX;
 		r.y = this.actualY;
 		return r.Contains( x, y );
@@ -1463,7 +1463,7 @@ idWindow::SetupTransforms
 
 		if ( this.rotate.data ) {
 			idWindow.rot.Set( idWindow.org, idWindow.vec, this.rotate.data );
-			idWindow.trans.equals( idWindow.rot.ToMat3 ( ) );
+			idWindow.trans.opEquals( idWindow.rot.ToMat3 ( ) );
 		}
 
 		if ( this.shear.x || this.shear.y ) {
@@ -1659,7 +1659,7 @@ idWindow::CalcClientRect
 ================
 */
 	CalcClientRect ( /*float*/ xofs: number, /*float */yofs: number ): void {
-		this.drawRect.equals( this.rect.data );
+		this.drawRect.opEquals( this.rect.data );
 
 		if ( this.flags & WIN_INVERTRECT ) {
 			this.drawRect.x = this.rect.x ( ) - this.rect.w ( );
@@ -2207,7 +2207,7 @@ idWindow::ParseString
 	ParseString ( src: idParser, out: idStr ): void {
 		var tok = new idToken;
 		if ( src.ReadToken( tok ) ) {
-			out.equals( tok.data );
+			out.opEquals( tok.data );
 		}
 	}
 ////
@@ -2375,7 +2375,7 @@ idWindow::ParseRegEntry
 */
 	ParseRegEntry ( name: string, src: idParser ): boolean {
 		var work = new idStr;
-		work.equals( name );
+		work.opEquals( name );
 		work.ToLower ( );
 
 		var $var = this.GetWinVarByName( work.data, null );
@@ -2413,14 +2413,14 @@ idWindow::ParseRegEntry
 					this.definedVars.Append( varf );
 				} else {
 					vars = new idWinStr ( );
-					vars.equalsStr( tok );
+					vars.opEqualsStr( tok );
 					vars.SetName( work.data );
 					this.definedVars.Append( vars );
 				}
 				break;
 			default:
 				vars = new idWinStr ( );
-				vars.equalsStr( tok );
+				vars.opEqualsStr( tok );
 				vars.SetName( work.data );
 				this.definedVars.Append( vars );
 				break;
@@ -2436,7 +2436,7 @@ idWindow::SetInitialState
 ================
 */
 	SetInitialState ( _name: string ): void {
-		this.name.equals( _name );
+		this.name.opEquals( _name );
 		this.matScalex = 1.0;
 		this.matScaley = 1.0;
 		this.forceAspectWidth = 640.0;
@@ -2493,7 +2493,7 @@ idWindow::Parse
 				}
 				dlog( DEBUG_GUI, "idWindow::Parse token: %si\n", token.c_str ( ) );
 				src.ExpectTokenType( TT_NAME, 0, token );
-				token2.equals( token );
+				token2.opEquals( token );
 				src.UnreadToken( token );
 				var dw: drawWin_t = this.FindChildByName( token2.c_str ( ) );
 				if ( dw && dw.win ) {
@@ -2713,7 +2713,7 @@ idWindow::Parse
 				this.timeLineEvents.Append( ev );
 			} else if ( token.data == "definefloat" ) {
 				src.ReadToken( token );
-				work.equals( token.data );
+				work.opEquals( token.data );
 				work.ToLower ( );
 				var varf = new idWinFloat ( );
 				varf.SetName( work.data );
@@ -2738,7 +2738,7 @@ idWindow::Parse
 //#endif
 			} else if ( token.data == "definevec4" ) {
 				src.ReadToken( token );
-				work.equals( token.data );
+				work.opEquals( token.data );
 				work.ToLower ( );
 				var $var = new idWinVec4 ( );
 				$var.SetName( work.data );
@@ -2766,7 +2766,7 @@ idWindow::Parse
 //#endif
 			} else if ( token.data == "float" ) {
 				src.ReadToken( token );
-				work.equals( token.data );
+				work.opEquals( token.data );
 				work.ToLower ( );
 				var varf = new idWinFloat ( );
 				varf.SetName( work.data );

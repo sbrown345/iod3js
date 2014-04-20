@@ -752,27 +752,27 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//
 	//	EvaluateContacts();
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Player::SetOrigin
-	//================
-	//*/
-	//void idPhysics_Monster::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
-	//	idVec3 masterOrigin;
-	//	idMat3 masterAxis;
-	//
-	//	this.current.localOrigin = newOrigin;
-	//	if ( masterEntity ) {
-	//		this.self.GetMasterPosition( masterOrigin, masterAxis );
-	//		this.current.origin = masterOrigin + newOrigin * masterAxis;
-	//	}
-	//	else {
-	//		this.current.origin = newOrigin;
-	//	}
-	//	clipModel.Link( gameLocal.clip, this.self, 0, newOrigin, clipModel.GetAxis() );
-	//	Activate();
-	//}
+	
+	/*
+	================
+	idPhysics_Player::SetOrigin
+	================
+	*/
+	void idPhysics_Monster::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
+		idVec3 masterOrigin;
+		idMat3 masterAxis;
+	
+		this.current.localOrigin = newOrigin;
+		if ( masterEntity ) {
+			this.self.GetMasterPosition( masterOrigin, masterAxis );
+			this.current.origin = masterOrigin + newOrigin * masterAxis;
+		}
+		else {
+			this.current.origin = newOrigin;
+		}
+		clipModel.Link( gameLocal.clip, this.self, 0, newOrigin, clipModel.GetAxis() );
+		Activate();
+	}
 	//
 	///*
 	//================

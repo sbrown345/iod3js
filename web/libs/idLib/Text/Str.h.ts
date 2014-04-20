@@ -152,7 +152,7 @@ class idStr implements ITrackedObject {
 
 	copy ( dest: idStr = null ): idStr {
 		dest = dest || new idStr;
-		dest.equals( this );
+		dest.opEquals( this );
 		return dest;
 	}
 
@@ -1219,9 +1219,9 @@ FreeData( ):void {
 idStr::operator=
 ============
 */
-	equals ( text: string ): void
-	equals ( text: idStr ): void
-	equals ( text: any ): void {
+	opEquals ( text: string ): void
+	opEquals ( text: idStr ): void
+	opEquals ( text: any ): void {
 		var l: number /*int*/;
 		//int diff;
 		//var/*int*/i:number;

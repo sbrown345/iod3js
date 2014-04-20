@@ -65,7 +65,7 @@ class idBindWindow extends idWindow {
 
 
 	CommonInit ( ): void {
-		this.bindName.equalsStr( new idStr( "" ) );
+		this.bindName.opEqualsStr( new idStr( "" ) );
 		this.waitingOnKey = false;
 	}
 
@@ -141,19 +141,19 @@ class idBindWindow extends idWindow {
 
 	Draw ( /*int*/ time: number, /*float */x: number, /*float */y: number ): void {
 		var color = new idVec4;
-		color.equals( this.foreColor.data );
+		color.opEquals( this.foreColor.data );
 
 		var str = new idStr;
 		if ( this.waitingOnKey ) {
-			str.equals( common.GetLanguageDict ( ).GetString( "#str_07000" ) );
+			str.opEquals( common.GetLanguageDict ( ).GetString( "#str_07000" ) );
 		} else if ( this.bindName.Length ( ) ) {
-			str.equals( this.bindName.c_str ( ) );
+			str.opEquals( this.bindName.c_str ( ) );
 		} else {
-			str.equals( common.GetLanguageDict ( ).GetString( "#str_07001" ) );
+			str.opEquals( common.GetLanguageDict ( ).GetString( "#str_07001" ) );
 		}
 
 		if ( this.waitingOnKey || ( this.hover && !this.noEvents && this.Contains( this.gui.CursorX ( ), this.gui.CursorY ( ) ) ) ) {
-			color.equals( this.hoverColor.data );
+			color.opEquals( this.hoverColor.data );
 		} else {
 			this.hover = false;
 		}

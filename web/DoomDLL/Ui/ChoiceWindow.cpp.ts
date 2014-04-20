@@ -361,9 +361,9 @@ idChoiceWindow::CommonInit
 					if ( token.data == ";" ) {
 						if ( str2.Length ( ) ) {
 							str2.StripTrailingWhitespace ( );
-							str2.equals( common.GetLanguageDict ( ).GetString( str2.data ) );
+							str2.opEquals( common.GetLanguageDict ( ).GetString( str2.data ) );
 							this.choices.Append( str2 );
-							str2.equals( "" );
+							str2.opEquals( "" );
 						}
 						continue;
 					}
@@ -375,14 +375,14 @@ idChoiceWindow::CommonInit
 					this.choices.Append( str2 );
 				}
 			}
-			this.latchedChoices.equals( this.choicesStr.c_str ( ) );
+			this.latchedChoices.opEquals( this.choicesStr.c_str ( ) );
 		}
 		if ( this.choiceVals.Length ( ) && this.latchedVals.Icmp( this.choiceVals.c_str ( ) ) ) {
 			this.values.Clear ( );
 			src.FreeSource ( );
 			src.SetFlags( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
 			src.LoadMemory( this.choiceVals.c_str ( ), this.choiceVals.Length ( ), "<ChoiceVals>" );
-			str2.equals( "" );
+			str2.opEquals( "" );
 			var negNum = false;
 			if ( src.IsLoaded ( ) ) {
 				while ( src.ReadToken( token ) ) {
@@ -394,7 +394,7 @@ idChoiceWindow::CommonInit
 						if ( str2.Length ( ) ) {
 							str2.StripTrailingWhitespace ( );
 							this.values.Append( str2 );
-							str2.equals( "" );
+							str2.opEquals( "" );
 						}
 						continue;
 					}
@@ -413,7 +413,7 @@ idChoiceWindow::CommonInit
 			if ( this.choices.Num ( ) != this.values.Num ( ) ) {
 				common.Warning( "idChoiceWindow:: gui '%s' window '%s' has value count unequal to choices count", this.gui.GetSourceFile ( ), this.name.c_str ( ) );
 			}
-			this.latchedVals.equals( this.choiceVals.c_str ( ) );
+			this.latchedVals.opEquals( this.choiceVals.c_str ( ) );
 		}
 	}
 

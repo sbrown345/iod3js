@@ -89,7 +89,7 @@ pointer list. Then copies the strings into another list using the ordered list o
 		other.SetNum( this.num );
 		other.SetGranularity( this.granularity );
 		for ( i = 0; i < other.Num ( ); i++ ) {
-			other[i].equals( pointerList[i] );
+			other[i].opEquals( pointerList[i] );
 		}
 
 		this.Swap( other );

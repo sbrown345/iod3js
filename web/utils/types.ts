@@ -27,23 +27,22 @@ function TypeInfoCopier ( dest: any, source: any, typeInfo: TypeInfo ): void {
 function memcpyStructs ( dest: any, source: any, count: number, typeInfo: TypeInfo = null, srcOffset = 0 ): void {
 	for ( var i = 0; i < count; i++ ) {
 		if ( !source[i] ) {
-			todoThrow("source should exist");
+			todoThrow( "source should exist" );
 		}
 
-		if (!dest[i]) {
+		if ( !dest[i] ) {
 			todoThrow( "dest should exist" );
-			dest[i] = new typeInfo.typeClass;
 		}
 
 		// todo: make this consistent
 		if ( typeInfo ) {
 			TypeInfoCopier( dest[i], source[i + srcOffset], typeInfo );
-		} else if (source[i].copy && dest[i].copy ) {
+		} else if ( source[i].copy ) {
 			source[i].copy( dest[i] );
-		} else if (dest[i].opEquals && source[i].opEquals ) {
+		} else if ( dest[i].opEquals ) {
 			dest[i].opEquals( source[i] );
-		} else if (dest[i].opEquals && source[i].opEquals ) {
-			dest[i].opEquals( source[i] );
+		} else if ( dest[i].equals ) {
+			todoThrow( "rename to opEquals" );
 		} else {
 			todoThrow ( );
 		}

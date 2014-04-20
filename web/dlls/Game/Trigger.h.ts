@@ -678,7 +678,7 @@ idTrigger_EntityName::Spawn
 		var $triggerFirst = new R( this.triggerFirst );
 		this.spawnArgs.GetBool_R( "triggerFirst", "0", $triggerFirst ), this.triggerFirst = $triggerFirst.$;
 
-		this.entityName.equals( this.spawnArgs.GetString( "entityname" ) );
+		this.entityName.opEquals( this.spawnArgs.GetString( "entityname" ) );
 		if ( !this.entityName.Length ( ) ) {
 			gameLocal.Error( "idTrigger_EntityName '%s' at (%s) doesn't have 'entityname' key specified", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ) );
 		}
@@ -882,8 +882,8 @@ Can be turned on or off by using.
 		this.spawnArgs.GetBool_R( "start_on", "0", $on ), this.on = $on.$;
 		var $delay = new R( this.delay );
 		this.spawnArgs.GetFloat_R( "delay", "0", $delay ), this.delay = $delay.$;
-		this.onName.equals( this.spawnArgs.GetString( "onName" ) );
-		this.offName.equals( this.spawnArgs.GetString( "offName" ) );
+		this.onName.opEquals( this.spawnArgs.GetString( "onName" ) );
+		this.offName.opEquals( this.spawnArgs.GetString( "offName" ) );
 
 		if ( this.random >= this.wait && this.wait >= 0 ) {
 			this.random = this.wait - 0.001;

@@ -1157,7 +1157,7 @@ idAnimated::Spawn
 
 		this.blendFrames = this.spawnArgs.GetInt( "blend_in" );
 
-		animname.equals( this.spawnArgs.GetString( this.num_anims ? "anim1" : "anim" ) );
+		animname.opEquals( this.spawnArgs.GetString( this.num_anims ? "anim1" : "anim" ) );
 		if ( !animname.Length ( ) ) {
 			this.anim = 0;
 		} else {

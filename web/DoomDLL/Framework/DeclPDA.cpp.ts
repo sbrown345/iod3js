@@ -132,43 +132,43 @@ idDeclPDA::Parse
 
 			if ( !token.Icmp( "name" ) ) {
 				src.ReadToken( token );
-				this.pdaName.equals( token );
+				this.pdaName.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "fullname" ) ) {
 				src.ReadToken( token );
-				this.fullName.equals( token );
+				this.fullName.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "icon" ) ) {
 				src.ReadToken( token );
-				this.icon.equals( token );
+				this.icon.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "id" ) ) {
 				src.ReadToken( token );
-				this.id.equals( token );
+				this.id.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "post" ) ) {
 				src.ReadToken( token );
-				this.post.equals( token );
+				this.post.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "title" ) ) {
 				src.ReadToken( token );
-				this.title.equals( token );
+				this.title.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "security" ) ) {
 				src.ReadToken( token );
-				this.security.equals( token );
+				this.security.opEquals( token );
 				continue;
 			}
 
@@ -303,7 +303,7 @@ idDeclPDA::SetSecurity
 =================
 */
 	SetSecurity ( sec: string ): void {
-		this.security.equals( sec );
+		this.security.opEquals( sec );
 	}
 
 /*
@@ -436,7 +436,7 @@ idDeclEmail::Parse
 		src.SetFlags( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT | lexerFlags_t.LEXFL_NOFATALERRORS );
 		src.SkipUntilString( "{" );
 
-		this.text.equals( "" );
+		this.text.opEquals( "" );
 		// scan through, identifying each individual parameter
 		while ( 1 ) {
 
@@ -450,25 +450,25 @@ idDeclEmail::Parse
 
 			if ( !token.Icmp( "subject" ) ) {
 				src.ReadToken( token );
-				this.subject.equals( token );
+				this.subject.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "to" ) ) {
 				src.ReadToken( token );
-				this.to.equals( token );
+				this.to.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "from" ) ) {
 				src.ReadToken( token );
-				this.from.equals( token );
+				this.from.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "date" ) ) {
 				src.ReadToken( token );
-				this.date.equals( token );
+				this.date.opEquals( token );
 				continue;
 			}
 
@@ -486,7 +486,7 @@ idDeclEmail::Parse
 
 			if ( !token.Icmp( "image" ) ) {
 				src.ReadToken( token );
-				this.image.equals( token );
+				this.image.opEquals( token );
 				continue;
 			}
 		}
@@ -598,32 +598,32 @@ idDeclVideo::Parse
 
 			if ( !token.Icmp( "name" ) ) {
 				src.ReadToken( token );
-				this.videoName.equals( token );
+				this.videoName.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "preview" ) ) {
 				src.ReadToken( token );
-				this.preview.equals( token );
+				this.preview.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "video" ) ) {
 				src.ReadToken( token );
-				this.video.equals( token );
+				this.video.opEquals( token );
 				declManager.FindMaterial( this.video.data );
 				continue;
 			}
 
 			if ( !token.Icmp( "info" ) ) {
 				src.ReadToken( token );
-				this.info.equals( token );
+				this.info.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "audio" ) ) {
 				src.ReadToken( token );
-				this.audio.equals( token );
+				this.audio.opEquals( token );
 				declManager.FindSound( this.audio.data );
 				continue;
 			}
@@ -735,26 +735,26 @@ idDeclAudio::Parse
 
 			if ( !token.Icmp( "name" ) ) {
 				src.ReadToken( token );
-				this.audioName.equals( token );
+				this.audioName.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "audio" ) ) {
 				src.ReadToken( token );
-				this.audio.equals( token );
+				this.audio.opEquals( token );
 				declManager.FindSound( this.audio.data );
 				continue;
 			}
 
 			if ( !token.Icmp( "info" ) ) {
 				src.ReadToken( token );
-				this.info.equals( token );
+				this.info.opEquals( token );
 				continue;
 			}
 
 			if ( !token.Icmp( "preview" ) ) {
 				src.ReadToken( token );
-				this.preview.equals( token );
+				this.preview.opEquals( token );
 				continue;
 			}
 

@@ -263,7 +263,7 @@ idDeclModelDef::GetJointList
 			}
 
 			// copy joint name
-			jointname.equals( "" );
+			jointname.opEquals( "" );
 
 			if ( jointnames[pos] == '-' ) {
 				subtract = true;
@@ -763,7 +763,7 @@ Parse( text:string, /*const int */textLength :number):boolean {
 			}
 
 			channel = i;
-			jointnames.equals( "" );
+			jointnames.opEquals( "" );
 
 			while( !src.CheckTokenString( ")" ) ) {
 				if( !src.ReadToken( token2 ) ) {

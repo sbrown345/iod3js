@@ -760,7 +760,7 @@ idThread::SetThreadName
 ================
 */
 SetThreadName( name:string ) :void {
-	this.threadName.equals( name );
+	this.threadName.opEquals( name );
 }
 
 ///*

@@ -1995,27 +1995,27 @@ Returns true if the velocity was clipped in some way
 ////	EvaluateContacts();
 ////}
 ////
-/////*
-////================
-////idPhysics_Player::SetOrigin
-////================
-////*/
-////void idPhysics_Player::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
-////	idVec3 masterOrigin;
-////	idMat3 masterAxis;
-////
-////	this.current.localOrigin = newOrigin;
-////	if ( masterEntity ) {
-////		self.GetMasterPosition( masterOrigin, masterAxis );
-////		this.current.origin = masterOrigin + newOrigin * masterAxis;
-////	}
-////	else {
-////		this.current.origin = newOrigin;
-////	}
-////
-////	clipModel.Link( gameLocal.clip, self, 0, newOrigin, clipModel.GetAxis() );
-////}
-////
+/*
+================
+idPhysics_Player::SetOrigin
+================
+*/
+void idPhysics_Player::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
+	idVec3 masterOrigin;
+	idMat3 masterAxis;
+
+	this.current.localOrigin = newOrigin;
+	if ( masterEntity ) {
+		self.GetMasterPosition( masterOrigin, masterAxis );
+		this.current.origin = masterOrigin + newOrigin * masterAxis;
+	}
+	else {
+		this.current.origin = newOrigin;
+	}
+
+	clipModel.Link( gameLocal.clip, self, 0, newOrigin, clipModel.GetAxis() );
+}
+
 /*
 ================
 idPhysics_Player::GetOrigin

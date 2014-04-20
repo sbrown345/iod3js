@@ -358,7 +358,7 @@ class idActor extends idAFEntity_Gibbable {
 		this.allowPain = false;
 		this.allowEyeFocus = false;
 
-		this.waitState.equals( "" );
+		this.waitState.opEquals( "" );
 
 		this.blink_anim = NULL;
 		this.blink_time = 0;
@@ -418,7 +418,7 @@ idActor::Spawn
 		var fovDegrees = new R<number>()/*float*/;
 		var copyJoint = new copyJoints_t;
 
-		this.animPrefix.equals( "" );
+		this.animPrefix.opEquals( "" );
 		this.state = null;
 		this.idealState = null;
 
@@ -435,7 +435,7 @@ idActor::Spawn
 		this.spawnArgs.GetBool_R("use_combat_bbox", "0", $use_combat_box);
 		this.use_combat_bbox = $use_combat_box.$;
 
-		this.viewAxis.equals( this.GetPhysics ( ).GetAxis ( ) );
+		this.viewAxis.opEquals( this.GetPhysics ( ).GetAxis ( ) );
 
 		this.spawnArgs.GetFloat_R("fov", "90", fovDegrees);
 		this.SetFOV( fovDegrees.$ );
@@ -500,7 +500,7 @@ idActor::Spawn
 					continue;
 				}
 
-				jointName.equals( kv.GetKey ( ) );
+				jointName.opEquals( kv.GetKey ( ) );
 				if ( jointName.StripLeadingOnce( "copy_joint_world " ) ) {
 					copyJoint.mod = jointModTransform_t.JOINTMOD_WORLD_OVERRIDE;
 				} else {
@@ -514,7 +514,7 @@ idActor::Spawn
 					continue;
 				}
 
-				jointName.equals( kv.GetValue ( ) );
+				jointName.opEquals( kv.GetValue ( ) );
 				copyJoint.to = headAnimator.GetJointHandle( jointName.data );
 				if ( copyJoint.to == jointHandle_t.INVALID_JOINT ) {
 					gameLocal.Warning( "Unknown copy_joint '%s' on head of entity %s", jointName.c_str ( ), this.name.c_str ( ) );
@@ -593,7 +593,7 @@ idActor::SetupHead
 
 		headModel = this.spawnArgs.GetString( "def_head", "" );
 		if ( headModel[0] ) {
-			jointName.equals( this.spawnArgs.GetString( "head_joint" ) );
+			jointName.opEquals( this.spawnArgs.GetString( "head_joint" ) );
 			joint = this.animator.GetJointHandle( jointName.data );
 			if ( joint == jointHandle_t.INVALID_JOINT ) {
 				gameLocal.Error( "Joint '%s' not found for 'head_joint' on '%s'", jointName.c_str ( ), this.name.c_str ( ) );
@@ -628,7 +628,7 @@ idActor::SetupHead
 			todoThrow ( );
 			//this.animator.GetJointTransform(joint, gameLocal.time, origin, axis);
 			//debugger; //check b
-			//origin.equals( this.renderEntity.origin.opAddition( idMat3.opMultiplication_VecMat( origin.opAddition( this.modelOffset ), this.renderEntity.axis ) ) );
+			//origin.opEquals( this.renderEntity.origin.opAddition( idMat3.opMultiplication_VecMat( origin.opAddition( this.modelOffset ), this.renderEntity.axis ) ) );
 			//attach.ent.opEquals( headEnt );
 			//headEnt.SetOrigin( origin );
 			//headEnt.SetAxis( this.renderEntity.axis );
@@ -1035,7 +1035,7 @@ idActor::SetupBody
 		////			headEnt.GetAnimator ( ).ClearAllAnims( gameLocal.time, 0 );
 		////			headEnt.GetAnimator ( ).ForceUpdate ( );
 		////			pos.opAdditionAssignment( headEnt.GetPhysics ( ).GetOrigin ( ).opSubtraction( this.GetPhysics ( ).GetOrigin ( ) ) );
-		////			this.eyeOffset.equals( pos.opAddition( this.modelOffset ) );
+		////			this.eyeOffset.opEquals( pos.opAddition( this.modelOffset ) );
 		////		} else {
 		////			// just base it off the bounding box size
 		////			this.eyeOffset.z = this.GetPhysics ( ).GetBounds ( )[1].z - 6;
@@ -1060,7 +1060,7 @@ idActor::SetupBody
 		////			this.animator.GetJointTransform( this.leftEyeJoint, gameLocal.time, pos, axis );
 		////			this.animator.ClearAllAnims( gameLocal.time, 0 );
 		////			this.animator.ForceUpdate ( );
-		////			this.eyeOffset.equals( pos.opAddition( this.modelOffset ) );
+		////			this.eyeOffset.opEquals( pos.opAddition( this.modelOffset ) );
 		////		} else {
 		////			// just base it off the bounding box size
 		////			this.eyeOffset.z = this.GetPhysics ( ).GetBounds ( )[1].z - 6;
@@ -1069,7 +1069,7 @@ idActor::SetupBody
 		////	this.headAnim.Init( this, this.animator, ANIMCHANNEL_HEAD );
 		////}
 
-		////this.waitState.equals( "" );
+		////this.waitState.opEquals( "" );
 
 		////this.torsoAnim.Init( this, this.animator, ANIMCHANNEL_TORSO );
 		////this.legsAnim.Init( this, this.animator, ANIMCHANNEL_LEGS );
@@ -1681,7 +1681,7 @@ idActor::Attach
 ////	this.GetPhysics().SetOrigin( origin + idVec3( 0, 0, CM_CLIP_EPSILON ) );
 ////	this.GetPhysics().SetLinearVelocity( vec3_origin );
 ////
-////	this.viewAxis.equals( angles.ToMat3();
+////	this.viewAxis.opEquals( angles.ToMat3();
 ////
 ////	UpdateVisuals();
 ////
@@ -2260,7 +2260,7 @@ FIXME: only store group names once and store an index for each joint
 		this.damageGroups.SetNum( this.animator.NumJoints ( ) );
 		arg = this.spawnArgs.MatchPrefix( "damage_zone ", null );
 		while ( arg ) {
-			groupname.equals( arg.GetKey ( ) );
+			groupname.opEquals( arg.GetKey ( ) );
 			groupname.Strip( "damage_zone " );
 			this.animator.GetJointList( arg.GetValue ( ).data, jointList );
 			for ( i = 0; i < jointList.Num ( ); i++ ) {
@@ -2281,7 +2281,7 @@ FIXME: only store group names once and store an index for each joint
 		arg = this.spawnArgs.MatchPrefix( "damage_scale ", null );
 		while ( arg ) {
 			scale = atof( arg.GetValue ( ) );
-			groupname.equals( arg.GetKey ( ) );
+			groupname.opEquals( arg.GetKey ( ) );
 			groupname.Strip( "damage_scale " );
 			for ( i = 0; i < this.damageScale.Num ( ); i++ ) {
 				if ( this.damageGroups[i].equalTo( groupname ) )
@@ -2467,7 +2467,7 @@ FIXME: only store group names once and store an index for each joint
 ////=====================
 ////*/
 ////void idActor::Event_SetAnimPrefix( const char *prefix ):void {
-////	this.animPrefix.equals(prefix);
+////	this.animPrefix.opEquals(prefix);
 ////}
 ////
 /////*

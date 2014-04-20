@@ -97,7 +97,7 @@ class idWorldspawn extends idEntity {
 		}
 
 		// load script
-		scriptname.equals( gameLocal.GetMapName ( ) );
+		scriptname.opEquals( gameLocal.GetMapName ( ) );
 		scriptname.SetFileExtension( ".script" );
 		if ( fileSystem.ReadFile( scriptname.data, null, null ) > 0 ) {
 			gameLocal.program.CompileFile( scriptname.data );

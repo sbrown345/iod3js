@@ -721,13 +721,13 @@ idParser::ReadSourceToken
 			$delete( script );
 		}
 		// copy the already available token
-		token.equals(this.tokens);
+		token.opEquals(this.tokens);
 		// remove the token from the source
 		//t = this.tokens;
 		if ( !this.tokens.next ) {
 			this.tokens = null;
 		} else {
-			this.tokens.equals( this.tokens.next );
+			this.tokens.opEquals( this.tokens.next );
 		}
 
 		return 1 /*true*/;
@@ -853,7 +853,7 @@ idParser::StringizeTokens
 		token.type = TT_STRING;
 		token.whiteSpaceStart_p = NULL;
 		token.whiteSpaceEnd_p = NULL;
-		token.equals( "" ); //(*token) = "";
+		token.opEquals( "" ); //(*token) = "";
 		for ( t = this.tokens; t; t = t.next ) {
 			token.Append( t.c_str ( ) );
 		}
@@ -1220,16 +1220,16 @@ idParser::Directive_include
 	if ( token.type == TT_STRING ) {
 		script = new idLexer;
 		// try relative to the current file
-		path.equals( this.scriptstack.GetFileName ( ) );
+		path.opEquals( this.scriptstack.GetFileName ( ) );
 		path.StripFilename();
 		path.Append("/");
 		path.Append( token.data );
 		if ( !script.LoadFile( path.data, this.OSPath ) ) {
 			// try absolute path
-			path.equals( token.data );
+			path.opEquals( token.data );
 			if (!script.LoadFile(path.data, this.OSPath ) ) {
 				// try from the include path
-				path.equals( this.includepath.data + token );
+				path.opEquals( this.includepath.data + token );
 				if (!script.LoadFile(path.data, this.OSPath ) ) {
 					$delete(script);
 					script = null;
@@ -2365,7 +2365,7 @@ UnreadSignToken( ):void {
 	token.whiteSpaceEnd_p = NULL;
 	token.linesCrossed = 0;
 	token.flags = 0;
-	token.equals("-");
+	token.opEquals("-");
 	token.type = TT_PUNCTUATION;
 	token.subtype = P_SUB;
 	this.UnreadSourceToken( token );
@@ -2696,12 +2696,12 @@ idParser::ExpectTokenType
 
 			if (token.type != type ) {
 			switch( type ) {
-				case TT_STRING: str.equals("string"); break;
-				case TT_LITERAL: str.equals("literal"); break;
-				case TT_NUMBER: str.equals("number"); break;
-				case TT_NAME: str.equals("name"); break;
-				case TT_PUNCTUATION: str.equals("punctuation"); break;
-				default: str.equals("unknown type"); break;
+				case TT_STRING: str.opEquals("string"); break;
+				case TT_LITERAL: str.opEquals("literal"); break;
+				case TT_NUMBER: str.opEquals("number"); break;
+				case TT_NAME: str.opEquals("name"); break;
+				case TT_PUNCTUATION: str.opEquals("punctuation"); break;
+				default: str.opEquals("unknown type"); break;
 			}
 				this.Error("expected a %s but found '%s'", str.c_str(), token.c_str() );
 			return 0;
@@ -2709,10 +2709,10 @@ idParser::ExpectTokenType
 			if (token.type == TT_NUMBER ) {
 				if ((token.subtype & subtype) != subtype ) {
 				str.Clear();
-				if ( subtype & TT_DECIMAL ) str.equals("decimal ");
-				if (subtype & TT_HEX) str.equals("hex ");
-				if (subtype & TT_OCTAL) str.equals("octal ");
-				if (subtype & TT_BINARY) str.equals("binary ");
+				if ( subtype & TT_DECIMAL ) str.opEquals("decimal ");
+				if (subtype & TT_HEX) str.opEquals("hex ");
+				if (subtype & TT_OCTAL) str.opEquals("octal ");
+				if (subtype & TT_BINARY) str.opEquals("binary ");
 					if (subtype & TT_UNSIGNED) str.Append( "unsigned ");
 				if ( subtype & TT_LONG ) str.Append("long ");
 				if ( subtype & TT_FLOAT ) str.Append("float ");
@@ -3296,7 +3296,7 @@ idParser::LoadFile
 		script.SetPunctuations( this.punctuations );
 		script.next = null;
 		this.OSPath = OSPath;
-		this.filename.equals( filename );
+		this.filename.opEquals( filename );
 		this.scriptstack = script;
 		this.tokens = null;
 		this.indentstack = null;
@@ -3331,7 +3331,7 @@ LoadMemory(/*const char **/ptr:string, /*int */length:number, /*const char **/na
 	script.SetFlags( this.flags );
 	script.SetPunctuations( this.punctuations );
 	script.next = null;
-	this.filename.equals(name);
+	this.filename.opEquals(name);
 	this.scriptstack = script;
 	this.tokens = null;
 	this.indentstack = null;

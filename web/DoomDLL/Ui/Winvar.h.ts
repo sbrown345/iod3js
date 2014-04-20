@@ -70,7 +70,7 @@ class idWinVar implements ITrackedObject {
 		}
 	}
 	//idWinVar &operator =
-	equals ( other: idWinVar ): idWinVar {
+	opEquals ( other: idWinVar ): idWinVar {
 		this.guiDict = other.guiDict;
 		this.SetName( other.name );
 		return this;
@@ -155,8 +155,8 @@ class idWinBool extends idWinVar {
 		}
 		return this.data;
 	}
-	equals ( other: idWinBool ): idWinBool {
-		super.equals( other );
+	opEquals ( other: idWinBool ): idWinBool {
+		super.opEquals( other );
 		this.data = other.data;
 		return this;
 	}
@@ -202,7 +202,7 @@ class idWinStr extends idWinVar {
 	Init(_name: string, win: idWindow): void  {
 		super.Init(_name, win);
 		if (this.guiDict) {
-			this.data.equals( this.guiDict.GetString( this.GetName ( ) ) );
+			this.data.opEquals( this.guiDict.GetString( this.GetName ( ) ) );
 		} 
 	}
 ////	int	operator==(	const idStr &other ) const {
@@ -211,16 +211,16 @@ class idWinStr extends idWinVar {
 ////	int	operator==(	const char *other ) const {
 ////		return (data == other);
 ////	}
-	equalsStr(other: idStr): idStr {
-		this.data.equals(other);
+	opEqualsStr(other: idStr): idStr {
+		this.data.opEquals(other);
 		if ( this.guiDict ) {
 			this.guiDict.Set( this.GetName ( ), this.data.data );
 		}
 		return this.data;
 	}
-	equals(other: idWinStr ) {
-		super.equals( other );
-		this.data.equals( other.data );
+	opEquals(other: idWinStr ) {
+		super.opEquals( other );
+		this.data.opEquals( other.data );
 		return this;
 	}
 
@@ -238,7 +238,7 @@ class idWinStr extends idWinVar {
 ////	}
 	Length ( ): number {
 		if ( this.guiDict && this.name /* && *this.name*/ ) {
-			this.data.equals( this.guiDict.GetString( this.GetName ( ) ) );
+			this.data.opEquals( this.guiDict.GetString( this.GetName ( ) ) );
 		}
 		return this.data.Length ( );
 	}
@@ -253,7 +253,7 @@ class idWinStr extends idWinVar {
 	}
 ////
 	Set ( val: string ): void {
-		this.data.equals( val );
+		this.data.opEquals( val );
 		if ( this.guiDict ) {
 			this.guiDict.Set( this.GetName ( ), this.data.data );
 		}
@@ -262,7 +262,7 @@ class idWinStr extends idWinVar {
 	Update ( ): void {
 		var s = this.GetName ( );
 		if ( this.guiDict && s /*[0] != '\0'*/ ) {
-			this.data.equals( this.guiDict.GetString( s ) );
+			this.data.opEquals( this.guiDict.GetString( s ) );
 		}
 	}
 
@@ -317,8 +317,8 @@ class idWinInt extends idWinVar {
 		return this.data;
 	}
 
-	equals ( other: idWinInt ): idWinInt {
-		super.equals( other );
+	opEquals ( other: idWinInt ): idWinInt {
+		super.opEquals( other );
 		this.data = other.data;
 		return this;
 	}
@@ -370,8 +370,8 @@ class idWinFloat extends idWinVar {
 			this.data = this.guiDict.GetFloat(this.GetName());
 		} 
 	}
-	equals(other: idWinFloat): idWinFloat {
-		super.equals( other );//idWinVar::operator=(other);
+	opEquals(other: idWinFloat): idWinFloat {
+		super.opEquals( other );//idWinVar::operator=(other);
 		this.data = other.data;
 		return this;
 	}
@@ -436,13 +436,13 @@ class idWinRectangle extends idWinVar {
 	//	//return ( other.equalTo( this.data ) );
 	//}
 
-	equals(other: idWinRectangle): idWinRectangle {
-		super.equals( other );
+	opEquals(other: idWinRectangle): idWinRectangle {
+		super.opEquals( other );
 		this.data = other.data;
 		return this;
 	}
 	equalsVec4(other: idVec4): idRectangle {
-		this.data.equalsVec4( other );
+		this.data.opEquals_Vec4( other );
 		if ( this.guiDict ) {
 			this.guiDict.SetVec4( this.GetName ( ), other );
 		}
@@ -450,7 +450,7 @@ class idWinRectangle extends idWinVar {
 	}
 
 	equalsRectangle ( other: idRectangle ): idRectangle {
-		this.data.equals( other );
+		this.data.opEquals( other );
 		if ( this.guiDict ) {
 			var v = this.data.ToVec4 ( );
 			this.guiDict.SetVec4( this.GetName ( ), v );
@@ -547,9 +547,9 @@ class idWinVec2 extends idWinVar {
 ////	int	operator==(	const idVec2 &other ) const {
 ////		return (other == this.data);
 ////	}
-	equals ( other: idWinVec2 ): idWinVec2 {
-		super.equals( other );
-		this.data.equals( other.data );
+	opEquals ( other: idWinVec2 ): idWinVec2 {
+		super.opEquals( other );
+		this.data.opEquals( other.data );
 		return this;
 	}
 
@@ -620,14 +620,14 @@ class idWinVec4 extends idWinVar {
 	Init(_name:string, win:idWindow): void  {
 		super.Init(_name, win);
 		if (this.guiDict) {
-			this.data.equals( this.guiDict.GetVec4(this.GetName()));
+			this.data.opEquals( this.guiDict.GetVec4(this.GetName()));
 		} 
 	}
 ////	int	operator==(	const idVec4 &other ) const {
 ////		return (other == this.data);
 ////	}
-	equals ( other: idWinVec4 ): idWinVec4 {
-		super.equals( other );
+	opEquals ( other: idWinVec4 ): idWinVec4 {
+		super.opEquals( other );
 		this.data = other.data;
 		return this;
 	}
@@ -725,8 +725,8 @@ class idWinVec3 extends idWinVar {
 ////	int	operator==(	const idVec3 &other ) const {
 ////		return (other == this.data);
 ////	}
-	equals ( other: idWinVec3 ): idWinVec3 {
-		super.equals( other );
+	opEquals ( other: idWinVec3 ): idWinVec3 {
+		super.opEquals( other );
 		this.data = other.data;
 		return this;
 	}
@@ -803,7 +803,7 @@ class idWinBackground extends idWinStr {
 	Init(_name:string, win:idWindow): void  {
 		super.Init(_name, win);
 		if (this.guiDict) {
-			this.data.equals( this.guiDict.GetString( this.GetName ( ) ) );
+			this.data.opEquals( this.guiDict.GetString( this.GetName ( ) ) );
 		} 
 	}
 ////	int	operator==(	const idStr &other ) const {
@@ -812,8 +812,8 @@ class idWinBackground extends idWinStr {
 ////	int	operator==(	const char *other ) const {
 ////		return (data == other);
 ////	}
-	equalsStr ( other: idStr ): idStr {
-		this.data.equals( other.data );
+	opEqualsStr ( other: idStr ): idStr {
+		this.data.opEquals( other.data );
 		if ( this.guiDict ) {
 			this.guiDict.Set( this.GetName ( ), this.data.data );
 		}
@@ -828,7 +828,7 @@ class idWinBackground extends idWinStr {
 	}
 
 	operator ( other: idWinBackground ): idWinBackground {
-		super.equals( other );
+		super.opEquals( other );
 		this.data = other.data;
 		this.mat = other.mat;
 		if ( this.mat ) {
@@ -848,7 +848,7 @@ class idWinBackground extends idWinStr {
 ////	}
 	Length ( ): number {
 		if ( this.guiDict ) {
-			this.data.equals( this.guiDict.GetString( this.GetName ( ) ) );
+			this.data.opEquals( this.guiDict.GetString( this.GetName ( ) ) );
 		}
 		return this.data.Length ( );
 	}
@@ -857,7 +857,7 @@ class idWinBackground extends idWinStr {
 	}
 
 	Set ( val: string ): void {
-		this.data.equals( val );
+		this.data.opEquals( val );
 		if ( this.guiDict ) {
 			this.guiDict.Set( this.GetName ( ), this.data.data );
 		}
@@ -873,7 +873,7 @@ class idWinBackground extends idWinStr {
 	Update ( ): void {
 		var s = this.GetName ( );
 		if ( this.guiDict && s /*[0] != '\0'*/ ) {
-			this.data.equals( this.guiDict.GetString( s ) );
+			this.data.opEquals( this.guiDict.GetString( s ) );
 			if ( this.mat ) {
 				if ( this.data.data == "" ) {
 					this.mat = null;

@@ -59,7 +59,7 @@ class idTabRect {
 		dest.align = this.align;
 		dest.valign = this.valign;
 		dest.type = this.type;
-		dest.iconSize.equals( this.iconSize );
+		dest.iconSize.opEquals( this.iconSize );
 		dest.iconVOffset = this.iconVOffset;
 		return dest;
 	}
@@ -128,7 +128,7 @@ class idListWindow extends idWindow {
 ////static const int doubleClickSpeed = 300;
 ////
 	CommonInit ( ): void {
-		this.typed.equals( "" );
+		this.typed.opEquals( "" );
 		this.typedTime = 0;
 		this.clickTime = 0;
 		this.currentSel.Clear ( );

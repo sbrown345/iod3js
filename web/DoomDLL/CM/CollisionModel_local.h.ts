@@ -3646,7 +3646,7 @@ idCollisionModelManagerLocal::LoadRenderModel
 		renderModel = renderModelManager.FindModel( fileName );
 
 		model = this.AllocModel ( );
-		model.name.equals( fileName );
+		model.name.opEquals( fileName );
 		node = this.AllocNode( model, NODE_BLOCK_SIZE_SMALL );
 		node.planeType = -1;
 		model.node = node;
@@ -4045,7 +4045,7 @@ idCollisionModelManagerLocal::LoadMap
 		this.BuildModels( mapFile );
 
 		// save name and time stamp
-		this.mapName.equals( mapFile.GetName ( ) );
+		this.mapName.opEquals( mapFile.GetName ( ) );
 		this.mapFileTime = mapFile.GetFileTime ( );
 		this.loaded = 1 /*true*/;
 
@@ -5080,7 +5080,7 @@ idCollisionModelManagerLocal::ParseCollisionModel
 		this.numModels++;
 		// parse the file
 		src.ExpectTokenType( TT_STRING, 0, token );
-		model.name.equals( token );
+		model.name.opEquals( token );
 		src.ExpectTokenString( "{" );
 		while ( !src.CheckTokenString( "}" ) ) {
 
@@ -5154,7 +5154,7 @@ idCollisionModelManagerLocal::LoadCollisionModelFile
 		var crc: number /*unsigned int */;
 
 		// load it
-		fileName.equals( name );
+		fileName.opEquals( name );
 		fileName.SetFileExtension( CM_FILE_EXT );
 		src = new idLexer( fileName.data );
 		src.SetFlags( lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NODOLLARPRECOMPILE );

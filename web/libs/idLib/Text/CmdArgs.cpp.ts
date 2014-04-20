@@ -80,7 +80,7 @@ class idCmdArgs {
 
 	copy ( dest: idCmdArgs = null ): idCmdArgs {
 		dest = dest || new idCmdArgs;
-		dest.equals( this );
+		dest.opEquals( this );
 		return dest;
 	}
 
@@ -92,7 +92,7 @@ class idCmdArgs {
 idCmdArgs::operator=
 ============
 */
-	equals ( args: idCmdArgs ): idCmdArgs {
+	opEquals ( args: idCmdArgs ): idCmdArgs {
 		var /*int */i: number;
 
 		this.argc = args.argc;
@@ -197,7 +197,7 @@ will point into this temporary buffer.
 			// check for negative numbers
 			if ( !keepAsStrings && ( token.data == "-" ) ) {
 				if ( lex.CheckTokenType( TT_NUMBER, 0, $number ) ) {
-					token.equals( "-" + $number.data );
+					token.opEquals( "-" + $number.data );
 				}
 			}
 
@@ -207,9 +207,9 @@ will point into this temporary buffer.
 					return;
 				}
 				if ( /*idLib::*/cvarSystem ) {
-					token.equals(/*idLib::*/cvarSystem.GetCVarString( token.c_str ( ) ) );
+					token.opEquals(/*idLib::*/cvarSystem.GetCVarString( token.c_str ( ) ) );
 				} else {
-					token.equals( "<unknown>" );
+					token.opEquals( "<unknown>" );
 				}
 			}
 

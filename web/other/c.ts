@@ -215,6 +215,14 @@ function reinterpret_cast<T> ( obj: any ): T {
 	return <T>obj;
 }
 
+function defaultVal ( type: any ) {
+	if ( type == Number ) {
+		return 0;
+	}
+
+	return new type;
+}
+
 function short ( buf: Uint8Array, ptr: number ): number {
 	return buf[ptr] + ( buf[ptr + 1] << 8 );
 }
@@ -276,10 +284,12 @@ var max = Math.max;
 var pow = Math.pow;
 var sin = Math.sin;
 var sinf = Math.sin;
+var asin = Math.asin;
 var cos = Math.cos;
 var cosf = Math.cos;
 var acosf = Math.acos;
 var atan = Math.atan;
+var atan2 = Math.atan2;
 var atanf = Math.atan;
 var floor = Math.floor;
 var floorf = Math.floor;

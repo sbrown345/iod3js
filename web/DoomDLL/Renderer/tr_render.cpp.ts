@@ -533,7 +533,7 @@ function RB_BeginDrawingView ():void {
 		tr.viewportOffset[1] + backEnd.viewDef.viewport.y1 + backEnd.viewDef.scissor.y1, 
 		backEnd.viewDef.scissor.x2 + 1 - backEnd.viewDef.scissor.x1,
 		backEnd.viewDef.scissor.y2 + 1 - backEnd.viewDef.scissor.y1 );
-	backEnd.currentScissor.equals(backEnd.viewDef.scissor);
+	backEnd.currentScissor.opEquals(backEnd.viewDef.scissor);
 
 	// ensures that depth writes are enabled for the depth clear
 	GL_State( GLS_DEFAULT );

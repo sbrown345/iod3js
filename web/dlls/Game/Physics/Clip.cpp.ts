@@ -560,8 +560,9 @@ idClipModel::Init
 			if ( a1 instanceof idTraceModel ) {
 				var trm: idTraceModel = a1;
 				this.constructor_trace( trm );
-			} else if ( a1 instanceof idClipModel ) {
-				todoThrow ( );
+			} else if (a1 instanceof idClipModel) {
+				var model = <idClipModel>a1;
+				this.constructor_clipModel(model );
 			} else {
 				todoThrow ( );
 			}
@@ -611,32 +612,32 @@ idClipModel::idClipModel
 		this.LoadModel_handle( renderModelHandle );
 	}
 
-/////*
-////================
-////idClipModel::idClipModel
-////================
-////*/
-////idClipModel::idClipModel( const idClipModel *model ) {
-////	this.enabled = model.enabled;
-////	this.entity = model.entity;
-////	this.id = model.id;
-////	this.owner = model.owner;
-////	this.origin = model.origin;
-////	this.axis = model.axis;
-////	this.bounds = model.bounds;
-////	this.absBounds = model.absBounds;
-////	this.material = model.material;
-////	this.contents = model.contents;
-////	this.collisionModelHandle = model.collisionModelHandle;
-////	this.traceModelIndex = -1;
-////	if ( model.traceModelIndex != -1 ) {
-////		this.LoadModel( *GetCachedTraceModel( model.traceModelIndex ) );
-////	}
-////	renderModelHandle = model.renderModelHandle;
-////	this.clipLinks = NULL;
-////	this.touchCount = -1;
-////}
-////
+/*
+================
+idClipModel::idClipModel
+================
+*/
+	private constructor_clipModel ( model: idClipModel ) {
+		this.enabled = model.enabled;
+		this.entity = model.entity;
+		this.id = model.id;
+		this.owner = model.owner;
+		this.origin.opEquals( model.origin );
+		this.axis.opEquals( model.axis );
+		this.bounds.opEquals( model.bounds );
+		this.absBounds.opEquals( model.absBounds );
+		this.material = model.material;
+		this.contents = model.contents;
+		this.collisionModelHandle = model.collisionModelHandle;
+		this.traceModelIndex = -1;
+		if ( model.traceModelIndex != -1 ) {
+			this.LoadModel( /***/ this.GetCachedTraceModel( model.traceModelIndex ) );
+		}
+		this.renderModelHandle = model.renderModelHandle;
+		this.clipLinks = null;
+		this.touchCount = -1;
+	}
+
 /*
 ================
 idClipModel::~idClipModel
@@ -764,7 +765,7 @@ idClipModel::GetMassProperties
 		var entry = traceModelCache[this.traceModelIndex];
 		mass.$ = entry.volume * density;
 		centerOfMass.opEquals( entry.centerOfMass );
-		inertiaTensor.equals( idMat3.opMultiplication_floatMat( density, entry.inertiaTensor ) );
+		inertiaTensor.opEquals( idMat3.opMultiplication_floatMat( density, entry.inertiaTensor ) );
 	}
 
 /*

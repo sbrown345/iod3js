@@ -74,7 +74,7 @@ class soundShaderParms_t {
 		this.soundClass = 0;
 	}
 
-	equals ( other: soundShaderParms_t ) {
+	opEquals ( other: soundShaderParms_t ) {
 		this.minDistance = other.minDistance;
 		this.maxDistance = other.maxDistance;
 		this.volume = other.volume;

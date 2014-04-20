@@ -178,11 +178,11 @@ function ASE_KeyMAP_DIFFUSE ( token: string ): void {
 		if ( s ) {
 			s[0] = 0;
 		}
-		matname.equals( ase.token.subarray( 1 ).toString ( ) );
+		matname.opEquals( ase.token.subarray( 1 ).toString ( ) );
 
 		// convert the 3DSMax material pathname to a qpath
 		matname.BackSlashesToSlashes ( );
-		qpath.equals( fileSystem.OSPathToRelativePath( matname.data ) );
+		qpath.opEquals( fileSystem.OSPathToRelativePath( matname.data ) );
 		idStr.Copynz( ase.currentMaterial.name, qpath.data, sizeof( ase.currentMaterial.name ) );
 	} else if ( !strcmp( token, "*UVW_U_OFFSET" ) ) {
 		material = ase.model.materials[ase.model.materials.Num ( ) - 1];

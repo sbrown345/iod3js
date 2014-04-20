@@ -260,7 +260,7 @@ idRenderModelManagerLocal::GetModel
 			return null;
 		}
 
-		canonical.equals( modelName );
+		canonical.opEquals( modelName );
 		canonical.ToLower ( );
 
 		// see if it is already present

@@ -180,7 +180,7 @@ class idDeclFile {
     constructor( fileName:string, defaultType:declType_t )
     constructor( fileName?:string, defaultType?:declType_t ) {
         if( arguments.length === 2 ) {
-	        this.fileName.equals( fileName );
+	        this.fileName.opEquals( fileName );
             this.defaultType = defaultType;
             this.timestamp = 0;
             this.checksum = 0;
@@ -188,7 +188,7 @@ class idDeclFile {
             this.numLines = 0;
             this.decls = /*NULL*/null;
         } else {
-	        this.fileName.equals( "<implicit file>" );
+	        this.fileName.opEquals( "<implicit file>" );
             this.defaultType = declType_t.DECL_MAX_TYPES;
             this.timestamp = 0;
             this.checksum = 0;
@@ -520,7 +520,7 @@ idDeclManagerLocal::RegisterDeclFolder
 
 		// load and parse decl files
 		for (i = 0; i < fileList.GetNumFiles(); i++) {
-			fileName.equals(declFolder.folder + "/" + fileList.GetFile(i));
+			fileName.opEquals(declFolder.folder + "/" + fileList.GetFile(i));
 
 			dlog(DEBUG_RegisterDeclFolder, "fileName: %s\n", fileName);
 			// check whether this file has already been loaded
@@ -1248,7 +1248,7 @@ FindTypeWithoutParsing (type: declType_t, name: string, makeDefault: boolean = t
 
 		var decl = new idDeclLocal;
 		decl.self = /*NULL*/null;
-		decl.name.equals(canonicalName.toString());
+		decl.name.opEquals(canonicalName.toString());
 		decl.type = type;
 		decl.declState = declState_t.DS_UNPARSED;
 		decl.textSource = /*NULL*/null;
@@ -1695,7 +1695,7 @@ idDeclFile.prototype.LoadAndParse = function ( ): number {
 			continue;
 		}
 
-		name.equals( token.data );
+		name.opEquals( token.data );
 
 		assert( src.buffer.indexOf( "<!DOCTYPE html" ) === -1 );
 

@@ -74,7 +74,9 @@ class idExtrapolate<type> {
 	baseSpeed:type;
 	speed:type;
 	currentTime :number/*mutable float*/;
-	currentValue:type;
+	currentValue: type;
+
+	type:any
 ////};
 
 /*
@@ -83,15 +85,25 @@ idExtrapolate::idExtrapolate
 ====================
 */
 //template< class type >
-constructor() {
-	this.extrapolationType = extrapolation_t.EXTRAPOLATION_NONE;
-	this.startTime =this. duration = 0.0;
-	this.startValue["memset0"]();//memset(this.startValue, 0, sizeof(this.startValue));
-	this.baseSpeed["memset0"]();//memset(this.baseSpeed, 0, sizeof(this.baseSpeed));
-	this.speed["memset0"]();//memset(this.speed, 0, sizeof(this.speed ) );
-	this.currentTime = -1;
-	this.currentValue = this.startValue;
-}
+	constructor ( type: any ) {
+		this.type = type;
+		this.extrapolationType = extrapolation_t.EXTRAPOLATION_NONE;
+		this.startTime = this.duration = 0.0;
+		if (this.type == Number ) {
+			this.startValue = <any>0;
+			this.baseSpeed = <any>0;
+			this.speed = <any>0;
+		} else {
+			this.startValue = new type;
+			this.baseSpeed = new type;
+			this.speed = new type;
+			this.startValue["memset0"] ( );
+			this.baseSpeed["memset0"] ( );
+			this.speed["memset0"] ( );
+		}
+		this.currentTime = -1;
+		this.currentValue = this.startValue;
+	}
 
 /*
 ====================
@@ -99,16 +111,22 @@ idExtrapolate::Init
 ====================
 */
 //template< class type >
-Init( /*const float */startTime: number, /*const float */duration: number,startValue: type, baseSpeed: type, speed:type, extrapolationType :extrapolation_t ) {
-	this.extrapolationType = extrapolationType;
-	this.startTime = startTime;
-	this.duration = duration;
-	this.startValue["opEquals"]( startValue );
-	this.baseSpeed["opEquals"](  baseSpeed);
-	this.speed["opEquals"](  speed);
-	this.currentTime = -1;
-	this.currentValue = startValue;
-}
+	Init ( /*float */startTime: number, /*float */duration: number, startValue: type, baseSpeed: type, speed: type, extrapolationType: extrapolation_t ) {
+		this.extrapolationType = extrapolationType;
+		this.startTime = startTime;
+		this.duration = duration;
+		if ( this.type == Number ) {
+			this.startValue = startValue;
+			this.baseSpeed = baseSpeed;
+			this.speed = speed;
+		} else {
+			this.startValue["opEquals"]( startValue );
+			this.baseSpeed["opEquals"]( baseSpeed );
+			this.speed["opEquals"]( speed );
+		}
+		this.currentTime = -1;
+		this.currentValue = startValue;
+	}
 
 /////*
 ////====================
@@ -169,7 +187,7 @@ Init( /*const float */startTime: number, /*const float */duration: number,startV
 ////				currentValue = startValue;
 ////			} else {
 ////				deltaTime = ( time - startTime ) / duration;
-////				s = ( 1.0f - idMath::Cos( deltaTime * idMath::HALF_PI ) ) * duration * 0.001f * idMath::SQRT_1OVER2;
+////				s = ( 1.0 - idMath::Cos( deltaTime * idMath::HALF_PI ) ) * duration * 0.001f * idMath::SQRT_1OVER2;
 ////				currentValue = startValue + deltaTime * baseSpeed + s * speed;
 ////			}
 ////			break;
@@ -219,7 +237,7 @@ Init( /*const float */startTime: number, /*const float */duration: number,startV
 ////		}
 ////		case EXTRAPOLATION_DECELLINEAR: {
 ////			deltaTime = ( time - startTime ) / duration;
-////			s = 1.0f - deltaTime;
+////			s = 1.0 - deltaTime;
 ////			return baseSpeed + s * speed;
 ////		}
 ////		case EXTRAPOLATION_ACCELSINE: {

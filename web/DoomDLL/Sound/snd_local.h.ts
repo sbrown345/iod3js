@@ -705,7 +705,7 @@ idSoundWorldLocal::Init
 		this.listenerPrivateId = 0;
 		this.listenerQU.Zero ( );
 		this.listenerArea = 0;
-		this.listenerAreaName.equals( "Undefined" );
+		this.listenerAreaName.opEquals( "Undefined" );
 		this.listenerEnvironmentID = -2;
 
 		this.gameMsec = 0;
@@ -723,8 +723,8 @@ idSoundWorldLocal::Init
 
 		this.fpa[0] = this.fpa[1] = this.fpa[2] = this.fpa[3] = this.fpa[4] = this.fpa[5] = null;
 
-		this.aviDemoPath.equals( "" );
-		this.aviDemoName.equals( "" );
+		this.aviDemoPath.opEquals( "" );
+		this.aviDemoName.opEquals( "" );
 
 		this.localSound = null;
 
@@ -1206,8 +1206,8 @@ idSoundWorldLocal::AllocSoundEmitter
 ////===================
 ////*/
 ////void idSoundWorldLocal::AVIOpen( const char *path, const char *name ) {
-////	aviDemoPath.equals( path );
-////	aviDemoName.equals( name );
+////	aviDemoPath.opEquals( path );
+////	aviDemoName.opEquals( name );
 ////
 ////	lastAVI44kHz = game44kHz - game44kHz % MIXBUFFER_SAMPLES;
 ////

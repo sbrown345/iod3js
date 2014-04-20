@@ -108,16 +108,16 @@ idDeclParticle::GetStageBounds
 
 		var renderEntity = new renderEntity_t;
 		renderEntity.memset0 ( ); //memset( &renderEntity, 0, sizeof( renderEntity ) );
-		renderEntity.axis.equals(mat3_identity);
+		renderEntity.axis.opEquals(mat3_identity);
 
 		var renderView = new renderView_t;
 		renderView.memset0 ( );
-		renderView.viewaxis.equals( mat3_identity );
+		renderView.viewaxis.opEquals( mat3_identity );
 
 		g.renderEnt = renderEntity;
 		g.renderView = renderView;
 		g.origin.Zero ( );
-		g.axis.equals( mat3_identity );
+		g.axis.opEquals( mat3_identity );
 
 		var steppingRandom = new idRandom;
 		steppingRandom.SetSeed( 0 );
@@ -1506,7 +1506,7 @@ idParticleStage::operator=
 		//this.customPathParms[5] = src.customPathParms[5];
 		//this.customPathParms[6] = src.customPathParms[6];
 		//this.customPathParms[7] = src.customPathParms[7];
-		//this.offset.equals(src.offset);
+		//this.offset.opEquals(src.offset);
 		//this.animationFrames = src.animationFrames;
 		//this.animationRate = src.animationRate;
 		//this.initialAngle = src.initialAngle;
@@ -1518,8 +1518,8 @@ idParticleStage::operator=
 		//this.orientationParms[3] = src.orientationParms[3];
 		//	this.size.opEquals( src.size );
 		//	this.aspect.opEquals( src.aspect );//todo: check others
-		//this.color.equals(src.color);
-		//this.fadeColor.equals(src.fadeColor);
+		//this.color.opEquals(src.color);
+		//this.fadeColor.opEquals(src.fadeColor);
 		//this.fadeInFraction = src.fadeInFraction;
 		//this.fadeOutFraction = src.fadeOutFraction;
 		//this.fadeIndexFraction = src.fadeIndexFraction;

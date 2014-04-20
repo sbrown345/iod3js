@@ -1046,7 +1046,7 @@ function R_AddDrawSurf ( tri: srfTriangles_t, space: viewEntity_t, renderEntity:
 	drawSurf.geo = tri;
 	drawSurf.space = space;
 	drawSurf.material = shader;
-	drawSurf.scissorRect.equals(scissor);
+	drawSurf.scissorRect.opEquals(scissor);
 	drawSurf.sort = shader.GetSort ( ) + tr.sortOffset;
 	drawSurf.dsFlags = 0;
 

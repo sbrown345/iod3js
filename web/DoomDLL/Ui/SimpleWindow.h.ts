@@ -111,12 +111,12 @@ class idSimpleWindow {
 	constructor ( win: idWindow ) {
 		this.gui = win.GetGui ( );
 		this.dc = win.dc;
-		this.drawRect.equals( win.drawRect );
-		this.clientRect.equals( win.clientRect );
-		this.textRect.equals( win.textRect );
-		this.origin.equals( win.origin );
+		this.drawRect.opEquals( win.drawRect );
+		this.clientRect.opEquals( win.clientRect );
+		this.textRect.opEquals( win.textRect );
+		this.origin.opEquals( win.origin );
 		this.fontNum = win.fontNum;
-		this.name.equals( win.name );
+		this.name.opEquals( win.name );
 		this.matScalex = win.matScalex;
 		this.matScaley = win.matScaley;
 		this.borderSize = win.borderSize;
@@ -127,15 +127,15 @@ class idSimpleWindow {
 		this.flags = win.flags;
 		this.textShadow = win.textShadow;
 
-		this.visible.equals( win.visible );
-		this.text.equals( win.text );
-		this.rect.equals( win.rect );
-		this.backColor.equals( win.backColor );
-		this.matColor.equals( win.matColor );
-		this.foreColor.equals( win.foreColor );
-		this.borderColor.equals( win.borderColor );
-		this.textScale.equals( win.textScale );
-		this.rotate.equals( win.rotate );
+		this.visible.opEquals( win.visible );
+		this.text.opEquals( win.text );
+		this.rect.opEquals( win.rect );
+		this.backColor.opEquals( win.backColor );
+		this.matColor.opEquals( win.matColor );
+		this.foreColor.opEquals( win.foreColor );
+		this.borderColor.opEquals( win.borderColor );
+		this.textScale.opEquals( win.textScale );
+		this.rotate.opEquals( win.rotate );
 		this.shear.equalsVec2( win.shear );
 		this.backGroundName = win.backGroundName;
 		if ( this.backGroundName.Length ( ) ) {

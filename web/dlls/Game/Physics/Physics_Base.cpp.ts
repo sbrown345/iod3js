@@ -471,14 +471,14 @@ class idPhysics_Base extends idPhysics {
 	//*/
 	//void idPhysics_Base::RestoreState( ) {
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::SetOrigin
-	//================
-	//*/
-	//void idPhysics_Base::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
-	//}
+	
+	/*
+	================
+	idPhysics_Base::SetOrigin
+	================
+	*/
+	void idPhysics_Base::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
+	}
 	//
 	///*
 	//================

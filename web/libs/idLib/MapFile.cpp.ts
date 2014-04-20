@@ -134,7 +134,7 @@ class idMapPatch extends idMapPrimitive_idSurface_Patch //idMapPrimitive // todo
 	////	static idMapPatch *		Parse( idLexer &src, origin: idVec3, bool patchDef3 = true, float version = CURRENT_MAP_VERSION );
 	////	bool					Write( idFile *fp, int primitiveNum, const idVec3 &origin ) const;
 	GetMaterial ( ): string { return this.material.data; }
-	SetMaterial ( p: string ): void { this.material.equals( p ); }
+	SetMaterial ( p: string ): void { this.material.opEquals( p ); }
 	GetHorzSubdivisions ( ): number /*int*/ { return this.horzSubdivisions; }
 	GetVertSubdivisions ( ): number /*int*/ { return this.vertSubdivisions; }
 	GetExplicitlySubdivided ( ): boolean { return this.explicitSubdivisions; }
@@ -466,9 +466,9 @@ idMapBrush::Parse
 
 			// we had an implicit 'textures/' in the old format...
 			if ( version < 2.0 ) {
-				side.material.equals( "textures/" + token.data );
+				side.material.opEquals( "textures/" + token.data );
 			} else {
-				side.material.equals( token );
+				side.material.opEquals( token );
 			}
 
 			// Q2 allowed override of default flags and values, but we don't any more
@@ -490,7 +490,7 @@ idMapBrush::Parse
 			brush.AddSide( sides[i] );
 		}
 
-		brush.epairs.equals( epairs );
+		brush.epairs.opEquals( epairs );
 
 		return brush;
 	}
@@ -566,7 +566,7 @@ idMapBrush::Parse
 ////		brush.AddSide( sides[i] );
 ////	}
 ////
-////	brush.epairs.equals( epairs );
+////	brush.epairs.opEquals( epairs );
 ////
 ////	return brush;
 ////}
@@ -728,9 +728,9 @@ idMapEntity::Parse
 				var key = new idStr, value = new idStr;
 
 				// parse a key / value pair
-				key.equals( token );
+				key.opEquals( token );
 				src.ReadTokenOnLine( token );
-				value.equals( token );
+				value.opEquals( token );
 
 				// strip trailing spaces that sometimes get accidentally
 				// added in the editor
@@ -866,7 +866,7 @@ class idMapBrushSide {
 ////							idMapBrushSide( );
 ////							~idMapBrushSide( ) { }
 	GetMaterial ( ): string { return this.material.data; }
-	SetMaterial ( p: string ): void { this.material.equals( p ); }
+	SetMaterial ( p: string ): void { this.material.opEquals( p ); }
 	GetPlane(): idPlane { return this.plane; }
 	SetPlane(p: idPlane ):void { this.plane.opEquals( p ); }
 	SetTextureMatrix(mat: idVec3[]/*[2]*/ ): void { this.texMat[0] = mat[0]; this. texMat[1] = mat[1]; }
@@ -981,9 +981,9 @@ class idMapFile {
 		var mapEnt: idMapEntity;
 		var /*int */i: number, j: number, k: number;
 
-		this.name.equals( filename );
+		this.name.opEquals( filename );
 		this.name.StripFileExtension ( );
-		fullName.equals( this.name );
+		fullName.opEquals( this.name );
 		this.hasPrimitiveData = false;
 
 		if ( !ignoreRegion ) {

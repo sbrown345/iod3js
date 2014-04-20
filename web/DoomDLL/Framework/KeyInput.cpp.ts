@@ -662,7 +662,7 @@ idKeyInput::SetBinding
 		usercmdGen.Clear ( );
 
 		// allocate memory for new binding
-		keys[keynum].binding.equals( binding );
+		keys[keynum].binding.opEquals( binding );
 
 		// find the action for the async command generation
 		keys[keynum].usercmdAction = usercmdGen.CommandStringUsercmdData( binding );

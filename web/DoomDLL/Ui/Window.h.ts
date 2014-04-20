@@ -160,7 +160,7 @@ class rvNamedEvent
 	constructor(name:string)
 	{
 		this.mEvent = new idGuiScriptList;
-		this.mName.equals( name );
+		this.mName.opEquals( name );
 	}
 ////	~rvNamedEvent(void)
 ////	{

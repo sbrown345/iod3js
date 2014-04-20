@@ -232,6 +232,7 @@
     <TypeScriptCompile Include="libs\idLib\Math\Rotation.h.ts" />
     <TypeScriptCompile Include="libs\idLib\Math\Quat.h.ts" />
     <TypeScriptCompile Include="libs\idLib\Math\Extrapolate.h.ts" />
+    <TypeScriptCompile Include="libs\idLib\Math\Curve.h.ts" />
     <Content Include="libs\idLib\Timer.h.ts" />
     <Content Include="log.aspx" />
     <Content Include="other\files.ts" />

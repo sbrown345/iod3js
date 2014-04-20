@@ -4217,8 +4217,8 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	mass						= 1.0f;
 ////	invMass						= 1.0f;
 ////	centerOfMass				 .opEquals(  vec3_zero);
-////	inertiaTensor				 .equals(  mat3_identity);
-////	inverseInertiaTensor		 .equals(  mat3_identity);
+////	inertiaTensor				 .opEquals(  mat3_identity);
+////	inverseInertiaTensor		 .opEquals(  mat3_identity);
 ////
 ////	current						= &state[0];
 ////	next						= &state[1];

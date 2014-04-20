@@ -509,7 +509,7 @@ idSoundEmitterLocal::OverrideParms
 	OverrideParms ( base: soundShaderParms_t,
 		over: soundShaderParms_t, out: soundShaderParms_t ): void {
 		if ( !over ) {
-			out.equals( base );
+			out.opEquals( base );
 			return;
 		}
 		if ( over.minDistance ) {
@@ -730,7 +730,7 @@ idSoundEmitterLocal::UpdateEmitter
 
 		this.origin = origin;
 		this.listenerId = listenerId;
-		this.parms.equals( parms );
+		this.parms.opEquals( parms );
 
 		// FIXME: change values on all channels?
 	}

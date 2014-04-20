@@ -167,7 +167,7 @@ class idEditWindow extends idWindow {
 		this.cursorLine = 0;
 		this.cvarMax = 0;
 		this.wrap = false;
-		this.sourceFile.equals( "" );
+		this.sourceFile.opEquals( "" );
 		this.scroller = null;
 		this.sizeBias = 0;
 		this.lastTextLength = 0;
@@ -626,7 +626,7 @@ InitScroller(  horizontal :boolean):void
 
 			this.breaks.Clear();
 			var rect = new idRectangle();
-			rect.equals( this.textRect );
+			rect.opEquals( this.textRect );
 			rect.w -= this.sizeBias;
 			this.dc.DrawText_text( this.text.c_str ( ), this.textScale.data, this.textAlign, colorWhite, rect, true, ( this.flags & WIN_FOCUS ) ? this.cursorPos : -1, true, this.breaks );
 

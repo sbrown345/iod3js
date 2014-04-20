@@ -47,7 +47,7 @@
 class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 	
 	Init ( ): void {
-		this.screenRect.equals( new idRectangle( 0, 0, 640, 480 ) );
+		this.screenRect.opEquals( new idRectangle( 0, 0, 640, 480 ) );
 		this.dc.Init ( );
 	}
 //
@@ -297,7 +297,7 @@ class idUserInterfaceLocal extends idUserInterface {
 			this.desktop = new idWindow( this );
 		}
 
-		this.source.equals( qpath );
+		this.source.opEquals( qpath );
 		this.state.Set( "text", "Test Text!" );
 
 		var src = new idParser( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_ALLOWMULTICHARLITERALS | lexerFlags_t.LEXFL_ALLOWBACKSLASHSTRINGCONCAT );

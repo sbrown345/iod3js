@@ -89,8 +89,8 @@ idMaterial::CommonInit
 =============
 */
 	CommonInit ( ): void {
-		this.desc.equals( "<none>" );
-		this.renderBump.equals( "" );
+		this.desc.opEquals( "<none>" );
+		this.renderBump.opEquals( "" );
 		this.contentFlags = contentsFlags_t.CONTENTS_SOLID;
 		this.surfaceFlags = surfTypes_t.SURFTYPE_NONE;
 		this.materialFlags = 0;
@@ -1784,14 +1784,14 @@ If there is any error during parsing, defaultShader will be set.
 				break;
 			} else if ( !token.Icmp( "qer_editorimage" ) ) {
 				src.ReadTokenOnLine( token );
-				this.editorImageName.equals( token.c_str ( ) );
+				this.editorImageName.opEquals( token.c_str ( ) );
 				src.SkipRestOfLine ( );
 				continue;
 			}
 			// description
 			else if ( !token.Icmp( "description" ) ) {
 				src.ReadTokenOnLine( token );
-				this.desc.equals( token.c_str ( ) );
+				this.desc.opEquals( token.c_str ( ) );
 				continue;
 			}
 			// check for the surface / content bit flags

@@ -129,7 +129,7 @@ idSmokeParticles::Init
 		this.renderEntity.memset0 ( );//	memset(   this.renderEntity, 0, sizeof( this.renderEntity ) );
 
 		this.renderEntity.bounds.Clear ( );
-		this.renderEntity.axis.equals( mat3_identity );
+		this.renderEntity.axis.opEquals( mat3_identity );
 		this.renderEntity.shaderParms[SHADERPARM_RED] = 1;
 		this.renderEntity.shaderParms[SHADERPARM_GREEN] = 1;
 		this.renderEntity.shaderParms[SHADERPARM_BLUE] = 1;

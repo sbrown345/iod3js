@@ -419,7 +419,7 @@ class varEval_t {
 class idTypeDef {
 	//private:
 	type: etype_t;
-	name: idStr;
+	name = new idStr;
 	size: number/*size_t*/;
 
 	// function types are more complex
@@ -480,11 +480,11 @@ idTypeDef::idTypeDef
 		if ( arguments.length == 1 ) {
 			var other = other_or_etype;
 
-			this.equals( other );
+			this.opEquals( other );
 		} else {
 			var etype = other_or_etype;
 
-			this.name = new idStr( ename );
+			this.name .opEquals( ename );
 			this.type = etype;
 			this.def = edef;
 			this.size = esize;
@@ -501,10 +501,10 @@ idTypeDef::idTypeDef
 	idTypeDef::operator=
 	================
 	*/
-	equals ( other: idTypeDef ): void {
+	opEquals ( other: idTypeDef ): void {
 		this.type = other.type;
 		this.def = other.def;
-		this.name = other.name;
+		this.name.opEquals( other.name );
 		this.size = other.size;
 		this.auxType = other.auxType;
 		this.parmTypes = other.parmTypes;
@@ -636,7 +636,7 @@ idTypeDef::idTypeDef
 
 		this.parmTypes.Append( parmtype );
 		var parmName = this.parmNames.Alloc ( );
-		parmName.equals( name );
+		parmName.opEquals( name );
 	}
 	
 	/*
@@ -653,7 +653,7 @@ idTypeDef::idTypeDef
 
 		this.parmTypes.Append( fieldtype );
 		var parmName = this.parmNames.Alloc ( );
-		parmName.equals( name );
+		parmName.opEquals( name );
 
 		if ( fieldtype.FieldType ( ).Inherits( type_object ) ) {
 			this.size += type_object.Size ( );
@@ -668,7 +668,7 @@ idTypeDef::idTypeDef
 	================
 	*/
 	SetName ( newname: string ): void {
-		this.name.equals( newname );
+		this.name.opEquals( newname );
 	}
 
 	/*
@@ -959,7 +959,7 @@ class idVarDef {
 	idVarDef::~idVarDef
 	============
 	*/
-	destructor() {
+	destructor():void {
 		if ( this.name ) {
 			this.name.RemoveDef( this );
 		}

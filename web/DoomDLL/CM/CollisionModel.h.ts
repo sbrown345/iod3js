@@ -103,7 +103,7 @@ class trace_t {
 	memset0 ( ): void {
 		this.fraction = 0;
 		this.endpos.Zero ( );
-		this.endAxis.equals( mat3_zero );
+		this.endAxis.opEquals( mat3_zero );
 		this.c.memset0 ( );
 	}
 };

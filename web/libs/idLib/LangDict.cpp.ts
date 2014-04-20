@@ -36,8 +36,8 @@ class idLangKeyValue {
 
 	copy ( dest: idLangKeyValue = null ): idLangKeyValue {
 		dest = dest || new idLangKeyValue;
-		dest.key.equals( this.key );
-		dest.value.equals( this.value );
+		dest.key.opEquals( this.key );
+		dest.value.opEquals( this.value );
 		return dest;
 	}
 };
@@ -148,7 +148,7 @@ Load( fileName:string, clear:boolean /* _D3XP */ ) {
 				break;
 			}
 			var kv = new idLangKeyValue;
-			kv.key.equals( tok.data );
+			kv.key.opEquals( tok.data );
 			kv.value.opEquals( tok2.data );
 			assert( kv.key.Cmpn( STRTABLE_ID, STRTABLE_ID_LENGTH ) == 0 );
 			this.hash.Add( this.GetHashKey( kv.key.data ), this.args.Append( kv ) );

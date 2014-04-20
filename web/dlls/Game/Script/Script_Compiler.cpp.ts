@@ -857,7 +857,7 @@ Gets the next token
 =============
 idCompiler::CheckToken
 
-Returns true and gets the next token if the current token equals string
+Returns true and gets the next token if the current token opEquals string
 Returns false and does nothing otherwise
 =============
 */
@@ -883,7 +883,7 @@ Checks to see if the current token is a valid name
 			this.Error( "'%s' is not a name", this.token.c_str ( ) );
 		}
 
-		name.equals( this.token.data );
+		name.opEquals( this.token.data );
 		this.NextToken ( );
 	}
 
@@ -2680,19 +2680,19 @@ compiles the 0 terminated text, adding definitions to the program structure
 		this.parserPtr = this.parser;
 
 		// unread tokens to include script defines
-		this.token.equals( SCRIPT_DEFAULTDEFS );
+		this.token.opEquals( SCRIPT_DEFAULTDEFS );
 		this.token.type = TT_STRING;
 		this.token.subtype = this.token.Length ( );
 		this.token.line = this.token.linesCrossed = 0;
 		this.parser.UnreadToken( this.token );
 
-		this.token.equals( "include" );
+		this.token.opEquals( "include" );
 		this.token.type = TT_NAME;
 		this.token.subtype = this.token.Length ( );
 		this.token.line = this.token.linesCrossed = 0;
 		this.parser.UnreadToken( this.token );
 
-		this.token.equals( "#" );
+		this.token.opEquals( "#" );
 		this.token.type = TT_PUNCTUATION;
 		this.token.subtype = P_PRECOMP;
 		this.token.line = this.token.linesCrossed = 0;

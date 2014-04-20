@@ -857,7 +857,7 @@ class idAF {
 		joint = reinterpret_cast<idAnimator>( model ).GetJointHandle( jointName );
 		if ( ( joint >= 0 ) && ( joint < reinterpret_cast<idAnimator>( model ).NumJoints ( ) ) ) {
 			origin.opEquals( frame[joint].ToVec3 ( ) );
-			axis.equals( frame[joint].ToMat3 ( ) );
+			axis.opEquals( frame[joint].ToMat3 ( ) );
 			return true;
 		} else {
 			return false;
@@ -887,7 +887,7 @@ class idAF {
 			return false;
 		}
 
-		this.name.equals( fileName );
+		this.name.opEquals( fileName );
 		this.name.StripFileExtension();
 
 		file = static_cast<idDeclAF>(declManager.FindType( declType_t.DECL_AF, this.name.data ) );

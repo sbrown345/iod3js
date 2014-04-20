@@ -3699,20 +3699,20 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	EvaluateContacts();
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::SetOrigin
-	////================
-	////*/
-	////void idPhysics_AF::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
-	////	if ( masterBody ) {
-	////		Translate( masterBody.current.worldOrigin + masterBody.current.worldAxis * newOrigin - this.bodies[0].current.worldOrigin );
-	////	} else {
-	////		Translate( newOrigin - this.bodies[0].current.worldOrigin );
-	////	}
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_AF::SetOrigin
+	================
+	*/
+	void idPhysics_AF::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
+		if ( masterBody ) {
+			Translate( masterBody.current.worldOrigin + masterBody.current.worldAxis * newOrigin - this.bodies[0].current.worldOrigin );
+		} else {
+			Translate( newOrigin - this.bodies[0].current.worldOrigin );
+		}
+	}
+	
 	/////*
 	////================
 	////idPhysics_AF::SetAxis

@@ -226,14 +226,14 @@ class idRectangle {
 //}
 //
 //
-	equals ( r: idRectangle ): idRectangle {
+	opEquals ( r: idRectangle ): idRectangle {
 		this.x = r.x;
 		this.y = r.y;
 		this.w = r.w;
 		this.h = r.h;
 		return this;
 	}
-	equalsVec4 ( v: idVec4 ): idRectangle {
+	opEquals_Vec4 ( v: idVec4 ): idRectangle {
 		this.x = v.x;
 		this.y = v.y;
 		this.w = v.z;

@@ -457,7 +457,7 @@ idGuiScript::Parse
 			}
 
 			var str = new idWinStr ( );
-			str.equalsStr( token );
+			str.opEqualsStr( token );
 			var wv = new idGSWinVar;
 			wv.own = true;
 			wv.$var = str;
@@ -604,7 +604,7 @@ idGuiScript::Parse
 						if ( ownerparent && destparent &&
 						( dest == ( owner.$.simp ? owner.$.simp.GetWinVarByName( "rect" ) : owner.$.win.GetWinVarByName( "rect" ) ) ) ) {
 							var rect = new idRectangle
-							rect.equals( dynamic_cast<idWinRectangle>( dest, idWinRectangle ).data );
+							rect.opEquals( dynamic_cast<idWinRectangle>( dest, idWinRectangle ).data );
 							ownerparent.ClientToScreen( rect );
 							destparent.ScreenToClient( rect );
 							v4.equalsVec4( rect.ToVec4 ( ) );

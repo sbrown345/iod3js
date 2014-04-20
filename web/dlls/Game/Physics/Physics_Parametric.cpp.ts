@@ -59,13 +59,13 @@ class parametricPState_t{
 	axis = new idMat3;					// world axis
 	localOrigin = new idVec3;			// local origin
 	localAngles = new idAngles;			// local angles
-	linearExtrapolation = new idExtrapolate<idVec3>();	// extrapolation based description of the position over time
-//	idExtrapolate<idAngles>					angularExtrapolation;	// extrapolation based description of the orientation over time
-//	idInterpolateAccelDecelLinear<idVec3>	linearInterpolation;	// interpolation based description of the position over time
-//	idInterpolateAccelDecelLinear<idAngles>	angularInterpolation;	// interpolation based description of the orientation over time
-//	idCurve_Spline<idVec3> *				spline;					// spline based description of the position over time
-//	idInterpolateAccelDecelLinear<float>	splineInterpolate;		// position along the spline over time
-//	bool									useSplineAngles;		// set the orientation using the spline
+	linearExtrapolation = new idExtrapolate<idVec3>(idVec3);	// extrapolation based description of the position over time
+	angularExtrapolation = new idExtrapolate<idAngles>(idAngles);	// extrapolation based description of the orientation over time
+	linearInterpolation = new idInterpolateAccelDecelLinear<idVec3>(idVec3);	// interpolation based description of the position over time
+	angularInterpolation = new idInterpolateAccelDecelLinear<idAngles>(idAngles);	// interpolation based description of the orientation over time
+	spline:idCurve_Spline<idVec3> [];					// spline based description of the position over time
+	splineInterpolate = new idInterpolateAccelDecelLinear</*float*/number>(Number);		// position along the spline over time
+	useSplineAngles:boolean;		// set the orientation using the spline
 }
 
 class idPhysics_Parametric extends idPhysics_Base {
@@ -172,11 +172,11 @@ class idPhysics_Parametric extends idPhysics_Base {
 	isPusher:boolean;
 	clipModel:idClipModel;
 	pushFlags :number/*int*/;
-//
+
 	// results of last evaluate
 	pushResults = new trace_t;
 	isBlocked:boolean;
-//
+
 	// master
 	hasMaster:boolean;
 	isOrientated:boolean;
@@ -246,46 +246,46 @@ idPhysics_Parametric::Activate
 //	this.current.atRest = gameLocal.time;
 //	this.self.BecomeInactive( TH_PHYSICS );
 //}
-//
-///*
-//================
-//idPhysics_Parametric::idPhysics_Parametric
-//================
-//*/
-//idPhysics_Parametric::idPhysics_Parametric( ) {
-//
-//	this.current.time = gameLocal.time;
-//	this.current.atRest = -1;
-//	this.current.useSplineAngles = false;
-//	this.current.origin.Zero();
-//	this.current.angles.Zero();
-//	this.current.axis.Identity();
-//	this.current.localOrigin.Zero();
-//	this.current.localAngles.Zero();
-//	this.current.linearExtrapolation.Init( 0, 0, vec3_zero, vec3_zero, vec3_zero, EXTRAPOLATION_NONE );
-//	this.current.angularExtrapolation.Init( 0, 0, ang_zero, ang_zero, ang_zero, EXTRAPOLATION_NONE );
-//	this.current.linearInterpolation.Init( 0, 0, 0, 0, vec3_zero, vec3_zero );
-//	this.current.angularInterpolation.Init( 0, 0, 0, 0, ang_zero, ang_zero );
-//	this.current.spline = NULL;
-//	this.current.splineInterpolate.Init( 0, 1, 1, 2, 0, 0 );
-//
-//	saved = this.current;
-//
-//	this.isPusher = false;
-//	pushFlags = 0;
-//	this.clipModel = NULL;
-//	isBlocked = false;
-//	memset( &pushResults, 0, sizeof( pushResults ) );
-//
-//	hasMaster = false;
-//	isOrientated = false;
-//}
-//
-///*
-//================
-//idPhysics_Parametric::~idPhysics_Parametric
-//================
-//*/
+
+/*
+================
+idPhysics_Parametric::idPhysics_Parametric
+================
+*/
+constructor( ) {
+	super ( );
+	this.current.time = gameLocal.time;
+	this.current.atRest = -1;
+	this.current.useSplineAngles = false;
+	this.current.origin.Zero();
+	this.current.angles.Zero();
+	this.current.axis.Identity();
+	this.current.localOrigin.Zero();
+	this.current.localAngles.Zero();
+	this.current.linearExtrapolation.Init(0, 0, vec3_zero, vec3_zero, vec3_zero, extrapolation_t.EXTRAPOLATION_NONE );
+	this.current.angularExtrapolation.Init(0, 0, ang_zero, ang_zero, ang_zero, extrapolation_t.EXTRAPOLATION_NONE );
+	this.current.linearInterpolation.Init( 0, 0, 0, 0, vec3_zero, vec3_zero );
+	this.current.angularInterpolation.Init( 0, 0, 0, 0, ang_zero, ang_zero );
+	this.current.spline = null;
+	this.current.splineInterpolate.Init( 0, 1, 1, 2, 0, 0 );
+
+	this.saved = this.current;
+
+	this.isPusher = false;
+	this.pushFlags = 0;
+	this.clipModel = null;
+	this.isBlocked = false;
+	this.pushResults.memset0 ( );
+
+	this.hasMaster = false;
+	this.isOrientated = false;
+}
+
+/*
+================
+idPhysics_Parametric::~idPhysics_Parametric
+================
+*/
 //idPhysics_Parametric::~idPhysics_Parametric( ) {
 //	if ( this.clipModel != NULL ) {
 //		delete this.clipModel;
@@ -887,32 +887,32 @@ idPhysics_Parametric::GetAbsBounds
 //	}
 //}
 //
-///*
-//================
-//idPhysics_Parametric::SetOrigin
-//================
-//*/
-//void idPhysics_Parametric::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
-//	idVec3 masterOrigin;
-//	idMat3 masterAxis;
-//
-//	this.current.linearExtrapolation.SetStartValue( newOrigin );
-//	this.current.linearInterpolation.SetStartValue( newOrigin );
-//
-//	this.current.localOrigin = this.current.linearExtrapolation.GetCurrentValue( this.current.time );
-//	if ( hasMaster ) {
-//		this.self.GetMasterPosition( masterOrigin, masterAxis );
-//		this.current.origin = masterOrigin + this.current.localOrigin * masterAxis;
-//	}
-//	else {
-//		this.current.origin = this.current.localOrigin;
-//	}
-//	if ( this.clipModel ) {
-//		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
-//	}
-//	this.Activate();
-//}
-//
+/*
+================
+idPhysics_Parametric::SetOrigin
+================
+*/
+void idPhysics_Parametric::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
+	idVec3 masterOrigin;
+	idMat3 masterAxis;
+
+	this.current.linearExtrapolation.SetStartValue( newOrigin );
+	this.current.linearInterpolation.SetStartValue( newOrigin );
+
+	this.current.localOrigin = this.current.linearExtrapolation.GetCurrentValue( this.current.time );
+	if ( hasMaster ) {
+		this.self.GetMasterPosition( masterOrigin, masterAxis );
+		this.current.origin = masterOrigin + this.current.localOrigin * masterAxis;
+	}
+	else {
+		this.current.origin = this.current.localOrigin;
+	}
+	if ( this.clipModel ) {
+		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
+	}
+	this.Activate();
+}
+
 ///*
 //================
 //idPhysics_Parametric::SetAxis

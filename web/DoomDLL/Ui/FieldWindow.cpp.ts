@@ -133,7 +133,7 @@ class idFieldWindow extends idWindow {
 			this.CalcPaintOffset( len );
 		}
 		var rect = new idRectangle;
-		rect.equals( this.textRect );
+		rect.opEquals( this.textRect );
 		if ( this.paintOffset >= len ) {
 			this.paintOffset = 0;
 		}

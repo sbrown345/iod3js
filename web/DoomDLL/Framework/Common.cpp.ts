@@ -601,7 +601,7 @@ idCommonLocal::ClearWarnings
 ==================
 */
 	ClearWarnings ( reason: string ): void {
-		this.warningCaption.equals(reason);
+		this.warningCaption.opEquals(reason);
 		this.warningList.Clear ( );
 	}
 

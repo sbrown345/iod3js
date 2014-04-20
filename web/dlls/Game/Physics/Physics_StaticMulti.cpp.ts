@@ -459,7 +459,7 @@ idPhysics_StaticMulti::GetAbsBounds
 ================
 */
 static absBounds = new idBounds;
-	GetAbsBounds ( /*int*/ id: number ): idBounds {
+	GetAbsBounds( /*int*/ id: number  = -1): idBounds {
 		var /*int*/i: number;
 		//static idBounds absBounds;
 
@@ -610,37 +610,37 @@ idPhysics_StaticMulti::PutToRest
 ////*/
 ////void idPhysics_StaticMulti::RestoreState( ) {
 ////}
-////
-/////*
-////================
-////idPhysics_StaticMulti::SetOrigin
-////================
-////*/
-////void idPhysics_StaticMulti::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
-////	idVec3 masterOrigin;
-////	idMat3 masterAxis;
-////
-////	if ( id >= 0 && id < this.clipModels.Num() ) {
-////		this.current[id].localOrigin = newOrigin;
-////		if ( hasMaster ) {
-////			this.self.GetMasterPosition( masterOrigin, masterAxis );
-////			this.current[id].origin = masterOrigin + newOrigin * masterAxis;
-////		} else {
-////			this.current[id].origin = newOrigin;
-////		}
-////		if ( this.clipModels[id] ) {
-////			this.clipModels[id].Link( gameLocal.clip, this.self, id, this.current[id].origin, this.current[id].axis );
-////		}
-////	} else if ( id == -1 ) {
-////		if ( hasMaster ) {
-////			this.self.GetMasterPosition( masterOrigin, masterAxis );
-////			Translate( masterOrigin + masterAxis * newOrigin - this.current[0].origin );
-////		} else {
-////			Translate( newOrigin - this.current[0].origin );
-////		}
-////	}
-////}
-////
+
+/*
+================
+idPhysics_StaticMulti::SetOrigin
+================
+*/
+void idPhysics_StaticMulti::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
+	idVec3 masterOrigin;
+	idMat3 masterAxis;
+
+	if ( id >= 0 && id < this.clipModels.Num() ) {
+		this.current[id].localOrigin = newOrigin;
+		if ( hasMaster ) {
+			this.self.GetMasterPosition( masterOrigin, masterAxis );
+			this.current[id].origin = masterOrigin + newOrigin * masterAxis;
+		} else {
+			this.current[id].origin = newOrigin;
+		}
+		if ( this.clipModels[id] ) {
+			this.clipModels[id].Link( gameLocal.clip, this.self, id, this.current[id].origin, this.current[id].axis );
+		}
+	} else if ( id == -1 ) {
+		if ( hasMaster ) {
+			this.self.GetMasterPosition( masterOrigin, masterAxis );
+			Translate( masterOrigin + masterAxis * newOrigin - this.current[0].origin );
+		} else {
+			Translate( newOrigin - this.current[0].origin );
+		}
+	}
+}
+
 /////*
 ////================
 ////idPhysics_StaticMulti::SetAxis

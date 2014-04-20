@@ -74,7 +74,7 @@ class idScreenRect {
 		this.zmin = 0; this.zmax = 0;							
 	}
 
-	equals ( other: idScreenRect ): void {
+	opEquals ( other: idScreenRect ): void {
 		this.x1 = other.x1;
 		this.y1 = other.y1;
 		this.x2 = other.x2;

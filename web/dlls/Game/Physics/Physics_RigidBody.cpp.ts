@@ -1289,29 +1289,29 @@ idPhysics_RigidBody::GetAbsBounds
 ////	EvaluateContacts();
 ////}
 ////
-/////*
-////================
-////idPhysics::SetOrigin
-////================
-////*/
-////void idPhysics_RigidBody::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
-////	idVec3 masterOrigin;
-////	idMat3 masterAxis;
-////
-////	this.current.localOrigin = newOrigin;
-////	if ( hasMaster ) {
-////		this.self.GetMasterPosition( masterOrigin, masterAxis );
-////		this.current.i.position = masterOrigin + newOrigin * masterAxis;
-////	}
-////	else {
-////		this.current.i.position = newOrigin;
-////	}
-////
-////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.clipModel.GetAxis() );
-////
-////	Activate();
-////}
-////
+/*
+================
+idPhysics::SetOrigin
+================
+*/
+void idPhysics_RigidBody::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
+	idVec3 masterOrigin;
+	idMat3 masterAxis;
+
+	this.current.localOrigin = newOrigin;
+	if ( hasMaster ) {
+		this.self.GetMasterPosition( masterOrigin, masterAxis );
+		this.current.i.position = masterOrigin + newOrigin * masterAxis;
+	}
+	else {
+		this.current.i.position = newOrigin;
+	}
+
+	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.clipModel.GetAxis() );
+
+	Activate();
+}
+
 /////*
 ////================
 ////idPhysics::SetAxis

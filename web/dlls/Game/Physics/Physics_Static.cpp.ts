@@ -531,7 +531,7 @@ idPhysics_Static::idPhysics_Static
 		var masterOrigin = new idVec3;
 		var masterAxis = new idMat3;
 
-		this.current.localAxis .equals(newAxis);
+		this.current.localAxis .opEquals(newAxis);
 
 		if ( this.hasMaster && this.isOrientated ) {
 			todoThrow ( );

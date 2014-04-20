@@ -69,9 +69,9 @@ class idDrawVert {
 		this.color = new Uint8Array( 4 );
 	}
 
-	equals ( other: idDrawVert ): void {
+	opEquals ( other: idDrawVert ): void {
 		this.xyz.opEquals( other.xyz );
-		this.st.equals( other.st );
+		this.st.opEquals( other.st );
 		this.normal.opEquals( other.normal );
 		this.tangents[0].opEquals( other.tangents[0] );
 		this.tangents[1].opEquals( other.tangents[1] );

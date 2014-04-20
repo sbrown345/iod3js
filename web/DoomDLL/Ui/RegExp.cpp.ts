@@ -72,7 +72,7 @@ class idRegister {
 	constructor ( p: string, t: number ) 
 	constructor ( p?: string, t?: number ) {
 		if ( arguments.length === 2 ) {
-			this.name.equals( p );
+			this.name.opEquals( p );
 			this.type = t;
 			assert( t >= 0 && t < REGTYPE.NUMTYPES );
 			this.regCount = idRegister.REGCOUNT[t];
@@ -114,17 +114,17 @@ idRegister::SetToRegs
 		switch ( this.type ) {
 		case REGTYPE.VEC4:
 		{
-			v.equals( ( <idWinVec4>this.$var ).data ); //v = * static_cast<idWinVec4*>(this.$var);
+			v.opEquals( ( <idWinVec4>this.$var ).data ); //v = * static_cast<idWinVec4*>(this.$var);
 			break;
 		}
 		case REGTYPE.RECTANGLE:
 		{
-			rect.equals( ( <idWinRectangle>this.$var ).data ); //rect = *static_cast<idWinRectangle*>(this.$var);
+			rect.opEquals( ( <idWinRectangle>this.$var ).data ); //rect = *static_cast<idWinRectangle*>(this.$var);
 			v = rect.ToVec4 ( );
 			break;
 		}
 		case REGTYPE.VEC2:
-			v2.equals( ( <idWinVec2>this.$var ).data ); // = *static_cast<idWinVec2*>(this.$var);
+			v2.opEquals( ( <idWinVec2>this.$var ).data ); // = *static_cast<idWinVec2*>(this.$var);
 			v[0] = v2[0];
 			v[1] = v2[1];
 			break;
@@ -359,7 +359,7 @@ idRegisterList::AddReg
 			if ( type == REGTYPE.STRING ) {
 				var tok = new idToken;
 				if ( src.ReadToken( tok ) ) {
-					tok.equals( common.GetLanguageDict ( ).GetString( tok.data ) );
+					tok.opEquals( common.GetLanguageDict ( ).GetString( tok.data ) );
 					$var.Init( tok.data, win );
 				}
 			} else {

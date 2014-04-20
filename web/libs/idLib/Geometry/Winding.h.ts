@@ -287,7 +287,7 @@ idWinding::ReAllocate
 		if ( oldP ) {
 			if ( keep ) {
 				for ( var i = 0; i < this.numPoints; i++ ) {
-					this.p[i].equals( oldP[i] );
+					this.p[i].opEquals( oldP[i] );
 				}
 			}
 			//delete[] oldP;
@@ -658,13 +658,13 @@ idWinding::ClipInPlace
 			}
 
 			if ( sides[i] == SIDE_ON ) {
-				newPoints[newNumPoints].equals( p1 );
+				newPoints[newNumPoints].opEquals( p1 );
 				newNumPoints++;
 				continue;
 			}
 
 			if ( sides[i] == SIDE_FRONT ) {
-				newPoints[newNumPoints].equals( p1 );
+				newPoints[newNumPoints].opEquals( p1 );
 				newNumPoints++;
 			}
 
@@ -693,7 +693,7 @@ idWinding::ClipInPlace
 			mid.s = p1.s + dot * ( p2.s - p1.s );
 			mid.t = p1.t + dot * ( p2.t - p1.t );
 
-			newPoints[newNumPoints].equals( mid );
+			newPoints[newNumPoints].opEquals( mid );
 			newNumPoints++;
 		}
 
@@ -733,7 +733,7 @@ idWinding::Reverse
 		w = new idWinding( this.numPoints );
 		w.numPoints = this.numPoints;
 		for ( i = 0; i < this.numPoints; i++ ) {
-			w.p[this.numPoints - i - 1].equals( this.p[i] );
+			w.p[this.numPoints - i - 1].opEquals( this.p[i] );
 		}
 		return w;
 	}
@@ -747,9 +747,9 @@ idWinding::ReverseSelf
 		var v = new idVec5;
 		var /*int */i: number;
 		for ( i = 0; i < ( this.numPoints >> 1 ); i++ ) {
-			v.equals( this.p[i] );
-			this.p[i] .equals( this.p[this.numPoints - i - 1]);
-			this.p[this.numPoints - i - 1].equals( v );
+			v.opEquals( this.p[i] );
+			this.p[i] .opEquals( this.p[this.numPoints - i - 1]);
+			this.p[this.numPoints - i - 1].opEquals( v );
 		}
 	}
 
@@ -1803,19 +1803,19 @@ idFixedWinding::Split
 			}
 
 			if ( sides[i] == SIDE_ON ) {
-				out.p[out.numPoints].equals( p1 );
+				out.p[out.numPoints].opEquals( p1 );
 				out.numPoints++;
-				back.p[back.numPoints].equals( p1 );
+				back.p[back.numPoints].opEquals( p1 );
 				back.numPoints++;
 				continue;
 			}
 
 			if ( sides[i] == SIDE_FRONT ) {
-				out.p[out.numPoints].equals( p1 );
+				out.p[out.numPoints].opEquals( p1 );
 				out.numPoints++;
 			}
 			if ( sides[i] == SIDE_BACK ) {
-				back.p[back.numPoints].equals( p1 );
+				back.p[back.numPoints].opEquals( p1 );
 				back.numPoints++;
 			}
 

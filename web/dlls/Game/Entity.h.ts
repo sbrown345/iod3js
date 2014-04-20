@@ -607,7 +607,7 @@ idEntity::Spawn
 		this.dormantStart = gameLocal.time - DELAY_DORMANT_TIME + gameLocal.msec * 5;
 
 		origin.opEquals( this.renderEntity.origin );
-		axis.equals( this.renderEntity.axis );
+		axis.opEquals( this.renderEntity.axis );
 
 		// do the audio parsing the same way dmap and the editor do
 		gameEdit.ParseSpawnArgsToRefSound( this.spawnArgs, this.refSound );
@@ -926,7 +926,7 @@ idEntity::SetName
 			gameLocal.program.SetEntity( this.name.data, null );
 		}
 
-		this.name.equals( newname );
+		this.name.opEquals( newname );
 		if ( this.name.Length ( ) ) {
 			if ( ( this.name.data == "NULL" ) || ( this.name.data == "null_entity" ) ) {
 				gameLocal.Error( "Cannot name entity '%s'.  '%s' is reserved for script.", this.name.c_str ( ), this.name.c_str ( ) );
@@ -1326,7 +1326,7 @@ UpdateModelTransform( ):void {
 		//this.renderEntity.axis = axis * this.GetPhysics().GetAxis();
 		//this.renderEntity.origin = this.GetPhysics().GetOrigin() + origin * this.renderEntity.axis;
 	} else {
-		this.renderEntity.axis.equals( this.GetPhysics ( ).GetAxis ( ) );
+		this.renderEntity.axis.opEquals( this.GetPhysics ( ).GetAxis ( ) );
 		this.renderEntity.origin.opEquals( this.GetPhysics ( ).GetOrigin ( ) );
 	}
 }

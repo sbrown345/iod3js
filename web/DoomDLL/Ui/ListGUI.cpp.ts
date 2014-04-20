@@ -42,7 +42,7 @@ class idListGUI extends idList<idStr> /*, public idListGUI */ {
 	// idListGUI interface
 	Config ( pGUI: idUserInterface, name: string ): void {
 		this.m_pGUI = pGUI;
-		this.m_name.equals( name );
+		this.m_name.opEquals( name );
 	}
 //	void				Add( int id, const idStr& s );
 //						// use the element count as index for the ids

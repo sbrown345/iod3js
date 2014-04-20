@@ -98,7 +98,7 @@ idSoundShader::Init
 ===============
 */
 	Init ( ): void {
-		this.desc.equals( "<no description>" );
+		this.desc.opEquals( "<no description>" );
 		this.errorDuringParse = false;
 		this.onDemand = false;
 		this.numEntries = 0;
@@ -152,7 +152,7 @@ idSoundShader::SetDefaultText
 	SetDefaultText ( ): boolean {
 		var wavname = new idStr;
 
-		wavname.equals( this.GetName ( ) );
+		wavname.opEquals( this.GetName ( ) );
 		wavname.DefaultFileExtension( ".wav" ); // if the name has .ogg in it, that will stay
 
 		// if there exists a wav file with the same name
@@ -251,7 +251,7 @@ idSoundShader::ParseShader
 			// description
 			else if ( !token.Icmp( "description" ) ) {
 				src.ReadTokenOnLine( token );
-				this.desc.equals( token.c_str ( ) );
+				this.desc.opEquals( token.c_str ( ) );
 			}
 			// mindistance
 			else if ( !token.Icmp( "mindistance" ) ) {
@@ -401,14 +401,14 @@ idSoundShader::ParseShader
 						var work = new idStr( token );
 						work.ToLower ( );
 						work.StripLeading( "sound/vo/" );
-						work.equals( va( "sound/vo/%s/%s", lang.c_str ( ), work.c_str ( ) ) );
+						work.opEquals( va( "sound/vo/%s/%s", lang.c_str ( ), work.c_str ( ) ) );
 						if ( fileSystem.ReadFile( work.data, null, null ) > 0 ) {
-							token.equals( work );
+							token.opEquals( work );
 						} else {
 							// also try to find it with the .ogg extension
 							work.SetFileExtension( ".ogg" );
 							if ( fileSystem.ReadFile( work.data, null, null ) > 0 ) {
-								token.equals( work );
+								token.opEquals( work );
 							}
 						}
 					}

@@ -2348,7 +2348,7 @@ FreeWorld  (): void {
 		this.interactionAllocator.Shutdown();
 		this.areaNumRefAllocator.Shutdown();
 
-		this.mapName.equals("<FREED>");
+		this.mapName.opEquals("<FREED>");
 	}
 //
 ///*
@@ -2756,7 +2756,7 @@ InitFromMap  (name: string): boolean {
 
 
 	// load it
-	filename.equals(name);
+	filename.opEquals(name);
 	filename.SetFileExtension(PROC_FILE_EXT);
 
 	// if we are reloading the same map, check the timestamp
@@ -2788,7 +2788,7 @@ InitFromMap  (name: string): boolean {
 	}
 
 
-	this.mapName.equals(name);
+	this.mapName.opEquals(name);
 	this.mapTimeStamp = currentTimeStamp.$;
 
 	// if we are writing a demo, archive the load command

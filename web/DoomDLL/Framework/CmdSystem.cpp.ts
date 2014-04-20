@@ -245,7 +245,7 @@ idCmdSystemLocal::Exec_f
 			return;
 		}
 
-		filename.equals( args.Argv( 1 ) );
+		filename.opEquals( args.Argv( 1 ) );
 		filename.DefaultFileExtension( ".cfg" );
 		len = fileSystem.ReadFile( filename.data, /* reinterpret_cast<void **>(&f)*/f, null );
 		if ( !f.$ ) {

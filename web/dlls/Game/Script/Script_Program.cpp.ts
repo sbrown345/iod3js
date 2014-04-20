@@ -116,7 +116,7 @@ function_t::SetName
 ================
 */
 	SetName ( name: string ): void {
-		this.name.equals( name );
+		this.name.opEquals( name );
 	}
 
 /*
@@ -159,7 +159,7 @@ class idVarDefName {
 //							idVarDefName( ) { defs = null; }
 //							idVarDefName( const char *n ) { name = n; defs = null; }
 	constructor ( n: string = null ) {
-		this.name.equals( n || "" );
+		this.name.opEquals( n || "" );
 		this.defs = null;
 	}
 //
@@ -976,19 +976,19 @@ idProgram::FreeDef
 		if ( def.Type ( ) == etype_t.ev_vector ) {
 			var name = new idStr;
 
-			name.equals( def.Name ( ) + "_x" ); //sprintf( name, "%s_x", def.Name() );
+			name.opEquals( def.Name ( ) + "_x" ); //sprintf( name, "%s_x", def.Name() );
 			e = this.GetDef( null, name.data, scope );
 			if ( e ) {
 				this.FreeDef( e, scope );
 			}
 
-			name.equals( def.Name ( ) + "_y" ); ////sprintf( name, "%s_y", def.Name() );
+			name.opEquals( def.Name ( ) + "_y" ); ////sprintf( name, "%s_y", def.Name() );
 			e = this.GetDef(null, name.data, scope );
 			if ( e ) {
 				this.FreeDef( e, scope );
 			}
 
-			name.equals( def.Name ( ) + "_z" ); ////sprintf( name, "%s_z", def.Name() );
+			name.opEquals( def.Name ( ) + "_z" ); ////sprintf( name, "%s_z", def.Name() );
 			e = this.GetDef(null, name.data, scope );
 			if ( e ) {
 				this.FreeDef( e, scope );
@@ -1369,7 +1369,7 @@ CompileText( source:string, text:string, console :boolean):boolean {
 	var ospath = new idStr;
 
 	// use a full os path for GetFilenum since it calls OSPathToRelativePath to convert filenames from the parser
-	ospath.equals(source);//fileSystem.RelativePathToOSPath( source );
+	ospath.opEquals(source);//fileSystem.RelativePathToOSPath( source );
 	this.filenum = this.GetFilenum( ospath.data );
 
 	//try {
@@ -1491,7 +1491,7 @@ idProgram::FreeData
 		this.top_defs = 0;
 		this.top_files = 0;
 
-		this.filename.equals( "" );
+		this.filename.opEquals( "" );
 	}
 
 /*
@@ -1697,7 +1697,7 @@ GetFilenum( name: string):number
 	}
 
 	var strippedName = new idStr;
-	strippedName.equals( name );// = fileSystem.OSPathToRelativePath( name );
+	strippedName.opEquals( name );// = fileSystem.OSPathToRelativePath( name );
 	if ( !strippedName.Length ( ) ) {
 		// not off the base path so just use the full path
 		this.filenum = this.fileList.AddUnique( new idStr( name ) );
@@ -1706,7 +1706,7 @@ GetFilenum( name: string):number
 	}
 
 	// save the unstripped name so that we don't have to strip the incoming name every time we call GetFilenum
-	this.filename.equals( name );
+	this.filename.opEquals( name );
 
 	return this.filenum;
 }

@@ -1236,7 +1236,7 @@ idAnim::idAnim
 
 		this.modelDef = modelDef;
 		this.numAnims = anim.numAnims;
-		this.name.equals( anim.name );
+		this.name.opEquals( anim.name );
 		this.realname = anim.realname;
 		this.flags = anim.flags;
 
@@ -1294,8 +1294,8 @@ idAnim::SetAnim
 
 		//assert( ( num > 0 ) && ( num <= ANIM_MaxSyncedAnims ) );
 		//this.numAnims	= num;
-		//this.realname	.equals( sourcename;
-		//name		.equals( animname;
+		//this.realname	.opEquals( sourcename;
+		//name		.opEquals( animname;
 
 		//for( i = 0; i < num; i++ ) {
 		//	this.anims[ i ] = md5anims[ i ];

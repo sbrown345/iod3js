@@ -140,7 +140,7 @@ class idRenderModelStatic extends idRenderModel {
 
 	constructor ( ) {
 		super ( );
-		this.name.equals("<undefined>");
+		this.name.opEquals("<undefined>");
 		this.bounds.Clear ( );
 		this.lastModifiedFrame = 0;
 		this.lastArchivedFrame = 0;
@@ -436,7 +436,7 @@ InitEmpty  (fileName: string): void {
 		this.isStaticWorldModel = false;
 	}
 
-	this.name.equals(fileName);
+	this.name.opEquals(fileName);
 	this.reloadable = false; // if it didn't come from a file, we can't reload it
 	this.PurgeModel();
 	this.purged = false;
@@ -1451,7 +1451,7 @@ idRenderModelStatic::ConvertLWOToModelSurfaces
 				mv = mvTable[j];
 				tri.verts[j].Clear ( );
 				tri.verts[j].xyz.opEquals( vList[mv.v] );
-				tri.verts[j].st.equals( tvList[mv.tv] );
+				tri.verts[j].st.opEquals( tvList[mv.tv] );
 				tri.verts[j].normal.opEquals( mv.normal );
 				tri.verts[j].color.set( mv.color );
 			}
