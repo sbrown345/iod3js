@@ -907,37 +907,37 @@ idDeclModelDef::GetAnim
 		//return animList[ which ] + 1;
 	}
 
-///*
-//=====================
-//idDeclModelDef::GetSkin
-//=====================
-//*/
-//const idDeclSkin *idDeclModelDef::GetSkin( ) const {
-//	return skin;
-//}
-//
-///*
-//=====================
-//idDeclModelDef::GetModelName
-//=====================
-//*/
-//const char *idDeclModelDef::GetModelName( ) const {
-//	if ( this.modelHandle ) {
-//		return this.modelHandle.Name();
-//	} else {
-//		return "";
-//	}
-//}
-//
-///*
-//=====================
-//idDeclModelDef::Joints
-//=====================
-//*/
-//const idList<jointInfo_t> &idDeclModelDef::Joints( ) const {
-//	return this.joints;
-//}
-//
+/*
+=====================
+idDeclModelDef::GetSkin
+=====================
+*/
+GetSkin(): idDeclSkin{
+	return this.skin;
+}
+
+/*
+=====================
+idDeclModelDef::GetModelName
+=====================
+*/
+	GetModelName ( ): string {
+		if ( this.modelHandle ) {
+			return this.modelHandle.Name ( );
+		} else {
+			return "";
+		}
+	}
+
+/*
+=====================
+idDeclModelDef::Joints
+=====================
+*/
+	Joints ( ): idList<jointInfo_t> {
+		return this.joints;
+	}
+
 ///*
 //=====================
 //idDeclModelDef::JointParents

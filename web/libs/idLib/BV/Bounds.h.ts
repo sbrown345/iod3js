@@ -361,11 +361,11 @@ Zero( ):void {
 //	return idBounds( this.b[0] + translation, this.b[1] + translation );
 //}
 
-//ID_INLINE idBounds &idBounds::TranslateSelf( const idVec3 &translation ) {
-//	this.b[0] += translation;
-//	this.b[1] += translation;
-//	return this;
-//}
+	TranslateSelf ( translation: idVec3 ): idBounds {
+		this.b[0].opAdditionAssignment( translation );
+		this.b[1].opAdditionAssignment( translation );
+		return this;
+	}
 
 //ID_INLINE idBounds idBounds::Rotate( const idMat3 &rotation ) const {
 //	idBounds bounds;

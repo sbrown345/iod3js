@@ -44,10 +44,11 @@ var ANIMCHANNEL_LEGS			= 2;
 var ANIMCHANNEL_HEAD			= 3;
 var ANIMCHANNEL_EYELIDS		= 4;
 //
-//// for converting from 24 frames per second to milliseconds
-//ID_INLINE int FRAME2MS( framenum/*int*/:number ) {
-//	return ( framenum * 1000 ) / 24;
-//}
+// for converting from 24 frames per second to milliseconds
+function FRAME2MS ( framenum /*int*/: number ): number {
+	return int( framenum * 1000 ) / 24;
+}
+
 //
 //class idRenderModel;
 //class idAnimator;
@@ -666,12 +667,13 @@ idMD5Anim::ConvertTimeToFrame
 		frame.frontlerp = 1.0 - frame.backlerp;
 	}
 
-///*
-//====================
-//idMD5Anim::GetOrigin
-//====================
-//*/
-//void idMD5Anim::GetOrigin( idVec3 &offset, /*int*/time:number, int cyclecount ) const {
+/*
+====================
+idMD5Anim::GetOrigin
+====================
+*/
+	GetOrigin ( offset: idVec3, /*int*/time: number, /*int*/ cyclecount: number ): void {
+		todoThrow ( );
 //	frameBlend_t frame;
 //
 //	offset = baseFrame[ 0 ].t;
@@ -704,14 +706,14 @@ idMD5Anim::ConvertTimeToFrame
 //	if ( frame.cycleCount ) {
 //		offset += totaldelta * ( float )frame.cycleCount;
 //	}
-//}
+	}
 //
 ///*
 //====================
 //idMD5Anim::GetOriginRotation
 //====================
 //*/
-//void idMD5Anim::GetOriginRotation( idQuat &rotation, /*int*/time:number, int cyclecount ) const {
+//void idMD5Anim::GetOriginRotation( idQuat &rotation, /*int*/time:number, /*int*/ cyclecount:number ) const {
 //	frameBlend_t	frame;
 //	int				animBits;
 //	
@@ -820,48 +822,49 @@ idMD5Anim::ConvertTimeToFrame
 //
 //	rotation.Slerp( q1, q2, frame.backlerp );
 //}
-//
-///*
-//====================
-//idMD5Anim::GetBounds
-//====================
-//*/
-//void idMD5Anim::GetBounds( idBounds &bnds, /*int*/time:number, int cyclecount ) const {
-//	frameBlend_t	frame;
-//	idVec3			offset;
-//
-//	ConvertTimeToFrame( time, cyclecount, frame );
-//
-//	bnds = bounds[ frame.frame1 ];
-//	bnds.AddBounds( bounds[ frame.frame2 ] );
-//
-//	// origin position
-//	offset = baseFrame[ 0 ].t;
-//	if ( jointInfo[ 0 ].animBits & ( ANIM_TX | ANIM_TY | ANIM_TZ ) ) {
-//		const float *componentPtr1 = &componentFrames[ numAnimatedComponents * frame.frame1 + jointInfo[ 0 ].firstComponent ];
-//		const float *componentPtr2 = &componentFrames[ numAnimatedComponents * frame.frame2 + jointInfo[ 0 ].firstComponent ];
-//
-//		if ( jointInfo[ 0 ].animBits & ANIM_TX ) {
-//			offset.x = *componentPtr1 * frame.frontlerp + *componentPtr2 * frame.backlerp;
-//			componentPtr1++;
-//			componentPtr2++;
-//		}
-//
-//		if ( jointInfo[ 0 ].animBits & ANIM_TY ) {
-//			offset.y = *componentPtr1 * frame.frontlerp + *componentPtr2 * frame.backlerp;
-//			componentPtr1++;
-//			componentPtr2++;
-//		}
-//
-//		if ( jointInfo[ 0 ].animBits & ANIM_TZ ) {
-//			offset.z = *componentPtr1 * frame.frontlerp + *componentPtr2 * frame.backlerp;
-//		}
-//	}
-//
-//	bnds[ 0 ] -= offset;
-//	bnds[ 1 ] -= offset;
-//}
-//
+
+/*
+====================
+idMD5Anim::GetBounds
+====================
+*/
+	GetBounds ( bnds: idBounds, /*int*/time: number, /*int*/ cyclecount: number ): void {
+		todoThrow ( );
+		//frameBlend_t	frame;
+		//idVec3			offset;
+
+		//ConvertTimeToFrame( time, cyclecount, frame );
+
+		//bnds = bounds[ frame.frame1 ];
+		//bnds.AddBounds( bounds[ frame.frame2 ] );
+
+		//// origin position
+		//offset = baseFrame[ 0 ].t;
+		//if ( jointInfo[ 0 ].animBits & ( ANIM_TX | ANIM_TY | ANIM_TZ ) ) {
+		//	const float *componentPtr1 = &componentFrames[ numAnimatedComponents * frame.frame1 + jointInfo[ 0 ].firstComponent ];
+		//	const float *componentPtr2 = &componentFrames[ numAnimatedComponents * frame.frame2 + jointInfo[ 0 ].firstComponent ];
+
+		//	if ( jointInfo[ 0 ].animBits & ANIM_TX ) {
+		//		offset.x = *componentPtr1 * frame.frontlerp + *componentPtr2 * frame.backlerp;
+		//		componentPtr1++;
+		//		componentPtr2++;
+		//	}
+
+		//	if ( jointInfo[ 0 ].animBits & ANIM_TY ) {
+		//		offset.y = *componentPtr1 * frame.frontlerp + *componentPtr2 * frame.backlerp;
+		//		componentPtr1++;
+		//		componentPtr2++;
+		//	}
+
+		//	if ( jointInfo[ 0 ].animBits & ANIM_TZ ) {
+		//		offset.z = *componentPtr1 * frame.frontlerp + *componentPtr2 * frame.backlerp;
+		//	}
+		//}
+
+		//bnds[ 0 ] -= offset;
+		//bnds[ 1 ] -= offset;
+	}
+
 /*
 ====================
 idMD5Anim::GetInterpolatedFrame
@@ -1349,43 +1352,43 @@ index 0 will never be NULL.  Any anim >= NumAnims will return NULL.
 //const idDeclModelDef *idAnim::ModelDef( ) const {
 //	return modelDef;
 //}
-//
-///*
-//=====================
-//idAnim::Length
-//=====================
-//*/
-//int idAnim::Length( ) const {
-//	if ( !this.anims[ 0 ] ) {
-//		return 0;
-//	}
-//
-//	return this.anims[ 0 ].Length();
-//}
-//
-///*
-//=====================
-//idAnim::NumFrames
-//=====================
-//*/
-//int	idAnim::NumFrames( ) const { 
-//	if ( !this.anims[ 0 ] ) {
-//		return 0;
-//	}
-//	
-//	return this.anims[ 0 ].NumFrames();
-//}
-//
-///*
-//=====================
-//idAnim::NumAnims
-//=====================
-//*/
-//int	idAnim::NumAnims( ) const { 
-//	return this.numAnims;
-//}
-//
-///*
+
+/*
+=====================
+idAnim::Length
+=====================
+*/
+	Length ( ): number {
+		if ( !this.anims[0] ) {
+			return 0;
+		}
+
+		return this.anims[0].Length ( );
+	}
+
+/*
+=====================
+idAnim::NumFrames
+=====================
+*/
+	NumFrames ( ): number {
+		if ( !this.anims[0] ) {
+			return 0;
+		}
+
+		return this.anims[0].NumFrames ( );
+	}
+
+/*
+=====================
+idAnim::NumAnims
+=====================
+*/
+	NumAnims ( ): number {
+		return this.numAnims;
+	}
+
+/*
 //=====================
 //idAnim::TotalMovementDelta
 //=====================
@@ -1398,27 +1401,27 @@ index 0 will never be NULL.  Any anim >= NumAnims will return NULL.
 //	return this.anims[ 0 ].TotalMovementDelta();
 //}
 //
-///*
-//=====================
-//idAnim::GetOrigin
-//=====================
-//*/
-//bool idAnim::GetOrigin( idVec3 &offset, animNum/*int*/:number, currentTime/*int*/:number, int cyclecount ) const {
-//	if ( !this.anims[ animNum ] ) {
-//		offset.Zero();
-//		return false;
-//	}
-//
-//	this.anims[ animNum ].GetOrigin( offset, currentTime, cyclecount );
-//	return true;
-//}
+/*
+=====================
+idAnim::GetOrigin
+=====================
+*/
+	GetOrigin ( offset: idVec3, animNum /*int*/: number, currentTime /*int*/: number, /*int*/ cyclecount: number ): boolean {
+		if ( !this.anims[animNum] ) {
+			offset.Zero ( );
+			return false;
+		}
+
+		this.anims[animNum].GetOrigin( offset, currentTime, cyclecount );
+		return true;
+	}
 //
 ///*
 //=====================
 //idAnim::GetOriginRotation
 //=====================
 //*/
-//bool idAnim::GetOriginRotation( idQuat &rotation, animNum/*int*/:number, currentTime/*int*/:number, int cyclecount ) const {
+//bool idAnim::GetOriginRotation( idQuat &rotation, animNum/*int*/:number, currentTime/*int*/:number, /*int*/ cyclecount:number ) const {
 //	if ( !this.anims[ animNum ] ) {
 //		rotation.Set( 0.0, 0.0, 0.0, 1.0 );
 //		return false;
@@ -1427,21 +1430,21 @@ index 0 will never be NULL.  Any anim >= NumAnims will return NULL.
 //	this.anims[ animNum ].GetOriginRotation( rotation, currentTime, cyclecount );
 //	return true;
 //}
-//
-///*
-//=====================
-//idAnim::GetBounds
-//=====================
-//*/
-//ID_INLINE bool idAnim::GetBounds( idBounds &bounds, animNum/*int*/:number, currentTime/*int*/:number, int cyclecount ) const {
-//	if ( !this.anims[ animNum ] ) {
-//		return false;
-//	}
-//
-//	this.anims[ animNum ].GetBounds( bounds, currentTime, cyclecount );
-//	return true;
-//}
-//
+
+/*
+=====================
+idAnim::GetBounds
+=====================
+*/
+	GetBounds ( bounds: idBounds, animNum /*int*/: number, currentTime /*int*/: number, /*int*/ cyclecount: number ): boolean {
+		if ( !this.anims[animNum] ) {
+			return false;
+		}
+
+		this.anims[animNum].GetBounds( bounds, currentTime, cyclecount );
+		return true;
+	}
+
 
 /*
 =====================
@@ -2272,10 +2275,10 @@ idAnimBlend::idAnimBlend
 //void idAnimBlend::Save( idSaveGame *savefile ) const {
 //	var/*int*/i:number;
 //
-//	savefile.WriteInt( starttime );
+//	savefile.WriteInt( this.starttime );
 //	savefile.WriteInt( this.endtime );
-//	savefile.WriteInt( timeOffset );
-//	savefile.WriteFloat( rate );
+//	savefile.WriteInt( this.timeOffset );
+//	savefile.WriteFloat( this.rate );
 //
 //	savefile.WriteInt( this.blendStartTime );
 //	savefile.WriteInt( this.blendDuration );
@@ -2283,12 +2286,12 @@ idAnimBlend::idAnimBlend
 //	savefile.WriteFloat( this.blendEndValue );
 //
 //	for( i = 0; i < ANIM_MaxSyncedAnims; i++ ) {
-//		savefile.WriteFloat( animWeights[ i ] );
+//		savefile.WriteFloat( this.animWeights[ i ] );
 //	}
-//	savefile.WriteShort( cycle );
+//	savefile.WriteShort( this.cycle );
 //	savefile.WriteShort( frame );
-//	savefile.WriteShort( animNum );
-//	savefile.WriteBool( allowMove );
+//	savefile.WriteShort( this.animNum );
+//	savefile.WriteBool( this.allowMove );
 //	savefile.WriteBool( allowFrameCommands );
 //}
 //
@@ -2304,10 +2307,10 @@ idAnimBlend::idAnimBlend
 //
 //	this.modelDef = modelDef;
 //
-//	savefile.ReadInt( starttime );
+//	savefile.ReadInt( this.starttime );
 //	savefile.ReadInt( this.endtime );
-//	savefile.ReadInt( timeOffset );
-//	savefile.ReadFloat( rate );
+//	savefile.ReadInt( this.timeOffset );
+//	savefile.ReadFloat( this.rate );
 //
 //	savefile.ReadInt( this.blendStartTime );
 //	savefile.ReadInt( this.blendDuration );
@@ -2315,18 +2318,18 @@ idAnimBlend::idAnimBlend
 //	savefile.ReadFloat( this.blendEndValue );
 //
 //	for( i = 0; i < ANIM_MaxSyncedAnims; i++ ) {
-//		savefile.ReadFloat( animWeights[ i ] );
+//		savefile.ReadFloat( this.animWeights[ i ] );
 //	}
-//	savefile.ReadShort( cycle );
+//	savefile.ReadShort( this.cycle );
 //	savefile.ReadShort( frame );
-//	savefile.ReadShort( animNum );
+//	savefile.ReadShort( this.animNum );
 //	if ( !modelDef ) {
-//		animNum = 0;
-//	} else if ( ( animNum < 0 ) || ( animNum > modelDef.NumAnims() ) ) {
-//		gameLocal.Warning( "Anim number %d out of range for model '%s' during save game", animNum, modelDef.GetModelName() );
-//		animNum = 0;
+//		this.animNum = 0;
+//	} else if ( ( this.animNum < 0 ) || ( this.animNum > modelDef.NumAnims() ) ) {
+//		gameLocal.Warning( "Anim number %d out of range for model '%s' during save game", this.animNum, modelDef.GetModelName() );
+//		this.animNum = 0;
 //	}
-//	savefile.ReadBool( allowMove );
+//	savefile.ReadBool( this.allowMove );
 //	savefile.ReadBool( allowFrameCommands );
 //}
 //
@@ -2361,7 +2364,7 @@ idAnimBlend::Reset
 //=====================
 //*/
 //const char *idAnimBlend::AnimFullName( ) const {
-//	const idAnim *anim = Anim();
+//	var anim = this.Anim();
 //	if ( !anim ) {
 //		return "";
 //	}
@@ -2375,7 +2378,7 @@ idAnimBlend::Reset
 //=====================
 //*/
 //const char *idAnimBlend::AnimName( ) const {
-//	const idAnim *anim = Anim();
+//	var anim = this.Anim();
 //	if ( !anim ) {
 //		return "";
 //	}
@@ -2389,7 +2392,7 @@ idAnimBlend::Reset
 //=====================
 //*/
 //int idAnimBlend::NumFrames( ) const {
-//	const idAnim *anim = Anim();
+//	var anim = this.Anim();
 //	if ( !anim ) {
 //		return 0;
 //	}
@@ -2403,7 +2406,7 @@ idAnimBlend::Reset
 //=====================
 //*/
 //int	idAnimBlend::Length( ) const {
-//	const idAnim *anim = Anim();
+//	var anim = this.Anim();
 //	if ( !anim ) {
 //		return 0;
 //	}
@@ -2465,7 +2468,7 @@ SetWeight( /*float */newweight:number, currentTime/*int*/:number, blendTime/*int
 //=====================
 //*/
 //int idAnimBlend::NumSyncedAnims( ) const {
-//	const idAnim *anim = Anim();
+//	var anim = this.Anim();
 //	if ( !anim ) {
 //		return 0;
 //	}
@@ -2479,7 +2482,7 @@ SetWeight( /*float */newweight:number, currentTime/*int*/:number, blendTime/*int
 //=====================
 //*/
 //bool idAnimBlend::SetSyncedAnimWeight( /*int*/num:number, float weight ) {
-//	const idAnim *anim = Anim();
+//	var anim = this.Anim();
 //	if ( !anim ) {
 //		return false;
 //	}
@@ -2488,7 +2491,7 @@ SetWeight( /*float */newweight:number, currentTime/*int*/:number, blendTime/*int
 //		return false;
 //	}
 //
-//	animWeights[ num ] = weight;
+//	this.animWeights[ num ] = weight;
 //	return true;
 //}
 //
@@ -2514,11 +2517,11 @@ SetWeight( /*float */newweight:number, currentTime/*int*/:number, blendTime/*int
 //		return;
 //	}
 //	
-//	animNum				= _animNum;
-//	starttime			= currentTime;
+//	this.animNum				= _animNum;
+//	this.starttime			= currentTime;
 //	this.endtime				= -1;
-//	cycle				= -1;
-//	animWeights[ 0 ]	= 1.0;
+//	this.cycle				= -1;
+//	this.animWeights[ 0 ]	= 1.0;
 //	frame				= _frame;
 //
 //	// a frame of 0 means it's not a single frame blend, so we set it to frame + 1
@@ -2557,15 +2560,15 @@ SetWeight( /*float */newweight:number, currentTime/*int*/:number, blendTime/*int
 //		return;
 //	}
 //
-//	animNum				= _animNum;
-//	animWeights[ 0 ]	= 1.0;
+//	this.animNum				= _animNum;
+//	this.animWeights[ 0 ]	= 1.0;
 //	this.endtime				= -1;
-//	cycle				= -1;
+//	this.cycle				= -1;
 //	if ( _anim.GetAnimFlags().random_cycle_start ) {
 //		// start the animation at a random time so that characters don't walk in sync
-//		starttime = currentTime - gameLocal.random.RandomFloat() * _anim.Length();
+//		this.starttime = currentTime - gameLocal.random.RandomFloat() * _anim.Length();
 //	} else {
-//		starttime = currentTime;
+//		this.starttime = currentTime;
 //	}
 //
 //	// set up blend
@@ -2597,11 +2600,11 @@ SetWeight( /*float */newweight:number, currentTime/*int*/:number, blendTime/*int
 //		return;
 //	}
 //
-//	animNum				= _animNum;
-//	starttime			= currentTime;
-//	this.endtime				= starttime + _anim.Length();
-//	cycle				= 1;
-//	animWeights[ 0 ]	= 1.0;
+//	this.animNum				= _animNum;
+//	this.starttime			= currentTime;
+//	this.endtime				= this.starttime + _anim.Length();
+//	this.cycle				= 1;
+//	this.animWeights[ 0 ]	= 1.0;
 //
 //	// set up blend
 //	this.blendEndValue		= 1.0;
@@ -2647,7 +2650,7 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //*/
 //bool idAnimBlend::FrameHasChanged( currentTime/*int*/:number ) const {
 //	// if we don't have an anim, no change
-//	if ( !animNum ) {
+//	if ( !this.animNum ) {
 //		return false;
 //	}
 //
@@ -2662,55 +2665,55 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //	}
 //
 //	// if we're a single frame anim and this isn't the frame we started on, we don't need to update
-//	if ( ( frame || ( NumFrames() == 1 ) ) && ( currentTime != starttime ) ) {
+//	if ( ( frame || ( NumFrames() == 1 ) ) && ( currentTime != this.starttime ) ) {
 //		return false;
 //	}
 //
 //	return true;
 //}
-//
-///*
-//=====================
-//idAnimBlend::GetCycleCount
-//=====================
-//*/
-//int idAnimBlend::GetCycleCount( ) const {
-//	return cycle;
-//}
-//
+
+/*
+=====================
+idAnimBlend::GetCycleCount
+=====================
+*/
+	GetCycleCount ( ): number {
+		return this.cycle;
+	}
+
 ///*
 //=====================
 //idAnimBlend::SetCycleCount
 //=====================
 //*/
 //void idAnimBlend::SetCycleCount( int count ) {
-//	const idAnim *anim = Anim();
+//	var anim = this.Anim();
 //
 //	if ( !anim ) {
-//		cycle = -1;
+//		this.cycle = -1;
 //		this.endtime = 0;
 //	} else {
-//		cycle = count;
-//		if ( cycle < 0 ) {
-//			cycle = -1;
+//		this.cycle = count;
+//		if ( this.cycle < 0 ) {
+//			this.cycle = -1;
 //			this.endtime	= -1;
-//		} else if ( cycle == 0 ) {
-//			cycle = 1;
+//		} else if ( this.cycle == 0 ) {
+//			this.cycle = 1;
 //
 //			// most of the time we're running at the original frame rate, so avoid the int-to-float-to-int conversion
-//			if ( rate == 1.0 ) {
-//				this.endtime	= starttime - timeOffset + anim.Length();
-//			} else if ( rate != 0.0 ) {
-//				this.endtime	= starttime - timeOffset + anim.Length() / rate;
+//			if ( this.rate == 1.0 ) {
+//				this.endtime	= this.starttime - this.timeOffset + anim.Length();
+//			} else if ( this.rate != 0.0 ) {
+//				this.endtime	= this.starttime - this.timeOffset + anim.Length() / this.rate;
 //			} else {
 //				this.endtime = -1;
 //			}
 //		} else {
 //			// most of the time we're running at the original frame rate, so avoid the int-to-float-to-int conversion
-//			if ( rate == 1.0 ) {
-//				this.endtime	= starttime - timeOffset + anim.Length() * cycle;
-//			} else if ( rate != 0.0 ) {
-//				this.endtime	= starttime - timeOffset + ( anim.Length() * cycle ) / rate;
+//			if ( this.rate == 1.0 ) {
+//				this.endtime	= this.starttime - this.timeOffset + anim.Length() * this.cycle;
+//			} else if ( this.rate != 0.0 ) {
+//				this.endtime	= this.starttime - this.timeOffset + ( anim.Length() * this.cycle ) / this.rate;
 //			} else {
 //				this.endtime = -1;
 //			}
@@ -2726,42 +2729,42 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //void idAnimBlend::SetPlaybackRate( currentTime/*int*/:number, float newRate ) {
 //	int animTime;
 //
-//	if ( rate == newRate ) {
+//	if ( this.rate == newRate ) {
 //		return;
 //	}
 //
-//	animTime = AnimTime( currentTime );
+//	animTime = this.AnimTime( currentTime );
 //	if ( newRate == 1.0 ) {
-//		timeOffset = animTime - ( currentTime - starttime );
+//		this.timeOffset = animTime - ( currentTime - this.starttime );
 //	} else {
-//		timeOffset = animTime - ( currentTime - starttime ) * newRate;
+//		this.timeOffset = animTime - ( currentTime - this.starttime ) * newRate;
 //	}
 //
-//	rate = newRate;
+//	this.rate = newRate;
 //
 //	// update the anim endtime
-//	SetCycleCount( cycle );
+//	SetCycleCount( this.cycle );
 //}
-//
-///*
-//=====================
-//idAnimBlend::GetPlaybackRate
-//=====================
-//*/
-//float idAnimBlend::GetPlaybackRate( ) const {
-//	return rate;
-//}
-//
+
+/*
+=====================
+idAnimBlend::GetPlaybackRate
+=====================
+*/
+	GetPlaybackRate ( ): number /*float*/ {
+		return this.rate;
+	}
+
 ///*
 //=====================
 //idAnimBlend::SetStartTime
 //=====================
 //*/
 //void idAnimBlend::SetStartTime( int _startTime ) {
-//	starttime = _startTime;
+//	this.starttime = _startTime;
 //
 //	// update the anim endtime
-//	SetCycleCount( cycle );
+//	SetCycleCount( this.cycle );
 //}
 //
 ///*
@@ -2770,11 +2773,11 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //=====================
 //*/
 //int idAnimBlend::GetStartTime( ) const {
-//	if ( !animNum ) {
+//	if ( !this.animNum ) {
 //		return 0;
 //	}
 //
-//	return starttime;
+//	return this.starttime;
 //}
 //
 ///*
@@ -2783,7 +2786,7 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //=====================
 //*/
 //int idAnimBlend::GetEndTime( ) const {
-//	if ( !animNum ) {
+//	if ( !this.animNum ) {
 //		return 0;
 //	}
 //
@@ -2796,7 +2799,7 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //=====================
 //*/
 //int idAnimBlend::PlayLength( ) const {
-//	if ( !animNum ) {
+//	if ( !this.animNum ) {
 //		return 0;
 //	}
 //
@@ -2804,7 +2807,7 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //		return -1;
 //	}
 //
-//	return this.endtime - starttime + timeOffset;
+//	return this.endtime - this.starttime + this.timeOffset;
 //}
 //
 ///*
@@ -2813,7 +2816,7 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //=====================
 //*/
 //void idAnimBlend::AllowMovement( bool allow ) {
-//	allowMove = allow;
+//	this.allowMove = allow;
 //}
 //
 ///*
@@ -2824,21 +2827,21 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //void idAnimBlend::AllowFrameCommands( bool allow ) {
 //	allowFrameCommands = allow;
 //}
-//
-//
-///*
-//=====================
-//idAnimBlend::Anim
-//=====================
-//*/
-//const idAnim *idAnimBlend::Anim( ) const {
-//	if ( !this.modelDef ) {
-//		return NULL;
-//	}
-//
-//	const idAnim *anim = this.modelDef.GetAnim( animNum );
-//	return anim;
-//}
+
+
+/*
+=====================
+idAnimBlend::Anim
+=====================
+*/
+	Anim ( ): idAnim {
+		if ( !this.modelDef ) {
+			return null;
+		}
+
+		var anim = this.modelDef.GetAnim_index( this.animNum );
+		return anim;
+	}
 //
 ///*
 //=====================
@@ -2846,48 +2849,48 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //=====================
 //*/
 //int idAnimBlend::AnimNum( ) const {
-//	return animNum;
+//	return this.animNum;
 //}
-//
-///*
-//=====================
-//idAnimBlend::AnimTime
-//=====================
-//*/
-//int idAnimBlend::AnimTime( currentTime/*int*/:number ) const {
-//	/*int*/time:number;
-//	int length;
-//	const idAnim *anim = Anim();
-//
-//	if ( anim ) {
-//		if ( frame ) {
-//			return FRAME2MS( frame - 1 );
-//		}
-//
-//		// most of the time we're running at the original frame rate, so avoid the int-to-float-to-int conversion
-//		if ( rate == 1.0 ) {
-//			time = currentTime - starttime + timeOffset;
-//		} else {
-//			time = static_cast<int>( ( currentTime - starttime ) * rate ) + timeOffset;
-//		}
-//
-//		// given enough time, we can easily wrap time around in our frame calculations, so
-//		// keep cycling animations' time within the length of the anim.
-//		length = anim.Length();
-//		if ( ( cycle < 0 ) && ( length > 0 ) ) {
-//			time %= length;
-//
-//			// time will wrap after 24 days (oh no!), resulting in negative results for the %.
-//			// adding the length gives us the proper result.
-//			if ( time < 0 ) {
-//				time += length;
-//			}
-//		}
-//		return time;
-//	} else {
-//		return 0;
-//	}
-//}
+
+/*
+=====================
+idAnimBlend::AnimTime
+=====================
+*/
+	AnimTime ( currentTime /*int*/: number ): number /*int*/ {
+		var /*int*/time:number;
+		var /*int */length: number;
+		var anim = this.Anim ( );
+
+		if ( anim ) {
+			if ( this.frame ) {
+				return FRAME2MS( this.frame - 1 );
+			}
+
+			// most of the time we're running at the original frame rate, so avoid the int-to-float-to-int conversion
+			if ( this.rate == 1.0 ) {
+				time = currentTime - this.starttime + this.timeOffset;
+			} else {
+				time =/* static_cast<int>*/int( ( currentTime - this.starttime ) * this.rate ) + this.timeOffset;
+			}
+
+			// given enough time, we can easily wrap time around in our frame calculations, so
+			// keep cycling animations' time within the length of the anim.
+			length = anim.Length ( );
+			if ( ( this.cycle < 0 ) && ( length > 0 ) ) {
+				time %= length;
+
+				// time will wrap after 24 days (oh no!), resulting in negative results for the %.
+				// adding the length gives us the proper result.
+				if ( time < 0 ) {
+					time += length;
+				}
+			}
+			return time;
+		} else {
+			return 0;
+		}
+	}
 //
 ///*
 //=====================
@@ -2899,18 +2902,18 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //	frameBlend_t	frameinfo;
 //	int				animTime;
 //
-//	const idAnim *anim = Anim();
+//	var anim = this.Anim();
 //	if ( !anim ) {
 //		return 1;
 //	}
 //
-//	if ( frame ) {
-//		return frame;
+//	if ( this.frame ) {
+//		return this.frame;
 //	}
 //
 //	md5anim = anim.MD5Anim( 0 );
-//	animTime = AnimTime( currentTime );
-//	md5anim.ConvertTimeToFrame( animTime, cycle, frameinfo );
+//	animTime = this.AnimTime( currentTime );
+//	md5anim.ConvertTimeToFrame( animTime, this.cycle, frameinfo );
 //
 //	return frameinfo.frame1 + 1;
 //}
@@ -2927,30 +2930,30 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //	int				fromFrameTime;
 //	int				toFrameTime;
 //
-//	if ( !allowFrameCommands || !ent || frame || ( ( this.endtime > 0 ) && ( fromtime > this.endtime ) ) ) {
+//	if ( !allowFrameCommands || !ent || this.frame || ( ( this.endtime > 0 ) && ( fromtime > this.endtime ) ) ) {
 //		return;
 //	}
 //
-//	const idAnim *anim = Anim();
+//	var anim = this.Anim();
 //	if ( !anim || !anim.HasFrameCommands() ) {
 //		return;
 //	}
 //
-//	if ( totime <= starttime ) {
+//	if ( totime <= this.starttime ) {
 //		// don't play until next frame or we'll play commands twice.
 //		// this happens on the player sometimes.
 //		return;
 //	}
 //
-//	fromFrameTime	= AnimTime( fromtime );
-//	toFrameTime		= AnimTime( totime );
+//	fromFrameTime	= this.AnimTime( fromtime );
+//	toFrameTime		= this.AnimTime( totime );
 //	if ( toFrameTime < fromFrameTime ) {
 //		toFrameTime += anim.Length();
 //	}
 //
 //	md5anim = anim.MD5Anim( 0 );
-//	md5anim.ConvertTimeToFrame( fromFrameTime, cycle, frame1 );
-//	md5anim.ConvertTimeToFrame( toFrameTime, cycle, frame2 );
+//	md5anim.ConvertTimeToFrame( fromFrameTime, this.cycle, frame1 );
+//	md5anim.ConvertTimeToFrame( toFrameTime, this.cycle, frame2 );
 //
 //	if ( fromFrameTime <= 0 ) {
 //		// make sure first frame is called
@@ -2977,7 +2980,7 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //	int				numAnims;
 //	int				time;
 //
-//	const idAnim *anim = Anim();
+//	var anim = this.Anim();
 //	if ( !anim ) {
 //		return false;
 //	}
@@ -3003,15 +3006,15 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //		jointFrame = ( idJointQuat * )_alloca16( numJoints * sizeof( *jointFrame ) );
 //	}
 //
-//	time = AnimTime( currentTime );
+//	time = this.AnimTime( currentTime );
 //
 //	numAnims = anim.NumAnims();
 //	if ( numAnims == 1 ) {
 //		md5anim = anim.MD5Anim( 0 );
-//		if ( frame ) {
-//			md5anim.GetSingleFrame( frame - 1, jointFrame, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
+//		if ( this.frame ) {
+//			md5anim.GetSingleFrame( this.frame - 1, jointFrame, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
 //		} else {
-//			md5anim.ConvertTimeToFrame( time, cycle, frametime );
+//			md5anim.ConvertTimeToFrame( time, this.cycle, frametime );
 //			md5anim.GetInterpolatedFrame( frametime, jointFrame, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
 //		}
 //	} else {
@@ -3021,19 +3024,19 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //		// allocate a temporary buffer to copy the joints to
 //		mixFrame = ( idJointQuat * )_alloca16( numJoints * sizeof( *jointFrame ) );
 //
-//		if ( !frame ) {
-//			anim.MD5Anim( 0 ).ConvertTimeToFrame( time, cycle, frametime );
+//		if ( !this.frame ) {
+//			anim.MD5Anim( 0 ).ConvertTimeToFrame( time, this.cycle, frametime );
 //		}
 //
 //		ptr = jointFrame;
 //		mixWeight = 0.0;
 //		for( i = 0; i < numAnims; i++ ) {
-//			if ( animWeights[ i ] > 0.0 ) {
-//				mixWeight += animWeights[ i ];
-//				lerp = animWeights[ i ] / mixWeight;
+//			if ( this.animWeights[ i ] > 0.0 ) {
+//				mixWeight += this.animWeights[ i ];
+//				lerp = this.animWeights[ i ] / mixWeight;
 //				md5anim = anim.MD5Anim( i );
-//				if ( frame ) {
-//					md5anim.GetSingleFrame( frame - 1, ptr, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
+//				if ( this.frame ) {
+//					md5anim.GetSingleFrame( this.frame - 1, ptr, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
 //				} else {
 //					md5anim.GetInterpolatedFrame( frametime, ptr, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
 //				}
@@ -3053,7 +3056,7 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //	}
 //
 //	if ( removeOriginOffset ) {
-//		if ( allowMove ) {
+//		if ( this.allowMove ) {
 //#ifdef VELOCITY_MOVE
 //			jointFrame[ 0 ].t.x = 0.0;
 //#else
@@ -3084,8 +3087,8 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //	}
 //
 //	if ( printInfo ) {
-//		if ( frame ) {
-//			gameLocal.Printf( "  %s: '%s', %d, %.2f%%\n", channelNames[ channel ], anim.FullName(), frame, weight * 100.0 );
+//		if ( this.frame ) {
+//			gameLocal.Printf( "  %s: '%s', %d, %.2f%%\n", channelNames[ channel ], anim.FullName(), this.frame, weight * 100.0 );
 //		} else {
 //			gameLocal.Printf( "  %s: '%s', %.3f, %.2f%%\n", channelNames[ channel ], anim.FullName(), ( float )frametime.frame1 + frametime.backlerp, weight * 100.0 );
 //		}
@@ -3093,57 +3096,57 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //
 //	return true;
 //}
-//
-///*
-//=====================
-//idAnimBlend::BlendOrigin
-//=====================
-//*/
-//void idAnimBlend::BlendOrigin( currentTime/*int*/:number, idVec3 &blendPos, float &blendWeight, bool removeOriginOffset ) const {
-//	float	lerp;
-//	idVec3	animpos;
-//	idVec3	pos;
-//	int		time;
-//	int		num;
-//	int		i;
-//
-//	if ( frame || ( ( this.endtime > 0 ) && ( currentTime > this.endtime ) ) ) {
-//		return;
-//	}
-//
-//	const idAnim *anim = Anim();
-//	if ( !anim ) {
-//		return;
-//	}
-//
-//	if ( allowMove && removeOriginOffset ) {
-//		return;
-//	}
-//
-//	float weight = this.GetWeight( currentTime );
-//	if ( !weight ) {
-//		return;
-//	}
-//
-//	time = AnimTime( currentTime );
-//
-//	pos.Zero();
-//	num = anim.NumAnims();
-//	for( i = 0; i < num; i++ ) {
-//		anim.GetOrigin( animpos, i, time, cycle );
-//		pos += animpos * animWeights[ i ];
-//	}
-//
-//	if ( !blendWeight ) {
-//		blendPos = pos;
-//		blendWeight = weight;
-//	} else {
-//		lerp = weight / ( blendWeight + weight );
-//		blendPos += lerp * ( pos - blendPos );
-//		blendWeight += weight;
-//	}
-//}
-//
+
+/*
+=====================
+idAnimBlend::BlendOrigin
+=====================
+*/
+	BlendOrigin ( currentTime: number /*int*/, blendPos: idVec3, /*float &*/blendWeight: R<number>, removeOriginOffset: boolean ): void {
+		var /*float	*/lerp: number;
+		var animpos = new idVec3;
+		var pos = new idVec3;
+		var time: number /*int*/;
+		var num: number /*int*/;
+		var i: number /*int*/;
+
+		if ( this.frame || ( ( this.endtime > 0 ) && ( currentTime > this.endtime ) ) ) {
+			return;
+		}
+
+		var anim = this.Anim ( );
+		if ( !anim ) {
+			return;
+		}
+
+		if ( this.allowMove && removeOriginOffset ) {
+			return;
+		}
+
+		var /*float */weight = this.GetWeight( currentTime );
+		if ( !weight ) {
+			return;
+		}
+
+		time = this.AnimTime( currentTime );
+
+		pos.Zero ( );
+		num = anim.NumAnims ( );
+		for ( i = 0; i < num; i++ ) {
+			anim.GetOrigin( animpos, i, time, this.cycle );
+			pos.opAdditionAssignment( animpos.timesFloat( this.animWeights[i] ) );
+		}
+
+		if ( !blendWeight ) {
+			blendPos.equals( pos );
+			blendWeight.$ = weight;
+		} else {
+			lerp = weight / ( blendWeight.$ + weight );
+			blendPos.opAdditionAssignment( lerp * ( pos.opSubtraction( blendPos ) ) );
+			blendWeight.$ += weight;
+		}
+	}
+
 ///*
 //=====================
 //idAnimBlend::BlendDelta
@@ -3160,11 +3163,11 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //	int		num;
 //	int		i;
 //	
-//	if ( frame || !allowMove || ( ( this.endtime > 0 ) && ( fromtime > this.endtime ) ) ) {
+//	if ( this.frame || !this.allowMove || ( ( this.endtime > 0 ) && ( fromtime > this.endtime ) ) ) {
 //		return;
 //	}
 //
-//	const idAnim *anim = Anim();
+//	var anim = this.Anim();
 //	if ( !anim ) {
 //		return;
 //	}
@@ -3174,8 +3177,8 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //		return;
 //	}
 //
-//	time1 = AnimTime( fromtime );
-//	time2 = AnimTime( totime );
+//	time1 = this.AnimTime( fromtime );
+//	time2 = this.AnimTime( totime );
 //	if ( time2 < time1 ) {
 //		time2 += anim.Length();
 //	}
@@ -3185,11 +3188,11 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //	pos1.Zero();
 //	pos2.Zero();
 //	for( i = 0; i < num; i++ ) {
-//		anim.GetOrigin( animpos, i, time1, cycle );
-//		pos1 += animpos * animWeights[ i ];
+//		anim.GetOrigin( animpos, i, time1, this.cycle );
+//		pos1 += animpos * this.animWeights[ i ];
 //
-//		anim.GetOrigin( animpos, i, time2, cycle );
-//		pos2 += animpos * animWeights[ i ];
+//		anim.GetOrigin( animpos, i, time2, this.cycle );
+//		pos2 += animpos * this.animWeights[ i ];
 //	}
 //
 //	delta = pos2 - pos1;
@@ -3219,11 +3222,11 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //	int		num;
 //	int		i;
 //	
-//	if ( frame || !allowMove || ( ( this.endtime > 0 ) && ( fromtime > this.endtime ) ) ) {
+//	if ( this.frame || !this.allowMove || ( ( this.endtime > 0 ) && ( fromtime > this.endtime ) ) ) {
 //		return;
 //	}
 //
-//	const idAnim *anim = Anim();
+//	var anim = this.Anim();
 //	if ( !anim || !anim.GetAnimFlags().anim_turn ) {
 //		return;
 //	}
@@ -3233,8 +3236,8 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //		return;
 //	}
 //
-//	time1 = AnimTime( fromtime );
-//	time2 = AnimTime( totime );
+//	time1 = this.AnimTime( fromtime );
+//	time2 = this.AnimTime( totime );
 //	if ( time2 < time1 ) {
 //		time2 += anim.Length();
 //	}
@@ -3245,17 +3248,17 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //	mixWeight = 0.0;
 //	num = anim.NumAnims();
 //	for( i = 0; i < num; i++ ) {
-//		if ( animWeights[ i ] > 0.0 ) {
-//			mixWeight += animWeights[ i ];
-//			if ( animWeights[ i ] == mixWeight ) {
-//				anim.GetOriginRotation( q1, i, time1, cycle );
-//				anim.GetOriginRotation( q2, i, time2, cycle );
+//		if ( this.animWeights[ i ] > 0.0 ) {
+//			mixWeight += this.animWeights[ i ];
+//			if ( this.animWeights[ i ] == mixWeight ) {
+//				anim.GetOriginRotation( q1, i, time1, this.cycle );
+//				anim.GetOriginRotation( q2, i, time2, this.cycle );
 //			} else {
-//				lerp = animWeights[ i ] / mixWeight;
-//				anim.GetOriginRotation( q3, i, time1, cycle );
+//				lerp = this.animWeights[ i ] / mixWeight;
+//				anim.GetOriginRotation( q3, i, time1, this.cycle );
 //				q1.Slerp( q1, q3, lerp );
 //
-//				anim.GetOriginRotation( q3, i, time2, cycle );
+//				anim.GetOriginRotation( q3, i, time2, this.cycle );
 //				q2.Slerp( q1, q3, lerp );
 //			}
 //		}
@@ -3271,50 +3274,50 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //		blendWeight += weight;
 //	}
 //}
-//
-///*
-//=====================
-//idAnimBlend::AddBounds
-//=====================
-//*/
-//bool idAnimBlend::AddBounds( currentTime/*int*/:number, idBounds &bounds, bool removeOriginOffset ) const {
-//	int			i;
-//	int			num;
-//	idBounds	b;
-//	int			time;
-//	idVec3		pos;
-//	bool		addorigin;
-//
-//	if ( ( this.endtime > 0 ) && ( currentTime > this.endtime ) ) {
-//		return false;
-//	}
-//
-//	const idAnim *anim = Anim();
-//	if ( !anim ) {
-//		return false;
-//	}
-//
-//	float weight = this.GetWeight( currentTime );
-//	if ( !weight ) {
-//		return false;
-//	}
-//
-//	time = AnimTime( currentTime );
-//	num = anim.NumAnims();
-//	
-//	addorigin = !allowMove || !removeOriginOffset;
-//	for( i = 0; i < num; i++ ) {
-//		if ( anim.GetBounds( b, i, time, cycle ) ) {
-//			if ( addorigin ) {
-//				anim.GetOrigin( pos, i, time, cycle );
-//				b.TranslateSelf( pos );
-//			}
-//			bounds.AddBounds( b );
-//		}
-//	}
-//
-//	return true;
-//}
+
+/*
+=====================
+idAnimBlend::AddBounds
+=====================
+*/
+	AddBounds ( currentTime: number /*int*/, bounds: idBounds, removeOriginOffset: boolean ): boolean {
+		var /*int			*/i: number;
+		var /*int			*/num: number;
+		var b = new idBounds;
+		var /*int			*/time: number;
+		var pos = new idVec3;
+		var addorigin: boolean;
+
+		if ( ( this.endtime > 0 ) && ( currentTime > this.endtime ) ) {
+			return false;
+		}
+
+		var anim = this.Anim ( );
+		if ( !anim ) {
+			return false;
+		}
+
+		var /*float */weight = this.GetWeight( currentTime );
+		if ( !weight ) {
+			return false;
+		}
+
+		time = this.AnimTime( currentTime );
+		num = anim.NumAnims ( );
+
+		addorigin = !this.allowMove || !removeOriginOffset;
+		for ( i = 0; i < num; i++ ) {
+			if ( anim.GetBounds( b, i, time, this.cycle ) ) {
+				if ( addorigin ) {
+					anim.GetOrigin( pos, i, time, this.cycle );
+					b.TranslateSelf( pos );
+				}
+				bounds.AddBounds( b );
+			}
+		}
+
+		return true;
+	}
 
 
 };
@@ -3521,7 +3524,7 @@ class idAnimator {
 	//size_t idAnimator::Allocated( ) const {
 	//	size_t	size;
 	//
-	//	size = this.jointMods.Allocated() + numJoints * sizeof( joints[0] ) + this.jointMods.Num() * sizeof( this.jointMods[ 0 ] ) + AFPoseJointMods.Allocated() + AFPoseJointFrame.Allocated() + AFPoseJoints.Allocated();
+	//	size = this.jointMods.Allocated() + numJoints * sizeof( joints[0] ) + this.jointMods.Num() * sizeof( this.jointMods[ 0 ] ) + AFPoseJointMods.Allocated() + AFPoseJointFrame.Allocated() + this.AFPoseJoints.Allocated();
 	//
 	//	return size;
 	//}
@@ -3564,9 +3567,9 @@ class idAnimator {
 	//
 	//	savefile.WriteFloat( AFPoseBlendWeight );
 	//
-	//	savefile.WriteInt( AFPoseJoints.Num() );
-	//	for ( i = 0; i < AFPoseJoints.Num(); i++ ) {
-	//		savefile.WriteInt( AFPoseJoints[i] );
+	//	savefile.WriteInt( this.AFPoseJoints.Num() );
+	//	for ( i = 0; i < this.AFPoseJoints.Num(); i++ ) {
+	//		savefile.WriteInt( this.AFPoseJoints[i] );
 	//	}
 	//	
 	//	savefile.WriteInt( AFPoseJointMods.Num() );
@@ -3585,7 +3588,7 @@ class idAnimator {
 	//		savefile.WriteVec3( AFPoseJointFrame[i].t );
 	//	}
 	//	
-	//	savefile.WriteBounds( AFPoseBounds );
+	//	savefile.WriteBounds( this.AFPoseBounds );
 	//	savefile.WriteInt( AFPoseTime );
 	//
 	//	savefile.WriteBool( removeOriginOffset );
@@ -3640,10 +3643,10 @@ class idAnimator {
 	//	savefile.ReadFloat( AFPoseBlendWeight );
 	//
 	//	savefile.ReadInt( num );
-	//	AFPoseJoints.SetGranularity( 1 );
-	//	AFPoseJoints.SetNum( num );
-	//	for ( i = 0; i < AFPoseJoints.Num(); i++ ) {
-	//		savefile.ReadInt( AFPoseJoints[i] );
+	//	this.AFPoseJoints.SetGranularity( 1 );
+	//	this.AFPoseJoints.SetNum( num );
+	//	for ( i = 0; i < this.AFPoseJoints.Num(); i++ ) {
+	//		savefile.ReadInt( this.AFPoseJoints[i] );
 	//	}
 	//	
 	//	savefile.ReadInt( num );
@@ -3666,7 +3669,7 @@ class idAnimator {
 	//		savefile.ReadVec3( AFPoseJointFrame[i].t );
 	//	}
 	//	
-	//	savefile.ReadBounds( AFPoseBounds );
+	//	savefile.ReadBounds( this.AFPoseBounds );
 	//	savefile.ReadInt( AFPoseTime );
 	//
 	//	savefile.ReadBool( removeOriginOffset );
@@ -4242,97 +4245,98 @@ class idAnimator {
 	//		return false;
 	//	}
 	//}
-	//
-	///*
-	//====================
-	//idAnimator::GetOrigin
-	//====================
-	//*/
-	//void idAnimator::GetOrigin( currentTime/*int*/:number, pos:idVec3 ) const {
-	//	int					i;
-	//	const idAnimBlend	*blend;
-	//	float				blendWeight;
-	//
-	//	if ( !this.modelDef || !this.modelDef.ModelHandle() ) {
-	//		pos.Zero();
-	//		return;
-	//	}
-	//
-	//	pos.Zero();
-	//	blendWeight = 0.0;
-	//
-	//	blend = this.channels[ ANIMCHANNEL_ALL ];
-	//	for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
-	//		blend.BlendOrigin( currentTime, pos, blendWeight, this.removeOriginOffset );
-	//	}
-	//
-	//	if ( this.modelDef.Joints()[ 0 ].channel ) {
-	//		blend = this.channels[ this.modelDef.Joints()[ 0 ].channel ];
-	//		for( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend++ ) {
-	//			blend.BlendOrigin( currentTime, pos, blendWeight, this.removeOriginOffset );
-	//		}
-	//	}
-	//
-	//	pos += this.modelDef.GetVisualOffset();
-	//}
-	//
-	///*
-	//====================
-	//idAnimator::GetBounds
-	//====================
-	//*/
-	//bool idAnimator::GetBounds( currentTime/*int*/:number, idBounds &bounds ) {
-	//	int					i, j;
-	//	const idAnimBlend	*blend;
-	//	int					count;
-	//
-	//	if ( !this.modelDef || !this.modelDef.ModelHandle() ) {
-	//		return false;
-	//	}
-	//
-	//	if ( AFPoseJoints.Num() ) {
-	//		bounds = AFPoseBounds;
-	//		count = 1;
-	//	} else {
-	//		bounds.Clear();
-	//		count = 0;
-	//	}
-	//
-	//	blend = this.channels[ 0 ];
-	//	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
-	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-	//			if ( blend.AddBounds( currentTime, bounds, this.removeOriginOffset ) ) {
-	//				count++;
-	//			}
-	//		}
-	//	}
-	//
-	//	if ( !count ) {
-	//		if ( !this.frameBounds.IsCleared() ) {
-	//			bounds = this.frameBounds;
-	//			return true;
-	//		} else {
-	//			bounds.Zero();
-	//			return false;
-	//		}
-	//	}
-	//
-	//	bounds.TranslateSelf( this.modelDef.GetVisualOffset() );
-	//
-	//	if ( g_debugBounds.GetBool() ) {
-	//		if ( bounds[1][0] - bounds[0][0] > 2048 || bounds[1][1] - bounds[0][1] > 2048 ) {
-	//			if ( this.entity ) {
-	//				gameLocal.Warning( "big frameBounds on entity '%s' with model '%s': %f,%f", entity.name.c_str(), this.modelDef.ModelHandle().Name(), bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1] );
-	//			} else {
-	//				gameLocal.Warning( "big frameBounds on model '%s': %f,%f", this.modelDef.ModelHandle().Name(), bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1] );
-	//			}
-	//		}
-	//	}
-	//
-	//	this.frameBounds .equals( bounds);
-	//
-	//	return true;
-	//}
+	
+	/*
+	====================
+	idAnimator::GetOrigin
+	====================
+	*/
+	GetOrigin ( currentTime /*int*/: number, pos: idVec3 ): void {
+		var /*int*/i: number;
+		var blend: idAnimBlend;
+		var /*float*/blendWeight: number;
+
+		if ( !this.modelDef || !this.modelDef.ModelHandle ( ) ) {
+			pos.Zero ( );
+			return;
+		}
+
+		pos.Zero ( );
+		blendWeight = 0.0;
+
+		blend = this.channels[ANIMCHANNEL_ALL][0];
+		for ( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend = this.channels[ANIMCHANNEL_ALL][i] ) {
+			blend.BlendOrigin( currentTime, pos, blendWeight, this.removeOriginOffset );
+		}
+
+		if ( this.modelDef.Joints ( )[0].channel ) {
+			var c = this.modelDef.Joints ( )[0].channel;
+			blend = this.channels[c][0];
+			for ( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend = this.channels[c][i] ) {
+				blend.BlendOrigin( currentTime, pos, blendWeight, this.removeOriginOffset );
+			}
+		}
+
+		pos.opAdditionAssignment( this.modelDef.GetVisualOffset ( ) );
+	}
+
+	/*
+	====================
+	idAnimator::GetBounds
+	====================
+	*/
+	GetBounds ( currentTime /*int*/: number, bounds: idBounds ): boolean {
+		var /*int*/i: number, j: number;
+		var blend: idAnimBlend;
+		var count: number /*int*/;
+
+		if ( !this.modelDef || !this.modelDef.ModelHandle ( ) ) {
+			return false;
+		}
+
+		if ( this.AFPoseJoints.Num ( ) ) {
+			bounds.opEquals( this.AFPoseBounds );
+			count = 1;
+		} else {
+			bounds.Clear ( );
+			count = 0;
+		}
+
+		blend = this.channels[0][0];
+		for ( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
+			for ( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend = this.channels[0][j] ) {
+				if ( blend.AddBounds( currentTime, bounds, this.removeOriginOffset ) ) {
+					count++;
+				}
+			}
+		}
+
+		if ( !count ) {
+			if ( !this.frameBounds.IsCleared ( ) ) {
+				bounds = this.frameBounds;
+				return true;
+			} else {
+				bounds.Zero ( );
+				return false;
+			}
+		}
+
+		bounds.TranslateSelf( this.modelDef.GetVisualOffset ( ) );
+
+		if ( g_debugBounds.GetBool ( ) ) {
+			if ( bounds[1][0] - bounds[0][0] > 2048 || bounds[1][1] - bounds[0][1] > 2048 ) {
+				if ( this.entity ) {
+					gameLocal.Warning( "big frameBounds on entity '%s' with model '%s': %f,%f", entity.name.c_str ( ), this.modelDef.ModelHandle ( ).Name ( ), bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1] );
+				} else {
+					gameLocal.Warning( "big frameBounds on model '%s': %f,%f", this.modelDef.ModelHandle ( ).Name ( ), bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1] );
+				}
+			}
+		}
+
+		this.frameBounds.opEquals( bounds );
+
+		return true;
+	}
 	//
 	///*
 	//=====================
@@ -4345,8 +4349,8 @@ class idAnimator {
 	//		return;
 	//	}
 	//
-	//	AFPoseJoints.SetNum( this.modelDef.Joints().Num(), false );
-	//	AFPoseJoints.SetNum( 0, false );
+	//	this.AFPoseJoints.SetNum( this.modelDef.Joints().Num(), false );
+	//	this.AFPoseJoints.SetNum( 0, false );
 	//	AFPoseJointMods.SetNum( this.modelDef.Joints().Num(), false );
 	//	AFPoseJointFrame.SetNum( this.modelDef.Joints().Num(), false );
 	//}
@@ -4361,9 +4365,9 @@ class idAnimator {
 	//	AFPoseJointMods[jointNum].axis = axis;
 	//	AFPoseJointMods[jointNum].origin = origin;
 	//
-	//	int index = idBinSearch_GreaterEqual<int>( AFPoseJoints.Ptr(), AFPoseJoints.Num(), jointNum );
-	//	if ( index >= AFPoseJoints.Num() || jointNum != AFPoseJoints[index] ) {
-	//		AFPoseJoints.Insert( jointNum, index );
+	//	int index = idBinSearch_GreaterEqual<int>( this.AFPoseJoints.Ptr(), this.AFPoseJoints.Num(), jointNum );
+	//	if ( index >= this.AFPoseJoints.Num() || jointNum != this.AFPoseJoints[index] ) {
+	//		this.AFPoseJoints.Insert( jointNum, index );
 	//	}
 	//}
 	//
@@ -4419,7 +4423,7 @@ class idAnimator {
 	//	SIMDProcessor.ConvertJointQuatsToJointMats( joints, jointFrame, numJoints );
 	//
 	//	// first joint is always root of entire hierarchy
-	//	if ( AFPoseJoints.Num() && AFPoseJoints[0] == 0 ) {
+	//	if ( this.AFPoseJoints.Num() && this.AFPoseJoints[0] == 0 ) {
 	//		switch( AFPoseJointMods[0].mod ) {
 	//			case AF_JOINTMOD_AXIS: {
 	//				joints[0].SetRotation( AFPoseJointMods[0].axis );
@@ -4444,8 +4448,8 @@ class idAnimator {
 	//	jointParent = this.modelDef.JointParents();
 	//
 	//	// transform the child joints
-	//	for( i = 1; j < AFPoseJoints.Num(); j++, i++ ) {
-	//		jointMod = AFPoseJoints[j];
+	//	for( i = 1; j < this.AFPoseJoints.Num(); j++, i++ ) {
+	//		jointMod = this.AFPoseJoints[j];
 	//
 	//		// transform any joints preceding the joint modifier
 	//		SIMDProcessor.TransformJoints( joints, jointParent, i, jointMod - 1 );
@@ -4486,21 +4490,21 @@ class idAnimator {
 	//	memset( blendJoints, 0, numJoints * sizeof( bool ) );
 	//
 	//	// mark all modified joints and their parents
-	//	for( i = 0; i < AFPoseJoints.Num(); i++ ) {
-	//		for( jointNum = AFPoseJoints[i]; jointNum != jointHandle_t.INVALID_JOINT; jointNum = jointParent[jointNum] ) {
+	//	for( i = 0; i < this.AFPoseJoints.Num(); i++ ) {
+	//		for( jointNum = this.AFPoseJoints[i]; jointNum != jointHandle_t.INVALID_JOINT; jointNum = jointParent[jointNum] ) {
 	//			blendJoints[jointNum] = true;
 	//		}
 	//	}
 	//
 	//	// lock all parents of modified joints
-	//	AFPoseJoints.SetNum( 0, false );
+	//	this.AFPoseJoints.SetNum( 0, false );
 	//	for ( i = 0; i < numJoints; i++ ) {
 	//		if ( blendJoints[i] ) {
-	//			AFPoseJoints.Append( i );
+	//			this.AFPoseJoints.Append( i );
 	//		}
 	//	}
 	//
-	//	AFPoseBounds = bounds;
+	//	this.AFPoseBounds .opEquals( bounds);
 	//	AFPoseTime = time;
 	//
 	//	this.ForceUpdate();
@@ -4522,11 +4526,11 @@ class idAnimator {
 	//*/
 	//bool idAnimator::BlendAFPose( idJointQuat *blendFrame ) const {
 	//
-	//	if ( !AFPoseJoints.Num() ) {
+	//	if ( !this.AFPoseJoints.Num() ) {
 	//		return false;
 	//	}
 	//
-	//	SIMDProcessor.BlendJoints( blendFrame, AFPoseJointFrame.Ptr(), AFPoseBlendWeight, AFPoseJoints.Ptr(), AFPoseJoints.Num() );
+	//	SIMDProcessor.BlendJoints( blendFrame, AFPoseJointFrame.Ptr(), AFPoseBlendWeight, this.AFPoseJoints.Ptr(), this.AFPoseJoints.Num() );
 	//
 	//	return true;
 	//}
@@ -4593,7 +4597,7 @@ class idAnimator {
 	//	}
 	//
 	//	// if animating with an articulated figure
-	//	if ( AFPoseJoints.Num() && currentTime <= AFPoseTime ) {
+	//	if ( this.AFPoseJoints.Num() && currentTime <= AFPoseTime ) {
 	//		return true;
 	//	}
 	//
@@ -4623,7 +4627,7 @@ class idAnimator {
 	//	}
 	//
 	//	// if animating with an articulated figure
-	//	if ( AFPoseJoints.Num() && currentTime <= AFPoseTime ) {
+	//	if ( this.AFPoseJoints.Num() && currentTime <= AFPoseTime ) {
 	//		return true;
 	//	}
 	//
@@ -4693,7 +4697,7 @@ class idAnimator {
 		//	}
 		//
 		//	// init the joint buffer
-		//	if ( AFPoseJoints.Num() ) {
+		//	if ( this.AFPoseJoints.Num() ) {
 		//		// initialize with AF pose anim for the case where there are no other animations and no AF pose joint modifications
 		//		defaultPose = AFPoseJointFrame.Ptr();
 		//	} else {
@@ -4745,7 +4749,7 @@ class idAnimator {
 		//				}
 		//			}
 		//
-		//			if ( debugInfo && !AFPoseJoints.Num() && !blendWeight ) {
+		//			if ( debugInfo && !this.AFPoseJoints.Num() && !blendWeight ) {
 		//				gameLocal.Printf( "%d: %s using default pose in model '%s'\n", gameLocal.time, channelNames[ i ], this.modelDef.GetModelName() );
 		//			}
 		//		}
