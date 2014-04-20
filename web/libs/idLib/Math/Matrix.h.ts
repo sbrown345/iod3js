@@ -820,40 +820,41 @@ class idMat3 {
 //idMat3 mat3_zero( idVec3( 0, 0, 0 ), idVec3( 0, 0, 0 ), idVec3( 0, 0, 0 ) );
 //idMat3 mat3_identity( idVec3( 1, 0, 0 ), idVec3( 0, 1, 0 ), idVec3( 0, 0, 1 ) );
 //
-///*
-//============
-//idMat3::ToAngles
-//============
-//*/
-//idAngles idMat3::ToAngles( ) const {
-//	idAngles	angles;
-//	double		theta;
-//	double		cp;
-//	float		sp;
-//
-//	sp = mat[ 0 ][ 2 ];
-//
-//	// cap off our sin value so that we don't get any NANs
-//	if ( sp > 1.0 ) {
-//		sp = 1.0;
-//	} else if ( sp < -1.0 ) {
-//		sp = -1.0;
-//	}
-//
-//	theta = -asin( sp );
-//	cp = cos( theta );
-//
-//	if ( cp > 8192.0 * idMath::FLT_EPSILON ) {
-//		angles.pitch	= RAD2DEG( theta );
-//		angles.yaw		= RAD2DEG( atan2( mat[ 0 ][ 1 ], mat[ 0 ][ 0 ] ) );
-//		angles.roll		= RAD2DEG( atan2( mat[ 1 ][ 2 ], mat[ 2 ][ 2 ] ) );
-//	} else {
-//		angles.pitch	= RAD2DEG( theta );
-//		angles.yaw		= RAD2DEG( -atan2( mat[ 1 ][ 0 ], mat[ 1 ][ 1 ] ) );
-//		angles.roll		= 0;
-//	}
-//	return angles;
-//}
+/*
+============
+idMat3::ToAngles
+============
+*/
+	ToAngles ( ): idAngles {
+		todoThrow ( );
+		var angles = new idAngles;
+		//double		theta;
+		//double		cp;
+		//float		sp;
+
+		//sp = mat[ 0 ][ 2 ];
+
+		//// cap off our sin value so that we don't get any NANs
+		//if ( sp > 1.0 ) {
+		//	sp = 1.0;
+		//} else if ( sp < -1.0 ) {
+		//	sp = -1.0;
+		//}
+
+		//theta = -asin( sp );
+		//cp = cos( theta );
+
+		//if ( cp > 8192.0 * idMath::FLT_EPSILON ) {
+		//	angles.pitch	= RAD2DEG( theta );
+		//	angles.yaw		= RAD2DEG( atan2( mat[ 0 ][ 1 ], mat[ 0 ][ 0 ] ) );
+		//	angles.roll		= RAD2DEG( atan2( mat[ 1 ][ 2 ], mat[ 2 ][ 2 ] ) );
+		//} else {
+		//	angles.pitch	= RAD2DEG( theta );
+		//	angles.yaw		= RAD2DEG( -atan2( mat[ 1 ][ 0 ], mat[ 1 ][ 1 ] ) );
+		//	angles.roll		= 0;
+		//}
+		return angles;
+	}
 //
 ///*
 //============

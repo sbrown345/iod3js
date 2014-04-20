@@ -352,15 +352,15 @@ class idPhysics_Base extends idPhysics {
 	GetBounds( /*int*/ id: number = -1): idBounds {
 		return bounds_zero;
 	}
-	//
-	///*
-	//================
-	//idPhysics_Base::GetAbsBounds
-	//================
-	//*/
-	//const idBounds &idPhysics_Base::GetAbsBounds( /*int*/ id:number  = -1) const {
-	//	return bounds_zero;
-	//}
+	
+	/*
+	================
+	idPhysics_Base::GetAbsBounds
+	================
+	*/
+	GetAbsBounds( /*int*/ id: number  = -1): idBounds {
+		return bounds_zero;
+	}
 	//
 	///*
 	//================

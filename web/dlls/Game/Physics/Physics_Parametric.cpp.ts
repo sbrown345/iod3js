@@ -59,7 +59,7 @@ class parametricPState_t{
 	axis = new idMat3;					// world axis
 	localOrigin = new idVec3;			// local origin
 	localAngles = new idAngles;			// local angles
-//	idExtrapolate<idVec3>					linearExtrapolation;	// extrapolation based description of the position over time
+	linearExtrapolation = new idExtrapolate<idVec3>();	// extrapolation based description of the position over time
 //	idExtrapolate<idAngles>					angularExtrapolation;	// extrapolation based description of the orientation over time
 //	idInterpolateAccelDecelLinear<idVec3>	linearInterpolation;	// interpolation based description of the position over time
 //	idInterpolateAccelDecelLinear<idAngles>	angularInterpolation;	// interpolation based description of the orientation over time
@@ -271,9 +271,9 @@ idPhysics_Parametric::Activate
 //
 //	saved = this.current;
 //
-//	isPusher = false;
+//	this.isPusher = false;
 //	pushFlags = 0;
-//	clipModel = NULL;
+//	this.clipModel = NULL;
 //	isBlocked = false;
 //	memset( &pushResults, 0, sizeof( pushResults ) );
 //
@@ -287,9 +287,9 @@ idPhysics_Parametric::Activate
 //================
 //*/
 //idPhysics_Parametric::~idPhysics_Parametric( ) {
-//	if ( clipModel != NULL ) {
-//		delete clipModel;
-//		clipModel = NULL;
+//	if ( this.clipModel != NULL ) {
+//		delete this.clipModel;
+//		this.clipModel = NULL;
 //	}
 //	if ( this.current.spline != NULL ) {
 //		delete this.current.spline;
@@ -428,8 +428,8 @@ idPhysics_Parametric::Activate
 //	idPhysics_Parametric_SavePState( savefile, this.current );
 //	idPhysics_Parametric_SavePState( savefile, saved );
 //
-//	savefile.WriteBool( isPusher );
-//	savefile.WriteClipModel( clipModel );
+//	savefile.WriteBool( this.isPusher );
+//	savefile.WriteClipModel( this.clipModel );
 //	savefile.WriteInt( pushFlags );
 //
 //	savefile.WriteTrace( pushResults );
@@ -449,8 +449,8 @@ idPhysics_Parametric::Activate
 //	idPhysics_Parametric_RestorePState( savefile, this.current );
 //	idPhysics_Parametric_RestorePState( savefile, saved );
 //
-//	savefile.ReadBool( isPusher );
-//	savefile.ReadClipModel( clipModel );
+//	savefile.ReadBool( this.isPusher );
+//	savefile.ReadClipModel( this.clipModel );
 //	savefile.ReadInt( pushFlags );
 //
 //	savefile.ReadTrace( pushResults );
@@ -459,51 +459,51 @@ idPhysics_Parametric::Activate
 //	savefile.ReadBool( hasMaster );
 //	savefile.ReadBool( isOrientated );
 //}
-//
-///*
-//================
-//idPhysics_Parametric::SetPusher
-//================
-//*/
-//void idPhysics_Parametric::SetPusher( int flags ) {
-//	assert( clipModel );
-//	isPusher = true;
-//	pushFlags = flags;
-//}
-//
-///*
-//================
-//idPhysics_Parametric::IsPusher
-//================
-//*/
-//bool idPhysics_Parametric::IsPusher( ) const {
-//	return isPusher;
-//}
-//
-///*
-//================
-//idPhysics_Parametric::SetLinearExtrapolation
-//================
-//*/
-//void idPhysics_Parametric::SetLinearExtrapolation( extrapolation_t type, int time, int duration, const idVec3 &base, const idVec3 &speed, const idVec3 &baseSpeed ) {
-//	this.current.time = gameLocal.time;
-//	this.current.linearExtrapolation.Init( time, duration, base, baseSpeed, speed, type );
-//	this.current.localOrigin = base;
-//	Activate();
-//}
-//
-///*
-//================
-//idPhysics_Parametric::SetAngularExtrapolation
-//================
-//*/
-//void idPhysics_Parametric::SetAngularExtrapolation( extrapolation_t type, int time, int duration, const idAngles &base, const idAngles &speed, const idAngles &baseSpeed ) {
-//	this.current.time = gameLocal.time;
-//	this.current.angularExtrapolation.Init( time, duration, base, baseSpeed, speed, type );
-//	this.current.localAngles = base;
-//	Activate();
-//}
-//
+
+/*
+================
+idPhysics_Parametric::SetPusher
+================
+*/
+SetPusher( /*int */flags :number):void {
+	assert( this.clipModel );
+	this.isPusher = true;
+	this.pushFlags = flags;
+}
+
+/*
+================
+idPhysics_Parametric::IsPusher
+================
+*/
+	IsPusher ( ): boolean {
+		return this.isPusher;
+	}
+
+/*
+================
+idPhysics_Parametric::SetLinearExtrapolation
+================
+*/
+	SetLinearExtrapolation ( type: extrapolation_t, /*int*/ time: number, /*int*/ duration: number, base: idVec3, speed: idVec3, baseSpeed: idVec3 ): void {
+		this.current.time = gameLocal.time;
+		this.current.linearExtrapolation.Init( time, duration, base, baseSpeed, speed, type );
+		this.current.localOrigin = base;
+		this.Activate ( );
+	}
+
+/*
+================
+idPhysics_Parametric::SetAngularExtrapolation
+================
+*/
+	SetAngularExtrapolation ( type: extrapolation_t, /*int*/ time: number, /*int*/ duration: number, base: idAngles, speed: idAngles, baseSpeed: idAngles ): void {
+		this.current.time = gameLocal.time;
+		this.current.angularExtrapolation.Init( time, duration, base, baseSpeed, speed, type );
+		this.current.localAngles = base;
+		this.Activate ( );
+	}
+
 ///*
 //================
 //idPhysics_Parametric::GetLinearExtrapolationType
@@ -527,11 +527,11 @@ idPhysics_Parametric::Activate
 //idPhysics_Parametric::SetLinearInterpolation
 //================
 //*/
-//void idPhysics_Parametric::SetLinearInterpolation( int time, int accelTime, int decelTime, int duration, const idVec3 &startPos, const idVec3 &endPos ) {
+//void idPhysics_Parametric::SetLinearInterpolation( /*int*/ time:number, int accelTime, int decelTime, /*int*/ duration:number, const idVec3 &startPos, const idVec3 &endPos ) {
 //	this.current.time = gameLocal.time;
 //	this.current.linearInterpolation.Init( time, accelTime, decelTime, duration, startPos, endPos );
 //	this.current.localOrigin = startPos;
-//	Activate();
+//	this.Activate();
 //}
 //
 ///*
@@ -539,11 +539,11 @@ idPhysics_Parametric::Activate
 //idPhysics_Parametric::SetAngularInterpolation
 //================
 //*/
-//void idPhysics_Parametric::SetAngularInterpolation( int time, int accelTime, int decelTime, int duration, const idAngles &startAng, const idAngles &endAng ) {
+//void idPhysics_Parametric::SetAngularInterpolation( /*int*/ time:number, int accelTime, int decelTime, /*int*/ duration:number, const idAngles &startAng, const idAngles &endAng ) {
 //	this.current.time = gameLocal.time;
 //	this.current.angularInterpolation.Init( time, accelTime, decelTime, duration, startAng, endAng );
 //	this.current.localAngles = startAng;
-//	Activate();
+//	this.Activate();
 //}
 //
 ///*
@@ -564,7 +564,7 @@ idPhysics_Parametric::Activate
 //		this.current.splineInterpolate.Init( startTime, accelTime, decelTime, endTime - startTime, 0.0, length );
 //	}
 //	this.current.useSplineAngles = useSplineAngles;
-//	Activate();
+//	this.Activate();
 //}
 //
 ///*
@@ -708,17 +708,17 @@ idPhysics_Parametric::GetBounds
 		return super.GetBounds ( );
 	}
 
-///*
-//================
-//idPhysics_Parametric::GetAbsBounds
-//================
-//*/
-//const idBounds &idPhysics_Parametric::GetAbsBounds( /*int*/ id:number  = -1) const {
-//	if ( this.clipModel ) {
-//		return this.clipModel.GetAbsBounds();
-//	}
-//	return idPhysics_Base::GetAbsBounds();
-//}
+/*
+================
+idPhysics_Parametric::GetAbsBounds
+================
+*/
+	GetAbsBounds ( /*int*/ id: number = -1 ): idBounds {
+		if ( this.clipModel ) {
+			return this.clipModel.GetAbsBounds ( );
+		}
+		return super.GetAbsBounds ( );
+	}
 //
 ///*
 //================
@@ -778,7 +778,7 @@ idPhysics_Parametric::GetBounds
 //		}
 //	}
 //
-//	if ( isPusher ) {
+//	if ( this.isPusher ) {
 //
 //		gameLocal.push.ClipPush( pushResults, this.self, pushFlags, oldOrigin, oldAxis, this.current.origin, this.current.axis );
 //		if ( pushResults.fraction < 1.0 ) {
@@ -910,7 +910,7 @@ idPhysics_Parametric::GetBounds
 //	if ( this.clipModel ) {
 //		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
 //	}
-//	Activate();
+//	this.Activate();
 //}
 //
 ///*
@@ -940,7 +940,7 @@ idPhysics_Parametric::GetBounds
 //	if ( this.clipModel ) {
 //		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
 //	}
-//	Activate();
+//	this.Activate();
 //}
 //
 ///*
@@ -994,7 +994,7 @@ idPhysics_Parametric::GetAxis
 //void idPhysics_Parametric::SetLinearVelocity( const idVec3 &newLinearVelocity, /*int*/ id:number ) {
 //	SetLinearExtrapolation( extrapolation_t(EXTRAPOLATION_LINEAR|EXTRAPOLATION_NOSTOP), gameLocal.time, 0, this.current.origin, newLinearVelocity, vec3_origin );
 //	this.current.linearInterpolation.Init( 0, 0, 0, 0, vec3_zero, vec3_zero );
-//	Activate();
+//	this.Activate();
 //}
 //
 ///*
@@ -1013,7 +1013,7 @@ idPhysics_Parametric::GetAxis
 //
 //	SetAngularExtrapolation( extrapolation_t(EXTRAPOLATION_LINEAR|EXTRAPOLATION_NOSTOP), gameLocal.time, 0, this.current.angles, rotation.ToAngles(), ang_zero );
 //	this.current.angularInterpolation.Init( 0, 0, 0, 0, ang_zero, ang_zero );
-//	Activate();
+//	this.Activate();
 //}
 //
 ///*

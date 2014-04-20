@@ -2392,31 +2392,30 @@ class idPhysics_AF extends idPhysics_Base {
 		}
 	}
 	
-	/////*
-	////================
-	////idPhysics_AF::GetAbsBounds
-	////================
-	////*/
-	////const idBounds &idPhysics_AF::GetAbsBounds( /*int*/ id:number  = -1) const {
-	////	var/*int*/i:number;
-	////	static idBounds absBounds;
-	////
-	////	if ( id >= 0 && id < this.bodies.Num() ) {
-	////		return this.bodies[id].GetClipModel().GetAbsBounds();
-	////	}
-	////	else if ( !this.bodies.Num() ) {
-	////		absBounds.Zero();
-	////		return absBounds;
-	////	}
-	////	else {
-	////		absBounds = this.bodies[0].GetClipModel().GetAbsBounds();
-	////		for ( i = 1; i < this.bodies.Num(); i++ ) {
-	////			absBounds += this.bodies[i].GetClipModel().GetAbsBounds();
-	////		}
-	////		return absBounds;
-	////	}
-	////}
-	////
+	/*
+	================
+	idPhysics_AF::GetAbsBounds
+	================
+	*/
+	static absBounds =  new idBounds;
+	GetAbsBounds ( /*int*/ id: number = -1 ): idBounds {
+
+		var /*int*/i: number;
+
+		if ( id >= 0 && id < this.bodies.Num ( ) ) {
+			return this.bodies[id].GetClipModel ( ).GetAbsBounds ( );
+		} else if ( !this.bodies.Num ( ) ) {
+			idPhysics_AF.absBounds.Zero ( );
+			return idPhysics_AF.absBounds;
+		} else {
+			idPhysics_AF.absBounds = this.bodies[0].GetClipModel ( ).GetAbsBounds ( );
+			for ( i = 1; i < this.bodies.Num ( ); i++ ) {
+				idPhysics_AF.absBounds.opAdditionAssignment( this.bodies[i].GetClipModel ( ).GetAbsBounds ( ) );
+			}
+			return idPhysics_AF.absBounds;
+		}
+	}
+
 	/////*
 	////================
 	////idPhysics_AF::Evaluate

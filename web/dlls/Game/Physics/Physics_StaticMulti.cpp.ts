@@ -453,31 +453,32 @@ idPhysics_StaticMulti::GetBounds
 		return bounds_zero;
 	}
 
-/////*
-////================
-////idPhysics_StaticMulti::GetAbsBounds
-////================
-////*/
-////const idBounds &idPhysics_StaticMulti::GetAbsBounds( /*int*/ id:number ) const {
-////	var/*int*/i:number;
-////	static idBounds absBounds;
-////
-////	if ( id >= 0 && id < this.clipModels.Num() ) {
-////		if ( this.clipModels[id] ) {
-////			return this.clipModels[id].GetAbsBounds();
-////		}
-////	}
-////	if ( id == -1 ) {
-////		absBounds.Clear();
-////		for ( i = 0; i < this.clipModels.Num(); i++ ) {
-////			if ( this.clipModels[i] ) {
-////				absBounds.AddBounds( this.clipModels[i].GetAbsBounds() );
-////			}
-////		}
-////		return absBounds;
-////	}
-////	return bounds_zero;
-////}
+/*
+================
+idPhysics_StaticMulti::GetAbsBounds
+================
+*/
+static absBounds = new idBounds;
+	GetAbsBounds ( /*int*/ id: number ): idBounds {
+		var /*int*/i: number;
+		//static idBounds absBounds;
+
+		if ( id >= 0 && id < this.clipModels.Num ( ) ) {
+			if ( this.clipModels[id] ) {
+				return this.clipModels[id].GetAbsBounds ( );
+			}
+		}
+		if ( id == -1 ) {
+			idPhysics_StaticMulti.absBounds.Clear ( );
+			for ( i = 0; i < this.clipModels.Num ( ); i++ ) {
+				if ( this.clipModels[i] ) {
+					idPhysics_StaticMulti.absBounds.AddBounds( this.clipModels[i].GetAbsBounds ( ) );
+				}
+			}
+			return idPhysics_StaticMulti.absBounds;
+		}
+		return bounds_zero;
+	}
 ////
 /////*
 ////================

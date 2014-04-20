@@ -151,6 +151,7 @@
 /// <reference path="libs/idlib/containers/strpool.h.ts" />
 // Math
 /// <reference path="libs/idlib/math/angles.cpp.ts" />
+/// <reference path="libs/idlib/math/extrapolate.h.ts" />
 /// <reference path="libs/idlib/math/interpolate.h.ts" />
 /// <reference path="libs/idlib/math/vector.h.ts" />
 /// <reference path="libs/idlib/math/math.h.ts" />

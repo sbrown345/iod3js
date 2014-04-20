@@ -3816,38 +3816,38 @@ AddWorldModelEntities  (): void {
 //==============
 //*/
 //int idRenderWorldLocal::NumPortals( void ) const {
-//	return numInterAreaPortals;
+//	return this.numInterAreaPortals;
 //}
-//
-///*
-//==============
-//FindPortal
-//
-//Game code uses this to identify which portals are inside doors.
-//Returns 0 if no portal contacts the bounds
-//==============
-//*/
-//qhandle_t idRenderWorldLocal::FindPortal( const idBounds &b ) const {
-//	int				i, j;
-//	idBounds		wb;
-//	doublePortal_t	*portal;
-//	idWinding		*w;
-//
-//	for ( i = 0 ; i < numInterAreaPortals ; i++ ) {
-//		portal = &doublePortals[i];
-//		w = portal.portals[0].w;
-//
-//		wb.Clear();
-//		for ( j = 0 ; j < w.GetNumPoints() ; j++ ) {
-//			wb.AddPoint( (*w)[j].ToVec3() );
-//		}
-//		if ( wb.IntersectsBounds( b ) ) {
-//			return i + 1;
-//		}
-//	}
-//
-//	return 0;
-//}
+
+/*
+==============
+FindPortal
+
+Game code uses this to identify which portals are inside doors.
+Returns 0 if no portal contacts the bounds
+==============
+*/
+	FindPortal ( b: idBounds ): number /*qhandle_t*/ {
+		var /*int				*/i: number, j: number;
+		var wb = new idBounds;
+		var portal: doublePortal_t;
+		var w: idWinding;
+
+		for ( i = 0; i < this.numInterAreaPortals; i++ ) {
+			portal = this.doublePortals[i];
+			w = portal.portals[0].w;
+
+			wb.Clear ( );
+			for ( j = 0; j < w.GetNumPoints ( ); j++ ) {
+				wb.AddPoint( ( /* * */w )[j].ToVec3 ( ) );
+			}
+			if ( wb.IntersectsBounds( b ) ) {
+				return i + 1;
+			}
+		}
+
+		return 0;
+	}
 
 /*
 =============
@@ -3910,21 +3910,21 @@ AreasAreConnected
 //		return;
 //	}
 //
-//	if ( portal < 1 || portal > numInterAreaPortals ) {
+//	if ( portal < 1 || portal > this.numInterAreaPortals ) {
 //		common.Error( "SetPortalState: bad portal number %i", portal );
 //	}
-//	int	old = doublePortals[portal-1].blockingBits;
+//	int	old = this.doublePortals[portal-1].blockingBits;
 //	if ( old == blockTypes ) {
 //		return;
 //	}
-//	doublePortals[portal-1].blockingBits = blockTypes;
+//	this.doublePortals[portal-1].blockingBits = blockTypes;
 //
 //	// leave the connectedAreaGroup the same on one side,
 //	// then flood fill from the other side with a new number for each changed attribute
 //	for ( int i = 0 ; i < NUM_PORTAL_ATTRIBUTES ; i++ ) {
 //		if ( ( old ^ blockTypes ) & ( 1 << i ) ) {
 //			connectedAreaNum++;
-//			FloodConnectedAreas( &this.portalAreas[doublePortals[portal-1].portals[1].intoArea], i );
+//			FloodConnectedAreas( &this.portalAreas[this.doublePortals[portal-1].portals[1].intoArea], i );
 //		}
 //	}
 //
@@ -3946,11 +3946,11 @@ AreasAreConnected
 //		return 0;
 //	}
 //
-//	if ( portal < 1 || portal > numInterAreaPortals ) {
+//	if ( portal < 1 || portal > this.numInterAreaPortals ) {
 //		common.Error( "GetPortalState: bad portal number %i", portal );
 //	}
 //
-//	return doublePortals[portal-1].blockingBits;
+//	return this.doublePortals[portal-1].blockingBits;
 //}
 //
 ///*

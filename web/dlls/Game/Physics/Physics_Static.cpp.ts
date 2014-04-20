@@ -351,21 +351,22 @@ idPhysics_Static::idPhysics_Static
 		return bounds_zero;
 	}
 
-	/////*
-	////================
-	////idPhysics_Static::GetAbsBounds
-	////================
-	////*/
-	////const idBounds &idPhysics_Static::GetAbsBounds( /*int*/ id:number = -1  ) const {
-	////	static idBounds absBounds;
-	////
-	////	if ( this.clipModel ) {
-	////		return this.clipModel.GetAbsBounds();
-	////	}
-	////	absBounds[0] = absBounds[1] = this.current.origin;
-	////	return absBounds;
-	////}
-	////
+	/*
+	================
+	idPhysics_Static::GetAbsBounds
+	================
+	*/
+	static absBounds = new idBounds;
+	GetAbsBounds( /*int*/ id: number = -1): idBounds {
+		//static idBounds absBounds;
+	
+		if ( this.clipModel ) {
+			return this.clipModel.GetAbsBounds();
+		}
+		idPhysics_Static.absBounds[0] = idPhysics_Static.absBounds[1] = this.current.origin;
+		return idPhysics_Static.absBounds;
+	}
+	
 	/////*
 	////================
 	////idPhysics_Static::Evaluate

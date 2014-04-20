@@ -386,13 +386,13 @@ Zero( ):void {
 //	return true;
 //}
 
-//ID_INLINE bool idBounds::IntersectsBounds( const idBounds &a ) const {
-//	if ( a.b[1][0] < this.b[0][0] || a.b[1][1] < this.b[0][1] || a.b[1][2] < this.b[0][2]
-//		|| a.b[0][0] > this.b[1][0] || a.b[0][1] > this.b[1][1] || a.b[0][2] > this.b[1][2] ) {
-//		return false;
-//	}
-//	return true;
-//}
+	IntersectsBounds ( a: idBounds ): boolean {
+		if ( a.b[1][0] < this.b[0][0] || a.b[1][1] < this.b[0][1] || a.b[1][2] < this.b[0][2]
+			|| a.b[0][0] > this.b[1][0] || a.b[0][1] > this.b[1][1] || a.b[0][2] > this.b[1][2] ) {
+			return false;
+		}
+		return true;
+	}
 
 //ID_INLINE idSphere idBounds::ToSphere( ) const {
 //	idSphere sphere;

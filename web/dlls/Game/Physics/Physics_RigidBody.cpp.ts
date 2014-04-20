@@ -990,15 +990,15 @@ idPhysics_RigidBody::GetBounds
 		return this.clipModel.GetBounds ( );
 	}
 
-/////*
-////================
-////idPhysics_RigidBody::GetAbsBounds
-////================
-////*/
-////const idBounds &idPhysics_RigidBody::GetAbsBounds( /*int*/ id:number  = -1) const {
-////	return this.clipModel.GetAbsBounds();
-////}
-////
+/*
+================
+idPhysics_RigidBody::GetAbsBounds
+================
+*/
+	GetAbsBounds ( /*int*/ id: number = -1 ): idBounds {
+		return this.clipModel.GetAbsBounds ( );
+	}
+
 /////*
 ////================
 ////idPhysics_RigidBody::Evaluate

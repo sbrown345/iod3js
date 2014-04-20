@@ -123,8 +123,8 @@ class idPhysics extends idClass {
 	   //	virtual int					GetClipMask(/*int*/ id:number = -1) const = 0;
 	   //	// get the bounds of a specific clip model or the whole physics object
 	   GetBounds(/*int */id = -1):idBounds { throw "placeholder"; }
-	   //	virtual const idBounds &	GetAbsBounds(/*int*/ id:number = -1) const = 0;
-	   //	// evaluate the physics with the given time step, returns true if the object moved
+	GetAbsBounds ( /*int*/ id: number = -1 ): idBounds { throw "placeholder"; }
+	//	// evaluate the physics with the given time step, returns true if the object moved
 	   //	virtual bool				Evaluate(int timeStepMSec, int endTimeMSec) = 0;
 	   //	// update the time without moving
 	   //	virtual void				UpdateTime(int endTimeMSec) = 0;

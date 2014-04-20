@@ -162,6 +162,10 @@ class idAngles {
 		this.roll = v[2];
 	}
 
+	memset0 ( ): void {
+		this.Zero ( );
+	}
+
 ////ID_INLINE void idAngles::Set(float pitch, float yaw, float roll) {
 ////	this.pitch = pitch;
 ////	this.yaw = yaw;
