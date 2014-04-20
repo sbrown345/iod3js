@@ -215,7 +215,7 @@ class idPhysics_Base extends idPhysics {
 	//	var/*int*/i:number;
 	//
 	//	savefile.WriteObject( this.self );
-	//	savefile.WriteInt( clipMask );
+	//	savefile.WriteInt( this.clipMask );
 	//	savefile.WriteVec3( gravityVector );
 	//	savefile.WriteVec3( gravityNormal );
 	//
@@ -239,7 +239,7 @@ class idPhysics_Base extends idPhysics {
 	//	int i, num;
 	//
 	//	savefile.ReadObject( reinterpret_cast<idClass *&>( this.self ) );
-	//	savefile.ReadInt( clipMask );
+	//	savefile.ReadInt( this.clipMask );
 	//	savefile.ReadVec3( gravityVector );
 	//	savefile.ReadVec3( gravityNormal );
 	//
@@ -331,19 +331,19 @@ class idPhysics_Base extends idPhysics {
 	idPhysics_Base::SetClipMask
 	================
 	*/
-	void idPhysics_Base::SetClipMask( int mask, /*int*/ id:number = -1 ) {
-		clipMask = mask;
+	SetClipMask ( /*int*/ mask: number, /*int*/ id: number = -1 ): void {
+		this.clipMask = mask;
 	}
-	
+
 	/*
 	================
 	idPhysics_Base::GetClipMask
 	================
 	*/
-	int idPhysics_Base::GetClipMask( /*int*/ id:number  = -1) const {
-		return clipMask;
+	GetClipMask ( /*int*/ id: number = -1 ): number {
+		return this.clipMask;
 	}
-	
+
 	/*
 	================
 	idPhysics_Base::GetBounds
@@ -868,7 +868,7 @@ class idPhysics_Base extends idPhysics {
 	//	dir.SubVec3(0) = gravityNormal;
 	//	dir.SubVec3(1) = vec3_origin;
 	//	num = gameLocal.clip.Contacts( &this.contacts[index], 10, clipModel.GetOrigin(),
-	//					dir, CONTACT_EPSILON, clipModel, clipModel.GetAxis(), clipMask, this.self );
+	//					dir, CONTACT_EPSILON, clipModel, clipModel.GetAxis(), this.clipMask, this.self );
 	//	this.contacts.SetNum( index + num, false );
 	//}
 	//

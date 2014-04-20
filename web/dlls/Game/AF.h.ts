@@ -689,12 +689,13 @@ class idAF {
 		return true;
 	}
 	
-	/////*
-	////================
-	////idAF::LoadConstraint
-	////================
-	////*/
-	////bool idAF::LoadConstraint( const idDeclAF_Constraint *fc ) {
+	/*
+	================
+	idAF::LoadConstraint
+	================
+	*/
+	LoadConstraint(fc: idDeclAF_Constraint) :boolean {
+		todoThrow ( );
 	////	idAFBody *body1, *body2;
 	////	idAngles angles;
 	////	idMat3 axis;	
@@ -842,27 +843,27 @@ class idAF {
 	////			break;
 	////		}
 	////	}
-	////	return true;
-	////}
+		return true;
+	}
 	
 	/*
 	================
 	GetJointTransform
 	================
 	*/
-	static GetJointTransform(model: void, frame: idJointMat, jointName: string, origin: idVec3, axis: idMat3 ):boolean {
-		var joint: jointHandle_t	;
-	
-		joint = reinterpret_cast<idAnimator >(model).GetJointHandle( jointName );
-		if ( ( joint >= 0 ) && ( joint < reinterpret_cast<idAnimator >(model).NumJoints() ) ) {
-			origin = frame[ joint ].ToVec3();
-			axis = frame[ joint ].ToMat3();
+	static GetJointTransform ( model: any, frame: idJointMat[], jointName: string, origin: idVec3, axis: idMat3 ): boolean {
+		var joint: jointHandle_t;
+
+		joint = reinterpret_cast<idAnimator>( model ).GetJointHandle( jointName );
+		if ( ( joint >= 0 ) && ( joint < reinterpret_cast<idAnimator>( model ).NumJoints ( ) ) ) {
+			origin.equals( frame[joint].ToVec3 ( ) );
+			axis.equals( frame[joint].ToMat3 ( ) );
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	/*
 	================
 	idAF::Load
@@ -951,7 +952,7 @@ class idAF {
 
 		// delete any bodies in the physicsObj that are no longer in the idDeclAF
 		for ( i = 0; i < this.physicsObj.GetNumBodies(); i++ ) {
-			var body: idAFBody= this.physicsObj.GetBody( i );
+			var body: idAFBody= this.physicsObj.GetBody_id( i );
 			for ( j = 0; j < file.bodies.Num(); j++ ) {
 				if ( file.bodies[j].name.Icmp( body.GetName() ) == 0 ) {
 					break;
@@ -985,7 +986,7 @@ class idAF {
 
 		// load constraints from the file
 		for ( i = 0; i < file.constraints.Num(); i++ ) {
-			LoadConstraint( file.constraints[i] );
+			this.LoadConstraint( file.constraints[i] );
 		}
 
 		this.physicsObj.UpdateClipModels();
@@ -994,7 +995,7 @@ class idAF {
 		for( i = 0; i < this.animator.NumJoints(); i++ ) {
 			if ( this.jointBody[i] == -1 ) {
 				gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) joint '%s' is not contained by a body",
-					this.name.c_str(), this.self.name.c_str(), this.self.GetPhysics().GetOrigin().ToString(0), this.animator.GetJointName( (jointHandle_t)i ) );
+					this.name.c_str(), this.self.name.c_str(), this.self.GetPhysics().GetOrigin().ToString(0), this.animator.GetJointName( <jointHandle_t>i ) );
 			}
 		}
 

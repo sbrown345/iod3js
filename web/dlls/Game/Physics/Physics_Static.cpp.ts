@@ -327,7 +327,7 @@ idPhysics_Static::idPhysics_Static
 	idPhysics_Static::SetClipMask
 	================
 	*/
-	void idPhysics_Static::SetClipMask( int mask, /*int*/ id:number = -1  ) {
+	SetClipMask( /*int */mask:number, /*int*/ id:number = -1  ):void {
 	}
 	
 	/*
@@ -335,10 +335,10 @@ idPhysics_Static::idPhysics_Static
 	idPhysics_Static::GetClipMask
 	================
 	*/
-	int idPhysics_Static::GetClipMask( /*int*/ id:number  = -1 ) const {
+	GetClipMask ( /*int*/ id: number = -1 ): number {
 		return 0;
 	}
-	
+
 	/*
 	================
 	idPhysics_Static::GetBounds

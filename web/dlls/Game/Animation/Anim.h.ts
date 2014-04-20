@@ -4969,18 +4969,18 @@ idAnimator::GetJointHandle
 		return this.modelDef.ModelHandle ( ).GetJointHandle( name );
 	}
 
-///*
-//=====================
-//idAnimator::GetJointName
-//=====================
-//*/
-//const char *idAnimator::GetJointName( jointHandle_t handle ) const {
-//	if ( !this.modelDef || !this.modelDef.ModelHandle() ) {
-//		return "";
-//	}
-//
-//	return this.modelDef.ModelHandle().GetJointName( handle );
-//}
+/*
+=====================
+idAnimator::GetJointName
+=====================
+*/
+	GetJointName ( handle: jointHandle_t ): string {
+		if ( !this.modelDef || !this.modelDef.ModelHandle ( ) ) {
+			return "";
+		}
+
+		return this.modelDef.ModelHandle ( ).GetJointName( handle );
+	}
 
 /*
 =====================

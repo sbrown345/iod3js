@@ -406,17 +406,17 @@ idPhysics_StaticMulti::SetContents
 idPhysics_StaticMulti::SetClipMask
 ================
 */
-void idPhysics_StaticMulti::SetClipMask( int mask, /*int*/ id:number ) {
-}
+	SetClipMask ( /*int*/ mask: number, /*int*/ id: number ): void {
+	}
 
 /*
 ================
 idPhysics_StaticMulti::GetClipMask
 ================
 */
-int idPhysics_StaticMulti::GetClipMask( /*int*/ id:number ) const {
-	return 0;
-}
+	GetClipMask ( /*int*/ id: number ): number {
+		return 0;
+	}
 
 /*
 ================

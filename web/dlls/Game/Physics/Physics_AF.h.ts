@@ -665,9 +665,9 @@ class idAFBody {
 ////							~idAFBody( );
 ////
 ////	void					Init( );
-////	const idStr &			GetName( ) const { return name; }
-////	const idVec3 &			GetWorldOrigin( ) const { return this.current.worldOrigin; }
-////	const idMat3 &			GetWorldAxis( ) const { return this.current.worldAxis; }
+	GetName( ) :idStr { return this.name; }
+	GetWorldOrigin(): idVec3 { return this.current.worldOrigin; }
+	GetWorldAxis(): idMat3 { return this.current.worldAxis; }
 ////	const idVec3 &			GetLinearVelocity( ) const { return this.current.spatialVelocity.SubVec3(0); }
 ////	const idVec3 &			GetAngularVelocity( ) const { return this.current.spatialVelocity.SubVec3(1); }
 ////	idVec3					GetPointVelocity( const idVec3 &point ) const;
@@ -882,10 +882,10 @@ class idPhysics_AF extends idPhysics_Base {
 ////	void					SetContactFrictionDent( const float dent, const float start, const float end );
 ////							// get the current contact friction scale
 ////	float					GetContactFrictionScale( ) const;
-////							// enable or disable collision detection
-////	void					SetCollision( const bool enable ) { enableCollision = enable; }
-////							// enable or disable self collision
-////	void					SetSelfCollision( const bool enable ) { selfCollision = enable; }
+							// enable or disable collision detection
+	SetCollision ( enable: boolean ): void { this.enableCollision = enable; }
+	// enable or disable self collision
+	SetSelfCollision ( enable: boolean ): void { this.selfCollision = enable; }
 ////							// enable or disable coming to a dead stop
 ////	void					SetComeToRest( bool enable ) { comeToRest = enable; }
 ////							// call when structure of articulated figure changes
@@ -980,45 +980,45 @@ class idPhysics_AF extends idPhysics_Base {
 	hangedAF:boolean;						// true when the articulated figure just changed
 	
 	// properties
-	inearFriction:number/*float*/;					// default translational friction
-	ngularFriction:number/*float*/;				// default rotational friction
-	ontactFriction:number/*float*/;				// default friction with contact surfaces
-	ouncyness:number/*float*/;						// default bouncyness
-	otalMass:number/*float*/;						// total mass of articulated figure
-	orceTotalMass:number/*float*/;					// force this total mass
-	
-	uspendVelocity = new idVec2;				// simulation may not be suspended if a body has more velocity
-	uspendAcceleration = new idVec2;			// simulation may not be suspended if a body has more acceleration
-	oMoveTime:number/*float*/;						// suspend simulation if hardly any movement for this many seconds
-	oMoveTranslation:number/*float*/;				// maximum translation considered no movement
-	oMoveRotation:number/*float*/;					// maximum rotation considered no movement
-	inMoveTime:number/*float*/;					// if > 0 the simulation is never suspended before running this many seconds
-	axMoveTime:number/*float*/;					// if > 0 the simulation is always suspeded after running this many seconds
-	mpulseThreshold:number/*float*/;				// threshold below which impulses are ignored to avoid continuous activation
-	
-	imeScale:number/*float*/;						// the time is scaled with this value for slow motion effects
-	imeScaleRampStart:number/*float*/;				// start of time scale change
-	imeScaleRampEnd:number/*float*/;				// end of time scale change
-	
-	ointFrictionScale:number/*float*/;				// joint friction scale
-	ointFrictionDent:number/*float*/;				// joint friction dives from 1 to this value and goes up again
-	ointFrictionDentStart:number/*float*/;			// start time of joint friction dent
-	ointFrictionDentEnd:number/*float*/;			// end time of joint friction dent
-	ointFrictionDentScale:number/*float*/;			// dent scale
-	
-	ontactFrictionScale:number/*float*/;			// contact friction scale
-	ontactFrictionDent:number/*float*/;			// contact friction dives from 1 to this value and goes up again
-	ontactFrictionDentStart:number/*float*/;		// start time of contact friction dent
-	ontactFrictionDentEnd:number/*float*/;			// end time of contact friction dent
-	ontactFrictionDentScale:number/*float*/;		// dent scale
-	
-	nableCollision:boolean;				// if true collision detection is enabled
-	elfCollision:boolean;					// if true the self collision is allowed
-	omeToRest:boolean;						// if true the figure can come to rest
-	inearTime:boolean;						// if true use the linear time algorithm
-	oImpact:boolean;						// if true do not activate when another object collides
-	orldConstraintsLocked:boolean;			// if true world constraints cannot be moved
-	orcePushable:boolean;					// if true can be pushed even when bound to a master
+	linearFriction: number/*float*/;					// default translational friction
+	angularFriction: number/*float*/;				// default rotational friction
+	contactFriction: number/*float*/;				// default friction with contact surfaces
+	bouncyness: number/*float*/;						// default bouncyness
+	totalMass: number/*float*/;						// total mass of articulated figure
+	forceTotalMass: number/*float*/;					// force this total mass
+
+	suspendVelocity = new idVec2;				// simulation may not be suspended if a body has more velocity
+	suspendAcceleration = new idVec2;			// simulation may not be suspended if a body has more acceleration
+	noMoveTime: number/*float*/;						// suspend simulation if hardly any movement for this many seconds
+	noMoveTranslation: number/*float*/;				// maximum translation considered no movement
+	noMoveRotation: number/*float*/;					// maximum rotation considered no movement
+	minMoveTime: number/*float*/;					// if > 0 the simulation is never suspended before running this many seconds
+	maxMoveTime: number/*float*/;					// if > 0 the simulation is always suspeded after running this many seconds
+	impulseThreshold: number/*float*/;				// threshold below which impulses are ignored to avoid continuous activation
+
+	timeScale: number/*float*/;						// the time is scaled with this value for slow motion effects
+	timeScaleRampStart: number/*float*/;				// start of time scale change
+	timeScaleRampEnd: number/*float*/;				// end of time scale change
+
+	jointFrictionScale: number/*float*/;				// joint friction scale
+	jointFrictionDent: number/*float*/;				// joint friction dives from 1 to this value and goes up again
+	jointFrictionDentStart: number/*float*/;			// start time of joint friction dent
+	jointFrictionDentEnd: number/*float*/;			// end time of joint friction dent
+	jointFrictionDentScale: number/*float*/;			// dent scale
+
+	contactFrictionScale: number/*float*/;			// contact friction scale
+	contactFrictionDent: number/*float*/;			// contact friction dives from 1 to this value and goes up again
+	contactFrictionDentStart: number/*float*/;		// start time of contact friction dent
+	contactFrictionDentEnd: number/*float*/;			// end time of contact friction dent
+	contactFrictionDentScale: number/*float*/;		// dent scale
+
+	enableCollision: boolean;				// if true collision detection is enabled
+	selfCollision: boolean;					// if true the self collision is allowed
+	comeToRest: boolean;						// if true the figure can come to rest
+	linearTime: boolean;						// if true use the linear time algorithm
+	noImpact: boolean;						// if true do not activate when another object collides
+	worldConstraintsLocked: boolean;			// if true world constraints cannot be moved
+	forcePushable:boolean;					// if true can be pushed even when bound to a master
 ////
 	// physics state
 	current = new AFPState_t;
@@ -2124,7 +2124,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	this.current.activateTime += timeStep;
 	////
 	////	// if the simulation should never be suspended before a certaint amount of time passed
-	////	if ( minMoveTime > 0.0 && this.current.activateTime < minMoveTime ) {
+	////	if ( this.minMoveTime > 0.0 && this.current.activateTime < this.minMoveTime ) {
 	////		return false;
 	////	}
 	////
@@ -2812,7 +2812,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	this.current.lastTimeStep = USERCMD_MSEC;
 	////	saved = this.current;
 	////
-	////	linearFriction = 0.005f;
+	////	this.linearFriction = 0.005f;
 	////	angularFriction = 0.005f;
 	////	contactFriction = 0.8f;
 	////	bouncyness = 0.4f;
@@ -2824,7 +2824,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	noMoveTime = NO_MOVE_TIME;
 	////	noMoveTranslation = NO_MOVE_TRANSLATION_TOLERANCE;
 	////	noMoveRotation = NO_MOVE_ROTATION_TOLERANCE;
-	////	minMoveTime = MIN_MOVE_TIME;
+	////	this.minMoveTime = MIN_MOVE_TIME;
 	////	maxMoveTime = MAX_MOVE_TIME;
 	////	impulseThreshold = IMPULSE_THRESHOLD;
 	////
@@ -2944,7 +2944,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	saveFile.WriteBool( changedAF );
 	////
-	////	saveFile.WriteFloat( linearFriction );
+	////	saveFile.WriteFloat( this.linearFriction );
 	////	saveFile.WriteFloat( angularFriction );
 	////	saveFile.WriteFloat( contactFriction );
 	////	saveFile.WriteFloat( bouncyness );
@@ -2956,7 +2956,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	saveFile.WriteFloat( noMoveTime );
 	////	saveFile.WriteFloat( noMoveTranslation );
 	////	saveFile.WriteFloat( noMoveRotation );
-	////	saveFile.WriteFloat( minMoveTime );
+	////	saveFile.WriteFloat( this.minMoveTime );
 	////	saveFile.WriteFloat( maxMoveTime );
 	////	saveFile.WriteFloat( impulseThreshold );
 	////
@@ -3018,7 +3018,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	saveFile.ReadBool( changedAF );
 	////
-	////	saveFile.ReadFloat( linearFriction );
+	////	saveFile.ReadFloat( this.linearFriction );
 	////	saveFile.ReadFloat( angularFriction );
 	////	saveFile.ReadFloat( contactFriction );
 	////	saveFile.ReadFloat( bouncyness );
@@ -3030,7 +3030,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	saveFile.ReadFloat( noMoveTime );
 	////	saveFile.ReadFloat( noMoveTranslation );
 	////	saveFile.ReadFloat( noMoveRotation );
-	////	saveFile.ReadFloat( minMoveTime );
+	////	saveFile.ReadFloat( this.minMoveTime );
 	////	saveFile.ReadFloat( maxMoveTime );
 	////	saveFile.ReadFloat( impulseThreshold );
 	////
@@ -3224,7 +3224,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	id = this.bodies.Num();
 	////	body.clipModel.SetId( id );
 	////	if ( body.linearFriction < 0.0 ) {
-	////		body.linearFriction = linearFriction;
+	////		body.linearFriction = this.linearFriction;
 	////		body.angularFriction = angularFriction;
 	////		body.contactFriction = contactFriction;
 	////	}
@@ -3386,36 +3386,36 @@ class idPhysics_AF extends idPhysics_Base {
 		return this.constraints.Num ( );
 	}
 
-	/////*
-	////================
-	////idPhysics_AF::GetBody
-	////================
-	////*/
-	////idAFBody *idPhysics_AF::GetBody( const char *bodyName ) const {
-	////	var/*int*/i:number;
-	////
-	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
-	////		if ( !this.bodies[i].name.Icmp( bodyName ) ) {
-	////			return this.bodies[i];
-	////		}
-	////	}
-	////
-	////	return NULL;
-	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::GetBody
-	////================
-	////*/
-	////idAFBody *idPhysics_AF::GetBody( /*int*/ id:number ) const {
-	////	if ( id < 0 || id >= this.bodies.Num() ) {
-	////		gameLocal.Error( "GetBody: no body with id %d exists\n", id );
-	////		return NULL;
-	////	}
-	////	return this.bodies[id];
-	////}
-	////
+	/*
+	================
+	idPhysics_AF::GetBody
+	================
+	*/
+	GetBody ( bodyName: string ): idAFBody {
+		var /*int*/i: number;
+
+		for ( i = 0; i < this.bodies.Num ( ); i++ ) {
+			if ( !this.bodies[i].name.Icmp( bodyName ) ) {
+				return this.bodies[i];
+			}
+		}
+
+		return null;
+	}
+
+	/*
+	================
+	idPhysics_AF::GetBody
+	================
+	*/
+	GetBody_id ( /*int*/ id: number ): idAFBody {
+		if ( id < 0 || id >= this.bodies.Num ( ) ) {
+			gameLocal.Error( "GetBody: no body with id %d exists\n", id );
+			return null;
+		}
+		return this.bodies[id];
+	}
+
 	/////*
 	////================
 	////idPhysics_AF::GetConstraint
@@ -3580,17 +3580,17 @@ class idPhysics_AF extends idPhysics_Base {
 	idPhysics_AF::SetDefaultFriction
 	================
 	*/
-	void idPhysics_AF::SetDefaultFriction( float linear, float angular, float contact ) {
-		if (	linear < 0.0 || linear > 1.0 ||
-				angular < 0.0 || angular > 1.0 ||
-				contact < 0.0 || contact > 1.0 ) {
+	SetDefaultFriction ( /*float */linear: number, /*float */angular: number, /*float */contact: number ): void {
+		if ( linear < 0.0 || linear > 1.0 ||
+			angular < 0.0 || angular > 1.0 ||
+			contact < 0.0 || contact > 1.0 ) {
 			return;
 		}
-		linearFriction = linear;
-		angularFriction = angular;
-		contactFriction = contact;
+		this.linearFriction = linear;
+		this.angularFriction = angular;
+		this.contactFriction = contact;
 	}
-	
+
 	/////*
 	////================
 	////idPhysics_AF::GetImpactInfo

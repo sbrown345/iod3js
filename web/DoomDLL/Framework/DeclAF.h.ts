@@ -534,8 +534,8 @@ class idDeclAF extends idDecl {
 	////		}
 	////	}
 	////
-	////	for ( i = 0; i < constraints.Num(); i++ ) {
-	////		if ( !WriteConstraint( &f, *constraints[i] ) ) {
+	////	for ( i = 0; i < this.constraints.Num(); i++ ) {
+	////		if ( !WriteConstraint( &f, *this.constraints[i] ) ) {
 	////			return false;
 	////		}
 	////	}
@@ -886,7 +886,7 @@ class idDeclAF extends idDecl {
 	////	idDeclAF_Constraint *constraint = new idDeclAF_Constraint;
 	////
 	////	constraint.SetDefault( this );
-	////	constraints.Alloc() = constraint;
+	////	this.constraints.Alloc() = constraint;
 	////
 	////	if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ||
 	////			!src.ExpectTokenString( "{" ) ) {
@@ -925,7 +925,7 @@ class idDeclAF extends idDecl {
 	////	idDeclAF_Constraint *constraint = new idDeclAF_Constraint;
 	////
 	////	constraint.SetDefault( this );
-	////	constraints.Alloc() = constraint;
+	////	this.constraints.Alloc() = constraint;
 	////
 	////	if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ||
 	////			!src.ExpectTokenString( "{" ) ) {
@@ -1004,7 +1004,7 @@ class idDeclAF extends idDecl {
 	////	idDeclAF_Constraint *constraint = new idDeclAF_Constraint;
 	////
 	////	constraint.SetDefault( this );
-	////	constraints.Alloc() = constraint;
+	////	this.constraints.Alloc() = constraint;
 	////
 	////	if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ||
 	////			!src.ExpectTokenString( "{" ) ) {
@@ -1082,7 +1082,7 @@ class idDeclAF extends idDecl {
 	////	idDeclAF_Constraint *constraint = new idDeclAF_Constraint;
 	////
 	////	constraint.SetDefault( this );
-	////	constraints.Alloc() = constraint;
+	////	this.constraints.Alloc() = constraint;
 	////
 	////	if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ||
 	////			!src.ExpectTokenString( "{" ) ) {
@@ -1146,7 +1146,7 @@ class idDeclAF extends idDecl {
 	////	idDeclAF_Constraint *constraint = new idDeclAF_Constraint;
 	////
 	////	constraint.SetDefault( this );
-	////	constraints.Alloc() = constraint;
+	////	this.constraints.Alloc() = constraint;
 	////
 	////	if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ||
 	////			!src.ExpectTokenString( "{" ) ) {
@@ -1193,7 +1193,7 @@ class idDeclAF extends idDecl {
 	////	idDeclAF_Constraint *constraint = new idDeclAF_Constraint;
 	////
 	////	constraint.SetDefault( this );
-	////	constraints.Alloc() = constraint;
+	////	this.constraints.Alloc() = constraint;
 	////
 	////	if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ||
 	////			!src.ExpectTokenString( "{" ) ) {
@@ -1401,19 +1401,19 @@ class idDeclAF extends idDecl {
 	////		}
 	////	}
 	////
-	////	for ( i = 0; i < constraints.Num(); i++ ) {
+	////	for ( i = 0; i < this.constraints.Num(); i++ ) {
 	////		// check for multiple constraints with the same name
-	////		for ( j = i+1; j < constraints.Num(); j++ ) {
-	////			if ( constraints[i].name == constraints[j].name ) {
-	////				src.Error( "two constraints with the same name \"%s\"", constraints[i].name.c_str() );
+	////		for ( j = i+1; j < this.constraints.Num(); j++ ) {
+	////			if ( this.constraints[i].name == this.constraints[j].name ) {
+	////				src.Error( "two constraints with the same name \"%s\"", this.constraints[i].name.c_str() );
 	////			}
 	////		}
 	////		// check if there are two valid bodies set
-	////		if ( constraints[i].body1 == "" ) {
-	////			src.Error( "no valid body1 specified for constraint '%s'", constraints[i].name.c_str() );
+	////		if ( this.constraints[i].body1 == "" ) {
+	////			src.Error( "no valid body1 specified for constraint '%s'", this.constraints[i].name.c_str() );
 	////		}
-	////		if ( constraints[i].body2 == "" ) {
-	////			src.Error( "no valid body2 specified for constraint '%s'", constraints[i].name.c_str() );
+	////		if ( this.constraints[i].body2 == "" ) {
+	////			src.Error( "no valid body2 specified for constraint '%s'", this.constraints[i].name.c_str() );
 	////		}
 	////	}
 	////
@@ -1492,7 +1492,7 @@ class idDeclAF extends idDecl {
 ////	contents = CONTENTS_CORPSE;
 ////	clipMask = CONTENTS_SOLID | CONTENTS_CORPSE;
 ////	this.bodies.DeleteContents( true );
-////	constraints.DeleteContents( true );
+////	this.constraints.DeleteContents( true );
 ////}
 
 /*
@@ -1512,7 +1512,7 @@ idDeclAF::Finish
 			body.frictionDirection.Finish( name, GetJointTransform, frame, model );
 			body.contactMotorDirection.Finish( name, GetJointTransform, frame, model );
 		}
-		for ( i = 0; i < constraints.Num ( ); i++ ) {
+		for ( i = 0; i < this.constraints.Num ( ); i++ ) {
 			var constraint: idDeclAF_Constraint = this.constraints[i];
 			constraint.anchor.Finish( name, GetJointTransform, frame, model );
 			constraint.anchor2.Finish( name, GetJointTransform, frame, model );
@@ -1554,11 +1554,11 @@ idDeclAF::Finish
 ////			break;
 ////		}
 ////	}
-////	for ( i = 0; i < constraints.Num(); i++ ) {
-////		if ( constraints[i].body1.Icmp( oldName ) == 0 ) {
-////			constraints[i].body1 = newName;
-////		} else if ( constraints[i].body2.Icmp( oldName ) == 0 ) {
-////			constraints[i].body2 = newName;
+////	for ( i = 0; i < this.constraints.Num(); i++ ) {
+////		if ( this.constraints[i].body1.Icmp( oldName ) == 0 ) {
+////			this.constraints[i].body1 = newName;
+////		} else if ( this.constraints[i].body2.Icmp( oldName ) == 0 ) {
+////			this.constraints[i].body2 = newName;
 ////		}
 ////	}
 ////}
@@ -1568,7 +1568,7 @@ idDeclAF::Finish
 ////idDeclAF::DeleteBody
 ////
 ////  delete the body with the given name and delete
-////  all constraints that reference the body
+////  all this.constraints that reference the body
 ////================
 ////*/
 ////void idDeclAF::DeleteBody( name:string ) {
@@ -1581,11 +1581,11 @@ idDeclAF::Finish
 ////			break;
 ////		}
 ////	}
-////	for ( i = 0; i < constraints.Num(); i++ ) {
-////		if ( constraints[i].body1.Icmp( name ) == 0 ||
-////			constraints[i].body2.Icmp( name ) == 0 ) {
-////			delete constraints[i];
-////			constraints.RemoveIndex( i );
+////	for ( i = 0; i < this.constraints.Num(); i++ ) {
+////		if ( this.constraints[i].body1.Icmp( name ) == 0 ||
+////			this.constraints[i].body2.Icmp( name ) == 0 ) {
+////			delete this.constraints[i];
+////			this.constraints.RemoveIndex( i );
 ////			i--;
 ////		}
 ////	}
@@ -1602,7 +1602,7 @@ idDeclAF::Finish
 ////	constraint = new idDeclAF_Constraint;
 ////	constraint.SetDefault( this );
 ////	constraint.name = name;
-////	constraints.Append( constraint );
+////	this.constraints.Append( constraint );
 ////}
 ////
 /////*
@@ -1613,9 +1613,9 @@ idDeclAF::Finish
 ////void idDeclAF::RenameConstraint( const char *oldName, const char *newName ) {
 ////	var/*int*/i:number;
 ////
-////	for ( i = 0; i < constraints.Num(); i++ ) {
-////		if ( constraints[i].name.Icmp( oldName ) == 0 ) {
-////			constraints[i].name = newName;
+////	for ( i = 0; i < this.constraints.Num(); i++ ) {
+////		if ( this.constraints[i].name.Icmp( oldName ) == 0 ) {
+////			this.constraints[i].name = newName;
 ////			return;
 ////		}
 ////	}
@@ -1629,10 +1629,10 @@ idDeclAF::Finish
 ////void idDeclAF::DeleteConstraint( name:string ) {
 ////	var/*int*/i:number;
 ////
-////	for ( i = 0; i < constraints.Num(); i++ ) {
-////		if ( constraints[i].name.Icmp( name ) == 0 ) {
-////			delete constraints[i];
-////			constraints.RemoveIndex( i );
+////	for ( i = 0; i < this.constraints.Num(); i++ ) {
+////		if ( this.constraints[i].name.Icmp( name ) == 0 ) {
+////			delete this.constraints[i];
+////			this.constraints.RemoveIndex( i );
 ////			return;
 ////		}
 ////	}
@@ -1654,7 +1654,7 @@ idDeclAF::Finish
 ////*/
 ////idDeclAF::~idDeclAF( void ) {
 ////	this.bodies.DeleteContents( true );
-////	constraints.DeleteContents( true );
+////	this.constraints.DeleteContents( true );
 ////}
 }
 ////

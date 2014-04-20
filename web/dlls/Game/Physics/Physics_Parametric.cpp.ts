@@ -689,12 +689,12 @@ idPhysics_Parametric::SetClipMask
 idPhysics_Parametric::SetClipMask
 ================
 */
-int idPhysics_Parametric::GetContents( /*int*/ id:number  = -1) const {
-	if ( this.clipModel ) {
-		return this.clipModel.GetContents();
+	GetContents ( /*int*/ id: number = -1 ): number {
+		if ( this.clipModel ) {
+			return this.clipModel.GetContents ( );
+		}
+		return 0;
 	}
-	return 0;
-}
 
 /*
 ================

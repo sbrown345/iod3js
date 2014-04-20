@@ -165,8 +165,8 @@ class idVec2 {
 ////}
 
 	opEquals ( other: idVec2 ): idVec2 {
-		this.x = a.x;
-		this.y = a.y;
+		this.x = other.x;
+		this.y = other.y;
 		return this;
 	}
 
