@@ -28,36 +28,36 @@
 ////
 ////#ifndef __DECLAF_H__
 ////#define __DECLAF_H__
-////
-/////*
-////===============================================================================
-////
-////	Articulated Figure
-////
-////===============================================================================
-////*/
-////
-////class idDeclAF; // in cpp file
-////
-////typedef enum {
-////	DECLAF_CONSTRAINT_INVALID,
-////	DECLAF_CONSTRAINT_FIXED,
-////	DECLAF_CONSTRAINT_BALLANDSOCKETJOINT,
-////	DECLAF_CONSTRAINT_UNIVERSALJOINT,
-////	DECLAF_CONSTRAINT_HINGE,
-////	DECLAF_CONSTRAINT_SLIDER,
-////	DECLAF_CONSTRAINT_SPRING
-////} declAFConstraintType_t;
-////
-////typedef enum {
-////	DECLAF_JOINTMOD_AXIS,
-////	DECLAF_JOINTMOD_ORIGIN,
-////	DECLAF_JOINTMOD_BOTH
-////} declAFJointMod_t;
+
+/*
+===============================================================================
+
+	Articulated Figure
+
+===============================================================================
+*/
+
+//class idDeclAF; // in cpp file
+
+enum declAFConstraintType_t{
+	DECLAF_CONSTRAINT_INVALID,
+	DECLAF_CONSTRAINT_FIXED,
+	DECLAF_CONSTRAINT_BALLANDSOCKETJOINT,
+	DECLAF_CONSTRAINT_UNIVERSALJOINT,
+	DECLAF_CONSTRAINT_HINGE,
+	DECLAF_CONSTRAINT_SLIDER,
+	DECLAF_CONSTRAINT_SPRING
+}
+
+enum declAFJointMod_t{
+	DECLAF_JOINTMOD_AXIS,
+	DECLAF_JOINTMOD_ORIGIN,
+	DECLAF_JOINTMOD_BOTH
+}
 ////
 ////typedef bool (*getJointTransform_t)( void *model, const idJointMat *frame, const char *jointName, idVec3 &origin, idMat3 &axis );
 ////
-////class idAFVector {
+class idAFVector {
 ////public:
 ////	enum {
 ////		VEC_COORDS = 0,
@@ -65,8 +65,8 @@
 ////		VEC_BONECENTER,
 ////		VEC_BONEDIR
 ////	}						type;
-////	idStr					joint1;
-////	idStr					joint2;
+	joint1 = new idStr;
+	joint2 = new idStr;
 ////
 ////public:
 ////							idAFVector( void );
@@ -79,63 +79,331 @@
 ////	idVec3 &				ToVec3( void ) { return vec; }
 ////
 ////private:
-////	mutable idVec3			vec;
-////	bool					negate;
-////};
+	vec = new idVec3; //mutable
+	negate: boolean;
+
+	
+/////*
+////================
+////idAFVector::idAFVector
+////================
+////*/
+////idAFVector::idAFVector( void ) {
+////	type = VEC_COORDS;
+////	vec.Zero();
+////	negate = false;
+////}
+////
+/////*
+////================
+////idAFVector::Parse
+////================
+////*/
+////bool idAFVector::Parse( idLexer &src ) {
+////	idToken token;
+////
+////	if ( !src.ReadToken( &token ) ) {
+////		return false;
+////	}
+////
+////	if ( token == "-" ) {
+////		negate = true;
+////		if ( !src.ReadToken( &token ) ) {
+////			return false;
+////		}
+////	}
+////	else {
+////		negate = false;
+////	}
+////
+////	if ( token == "(" ) {
+////		type = idAFVector::VEC_COORDS;
+////		vec.x = src.ParseFloat();
+////		src.ExpectTokenString( "," );
+////		vec.y = src.ParseFloat();
+////		src.ExpectTokenString( "," );
+////		vec.z = src.ParseFloat();
+////		src.ExpectTokenString( ")" );
+////	}
+////	else if ( token == "joint" ) {
+////		type = idAFVector::VEC_JOINT;
+////		src.ExpectTokenString( "(" );
+////		src.ReadToken( &token );
+////		joint1 = token;
+////		src.ExpectTokenString( ")" );
+////	}
+////	else if ( token == "bonecenter" ) {
+////		type = idAFVector::VEC_BONECENTER;
+////		src.ExpectTokenString( "(" );
+////		src.ReadToken( &token );
+////		joint1 = token;
+////		src.ExpectTokenString( "," );
+////		src.ReadToken( &token );
+////		joint2 = token;
+////		src.ExpectTokenString( ")" );
+////	}
+////	else if ( token == "bonedir" ) {
+////		type = idAFVector::VEC_BONEDIR;
+////		src.ExpectTokenString( "(" );
+////		src.ReadToken( &token );
+////		joint1 = token;
+////		src.ExpectTokenString( "," );
+////		src.ReadToken( &token );
+////		joint2 = token;
+////		src.ExpectTokenString( ")" );
+////	}
+////	else {
+////		src.Error( "unknown token %s in vector", token.c_str() );
+////		return false;
+////	}
+////
+////	return true;
+////}
+
+/*
+================
+idAFVector::Finish
+================
+*/
+	Finish ( fileName: string, GetJointTransform: ( model: any, frame: idJointMat[], jointName: string, origin: idVec3, axis: idMat3 ) => boolean, frame: idJointMat[], model: any ): boolean {
+		todoThrow ( );
+////	idMat3 axis;
+////	idVec3 start, end;
+////
+////	switch( type ) {
+////		case idAFVector::VEC_COORDS: {
+////			break;
+////		}
+////		case idAFVector::VEC_JOINT: {
+////			if ( !GetJointTransform( model, frame, joint1, vec, axis ) ) {
+////				common.Warning( "invalid joint %s in joint() in '%s'", joint1.c_str(), fileName );
+////				vec.Zero();
+////			}
+////			break;
+////		}
+////		case idAFVector::VEC_BONECENTER: {
+////			if ( !GetJointTransform( model, frame, joint1, start, axis ) ) {
+////				common.Warning( "invalid joint %s in bonecenter() in '%s'", joint1.c_str(), fileName );
+////				start.Zero();
+////			}
+////			if ( !GetJointTransform( model, frame, joint2, end, axis ) ) {
+////				common.Warning( "invalid joint %s in bonecenter() in '%s'", joint2.c_str(), fileName );
+////				end.Zero();
+////			}
+////			vec = ( start + end ) * 0.5f;
+////			break;
+////		}
+////		case idAFVector::VEC_BONEDIR: {
+////			if ( !GetJointTransform( model, frame, joint1, start, axis ) ) {
+////				common.Warning( "invalid joint %s in bonedir() in '%s'", joint1.c_str(), fileName );
+////				start.Zero();
+////			}
+////			if ( !GetJointTransform( model, frame, joint2, end, axis ) ) {
+////				common.Warning( "invalid joint %s in bonedir() in '%s'", joint2.c_str(), fileName );
+////				end.Zero();
+////			}
+////			vec = ( end - start );
+////			break;
+////		}
+////		default: {
+////			vec.Zero();
+////			break;
+////		}
+////	}
+////
+////	if ( negate ) {
+////		vec = -vec;
+////	}
+////
+		return true;
+	}
+////
+/////*
+////================
+////idAFVector::Write
+////================
+////*/
+////bool idAFVector::Write( idFile *f ) const {
+////
+////	if ( negate ) {
+////		f.WriteFloatString( "-" );
+////	}
+////	switch( type ) {
+////		case idAFVector::VEC_COORDS: {
+////			f.WriteFloatString( "( %f, %f, %f )", vec.x, vec.y, vec.z );
+////			break;
+////		}
+////		case idAFVector::VEC_JOINT: {
+////			f.WriteFloatString( "joint( \"%s\" )", joint1.c_str() );
+////			break;
+////		}
+////		case idAFVector::VEC_BONECENTER: {
+////			f.WriteFloatString( "bonecenter( \"%s\", \"%s\" )", joint1.c_str(), joint2.c_str() );
+////			break;
+////		}
+////		case idAFVector::VEC_BONEDIR: {
+////			f.WriteFloatString( "bonedir( \"%s\", \"%s\" )", joint1.c_str(), joint2.c_str() );
+////			break;
+////		}
+////		default: {
+////			break;
+////		}
+////	}
+////	return true;
+////}
+////
+/////*
+////================
+////idAFVector::ToString
+////================
+////*/
+////const char *idAFVector::ToString( idStr &str, const int precision ) {
+////
+////	switch( type ) {
+////		case idAFVector::VEC_COORDS: {
+////			char format[128];
+////			sprintf( format, "( %%.%df, %%.%df, %%.%df )", precision, precision, precision );
+////			sprintf( str, format, vec.x, vec.y, vec.z );
+////			break;
+////		}
+////		case idAFVector::VEC_JOINT: {
+////			sprintf( str, "joint( \"%s\" )", joint1.c_str() );
+////			break;
+////		}
+////		case idAFVector::VEC_BONECENTER: {
+////			sprintf( str, "bonecenter( \"%s\", \"%s\" )", joint1.c_str(), joint2.c_str() );
+////			break;
+////		}
+////		case idAFVector::VEC_BONEDIR: {
+////			sprintf( str, "bonedir( \"%s\", \"%s\" )", joint1.c_str(), joint2.c_str() );
+////			break;
+////		}
+////		default: {
+////			break;
+////		}
+////	}
+////	if ( negate ) {
+////		str = "-" + str;
+////	}
+////	return str.c_str();
+////}
+////
+};
 ////
 class idDeclAF_Body {
 ////public:
 	name = new idStr;
 	jointName = new idStr;
-////	declAFJointMod_t		jointMod;
-////	int						modelType;
-////	idAFVector				v1, v2;
-////	int						numSides;
-////	float					width;
-////	float					density;
-////	idAFVector				origin;
-////	idAngles				angles;
-////	int						contents;
-////	int						clipMask;
-////	bool					selfCollision;
-////	idMat3					inertiaScale;
-////	float					linearFriction;
-////	float					angularFriction;
-////	float					contactFriction;
-////	idStr					containedJoints;
-////	idAFVector				frictionDirection;
-////	idAFVector				contactMotorDirection;
+	jointMod:declAFJointMod_t;
+	modelType :number/*int*/;
+	v1 = new idAFVector; v2 = new idAFVector;
+	numSides :number/*int*/;
+	width :number/*float*/;
+	density :number/*float*/;
+	origin = new idAFVector;
+	angles = new idAngles;
+	contents:number/*int*/;
+	clipMask:number/*int*/;
+	selfCollision:boolean;
+	inertiaScale = idMat3;
+	linearFriction:number/*float*/;
+	angularFriction:number/*float*/;
+	contactFriction:number/*float*/;
+	containedJoints = new idStr
+	frictionDirection = new idAFVector;
+	contactMotorDirection = new idAFVector;
 ////public:
 ////	void					SetDefault( const idDeclAF *file );
+
+	
+/////*
+////================
+////idDeclAF_Body::SetDefault
+////================
+////*/
+////void idDeclAF_Body::SetDefault( const idDeclAF *file ) {
+////	name = "noname";
+////	modelType = TRM_BOX;
+////	v1.type = idAFVector::VEC_COORDS;
+////	v1.ToVec3().x = v1.ToVec3().y = v1.ToVec3().z = -10.0f;
+////	v2.type = idAFVector::VEC_COORDS;
+////	v2.ToVec3().x = v2.ToVec3().y = v2.ToVec3().z = 10.0f;
+////	numSides = 3;
+////	origin.ToVec3().Zero();
+////	angles.Zero();
+////	density = 0.2f;
+////	inertiaScale.Identity();
+////	linearFriction = file.defaultLinearFriction;
+////	angularFriction = file.defaultAngularFriction;
+////	contactFriction = file.defaultContactFriction;
+////	contents = file.contents;
+////	clipMask = file.clipMask;
+////	selfCollision = file.selfCollision;
+////	frictionDirection.ToVec3().Zero();
+////	contactMotorDirection.ToVec3().Zero();
+////	jointName = "origin";
+////	jointMod = DECLAF_JOINTMOD_AXIS;
+////	containedJoints = "*origin";
+////}
+////
 };
 
 class idDeclAF_Constraint {
 ////public:
-////	idStr					name;
-////	idStr					body1;
-////	idStr					body2;
-////	declAFConstraintType_t	type;
-////	float					friction;
-////	float					stretch;
-////	float					compress;
-////	float					damping;
-////	float					restLength;
-////	float					minLength;
-////	float					maxLength;
-////	idAFVector				anchor;
-////	idAFVector				anchor2;
-////	idAFVector				shaft[2];
-////	idAFVector				axis;
+	name = new idStr;
+	body1 = new idStr;
+	body2 = new idStr;
+	type:declAFConstraintType_t;
+	friction:number/*float*/;
+	stretch:number/*float*/;
+	compress:number/*float*/;
+	damping:number/*float*/;
+	restLength:number/*float*/;
+	minLength:number/*float*/;
+	maxLength:number/*float*/;
+	anchor = new idAFVector;
+	anchor2 = new idAFVector;
+	shaft = [new idAFVector, new idAFVector];
+	axis = new idAFVector;
 ////	enum {
 ////		LIMIT_NONE = -1,
 ////		LIMIT_CONE,
 ////		LIMIT_PYRAMID
 ////	}						limit;
-////	idAFVector				limitAxis;
-////	float					limitAngles[3];
+	limitAxis = new idAFVector;
+	limitAngles = new Float32Array(3);
 ////
 ////public:
 ////	void					SetDefault( const idDeclAF *file );
+	
+/////*
+////================
+////idDeclAF_Constraint::SetDefault
+////================
+////*/
+////void idDeclAF_Constraint::SetDefault( const idDeclAF *file ) {
+////	name = "noname";
+////	type = DECLAF_CONSTRAINT_UNIVERSALJOINT;
+////	if ( file.bodies.Num() ) {
+////		body1 = file.bodies[0].name;
+////	}
+////	else {
+////		body1 = "world";
+////	}
+////	body2 = "world";
+////	friction = file.defaultConstraintFriction;
+////	anchor.ToVec3().Zero();
+////	anchor2.ToVec3().Zero();
+////	axis.ToVec3().Set( 1.0f, 0.0, 0.0 );
+////	shaft[0].ToVec3().Set( 0.0, 0.0, -1.0f );
+////	shaft[1].ToVec3().Set( 0.0, 0.0, 1.0f );
+////	limit = idDeclAF_Constraint::LIMIT_NONE;
+////	limitAngles[0] =
+////	limitAngles[1] =
+////	limitAngles[2] = 0.0;
+////	limitAxis.ToVec3().Set( 0.0, 0.0, -1.0f );
+////}
+
 };
 
 class idDeclAF extends idDecl {
@@ -1500,7 +1768,7 @@ class idDeclAF extends idDecl {
 idDeclAF::Finish
 ================
 */
-	Finish ( GetJointTransform: /*getJointTransform_t*/ ( model: any, frame: idJointMat, jointName: string, origin: idVec3, axis: idMat3 ) => boolean, frame: idJointMat, /*void **/model: any ): void {
+	Finish ( GetJointTransform: /*getJointTransform_t*/ ( model: any, frame: idJointMat[], jointName: string, origin: idVec3, axis: idMat3 ) => boolean, frame: idJointMat[], /*void **/model: any ): void {
 		var /*int*/i: number;
 
 		var name: string = this.GetName ( );

@@ -958,24 +958,26 @@ class idAF {
 					break;
 				}
 			}
-			if ( j >= file.bodies.Num() ) {
-				this.physicsObj.DeleteBody( i );
-				i--;
+			if (j >= file.bodies.Num()) {
+				todoThrow ( );
+				//this.physicsObj.DeleteBody( i );
+				//i--;
 			}
 		}
 
 		// delete any constraints in the physicsObj that are no longer in the idDeclAF
 		for ( i = 0; i < this.physicsObj.GetNumConstraints(); i++ ) {
-			var constraint: idAFConstraint= this.physicsObj.GetConstraint( i );
+			var constraint: idAFConstraint= this.physicsObj.GetConstraint_id( i );
 			for ( j = 0; j < file.constraints.Num(); j++ ) {
 				if ( file.constraints[j].name.Icmp( constraint.GetName() ) == 0 &&
-						file.constraints[j].type == constraint.GetType() ) {
+					<number>file.constraints[j].type == <number>constraint.GetType() ) {
 					break;
 				}
 			}
 			if ( j >= file.constraints.Num() ) {
-				this.physicsObj.DeleteConstraint( i );
-				i--;
+				todoThrow();
+				//this.physicsObj.DeleteConstraint( i );
+				//i--;
 			}
 		}
 

@@ -143,7 +143,6 @@
     <TypeScriptCompile Include="DoomDLL\Framework\Console.h.ts" />
     <Content Include="DoomDLL\Framework\CVarSystem.cpp.ts" />
     <Content Include="DoomDLL\Framework\CVarSystem.h.ts" />
-    <Content Include="DoomDLL\Framework\DeclAF.cpp.ts" />
     <Content Include="DoomDLL\Framework\DeclAF.h.ts" />
     <Content Include="DoomDLL\Framework\DeclEntityDef.cpp.ts" />
     <Content Include="DoomDLL\Framework\DeclFX.cpp.ts" />

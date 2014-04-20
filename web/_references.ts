@@ -250,7 +250,6 @@
 /// <reference path="doomdll/framework/declparticle.cpp.ts" />
 //#include "../framework/DeclAF.h"
 /// <reference path="doomdll/framework/declaf.h.ts" />
-/// <reference path="doomdll/framework/declaf.cpp.ts" />
 //#include "../framework/DeclPDA.h"
 /// <reference path="doomdll/framework/declpda.cpp.ts" />
 
