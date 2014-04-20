@@ -5110,7 +5110,7 @@ class idAnimatedEntity extends idEntity {
 	////	// check if the entity has an MD5 model
 	////	if ( this.animator.ModelHandle() ) {
 	////		// set the callback to update the joints
-	////		renderEntity.callback = idEntity::ModelCallback;
+	////		renderEntity.callback = idEntity.ModelCallback;
 	////		this.animator.GetJoints( &renderEntity.numJoints, &renderEntity.joints );
 	////		this.animator.GetBounds( gameLocal.time, renderEntity.bounds );
 	////		if ( modelDefHandle != -1 ) {
@@ -5211,7 +5211,7 @@ class idAnimatedEntity extends idEntity {
 		}
 
 		// set the callback to update the joints
-		this.renderEntity.callback = super.ModelCallback;
+		this.renderEntity.callback = idEntity.ModelCallback;
 		var $numJoints = new R( this.renderEntity.numJoints );
 		var $joints = new R( this.renderEntity.joints );
 		this.animator.GetJoints( $numJoints, $joints );

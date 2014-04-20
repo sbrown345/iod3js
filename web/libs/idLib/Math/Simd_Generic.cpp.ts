@@ -2358,20 +2358,20 @@ idSIMD_Generic::ConvertJointQuatsToJointMats
 //	}
 //}
 //
-///*
-//============
-//idSIMD_Generic::TransformJoints
-//============
-//*/
-//void VPCALL idSIMD_Generic::TransformJoints( idJointMat *jointMats, const int *parents, const int firstJoint, const int lastJoint ) {
-//	var/*int*/i:number;
-//
-//	for( i = firstJoint; i <= lastJoint; i++ ) {
-//		assert( parents[i] < i );
-//		jointMats[i] *= jointMats[parents[i]];
-//	}
-//}
-//
+/*
+============
+idSIMD_Generic::TransformJoints
+============
+*/
+	static TransformJoints ( jointMats: idJointMat [], parents: number[], /*int */firstJoint: number, /*const int */lastJoint: number ): void {
+		var /*int*/i: number;
+
+		for ( i = firstJoint; i <= lastJoint; i++ ) {
+			assert( parents[i] < i );
+			jointMats[i].opMultiplicationAssignment( jointMats[parents[i]] );
+		}
+	}
+
 ///*
 //============
 //idSIMD_Generic::UntransformJoints

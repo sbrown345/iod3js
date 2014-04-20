@@ -3136,15 +3136,15 @@ idAnimBlend::BlendOrigin
 			anim.GetOrigin( animpos, i, time, this.cycle );
 			pos.opAdditionAssignment( animpos.timesFloat( this.animWeights[i] ) );
 		}
-
-		if ( !blendWeight ) {
-			blendPos.equals( pos );
-			blendWeight.$ = weight;
-		} else {
-			lerp = weight / ( blendWeight.$ + weight );
-			blendPos.opAdditionAssignment( lerp * ( pos.opSubtraction( blendPos ) ) );
-			blendWeight.$ += weight;
-		}
+		todoThrow ( );
+		//if ( !blendWeight ) {
+		//	blendPos.equals( pos );
+		//	blendWeight.$ = weight;
+		//} else {
+		//	lerp = weight / ( blendWeight.$ + weight );
+		//	blendPos.opAdditionAssignment( lerp * ( pos.opSubtraction( blendPos ) ) );
+		//	blendWeight.$ += weight;
+		//}
 	}
 
 ///*
@@ -4254,7 +4254,7 @@ class idAnimator {
 	GetOrigin ( currentTime /*int*/: number, pos: idVec3 ): void {
 		var /*int*/i: number;
 		var blend: idAnimBlend;
-		var /*float*/blendWeight: number;
+		var /*float*/blendWeight = new R<number> ( );
 
 		if ( !this.modelDef || !this.modelDef.ModelHandle ( ) ) {
 			pos.Zero ( );
@@ -4262,7 +4262,7 @@ class idAnimator {
 		}
 
 		pos.Zero ( );
-		blendWeight = 0.0;
+		blendWeight.$ = 0.0;
 
 		blend = this.channels[ANIMCHANNEL_ALL][0];
 		for ( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend = this.channels[ANIMCHANNEL_ALL][i] ) {
@@ -4313,7 +4313,7 @@ class idAnimator {
 
 		if ( !count ) {
 			if ( !this.frameBounds.IsCleared ( ) ) {
-				bounds = this.frameBounds;
+				bounds.opEquals( this.frameBounds );
 				return true;
 			} else {
 				bounds.Zero ( );
@@ -4326,7 +4326,7 @@ class idAnimator {
 		if ( g_debugBounds.GetBool ( ) ) {
 			if ( bounds[1][0] - bounds[0][0] > 2048 || bounds[1][1] - bounds[0][1] > 2048 ) {
 				if ( this.entity ) {
-					gameLocal.Warning( "big frameBounds on entity '%s' with model '%s': %f,%f", entity.name.c_str ( ), this.modelDef.ModelHandle ( ).Name ( ), bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1] );
+					gameLocal.Warning( "big frameBounds on entity '%s' with model '%s': %f,%f", this.entity.name.c_str ( ), this.modelDef.ModelHandle ( ).Name ( ), bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1] );
 				} else {
 					gameLocal.Warning( "big frameBounds on model '%s': %f,%f", this.modelDef.ModelHandle ( ).Name ( ), bounds[1][0] - bounds[0][0], bounds[1][1] - bounds[0][1] );
 				}
@@ -5047,10 +5047,10 @@ idAnimator::GetChannelForJoint
 idAnimator::GetJoints
 =====================
 */
-	GetJoints( numJoints: R<number>, jointsPtr: R<idJointMat[]>):void {
-	numJoints.$	= this.numJoints;
-	jointsPtr.$	= this.joints;
-}
+	GetJoints ( numJoints: R<number>, jointsPtr: R<idJointMat[]> ): void {
+		numJoints.$ = this.numJoints;
+		jointsPtr.$ = this.joints;
+	}
 //
 ///*
 //=====================

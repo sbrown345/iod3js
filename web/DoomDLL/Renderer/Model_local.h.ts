@@ -637,7 +637,7 @@ idRenderModelStatic::GetJointHandle
 idRenderModelStatic::GetDefaultPose
 ================
 */
-	GetDefaultPose ( ): idJointQuat {
+	GetDefaultPose ( ): idJointQuat [] {
 		return null;
 	}
 
@@ -2917,8 +2917,8 @@ class idRenderModelMD5 extends idRenderModelStatic {
 idRenderModelMD5::GetDefaultPose
 ====================
 */
-	GetDefaultPose ( ): idJointQuat {
-		return this.defaultPose.Ptr ( );
+	GetDefaultPose ( ): idJointQuat[] {
+		return <idJointQuat[]><any> this.defaultPose.Ptr ( );
 	}
 
 /*

@@ -345,7 +345,7 @@ idDeclModelDef::GetDefaultPose
 =====================
 */
 	GetDefaultPose ( ): idJointQuat[] {
-		return this.modelHandle.GetDefaultPose ( );
+		return <idJointQuat[]><any>this.modelHandle.GetDefaultPose ( );
 	}
 
 /*
@@ -374,7 +374,7 @@ idDeclModelDef::SetupJoints
 
 		// set up initial pose for model (with no pose, model is just a jumbled mess)
 		list = new Array<idJointMat>( num ); // (idJointMat *) Mem_Alloc16( num * sizeof( list[0] ) );
-		pose = this.GetDefaultPose ( );
+		pose = <idJointQuat[]><any>this.GetDefaultPose ( );
 
 		// convert the joint quaternions to joint matrices
 		SIMDProcessor.ConvertJointQuatsToJointMats( list, pose, this.joints.Num ( ) );
@@ -387,11 +387,11 @@ idDeclModelDef::SetupJoints
 			list[0].SetTranslation( this.offset );
 //#endif
 		} else {
-			list[0].SetTranslation( pose[0].t + this.offset );
+			list[0].SetTranslation( pose[0].t.opAddition( this.offset ) );
 		}
 
 		// transform the joint hierarchy
-		SIMDProcessor.TransformJoints( list, this.jointParents.Ptr ( ), 1, this.joints.Num ( ) - 1 );
+		SIMDProcessor.TransformJoints( list, <number[]><any>this.jointParents.Ptr ( ), 1, this.joints.Num ( ) - 1 );
 
 		numJoints.$ = num;
 		jointList.$ = list;

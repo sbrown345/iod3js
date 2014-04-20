@@ -160,6 +160,7 @@
 /// <reference path="libs/idlib/math/plane.h.ts" />
 /// <reference path="libs/idlib/math/simd_generic.cpp.ts" />
 /// <reference path="libs/idlib/math/rotation.h.ts" />
+/// <reference path="libs/idlib/math/quat.h.ts" />
 /// <reference path="libs/idlib/math/random.h.ts" />
 // BV
 /// <reference path="libs/idlib/bv/sphere.cpp.ts" />

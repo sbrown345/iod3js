@@ -389,7 +389,7 @@ class idRenderModel {
 	GetJointName ( handle: jointHandle_t ): string { throw "placeholder"; }
 
 	// Returns the default animation pose or NULL if the model is not an MD5.
-	GetDefaultPose( ):idJointQuat[]{ throw "placeholder"; }
+	GetDefaultPose(): idJointQuat[]{ throw "placeholder"; }
 
 ////	// Returns number of the joint nearest to the given triangle.
 ////	virtual int					NearestJoint( int surfaceNum, int a, int c, int b ) const = 0;
