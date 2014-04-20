@@ -820,25 +820,25 @@ NULL's out it's entry in the world list
 //	def.overlay.CreateOverlay( model, localTextureAxis, material );
 //}
 //
-///*
-//====================
-//idRenderWorldLocal::RemoveDecals
-//====================
-//*/
-//void idRenderWorldLocal::RemoveDecals( qhandle_t entityHandle ) {
-//	if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num() ) {
-//		common.Error( "idRenderWorld::ProjectOverlay: index = %i", entityHandle );
-//		return;
-//	}
-//
-//	idRenderEntityLocal	*def = this.entityDefs[ entityHandle ];
-//	if ( !def ) {
-//		return;
-//	}
-//
-//	R_FreeEntityDefDecals( def );
-//	R_FreeEntityDefOverlay( def );
-//}
+/*
+====================
+idRenderWorldLocal::RemoveDecals
+====================
+*/
+	RemoveDecals ( /*qhandle_t*/ entityHandle: number ): void {
+		if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num ( ) ) {
+			common.Error( "idRenderWorld::ProjectOverlay: index = %i", entityHandle );
+			return;
+		}
+
+		var def: idRenderEntityLocal = this.entityDefs[entityHandle];
+		if ( !def ) {
+			return;
+		}
+		todoThrow ( );
+		//R_FreeEntityDefDecals( def );
+		//R_FreeEntityDefOverlay( def );
+	}
 //
 ///*
 //====================

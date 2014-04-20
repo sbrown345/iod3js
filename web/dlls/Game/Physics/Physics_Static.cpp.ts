@@ -282,23 +282,23 @@ idPhysics_Static::idPhysics_Static
 		return ( this.clipModel != null ) ? 1 : 0;
 	}
 
-	/////*
-	////================
-	////idPhysics_Static::SetMass
-	////================
-	////*/
-	////void idPhysics_Static::SetMass( float mass, /*int*/ id:number = -1  ) {
-	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::GetMass
-	////================
-	////*/
-	////float idPhysics_Static::GetMass( /*int*/ id:number ) const {
-	////	return 0.0f;
-	////}
-	
+	/*
+	================
+	idPhysics_Static::SetMass
+	================
+	*/
+	SetMass ( /*float*/ mass: number, /*int*/ id: number = -1 ): void {
+	}
+
+	/*
+	================
+	idPhysics_Static::GetMass
+	================
+	*/
+	GetMass ( /*int*/ id: number = -1 ): number {
+		return 0.0;
+	}
+
 	/*
 	================
 	idPhysics_Static::SetContents
@@ -636,14 +636,14 @@ GetOrigin( /*int*/ id:number  = 0) :idVec3 {
 	////const idVec3 &idPhysics_Static::GetAngularVelocity( /*int*/ id:number  = 0) const {
 	////	return vec3_origin;
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::SetGravity
-	////================
-	////*/
-	////void idPhysics_Static::SetGravity( const idVec3 &newGravity ) {
-	////}
+	
+	/*
+	================
+	idPhysics_Static::SetGravity
+	================
+	*/
+	SetGravity(newGravity: idVec3): void {
+	}
 	////
 	/////*
 	////================

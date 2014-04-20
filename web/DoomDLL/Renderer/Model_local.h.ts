@@ -632,14 +632,14 @@ idRenderModelStatic::GetJointHandle
 ////	return "";
 ////}
 
-/////*
-////================
-////idRenderModelStatic::GetDefaultPose
-////================
-////*/
-////const idJointQuat *idRenderModelStatic::GetDefaultPose( ) const {
-////	return NULL;
-////}
+/*
+================
+idRenderModelStatic::GetDefaultPose
+================
+*/
+	GetDefaultPose ( ): idJointQuat {
+		return null;
+	}
 
 /////*
 ////================
@@ -2912,14 +2912,14 @@ class idRenderModelMD5 extends idRenderModelStatic {
 ////	return this.joints.Ptr();
 ////}
 
-/////*
-////====================
-////idRenderModelMD5::GetDefaultPose
-////====================
-////*/
-////const idJointQuat *idRenderModelMD5::GetDefaultPose( ) const {
-////	return defaultPose.Ptr();
-////}
+/*
+====================
+idRenderModelMD5::GetDefaultPose
+====================
+*/
+	GetDefaultPose ( ): idJointQuat {
+		return this.defaultPose.Ptr ( );
+	}
 
 /*
 ====================

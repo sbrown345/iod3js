@@ -66,7 +66,7 @@ class idPhysics_Base extends idPhysics {
 	//
 	//public:	// common physics interface
 	//
-	SetSelf ( e: idEntity ): void { throw "placeholder"; }
+	//SetSelf ( e: idEntity ): void { throw "placeholder"; }
 	//
 	//	void					SetClipModel(idClipModel *model, float density, /*int*/ id:number = 0, bool freeOld = true);
 	//	idClipModel *			GetClipModel(/*int*/ id:number = 0) const;
@@ -255,17 +255,17 @@ class idPhysics_Base extends idPhysics {
 	//		contactEntities[i].Restore( savefile );
 	//	}
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::SetSelf
-	//================
-	//*/
-	//void idPhysics_Base::SetSelf( idEntity *e ) {
-	//	assert( e );
-	//	this.self = e;
-	//}
-	//
+	
+	/*
+	================
+	idPhysics_Base::SetSelf
+	================
+	*/
+	SetSelf(e: idEntity): void {
+		assert(e);
+		this.self = e;
+	}
+
 	/*
 	================
 	idPhysics_Base::SetClipModel
@@ -292,23 +292,23 @@ class idPhysics_Base extends idPhysics {
 		return 0;
 	}
 	
-	///*
-	//================
-	//idPhysics_Base::SetMass
-	//================
-	//*/
-	//void idPhysics_Base::SetMass( float mass, /*int*/ id:number ) {
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::GetMass
-	//================
-	//*/
-	//float idPhysics_Base::GetMass( /*int*/ id:number ) const {
-	//	return 0.0;
-	//}
-	//
+	/*
+	================
+	idPhysics_Base::SetMass
+	================
+	*/
+	SetMass( /*float*/ mass: number, /*int*/ id: number = -1 ):void {
+	}
+	
+	/*
+	================
+	idPhysics_Base::GetMass
+	================
+	*/
+	GetMass( /*int*/ id: number= -1  ) :number {
+		return 0.0;
+	}
+	
 	/*
 	================
 	idPhysics_Base::SetContents

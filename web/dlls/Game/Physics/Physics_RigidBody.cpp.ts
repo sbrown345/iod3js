@@ -842,28 +842,29 @@ idPhysics_RigidBody::GetNumClipModels
 		return 1;
 	}
 
-/////*
-////================
-////idPhysics_RigidBody::SetMass
-////================
-////*/
-////void idPhysics_RigidBody::SetMass( float mass, /*int*/ id:number ) {
-////	assert( mass > 0.0 );
-////	this.inertiaTensor *= mass / this.mass;
-////	this.inverseInertiaTensor = this.inertiaTensor.Inverse() * (1.0 / 6.0);
-////	this.mass = mass;
-////	this.inverseMass = 1.0 / mass;
-////}
-////
-/////*
-////================
-////idPhysics_RigidBody::GetMass
-////================
-////*/
-////float idPhysics_RigidBody::GetMass( /*int*/ id:number ) const {
-////	return this.mass;
-////}
-////
+/*
+================
+idPhysics_RigidBody::SetMass
+================
+*/
+SetMass(/*float*/ mass:number, /*int*/ id:number = -1  ):void {
+	assert(mass > 0.0);
+	todoThrow ( );
+	//this.inertiaTensor *= mass / this.mass;
+	//this.inverseInertiaTensor = this.inertiaTensor.Inverse() * (1.0 / 6.0);
+	//this.mass = mass;
+	//this.inverseMass = 1.0 / mass;
+}
+
+/*
+================
+idPhysics_RigidBody::GetMass
+================
+*/
+	GetMass ( /*int*/ id: number = -1 ): number {
+		return this.mass;
+	}
+
 /////*
 ////================
 ////idPhysics_RigidBody::SetFriction

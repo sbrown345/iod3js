@@ -3449,7 +3449,7 @@ class idAnimator {
 	channels = new2dStructArray<idAnimBlend>(idAnimBlend,  ANIM_NumAnimChannels , ANIM_MaxAnimsPerChannel );
 	jointMods = new idList<jointMod_t >(jointMod_t , true);
 	numJoints :number/*int*/;
-	joints:idJointMat;
+	joints:idJointMat[];
 	
 	lastTransformTime :number/*mutable int*/;		// mutable because the value is updated in CreateFrame
 	stoppedAnimatingUpdate:/*mutable*/boolean;
@@ -3521,7 +3521,7 @@ class idAnimator {
 	//size_t idAnimator::Allocated( ) const {
 	//	size_t	size;
 	//
-	//	size = jointMods.Allocated() + numJoints * sizeof( joints[0] ) + jointMods.Num() * sizeof( jointMods[ 0 ] ) + AFPoseJointMods.Allocated() + AFPoseJointFrame.Allocated() + AFPoseJoints.Allocated();
+	//	size = this.jointMods.Allocated() + numJoints * sizeof( joints[0] ) + this.jointMods.Num() * sizeof( this.jointMods[ 0 ] ) + AFPoseJointMods.Allocated() + AFPoseJointFrame.Allocated() + AFPoseJoints.Allocated();
 	//
 	//	return size;
 	//}
@@ -3540,13 +3540,13 @@ class idAnimator {
 	//	savefile.WriteModelDef( this.modelDef );
 	//	savefile.WriteObject( this.entity );
 	//
-	//	savefile.WriteInt( jointMods.Num() );
-	//	for( i = 0; i < jointMods.Num(); i++ ) {
-	//		savefile.WriteInt( jointMods[ i ].jointnum );
-	//		savefile.WriteMat3( jointMods[ i ].mat );
-	//		savefile.WriteVec3( jointMods[ i ].pos );
-	//		savefile.WriteInt( (int&)jointMods[ i ].transform_pos );
-	//		savefile.WriteInt( (int&)jointMods[ i ].transform_axis );
+	//	savefile.WriteInt( this.jointMods.Num() );
+	//	for( i = 0; i < this.jointMods.Num(); i++ ) {
+	//		savefile.WriteInt( this.jointMods[ i ].jointnum );
+	//		savefile.WriteMat3( this.jointMods[ i ].mat );
+	//		savefile.WriteVec3( this.jointMods[ i ].pos );
+	//		savefile.WriteInt( (int&)this.jointMods[ i ].transform_pos );
+	//		savefile.WriteInt( (int&)this.jointMods[ i ].transform_axis );
 	//	}
 	//	
 	//	savefile.WriteInt( numJoints );
@@ -3560,7 +3560,7 @@ class idAnimator {
 	//	savefile.WriteInt( this.lastTransformTime );
 	//	savefile.WriteBool( stoppedAnimatingUpdate );
 	//	savefile.WriteBool( this.forceUpdate );
-	//	savefile.WriteBounds( frameBounds );
+	//	savefile.WriteBounds( this.frameBounds );
 	//
 	//	savefile.WriteFloat( AFPoseBlendWeight );
 	//
@@ -3613,20 +3613,20 @@ class idAnimator {
 	//	savefile.ReadObject( reinterpret_cast<idClass *&>( this.entity ) );
 	//
 	//	savefile.ReadInt( num );
-	//	jointMods.SetNum( num );
+	//	this.jointMods.SetNum( num );
 	//	for( i = 0; i < num; i++ ) {
-	//		jointMods[ i ] = new jointMod_t;
-	//		savefile.ReadInt( (int&)jointMods[ i ].jointnum );
-	//		savefile.ReadMat3( jointMods[ i ].mat );
-	//		savefile.ReadVec3( jointMods[ i ].pos );
-	//		savefile.ReadInt( (int&)jointMods[ i ].transform_pos );
-	//		savefile.ReadInt( (int&)jointMods[ i ].transform_axis );
+	//		this.jointMods[ i ] = new jointMod_t;
+	//		savefile.ReadInt( (int&)this.jointMods[ i ].jointnum );
+	//		savefile.ReadMat3( this.jointMods[ i ].mat );
+	//		savefile.ReadVec3( this.jointMods[ i ].pos );
+	//		savefile.ReadInt( (int&)this.jointMods[ i ].transform_pos );
+	//		savefile.ReadInt( (int&)this.jointMods[ i ].transform_axis );
 	//	}
 	//	
 	//	savefile.ReadInt( numJoints );
-	//	joints = (idJointMat *) Mem_Alloc16( numJoints * sizeof( joints[0] ) );
+	//	joints = (idJointMat *) Mem_Alloc16( numJoints * sizeof( this.joints[0] ) );
 	//	for ( i = 0; i < numJoints; i++ ) {
-	//		float *data = joints[i].ToFloatPtr();
+	//		float *data = this.joints[i].ToFloatPtr();
 	//		for ( j = 0; j < 12; j++ ) {
 	//			savefile.ReadFloat( data[j] );
 	//		}
@@ -3635,7 +3635,7 @@ class idAnimator {
 	//	savefile.ReadInt( this.lastTransformTime );
 	//	savefile.ReadBool( stoppedAnimatingUpdate );
 	//	savefile.ReadBool( this.forceUpdate );
-	//	savefile.ReadBounds( frameBounds );
+	//	savefile.ReadBounds( this.frameBounds );
 	//
 	//	savefile.ReadFloat( AFPoseBlendWeight );
 	//
@@ -3677,36 +3677,36 @@ class idAnimator {
 	//		}
 	//	}
 	//}
-	//
-	///*
-	//=====================
-	//idAnimator::FreeData
-	//=====================
-	//*/
-	//void idAnimator::FreeData( ) {
-	//	int	i, j;
-	//
-	//	if ( this.entity ) {
-	//		this.entity.BecomeInactive( TH_ANIMATE );
-	//	}
-	//
-	//	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
-	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
-	//			this.channels[ i ][ j ].Reset( NULL );
-	//		}
-	//	}
-	//
-	//	jointMods.DeleteContents( true );
-	//
-	//	Mem_Free16( joints );
-	//	joints = NULL;
-	//	numJoints = 0;
-	//
-	//	this.modelDef = NULL;
-	//
-	//	this.ForceUpdate();
-	//}
 	
+	/*
+	=====================
+	idAnimator::FreeData
+	=====================
+	*/
+	FreeData ( ): void {
+		var /*int	*/i: number, j: number;
+
+		if ( this.entity ) {
+			this.entity.BecomeInactive( TH_ANIMATE );
+		}
+
+		for ( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
+			for ( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
+				this.channels[i][j].Reset( NULL );
+			}
+		}
+
+		this.jointMods.DeleteContents( true );
+
+		Mem_Free16( this.joints );
+		this.joints = null;
+		this.numJoints = 0;
+
+		this.modelDef = null;
+
+		this.ForceUpdate ( );
+	}
+
 	/*
 	=====================
 	idAnimator::PushAnims
@@ -3729,49 +3729,52 @@ class idAnimator {
 		channel[ 1 ].Clear( currentTime, blendTime );
 		this.ForceUpdate();
 	}
-	//
-	///*
-	//=====================
-	//idAnimator::SetModel
-	//=====================
-	//*/
-	//idRenderModel *idAnimator::SetModel( const char *modelname ) {
-	//	var /*int */i:number, j:number;
-	//
-	//	FreeData();
-	//
-	//	// check if we're just clearing the model
-	//	if ( !modelname || !*modelname ) {
-	//		return NULL;
-	//	}
-	//
-	//	this.modelDef = static_cast<const idDeclModelDef *>( declManager.FindType( DECL_MODELDEF, modelname, false ) );
-	//	if ( !this.modelDef ) {
-	//		return NULL;
-	//	}
-	//	
-	//	idRenderModel *renderModel = this.modelDef.ModelHandle();
-	//	if ( !renderModel ) {
-	//		this.modelDef = NULL;
-	//		return NULL;
-	//	}
-	//
-	//	// make sure model hasn't been purged
-	//	this.modelDef.Touch();
-	//
-	//	this.modelDef.SetupJoints( &numJoints, &joints, frameBounds, removeOriginOffset );
-	//	this.modelDef.ModelHandle().Reset();
-	//
-	//	// set the this.modelDef on all channels
-	//	for( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
-	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
-	//			this.channels[ i ][ j ].Reset( this.modelDef );
-	//		}
-	//	}
-	//
-	//	return this.modelDef.ModelHandle();
-	//}
-	//
+	
+	/*
+	=====================
+	idAnimator::SetModel
+	=====================
+	*/
+	SetModel ( modelname: string ): idRenderModel {
+		var /*int */i: number, j: number;
+		this.FreeData ( );
+
+		// check if we're just clearing the model
+		if ( !modelname /*|| !*modelname */ ) {
+			return null;
+		}
+
+		this.modelDef = static_cast<idDeclModelDef>( declManager.FindType( declType_t.DECL_MODELDEF, modelname, false ) );
+		if ( !this.modelDef ) {
+			return null;
+		}
+
+		var renderModel: idRenderModel = this.modelDef.ModelHandle ( );
+		if ( !renderModel ) {
+			this.modelDef = null;
+			return null;
+		}
+
+		// make sure model hasn't been purged
+		this.modelDef.Touch ( );
+
+		var $numJoints = new R( this.numJoints );
+		var $joints = new R( this.joints );
+		this.modelDef.SetupJoints( $numJoints, $joints, this.frameBounds, this.removeOriginOffset );
+		this.numJoints = $numJoints.$;
+		this.joints = $joints.$;
+		this.modelDef.ModelHandle ( ).Reset ( );
+
+		// set the this.modelDef on all channels
+		for ( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
+			for ( j = 0; j < ANIM_MaxAnimsPerChannel; j++ ) {
+				this.channels[i][j].Reset( this.modelDef );
+			}
+		}
+
+		return this.modelDef.ModelHandle ( );
+	}
+
 	///*
 	//=====================
 	//idAnimator::Size
@@ -3781,42 +3784,42 @@ class idAnimator {
 	//	return sizeof( *this ) + Allocated();
 	//}
 	//
-	///*
-	//=====================
-	//idAnimator::SetEntity
-	//=====================
-	//*/
-	//void idAnimator::SetEntity( ent:idEntity ) {
-	//	this.entity = ent;
-	//}
-	//
-	///*
-	//=====================
-	//idAnimator::GetEntity
-	//=====================
-	//*/
-	//idEntity *idAnimator::GetEntity( ) const {
-	//	return this.entity;
-	//}
-	//
-	///*
-	//=====================
-	//idAnimator::RemoveOriginOffset
-	//=====================
-	//*/
-	//void idAnimator::RemoveOriginOffset( bool remove ) {
-	//	removeOriginOffset = remove;
-	//}
-	
+	/*
+	=====================
+	idAnimator::SetEntity
+	=====================
+	*/
+	SetEntity ( ent: idEntity ): void {
+		this.entity = ent;
+	}
+
+	/*
+	=====================
+	idAnimator::GetEntity
+	=====================
+	*/
+	GetEntity ( ): idEntity {
+		return this.entity;
+	}
+
+	/*
+	=====================
+	idAnimator::RemoveOriginOffset
+	=====================
+	*/
+	RemoveOriginOffset ( remove: boolean ) {
+		this.removeOriginOffset = remove;
+	}
+
 	/*
 	=====================
 	idAnimator::RemoveOrigin
 	=====================
 	*/
-	RemoveOrigin( ) :boolean {
+	RemoveOrigin ( ): boolean {
 		return this.removeOriginOffset;
 	}
-	
+
 	/*
 	=====================
 	idAnimator::GetJointList
@@ -3937,8 +3940,8 @@ class idAnimator {
 			gameLocal.Error( "idAnimator::Clear : channel out of range" );
 		}
 
-		blend = this.channels[channelNum];
-		for ( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend = this.channels[i] ) {
+		blend = this.channels[channelNum][0];
+		for ( i = 0; i < ANIM_MaxAnimsPerChannel; i++, blend = this.channels[channelNum][i] ) {
 			blend.Clear( currentTime, cleartime );
 		}
 		this.ForceUpdate ( );
@@ -4051,11 +4054,11 @@ class idAnimator {
 	//	}
 	//
 	//	jointMod = NULL;
-	//	for( i = 0; i < jointMods.Num(); i++ ) {
-	//		if ( jointMods[ i ].jointnum == jointnum ) {
-	//			jointMod = jointMods[ i ];
+	//	for( i = 0; i < this.jointMods.Num(); i++ ) {
+	//		if ( this.jointMods[ i ].jointnum == jointnum ) {
+	//			jointMod = this.jointMods[ i ];
 	//			break;
-	//		} else if ( jointMods[ i ].jointnum > jointnum ) {
+	//		} else if ( this.jointMods[ i ].jointnum > jointnum ) {
 	//			break;
 	//		}
 	//	}
@@ -4065,7 +4068,7 @@ class idAnimator {
 	//		jointMod.jointnum = jointnum;
 	//		jointMod.mat.Identity();
 	//		jointMod.transform_axis = JOINTMOD_NONE;
-	//		jointMods.Insert( jointMod, i );
+	//		this.jointMods.Insert( jointMod, i );
 	//	}
 	//
 	//	jointMod.pos = pos;
@@ -4091,11 +4094,11 @@ class idAnimator {
 	//	}
 	//
 	//	jointMod = NULL;
-	//	for( i = 0; i < jointMods.Num(); i++ ) {
-	//		if ( jointMods[ i ].jointnum == jointnum ) {
-	//			jointMod = jointMods[ i ];
+	//	for( i = 0; i < this.jointMods.Num(); i++ ) {
+	//		if ( this.jointMods[ i ].jointnum == jointnum ) {
+	//			jointMod = this.jointMods[ i ];
 	//			break;
-	//		} else if ( jointMods[ i ].jointnum > jointnum ) {
+	//		} else if ( this.jointMods[ i ].jointnum > jointnum ) {
 	//			break;
 	//		}
 	//	}
@@ -4105,7 +4108,7 @@ class idAnimator {
 	//		jointMod.jointnum = jointnum;
 	//		jointMod.pos.Zero();
 	//		jointMod.transform_pos = JOINTMOD_NONE;
-	//		jointMods.Insert( jointMod, i );
+	//		this.jointMods.Insert( jointMod, i );
 	//	}
 	//
 	//	jointMod.mat = mat;
@@ -4129,13 +4132,13 @@ class idAnimator {
 	//		return;
 	//	}
 	//
-	//	for( i = 0; i < jointMods.Num(); i++ ) {
-	//		if ( jointMods[ i ].jointnum == jointnum ) {
-	//			delete jointMods[ i ];
-	//			jointMods.RemoveIndex( i );
+	//	for( i = 0; i < this.jointMods.Num(); i++ ) {
+	//		if ( this.jointMods[ i ].jointnum == jointnum ) {
+	//			delete this.jointMods[ i ];
+	//			this.jointMods.RemoveIndex( i );
 	//			this.ForceUpdate();
 	//			break;
-	//		} else if ( jointMods[ i ].jointnum > jointnum ) {
+	//		} else if ( this.jointMods[ i ].jointnum > jointnum ) {
 	//			break;
 	//		}
 	//	}
@@ -4147,10 +4150,10 @@ class idAnimator {
 	//=====================
 	//*/
 	//void idAnimator::ClearAllJoints( ) {
-	//	if ( jointMods.Num() ) {
+	//	if ( this.jointMods.Num() ) {
 	//		this.ForceUpdate();
 	//	}
-	//	jointMods.DeleteContents( true );
+	//	this.jointMods.DeleteContents( true );
 	//}
 	//
 	/*
@@ -4305,8 +4308,8 @@ class idAnimator {
 	//	}
 	//
 	//	if ( !count ) {
-	//		if ( !frameBounds.IsCleared() ) {
-	//			bounds = frameBounds;
+	//		if ( !this.frameBounds.IsCleared() ) {
+	//			bounds = this.frameBounds;
 	//			return true;
 	//		} else {
 	//			bounds.Zero();
@@ -4326,7 +4329,7 @@ class idAnimator {
 	//		}
 	//	}
 	//
-	//	frameBounds = bounds;
+	//	this.frameBounds .equals( bounds);
 	//
 	//	return true;
 	//}
@@ -4768,33 +4771,33 @@ class idAnimator {
 		//		hasAnim = true;
 		//	}
 		//
-		//	if ( !hasAnim && !jointMods.Num() ) {
+		//	if ( !hasAnim && !this.jointMods.Num() ) {
 		//		// no animations were updated
 		//		return false;
 		//	}
 		//
 		//	// convert the joint quaternions to rotation matrices
-		//	SIMDProcessor.ConvertJointQuatsToJointMats( joints, jointFrame, numJoints );
+		//	SIMDProcessor.ConvertJointQuatsToJointMats( this.joints, jointFrame, numJoints );
 		//
 		//	// check if we need to modify the origin
-		//	if ( jointMods.Num() && ( jointMods[0].jointnum == 0 ) ) {
-		//		jointMod = jointMods[0];
+		//	if ( this.jointMods.Num() && ( this.jointMods[0].jointnum == 0 ) ) {
+		//		jointMod = this.jointMods[0];
 		//
 		//		switch( jointMod.transform_axis ) {
 		//			case JOINTMOD_NONE:
 		//				break;
 		//
 		//			case JOINTMOD_LOCAL:
-		//				joints[0].SetRotation( jointMod.mat * joints[0].ToMat3() );
+		//				this.joints[0].SetRotation( jointMod.mat * this.joints[0].ToMat3() );
 		//				break;
 		//			
 		//			case JOINTMOD_WORLD:
-		//				joints[0].SetRotation( joints[0].ToMat3() * jointMod.mat );
+		//				this.joints[0].SetRotation( this.joints[0].ToMat3() * jointMod.mat );
 		//				break;
 		//
 		//			case JOINTMOD_LOCAL_OVERRIDE:
 		//			case JOINTMOD_WORLD_OVERRIDE:
-		//				joints[0].SetRotation( jointMod.mat );
+		//				this.joints[0].SetRotation( jointMod.mat );
 		//				break;
 		//		}
 		//
@@ -4803,13 +4806,13 @@ class idAnimator {
 		//				break;
 		//
 		//			case JOINTMOD_LOCAL:
-		//				joints[0].SetTranslation( joints[0].ToVec3() + jointMod.pos );
+		//				this.joints[0].SetTranslation( this.joints[0].ToVec3() + jointMod.pos );
 		//				break;
 		//			
 		//			case JOINTMOD_LOCAL_OVERRIDE:
 		//			case JOINTMOD_WORLD:
 		//			case JOINTMOD_WORLD_OVERRIDE:
-		//				joints[0].SetTranslation( jointMod.pos );
+		//				this.joints[0].SetTranslation( jointMod.pos );
 		//				break;
 		//		}
 		//		j = 1;
@@ -4818,17 +4821,17 @@ class idAnimator {
 		//	}
 		//
 		//	// add in the model offset
-		//	joints[0].SetTranslation( joints[0].ToVec3() + this.modelDef.GetVisualOffset() );
+		//	this.joints[0].SetTranslation( this.joints[0].ToVec3() + this.modelDef.GetVisualOffset() );
 		//
 		//	// pointer to joint info
 		//	jointParent = this.modelDef.JointParents();
 		//
 		//	// add in any joint modifications
-		//	for( i = 1; j < jointMods.Num(); j++, i++ ) {
-		//		jointMod = jointMods[j];
+		//	for( i = 1; j < this.jointMods.Num(); j++, i++ ) {
+		//		jointMod = this.jointMods[j];
 		//
-		//		// transform any joints preceding the joint modifier
-		//		SIMDProcessor.TransformJoints( joints, jointParent, i, jointMod.jointnum - 1 );
+		//		// transform any this.joints preceding the joint modifier
+		//		SIMDProcessor.TransformJoints( this.joints, jointParent, i, jointMod.jointnum - 1 );
 		//		i = jointMod.jointnum;
 		//
 		//		parentNum = jointParent[i];
@@ -4836,52 +4839,52 @@ class idAnimator {
 		//		// modify the axis
 		//		switch( jointMod.transform_axis ) {
 		//			case JOINTMOD_NONE:
-		//				joints[i].SetRotation( joints[i].ToMat3() * joints[ parentNum ].ToMat3() );
+		//				this.joints[i].SetRotation( this.joints[i].ToMat3() * this.joints[ parentNum ].ToMat3() );
 		//				break;
 		//
 		//			case JOINTMOD_LOCAL:
-		//				joints[i].SetRotation( jointMod.mat * ( joints[i].ToMat3() * joints[parentNum].ToMat3() ) );
+		//				this.joints[i].SetRotation( jointMod.mat * ( this.joints[i].ToMat3() * this.joints[parentNum].ToMat3() ) );
 		//				break;
 		//			
 		//			case JOINTMOD_LOCAL_OVERRIDE:
-		//				joints[i].SetRotation( jointMod.mat * joints[parentNum].ToMat3() );
+		//				this.joints[i].SetRotation( jointMod.mat * this.joints[parentNum].ToMat3() );
 		//				break;
 		//
 		//			case JOINTMOD_WORLD:
-		//				joints[i].SetRotation( ( joints[i].ToMat3() * joints[parentNum].ToMat3() ) * jointMod.mat );
+		//				this.joints[i].SetRotation( ( this.joints[i].ToMat3() * this.joints[parentNum].ToMat3() ) * jointMod.mat );
 		//				break;
 		//
 		//			case JOINTMOD_WORLD_OVERRIDE:
-		//				joints[i].SetRotation( jointMod.mat );
+		//				this.joints[i].SetRotation( jointMod.mat );
 		//				break;
 		//		}
 		//
 		//		// modify the position
 		//		switch( jointMod.transform_pos ) {
 		//			case JOINTMOD_NONE:
-		//				joints[i].SetTranslation( joints[parentNum].ToVec3() + joints[i].ToVec3() * joints[parentNum].ToMat3() );
+		//				this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + this.joints[i].ToVec3() * this.joints[parentNum].ToMat3() );
 		//				break;
 		//
 		//			case JOINTMOD_LOCAL:
-		//				joints[i].SetTranslation( joints[parentNum].ToVec3() + ( joints[i].ToVec3() + jointMod.pos ) * joints[parentNum].ToMat3() );
+		//				this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + ( this.joints[i].ToVec3() + jointMod.pos ) * this.joints[parentNum].ToMat3() );
 		//				break;
 		//			
 		//			case JOINTMOD_LOCAL_OVERRIDE:
-		//				joints[i].SetTranslation( joints[parentNum].ToVec3() + jointMod.pos * joints[parentNum].ToMat3() );
+		//				this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + jointMod.pos * this.joints[parentNum].ToMat3() );
 		//				break;
 		//
 		//			case JOINTMOD_WORLD:
-		//				joints[i].SetTranslation( joints[parentNum].ToVec3() + joints[i].ToVec3() * joints[parentNum].ToMat3() + jointMod.pos );
+		//				this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + this.joints[i].ToVec3() * this.joints[parentNum].ToMat3() + jointMod.pos );
 		//				break;
 		//
 		//			case JOINTMOD_WORLD_OVERRIDE:
-		//				joints[i].SetTranslation( jointMod.pos );
+		//				this.joints[i].SetTranslation( jointMod.pos );
 		//				break;
 		//		}
 		//	}
 		//
 		//	// transform the rest of the hierarchy
-		//	SIMDProcessor.TransformJoints( joints, jointParent, i, numJoints - 1 );
+		//	SIMDProcessor.TransformJoints( this.joints, jointParent, i, numJoints - 1 );
 		//
 		return true;
 	}
@@ -4918,8 +4921,8 @@ idAnimator::ClearForceUpdate
 //
 //	CreateFrame( currentTime, false );
 //
-//	offset = joints[ jointHandle ].ToVec3();
-//	axis = joints[ jointHandle ].ToMat3();
+//	offset = this.joints[ jointHandle ].ToVec3();
+//	axis = this.joints[ jointHandle ].ToMat3();
 //
 //	return true;
 //}
@@ -4944,13 +4947,13 @@ idAnimator::ClearForceUpdate
 //	CreateFrame( currentTime, false );
 //
 //	if ( jointHandle > 0 ) {
-//		idJointMat m = joints[ jointHandle ];
-//		m /= joints[ modelJoints[ jointHandle ].parentNum ];
+//		idJointMat m = this.joints[ jointHandle ];
+//		m /= this.joints[ modelJoints[ jointHandle ].parentNum ];
 //		offset = m.ToVec3();
 //		axis = m.ToMat3();
 //	} else {
-//		offset = joints[ jointHandle ].ToVec3();
-//		axis = joints[ jointHandle ].ToMat3();
+//		offset = this.joints[ jointHandle ].ToVec3();
+//		axis = this.joints[ jointHandle ].ToMat3();
 //	}
 //
 //	return true;
@@ -5035,15 +5038,15 @@ idAnimator::GetChannelForJoint
 //	return jointnum;
 //}
 //
-///*
-//=====================
-//idAnimator::GetJoints
-//=====================
-//*/
-//void idAnimator::GetJoints( int *numJoints, idJointMat **jointsPtr ) {
-//	*numJoints	= this.numJoints;
-//	*jointsPtr	= this.joints;
-//}
+/*
+=====================
+idAnimator::GetJoints
+=====================
+*/
+	GetJoints( numJoints: R<number>, jointsPtr: R<idJointMat[]>):void {
+	numJoints.$	= this.numJoints;
+	jointsPtr.$	= this.joints;
+}
 //
 ///*
 //=====================

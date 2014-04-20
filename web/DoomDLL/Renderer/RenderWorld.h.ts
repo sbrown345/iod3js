@@ -132,7 +132,7 @@ class renderEntity_t {
 	remoteRenderView:renderView_t;		// any remote camera surfaces will use this								//struct renderView_s	*	
 	//
 	numJoints:number;																						//int						
-	joints: idJointMat;					// array of joints that will modify vertices.							//idJointMat *			
+	joints: idJointMat[];					// array of joints that will modify vertices.							//idJointMat *			
 	// NULL if non-deformable model.  NOT freed by renderer					//						
 	//
 	modelDepthHack:number;			// squash depth range so particle effects don't clip into walls			//float					

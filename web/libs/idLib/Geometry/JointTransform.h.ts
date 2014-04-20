@@ -39,9 +39,9 @@
 //
 class idJointQuat {
 //public:
-//
-//	idQuat			q;
-//	idVec3			t;
+	
+	q = new idQuat;
+	t = new idVec3;
 };
 //
 //

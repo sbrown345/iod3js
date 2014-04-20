@@ -69,14 +69,14 @@ class idAFVector {
 	joint2 = new idStr;
 ////
 ////public:
-////							idAFVector( void );
+////							idAFVector( );
 ////
 ////	bool					Parse( idLexer &src );
 ////	bool					Finish( const char *fileName, const getJointTransform_t GetJointTransform, const idJointMat *frame, void *model ) const;
 ////	bool					Write( idFile *f ) const;
 ////	const char *			ToString( idStr &str, const int precision = 8 );
-////	const idVec3 &			ToVec3( void ) const { return vec; }
-////	idVec3 &				ToVec3( void ) { return vec; }
+////	const idVec3 &			ToVec3( ) const { return vec; }
+////	idVec3 &				ToVec3( ) { return vec; }
 ////
 ////private:
 	vec = new idVec3; //mutable
@@ -88,7 +88,7 @@ class idAFVector {
 ////idAFVector::idAFVector
 ////================
 ////*/
-////idAFVector::idAFVector( void ) {
+////idAFVector::idAFVector( ) {
 ////	type = VEC_COORDS;
 ////	vec.Zero();
 ////	negate = false;
@@ -190,7 +190,7 @@ idAFVector::Finish
 ////				common.Warning( "invalid joint %s in bonecenter() in '%s'", joint2.c_str(), fileName );
 ////				end.Zero();
 ////			}
-////			vec = ( start + end ) * 0.5f;
+////			vec = ( start + end ) * 0.5;
 ////			break;
 ////		}
 ////		case idAFVector::VEC_BONEDIR: {
@@ -325,13 +325,13 @@ class idDeclAF_Body {
 ////	name = "noname";
 ////	modelType = TRM_BOX;
 ////	v1.type = idAFVector::VEC_COORDS;
-////	v1.ToVec3().x = v1.ToVec3().y = v1.ToVec3().z = -10.0f;
+////	v1.ToVec3().x = v1.ToVec3().y = v1.ToVec3().z = -10.0;
 ////	v2.type = idAFVector::VEC_COORDS;
-////	v2.ToVec3().x = v2.ToVec3().y = v2.ToVec3().z = 10.0f;
+////	v2.ToVec3().x = v2.ToVec3().y = v2.ToVec3().z = 10.0;
 ////	numSides = 3;
 ////	origin.ToVec3().Zero();
 ////	angles.Zero();
-////	density = 0.2f;
+////	density = 0.2;
 ////	inertiaScale.Identity();
 ////	linearFriction = file.defaultLinearFriction;
 ////	angularFriction = file.defaultAngularFriction;
@@ -394,14 +394,14 @@ class idDeclAF_Constraint {
 ////	friction = file.defaultConstraintFriction;
 ////	anchor.ToVec3().Zero();
 ////	anchor2.ToVec3().Zero();
-////	axis.ToVec3().Set( 1.0f, 0.0, 0.0 );
-////	shaft[0].ToVec3().Set( 0.0, 0.0, -1.0f );
-////	shaft[1].ToVec3().Set( 0.0, 0.0, 1.0f );
+////	axis.ToVec3().Set( 1.0, 0.0, 0.0 );
+////	shaft[0].ToVec3().Set( 0.0, 0.0, -1.0 );
+////	shaft[1].ToVec3().Set( 0.0, 0.0, 1.0 );
 ////	limit = idDeclAF_Constraint::LIMIT_NONE;
 ////	limitAngles[0] =
 ////	limitAngles[1] =
 ////	limitAngles[2] = 0.0;
-////	limitAxis.ToVec3().Set( 0.0, 0.0, -1.0f );
+////	limitAxis.ToVec3().Set( 0.0, 0.0, -1.0 );
 ////}
 
 };
@@ -409,17 +409,17 @@ class idDeclAF_Constraint {
 class idDeclAF extends idDecl {
 ////	friend class idAFFileManager;
 ////public:
-////							idDeclAF( void );
-////	virtual					~idDeclAF( void );
+////							idDeclAF( );
+////	virtual					~idDeclAF( );
 ////
-////	virtual size_t			Size( void ) const;
-////	virtual const char *	DefaultDefinition( void ) const;
+////	virtual size_t			Size( ) const;
+////	virtual const char *	DefaultDefinition( ) const;
 ////	virtual bool			Parse( text:string, const int textLength );
-////	virtual void			FreeData( void );
+////	virtual void			FreeData( );
 ////
 ////	virtual void			Finish( const getJointTransform_t GetJointTransform, const idJointMat *frame, void *model ) const;
 ////
-////	bool					Save( void );
+////	bool					Save( );
 ////
 ////	void					NewBody( name:string );
 ////	void					RenameBody( const char *oldName, const char *newName );
@@ -478,7 +478,7 @@ class idDeclAF extends idDecl {
 ////	bool					WriteConstraint( idFile *f, const idDeclAF_Constraint &c ) const;
 ////	bool					WriteSettings( idFile *f ) const;
 ////
-////	bool					RebuildTextSource( void );
+////	bool					RebuildTextSource( );
 
 
 	/////*
@@ -781,7 +781,7 @@ class idDeclAF extends idDecl {
 	////idDeclAF::RebuildTextSource
 	////================
 	////*/
-	////bool idDeclAF::RebuildTextSource( void ) {
+	////bool idDeclAF::RebuildTextSource( ) {
 	////	var/*int*/i:number;
 	////	idFile_Memory f;
 	////
@@ -820,7 +820,7 @@ class idDeclAF extends idDecl {
 	////idDeclAF::Save
 	////================
 	////*/
-	////bool idDeclAF::Save( void ) {
+	////bool idDeclAF::Save( ) {
 	////	RebuildTextSource();
 	////	ReplaceSourceFileText();
 	////	modified = false;
@@ -843,19 +843,19 @@ class idDeclAF extends idDecl {
 	////			c = 0;
 	////		}
 	////		else if ( token.Icmp( "solid" ) == 0 ) {
-	////			c |= CONTENTS_SOLID;
+	////			c |= contentsFlags_t.CONTENTS_SOLID;
 	////		}
 	////		else if ( token.Icmp( "body" ) == 0 ) {
-	////			c |= CONTENTS_BODY;
+	////			c |= contentsFlags_t.CONTENTS_BODY;
 	////		}
 	////		else if ( token.Icmp( "corpse" ) == 0 ) {
-	////			c |= CONTENTS_CORPSE;
+	////			c |= contentsFlags_t.CONTENTS_CORPSE;
 	////		}
 	////		else if ( token.Icmp( "playerclip" ) == 0 ) {
-	////			c |= CONTENTS_PLAYERCLIP;
+	////			c |= contentsFlags_t.CONTENTS_PLAYERCLIP;
 	////		}
 	////		else if ( token.Icmp( "monsterclip" ) == 0 ) {
-	////			c |= CONTENTS_MONSTERCLIP;
+	////			c |= contentsFlags_t.CONTENTS_MONSTERCLIP;
 	////		}
 	////		else if ( token == "," ) {
 	////			continue;
@@ -874,23 +874,23 @@ class idDeclAF extends idDecl {
 	////*/
 	////const char *idDeclAF::ContentsToString( const int contents, idStr &str ) {
 	////	str = "";
-	////	if ( contents & CONTENTS_SOLID ) {
+	////	if ( contents & contentsFlags_t.CONTENTS_SOLID ) {
 	////		if ( str.Length() ) str += ", ";
 	////		str += "solid";
 	////	}
-	////	if ( contents & CONTENTS_BODY ) {
+	////	if ( contents & contentsFlags_t.CONTENTS_BODY ) {
 	////		if ( str.Length() ) str += ", ";
 	////		str += "body";
 	////	}
-	////	if ( contents & CONTENTS_CORPSE ) {
+	////	if ( contents & contentsFlags_t.CONTENTS_CORPSE ) {
 	////		if ( str.Length() ) str += ", ";
 	////		str += "corpse";
 	////	}
-	////	if ( contents & CONTENTS_PLAYERCLIP ) {
+	////	if ( contents & contentsFlags_t.CONTENTS_PLAYERCLIP ) {
 	////		if ( str.Length() ) str += ", ";
 	////		str += "playerclip";
 	////	}
-	////	if ( contents & CONTENTS_MONSTERCLIP ) {
+	////	if ( contents & contentsFlags_t.CONTENTS_MONSTERCLIP ) {
 	////		if ( str.Length() ) str += ", ";
 	////		str += "monsterclip";
 	////	}
@@ -943,7 +943,7 @@ class idDeclAF extends idDecl {
 	////idDeclAF::Size
 	////=================
 	////*/
-	////size_t idDeclAF::Size( void ) const {
+	////size_t idDeclAF::Size( ) const {
 	////	return sizeof( idDeclAF );
 	////}
 	////
@@ -1139,7 +1139,7 @@ class idDeclAF extends idDecl {
 	////		return false;
 	////	}
 	////
-	////	body.clipMask |= CONTENTS_MOVEABLECLIP;
+	////	body.clipMask |= contentsFlags_t.CONTENTS_MOVEABLECLIP;
 	////
 	////	return true;
 	////}
@@ -1203,7 +1203,7 @@ class idDeclAF extends idDecl {
 	////	constraint.type = DECLAF_CONSTRAINT_BALLANDSOCKETJOINT;
 	////	constraint.limit = idDeclAF_Constraint::LIMIT_NONE;
 	////	constraint.name = token;
-	////	constraint.friction = 0.5f;
+	////	constraint.friction = 0.5;
 	////	constraint.anchor.ToVec3().Zero();
 	////	constraint.shaft[0].ToVec3().Zero();
 	////
@@ -1282,7 +1282,7 @@ class idDeclAF extends idDecl {
 	////	constraint.type = DECLAF_CONSTRAINT_UNIVERSALJOINT;
 	////	constraint.limit = idDeclAF_Constraint::LIMIT_NONE;
 	////	constraint.name = token;
-	////	constraint.friction = 0.5f;
+	////	constraint.friction = 0.5;
 	////	constraint.anchor.ToVec3().Zero();
 	////	constraint.shaft[0].ToVec3().Zero();
 	////	constraint.shaft[1].ToVec3().Zero();
@@ -1360,7 +1360,7 @@ class idDeclAF extends idDecl {
 	////	constraint.type = DECLAF_CONSTRAINT_HINGE;
 	////	constraint.limit = idDeclAF_Constraint::LIMIT_NONE;
 	////	constraint.name = token;
-	////	constraint.friction = 0.5f;
+	////	constraint.friction = 0.5;
 	////	constraint.anchor.ToVec3().Zero();
 	////	constraint.axis.ToVec3().Zero();
 	////
@@ -1424,7 +1424,7 @@ class idDeclAF extends idDecl {
 	////	constraint.type = DECLAF_CONSTRAINT_SLIDER;
 	////	constraint.limit = idDeclAF_Constraint::LIMIT_NONE;
 	////	constraint.name = token;
-	////	constraint.friction = 0.5f;
+	////	constraint.friction = 0.5;
 	////
 	////	while( src.ReadToken( &token ) ) {
 	////
@@ -1471,7 +1471,7 @@ class idDeclAF extends idDecl {
 	////	constraint.type = DECLAF_CONSTRAINT_SPRING;
 	////	constraint.limit = idDeclAF_Constraint::LIMIT_NONE;
 	////	constraint.name = token;
-	////	constraint.friction = 0.5f;
+	////	constraint.friction = 0.5;
 	////
 	////	while( src.ReadToken( &token ) ) {
 	////
@@ -1736,32 +1736,32 @@ class idDeclAF extends idDecl {
 			"\t" + "}\n" +
 			"}\n";
 	}
-////
-/////*
-////================
-////idDeclAF::FreeData
-////================
-////*/
-////void idDeclAF::FreeData( void ) {
-////	modified = false;
-////	defaultLinearFriction = 0.01f;
-////	defaultAngularFriction = 0.01f;
-////	defaultContactFriction = 0.8f;
-////	defaultConstraintFriction = 0.5f;
-////	totalMass = -1;
-////	suspendVelocity.Set( 20.0f, 30.0f );
-////	suspendAcceleration.Set( 40.0f, 60.0f );
-////	noMoveTime = 1.0f;
-////	noMoveTranslation = 10.0f;
-////	noMoveRotation = 10.0f;
-////	minMoveTime = -1.0f;
-////	maxMoveTime = -1.0f;
-////	selfCollision = true;
-////	contents = CONTENTS_CORPSE;
-////	clipMask = CONTENTS_SOLID | CONTENTS_CORPSE;
-////	this.bodies.DeleteContents( true );
-////	this.constraints.DeleteContents( true );
-////}
+
+/*
+================
+idDeclAF::FreeData
+================
+*/
+	FreeData ( ): void {
+		this.modified = false;
+		this.defaultLinearFriction = 0.01;
+		this.defaultAngularFriction = 0.01;
+		this.defaultContactFriction = 0.8;
+		this.defaultConstraintFriction = 0.5;
+		this.totalMass = -1;
+		this.suspendVelocity.Set( 20.0, 30.0 );
+		this.suspendAcceleration.Set( 40.0, 60.0 );
+		this.noMoveTime = 1.0;
+		this.noMoveTranslation = 10.0;
+		this.noMoveRotation = 10.0;
+		this.minMoveTime = -1.0;
+		this.maxMoveTime = -1.0;
+		this.selfCollision = true;
+		this.contents = contentsFlags_t.CONTENTS_CORPSE;
+		this.clipMask = contentsFlags_t.CONTENTS_SOLID | contentsFlags_t.CONTENTS_CORPSE;
+		this.bodies.DeleteContents( true );
+		this.constraints.DeleteContents( true );
+	}
 
 /*
 ================
@@ -1905,25 +1905,26 @@ idDeclAF::Finish
 ////		}
 ////	}
 ////}
-////
-/////*
-////================
-////idDeclAF::idDeclAF
-////================
-////*/
-////idDeclAF::idDeclAF( void ) {
-////	FreeData();
-////}
-////
-/////*
-////================
-////idDeclAF::~idDeclAF
-////================
-////*/
-////idDeclAF::~idDeclAF( void ) {
-////	this.bodies.DeleteContents( true );
-////	this.constraints.DeleteContents( true );
-////}
+
+/*
+================
+idDeclAF::idDeclAF
+================
+*/
+	constructor() {
+		super ( );
+		this.FreeData ( );
+	}
+	
+	/*
+	================
+	idDeclAF::~idDeclAF
+	================
+	*/
+	destructor ( ): void {
+		this.bodies.DeleteContents( true );
+		this.constraints.DeleteContents( true );
+	}
 }
 ////
 ////#endif /* !__DECLAF_H__ */

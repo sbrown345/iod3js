@@ -259,17 +259,17 @@ idPhysics_StaticMulti::idPhysics_StaticMulti
 ////	savefile.ReadBool(hasMaster);
 ////	savefile.ReadBool(isOrientated);
 ////}
-////
-/////*
-////================
-////idPhysics_StaticMulti::SetSelf
-////================
-////*/
-////void idPhysics_StaticMulti::SetSelf( idEntity *e ) {
-////	assert( e );
-////	this.self = e;
-////}
-////
+
+/*
+================
+idPhysics_StaticMulti::SetSelf
+================
+*/
+	SetSelf(e: idEntity): void {
+		assert(e);
+		this.self = e;
+	}
+
 /////*
 ////================
 ////idPhysics_StaticMulti::RemoveIndex
@@ -341,43 +341,43 @@ idPhysics_StaticMulti::GetNumClipModels
 		return this.clipModels.Num ( );
 	}
 
-/////*
-////================
-////idPhysics_StaticMulti::SetMass
-////================
-////*/
-////void idPhysics_StaticMulti::SetMass( float mass, /*int*/ id:number ) {
-////}
-////
-/////*
-////================
-////idPhysics_StaticMulti::GetMass
-////================
-////*/
-////float idPhysics_StaticMulti::GetMass( /*int*/ id:number ) const {
-////	return 0.0f;
-////}
-////
+/*
+================
+idPhysics_StaticMulti::SetMass
+================
+*/
+	SetMass ( /*float */mass: number, /*int*/ id: number = -1 ) {
+	}
+
+/*
+================
+idPhysics_StaticMulti::GetMass
+================
+*/
+	GetMass ( /*int*/ id: number = -1 ): number {
+		return 0.0;
+	}
+
 /*
 ================
 idPhysics_StaticMulti::SetContents
 ================
 */
-	SetContents( /*int*/ contents: number, /*int*/ id: number = -1 ) :void{
-	var/*int*/i:number;
+	SetContents ( /*int*/ contents: number, /*int*/ id: number = -1 ): void {
+		var /*int*/i: number;
 
-	if ( id >= 0 && id < this.clipModels.Num() ) {
-		if ( this.clipModels[id] ) {
-			this.clipModels[id].SetContents( contents );
-		}
-	} else if ( id == -1 ) {
-		for ( i = 0; i < this.clipModels.Num(); i++ ) {
-			if ( this.clipModels[i] ) {
-				this.clipModels[i].SetContents( contents );
+		if ( id >= 0 && id < this.clipModels.Num ( ) ) {
+			if ( this.clipModels[id] ) {
+				this.clipModels[id].SetContents( contents );
+			}
+		} else if ( id == -1 ) {
+			for ( i = 0; i < this.clipModels.Num ( ); i++ ) {
+				if ( this.clipModels[i] ) {
+					this.clipModels[i].SetContents( contents );
+				}
 			}
 		}
 	}
-}
 
 /////*
 ////================
@@ -816,15 +816,15 @@ idPhysics_StaticMulti::GetAxis
 ////const idVec3 &idPhysics_StaticMulti::GetAngularVelocity( /*int*/ id:number ) const {
 ////	return vec3_origin;
 ////}
-////
-/////*
-////================
-////idPhysics_StaticMulti::SetGravity
-////================
-////*/
-////void idPhysics_StaticMulti::SetGravity( const idVec3 &newGravity ) {
-////}
-////
+
+/*
+================
+idPhysics_StaticMulti::SetGravity
+================
+*/
+	SetGravity ( newGravity: idVec3 ): void {
+	}
+
 /////*
 ////================
 ////idPhysics_StaticMulti::GetGravity

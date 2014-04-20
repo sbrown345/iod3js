@@ -318,17 +318,17 @@ idDeclModelDef::GetJointList
 		}
 	}
 }
-//
-///*
-//=====================
-//idDeclModelDef::Touch
-//=====================
-//*/
-//void idDeclModelDef::Touch( ) const {
-//	if ( this.modelHandle ) {
-//		renderModelManager.FindModel( this.modelHandle.Name() );
-//	}
-//}
+
+/*
+=====================
+idDeclModelDef::Touch
+=====================
+*/
+	Touch ( ): void {
+		if ( this.modelHandle ) {
+			renderModelManager.FindModel( this.modelHandle.Name ( ) );
+		}
+	}
 
 /*
 =====================
@@ -339,66 +339,66 @@ idDeclModelDef::GetDefaultSkin
 		return this.skin;
 	}
 
-///*
-//=====================
-//idDeclModelDef::GetDefaultPose
-//=====================
-//*/
-//const idJointQuat *idDeclModelDef::GetDefaultPose( ) const {
-//	return this.modelHandle.GetDefaultPose();
-//}
-//
-///*
-//=====================
-//idDeclModelDef::SetupJoints
-//=====================
-//*/
-//void idDeclModelDef::SetupJoints( int *numJoints, idJointMat **jointList, idBounds &frameBounds, bool removeOriginOffset ) const {
-//	int					num;
-//	const idJointQuat	*pose;
-//	idJointMat			*list;
-//
-//	if ( !this.modelHandle || this.modelHandle.IsDefaultModel() ) {
-//		Mem_Free16( (*jointList) );
-//		(*jointList) = NULL;
-//		frameBounds.Clear();
-//		return;
-//	}
-//
-//	// get the number of joints
-//	num = this.modelHandle.NumJoints();
-//
-//	if ( !num ) {
-//		gameLocal.Error( "model '%s' has no joints", this.modelHandle.Name() );
-//	}
-//
-//	// set up initial pose for model (with no pose, model is just a jumbled mess)
-//	list = (idJointMat *) Mem_Alloc16( num * sizeof( list[0] ) );
-//	pose = GetDefaultPose();
-//
-//	// convert the joint quaternions to joint matrices
-//	SIMDProcessor.ConvertJointQuatsToJointMats( list, pose, this.joints.Num() );
-//
-//	// check if we offset the model by the origin joint
-//	if ( removeOriginOffset ) {
+/*
+=====================
+idDeclModelDef::GetDefaultPose
+=====================
+*/
+	GetDefaultPose ( ): idJointQuat[] {
+		return this.modelHandle.GetDefaultPose ( );
+	}
+
+/*
+=====================
+idDeclModelDef::SetupJoints
+=====================
+*/
+	SetupJoints ( /*int **/numJoints: R<number>, /*idJointMat ***/jointList: R<idJointMat[]>, frameBounds: idBounds, removeOriginOffset: boolean ): void {
+		var /*int					*/num: number;
+		var pose: idJointQuat[];
+		var list: idJointMat [];
+
+		if ( !this.modelHandle || this.modelHandle.IsDefaultModel ( ) ) {
+			//Mem_Free16( (*jointList) );
+			jointList.$ = null;
+			frameBounds.Clear ( );
+			return;
+		}
+
+		// get the number of joints
+		num = this.modelHandle.NumJoints ( );
+
+		if ( !num ) {
+			gameLocal.Error( "model '%s' has no joints", this.modelHandle.Name ( ) );
+		}
+
+		// set up initial pose for model (with no pose, model is just a jumbled mess)
+		list = new Array<idJointMat>( num ); // (idJointMat *) Mem_Alloc16( num * sizeof( list[0] ) );
+		pose = this.GetDefaultPose ( );
+
+		// convert the joint quaternions to joint matrices
+		SIMDProcessor.ConvertJointQuatsToJointMats( list, pose, this.joints.Num ( ) );
+
+		// check if we offset the model by the origin joint
+		if ( removeOriginOffset ) {
 //#ifdef VELOCITY_MOVE
 //		list[ 0 ].SetTranslation( idVec3( this.offset.x, this.offset.y + pose[0].t.y, this.offset.z + pose[0].t.z ) );
 //#else
-//		list[ 0 ].SetTranslation( this.offset );
+			list[0].SetTranslation( this.offset );
 //#endif
-//	} else {
-//		list[ 0 ].SetTranslation( pose[0].t + this.offset );
-//	}
-//
-//	// transform the joint hierarchy
-//	SIMDProcessor.TransformJoints( list, this.jointParents.Ptr(), 1, this.joints.Num() - 1 );
-//
-//	*numJoints = num;
-//	*jointList = list;
-//
-//	// get the bounds of the default pose
-//	frameBounds = this.modelHandle.Bounds( NULL );
-//}
+		} else {
+			list[0].SetTranslation( pose[0].t + this.offset );
+		}
+
+		// transform the joint hierarchy
+		SIMDProcessor.TransformJoints( list, this.jointParents.Ptr ( ), 1, this.joints.Num ( ) - 1 );
+
+		numJoints.$ = num;
+		jointList.$ = list;
+
+		// get the bounds of the default pose
+		frameBounds.opEquals( this.modelHandle.Bounds( null ) );
+	}
 
 /*
 =====================

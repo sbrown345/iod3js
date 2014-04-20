@@ -561,7 +561,7 @@ idPhysics_Parametric::Activate
 //		float startTime = this.current.spline.GetTime( 0 );
 //		float endTime = this.current.spline.GetTime( this.current.spline.GetNumValues() - 1 );
 //		float length = this.current.spline.GetLengthForTime( endTime );
-//		this.current.splineInterpolate.Init( startTime, accelTime, decelTime, endTime - startTime, 0.0f, length );
+//		this.current.splineInterpolate.Init( startTime, accelTime, decelTime, endTime - startTime, 0.0, length );
 //	}
 //	this.current.useSplineAngles = useSplineAngles;
 //	Activate();
@@ -656,23 +656,23 @@ idPhysics_Parametric::GetNumClipModels
 		return ( this.clipModel != null ) ? 1 : 0;
 	}
 
-///*
-//================
-//idPhysics_Parametric::SetMass
-//================
-//*/
-//void idPhysics_Parametric::SetMass( float mass, /*int*/ id:number ) {
-//}
-//
-///*
-//================
-//idPhysics_Parametric::GetMass
-//================
-//*/
-//float idPhysics_Parametric::GetMass( /*int*/ id:number ) const {
-//	return 0.0f;
-//}
-//
+/*
+================
+idPhysics_Parametric::SetMass
+================
+*/
+	SetMass ( /*float*/ mass: number, /*int*/ id: number = -1 ): void {
+	}
+
+/*
+================
+idPhysics_Parametric::GetMass
+================
+*/
+	GetMass ( /*int*/ id: number= -1 ): number {
+		return 0.0;
+	}
+
 /*
 ================
 idPhysics_Parametric::SetClipMask
@@ -781,7 +781,7 @@ idPhysics_Parametric::GetBounds
 //	if ( isPusher ) {
 //
 //		gameLocal.push.ClipPush( pushResults, this.self, pushFlags, oldOrigin, oldAxis, this.current.origin, this.current.axis );
-//		if ( pushResults.fraction < 1.0f ) {
+//		if ( pushResults.fraction < 1.0 ) {
 //			this.clipModel.Link( gameLocal.clip, this.self, 0, oldOrigin, oldAxis );
 //			this.current.localOrigin = oldLocalOrigin;
 //			this.current.origin = oldOrigin;
@@ -1201,52 +1201,52 @@ idPhysics_Parametric::GetAxis
 //	msg.WriteDeltaFloat( this.current.angles[2], this.current.localAngles[2] );
 //
 //	msg.WriteBits( this.current.linearExtrapolation.GetExtrapolationType(), 8 );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetStartTime() );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetDuration() );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetStartValue()[0] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetStartValue()[1] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetStartValue()[2] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetSpeed()[0] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetSpeed()[1] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetSpeed()[2] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetBaseSpeed()[0] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetBaseSpeed()[1] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearExtrapolation.GetBaseSpeed()[2] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearExtrapolation.GetStartTime() );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearExtrapolation.GetDuration() );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearExtrapolation.GetStartValue()[0] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearExtrapolation.GetStartValue()[1] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearExtrapolation.GetStartValue()[2] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearExtrapolation.GetSpeed()[0] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearExtrapolation.GetSpeed()[1] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearExtrapolation.GetSpeed()[2] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearExtrapolation.GetBaseSpeed()[0] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearExtrapolation.GetBaseSpeed()[1] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearExtrapolation.GetBaseSpeed()[2] );
 //
 //	msg.WriteBits( this.current.angularExtrapolation.GetExtrapolationType(), 8 );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetStartTime() );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetDuration() );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetStartValue()[0] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetStartValue()[1] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetStartValue()[2] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetSpeed()[0] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetSpeed()[1] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetSpeed()[2] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetBaseSpeed()[0] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetBaseSpeed()[1] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularExtrapolation.GetBaseSpeed()[2] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularExtrapolation.GetStartTime() );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularExtrapolation.GetDuration() );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularExtrapolation.GetStartValue()[0] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularExtrapolation.GetStartValue()[1] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularExtrapolation.GetStartValue()[2] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularExtrapolation.GetSpeed()[0] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularExtrapolation.GetSpeed()[1] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularExtrapolation.GetSpeed()[2] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularExtrapolation.GetBaseSpeed()[0] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularExtrapolation.GetBaseSpeed()[1] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularExtrapolation.GetBaseSpeed()[2] );
 //
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetStartTime() );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetAcceleration() );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetDeceleration() );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetDuration() );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetStartValue()[0] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetStartValue()[1] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetStartValue()[2] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetEndValue()[0] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetEndValue()[1] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.linearInterpolation.GetEndValue()[2] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearInterpolation.GetStartTime() );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearInterpolation.GetAcceleration() );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearInterpolation.GetDeceleration() );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearInterpolation.GetDuration() );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearInterpolation.GetStartValue()[0] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearInterpolation.GetStartValue()[1] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearInterpolation.GetStartValue()[2] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearInterpolation.GetEndValue()[0] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearInterpolation.GetEndValue()[1] );
+//	msg.WriteDeltaFloat( 0.0, this.current.linearInterpolation.GetEndValue()[2] );
 //
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetStartTime() );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetAcceleration() );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetDeceleration() );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetDuration() );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetStartValue()[0] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetStartValue()[1] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetStartValue()[2] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetEndValue()[0] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetEndValue()[1] );
-//	msg.WriteDeltaFloat( 0.0f, this.current.angularInterpolation.GetEndValue()[2] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularInterpolation.GetStartTime() );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularInterpolation.GetAcceleration() );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularInterpolation.GetDeceleration() );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularInterpolation.GetDuration() );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularInterpolation.GetStartValue()[0] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularInterpolation.GetStartValue()[1] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularInterpolation.GetStartValue()[2] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularInterpolation.GetEndValue()[0] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularInterpolation.GetEndValue()[1] );
+//	msg.WriteDeltaFloat( 0.0, this.current.angularInterpolation.GetEndValue()[2] );
 //}
 //
 ///*
@@ -1276,55 +1276,55 @@ idPhysics_Parametric::GetAxis
 //	this.current.localAngles[2] = msg.ReadDeltaFloat( this.current.angles[2] );
 //
 //	linearType = (extrapolation_t) msg.ReadBits( 8 );
-//	startTime = msg.ReadDeltaFloat( 0.0f );
-//	duration = msg.ReadDeltaFloat( 0.0f );
-//	linearStartValue[0] = msg.ReadDeltaFloat( 0.0f );
-//	linearStartValue[1] = msg.ReadDeltaFloat( 0.0f );
-//	linearStartValue[2] = msg.ReadDeltaFloat( 0.0f );
-//	linearSpeed[0] = msg.ReadDeltaFloat( 0.0f );
-//	linearSpeed[1] = msg.ReadDeltaFloat( 0.0f );
-//	linearSpeed[2] = msg.ReadDeltaFloat( 0.0f );
-//	linearBaseSpeed[0] = msg.ReadDeltaFloat( 0.0f );
-//	linearBaseSpeed[1] = msg.ReadDeltaFloat( 0.0f );
-//	linearBaseSpeed[2] = msg.ReadDeltaFloat( 0.0f );
+//	startTime = msg.ReadDeltaFloat( 0.0 );
+//	duration = msg.ReadDeltaFloat( 0.0 );
+//	linearStartValue[0] = msg.ReadDeltaFloat( 0.0 );
+//	linearStartValue[1] = msg.ReadDeltaFloat( 0.0 );
+//	linearStartValue[2] = msg.ReadDeltaFloat( 0.0 );
+//	linearSpeed[0] = msg.ReadDeltaFloat( 0.0 );
+//	linearSpeed[1] = msg.ReadDeltaFloat( 0.0 );
+//	linearSpeed[2] = msg.ReadDeltaFloat( 0.0 );
+//	linearBaseSpeed[0] = msg.ReadDeltaFloat( 0.0 );
+//	linearBaseSpeed[1] = msg.ReadDeltaFloat( 0.0 );
+//	linearBaseSpeed[2] = msg.ReadDeltaFloat( 0.0 );
 //	this.current.linearExtrapolation.Init( startTime, duration, linearStartValue, linearBaseSpeed, linearSpeed, linearType );
 //
 //	angularType = (extrapolation_t) msg.ReadBits( 8 );
-//	startTime = msg.ReadDeltaFloat( 0.0f );
-//	duration = msg.ReadDeltaFloat( 0.0f );
-//	angularStartValue[0] = msg.ReadDeltaFloat( 0.0f );
-//	angularStartValue[1] = msg.ReadDeltaFloat( 0.0f );
-//	angularStartValue[2] = msg.ReadDeltaFloat( 0.0f );
-//	angularSpeed[0] = msg.ReadDeltaFloat( 0.0f );
-//	angularSpeed[1] = msg.ReadDeltaFloat( 0.0f );
-//	angularSpeed[2] = msg.ReadDeltaFloat( 0.0f );
-//	angularBaseSpeed[0] = msg.ReadDeltaFloat( 0.0f );
-//	angularBaseSpeed[1] = msg.ReadDeltaFloat( 0.0f );
-//	angularBaseSpeed[2] = msg.ReadDeltaFloat( 0.0f );
+//	startTime = msg.ReadDeltaFloat( 0.0 );
+//	duration = msg.ReadDeltaFloat( 0.0 );
+//	angularStartValue[0] = msg.ReadDeltaFloat( 0.0 );
+//	angularStartValue[1] = msg.ReadDeltaFloat( 0.0 );
+//	angularStartValue[2] = msg.ReadDeltaFloat( 0.0 );
+//	angularSpeed[0] = msg.ReadDeltaFloat( 0.0 );
+//	angularSpeed[1] = msg.ReadDeltaFloat( 0.0 );
+//	angularSpeed[2] = msg.ReadDeltaFloat( 0.0 );
+//	angularBaseSpeed[0] = msg.ReadDeltaFloat( 0.0 );
+//	angularBaseSpeed[1] = msg.ReadDeltaFloat( 0.0 );
+//	angularBaseSpeed[2] = msg.ReadDeltaFloat( 0.0 );
 //	this.current.angularExtrapolation.Init( startTime, duration, angularStartValue, angularBaseSpeed, angularSpeed, angularType );
 //
-//	startTime = msg.ReadDeltaFloat( 0.0f );
-//	accelTime = msg.ReadDeltaFloat( 0.0f );
-//	decelTime = msg.ReadDeltaFloat( 0.0f );
-//	duration = msg.ReadDeltaFloat( 0.0f );
-//	startPos[0] = msg.ReadDeltaFloat( 0.0f );
-//	startPos[1] = msg.ReadDeltaFloat( 0.0f );
-//	startPos[2] = msg.ReadDeltaFloat( 0.0f );
-//	endPos[0] = msg.ReadDeltaFloat( 0.0f );
-//	endPos[1] = msg.ReadDeltaFloat( 0.0f );
-//	endPos[2] = msg.ReadDeltaFloat( 0.0f );
+//	startTime = msg.ReadDeltaFloat( 0.0 );
+//	accelTime = msg.ReadDeltaFloat( 0.0 );
+//	decelTime = msg.ReadDeltaFloat( 0.0 );
+//	duration = msg.ReadDeltaFloat( 0.0 );
+//	startPos[0] = msg.ReadDeltaFloat( 0.0 );
+//	startPos[1] = msg.ReadDeltaFloat( 0.0 );
+//	startPos[2] = msg.ReadDeltaFloat( 0.0 );
+//	endPos[0] = msg.ReadDeltaFloat( 0.0 );
+//	endPos[1] = msg.ReadDeltaFloat( 0.0 );
+//	endPos[2] = msg.ReadDeltaFloat( 0.0 );
 //	this.current.linearInterpolation.Init( startTime, accelTime, decelTime, duration, startPos, endPos );
 //
-//	startTime = msg.ReadDeltaFloat( 0.0f );
-//	accelTime = msg.ReadDeltaFloat( 0.0f );
-//	decelTime = msg.ReadDeltaFloat( 0.0f );
-//	duration = msg.ReadDeltaFloat( 0.0f );
-//	startAng[0] = msg.ReadDeltaFloat( 0.0f );
-//	startAng[1] = msg.ReadDeltaFloat( 0.0f );
-//	startAng[2] = msg.ReadDeltaFloat( 0.0f );
-//	endAng[0] = msg.ReadDeltaFloat( 0.0f );
-//	endAng[1] = msg.ReadDeltaFloat( 0.0f );
-//	endAng[2] = msg.ReadDeltaFloat( 0.0f );
+//	startTime = msg.ReadDeltaFloat( 0.0 );
+//	accelTime = msg.ReadDeltaFloat( 0.0 );
+//	decelTime = msg.ReadDeltaFloat( 0.0 );
+//	duration = msg.ReadDeltaFloat( 0.0 );
+//	startAng[0] = msg.ReadDeltaFloat( 0.0 );
+//	startAng[1] = msg.ReadDeltaFloat( 0.0 );
+//	startAng[2] = msg.ReadDeltaFloat( 0.0 );
+//	endAng[0] = msg.ReadDeltaFloat( 0.0 );
+//	endAng[1] = msg.ReadDeltaFloat( 0.0 );
+//	endAng[2] = msg.ReadDeltaFloat( 0.0 );
 //	this.current.angularInterpolation.Init( startTime, accelTime, decelTime, duration, startAng, endAng );
 //
 //	this.current.axis = this.current.angles.ToMat3();
