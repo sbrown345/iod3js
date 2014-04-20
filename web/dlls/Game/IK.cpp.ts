@@ -69,10 +69,10 @@
 ////	numArms = 0;
 ////	enabledArms = 0;
 ////	for ( i = 0; i < MAX_ARMS; i++ ) {
-////		handJoints[i] = INVALID_JOINT;
-////		elbowJoints[i] = INVALID_JOINT;
-////		shoulderJoints[i] = INVALID_JOINT;
-////		dirJoints[i] = INVALID_JOINT;
+////		handJoints[i] = jointHandle_t.INVALID_JOINT;
+////		elbowJoints[i] = jointHandle_t.INVALID_JOINT;
+////		shoulderJoints[i] = jointHandle_t.INVALID_JOINT;
+////		dirJoints[i] = jointHandle_t.INVALID_JOINT;
 ////		shoulderForward[i].Zero();
 ////		elbowForward[i].Zero();
 ////		upperArmLength[i] = 0.0f;
@@ -200,19 +200,19 @@
 ////
 ////		jointName = self.spawnArgs.GetString( va( "ik_hand%d", i+1 ) );
 ////		handJoints[i] = animator.GetJointHandle( jointName );
-////		if ( handJoints[i] == INVALID_JOINT ) {
+////		if ( handJoints[i] == jointHandle_t.INVALID_JOINT ) {
 ////			gameLocal.Error( "idIK_Reach::Init: invalid hand joint '%s'", jointName );
 ////		}
 ////
 ////		jointName = self.spawnArgs.GetString( va( "ik_elbow%d", i+1 ) );
 ////		elbowJoints[i] = animator.GetJointHandle( jointName );
-////		if ( elbowJoints[i] == INVALID_JOINT ) {
+////		if ( elbowJoints[i] == jointHandle_t.INVALID_JOINT ) {
 ////			gameLocal.Error( "idIK_Reach::Init: invalid elbow joint '%s'\n", jointName );
 ////		}
 ////
 ////		jointName = self.spawnArgs.GetString( va( "ik_shoulder%d", i+1 ) );
 ////		shoulderJoints[i] = animator.GetJointHandle( jointName );
-////		if ( shoulderJoints[i] == INVALID_JOINT ) {
+////		if ( shoulderJoints[i] == jointHandle_t.INVALID_JOINT ) {
 ////			gameLocal.Error( "idIK_Reach::Init: invalid shoulder joint '%s'\n", jointName );
 ////		}
 ////
@@ -235,7 +235,7 @@
 ////		shoulderOrigin = joints[ shoulderJoints[ i ] ].ToVec3();
 ////
 ////		// get the IK direction
-////		if ( dirJoints[i] != INVALID_JOINT ) {
+////		if ( dirJoints[i] != jointHandle_t.INVALID_JOINT ) {
 ////			dirOrigin = joints[ dirJoints[ i ] ].ToVec3();
 ////			dir = dirOrigin - elbowOrigin;
 ////		} else {

@@ -1018,7 +1018,7 @@ idMover.Type = new idTypeInfo("idMover", "idEntity",
 ////*/
 ////void idMover::Event_PartBlocked( blockingEntity:idEntity  ) {
 ////	if ( damage > 0.0f ) {
-////		blockingEntity->Damage( this, this, vec3_origin, "damage_moverCrush", damage, INVALID_JOINT );
+////		blockingEntity->Damage( this, this, vec3_origin, "damage_moverCrush", damage, jointHandle_t.INVALID_JOINT );
 ////	}
 ////	if ( g_debugMover.GetBool() ) {
 ////		gameLocal.Printf( "%d: '%s' blocked by '%s'\n", gameLocal.time, name.c_str(), blockingEntity->name.c_str() );
@@ -3890,7 +3890,7 @@ idDoor.Type = new idTypeInfo("idDoor", "idMover_Binary",
 ////*/
 ////void idDoor::Event_PartBlocked( blockingEntity:idEntity  ) {
 ////	if ( damage > 0.0f ) {
-////		blockingEntity->Damage( this, this, vec3_origin, "damage_moverCrush", damage, INVALID_JOINT );
+////		blockingEntity->Damage( this, this, vec3_origin, "damage_moverCrush", damage, jointHandle_t.INVALID_JOINT );
 ////	}
 ////}
 ////
@@ -4348,7 +4348,7 @@ idPlat.Type = new idTypeInfo("idPlat", "idMover_Binary",
 ////*/
 ////void idPlat::Event_PartBlocked( blockingEntity:idEntity  ) {
 ////	if ( damage > 0.0f ) {
-////		blockingEntity->Damage( this, this, vec3_origin, "damage_moverCrush", damage, INVALID_JOINT );
+////		blockingEntity->Damage( this, this, vec3_origin, "damage_moverCrush", damage, jointHandle_t.INVALID_JOINT );
 ////	}
 ////}
 ////
@@ -4460,7 +4460,7 @@ idMover_Periodic.Type = new idTypeInfo( "idMover_Periodic", "idEntity",
 ////*/
 ////void idMover_Periodic::Event_PartBlocked( blockingEntity:idEntity  ) {
 ////	if ( damage > 0.0f ) {
-////		blockingEntity->Damage( this, this, vec3_origin, "damage_moverCrush", damage, INVALID_JOINT );
+////		blockingEntity->Damage( this, this, vec3_origin, "damage_moverCrush", damage, jointHandle_t.INVALID_JOINT );
 ////	}
 ////}
 ////

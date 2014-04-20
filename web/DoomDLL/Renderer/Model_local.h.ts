@@ -647,7 +647,7 @@ idRenderModelStatic::GetJointHandle
 ////================
 ////*/
 ////int idRenderModelStatic::NearestJoint( int surfaceNum, int a, int b, int c ) const {
-////	return INVALID_JOINT;
+////	return jointHandle_t.INVALID_JOINT;
 ////}
 
 

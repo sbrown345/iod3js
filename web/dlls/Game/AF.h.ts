@@ -525,7 +525,7 @@ class idAF {
 	////	idMat3 axis;
 	////
 	////	handle = animator.GetJointHandle( jointName );
-	////	if ( handle == INVALID_JOINT ) {
+	////	if ( handle == jointHandle_t.INVALID_JOINT ) {
 	////		gameLocal.Error( "idAF for entity '%s' at (%s) modifies unknown joint '%s'", self.name.c_str(), self.GetPhysics().GetOrigin().ToString(0), jointName );
 	////	}
 	////
@@ -868,143 +868,142 @@ class idAF {
 	================
 	*/
 	Load(ent: idEntity, fileName: string): boolean {
-		todoThrow();
-		//int i, j;
-		//const idDeclAF *file;
-		//const idDeclModelDef *modelDef;
-		//idRenderModel *model;
-		//int numJoints;
-		//idJointMat *joints;
+		int i, j;
+		const idDeclAF *file;
+		const idDeclModelDef *modelDef;
+		idRenderModel *model;
+		int numJoints;
+		idJointMat *joints;
 
-		//assert( ent );
+		assert( ent );
 
-		//self = ent;
-		//physicsObj.SetSelf( self );
+		self = ent;
+		physicsObj.SetSelf( self );
 
-		//if ( animator == NULL ) {
-		//	gameLocal.Warning( "Couldn't load af '%s' for entity '%s' at (%s): NULL animator\n", name.c_str(), ent.name.c_str(), ent.GetPhysics().GetOrigin().ToString(0) );
-		//	return false;
-		//}
+		if ( animator == NULL ) {
+			gameLocal.Warning( "Couldn't load af '%s' for entity '%s' at (%s): NULL animator\n", name.c_str(), ent.name.c_str(), ent.GetPhysics().GetOrigin().ToString(0) );
+			return false;
+		}
 
-		//name = fileName;
-		//name.StripFileExtension();
+		name = fileName;
+		name.StripFileExtension();
 
-		//file = static_cast<const idDeclAF *>( declManager.FindType( DECL_AF, name ) );
-		//if ( !file ) {
-		//	gameLocal.Warning( "Couldn't load af '%s' for entity '%s' at (%s)\n", name.c_str(), ent.name.c_str(), ent.GetPhysics().GetOrigin().ToString(0) );
-		//	return false;
-		//}
+		file = static_cast<const idDeclAF *>( declManager.FindType( DECL_AF, name ) );
+		if ( !file ) {
+			gameLocal.Warning( "Couldn't load af '%s' for entity '%s' at (%s)\n", name.c_str(), ent.name.c_str(), ent.GetPhysics().GetOrigin().ToString(0) );
+			return false;
+		}
 
-		//if ( file.bodies.Num() == 0 || file.bodies[0].jointName != "origin" ) {
-		//	gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no body which modifies the origin joint.",
-		//						name.c_str(), ent.name.c_str(), ent.GetPhysics().GetOrigin().ToString(0) );
-		//	return false;
-		//}
+		if ( file.bodies.Num() == 0 || file.bodies[0].jointName != "origin" ) {
+			gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no body which modifies the origin joint.",
+								name.c_str(), ent.name.c_str(), ent.GetPhysics().GetOrigin().ToString(0) );
+			return false;
+		}
 
-		//modelDef = animator.ModelDef();
-		//if ( modelDef == NULL || modelDef.GetState() == DS_DEFAULTED ) {
-		//	gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no or defaulted modelDef '%s'",
-		//						name.c_str(), ent.name.c_str(), ent.GetPhysics().GetOrigin().ToString(0), modelDef ? modelDef.GetName() : "" );
-		//	return false;
-		//}
+		modelDef = animator.ModelDef();
+		if ( modelDef == NULL || modelDef.GetState() == DS_DEFAULTED ) {
+			gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no or defaulted modelDef '%s'",
+								name.c_str(), ent.name.c_str(), ent.GetPhysics().GetOrigin().ToString(0), modelDef ? modelDef.GetName() : "" );
+			return false;
+		}
 
-		//model = animator.ModelHandle();
-		//if ( model == NULL || model.IsDefaultModel() ) {
-		//	gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no or defaulted model '%s'",
-		//						name.c_str(), ent.name.c_str(), ent.GetPhysics().GetOrigin().ToString(0), model ? model.Name() : "" );
-		//	return false;
-		//}
+		model = animator.ModelHandle();
+		if ( model == NULL || model.IsDefaultModel() ) {
+			gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no or defaulted model '%s'",
+								name.c_str(), ent.name.c_str(), ent.GetPhysics().GetOrigin().ToString(0), model ? model.Name() : "" );
+			return false;
+		}
 
-		//// get the modified animation
-		//modifiedAnim = animator.GetAnim( ARTICULATED_FIGURE_ANIM );
-		//if ( !modifiedAnim ) {
-		//	gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no modified animation '%s'",
-		//						name.c_str(), ent.name.c_str(), ent.GetPhysics().GetOrigin().ToString(0), ARTICULATED_FIGURE_ANIM );
-		//	return false;
-		//}
+		// get the modified animation
+		modifiedAnim = animator.GetAnim( ARTICULATED_FIGURE_ANIM );
+		if ( !modifiedAnim ) {
+			gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no modified animation '%s'",
+								name.c_str(), ent.name.c_str(), ent.GetPhysics().GetOrigin().ToString(0), ARTICULATED_FIGURE_ANIM );
+			return false;
+		}
 
-		//// create the animation frame used to setup the articulated figure
-		//numJoints = animator.NumJoints();
-		//joints = ( idJointMat * )_alloca16( numJoints * sizeof( joints[0] ) );
-		//gameEdit.ANIM_CreateAnimFrame( model, animator.GetAnim( modifiedAnim ).MD5Anim( 0 ), numJoints, joints, 1, animator.ModelDef().GetVisualOffset(), animator.RemoveOrigin() );
+		// create the animation frame used to setup the articulated figure
+		numJoints = animator.NumJoints();
+		joints = ( idJointMat * )_alloca16( numJoints * sizeof( joints[0] ) );
+		gameEdit.ANIM_CreateAnimFrame( model, animator.GetAnim( modifiedAnim ).MD5Anim( 0 ), numJoints, joints, 1, animator.ModelDef().GetVisualOffset(), animator.RemoveOrigin() );
 
-		//// set all vector positions from model joints
-		//file.Finish( GetJointTransform, joints, animator );
+		// set all vector positions from model joints
+		file.Finish( GetJointTransform, joints, animator );
 
-		//// initialize articulated figure physics
-		//physicsObj.SetGravity( gameLocal.GetGravity() );
-		//physicsObj.SetClipMask( file.clipMask );
-		//physicsObj.SetDefaultFriction( file.defaultLinearFriction, file.defaultAngularFriction, file.defaultContactFriction );
-		//physicsObj.SetSuspendSpeed( file.suspendVelocity, file.suspendAcceleration );
-		//physicsObj.SetSuspendTolerance( file.noMoveTime, file.noMoveTranslation, file.noMoveRotation );
-		//physicsObj.SetSuspendTime( file.minMoveTime, file.maxMoveTime );
-		//physicsObj.SetSelfCollision( file.selfCollision );
+		// initialize articulated figure physics
+		physicsObj.SetGravity( gameLocal.GetGravity() );
+		physicsObj.SetClipMask( file.clipMask );
+		physicsObj.SetDefaultFriction( file.defaultLinearFriction, file.defaultAngularFriction, file.defaultContactFriction );
+		physicsObj.SetSuspendSpeed( file.suspendVelocity, file.suspendAcceleration );
+		physicsObj.SetSuspendTolerance( file.noMoveTime, file.noMoveTranslation, file.noMoveRotation );
+		physicsObj.SetSuspendTime( file.minMoveTime, file.maxMoveTime );
+		physicsObj.SetSelfCollision( file.selfCollision );
 
-		//// clear the list with transforms from joints to bodies
-		//jointMods.SetNum( 0, false );
+		// clear the list with transforms from joints to bodies
+		jointMods.SetNum( 0, false );
 
-		//// clear the joint to body conversion list
-		//jointBody.AssureSize( animator.NumJoints() );
-		//for ( i = 0; i < jointBody.Num(); i++ ) {
-		//	jointBody[i] = -1;
-		//}
+		// clear the joint to body conversion list
+		jointBody.AssureSize( animator.NumJoints() );
+		for ( i = 0; i < jointBody.Num(); i++ ) {
+			jointBody[i] = -1;
+		}
 
-		//// delete any bodies in the physicsObj that are no longer in the idDeclAF
-		//for ( i = 0; i < physicsObj.GetNumBodies(); i++ ) {
-		//	idAFBody *body = physicsObj.GetBody( i );
-		//	for ( j = 0; j < file.bodies.Num(); j++ ) {
-		//		if ( file.bodies[j].name.Icmp( body.GetName() ) == 0 ) {
-		//			break;
-		//		}
-		//	}
-		//	if ( j >= file.bodies.Num() ) {
-		//		physicsObj.DeleteBody( i );
-		//		i--;
-		//	}
-		//}
+		// delete any bodies in the physicsObj that are no longer in the idDeclAF
+		for ( i = 0; i < physicsObj.GetNumBodies(); i++ ) {
+			idAFBody *body = physicsObj.GetBody( i );
+			for ( j = 0; j < file.bodies.Num(); j++ ) {
+				if ( file.bodies[j].name.Icmp( body.GetName() ) == 0 ) {
+					break;
+				}
+			}
+			if ( j >= file.bodies.Num() ) {
+				physicsObj.DeleteBody( i );
+				i--;
+			}
+		}
 
-		//// delete any constraints in the physicsObj that are no longer in the idDeclAF
-		//for ( i = 0; i < physicsObj.GetNumConstraints(); i++ ) {
-		//	idAFConstraint *constraint = physicsObj.GetConstraint( i );
-		//	for ( j = 0; j < file.constraints.Num(); j++ ) {
-		//		if ( file.constraints[j].name.Icmp( constraint.GetName() ) == 0 &&
-		//				file.constraints[j].type == constraint.GetType() ) {
-		//			break;
-		//		}
-		//	}
-		//	if ( j >= file.constraints.Num() ) {
-		//		physicsObj.DeleteConstraint( i );
-		//		i--;
-		//	}
-		//}
+		// delete any constraints in the physicsObj that are no longer in the idDeclAF
+		for ( i = 0; i < physicsObj.GetNumConstraints(); i++ ) {
+			idAFConstraint *constraint = physicsObj.GetConstraint( i );
+			for ( j = 0; j < file.constraints.Num(); j++ ) {
+				if ( file.constraints[j].name.Icmp( constraint.GetName() ) == 0 &&
+						file.constraints[j].type == constraint.GetType() ) {
+					break;
+				}
+			}
+			if ( j >= file.constraints.Num() ) {
+				physicsObj.DeleteConstraint( i );
+				i--;
+			}
+		}
 
-		//// load bodies from the file
-		//for ( i = 0; i < file.bodies.Num(); i++ ) {
-		//	LoadBody( file.bodies[i], joints );
-		//}
+		// load bodies from the file
+		for ( i = 0; i < file.bodies.Num(); i++ ) {
+			LoadBody( file.bodies[i], joints );
+		}
 
-		//// load constraints from the file
-		//for ( i = 0; i < file.constraints.Num(); i++ ) {
-		//	LoadConstraint( file.constraints[i] );
-		//}
+		// load constraints from the file
+		for ( i = 0; i < file.constraints.Num(); i++ ) {
+			LoadConstraint( file.constraints[i] );
+		}
 
-		//physicsObj.UpdateClipModels();
+		physicsObj.UpdateClipModels();
 
-		//// check if each joint is contained by a body
-		//for( i = 0; i < animator.NumJoints(); i++ ) {
-		//	if ( jointBody[i] == -1 ) {
-		//		gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) joint '%s' is not contained by a body",
-		//			name.c_str(), self.name.c_str(), self.GetPhysics().GetOrigin().ToString(0), animator.GetJointName( (jointHandle_t)i ) );
-		//	}
-		//}
+		// check if each joint is contained by a body
+		for( i = 0; i < animator.NumJoints(); i++ ) {
+			if ( jointBody[i] == -1 ) {
+				gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) joint '%s' is not contained by a body",
+					name.c_str(), self.name.c_str(), self.GetPhysics().GetOrigin().ToString(0), animator.GetJointName( (jointHandle_t)i ) );
+			}
+		}
 
-		//physicsObj.SetMass( file.totalMass );
-		//physicsObj.SetChanged();
+		physicsObj.SetMass( file.totalMass );
+		physicsObj.SetChanged();
 
-		//// disable the articulated figure for collision detection until activated
-		//physicsObj.DisableClip();
+		// disable the articulated figure for collision detection until activated
+		physicsObj.DisableClip();
 
-		//isLoaded = true;
+		isLoaded = true;
 
 		return true;
 	}
@@ -1285,7 +1284,7 @@ idAF::LoadState
 ////			lexer.ReadToken( &jointName );
 ////
 ////			jointHandle_t joint = animator.GetJointHandle( jointName );
-////			if ( joint == INVALID_JOINT ) {
+////			if ( joint == jointHandle_t.INVALID_JOINT ) {
 ////				gameLocal.Warning( "idAF::AddBindConstraints: joint '%s' not found", jointName.c_str() );
 ////			}
 ////
@@ -1300,7 +1299,7 @@ idAF::LoadState
 ////			lexer.ReadToken( &jointName );
 ////
 ////			jointHandle_t joint = animator.GetJointHandle( jointName );
-////			if ( joint == INVALID_JOINT ) {
+////			if ( joint == jointHandle_t.INVALID_JOINT ) {
 ////				gameLocal.Warning( "idAF::AddBindConstraints: joint '%s' not found", jointName.c_str() );
 ////			}
 ////			animator.GetJointTransform( joint, gameLocal.time, origin, axis );

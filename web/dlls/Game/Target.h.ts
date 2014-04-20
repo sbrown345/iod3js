@@ -164,7 +164,7 @@ class idTarget_Damage extends idTarget {
 ////	for( i = 0; i < targets.Num(); i++ ) {
 ////		ent = targets[ i ].GetEntity();
 ////		if ( ent ) {
-////			ent->Damage( this, this, vec3_origin, damage, 1.0, INVALID_JOINT );
+////			ent->Damage( this, this, vec3_origin, damage, 1.0, jointHandle_t.INVALID_JOINT );
 ////		}
 ////	}
 ////}

@@ -489,7 +489,7 @@ idAnimatedEntity.Type = new idTypeInfo("idAnimatedEntity", "idEntity",
 ////	}
 ////
 ////	jointNum = CLIPMODEL_ID_TO_JOINT_HANDLE( collision.c.id );
-////	if ( jointNum == INVALID_JOINT ) {
+////	if ( jointNum == jointHandle_t.INVALID_JOINT ) {
 ////		return;
 ////	}
 ////
@@ -684,7 +684,7 @@ idAnimatedEntity.Type = new idTypeInfo("idAnimatedEntity", "idEntity",
 ////================
 ////idAnimatedEntity::Event_GetJointHandle
 ////
-////looks up the number of the specified joint.  returns INVALID_JOINT if the joint is not found.
+////looks up the number of the specified joint.  returns jointHandle_t.INVALID_JOINT if the joint is not found.
 ////================
 ////*/
 ////void idAnimatedEntity::Event_GetJointHandle( jointname:string ) {

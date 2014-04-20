@@ -160,7 +160,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////*/
 ////void idDragEntity::Clear() {
 ////	dragEnt			= NULL;
-////	joint			= INVALID_JOINT;
+////	joint			= jointHandle_t.INVALID_JOINT;
 ////	id				= 0;
 ////	localEntityPoint.Zero();
 ////	localPlayerPoint.Zero();
@@ -191,7 +191,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////	trace_t trace;
 ////	idEntity *newEnt;
 ////	idAngles angles;
-////	jointHandle_t newJoint = INVALID_JOINT;
+////	jointHandle_t newJoint = jointHandle_t.INVALID_JOINT;
 ////	idStr newBodyName;
 ////
 ////	player.GetViewPos( viewPoint, viewAxis );
@@ -231,13 +231,13 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////						if ( trace.c.id < 0 ) {
 ////							newJoint = CLIPMODEL_ID_TO_JOINT_HANDLE( trace.c.id );
 ////						} else {
-////							newJoint = INVALID_JOINT;
+////							newJoint = jointHandle_t.INVALID_JOINT;
 ////						}
 ////						newBodyName = "";
 ////
 ////					} else {
 ////
-////						newJoint = INVALID_JOINT;
+////						newJoint = jointHandle_t.INVALID_JOINT;
 ////						newEnt = NULL;
 ////					}
 ////				}
@@ -289,7 +289,7 @@ idCursor3D.Type = new idTypeInfo( "idCursor3D", "idEntity",
 ////		renderEntity_t *renderEntity = drag.GetRenderEntity();
 ////		idAnimator *dragAnimator = drag.GetAnimator();
 ////
-////		if ( joint != INVALID_JOINT && renderEntity && dragAnimator ) {
+////		if ( joint != jointHandle_t.INVALID_JOINT && renderEntity && dragAnimator ) {
 ////			dragAnimator.GetJointTransform( joint, gameLocal.time, cursor.draggedPosition, axis );
 ////			cursor.draggedPosition = renderEntity.origin + cursor.draggedPosition * renderEntity.axis;
 ////			gameRenderWorld.DrawText( va( "%s\n%s\n%s, %s", drag.GetName(), drag.GetType().classname, dragAnimator.GetJointName( joint ), bodyName.c_str() ), cursor.GetPhysics().GetOrigin(), 0.1f, colorWhite, viewAxis, 1 );

@@ -1177,7 +1177,7 @@ idTrigger_Hurt::Spawn
 ////
 ////	if ( this.on && other && gameLocal.time >= this.nextTime ) {
 ////		damage = this.spawnArgs.GetString( "def_damage", "damage_painTrigger" );
-////		other.Damage( NULL, NULL, vec3_origin, damage, 1.0, INVALID_JOINT );
+////		other.Damage( NULL, NULL, vec3_origin, damage, 1.0, jointHandle_t.INVALID_JOINT );
 ////
 ////		ActivateTargets( other );
 ////		CallScript();

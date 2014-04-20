@@ -188,12 +188,12 @@ idPlayerStart::Spawn
 ////			gameSoundWorld.FadeSoundClasses( 0, -20.0f, teleportDelay );
 ////			player.StartSound( "snd_teleport_start", SND_CHANNEL_BODY2, 0, false, NULL );
 ////			this.teleportStage++;
-////			PostEventSec( &EV_TeleportStage, teleportDelay, player );
+////			this.PostEventSec( &EV_TeleportStage, teleportDelay, player );
 ////			break;
 ////		case 1:
 ////			gameSoundWorld.FadeSoundClasses( 0, 0.0f, 0.25f );
 ////			this.teleportStage++;
-////			PostEventSec( &EV_TeleportStage, 0.25f, player );
+////			this.PostEventSec( &EV_TeleportStage, 0.25f, player );
 ////			break;
 ////		case 2:
 ////			player.SetInfluenceView( NULL, NULL, 0.0f, NULL );
@@ -561,10 +561,10 @@ Spawn():void{throw "placeholder";}
 ////	// make sure the model gets cached
 ////	this.spawnArgs.GetString( "broken", "", broken );
 ////	if ( broken.Length() && !renderModelManager.CheckModel( broken ) ) {
-////		gameLocal.Error( "idDamagable '%s' at (%s): cannot load broken model '%s'", name.c_str(), this.GetPhysics().GetOrigin().ToString(0), broken.c_str() );
+////		gameLocal.Error( "idDamagable '%s' at (%s): cannot load broken model '%s'", this.name.c_str(), this.GetPhysics().GetOrigin().ToString(0), broken.c_str() );
 ////	}
 ////
-////	fl.takedamage = true;
+////	this.fl.takedamage = true;
 ////	GetPhysics().SetContents( CONTENTS_SOLID );
 ////}
 ////
@@ -588,7 +588,7 @@ Spawn():void{throw "placeholder";}
 ////	if ( count > 0 ) {
 ////		count--;
 ////		if ( !count ) {
-////			fl.takedamage = false;
+////			this.fl.takedamage = false;
 ////		} else {
 ////			health = this.spawnArgs.GetInt( "health", "5" );
 ////		}
@@ -625,7 +625,7 @@ Spawn():void{throw "placeholder";}
 ////	ActivateTargets( activator );
 ////
 ////	if ( this.spawnArgs.GetBool( "hideWhenBroken" ) ) {
-////		Hide();
+////		this.Hide();
 ////		PostEventMS( &EV_RestoreDamagable, nextTriggerTime - gameLocal.time );
 ////		this.BecomeActive( TH_THINK );
 ////	}
@@ -684,21 +684,20 @@ class idExplodable extends idEntity {
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idExplodable>[];
 //
-Spawn():void{throw "placeholder";}
 //
 //private:
 	Event_Explode(activator: idEntity): void { throw "placeholder"; }
 
-	
-/////*
-////================
-////idExplodable::Spawn
-////================
-////*/
-////void idExplodable::Spawn( ) {
-////	Hide();
-////}
-////
+
+/*
+================
+idExplodable::Spawn
+================
+*/
+	Spawn ( ): void {
+		this.Hide ( );
+	}
+
 /////*
 ////================
 ////idExplodable::Event_Explode
@@ -746,7 +745,6 @@ class idSpring extends idEntity {
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idSpring>[];
 //
-Spawn():void{throw "placeholder";}
 //
 //	virtual void		Think( );
 //
@@ -759,9 +757,9 @@ Spawn():void{throw "placeholder";}
 //	idVec3				p2;
 //	idForce_Spring		spring;
 //
-	Event_LinkSpring(): void { throw "placeholder"; }
+	Event_LinkSpring ( ): void { throw "placeholder"; }
 
-	
+
 /////*
 ////================
 ////idSpring::Think
@@ -812,7 +810,7 @@ Spawn():void{throw "placeholder";}
 ////	if ( name1.Length() ) {
 ////		ent1 = gameLocal.FindEntity( name1 );
 ////		if ( !ent1 ) {
-////			gameLocal.Error( "idSpring '%s' at (%s): cannot find first entity '%s'", name.c_str(), this.GetPhysics().GetOrigin().ToString(0), name1.c_str() );
+////			gameLocal.Error( "idSpring '%s' at (%s): cannot find first entity '%s'", this.name.c_str(), this.GetPhysics().GetOrigin().ToString(0), name1.c_str() );
 ////		}
 ////	}
 ////	else {
@@ -822,7 +820,7 @@ Spawn():void{throw "placeholder";}
 ////	if ( name2.Length() ) {
 ////		ent2 = gameLocal.FindEntity( name2 );
 ////		if ( !ent2 ) {
-////			gameLocal.Error( "idSpring '%s' at (%s): cannot find second entity '%s'", name.c_str(), this.GetPhysics().GetOrigin().ToString(0), name2.c_str() );
+////			gameLocal.Error( "idSpring '%s' at (%s): cannot find second entity '%s'", this.name.c_str(), this.GetPhysics().GetOrigin().ToString(0), name2.c_str() );
 ////		}
 ////	}
 ////	else {
@@ -832,30 +830,31 @@ Spawn():void{throw "placeholder";}
 ////	this.BecomeActive( TH_THINK );
 ////}
 ////
-/////*
-////================
-////idSpring::Spawn
-////================
-////*/
-////void idSpring::Spawn( ) {
-////	float Kstretch, damping, restLength;
-////
-////	this.spawnArgs.GetInt( "id1", "0", id1 );
-////	this.spawnArgs.GetInt( "id2", "0", id2 );
-////	this.spawnArgs.GetVector( "point1", "0 0 0", p1 );
-////	this.spawnArgs.GetVector( "point2", "0 0 0", p2 );
-////	this.spawnArgs.GetFloat( "constant", "100.0f", Kstretch );
-////	this.spawnArgs.GetFloat( "damping", "10.0f", damping );
-////	this.spawnArgs.GetFloat( "restlength", "0.0f", restLength );
-////
-////	spring.InitSpring( Kstretch, 0.0f, damping, restLength );
-////
-////	ent1 = ent2 = NULL;
-////
-////	PostEventMS( &EV_PostSpawn, 0 );
-////}
-////
-};
+/*
+================
+idSpring::Spawn
+================
+*/
+	Spawn ( ): void {
+		todoThrow ( );
+		//float Kstretch, damping, restLength;
+
+		//this.spawnArgs.GetInt( "id1", "0", id1 );
+		//this.spawnArgs.GetInt( "id2", "0", id2 );
+		//this.spawnArgs.GetVector( "point1", "0 0 0", p1 );
+		//this.spawnArgs.GetVector( "point2", "0 0 0", p2 );
+		//this.spawnArgs.GetFloat( "constant", "100.0f", Kstretch );
+		//this.spawnArgs.GetFloat( "damping", "10.0f", damping );
+		//this.spawnArgs.GetFloat( "restlength", "0.0f", restLength );
+
+		//spring.InitSpring( Kstretch, 0.0f, damping, restLength );
+
+		//ent1 = ent2 = NULL;
+
+		//PostEventMS( &EV_PostSpawn, 0 );
+	}
+
+}
 
 
 /*
@@ -877,7 +876,6 @@ class idForceField extends idEntity {
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-Spawn():void{throw "placeholder";}
 //
 //	virtual void		Think( );
 //
@@ -940,7 +938,8 @@ Spawn():void{throw "placeholder";}
 ////idForceField::Spawn
 ////================
 ////*/
-////void idForceField::Spawn( ) {
+	Spawn(): void {
+		todoThrow ( );
 ////	idVec3 uniform;
 ////	float explosion, implosion, randomTorque;
 ////
@@ -976,7 +975,7 @@ Spawn():void{throw "placeholder";}
 ////	if ( this.spawnArgs.GetBool( "start_on" ) ) {
 ////		this.BecomeActive( TH_THINK );
 ////	}
-////}
+}
 ////
 /////*
 ////===============
@@ -997,7 +996,7 @@ Spawn():void{throw "placeholder";}
 ////
 ////	Toggle();
 ////	if ( this.spawnArgs.GetFloat( "wait", "0.01", wait ) ) {
-////		PostEventSec( &EV_Toggle, wait );
+////		this.PostEventSec( &EV_Toggle, wait );
 ////	}
 ////}
 ////
@@ -1014,7 +1013,7 @@ Spawn():void{throw "placeholder";}
 ////	}
 ////}
 ////
-};
+	};
 
 
 /*
@@ -1045,13 +1044,13 @@ class idAnimated extends idAFEntity_Gibbable {
 //	virtual bool			GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis );
 //
 //private:
-//	int						num_anims;
-//	int						current_anim_index;
-//	int						anim;
-//	int						blendFrames;
-//	jointHandle_t			soundJoint;
-//	idEntityPtr<idEntity>	activator;
-//	bool					activated;
+	num_anims :number/*int*/;
+	current_anim_index :number/*int*/
+	anim :number/*int*/
+	blendFrames :number/*int*/
+	soundJoint:jointHandle_t;
+	activator = new idEntityPtr<idEntity>();
+	activated:boolean;
 //
 //	void					PlayNextAnim( );
 //
@@ -1065,31 +1064,31 @@ class idAnimated extends idAFEntity_Gibbable {
 
 
 	
-/////*
-////===============
-////idAnimated::idAnimated
-////================
-////*/
-////idAnimated::idAnimated() {
-////	anim = 0;
-////	blendFrames = 0;
-////	soundJoint = INVALID_JOINT;
-////	activated = false;
-////	combatModel = NULL;
-////	activator = NULL;
-////	current_anim_index = 0;
-////	num_anims = 0;
-////
-////}
-////
+/*
+===============
+idAnimated::idAnimated
+================
+*/
+	constructor() {
+		super ( );
+		this.anim = 0;
+		this.blendFrames = 0;
+		this.soundJoint = jointHandle_t.INVALID_JOINT;
+		this.activated = false;
+		this.combatModel = null;
+		this.activator = null;
+		this.current_anim_index = 0;
+		this.num_anims = 0;
+	}
+
 /////*
 ////===============
 ////idAnimated::idAnimated
 ////================
 ////*/
 ////idAnimated::~idAnimated() {
-////	delete combatModel;
-////	combatModel = NULL;
+////	delete this.combatModel;
+////	this.combatModel = NULL;
 ////}
 ////
 /////*
@@ -1098,11 +1097,11 @@ class idAnimated extends idAFEntity_Gibbable {
 ////================
 ////*/
 ////void idAnimated::Save( idSaveGame *savefile ) const {
-////	savefile.WriteInt( current_anim_index );
-////	savefile.WriteInt( num_anims );
-////	savefile.WriteInt( anim );
-////	savefile.WriteInt( blendFrames );
-////	savefile.WriteJoint( soundJoint );
+////	savefile.WriteInt( this.current_anim_index );
+////	savefile.WriteInt( this.num_anims );
+////	savefile.WriteInt( this.anim );
+////	savefile.WriteInt( this.blendFrames );
+////	savefile.WriteJoint( this.soundJoint );
 ////	activator.Save( savefile );
 ////	savefile.WriteBool( activated );
 ////}
@@ -1113,111 +1112,113 @@ class idAnimated extends idAFEntity_Gibbable {
 ////================
 ////*/
 ////void idAnimated::Restore( idRestoreGame *savefile ) {
-////	savefile.ReadInt( current_anim_index );
-////	savefile.ReadInt( num_anims );
-////	savefile.ReadInt( anim );
-////	savefile.ReadInt( blendFrames );
-////	savefile.ReadJoint( soundJoint );
+////	savefile.ReadInt( this.current_anim_index );
+////	savefile.ReadInt( this.num_anims );
+////	savefile.ReadInt( this.anim );
+////	savefile.ReadInt( this.blendFrames );
+////	savefile.ReadJoint( this.soundJoint );
 ////	activator.Restore( savefile );
 ////	savefile.ReadBool( activated );
 ////}
-////
-/////*
-////===============
-////idAnimated::Spawn
-////================
-////*/
-////void idAnimated::Spawn( ) {
-////	idStr		animname;
-////	int			anim2;
-////	float		wait;
-////	const char	*joint;
-////
-////	joint = this.spawnArgs.GetString( "sound_bone", "origin" ); 
-////	soundJoint = animator.GetJointHandle( joint );
-////	if ( soundJoint == INVALID_JOINT ) {
-////		gameLocal.Warning( "idAnimated '%s' at (%s): cannot find joint '%s' for sound playback", name.c_str(), this.GetPhysics().GetOrigin().ToString(0), joint );
-////	}
-////
-////	LoadAF();
-////
-////	// allow bullets to collide with a combat model
-////	if ( this.spawnArgs.GetBool( "combatModel", "0" ) ) {
-////		combatModel = new idClipModel( modelDefHandle );
-////	}
-////
-////	// allow the entity to take damage
-////	if ( this.spawnArgs.GetBool( "takeDamage", "0" ) ) {
-////		fl.takedamage = true;
-////	}
-////
-////	blendFrames = 0;
-////
-////	current_anim_index = 0;
-////	this.spawnArgs.GetInt( "num_anims", "0", num_anims );
-////
-////	blendFrames = this.spawnArgs.GetInt( "blend_in" );
-////
-////	animname = this.spawnArgs.GetString( num_anims ? "anim1" : "anim" );
-////	if ( !animname.Length() ) {
-////		anim = 0;
-////	} else {
-////		anim = animator.GetAnim( animname );
-////		if ( !anim ) {
-////			gameLocal.Error( "idAnimated '%s' at (%s): cannot find anim '%s'", name.c_str(), this.GetPhysics().GetOrigin().ToString(0), animname.c_str() );
-////		}
-////	}
-////
-////	if ( this.spawnArgs.GetBool( "hide" ) ) {
-////		Hide();
-////
-////		if ( !num_anims ) {
-////			blendFrames = 0;
-////		}
-////	} else if ( this.spawnArgs.GetString( "start_anim", "", animname ) ) {
-////		anim2 = animator.GetAnim( animname );
-////		if ( !anim2 ) {
-////			gameLocal.Error( "idAnimated '%s' at (%s): cannot find anim '%s'", name.c_str(), this.GetPhysics().GetOrigin().ToString(0), animname.c_str() );
-////		}
-////		animator.CycleAnim( ANIMCHANNEL_ALL, anim2, gameLocal.time, 0 );
-////	} else if ( anim ) {
-////		// init joints to the first frame of the animation
-////		animator.SetFrame( ANIMCHANNEL_ALL, anim, 1, gameLocal.time, 0 );		
-////
-////		if ( !num_anims ) {
-////			blendFrames = 0;
-////		}
-////	}
-////
-////	this.spawnArgs.GetFloat( "wait", "-1", wait );
-////
-////	if ( wait >= 0 ) {
-////		PostEventSec( &EV_Activate, wait, this );
-////	}
-////}
-////
-/////*
-////===============
-////idAnimated::LoadAF
-////===============
-////*/
-////bool idAnimated::LoadAF( ) {
-////	idStr fileName;
-////
-////	if ( !this.spawnArgs.GetString( "ragdoll", "*unknown*", fileName ) ) {
-////		return false;
-////	}
-////	af.SetAnimator( GetAnimator() );
-////	return af.Load( this, fileName );
-////}
-////
+
+/*
+===============
+idAnimated::Spawn
+================
+*/
+	Spawn ( ): void {
+		var animname = new idStr;
+		var anim2: number /*int*/;
+		var wait = new R<number> ( ) /*float*/;
+		var joint: string;
+
+		joint = this.spawnArgs.GetString( "sound_bone", "origin" );
+		this.soundJoint = this.animator.GetJointHandle( joint );
+		if ( this.soundJoint == jointHandle_t.INVALID_JOINT ) {
+			gameLocal.Warning( "idAnimated '%s' at (%s): cannot find joint '%s' for sound playback", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ), joint );
+		}
+
+		this.LoadAF ( );
+
+		// allow bullets to collide with a combat model
+		if ( this.spawnArgs.GetBool( "combatModel", "0" ) ) {
+			this.combatModel = new idClipModel( this.modelDefHandle );
+		}
+
+		// allow the entity to take damage
+		if ( this.spawnArgs.GetBool( "takeDamage", "0" ) ) {
+			this.fl.takedamage = true;
+		}
+
+		this.blendFrames = 0;
+
+		this.current_anim_index = 0;
+		var $num_anims = new R( this.num_anims );
+		this.spawnArgs.GetInt_R( "num_anims", "0", $num_anims );
+		this.num_anims = $num_anims.$;
+
+		this.blendFrames = this.spawnArgs.GetInt( "blend_in" );
+
+		animname.equals( this.spawnArgs.GetString( this.num_anims ? "anim1" : "anim" ) );
+		if ( !animname.Length ( ) ) {
+			this.anim = 0;
+		} else {
+			this.anim = this.animator.GetAnim_name( animname.data );
+			if ( !this.anim ) {
+				gameLocal.Error( "idAnimated '%s' at (%s): cannot find anim '%s'", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ), animname.c_str ( ) );
+			}
+		}
+
+		if ( this.spawnArgs.GetBool( "hide" ) ) {
+			this.Hide ( );
+
+			if ( !this.num_anims ) {
+				this.blendFrames = 0;
+			}
+		} else if ( this.spawnArgs.GetString_RidStr( "start_anim", "", animname ) ) {
+			anim2 = this.animator.GetAnim_name( animname.data );
+			if ( !anim2 ) {
+				gameLocal.Error( "idAnimated '%s' at (%s): cannot find anim '%s'", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ), animname.c_str ( ) );
+			}
+			this.animator.CycleAnim( ANIMCHANNEL_ALL, anim2, gameLocal.time, 0 );
+		} else if ( this.anim ) {
+			// init joints to the first frame of the animation
+			this.animator.SetFrame( ANIMCHANNEL_ALL, this.anim, 1, gameLocal.time, 0 );
+
+			if ( !this.num_anims ) {
+				this.blendFrames = 0;
+			}
+		}
+
+		this.spawnArgs.GetFloat_R( "wait", "-1", wait );
+
+		if ( wait.$ >= 0 ) {
+			this.PostEventSec( EV_Activate, wait.$, this );
+		}
+	}
+
+/*
+===============
+idAnimated::LoadAF
+===============
+*/
+	LoadAF ( ): boolean {
+		var fileName = new idStr;
+
+		if ( !this.spawnArgs.GetString_RidStr( "ragdoll", "*unknown*", fileName ) ) {
+			return false;
+		}
+		this.af.SetAnimator( this.GetAnimator ( ) );
+		return this.af.Load( this, fileName.data );
+	}
+
 /////*
 ////===============
 ////idAnimated::GetPhysicsToSoundTransform
 ////===============
 ////*/
 ////bool idAnimated::GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis ) {
-////	animator.GetJointTransform( soundJoint, gameLocal.time, origin, axis );
+////	this.animator.GetJointTransform( this.soundJoint, gameLocal.time, origin, axis );
 ////	axis = renderEntity.axis;
 ////	return true;
 ////}
@@ -1229,12 +1230,12 @@ class idAnimated extends idAFEntity_Gibbable {
 ////*/
 ////bool idAnimated::StartRagdoll( ) {
 ////	// if no AF loaded
-////	if ( !af.IsLoaded() ) {
+////	if ( !this.af.IsLoaded() ) {
 ////		return false;
 ////	}
 ////
 ////	// if the AF is already active
-////	if ( af.IsActive() ) {
+////	if ( this.af.IsActive() ) {
 ////		return true;
 ////	}
 ////
@@ -1242,7 +1243,7 @@ class idAnimated extends idAFEntity_Gibbable {
 ////	GetPhysics().DisableClip();
 ////
 ////	// start using the AF
-////	af.StartFromCurrentPose( this.spawnArgs.GetInt( "velocityTime", "0" ) );
+////	this.af.StartFromCurrentPose( this.spawnArgs.GetInt( "velocityTime", "0" ) );
 ////	
 ////	return true;
 ////}
@@ -1257,29 +1258,29 @@ class idAnimated extends idAFEntity_Gibbable {
 ////	int len;
 ////	int cycle;
 ////
-////	if ( current_anim_index >= num_anims ) {
-////		Hide();
+////	if ( this.current_anim_index >= this.num_anims ) {
+////		this.Hide();
 ////		if ( this.spawnArgs.GetBool( "remove" ) ) {
 ////			PostEventMS( &EV_Remove, 0 );
 ////		} else {
-////			current_anim_index = 0;
+////			this.current_anim_index = 0;
 ////		}
 ////		return;
 ////	}
 ////
 ////	Show();
-////	current_anim_index++;
+////	this.current_anim_index++;
 ////
-////	this.spawnArgs.GetString( va( "anim%d", current_anim_index ), NULL, &animname );
+////	this.spawnArgs.GetString( va( "anim%d", this.current_anim_index ), NULL, &animname );
 ////	if ( !animname ) {
-////		anim = 0;
-////		animator.Clear( ANIMCHANNEL_ALL, gameLocal.time, FRAME2MS( blendFrames ) );
+////		this.anim = 0;
+////		this.animator.Clear( ANIMCHANNEL_ALL, gameLocal.time, FRAME2MS( this.blendFrames ) );
 ////		return;
 ////	}
 ////
-////	anim = animator.GetAnim( animname );
-////	if ( !anim ) {
-////		gameLocal.Warning( "missing anim '%s' on %s", animname, name.c_str() );
+////	this.anim = this.animator.GetAnim( animname );
+////	if ( !this.anim ) {
+////		gameLocal.Warning( "missing anim '%s' on %s", animname, this.name.c_str() );
 ////		return;
 ////	}
 ////
@@ -1288,22 +1289,22 @@ class idAnimated extends idAFEntity_Gibbable {
 ////	}
 ////		
 ////	this.spawnArgs.GetInt( "cycle", "1", cycle );
-////	if ( ( current_anim_index == num_anims ) && this.spawnArgs.GetBool( "loop_last_anim" ) ) {
+////	if ( ( this.current_anim_index == this.num_anims ) && this.spawnArgs.GetBool( "loop_last_anim" ) ) {
 ////		cycle = -1;
 ////	}
 ////
-////	animator.CycleAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, FRAME2MS( blendFrames ) );
-////	animator.CurrentAnim( ANIMCHANNEL_ALL ).SetCycleCount( cycle );
+////	this.animator.CycleAnim( ANIMCHANNEL_ALL, this.anim, gameLocal.time, FRAME2MS( this.blendFrames ) );
+////	this.animator.CurrentAnim( ANIMCHANNEL_ALL ).SetCycleCount( cycle );
 ////
-////	len = animator.CurrentAnim( ANIMCHANNEL_ALL ).PlayLength();
+////	len = this.animator.CurrentAnim( ANIMCHANNEL_ALL ).PlayLength();
 ////	if ( len >= 0 ) {
-////		PostEventMS( &EV_AnimDone, len, current_anim_index );
+////		PostEventMS( &EV_AnimDone, len, this.current_anim_index );
 ////	}
 ////
 ////	// offset the start time of the shader to sync it to the game time
 ////	renderEntity.shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( gameLocal.time );
 ////
-////	animator.ForceUpdate();
+////	this.animator.ForceUpdate();
 ////	UpdateAnimation();
 ////	UpdateVisuals();
 ////	Present();
@@ -1325,12 +1326,12 @@ class idAnimated extends idAFEntity_Gibbable {
 ////*/
 ////void idAnimated::Event_AnimDone( int animindex ) {
 ////	if ( g_debugCinematic.GetBool() ) {
-////		const idAnim *animPtr = animator.GetAnim( anim );
+////		const idAnim *animPtr = this.animator.GetAnim( this.anim );
 ////		gameLocal.Printf( "%d: '%s' end anim '%s'\n", gameLocal.framenum, GetName(), animPtr ? animPtr.Name() : "" );
 ////	}
 ////
-////	if ( ( animindex >= num_anims ) && this.spawnArgs.GetBool( "remove" ) ) {
-////		Hide();
+////	if ( ( animindex >= this.num_anims ) && this.spawnArgs.GetBool( "remove" ) ) {
+////		this.Hide();
 ////		PostEventMS( &EV_Remove, 0 );
 ////	} else if ( this.spawnArgs.GetBool( "auto_advance" ) ) {
 ////		PlayNextAnim();
@@ -1347,7 +1348,7 @@ class idAnimated extends idAFEntity_Gibbable {
 ////================
 ////*/
 ////void idAnimated::Event_Activate( idEntity *_activator ) {
-////	if ( num_anims ) {
+////	if ( this.num_anims ) {
 ////		PlayNextAnim();
 ////		activator = _activator;
 ////		return;
@@ -1374,21 +1375,21 @@ class idAnimated extends idAFEntity_Gibbable {
 ////
 ////	Show();
 ////
-////	if ( num_anims ) {
+////	if ( this.num_anims ) {
 ////		PlayNextAnim();
 ////		return;
 ////	}
 ////
-////	if ( anim ) {
+////	if ( this.anim ) {
 ////		if ( g_debugCinematic.GetBool() ) {
-////			const idAnim *animPtr = animator.GetAnim( anim );
+////			const idAnim *animPtr = this.animator.GetAnim( this.anim );
 ////			gameLocal.Printf( "%d: '%s' start anim '%s'\n", gameLocal.framenum, GetName(), animPtr ? animPtr.Name() : "" );
 ////		}
 ////		this.spawnArgs.GetInt( "cycle", "1", cycle );
-////		animator.CycleAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, FRAME2MS( blendFrames ) );
-////		animator.CurrentAnim( ANIMCHANNEL_ALL ).SetCycleCount( cycle );
+////		this.animator.CycleAnim( ANIMCHANNEL_ALL, this.anim, gameLocal.time, FRAME2MS( this.blendFrames ) );
+////		this.animator.CurrentAnim( ANIMCHANNEL_ALL ).SetCycleCount( cycle );
 ////
-////		len = animator.CurrentAnim( ANIMCHANNEL_ALL ).PlayLength();
+////		len = this.animator.CurrentAnim( ANIMCHANNEL_ALL ).PlayLength();
 ////		if ( len >= 0 ) {
 ////			PostEventMS( &EV_AnimDone, len, 1 );
 ////		}
@@ -1397,7 +1398,7 @@ class idAnimated extends idAFEntity_Gibbable {
 ////	// offset the start time of the shader to sync it to the game time
 ////	renderEntity.shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( gameLocal.time );
 ////
-////	animator.ForceUpdate();
+////	this.animator.ForceUpdate();
 ////	UpdateAnimation();
 ////	UpdateVisuals();
 ////	Present();
@@ -1430,16 +1431,16 @@ class idAnimated extends idAFEntity_Gibbable {
 ////	projectilename = this.spawnArgs.GetString( "projectilename" );
 ////	projectileDef = gameLocal.FindEntityDefDict( projectilename, false );
 ////	if ( !projectileDef ) {
-////		gameLocal.Warning( "idAnimated '%s' at (%s): 'launchMissiles' called with unknown projectile '%s'", name.c_str(), this.GetPhysics().GetOrigin().ToString(0), projectilename );
+////		gameLocal.Warning( "idAnimated '%s' at (%s): 'launchMissiles' called with unknown projectile '%s'", this.name.c_str(), this.GetPhysics().GetOrigin().ToString(0), projectilename );
 ////		return;
 ////	}
 ////
 ////	StartSound( "snd_missile", SND_CHANNEL_WEAPON, 0, false, NULL );
 ////
-////	animator.GetJointTransform( ( jointHandle_t )launchjoint, gameLocal.time, launchPos, axis );
+////	this.animator.GetJointTransform( ( jointHandle_t )launchjoint, gameLocal.time, launchPos, axis );
 ////	launchPos = renderEntity.origin + launchPos * renderEntity.axis;
 ////	
-////	animator.GetJointTransform( ( jointHandle_t )targetjoint, gameLocal.time, targetPos, axis );
+////	this.animator.GetJointTransform( ( jointHandle_t )targetjoint, gameLocal.time, targetPos, axis );
 ////	targetPos = renderEntity.origin + targetPos * renderEntity.axis;
 ////
 ////	dir = targetPos - launchPos;
@@ -1447,7 +1448,7 @@ class idAnimated extends idAFEntity_Gibbable {
 ////
 ////	gameLocal.SpawnEntityDef( *projectileDef, &ent, false );
 ////	if ( !ent || !ent.IsType( idProjectile::Type ) ) {
-////		gameLocal.Error( "idAnimated '%s' at (%s): in 'launchMissiles' call '%s' is not an idProjectile", name.c_str(), this.GetPhysics().GetOrigin().ToString(0), projectilename );
+////		gameLocal.Error( "idAnimated '%s' at (%s): in 'launchMissiles' call '%s' is not an idProjectile", this.name.c_str(), this.GetPhysics().GetOrigin().ToString(0), projectilename );
 ////	}
 ////	projectile = ( idProjectile * )ent;
 ////	projectile.Create( this, launchPos, dir );
@@ -1470,19 +1471,19 @@ class idAnimated extends idAFEntity_Gibbable {
 ////
 ////	projectileDef = gameLocal.FindEntityDefDict( projectilename, false );
 ////	if ( !projectileDef ) {
-////		gameLocal.Warning( "idAnimated '%s' at (%s): unknown projectile '%s'", name.c_str(), this.GetPhysics().GetOrigin().ToString(0), projectilename );
+////		gameLocal.Warning( "idAnimated '%s' at (%s): unknown projectile '%s'", this.name.c_str(), this.GetPhysics().GetOrigin().ToString(0), projectilename );
 ////		return;
 ////	}
 ////
-////	launch = animator.GetJointHandle( launchjoint );
-////	if ( launch == INVALID_JOINT ) {
-////		gameLocal.Warning( "idAnimated '%s' at (%s): unknown launch joint '%s'", name.c_str(), this.GetPhysics().GetOrigin().ToString(0), launchjoint );
+////	launch = this.animator.GetJointHandle( launchjoint );
+////	if ( launch == jointHandle_t.INVALID_JOINT ) {
+////		gameLocal.Warning( "idAnimated '%s' at (%s): unknown launch joint '%s'", this.name.c_str(), this.GetPhysics().GetOrigin().ToString(0), launchjoint );
 ////		gameLocal.Error( "Unknown joint '%s'", launchjoint );
 ////	}
 ////
-////	target = animator.GetJointHandle( targetjoint );
-////	if ( target == INVALID_JOINT ) {
-////		gameLocal.Warning( "idAnimated '%s' at (%s): unknown target joint '%s'", name.c_str(), this.GetPhysics().GetOrigin().ToString(0), targetjoint );
+////	target = this.animator.GetJointHandle( targetjoint );
+////	if ( target == jointHandle_t.INVALID_JOINT ) {
+////		gameLocal.Warning( "idAnimated '%s' at (%s): unknown target joint '%s'", this.name.c_str(), this.GetPhysics().GetOrigin().ToString(0), targetjoint );
 ////	}
 ////
 ////	this.spawnArgs.Set( "projectilename", projectilename );
@@ -1729,7 +1730,7 @@ Event_Activate( activator:idEntity ):void  {
 	//	if ( IsHidden() ) {
 	//		Show();
 	//	} else {
-	//		Hide();
+	//		this.Hide();
 	//	}
 	//}
 
@@ -1770,7 +1771,7 @@ Event_Activate( activator:idEntity ):void  {
 ////	hidden = msg.ReadBits( 1 ) == 1;
 ////	if ( hidden != IsHidden() ) {
 ////		if ( hidden ) {
-////			Hide();
+////			this.Hide();
 ////		} else {
 ////			Show();
 ////		}
@@ -1972,7 +1973,8 @@ class idFuncSmoke extends idEntity {
 ////idFuncSmoke::Spawn
 ////===============
 ////*/
-////void idFuncSmoke::Spawn( ) {
+	Spawn(): void {
+		todoThrow()
 ////	const char *smokeName = this.spawnArgs.GetString( "smoke" );
 ////	if ( *smokeName != '\0' ) {
 ////		smoke = static_cast<const idDeclParticle *>( declManager.FindType( DECL_PARTICLE, smokeName ) );
@@ -1988,7 +1990,7 @@ class idFuncSmoke extends idEntity {
 ////		restart = true;
 ////	}
 ////	GetPhysics().SetContents( 0 );
-////}
+}
 ////
 /////*
 ////================
@@ -2102,7 +2104,7 @@ idFuncSplat::Spawn
 ////*/
 ////void idFuncSplat::Event_Activate( activator:idEntity ) {
 ////	idFuncEmitter::Event_Activate( activator );
-////	PostEventSec( &EV_Splat, this.spawnArgs.GetFloat( "splatDelay", "0.25" ) );
+////	this.PostEventSec( &EV_Splat, this.spawnArgs.GetFloat( "splatDelay", "0.25" ) );
 ////	StartSound( "snd_spurt", SND_CHANNEL_ANY, 0, false, NULL );
 ////}
 };
@@ -2124,7 +2126,6 @@ class idTextEntity extends idEntity {
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idTextEntity>[];
 //
-Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -2136,20 +2137,21 @@ Spawn():void{throw "placeholder";}
 //	bool				playerOriented;
 
 	
-/////*
-////================
-////idTextEntity::Spawn
-////================
-////*/
-////void idTextEntity::Spawn( ) {
-////	// these are cached as the are used each frame
-////	text = this.spawnArgs.GetString( "text" );
-////	playerOriented = this.spawnArgs.GetBool( "playerOriented" );
-////	bool force = this.spawnArgs.GetBool( "force" );
-////	if ( developer.GetBool() || force ) {
-////		BecomeActive(TH_THINK);
-////	}
-////}
+/*
+================
+idTextEntity::Spawn
+================
+*/
+	Spawn(): void {
+		todoThrow ( );
+		//// these are cached as the are used each frame
+		//text = this.spawnArgs.GetString( "text" );
+		//playerOriented = this.spawnArgs.GetBool( "playerOriented" );
+		//bool force = this.spawnArgs.GetBool( "force" );
+		//if ( developer.GetBool() || force ) {
+		//	BecomeActive(TH_THINK);
+		//}
+	}
 ////
 /////*
 ////================
@@ -2215,21 +2217,22 @@ class idLocationEntity extends idEntity {
 //private:
 
 	
-/////*
-////======================
-////idLocationEntity::Spawn
-////======================
-////*/
-////void idLocationEntity::Spawn() {
+/*
+======================
+idLocationEntity::Spawn
+======================
+*/
+	Spawn ( ): void {
+		todoThrow ( );
 ////	idStr realName;
 ////
 ////	// this just holds dict information
 ////
 ////	// if "location" not already set, use the entity name.
 ////	if ( !this.spawnArgs.GetString( "location", "", realName ) ) {
-////		this.spawnArgs.Set( "location", name );
+////		this.spawnArgs.Set( "location", this.name );
 ////	}
-////}
+	}
 ////
 /////*
 ////======================
@@ -2478,7 +2481,7 @@ Spawn():void{throw "placeholder";}
 ////	}
 ////
 ////	SetModel( "_BEAM" );
-////	Hide();
+////	this.Hide();
 ////	PostEventMS( &EV_PostSpawn, 0 );
 ////}
 ////
@@ -2492,7 +2495,7 @@ Spawn():void{throw "placeholder";}
 ////
 ////	if ( !IsHidden() && !target.GetEntity() ) {
 ////		// hide if our target is removed
-////		Hide();
+////		this.Hide();
 ////	}
 ////
 ////	RunPhysics();
@@ -2569,7 +2572,7 @@ Spawn():void{throw "placeholder";}
 ////	}
 ////
 ////	if ( !targetBeam ) {
-////		gameLocal.Error( "Could not find valid beam target for '%s'", name.c_str() );
+////		gameLocal.Error( "Could not find valid beam target for '%s'", this.name.c_str() );
 ////	}
 ////
 ////	target = targetBeam;
@@ -2588,7 +2591,7 @@ Spawn():void{throw "placeholder";}
 ////	if ( IsHidden() ) {
 ////		Show();
 ////	} else {
-////		Hide();		
+////		this.Hide();		
 ////	}
 ////}
 ////
@@ -2684,7 +2687,7 @@ class idLiquid extends idEntity {
 /////*
 ////	model = dynamic_cast<idRenderModelLiquid *>( renderEntity.hModel );
 ////	if ( !model ) {
-////		gameLocal.Error( "Entity '%s' must have liquid model", name.c_str() );
+////		gameLocal.Error( "Entity '%s' must have liquid model", this.name.c_str() );
 ////	}
 ////	model.Reset();
 ////	GetPhysics().SetContents( CONTENTS_TRIGGER );
@@ -2925,7 +2928,7 @@ Spawn():void{throw "placeholder";}
 ////	shakeTime = this.spawnArgs.GetFloat( "shakeTime", "0" );
 ////
 ////	if ( !triggered ){
-////		PostEventSec( &EV_Activate, this.spawnArgs.GetFloat( "wait" ), this );
+////		this.PostEventSec( &EV_Activate, this.spawnArgs.GetFloat( "wait" ), this );
 ////	}
 ////	BecomeInactive( TH_THINK );
 ////}
@@ -2958,7 +2961,7 @@ Spawn():void{throw "placeholder";}
 ////		if (disabled) {
 ////			return;
 ////		} else {
-////			PostEventSec( &EV_Activate, wait + random * gameLocal.random.CRandomFloat(), this );
+////			this.PostEventSec( &EV_Activate, wait + random * gameLocal.random.CRandomFloat(), this );
 ////		}
 ////	}
 ////
@@ -2978,7 +2981,7 @@ Spawn():void{throw "placeholder";}
 ////
 ////	if ( wait > 0.0f ) {
 ////		if ( !triggered ) {
-////			PostEventSec( &EV_Activate, wait + random * gameLocal.random.CRandomFloat(), this );
+////			this.PostEventSec( &EV_Activate, wait + random * gameLocal.random.CRandomFloat(), this );
 ////		} else {
 ////			nextTriggerTime = gameLocal.time + SEC2MS( wait + random * gameLocal.random.CRandomFloat() );
 ////		}
@@ -3350,7 +3353,7 @@ Spawn():void{throw "placeholder";}
 ////	}
 ////	// we still put the hud up because this is used with no sound on 
 ////	// certain frame commands when the chatter is triggered
-////	PostEventSec( &EV_ResetRadioHud, time, player );
+////	this.PostEventSec( &EV_ResetRadioHud, time, player );
 ////
 ////}
 ////
@@ -3426,7 +3429,7 @@ Spawn():void{throw "placeholder";}
 ////	speed			= 0.0f;
 ////	min_wait		= 0;
 ////	max_wait		= 0;
-////	fl.neverDormant	= false;
+////	this.fl.neverDormant	= false;
 ////}
 ////
 /////*
@@ -3512,7 +3515,7 @@ Spawn():void{throw "placeholder";}
 ////	max_wait = SEC2MS( this.spawnArgs.GetFloat( "max_wait", "3" ) );
 ////
 ////	shake_ang = this.spawnArgs.GetVector( "shake_ang", "65 65 65" );
-////	Hide();
+////	this.Hide();
 ////	GetPhysics().SetContents( 0 );
 ////}
 ////

@@ -369,11 +369,11 @@
 ////	eyeMax.Zero();
 ////	muzzleFlashEnd		= 0;
 ////	flashTime			= 0;
-////	flashJointWorld		= INVALID_JOINT;
+////	flashJointWorld		= jointHandle_t.INVALID_JOINT;
 ////
-////	focusJoint			= INVALID_JOINT;
-////	orientationJoint	= INVALID_JOINT;
-////	flyTiltJoint		= INVALID_JOINT;
+////	focusJoint			= jointHandle_t.INVALID_JOINT;
+////	orientationJoint	= jointHandle_t.INVALID_JOINT;
+////	flyTiltJoint		= jointHandle_t.INVALID_JOINT;
 ////
 ////	eyeVerticalOffset	= 0.0f;
 ////	eyeHorizontalOffset = 0.0f;
@@ -777,7 +777,7 @@
 ////		jointName = kv->GetKey();
 ////		jointName.StripLeadingOnce( "look_joint " );
 ////		joint = animator.GetJointHandle( jointName );
-////		if ( joint == INVALID_JOINT ) {
+////		if ( joint == jointHandle_t.INVALID_JOINT ) {
 ////			gameLocal.Warning( "Unknown look_joint '%s' on entity %s", jointName.c_str(), name.c_str() );
 ////		} else {
 ////			jointScale = spawnArgs.GetAngles( kv->GetKey(), "0 0 0" );
@@ -812,7 +812,7 @@
 ////		jointname = spawnArgs.GetString( "bone_focus" );
 ////		if ( *jointname ) {
 ////			focusJoint = headAnimator->GetJointHandle( jointname );
-////			if ( focusJoint == INVALID_JOINT ) {
+////			if ( focusJoint == jointHandle_t.INVALID_JOINT ) {
 ////				gameLocal.Warning( "Joint '%s' not found on head on '%s'", jointname, name.c_str() );
 ////			}
 ////		}
@@ -820,7 +820,7 @@
 ////		jointname = spawnArgs.GetString( "bone_focus" );
 ////		if ( *jointname ) {
 ////			focusJoint = animator.GetJointHandle( jointname );
-////			if ( focusJoint == INVALID_JOINT ) {
+////			if ( focusJoint == jointHandle_t.INVALID_JOINT ) {
 ////				gameLocal.Warning( "Joint '%s' not found on '%s'", jointname, name.c_str() );
 ////			}
 ////		}
@@ -829,7 +829,7 @@
 ////	jointname = spawnArgs.GetString( "bone_orientation" );
 ////	if ( *jointname ) {
 ////		orientationJoint = animator.GetJointHandle( jointname );
-////		if ( orientationJoint == INVALID_JOINT ) {
+////		if ( orientationJoint == jointHandle_t.INVALID_JOINT ) {
 ////			gameLocal.Warning( "Joint '%s' not found on '%s'", jointname, name.c_str() );
 ////		}
 ////	}
@@ -837,7 +837,7 @@
 ////	jointname = spawnArgs.GetString( "bone_flytilt" );
 ////	if ( *jointname ) {
 ////		flyTiltJoint = animator.GetJointHandle( jointname );
-////		if ( flyTiltJoint == INVALID_JOINT ) {
+////		if ( flyTiltJoint == jointHandle_t.INVALID_JOINT ) {
 ////			gameLocal.Warning( "Joint '%s' not found on '%s'", jointname, name.c_str() );
 ////		}
 ////	}
@@ -2905,7 +2905,7 @@
 ////	fly_roll = fly_roll * 0.95f + roll * 0.05f;
 ////	fly_pitch = fly_pitch * 0.95f + pitch * 0.05f;
 ////
-////	if ( flyTiltJoint != INVALID_JOINT ) {
+////	if ( flyTiltJoint != jointHandle_t.INVALID_JOINT ) {
 ////		animator.SetJointAxis( flyTiltJoint, JOINTMOD_WORLD, idAngles( fly_pitch, 0.0f, fly_roll ).ToMat3() );
 ////	} else {
 ////		viewAxis = idAngles( fly_pitch, current_yaw, fly_roll ).ToMat3();
@@ -3283,7 +3283,7 @@
 ////	}
 ////
 ////	pe.joint = animator.GetJointHandle( jointName );
-////	if ( pe.joint == INVALID_JOINT ) {
+////	if ( pe.joint == jointHandle_t.INVALID_JOINT ) {
 ////		gameLocal.Warning( "Unknown particleJoint '%s' on '%s'", jointName, name.c_str() );
 ////		pe.time = 0;
 ////		pe.particle = NULL;
@@ -3947,7 +3947,7 @@
 ////			frame = anim->FindFrameForFrameCommand( FC_LAUNCHMISSILE, &command );
 ////			if ( frame >= 0 ) {
 ////				joint = animator.GetJointHandle( command->string->c_str() );
-////				if ( joint == INVALID_JOINT ) {
+////				if ( joint == jointHandle_t.INVALID_JOINT ) {
 ////					gameLocal.Error( "Invalid joint '%s' on 'launch_missile' frame command on frame %d of model '%s'", command->string->c_str(), frame, modelDef->GetName() );
 ////				}
 ////				GetJointTransformForAnim( joint, i, FRAME2MS( frame ), missileLaunchOffset[ i ], axis );
@@ -4263,7 +4263,7 @@
 ////	idVec3	globalKickDir;
 ////	globalKickDir = ( viewAxis * physicsObj.GetGravityAxis() ) * kickDir;
 ////
-////	ent->Damage( this, this, globalKickDir, meleeDefName, 1.0f, INVALID_JOINT );
+////	ent->Damage( this, this, globalKickDir, meleeDefName, 1.0f, jointHandle_t.INVALID_JOINT );
 ////
 ////	// end the attack if we're a multiframe attack
 ////	EndAttack();
@@ -4357,7 +4357,7 @@
 ////	if ( enemyEnt->IsType( idPlayer::Type ) && g_skill.GetInteger() < 2 ) {
 ////		int	damage, armor;
 ////		idPlayer *player = static_cast<idPlayer*>( enemyEnt );
-////		player->CalcDamagePoints( this, this, meleeDef, 1.0f, INVALID_JOINT, &damage, &armor );
+////		player->CalcDamagePoints( this, this, meleeDef, 1.0f, jointHandle_t.INVALID_JOINT, &damage, &armor );
 ////
 ////		if ( enemyEnt->health <= damage ) {
 ////			int	t = gameLocal.time - player->lastSavingThrowTime;
@@ -4398,7 +4398,7 @@
 ////	idVec3	globalKickDir;
 ////	globalKickDir = ( viewAxis * physicsObj.GetGravityAxis() ) * kickDir;
 ////
-////	enemyEnt->Damage( this, this, globalKickDir, meleeDefName, 1.0f, INVALID_JOINT );
+////	enemyEnt->Damage( this, this, globalKickDir, meleeDefName, 1.0f, jointHandle_t.INVALID_JOINT );
 ////
 ////	lastAttackTime = gameLocal.time;
 ////
@@ -4439,7 +4439,7 @@
 ////			vel = ent->GetPhysics()->GetAbsBounds().GetCenter() - touchList[ i ].touchedByBody->GetWorldOrigin();
 ////			vel.Normalize();
 ////			if ( attack.Length() && ent->IsType( idActor::Type ) ) {
-////				ent->Damage( this, this, vel, attack, 1.0f, INVALID_JOINT );
+////				ent->Damage( this, this, vel, attack, 1.0f, jointHandle_t.INVALID_JOINT );
 ////			} else {
 ////				ent->GetPhysics()->SetLinearVelocity( 100.0f * vel, touchList[ i ].touchedClipModel->GetId() );
 ////			}
@@ -4466,7 +4466,7 @@
 ////		muzzle -= physicsObj.GetGravityNormal() * physicsObj.GetBounds()[ 1 ].z * 0.5f;
 ////	} else {
 ////		joint = animator.GetJointHandle( jointname );
-////		if ( joint == INVALID_JOINT ) {
+////		if ( joint == jointHandle_t.INVALID_JOINT ) {
 ////			gameLocal.Error( "Unknown joint '%s' on %s", jointname, GetEntityDefName() );
 ////		}
 ////		GetJointWorldTransform( joint, gameLocal.time, muzzle, axis );
@@ -4491,7 +4491,7 @@
 ////	renderEntity.shaderParms[SHADERPARM_TIMEOFFSET] = -MS2SEC( gameLocal.time );
 ////	renderEntity.shaderParms[ SHADERPARM_DIVERSITY ] = gameLocal.random.CRandomFloat();
 ////
-////	if ( flashJointWorld != INVALID_JOINT ) {
+////	if ( flashJointWorld != jointHandle_t.INVALID_JOINT ) {
 ////		GetJointWorldTransform( flashJointWorld, gameLocal.time, org, axis );
 ////
 ////		if ( worldMuzzleFlash.lightRadius.x > 0.0f ) {
@@ -4735,7 +4735,7 @@
 ////		return idActor::UpdateAnimationControllers();
 ////	}
 ////
-////	if ( orientationJoint == INVALID_JOINT ) {
+////	if ( orientationJoint == jointHandle_t.INVALID_JOINT ) {
 ////		orientationJointAxis = viewAxis;
 ////		orientationJointPos = physicsObj.GetOrigin();
 ////		orientationJointYaw = current_yaw;
@@ -4745,7 +4745,7 @@
 ////		orientationJointAxis = idAngles( 0.0f, orientationJointYaw, 0.0f ).ToMat3();
 ////	}
 ////
-////	if ( focusJoint != INVALID_JOINT ) {
+////	if ( focusJoint != jointHandle_t.INVALID_JOINT ) {
 ////		if ( headEnt ) {
 ////			headEnt->GetJointWorldTransform( focusJoint, gameLocal.time, eyepos, axis );
 ////		} else {

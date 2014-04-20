@@ -3989,7 +3989,7 @@ Returns the entity whose name matches the specified string.
 ////		if ( hit.IsType( idPlayer::Type ) && static_cast< idPlayer * >( hit ).IsInTeleport() ) {
 ////			static_cast< idPlayer * >( hit ).TeleportDeath( ent.entityNumber );
 ////		} else if ( !catch_teleport ) {
-////			hit.Damage( ent, ent, vec3_origin, "damage_telefrag", 1.0f, INVALID_JOINT );
+////			hit.Damage( ent, ent, vec3_origin, "damage_telefrag", 1.0f, jointHandle_t.INVALID_JOINT );
 ////		}
 
 ////		if ( !gameLocal.isMultiplayer ) {
@@ -4144,7 +4144,7 @@ Returns the entity whose name matches the specified string.
 ////				damageScale *= attackerDamageScale;
 ////			}
 
-////			ent.Damage( inflictor, attacker, dir, damageDefName, damageScale, INVALID_JOINT );
+////			ent.Damage( inflictor, attacker, dir, damageDefName, damageScale, jointHandle_t.INVALID_JOINT );
 ////		} 
 ////	}
 

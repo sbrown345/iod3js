@@ -160,7 +160,7 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //	if ( headModel[ 0 ] ) {
 //		jointName = spawnArgs.GetString( "head_joint" );
 //		joint = animator.GetJointHandle( jointName );
-//		if ( joint == INVALID_JOINT ) {
+//		if ( joint == jointHandle_t.INVALID_JOINT ) {
 //			gameLocal.Warning( "Joint '%s' not found for 'head_joint'", jointName.c_str() );
 //		} else {
 //			// copy any sounds in case we have frame commands on the head
@@ -193,13 +193,13 @@ idTestModel.Type = new idTypeInfo("idTestModel", "idAnimatedEntity",
 //				}
 //
 //				copyJoint.from = animator.GetJointHandle( jointName );
-//				if ( copyJoint.from == INVALID_JOINT ) {
+//				if ( copyJoint.from == jointHandle_t.INVALID_JOINT ) {
 //					gameLocal.Warning( "Unknown copy_joint '%s'", jointName.c_str() );
 //					continue;
 //				}
 //
 //				copyJoint.to = headAnimator.GetJointHandle( jointName );
-//				if ( copyJoint.to == INVALID_JOINT ) {
+//				if ( copyJoint.to == jointHandle_t.INVALID_JOINT ) {
 //					gameLocal.Warning( "Unknown copy_joint '%s' on head", jointName.c_str() );
 //					continue;
 //				}

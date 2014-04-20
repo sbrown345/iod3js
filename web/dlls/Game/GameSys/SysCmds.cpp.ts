@@ -830,7 +830,7 @@
 ////		return;
 ////	}
 
-////	ent.Damage( gameLocal.world, gameLocal.world, idVec3( 0, 0, 1 ), "damage_moverCrush", atoi( args.Argv( 2 ) ), INVALID_JOINT );
+////	ent.Damage( gameLocal.world, gameLocal.world, idVec3( 0, 0, 1 ), "damage_moverCrush", atoi( args.Argv( 2 ) ), jointHandle_t.INVALID_JOINT );
 ////}
 
 
@@ -1497,7 +1497,7 @@
 ////	// give the player full health before and after
 ////	// running the damage
 ////	player.health = player.inventory.maxHealth;
-////	player.Damage( NULL, NULL, dir, damageDefName, 1.0f, INVALID_JOINT );
+////	player.Damage( NULL, NULL, dir, damageDefName, 1.0f, jointHandle_t.INVALID_JOINT );
 ////	player.health = player.inventory.maxHealth;
 ////}
 
@@ -1544,7 +1544,7 @@
 ////	dir[2] = 0;
 
 ////	g_testDeath.SetBool( 1 );
-////	player.Damage( NULL, NULL, dir, "damage_triggerhurt_1000", 1.0f, INVALID_JOINT );
+////	player.Damage( NULL, NULL, dir, "damage_triggerhurt_1000", 1.0f, jointHandle_t.INVALID_JOINT );
 ////	if ( args.Argc() >= 2) {
 ////		player.SpawnGibs( dir, "damage_triggerhurt_1000" );
 ////	}

@@ -686,15 +686,15 @@ idWeapon.Type = new idTypeInfo("idWeapon", "idAnimatedEntity",
 ////
 ////	zoomFov = 90;
 ////
-////	barrelJointView		= INVALID_JOINT;
-////	flashJointView		= INVALID_JOINT;
-////	ejectJointView		= INVALID_JOINT;
-////	guiLightJointView	= INVALID_JOINT;
-////	ventLightJointView	= INVALID_JOINT;
+////	barrelJointView		= jointHandle_t.INVALID_JOINT;
+////	flashJointView		= jointHandle_t.INVALID_JOINT;
+////	ejectJointView		= jointHandle_t.INVALID_JOINT;
+////	guiLightJointView	= jointHandle_t.INVALID_JOINT;
+////	ventLightJointView	= jointHandle_t.INVALID_JOINT;
 ////
-////	barrelJointWorld	= INVALID_JOINT;
-////	flashJointWorld		= INVALID_JOINT;
-////	ejectJointWorld		= INVALID_JOINT;
+////	barrelJointWorld	= jointHandle_t.INVALID_JOINT;
+////	flashJointWorld		= jointHandle_t.INVALID_JOINT;
+////	ejectJointWorld		= jointHandle_t.INVALID_JOINT;
 ////
 ////	hasBloodSplat		= false;
 ////	nozzleFx			= false;
@@ -1131,7 +1131,7 @@ idWeapon.Type = new idTypeInfo("idWeapon", "idAnimatedEntity",
 ////		return;
 ////	}
 ////
-////	if ( flashJointView == INVALID_JOINT ) {
+////	if ( flashJointView == jointHandle_t.INVALID_JOINT ) {
 ////		return;
 ////	}
 ////
@@ -1604,7 +1604,7 @@ idWeapon.Type = new idTypeInfo("idWeapon", "idAnimatedEntity",
 ////	renderEntity.shaderParms[5] = s;
 ////	renderEntity.shaderParms[6] = l;
 ////
-////	if ( ventLightJointView == INVALID_JOINT ) {
+////	if ( ventLightJointView == jointHandle_t.INVALID_JOINT ) {
 ////		return;
 ////	}
 ////
@@ -1999,7 +1999,7 @@ idWeapon.Type = new idTypeInfo("idWeapon", "idAnimatedEntity",
 ////	}
 ////
 ////	// update the gui light
-////	if ( guiLight.lightRadius[0] && guiLightJointView != INVALID_JOINT ) {
+////	if ( guiLight.lightRadius[0] && guiLightJointView != jointHandle_t.INVALID_JOINT ) {
 ////		GetGlobalJointTransform( true, guiLightJointView, guiLight.origin, guiLight.axis );
 ////
 ////		if ( ( guiLightHandle != -1 ) ) {
@@ -2878,7 +2878,7 @@ idWeapon.Type = new idTypeInfo("idWeapon", "idAnimatedEntity",
 ////	}
 ////
 ////	// calculate the muzzle position
-////	if ( barrelJointView != INVALID_JOINT && projectileDict.GetBool( "launchFromBarrel" ) ) {
+////	if ( barrelJointView != jointHandle_t.INVALID_JOINT && projectileDict.GetBool( "launchFromBarrel" ) ) {
 ////		// there is an explicit joint for the muzzle
 ////		GetGlobalJointTransform( true, barrelJointView, muzzleOrigin, muzzleAxis );
 ////	} else {
@@ -3134,7 +3134,7 @@ idWeapon.Type = new idTypeInfo("idWeapon", "idAnimatedEntity",
 ////		return;
 ////	}
 ////
-////	if ( ejectJointView == INVALID_JOINT || !brassDict.GetNumKeyVals() ) {
+////	if ( ejectJointView == jointHandle_t.INVALID_JOINT || !brassDict.GetNumKeyVals() ) {
 ////		return;
 ////	}
 ////

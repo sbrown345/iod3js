@@ -1133,7 +1133,16 @@ idClass::PostEventMS
 ////bool idClass::PostEventSec( ev: idEventDef, /*float*/time:number, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 ): boolean  {
 ////	return PostEventArgs( ev, SEC2MS( time ), 8, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8 );
 ////}
-////
+/*
+================
+idClass::PostEventSec
+================
+*/
+	PostEventSec ( ev: idEventDef, /*float*/time: number, /*idEventArg*/ arg1: any = null, /*idEventArg*/ arg2: any = null, /*idEventArg*/ arg3: any = null, /*idEventArg*/ arg4: any = null, /*idEventArg*/ arg5: any = null, /*idEventArg*/ arg6: any = null, /*idEventArg*/ arg7: any = null, /*idEventArg*/ arg8: any = null ): boolean {
+		todoThrow ( );
+		return this.PostEventArgs( ev, SEC2MS( time ), arguments.length, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8 );
+	}
+
 /////*
 ////================
 ////idClass::ProcessEventArgs

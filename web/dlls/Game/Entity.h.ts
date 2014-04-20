@@ -1950,7 +1950,7 @@ idEntity::FreeSoundEmitter
 ////
 ////	PreBind();
 ////
-////	this.bindJoint = INVALID_JOINT;
+////	this.bindJoint = jointHandle_t.INVALID_JOINT;
 ////	this.bindBody = -1;
 ////	this.bindMaster = master;
 ////	this.fl.bindOrientated = orientated;
@@ -1982,7 +1982,7 @@ idEntity::FreeSoundEmitter
 ////	}
 ////
 ////	jointnum = masterAnimator.GetJointHandle( jointname );
-////	if ( jointnum == INVALID_JOINT ) {
+////	if ( jointnum == jointHandle_t.INVALID_JOINT ) {
 ////		gameLocal.Warning( "idEntity::BindToJoint: joint '%s' not found on entity '%s'.", jointname, master.GetName() );
 ////	}
 ////
@@ -2042,7 +2042,7 @@ idEntity::FreeSoundEmitter
 ////
 ////	PreBind();
 ////
-////	this.bindJoint = INVALID_JOINT;
+////	this.bindJoint = jointHandle_t.INVALID_JOINT;
 ////	this.bindBody = bodyId;
 ////	this.bindMaster = master;
 ////	this.fl.bindOrientated = orientated;
@@ -2135,7 +2135,7 @@ idEntity::FreeSoundEmitter
 ////		this.teamMaster = NULL;
 ////	}
 ////
-////	this.bindJoint = INVALID_JOINT;
+////	this.bindJoint = jointHandle_t.INVALID_JOINT;
 ////	this.bindBody = -1;
 ////	this.bindMaster = NULL;
 ////
@@ -2366,7 +2366,7 @@ idEntity::FreeSoundEmitter
 ////
 ////	if ( this.bindMaster ) {
 ////		// if bound to a joint of an animated model
-////		if ( this.bindJoint != INVALID_JOINT ) {
+////		if ( this.bindJoint != jointHandle_t.INVALID_JOINT ) {
 ////			masterAnimator = this.bindMaster.GetAnimator();
 ////			if ( !masterAnimator ) {
 ////				masterOrigin = vec3_origin;
@@ -4018,7 +4018,7 @@ idEntity::Event_FindTargets
 ////					gameLocal.Error( "Cannot bind to joint '%s' on '%s'.  Entity does not support skeletal models.", joint, this.name.c_str() );
 ////				}
 ////				bindJoint = parentAnimator.GetJointHandle( joint );
-////				if ( bindJoint == INVALID_JOINT ) {
+////				if ( bindJoint == jointHandle_t.INVALID_JOINT ) {
 ////					gameLocal.Error( "Joint '%s' not found for bind on '%s'", joint, this.name.c_str() );
 ////				}
 ////
@@ -4725,7 +4725,7 @@ idEntity::Event_FindTargets
 ////	if ( this.bindMaster ) {
 ////		bindInfo = this.bindMaster.entityNumber;
 ////		bindInfo |= ( this.fl.bindOrientated & 1 ) << GENTITYNUM_BITS;
-////		if ( this.bindJoint != INVALID_JOINT ) {
+////		if ( this.bindJoint != jointHandle_t.INVALID_JOINT ) {
 ////			bindInfo |= 1 << ( GENTITYNUM_BITS + 1 );
 ////			bindInfo |= this.bindJoint << ( 3 + GENTITYNUM_BITS );
 ////		} else if ( this.bindBody != -1 ) {

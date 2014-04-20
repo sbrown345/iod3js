@@ -3446,7 +3446,7 @@ class idAnimator {
 	modelDef: idDeclModelDef;
 	entity:idEntity;
 
-	channels = multiDimTypedArray<idAnimBlend>(idAnimBlend,  ANIM_NumAnimChannels , ANIM_MaxAnimsPerChannel );
+	channels = new2dStructArray<idAnimBlend>(idAnimBlend,  ANIM_NumAnimChannels , ANIM_MaxAnimsPerChannel );
 	jointMods = new idList<jointMod_t >(jointMod_t , true);
 	numJoints :number/*int*/;
 	joints:idJointMat;
@@ -4484,7 +4484,7 @@ class idAnimator {
 	//
 	//	// mark all modified joints and their parents
 	//	for( i = 0; i < AFPoseJoints.Num(); i++ ) {
-	//		for( jointNum = AFPoseJoints[i]; jointNum != INVALID_JOINT; jointNum = jointParent[jointNum] ) {
+	//		for( jointNum = AFPoseJoints[i]; jointNum != jointHandle_t.INVALID_JOINT; jointNum = jointParent[jointNum] ) {
 	//			blendJoints[jointNum] = true;
 	//		}
 	//	}
@@ -5019,7 +5019,7 @@ idAnimator::GetChannelForJoint
 //	const jointInfo_t	*joint;
 //
 //	if ( !this.modelDef ) {
-//		return INVALID_JOINT;
+//		return jointHandle_t.INVALID_JOINT;
 //	}
 //
 //	num = this.modelDef.NumJoints();

@@ -307,7 +307,7 @@ idMoveable.Type = new idTypeInfo( "idMoveable", "idEntity",
 ////			f = v > maxDamageVelocity ? 1.0f : idMath::Sqrt( v - minDamageVelocity ) * ( 1.0f / idMath::Sqrt( maxDamageVelocity - minDamageVelocity ) );
 ////			dir = velocity;
 ////			dir.NormalizeFast();
-////			ent->Damage( this, GetPhysics()->GetClipModel()->GetOwner(), dir, damage, f, INVALID_JOINT );
+////			ent->Damage( this, GetPhysics()->GetClipModel()->GetOwner(), dir, damage, f, jointHandle_t.INVALID_JOINT );
 ////			nextDamageTime = gameLocal.time + 1000;
 ////		}
 ////	}

@@ -101,7 +101,7 @@ class idPlayerIcon {
 ////	idVec3 origin;
 ////	idMat3 axis;
 ////
-////	if ( joint == INVALID_JOINT ) {
+////	if ( joint == jointHandle_t.INVALID_JOINT ) {
 ////		FreeIcon();
 ////		return;
 ////	}

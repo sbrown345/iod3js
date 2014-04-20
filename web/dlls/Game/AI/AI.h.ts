@@ -160,7 +160,7 @@
 ////	particleEmitter_s() {
 ////		particle = NULL;
 ////		time = 0;
-////		joint = INVALID_JOINT;
+////		joint = jointHandle_t.INVALID_JOINT;
 ////	};
 ////	const idDeclParticle *particle;
 ////	int					time;

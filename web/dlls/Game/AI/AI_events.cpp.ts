@@ -709,7 +709,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////		org = physicsObj.GetOrigin();
 ////	} else {
 ////		joint = animator.GetJointHandle( jointname );
-////		if ( joint == INVALID_JOINT ) {
+////		if ( joint == jointHandle_t.INVALID_JOINT ) {
 ////			gameLocal.Error( "Unknown joint '%s' on %s", jointname, GetEntityDefName() );
 ////		}
 ////		GetJointWorldTransform( joint, gameLocal.time, org, axis );
@@ -762,7 +762,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////	idEntity		*hitEnt;
 ////
 ////	joint = animator.GetJointHandle( jointname );
-////	if ( joint == INVALID_JOINT ) {
+////	if ( joint == jointHandle_t.INVALID_JOINT ) {
 ////		gameLocal.Error( "Unknown joint '%s' on %s", jointname, GetEntityDefName() );
 ////	}
 ////	animator.GetJointTransform( joint, gameLocal.time, end, axis );
@@ -1582,7 +1582,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////	const idVec3 &org = physicsObj.GetOrigin();
 ////	idVec3 toPos = enemyEnt->GetEyePosition();
 ////	jointHandle_t joint = animator.GetJointHandle( jointname );
-////	if ( joint == INVALID_JOINT ) {
+////	if ( joint == jointHandle_t.INVALID_JOINT ) {
 ////		gameLocal.Error( "Unknown joint '%s' on %s", jointname, GetEntityDefName() );
 ////	}
 ////	animator.GetJointTransform( joint, gameLocal.time, muzzle, axis );
@@ -2417,7 +2417,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////		BecomeActive( TH_PHYSICS );
 ////	}
 ////
-////	Killed( this, this, 0, vec3_zero, INVALID_JOINT );
+////	Killed( this, this, 0, vec3_zero, jointHandle_t.INVALID_JOINT );
 ////}
 ////
 /////*
