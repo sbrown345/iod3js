@@ -50,18 +50,16 @@ class idSpawnableEntity extends idEntity {
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idSpawnableEntity>[];
 
-	
-/////*
-////======================
-////idSpawnableEntity::Spawn
-////======================
-////*/
-////void idSpawnableEntity::Spawn() {
-////	// this just holds dict information
-////}
-////
 
-};
+/*
+======================
+idSpawnableEntity::Spawn
+======================
+*/
+	Spawn ( ): void {
+		// this just holds dict information
+	}
+}
 
 /*
 ===============================================================================
@@ -504,7 +502,6 @@ class idDamagable extends idEntity {
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
 //
-Spawn():void{throw "placeholder";}
 //	void				Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
 //
 //private:
@@ -551,7 +548,8 @@ Spawn():void{throw "placeholder";}
 ////idDamagable::Spawn
 ////================
 ////*/
-////void idDamagable::Spawn( ) {
+	Spawn ( ): void {
+		todoThrow ( );
 ////	idStr broken;
 ////
 ////	health = this.spawnArgs.GetInt( "health", "5" );
@@ -566,7 +564,7 @@ Spawn():void{throw "placeholder";}
 ////
 ////	this.fl.takedamage = true;
 ////	GetPhysics().SetContents( CONTENTS_SOLID );
-////}
+	}
 ////
 /////*
 ////================
@@ -2253,7 +2251,25 @@ class idLocationSeparatorEntity extends idEntity {
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idLocationSeparatorEntity>[];
 //
-Spawn():void{throw "placeholder";}
+
+
+	/////*
+	////================
+	////idLocationSeparatorEntity::Spawn
+	////================
+	////*/
+	Spawn(): void {
+		todoThrow();
+		////	idBounds b;
+		////
+		////	b = idBounds( this.spawnArgs.GetVector( "origin" ) ).Expand( 16 );
+		////	qhandle_t portal = gameRenderWorld.FindPortal( b );
+		////	if ( !portal ) {
+		////		gameLocal.Warning( "LocationSeparator '%s' didn't contact a portal", this.spawnArgs.GetString( "name" ) );
+		////	}
+		////	gameLocal.SetPortalState( portal, PS_BLOCK_LOCATION );
+	}
+
 //
 //private:
 };
@@ -2268,7 +2284,6 @@ class idVacuumSeparatorEntity extends idEntity {
 //
 //						idVacuumSeparatorEntity( );
 //
-Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -2317,7 +2332,8 @@ Spawn():void{throw "placeholder";}
 ////idVacuumSeparatorEntity::Spawn
 ////================
 ////*/
-////void idVacuumSeparatorEntity::Spawn() {
+	Spawn(): void {
+		todoThrow();
 ////	idBounds b;
 ////
 ////	b = idBounds( this.spawnArgs.GetVector( "origin" ) ).Expand( 16 );
@@ -2327,7 +2343,7 @@ Spawn():void{throw "placeholder";}
 ////		return;
 ////	}
 ////	gameLocal.SetPortalState( portal, PS_BLOCK_AIR | PS_BLOCK_LOCATION );
-////}
+}
 ////
 /////*
 ////================
@@ -2341,25 +2357,6 @@ Spawn():void{throw "placeholder";}
 ////	gameLocal.SetPortalState( portal, PS_BLOCK_NONE );
 ////}
 ////
-////
-
-
-	
-/////*
-////================
-////idLocationSeparatorEntity::Spawn
-////================
-////*/
-////void idLocationSeparatorEntity::Spawn() {
-////	idBounds b;
-////
-////	b = idBounds( this.spawnArgs.GetVector( "origin" ) ).Expand( 16 );
-////	qhandle_t portal = gameRenderWorld.FindPortal( b );
-////	if ( !portal ) {
-////		gameLocal.Warning( "LocationSeparator '%s' didn't contact a portal", this.spawnArgs.GetString( "name" ) );
-////	}
-////	gameLocal.SetPortalState( portal, PS_BLOCK_LOCATION );
-////}
 ////
 
 };
@@ -2382,7 +2379,8 @@ class idVacuumEntity extends idEntity {
 ////idVacuumEntity::Spawn
 ////================
 ////*/
-////void idVacuumEntity::Spawn() {
+	Spawn(): void {
+		todoThrow();
 ////	if ( gameLocal.vacuumAreaNum != -1 ) {
 ////		gameLocal.Warning( "idVacuumEntity::Spawn: multiple idVacuumEntity in level" );
 ////		return;
@@ -2391,8 +2389,8 @@ class idVacuumEntity extends idEntity {
 ////	idVec3 org = this.spawnArgs.GetVector( "origin" );
 ////
 ////	gameLocal.vacuumAreaNum = gameRenderWorld.PointInArea( org );
-////}
-////
+}
+
 
 };
 
@@ -2415,7 +2413,6 @@ class idBeam extends idEntity {
 //
 //						idBeam();
 //
-Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -2473,7 +2470,8 @@ Spawn():void{throw "placeholder";}
 ////idBeam::Spawn
 ////===============
 ////*/
-////void idBeam::Spawn( ) {
+	Spawn(): void {
+		todoThrow();
 ////	float width;
 ////
 ////	if ( this.spawnArgs.GetFloat( "width", "0", width ) ) {
@@ -2483,7 +2481,7 @@ Spawn():void{throw "placeholder";}
 ////	SetModel( "_BEAM" );
 ////	this.Hide();
 ////	PostEventMS( &EV_PostSpawn, 0 );
-////}
+}
 ////
 /////*
 ////================
@@ -2683,7 +2681,8 @@ class idLiquid extends idEntity {
 ////idLiquid::Spawn
 ////================
 ////*/
-////void idLiquid::Spawn() {
+	Spawn(): void {
+		todoThrow();
 /////*
 ////	model = dynamic_cast<idRenderModelLiquid *>( renderEntity.hModel );
 ////	if ( !model ) {
@@ -2692,7 +2691,7 @@ class idLiquid extends idEntity {
 ////	model.Reset();
 ////	GetPhysics().SetContents( CONTENTS_TRIGGER );
 ////*/
-////}
+}
 ////
 /////*
 ////================
@@ -2774,7 +2773,8 @@ class idShaking extends idEntity {
 ////idShaking::Spawn
 ////===============
 ////*/
-////void idShaking::Spawn( ) {
+	Spawn(): void {
+		todoThrow();
 ////	physicsObj.SetSelf( this );
 ////	physicsObj.SetClipModel( new idClipModel( this.GetPhysics().GetClipModel() ), 1.0f );
 ////	physicsObj.SetOrigin( this.GetPhysics().GetOrigin() );
@@ -2786,7 +2786,7 @@ class idShaking extends idEntity {
 ////	if ( !this.spawnArgs.GetBool( "start_off" ) ) {
 ////		BeginShaking();
 ////	}
-////}
+}
 ////
 /////*
 ////================
@@ -2840,7 +2840,6 @@ class idEarthQuake extends idEntity {
 //			
 //						idEarthQuake();
 //
-Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -2917,7 +2916,8 @@ Spawn():void{throw "placeholder";}
 ////idEarthQuake::Spawn
 ////===============
 ////*/
-////void idEarthQuake::Spawn( ) {
+	Spawn(): void {
+		todoThrow();
 ////	nextTriggerTime = 0;
 ////	shakeStopTime = 0;
 ////	wait = this.spawnArgs.GetFloat( "wait", "15" );
@@ -2931,7 +2931,7 @@ Spawn():void{throw "placeholder";}
 ////		this.PostEventSec( &EV_Activate, this.spawnArgs.GetFloat( "wait" ), this );
 ////	}
 ////	BecomeInactive( TH_THINK );
-////}
+}
 ////
 /////*
 ////================
@@ -3031,7 +3031,7 @@ class idFuncPortal extends idEntity {
 //			
 //						idFuncPortal();
 //
-Spawn():void{throw "placeholder";}
+
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -3079,13 +3079,14 @@ Spawn():void{throw "placeholder";}
 ////idFuncPortal::Spawn
 ////===============
 ////*/
-////void idFuncPortal::Spawn( ) {
+	Spawn(): void {
+		todoThrow();
 ////	portal = gameRenderWorld.FindPortal( this.GetPhysics().GetAbsBounds().Expand( 32.0f ) );
 ////	if ( portal > 0 ) {
 ////		state = this.spawnArgs.GetBool( "start_on" );
 ////		gameLocal.SetPortalState( portal, state ? PS_BLOCK_ALL : PS_BLOCK_NONE );
 ////	}
-////}
+}
 ////
 /////*
 ////================
@@ -3119,7 +3120,6 @@ class idFuncAASPortal extends idEntity {
 //			
 //						idFuncAASPortal();
 //
-Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -3164,10 +3164,11 @@ Spawn():void{throw "placeholder";}
 ////idFuncAASPortal::Spawn
 ////===============
 ////*/
-////void idFuncAASPortal::Spawn( ) {
+	Spawn(): void {
+		todoThrow();
 ////	state = this.spawnArgs.GetBool( "start_on" );
 ////	gameLocal.SetAASAreaState( this.GetPhysics().GetAbsBounds(), AREACONTENTS_CLUSTERPORTAL, state );
-////}
+}
 ////
 /////*
 ////================
@@ -3199,7 +3200,6 @@ class idFuncAASObstacle extends idEntity {
 //			
 //						idFuncAASObstacle();
 //
-Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -3243,10 +3243,11 @@ Spawn():void{throw "placeholder";}
 ////idFuncAASObstacle::Spawn
 ////===============
 ////*/
-////void idFuncAASObstacle::Spawn( ) {
+	Spawn(): void {
+		todoThrow();
 ////	state = this.spawnArgs.GetBool( "start_on" );
 ////	gameLocal.SetAASAreaState( this.GetPhysics().GetAbsBounds(), AREACONTENTS_OBSTACLE, state );
-////}
+}
 ////
 /////*
 ////================
@@ -3279,7 +3280,7 @@ class idFuncRadioChatter extends idEntity {
 //
 //						idFuncRadioChatter();
 //
-Spawn():void{throw "placeholder";}
+
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -3322,9 +3323,10 @@ Spawn():void{throw "placeholder";}
 ////idFuncRadioChatter::Spawn
 ////===============
 ////*/
-////void idFuncRadioChatter::Spawn( ) {
+	Spawn(): void {
+		todoThrow();
 ////	time = this.spawnArgs.GetFloat( "time", "5.0" );
-////}
+}
 ////
 /////*
 ////================
@@ -3390,7 +3392,6 @@ class idPhantomObjects extends idEntity {
 //			
 //						idPhantomObjects();
 //
-Spawn():void{throw "placeholder";}
 //
 //	void				Save ( savefile: idSaveGame ): void { throw "placeholder"; }
 //	void				Restore ( savefile: idRestoreGame ): void { throw "placeholder"; }
@@ -3503,7 +3504,8 @@ Spawn():void{throw "placeholder";}
 ////idPhantomObjects::Spawn
 ////===============
 ////*/
-////void idPhantomObjects::Spawn( ) {
+	Spawn(): void {
+		todoThrow();
 ////	throw_time = this.spawnArgs.GetFloat( "time", "5" );
 ////	speed = this.spawnArgs.GetFloat( "speed", "1200" );
 ////	shake_time = this.spawnArgs.GetFloat( "shake_time", "1" );
@@ -3517,7 +3519,7 @@ Spawn():void{throw "placeholder";}
 ////	shake_ang = this.spawnArgs.GetVector( "shake_ang", "65 65 65" );
 ////	this.Hide();
 ////	GetPhysics().SetContents( 0 );
-////}
+}
 ////
 /////*
 ////================

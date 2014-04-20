@@ -1196,7 +1196,8 @@ idPlayer::idPlayer
 ////Prepare any resources used by the player.
 ////==============
 ////*/
-////void idPlayer::Spawn( ) {
+	Spawn(): void {
+		todoThrow();
 ////	idStr		temp;
 ////	idBounds	bounds;
 ////
@@ -1371,7 +1372,7 @@ idPlayer::idPlayer
 ////#endif
 ////		}
 ////	}
-////}
+}
 ////
 /////*
 ////==============

@@ -1343,15 +1343,15 @@ index 0 will never be NULL.  Any anim >= NumAnims will return NULL.
 		}
 		return this.anims[num];
 	}
-//
-///*
-//=====================
-//idAnim::ModelDef
-//=====================
-//*/
-//const idDeclModelDef *idAnim::ModelDef( ) const {
-//	return modelDef;
-//}
+
+/*
+=====================
+idAnim::ModelDef
+=====================
+*/
+	ModelDef(): idDeclModelDef {
+		return this.modelDef;
+	}
 
 /*
 =====================

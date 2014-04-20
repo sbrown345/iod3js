@@ -157,7 +157,7 @@ void idCameraView::Stop( void ) {
 
 /*
 =====================
-idCameraView::Spawn
+idCameraView::SetAttachment
 =====================
 */
 void idCameraView::SetAttachment( idEntity **e, const char *p  ) {

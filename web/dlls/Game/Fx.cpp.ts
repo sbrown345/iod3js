@@ -638,8 +638,8 @@ class idEntityFx extends idEntity {
 ////idEntityFx::Spawn
 ////================
 ////*/
-////void idEntityFx::Spawn( void ) {
-////
+	Spawn(): void {
+		todoThrow();
 ////	if ( g_skipFX.GetBool() ) {
 ////		return;
 ////	}
@@ -656,7 +656,7 @@ class idEntityFx extends idEntity {
 ////			PostEventMS( &EV_Activate, 0, this );
 ////		}
 ////	}
-////}
+}
 ////
 /////*
 ////================

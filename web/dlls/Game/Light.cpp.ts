@@ -251,309 +251,266 @@ class idLight extends idEntity {
 	Event_ToggleOnOff ( activator: idEntity ): void { throw "placeholder"; }
 	Event_SetSoundHandles ( ): void { throw "placeholder"; }
 	Event_FadeOut ( /*float*/time: number ): void { throw "placeholder"; }
-	Event_FadeIn ( /*float*/time: number ): void { throw "placeholder"; }
-};
+	Event_FadeIn( /*float*/time: number): void { throw "placeholder"; }
 
 
-////CLASS_DECLARATION( idEntity, idLight )
-idLight.CreateInstance = function (): idClass {
-	try {
-		var ptr = new idLight;
-		ptr.FindUninitializedMemory();
-		return ptr;
-	} catch (e) {
-		return null;
+	////
+	/////*
+	////================
+	////idLight::UpdateChangeableSpawnArgs
+	////================
+	////*/
+	////void idLight::UpdateChangeableSpawnArgs( const idDict *source ) {
+	////
+	////	idEntity::UpdateChangeableSpawnArgs( source );
+	////
+	////	if ( source ) {
+	////		source.Print();
+	////	}
+	////	FreeSoundEmitter( true );
+	////	gameEdit.ParseSpawnArgsToRefSound( source ? source : &spawnArgs, &refSound );
+	////	if ( refSound.shader && !refSound.waitfortrigger ) {
+	////		StartSoundShader( refSound.shader, SND_CHANNEL_ANY, 0, false, NULL );
+	////	}
+	////
+	////	gameEdit.ParseSpawnArgsToRenderLight( source ? source : &spawnArgs, &renderLight );
+	////
+	////	UpdateVisuals();
+	////}
+	////
+	/////*
+	////================
+	////idLight::idLight
+	////================
+	////*/
+	////idLight::idLight() {
+	////	memset( &renderLight, 0, sizeof( renderLight ) );
+	////	localLightOrigin	= vec3_zero;
+	////	localLightAxis		= mat3_identity;
+	////	lightDefHandle		= -1;
+	////	levels				= 0;
+	////	currentLevel		= 0;
+	////	baseColor			= vec3_zero;
+	////	breakOnTrigger		= false;
+	////	count				= 0;
+	////	triggercount		= 0;
+	////	lightParent			= NULL;
+	////	fadeFrom.Set( 1, 1, 1, 1 );
+	////	fadeTo.Set( 1, 1, 1, 1 );
+	////	fadeStart			= 0;
+	////	fadeEnd				= 0;
+	////	soundWasPlaying		= false;
+	////}
+	////
+	/////*
+	////================
+	////idLight::~idLight
+	////================
+	////*/
+	////idLight::~idLight() {
+	////	if ( lightDefHandle != -1 ) {
+	////		gameRenderWorld.FreeLightDef( lightDefHandle );
+	////	}
+	////}
+	////
+	/////*
+	////================
+	////idLight::Save
+	////
+	////archives object for save game file
+	////================
+	////*/
+	////void idLight::Save( idSaveGame *savefile ) const {
+	////	savefile.WriteRenderLight( renderLight );
+	////	
+	////	savefile.WriteBool( renderLight.prelightModel != NULL );
+	////
+	////	savefile.WriteVec3( localLightOrigin );
+	////	savefile.WriteMat3( localLightAxis );
+	////
+	////	savefile.WriteString( brokenModel );
+	////	savefile.WriteInt( levels );
+	////	savefile.WriteInt( currentLevel );
+	////
+	////	savefile.WriteVec3( baseColor );
+	////	savefile.WriteBool( breakOnTrigger );
+	////	savefile.WriteInt( count );
+	////	savefile.WriteInt( triggercount );
+	////	savefile.WriteObject( lightParent );
+	////
+	////	savefile.WriteVec4( fadeFrom );
+	////	savefile.WriteVec4( fadeTo );
+	////	savefile.WriteInt( fadeStart );
+	////	savefile.WriteInt( fadeEnd );
+	////	savefile.WriteBool( soundWasPlaying );
+	////}
+	////
+	/////*
+	////================
+	////idLight::Restore
+	////
+	////unarchives object from save game file
+	////================
+	////*/
+	////void idLight::Restore( idRestoreGame *savefile ) {
+	////	bool hadPrelightModel;
+	////
+	////	savefile.ReadRenderLight( renderLight );
+	////
+	////	savefile.ReadBool( hadPrelightModel );
+	////	renderLight.prelightModel = renderModelManager.CheckModel( va( "_prelight_%s", name.c_str() ) );
+	////	if ( ( renderLight.prelightModel == NULL ) && hadPrelightModel ) {
+	////		assert( 0 );
+	////		if ( developer.GetBool() ) {
+	////			// we really want to know if this happens
+	////			gameLocal.Error( "idLight::Restore: prelightModel '_prelight_%s' not found", name.c_str() );
+	////		} else {
+	////			// but let it slide after release
+	////			gameLocal.Warning( "idLight::Restore: prelightModel '_prelight_%s' not found", name.c_str() );
+	////		}
+	////	}
+	////
+	////	savefile.ReadVec3( localLightOrigin );
+	////	savefile.ReadMat3( localLightAxis );
+	////
+	////	savefile.ReadString( brokenModel );
+	////	savefile.ReadInt( levels );
+	////	savefile.ReadInt( currentLevel );
+	////
+	////	savefile.ReadVec3( baseColor );
+	////	savefile.ReadBool( breakOnTrigger );
+	////	savefile.ReadInt( count );
+	////	savefile.ReadInt( triggercount );
+	////	savefile.ReadObject( reinterpret_cast<idClass *&>( lightParent ) );
+	////
+	////	savefile.ReadVec4( fadeFrom );
+	////	savefile.ReadVec4( fadeTo );
+	////	savefile.ReadInt( fadeStart );
+	////	savefile.ReadInt( fadeEnd );
+	////	savefile.ReadBool( soundWasPlaying );
+	////
+	////	lightDefHandle = -1;
+	////
+	////	SetLightLevel();
+	////}
+	////
+	/////*
+	////================
+	////idLight::Spawn
+	////================
+	////*/
+	Spawn(): void {
+		todoThrow();
+		////	bool start_off;
+		////	bool needBroken;
+		////	const char *demonic_shader;
+		////
+		////	// do the parsing the same way dmap and the editor do
+		////	gameEdit.ParseSpawnArgsToRenderLight( &spawnArgs, &renderLight );
+		////
+		////	// we need the origin and axis relative to the physics origin/axis
+		////	localLightOrigin = ( renderLight.origin - GetPhysics().GetOrigin() ) * GetPhysics().GetAxis().Transpose();
+		////	localLightAxis = renderLight.axis * GetPhysics().GetAxis().Transpose();
+		////
+		////	// set the base color from the shader parms
+		////	baseColor.Set( renderLight.shaderParms[ SHADERPARM_RED ], renderLight.shaderParms[ SHADERPARM_GREEN ], renderLight.shaderParms[ SHADERPARM_BLUE ] );
+		////
+		////	// set the number of light levels
+		////	spawnArgs.GetInt( "levels", "1", levels );
+		////	currentLevel = levels;
+		////	if ( levels <= 0 ) {
+		////		gameLocal.Error( "Invalid light level set on entity #%d(%s)", entityNumber, name.c_str() );
+		////	}
+		////
+		////	// make sure the demonic shader is cached
+		////	if ( spawnArgs.GetString( "mat_demonic", NULL, &demonic_shader ) ) {
+		////		declManager.FindType( DECL_MATERIAL, demonic_shader );
+		////	}
+		////
+		////	// game specific functionality, not mirrored in
+		////	// editor or dmap light parsing
+		////
+		////	// also put the light texture on the model, so light flares
+		////	// can get the current intensity of the light
+		////	renderEntity.referenceShader = renderLight.shader;
+		////
+		////	lightDefHandle = -1;		// no static version yet
+		////
+		////	// see if an optimized shadow volume exists
+		////	// the renderer will ignore this value after a light has been moved,
+		////	// but there may still be a chance to get it wrong if the game moves
+		////	// a light before the first present, and doesn't clear the prelight
+		////	renderLight.prelightModel = 0;
+		////	if ( name[ 0 ] ) {
+		////		// this will return 0 if not found
+		////		renderLight.prelightModel = renderModelManager.CheckModel( va( "_prelight_%s", name.c_str() ) );
+		////	}
+		////
+		////	spawnArgs.GetBool( "start_off", "0", start_off );
+		////	if ( start_off ) {
+		////		Off();
+		////	}
+		////
+		////	health = spawnArgs.GetInt( "health", "0" );
+		////	spawnArgs.GetString( "broken", "", brokenModel );
+		////	spawnArgs.GetBool( "break", "0", breakOnTrigger );
+		////	spawnArgs.GetInt( "count", "1", count );
+		////
+		////	triggercount = 0;
+		////
+		////	fadeFrom.Set( 1, 1, 1, 1 );
+		////	fadeTo.Set( 1, 1, 1, 1 );
+		////	fadeStart			= 0;
+		////	fadeEnd				= 0;
+		////
+		////	// if we have a health make light breakable
+		////	if ( health ) {
+		////		idStr model = spawnArgs.GetString( "model" );		// get the visual model
+		////		if ( !model.Length() ) {
+		////			gameLocal.Error( "Breakable light without a model set on entity #%d(%s)", entityNumber, name.c_str() );
+		////		}
+		////
+		////		fl.takedamage	= true;
+		////
+		////		// see if we need to create a broken model name
+		////		needBroken = true;
+		////		if ( model.Length() && !brokenModel.Length() ) {
+		////			int	pos;
+		////
+		////			needBroken = false;
+		////		
+		////			pos = model.Find( "." );
+		////			if ( pos < 0 ) {
+		////				pos = model.Length();
+		////			}
+		////			if ( pos > 0 ) {
+		////				model.Left( pos, brokenModel );
+		////			}
+		////			brokenModel += "_broken";
+		////			if ( pos > 0 ) {
+		////				brokenModel += &model[ pos ];
+		////			}
+		////		}
+		////	
+		////		// make sure the model gets cached
+		////		if ( !renderModelManager.CheckModel( brokenModel ) ) {
+		////			if ( needBroken ) {
+		////				gameLocal.Error( "Model '%s' not found for entity %d(%s)", brokenModel.c_str(), entityNumber, name.c_str() );
+		////			} else {
+		////				brokenModel = "";
+		////			}
+		////		}
+		////
+		////		GetPhysics().SetContents( spawnArgs.GetBool( "nonsolid" ) ? 0 : CONTENTS_SOLID );
+		////	
+		////		// make sure the collision model gets cached
+		////		idClipModel.CheckModel( brokenModel );
+		////	}
+		////
+		////	PostEventMS( &EV_PostSpawn, 0 );
+		////
+		////	UpdateVisuals();
 	}
-};
-
-idLight.prototype.GetType = function (): idTypeInfo {
-	return (idLight.Type);
-};
-
-idLight.eventCallbacks = [
-	EVENT(EV_Light_SetShader, idLight.prototype.Event_SetShader),
-	EVENT(EV_Light_GetLightParm, idLight.prototype.Event_GetLightParm),
-	EVENT(EV_Light_SetLightParm, idLight.prototype.Event_SetLightParm),
-	EVENT(EV_Light_SetLightParms, idLight.prototype.Event_SetLightParms),
-	EVENT(EV_Light_SetRadiusXYZ, idLight.prototype.Event_SetRadiusXYZ),
-	EVENT(EV_Light_SetRadius, idLight.prototype.Event_SetRadius),
-	EVENT(EV_Hide, idLight.prototype.Event_Hide),
-	EVENT(EV_Show, idLight.prototype.Event_Show),
-	EVENT(EV_Light_On, idLight.prototype.Event_On),
-	EVENT(EV_Light_Off, idLight.prototype.Event_Off),
-	EVENT(EV_Activate, idLight.prototype.Event_ToggleOnOff),
-	EVENT(EV_PostSpawn, idLight.prototype.Event_SetSoundHandles),
-	EVENT(EV_Light_FadeOut, idLight.prototype.Event_FadeOut),
-	EVENT(EV_Light_FadeIn, idLight.prototype.Event_FadeIn)
-];
-
-idLight.Type = new idTypeInfo("idLight", "idEntity",
-	idLight.eventCallbacks, idLight.CreateInstance, idLight.prototype.Spawn,
-	idLight.prototype.Save, idLight.prototype.Restore);
-
-////END_CLASS
-////
-////
-
-////#endif /* !__GAME_LIGHT_H__ */
-////
-////
-////
-/////*
-////================
-////idLight::UpdateChangeableSpawnArgs
-////================
-////*/
-////void idLight::UpdateChangeableSpawnArgs( const idDict *source ) {
-////
-////	idEntity::UpdateChangeableSpawnArgs( source );
-////
-////	if ( source ) {
-////		source.Print();
-////	}
-////	FreeSoundEmitter( true );
-////	gameEdit.ParseSpawnArgsToRefSound( source ? source : &spawnArgs, &refSound );
-////	if ( refSound.shader && !refSound.waitfortrigger ) {
-////		StartSoundShader( refSound.shader, SND_CHANNEL_ANY, 0, false, NULL );
-////	}
-////
-////	gameEdit.ParseSpawnArgsToRenderLight( source ? source : &spawnArgs, &renderLight );
-////
-////	UpdateVisuals();
-////}
-////
-/////*
-////================
-////idLight::idLight
-////================
-////*/
-////idLight::idLight() {
-////	memset( &renderLight, 0, sizeof( renderLight ) );
-////	localLightOrigin	= vec3_zero;
-////	localLightAxis		= mat3_identity;
-////	lightDefHandle		= -1;
-////	levels				= 0;
-////	currentLevel		= 0;
-////	baseColor			= vec3_zero;
-////	breakOnTrigger		= false;
-////	count				= 0;
-////	triggercount		= 0;
-////	lightParent			= NULL;
-////	fadeFrom.Set( 1, 1, 1, 1 );
-////	fadeTo.Set( 1, 1, 1, 1 );
-////	fadeStart			= 0;
-////	fadeEnd				= 0;
-////	soundWasPlaying		= false;
-////}
-////
-/////*
-////================
-////idLight::~idLight
-////================
-////*/
-////idLight::~idLight() {
-////	if ( lightDefHandle != -1 ) {
-////		gameRenderWorld.FreeLightDef( lightDefHandle );
-////	}
-////}
-////
-/////*
-////================
-////idLight::Save
-////
-////archives object for save game file
-////================
-////*/
-////void idLight::Save( idSaveGame *savefile ) const {
-////	savefile.WriteRenderLight( renderLight );
-////	
-////	savefile.WriteBool( renderLight.prelightModel != NULL );
-////
-////	savefile.WriteVec3( localLightOrigin );
-////	savefile.WriteMat3( localLightAxis );
-////
-////	savefile.WriteString( brokenModel );
-////	savefile.WriteInt( levels );
-////	savefile.WriteInt( currentLevel );
-////
-////	savefile.WriteVec3( baseColor );
-////	savefile.WriteBool( breakOnTrigger );
-////	savefile.WriteInt( count );
-////	savefile.WriteInt( triggercount );
-////	savefile.WriteObject( lightParent );
-////
-////	savefile.WriteVec4( fadeFrom );
-////	savefile.WriteVec4( fadeTo );
-////	savefile.WriteInt( fadeStart );
-////	savefile.WriteInt( fadeEnd );
-////	savefile.WriteBool( soundWasPlaying );
-////}
-////
-/////*
-////================
-////idLight::Restore
-////
-////unarchives object from save game file
-////================
-////*/
-////void idLight::Restore( idRestoreGame *savefile ) {
-////	bool hadPrelightModel;
-////
-////	savefile.ReadRenderLight( renderLight );
-////
-////	savefile.ReadBool( hadPrelightModel );
-////	renderLight.prelightModel = renderModelManager.CheckModel( va( "_prelight_%s", name.c_str() ) );
-////	if ( ( renderLight.prelightModel == NULL ) && hadPrelightModel ) {
-////		assert( 0 );
-////		if ( developer.GetBool() ) {
-////			// we really want to know if this happens
-////			gameLocal.Error( "idLight::Restore: prelightModel '_prelight_%s' not found", name.c_str() );
-////		} else {
-////			// but let it slide after release
-////			gameLocal.Warning( "idLight::Restore: prelightModel '_prelight_%s' not found", name.c_str() );
-////		}
-////	}
-////
-////	savefile.ReadVec3( localLightOrigin );
-////	savefile.ReadMat3( localLightAxis );
-////
-////	savefile.ReadString( brokenModel );
-////	savefile.ReadInt( levels );
-////	savefile.ReadInt( currentLevel );
-////
-////	savefile.ReadVec3( baseColor );
-////	savefile.ReadBool( breakOnTrigger );
-////	savefile.ReadInt( count );
-////	savefile.ReadInt( triggercount );
-////	savefile.ReadObject( reinterpret_cast<idClass *&>( lightParent ) );
-////
-////	savefile.ReadVec4( fadeFrom );
-////	savefile.ReadVec4( fadeTo );
-////	savefile.ReadInt( fadeStart );
-////	savefile.ReadInt( fadeEnd );
-////	savefile.ReadBool( soundWasPlaying );
-////
-////	lightDefHandle = -1;
-////
-////	SetLightLevel();
-////}
-////
-/////*
-////================
-////idLight::Spawn
-////================
-////*/
-////void idLight::Spawn( void ) {
-////	bool start_off;
-////	bool needBroken;
-////	const char *demonic_shader;
-////
-////	// do the parsing the same way dmap and the editor do
-////	gameEdit.ParseSpawnArgsToRenderLight( &spawnArgs, &renderLight );
-////
-////	// we need the origin and axis relative to the physics origin/axis
-////	localLightOrigin = ( renderLight.origin - GetPhysics().GetOrigin() ) * GetPhysics().GetAxis().Transpose();
-////	localLightAxis = renderLight.axis * GetPhysics().GetAxis().Transpose();
-////
-////	// set the base color from the shader parms
-////	baseColor.Set( renderLight.shaderParms[ SHADERPARM_RED ], renderLight.shaderParms[ SHADERPARM_GREEN ], renderLight.shaderParms[ SHADERPARM_BLUE ] );
-////
-////	// set the number of light levels
-////	spawnArgs.GetInt( "levels", "1", levels );
-////	currentLevel = levels;
-////	if ( levels <= 0 ) {
-////		gameLocal.Error( "Invalid light level set on entity #%d(%s)", entityNumber, name.c_str() );
-////	}
-////
-////	// make sure the demonic shader is cached
-////	if ( spawnArgs.GetString( "mat_demonic", NULL, &demonic_shader ) ) {
-////		declManager.FindType( DECL_MATERIAL, demonic_shader );
-////	}
-////
-////	// game specific functionality, not mirrored in
-////	// editor or dmap light parsing
-////
-////	// also put the light texture on the model, so light flares
-////	// can get the current intensity of the light
-////	renderEntity.referenceShader = renderLight.shader;
-////
-////	lightDefHandle = -1;		// no static version yet
-////
-////	// see if an optimized shadow volume exists
-////	// the renderer will ignore this value after a light has been moved,
-////	// but there may still be a chance to get it wrong if the game moves
-////	// a light before the first present, and doesn't clear the prelight
-////	renderLight.prelightModel = 0;
-////	if ( name[ 0 ] ) {
-////		// this will return 0 if not found
-////		renderLight.prelightModel = renderModelManager.CheckModel( va( "_prelight_%s", name.c_str() ) );
-////	}
-////
-////	spawnArgs.GetBool( "start_off", "0", start_off );
-////	if ( start_off ) {
-////		Off();
-////	}
-////
-////	health = spawnArgs.GetInt( "health", "0" );
-////	spawnArgs.GetString( "broken", "", brokenModel );
-////	spawnArgs.GetBool( "break", "0", breakOnTrigger );
-////	spawnArgs.GetInt( "count", "1", count );
-////
-////	triggercount = 0;
-////
-////	fadeFrom.Set( 1, 1, 1, 1 );
-////	fadeTo.Set( 1, 1, 1, 1 );
-////	fadeStart			= 0;
-////	fadeEnd				= 0;
-////
-////	// if we have a health make light breakable
-////	if ( health ) {
-////		idStr model = spawnArgs.GetString( "model" );		// get the visual model
-////		if ( !model.Length() ) {
-////			gameLocal.Error( "Breakable light without a model set on entity #%d(%s)", entityNumber, name.c_str() );
-////		}
-////
-////		fl.takedamage	= true;
-////
-////		// see if we need to create a broken model name
-////		needBroken = true;
-////		if ( model.Length() && !brokenModel.Length() ) {
-////			int	pos;
-////
-////			needBroken = false;
-////		
-////			pos = model.Find( "." );
-////			if ( pos < 0 ) {
-////				pos = model.Length();
-////			}
-////			if ( pos > 0 ) {
-////				model.Left( pos, brokenModel );
-////			}
-////			brokenModel += "_broken";
-////			if ( pos > 0 ) {
-////				brokenModel += &model[ pos ];
-////			}
-////		}
-////	
-////		// make sure the model gets cached
-////		if ( !renderModelManager.CheckModel( brokenModel ) ) {
-////			if ( needBroken ) {
-////				gameLocal.Error( "Model '%s' not found for entity %d(%s)", brokenModel.c_str(), entityNumber, name.c_str() );
-////			} else {
-////				brokenModel = "";
-////			}
-////		}
-////
-////		GetPhysics().SetContents( spawnArgs.GetBool( "nonsolid" ) ? 0 : CONTENTS_SOLID );
-////	
-////		// make sure the collision model gets cached
-////		idClipModel.CheckModel( brokenModel );
-////	}
-////
-////	PostEventMS( &EV_PostSpawn, 0 );
-////
-////	UpdateVisuals();
-////}
 ////
 /////*
 ////================
@@ -1281,3 +1238,49 @@ idLight.Type = new idTypeInfo("idLight", "idEntity",
 ////	}
 ////	return false;
 ////}
+};
+
+
+////CLASS_DECLARATION( idEntity, idLight )
+idLight.CreateInstance = function (): idClass {
+	try {
+		var ptr = new idLight;
+		ptr.FindUninitializedMemory();
+		return ptr;
+	} catch (e) {
+		return null;
+	}
+};
+
+idLight.prototype.GetType = function (): idTypeInfo {
+	return (idLight.Type);
+};
+
+idLight.eventCallbacks = [
+	EVENT(EV_Light_SetShader, idLight.prototype.Event_SetShader),
+	EVENT(EV_Light_GetLightParm, idLight.prototype.Event_GetLightParm),
+	EVENT(EV_Light_SetLightParm, idLight.prototype.Event_SetLightParm),
+	EVENT(EV_Light_SetLightParms, idLight.prototype.Event_SetLightParms),
+	EVENT(EV_Light_SetRadiusXYZ, idLight.prototype.Event_SetRadiusXYZ),
+	EVENT(EV_Light_SetRadius, idLight.prototype.Event_SetRadius),
+	EVENT(EV_Hide, idLight.prototype.Event_Hide),
+	EVENT(EV_Show, idLight.prototype.Event_Show),
+	EVENT(EV_Light_On, idLight.prototype.Event_On),
+	EVENT(EV_Light_Off, idLight.prototype.Event_Off),
+	EVENT(EV_Activate, idLight.prototype.Event_ToggleOnOff),
+	EVENT(EV_PostSpawn, idLight.prototype.Event_SetSoundHandles),
+	EVENT(EV_Light_FadeOut, idLight.prototype.Event_FadeOut),
+	EVENT(EV_Light_FadeIn, idLight.prototype.Event_FadeIn)
+];
+
+idLight.Type = new idTypeInfo("idLight", "idEntity",
+	idLight.eventCallbacks, idLight.CreateInstance, idLight.prototype.Spawn,
+	idLight.prototype.Save, idLight.prototype.Restore);
+
+////END_CLASS
+////
+////
+
+////#endif /* !__GAME_LIGHT_H__ */
+////
+////

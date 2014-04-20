@@ -1578,7 +1578,7 @@ idAFEntity_WithAttachedHead::Spawn
 ================
 */
 	Spawn(): void {
-	//	todoThrow();
+		todoThrow();
 	//SetupHead();
 
 	//this.Error 1 Build: The property 'SetClipBox' does not exist on value of type 'idPhysics'. C:\dev\iod3_LogicalError_glsl_es2\web\dlls\Game\Misc.h.ts 347 23 neots();

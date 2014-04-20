@@ -231,93 +231,93 @@ idDeclModelDef::ModelHandle
 idDeclModelDef::GetJointList
 =====================
 */
-	GetJointList(jointnames: string, jointList:idList<jointHandle_t>  ) :void {
-	var pos:number;
-		var jointname = new idStr			;
-	var joint:jointInfo_t;
-	var child:jointInfo_t;
-	var i :number /*int*/;
-	var num :number /*int*/;
-	var getChildren:boolean;
-	var subtract: boolean;
+	GetJointList ( jointnames: string, jointList: idList<jointHandle_t> ): void {
+		var pos: number;
+		var jointname = new idStr;
+		var joint: jointInfo_t;
+		var child: jointInfo_t;
+		var i: number /*int*/;
+		var num: number /*int*/;
+		var getChildren: boolean;
+		var subtract: boolean;
 
-	if ( !this.modelHandle ) {
-		return;
+		if ( !this.modelHandle ) {
+			return;
+		}
+
+		jointList.Clear ( );
+
+		num = this.modelHandle.NumJoints ( );
+
+		// scan through list of joints and add each to the joint list
+		pos = 0; //jointnames;
+		while ( jointnames[pos] ) {
+			// skip over whitespace
+			while ( ( jointnames[pos] /*!= 0*/ ) && isspace( jointnames[pos] ) ) {
+				pos++;
+			}
+
+			if ( !jointnames[pos] ) {
+				// no more names
+				break;
+			}
+
+			// copy joint name
+			jointname.equals( "" );
+
+			if ( jointnames[pos] == '-' ) {
+				subtract = true;
+				pos++;
+			} else {
+				subtract = false;
+			}
+
+			if ( jointnames[pos] == '*' ) {
+				getChildren = true;
+				pos++;
+			} else {
+				getChildren = false;
+			}
+
+			while ( ( jointnames[pos] /*!= 0*/ ) && !isspace( jointnames[pos] ) ) {
+				jointname.Append( jointnames[pos] );
+				pos++;
+			}
+
+			joint = this.FindJoint( jointname.data );
+			if ( !joint ) {
+				gameLocal.Warning( "Unknown joint '%s' in '%s' for model '%s'", jointname.c_str ( ), jointnames, this.GetName ( ) );
+				continue;
+			}
+
+			if ( !subtract ) {
+				jointList.AddUnique( joint.num );
+			} else {
+				jointList.Remove( joint.num );
+			}
+
+			if ( getChildren ) {
+				todoThrow ( );
+				//	// include all joint's children
+				//	child = joint + 1;
+				//	for( i = joint.num + 1; i < num; i++, child++ ) {
+				//		// all children of the joint should follow it in the list.
+				//		// once we reach a joint without a parent or with a parent
+				//		// who is earlier in the list than the specified joint, then
+				//		// we've gone through all it's children.
+				//		if ( child.parentNum < joint.num ) {
+				//			break;
+				//		}
+
+				//		if ( !subtract ) {
+				//			jointList.AddUnique( child.num );
+				//		} else {
+				//			jointList.Remove( child.num );
+				//		}
+				//	}
+			}
+		}
 	}
-
-	jointList.Clear();
-
-	num = this.modelHandle.NumJoints();
-
-	// scan through list of joints and add each to the joint list
-		pos = 0;//jointnames;
-	while( jointnames[pos] ) {
-		// skip over whitespace
-		while( ( jointnames[pos] /*!= 0*/ ) && isspace( jointnames[pos] ) ) {
-			pos++;
-		}
-
-		if ( !jointnames[pos] ) {
-			// no more names
-			break;
-		}
-
-		// copy joint name
-		jointname.equals( "" );
-
-		if ( jointnames[pos] == '-' ) {
-			subtract = true;
-			pos++;
-		} else {
-			subtract = false;
-		}
-
-		if ( jointnames[pos] == '*' ) {
-			getChildren = true;
-			pos++;
-		} else {
-			getChildren = false;
-		}
-
-		while( ( jointnames[pos] /*!= 0*/ ) && !isspace( jointnames[pos] ) ) {
-			jointname.Append( jointnames[pos] );
-			pos++;
-		}
-
-		joint = this.FindJoint( jointname .data);
-		if ( !joint ) {
-			gameLocal.Warning( "Unknown joint '%s' in '%s' for model '%s'", jointname.c_str(), jointnames, this.GetName() );
-			continue;
-		}
-
-		if ( !subtract ) {
-			jointList.AddUnique( joint.num );
-		} else {
-			jointList.Remove( joint.num );
-		}
-
-		if (getChildren) {
-			todoThrow ( );
-		//	// include all joint's children
-		//	child = joint + 1;
-		//	for( i = joint.num + 1; i < num; i++, child++ ) {
-		//		// all children of the joint should follow it in the list.
-		//		// once we reach a joint without a parent or with a parent
-		//		// who is earlier in the list than the specified joint, then
-		//		// we've gone through all it's children.
-		//		if ( child.parentNum < joint.num ) {
-		//			break;
-		//		}
-
-		//		if ( !subtract ) {
-		//			jointList.AddUnique( child.num );
-		//		} else {
-		//			jointList.Remove( child.num );
-		//		}
-		//	}
-		}
-	}
-}
 
 /*
 =====================
