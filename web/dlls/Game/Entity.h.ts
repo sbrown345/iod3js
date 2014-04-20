@@ -606,7 +606,7 @@ idEntity::Spawn
 		// go dormant within 5 frames so that when the map starts most monsters are dormant
 		this.dormantStart = gameLocal.time - DELAY_DORMANT_TIME + gameLocal.msec * 5;
 
-		origin.equals( this.renderEntity.origin );
+		origin.opEquals( this.renderEntity.origin );
 		axis.equals( this.renderEntity.axis );
 
 		// do the audio parsing the same way dmap and the editor do
@@ -1327,7 +1327,7 @@ UpdateModelTransform( ):void {
 		//this.renderEntity.origin = this.GetPhysics().GetOrigin() + origin * this.renderEntity.axis;
 	} else {
 		this.renderEntity.axis.equals( this.GetPhysics ( ).GetAxis ( ) );
-		this.renderEntity.origin.equals( this.GetPhysics ( ).GetOrigin ( ) );
+		this.renderEntity.origin.opEquals( this.GetPhysics ( ).GetOrigin ( ) );
 	}
 }
 
@@ -1800,9 +1800,9 @@ idEntity::UpdateSound
 			var axis = new idMat3 ;
 
 			if ( this.GetPhysicsToSoundTransform( origin, axis ) ) {
-				this.refSound.origin.equals( this.GetPhysics ( ).GetOrigin ( ).opAddition( ( origin.opMultiplicationAssignment_mat3( axis ) ) ) );
+				this.refSound.origin.opEquals( this.GetPhysics ( ).GetOrigin ( ).opAddition( ( origin.opMultiplicationAssignment_mat3( axis ) ) ) );
 			} else {
-				this.refSound.origin.equals( this.GetPhysics ( ).GetOrigin ( ) );
+				this.refSound.origin.opEquals( this.GetPhysics ( ).GetOrigin ( ) );
 			}
 
 			this.refSound.referenceSound.UpdateEmitter( this.refSound.origin, this.refSound.listenerId, this.refSound.parms );

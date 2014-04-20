@@ -455,7 +455,7 @@ idMapBrush::Parse
 				sides.DeleteContents( true );
 				return null;
 			}
-			side.origin.equals( origin );
+			side.origin.opEquals( origin );
 
 			// read the material
 			if ( !src.ReadTokenOnLine( token ) ) {
@@ -870,7 +870,7 @@ class idMapBrushSide {
 	GetPlane(): idPlane { return this.plane; }
 	SetPlane(p: idPlane ):void { this.plane.opEquals( p ); }
 	SetTextureMatrix(mat: idVec3[]/*[2]*/ ): void { this.texMat[0] = mat[0]; this. texMat[1] = mat[1]; }
-	GetTextureMatrix(mat1: idVec3, mat2: idVec3): void { mat1.equals( this.texMat[0]); mat2 .equals(this.texMat[1]); }
+	GetTextureMatrix(mat1: idVec3, mat2: idVec3): void { mat1.opEquals( this.texMat[0]); mat2 .opEquals(this.texMat[1]); }
 ////	void					GetTextureVectors( idVec4 v[2] ) const;
 ////
 ////protected:

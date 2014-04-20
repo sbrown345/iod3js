@@ -600,16 +600,16 @@ idPVS::AddPassageBoundaries
 		for ( i = 0; i < source.GetNumPoints ( ); i++ ) {
 
 			l = ( i + 1 ) % source.GetNumPoints ( );
-			v1.equals( source[l].ToVec3 ( ).opSubtraction( source[i].ToVec3 ( ) ) );
+			v1.opEquals( source[l].ToVec3 ( ).opSubtraction( source[i].ToVec3 ( ) ) );
 
 			// find a vertex of pass that makes a plane that puts all of the
 			// vertices of pass on the front side and all of the vertices of
 			// source on the back side
 			for ( j = 0; j < pass.GetNumPoints ( ); j++ ) {
 
-				v2.equals( pass[j].ToVec3 ( ).opSubtraction( source[i].ToVec3 ( ) ) );
+				v2.opEquals( pass[j].ToVec3 ( ).opSubtraction( source[i].ToVec3 ( ) ) );
 
-				normal.equals( v1.Cross( v2 ) );
+				normal.opEquals( v1.Cross( v2 ) );
 				if ( normal.Normalize ( ) < 0.01 ) {
 					continue;
 				}
@@ -644,7 +644,7 @@ idPVS::AddPassageBoundaries
 
 				// flip the normal if the source portal is backwards
 				if ( flipTest ) {
-					normal.equals( normal.opUnaryMinus ( ) );
+					normal.opEquals( normal.opUnaryMinus ( ) );
 					dist = -dist;
 				}
 

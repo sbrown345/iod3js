@@ -40,8 +40,10 @@ function memcpyStructs ( dest: any, source: any, count: number, typeInfo: TypeIn
 			TypeInfoCopier( dest[i], source[i + srcOffset], typeInfo );
 		} else if (source[i].copy && dest[i].copy ) {
 			source[i].copy( dest[i] );
-		} else if (dest[i].equals && source[i].equals ) {
-			dest[i].equals( source[i] );
+		} else if (dest[i].opEquals && source[i].opEquals ) {
+			dest[i].opEquals( source[i] );
+		} else if (dest[i].opEquals && source[i].opEquals ) {
+			dest[i].opEquals( source[i] );
 		} else {
 			todoThrow ( );
 		}

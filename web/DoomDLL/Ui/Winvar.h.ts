@@ -732,7 +732,7 @@ class idWinVec3 extends idWinVar {
 	}
 
 	equalsVec3 ( other: idVec3 ): idVec3 {
-		this.data.equals( other );
+		this.data.opEquals( other );
 		if ( this.guiDict ) {
 			this.guiDict.SetVector( this.GetName ( ), this.data );
 		}

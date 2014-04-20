@@ -239,10 +239,10 @@ class idIK {
 	*/
 	GetBoneAxis(startPos: idVec3, endPos: idVec3, dir: idVec3, axis: idMat3 ) :number/*float*/{
 		var/*float */length:number;
-		axis[0].equals( endPos.opSubtraction( startPos ) );
+		axis[0].opEquals( endPos.opSubtraction( startPos ) );
 		length = axis[0].Normalize();
 		debugger;//check line below:
-		axis[1].equals(dir.opSubtraction(axis[0].timesFloat(dir.timesVec(axis[0])))); //axis[1] = dir - axis[0] * dir * axis[0];
+		axis[1].opEquals(dir.opSubtraction(axis[0].timesFloat(dir.timesVec(axis[0])))); //axis[1] = dir - axis[0] * dir * axis[0];
 		axis[1].Normalize();
 		axis[2].Cross_2(axis[1], axis[0]);
 		return length;
@@ -595,7 +595,7 @@ idIK_Walk::Init
 			ankleOrigin = joints[this.ankleJoints[i]].ToVec3 ( );
 
 			kneeAxis = joints[this.kneeJoints[i]].ToMat3 ( );
-			kneeOrigin.equals( joints[this.kneeJoints[i]].ToVec3 ( ) );
+			kneeOrigin.opEquals( joints[this.kneeJoints[i]].ToVec3 ( ) );
 
 			hipAxis = joints[this.hipJoints[i]].ToMat3 ( );
 			hipOrigin = joints[this.hipJoints[i]].ToVec3 ( );
@@ -603,13 +603,13 @@ idIK_Walk::Init
 			// get the IK direction
 			if ( this.dirJoints[i] != jointHandle_t.INVALID_JOINT ) {
 				dirOrigin = joints[this.dirJoints[i]].ToVec3 ( );
-				dir.equals( dirOrigin.opSubtraction( kneeOrigin ) );
+				dir.opEquals( dirOrigin.opSubtraction( kneeOrigin ) );
 			} else {
 				dir.Set( 1.0, 0.0, 0.0 );
 			}
 
-			this.hipForward[i].equals( dir.opMultiplicationAssignment_mat3( hipAxis.Transpose ( ) ) );
-			this.kneeForward[i].equals( dir.opMultiplicationAssignment_mat3( kneeAxis.Transpose ( ) ) );
+			this.hipForward[i].opEquals( dir.opMultiplicationAssignment_mat3( hipAxis.Transpose ( ) ) );
+			this.kneeForward[i].opEquals( dir.opMultiplicationAssignment_mat3( kneeAxis.Transpose ( ) ) );
 
 			// conversion from upper leg bone axis to hip joint axis
 			this.upperLegLength[i] = this.GetBoneAxis( hipOrigin, kneeOrigin, dir, axis );
@@ -635,7 +635,7 @@ idIK_Walk::Init
 		footSize = self.spawnArgs.GetFloat( "ik_footSize", "4" ) * 0.5;
 		if ( footSize > 0.0 ) {
 			for ( i = 0; i < 4; i++ ) {
-				verts[i].equals( footWinding[i].timesFloat( footSize ) );
+				verts[i].opEquals( footWinding[i].timesFloat( footSize ) );
 			}
 			trm.SetupPolygon( verts, 4 );
 			this.footModel = new idClipModel( trm );

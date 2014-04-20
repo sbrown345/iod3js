@@ -1421,7 +1421,7 @@ idRenderModelStatic::ConvertLWOToModelSurfaces
 						mv = mvTable[tri.numVerts];
 						mv.v = v;
 						mv.tv = tv;
-						mv.normal.equals( normal );
+						mv.normal.opEquals( normal );
 						mv.color.set(color);//*(unsigned *)mv.color = *(unsigned *)color;
 						mv.next = null;
 						if ( lastmv ) {
@@ -1450,9 +1450,9 @@ idRenderModelStatic::ConvertLWOToModelSurfaces
 			for ( j = 0; j < tri.numVerts; j++ ) {
 				mv = mvTable[j];
 				tri.verts[j].Clear ( );
-				tri.verts[j].xyz.equals( vList[mv.v] );
+				tri.verts[j].xyz.opEquals( vList[mv.v] );
 				tri.verts[j].st.equals( tvList[mv.tv] );
-				tri.verts[j].normal.equals( mv.normal );
+				tri.verts[j].normal.opEquals( mv.normal );
 				tri.verts[j].color.set( mv.color );
 			}
 

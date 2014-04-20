@@ -70,11 +70,11 @@ class idDrawVert {
 	}
 
 	equals ( other: idDrawVert ): void {
-		this.xyz.equals( other.xyz );
+		this.xyz.opEquals( other.xyz );
 		this.st.equals( other.st );
-		this.normal.equals( other.normal );
-		this.tangents[0].equals( other.tangents[0] );
-		this.tangents[1].equals( other.tangents[1] );
+		this.normal.opEquals( other.normal );
+		this.tangents[0].opEquals( other.tangents[0] );
+		this.tangents[1].opEquals( other.tangents[1] );
 		this.color[0] = other.color[0];
 		this.color[1] = other.color[1];
 		this.color[2] = other.color[2];

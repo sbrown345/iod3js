@@ -93,7 +93,7 @@ class cm_vertex_t {
 
 	copy ( dest: cm_vertex_t = null ): cm_vertex_t {
 		dest = dest || new cm_vertex_t;
-		dest.p.equals( this.p );
+		dest.p.opEquals( this.p );
 		dest.checkcount = this.checkcount;
 		dest.side = this.side;
 		dest.sideSet = this.sideSet;
@@ -127,7 +127,7 @@ class cm_edge_t {
 		dest.sideSet = this.sideSet;
 		dest.vertexNum[0] = this.vertexNum[0];
 		dest.vertexNum[1] = this.vertexNum[1];
-		dest.normal.equals( this.normal );
+		dest.normal.opEquals( this.normal );
 		return dest;
 	}
 }
@@ -1150,25 +1150,25 @@ idCollisionModelManagerLocal::CalculateEdgeNormals
 					if ( edge.normal[0] == 0.0 && edge.normal[1] == 0.0 && edge.normal[2] == 0.0 ) {
 						// if the edge is only used by this polygon
 						if ( edge.numUsers == 1 ) {
-							dir.equals( model.vertices[edge.vertexNum[edgeNum < 0 ? 1 : 0]].p.opSubtraction( model.vertices[edge.vertexNum[edgeNum > 0 ? 1 : 0]].p ) );
-							edge.normal.equals( p.plane.Normal ( ).Cross( dir ) );
+							dir.opEquals( model.vertices[edge.vertexNum[edgeNum < 0 ? 1 : 0]].p.opSubtraction( model.vertices[edge.vertexNum[edgeNum > 0 ? 1 : 0]].p ) );
+							edge.normal.opEquals( p.plane.Normal ( ).Cross( dir ) );
 							edge.normal.Normalize ( );
 						} else {
 							// the edge is used by more than one polygon
-							edge.normal.equals( p.plane.Normal ( ) );
+							edge.normal.opEquals( p.plane.Normal ( ) );
 						}
 					} else {
 						dot = edge.normal.timesVec( p.plane.Normal ( ) );
 						// if the two planes make a very sharp edge
 						if ( dot < idCollisionModelManagerLocal.SHARP_EDGE_DOT ) {
 							// max length normal pointing outside both polygons
-							dir.equals( model.vertices[edge.vertexNum[edgeNum > 0 ? 1 : 0]].p.opSubtraction( model.vertices[edge.vertexNum[edgeNum < 0 ? 1 : 0]].p ) );
-							edge.normal.equals( edge.normal.Cross( dir ).opAddition( p.plane.Normal ( ).Cross( dir.opUnaryMinus ( ) ) ) );
+							dir.opEquals( model.vertices[edge.vertexNum[edgeNum > 0 ? 1 : 0]].p.opSubtraction( model.vertices[edge.vertexNum[edgeNum < 0 ? 1 : 0]].p ) );
+							edge.normal.opEquals( edge.normal.Cross( dir ).opAddition( p.plane.Normal ( ).Cross( dir.opUnaryMinus ( ) ) ) );
 							edge.normal.opMultiplicationAssignment( ( 0.5 / ( 0.5 + 0.5 * idCollisionModelManagerLocal.SHARP_EDGE_DOT ) ) / edge.normal.Length ( ) );
 							model.numSharpEdges++;
 						} else {
 							s = 0.5 / ( 0.5 + 0.5 * dot );
-							edge.normal.equals( idVec3.times( s, edge.normal.opAddition( p.plane.Normal ( ) ) ) );
+							edge.normal.opEquals( idVec3.times( s, edge.normal.opAddition( p.plane.Normal ( ) ) ) );
 						}
 					}
 				}
@@ -1836,15 +1836,15 @@ idCollisionModelManagerLocal::WindingOutsideBrushes
 			cm_windingList.bounds.AddPoint( ( w )[i].ToVec3 ( ) );
 		}
 
-		cm_windingList.origin.equals( cm_windingList.bounds[1].opSubtraction( cm_windingList.bounds[0] ).timesFloat( 0.5 ) );
+		cm_windingList.origin.opEquals( cm_windingList.bounds[1].opSubtraction( cm_windingList.bounds[0] ).timesFloat( 0.5 ) );
 		cm_windingList.radius = cm_windingList.origin.Length ( ) + CHOP_EPSILON;
-		cm_windingList.origin.equals( cm_windingList.bounds[0].opAddition( cm_windingList.origin ) );
+		cm_windingList.origin.opEquals( cm_windingList.bounds[0].opAddition( cm_windingList.origin ) );
 		cm_windingList.bounds[0].opSubtractionAssignment( new idVec3( CHOP_EPSILON, CHOP_EPSILON, CHOP_EPSILON ) );
 		cm_windingList.bounds[1].opAdditionAssignment( new idVec3( CHOP_EPSILON, CHOP_EPSILON, CHOP_EPSILON ) );
 
 		cm_windingList.w[0].opEquals( w );
 		cm_windingList.numWindings = 1;
-		cm_windingList.normal.equals( plane.Normal ( ) );
+		cm_windingList.normal.opEquals( plane.Normal ( ) );
 		cm_windingList.contents = contents;
 		cm_windingList.primitiveNum = primitiveNum;
 		//
@@ -2012,14 +2012,14 @@ idCollisionModelManagerLocal::TryMergePolygons
 		// check if the new polygon would still be convex
 		edgeNum = p1.edges[p1BeforeShare];
 		edge = model.edges[abs( edgeNum )];
-		delta.equals( model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p.opSubtraction(
+		delta.opEquals( model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p.opSubtraction(
 			model.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]].p ) );
 		normal = p1.plane.Normal ( ).Cross( delta );
 		normal.Normalize ( );
 
 		edgeNum = p2.edges[p2AfterShare];
 		edge = model.edges[abs( edgeNum )];
-		delta.equals( model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p.opSubtraction(
+		delta.opEquals( model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p.opSubtraction(
 			model.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]].p ) );
 
 		dot = delta.timesVec( normal );
@@ -2029,14 +2029,14 @@ idCollisionModelManagerLocal::TryMergePolygons
 
 		edgeNum = p2.edges[p2BeforeShare];
 		edge = model.edges[abs( edgeNum )];
-		delta.equals( model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p.opSubtraction(
+		delta.opEquals( model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p.opSubtraction(
 			model.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]].p ) );
 		normal = p1.plane.Normal ( ).Cross( delta );
 		normal.Normalize ( );
 
 		edgeNum = p1.edges[p1AfterShare];
 		edge = model.edges[abs( edgeNum )];
-		delta.equals( model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p.opSubtraction(
+		delta.opEquals( model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p.opSubtraction(
 			model.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]].p ) );
 
 		dot = delta.timesVec( normal );
@@ -2252,8 +2252,8 @@ idCollisionModelManagerLocal::PointInsidePolygon
 			//
 			v1 = model.vertices[edge.vertexNum[INTSIGNBITSET( edgeNum )]].p;
 			v2 = model.vertices[edge.vertexNum[INTSIGNBITNOTSET( edgeNum )]].p;
-			dir1.equals( v2.opSubtraction( v1 ) );
-			vec.equals( v.opSubtraction( v1 ) );
+			dir1.opEquals( v2.opSubtraction( v1 ) );
+			vec.opEquals( v.opSubtraction( v1 ) );
 			dir2 = dir1.Cross( p.plane.Normal ( ) );
 			if ( vec.timesVec( dir2 ) > VERTEX_EPSILON ) {
 				return false;
@@ -2343,8 +2343,8 @@ idCollisionModelManagerLocal::FindInternalEdgesOnPolygon
 			}
 		}
 		// the two polygon plane normals should face towards each other
-		dir1 .equals( (v2) .opSubtraction (v1));
-		dir2.equals(p1.plane.Normal().Cross( dir1 ));
+		dir1 .opEquals( (v2) .opSubtraction (v1));
+		dir2.opEquals(p1.plane.Normal().Cross( dir1 ));
 		if ( p2.plane.Normal ( ).timesVec( dir2 ) < 0 ) {
 			//continue;
 			break;
@@ -2962,7 +2962,7 @@ idCollisionModelManagerLocal::GetVertex
 
 			cm_vertexHash.ResizeIndex( model.maxVertices );
 		}
-		model.vertices[model.numVertices].p.equals( vert );
+		model.vertices[model.numVertices].p.opEquals( vert );
 		model.vertices[model.numVertices].checkcount = 0;
 		vertexNum.$ = model.numVertices;
 		// add vertice to hash
@@ -4943,7 +4943,7 @@ idCollisionModelManagerLocal::ParseEdges
 			model.edges[i].sideSet = 0;
 			model.edges[i].internal = src.ParseInt ( );
 			model.edges[i].numUsers = src.ParseInt ( );
-			model.edges[i].normal.equals( vec3_origin );
+			model.edges[i].normal.opEquals( vec3_origin );
 			model.edges[i].checkcount = 0;
 			model.numInternalEdges += model.edges[i].internal;
 		}

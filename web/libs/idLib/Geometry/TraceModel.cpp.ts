@@ -219,7 +219,7 @@ idTraceModel::SetupBox
 			this.InitBox ( );
 		}
 		// offset to center
-		this.offset.equals( ( boxBounds[0].opAddition( boxBounds[1] ) ).timesFloat( 0.5 ) );
+		this.offset.opEquals( ( boxBounds[0].opAddition( boxBounds[1] ) ).timesFloat( 0.5 ) );
 		// set box vertices
 		for ( i = 0; i < 8; i++ ) {
 			this.verts[i][0] = boxBounds[( i ^ ( i >> 1 ) ) & 1][0];
@@ -744,8 +744,8 @@ idTraceModel::SetupCylinder
 		this.numVerts = n * 2;
 		this.numEdges = n * 3;
 		this.numPolys = n + 2;
-		this.offset.equals( ( cylBounds[0].opAddition( cylBounds[1] ) ).timesFloat( 0.5 ) );
-		halfSize.equals( cylBounds[1].opSubtraction( this.offset ) );
+		this.offset.opEquals( ( cylBounds[0].opAddition( cylBounds[1] ) ).timesFloat( 0.5 ) );
+		halfSize.opEquals( cylBounds[1].opSubtraction( this.offset ) );
 		for ( i = 0; i < n; i++ ) {
 			// verts
 			angle = idMath.TWO_PI * i / n;
@@ -780,7 +780,7 @@ idTraceModel::SetupCylinder
 		// polygons
 		for ( i = 0; i < n; i++ ) {
 			// vertical polygon plane
-			this.polys[i].normal.equals( this.verts[( i + 1 ) % n].opSubtraction( this.verts[i] ).Cross( this.verts[n + i].opSubtraction( this.verts[i] ) ) );
+			this.polys[i].normal.opEquals( this.verts[( i + 1 ) % n].opSubtraction( this.verts[i] ).Cross( this.verts[n + i].opSubtraction( this.verts[i] ) ) );
 			this.polys[i].normal.Normalize ( );
 			this.polys[i].dist = this.polys[i].normal.timesVec( this.verts[i] );
 			// vertical polygon bounds
@@ -857,8 +857,8 @@ idTraceModel::SetupCone
 		this.numVerts = n + 1;
 		this.numEdges = n * 2;
 		this.numPolys = n + 1;
-		this.offset.equals( ( coneBounds[0].opAddition( coneBounds[1] ) ).timesFloat( 0.5 ) );
-		halfSize.equals( coneBounds[1].opSubtraction( this.offset ) );
+		this.offset.opEquals( ( coneBounds[0].opAddition( coneBounds[1] ) ).timesFloat( 0.5 ) );
+		halfSize.opEquals( coneBounds[1].opSubtraction( this.offset ) );
 		this.verts[n].Set( 0.0, 0.0, halfSize.z + this.offset.z );
 		for ( i = 0; i < n; i++ ) {
 			// verts
@@ -886,7 +886,7 @@ idTraceModel::SetupCone
 		// polygons
 		for ( i = 0; i < n; i++ ) {
 			// polygon plane
-			this.polys[i].normal.equals( this.verts[( i + 1 ) % n].opSubtraction( this.verts[i] ).Cross( this.verts[n].opSubtraction( this.verts[i] ) ) );
+			this.polys[i].normal.opEquals( this.verts[( i + 1 ) % n].opSubtraction( this.verts[i] ).Cross( this.verts[n].opSubtraction( this.verts[i] ) ) );
 			this.polys[i].normal.Normalize ( );
 			this.polys[i].dist = this.polys[i].normal.timesVec( this.verts[i] );
 			// polygon bounds
@@ -1117,7 +1117,7 @@ idTraceModel::VolumeFromPolygon
 		trm.$.numEdges = this.numEdges * 3;
 		trm.$.numPolys = this.numEdges + 2;
 		for ( i = 0; i < this.numEdges; i++ ) {
-			trm.$.verts[this.numVerts + i].equals( this.verts[i].opSubtraction( idVec3.times( thickness, this.polys[0].normal ) ) );
+			trm.$.verts[this.numVerts + i].opEquals( this.verts[i].opSubtraction( idVec3.times( thickness, this.polys[0].normal ) ) );
 			trm.$.edges[this.numEdges + i + 1].v[0] = this.numVerts + i;
 			trm.$.edges[this.numEdges + i + 1].v[1] = this.numVerts + ( i + 1 ) % this.numVerts;
 			trm.$.edges[this.numEdges * 2 + i + 1].v[0] = i;
@@ -1128,7 +1128,7 @@ idTraceModel::VolumeFromPolygon
 			trm.$.polys[2 + i].edges[1] = this.numEdges * 2 + i + 1;
 			trm.$.polys[2 + i].edges[2] = this.numEdges + i + 1;
 			trm.$.polys[2 + i].edges[3] = -( this.numEdges * 2 + ( i + 1 ) % this.numEdges + 1 );
-			trm.$.polys[2 + i].normal.equals( this.verts[( i + 1 ) % this.numVerts].opSubtraction( this.verts[i] ) ).Cross( this.polys[0].normal );
+			trm.$.polys[2 + i].normal.opEquals( this.verts[( i + 1 ) % this.numVerts].opSubtraction( this.verts[i] ) ).Cross( this.polys[0].normal );
 			trm.$.polys[2 + i].normal.Normalize ( );
 			trm.$.polys[2 + i].dist = trm.$.polys[2 + i].normal.timesVec( this.verts[i] );
 		}
@@ -1162,18 +1162,18 @@ idTraceModel::GenerateEdgeNormals
 				edgeNum = poly.edges[j];
 				edge = this.edges[abs( edgeNum )]; //+ abs( edgeNum );
 				if ( edge.normal[0] == 0.0 && edge.normal[1] == 0.0 && edge.normal[2] == 0.0 ) {
-					edge.normal.equals( poly.normal );
+					edge.normal.opEquals( poly.normal );
 				} else {
 					dot = edge.normal.timesVec( poly.normal );
 					// if the two planes make a very sharp edge
 					if ( dot < idTraceModel.SHARP_EDGE_DOT ) {
 						// max length normal pointing outside both polygons
-						dir.equals( this.verts[edge.v[edgeNum > 0 ? 1 : 0]].opSubtraction( this.verts[edge.v[edgeNum < 0 ? 1 : 0]] ) );
-						edge.normal.equals( edge.normal.Cross( dir ).opAddition( poly.normal.Cross( dir.opUnaryMinus ( ) ) ) );
+						dir.opEquals( this.verts[edge.v[edgeNum > 0 ? 1 : 0]].opSubtraction( this.verts[edge.v[edgeNum < 0 ? 1 : 0]] ) );
+						edge.normal.opEquals( edge.normal.Cross( dir ).opAddition( poly.normal.Cross( dir.opUnaryMinus ( ) ) ) );
 						edge.normal.opMultiplicationAssignment( 0.5 / ( 0.5 + 0.5 * idTraceModel.SHARP_EDGE_DOT ) / edge.normal.Length ( ) );
 						numSharpEdges++;
 					} else {
-						edge.normal.equals( idVec3.times( ( 0.5 / ( 0.5 + 0.5 * dot ) ), ( edge.normal.opAddition( poly.normal ) ) ) );
+						edge.normal.opEquals( idVec3.times( ( 0.5 / ( 0.5 + 0.5 * dot ) ), ( edge.normal.opAddition( poly.normal ) ) ) );
 					}
 				}
 			}
@@ -1454,8 +1454,8 @@ idTraceModel::ProjectionIntegrals
 		poly = this.polys[polyNum];
 		for ( i = 0; i < poly.numEdges; i++ ) {
 			edgeNum = poly.edges[i];
-			v1.equals( this.verts[this.edges[abs( edgeNum )].v[edgeNum < 0 ? 1 : 0]] );
-			v2.equals( this.verts[this.edges[abs( edgeNum )].v[edgeNum > 0 ? 1 : 0]] );
+			v1.opEquals( this.verts[this.edges[abs( edgeNum )].v[edgeNum < 0 ? 1 : 0]] );
+			v2.opEquals( this.verts[this.edges[abs( edgeNum )].v[edgeNum > 0 ? 1 : 0]] );
 			a0 = v1[a];
 			b0 = v1[b];
 			a1 = v2[a];
@@ -1525,7 +1525,7 @@ idTraceModel::PolygonIntegrals
 
 		this.ProjectionIntegrals( polyNum, a, b, pi );
 
-		n.equals( this.polys[polyNum].normal );
+		n.opEquals( this.polys[polyNum].normal );
 		w = -this.polys[polyNum].dist;
 		k1 = 1 / n[c];
 		k2 = k1 * k1;
@@ -1631,7 +1631,7 @@ idTraceModel::GetMassProperties
 		// mass of model
 		mass.$ = density * integrals.T0;
 		// center of mass
-		centerOfMass.equals( integrals.T1.opDivision( integrals.T0 ) );
+		centerOfMass.opEquals( integrals.T1.opDivision( integrals.T0 ) );
 		// compute inertia tensor
 		inertiaTensor[0][0] = density * ( integrals.T2[1] + integrals.T2[2] );
 		inertiaTensor[1][1] = density * ( integrals.T2[2] + integrals.T2[0] );

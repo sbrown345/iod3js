@@ -454,9 +454,9 @@ class idMat3 {
 	}
 
 	equals ( other: idMat3 ) {
-		this.mat[0].equals( other.mat[0] );
-		this.mat[1].equals( other.mat[1] );
-		this.mat[2].equals( other.mat[2] );
+		this.mat[0].opEquals( other.mat[0] );
+		this.mat[1].opEquals( other.mat[1] );
+		this.mat[2].opEquals( other.mat[2] );
 	}
 
 	memset0 ( ): void {

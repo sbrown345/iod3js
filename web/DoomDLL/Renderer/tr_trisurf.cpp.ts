@@ -1235,13 +1235,13 @@ function R_DeriveFaceTangents ( tri: srfTriangles_t, faceTangents: faceTangents_
 		temp[1] = ( d0[1] * d1[4] - d0[4] * d1[1] ) * inva;
 		temp[2] = ( d0[2] * d1[4] - d0[4] * d1[2] ) * inva;
 		temp.Normalize ( );
-		ft.tangents[0].equals( temp );
+		ft.tangents[0].opEquals( temp );
 
 		temp[0] = ( d0[3] * d1[0] - d0[0] * d1[3] ) * inva;
 		temp[1] = ( d0[3] * d1[1] - d0[1] * d1[3] ) * inva;
 		temp[2] = ( d0[3] * d1[2] - d0[2] * d1[3] ) * inva;
 		temp.Normalize ( );
-		ft.tangents[1].equals( temp );
+		ft.tangents[1].opEquals( temp );
 //#else
 //        temp[0] = (d0[0] * d1[4] - d0[4] * d1[0]);
 //        temp[1] = (d0[1] * d1[4] - d0[4] * d1[1]);
@@ -1445,7 +1445,7 @@ function R_DeriveTangentsWithoutNormals ( tri: srfTriangles_t ): void {
 			var /*float	*/d: number;
 
 			d = vert.tangents[j].timesVec( vert.normal );
-			vert.tangents[j].equals( vert.tangents[j].opSubtraction( idVec3.times( d, vert.normal ) ) );
+			vert.tangents[j].opEquals( vert.tangents[j].opSubtraction( idVec3.times( d, vert.normal ) ) );
 			vert.tangents[j].Normalize ( );
 		}
 	}
@@ -1798,7 +1798,7 @@ function R_DeriveTangents(tri:srfTriangles_t, allocFacePlanes:boolean = true):vo
 
 	// copy vertex normals to duplicated vertices
 	for ( i = 0; i < tri.numDupVerts; i++ ) {
-		verts[dupVerts[i * 2 + 1]].normal /*=*/.equals( verts[dupVerts[i * 2 + 0]].normal );
+		verts[dupVerts[i * 2 + 1]].normal /*=*/.opEquals( verts[dupVerts[i * 2 + 0]].normal );
 	}
 
 //#endif
@@ -2097,7 +2097,7 @@ function R_ReverseTriangles ( tri: srfTriangles_t ): void {
 	// If the surface is going to have generated normals, this won't matter,
 	// but if it has explicit normals, this will keep it on the correct side
 	for ( i = 0; i < tri.numVerts; i++ ) {
-		tri.verts[i].normal.equals( vec3_origin.opSubtraction( tri.verts[i].normal ) );
+		tri.verts[i].normal.opEquals( vec3_origin.opSubtraction( tri.verts[i].normal ) );
 	}
 
 	// flip the index order to make them back sided

@@ -955,7 +955,7 @@ idWinding::GetBounds
 			return;
 		}
 
-		bounds[0].equals( bounds[1].equals( this.p[0].ToVec3 ( ) ) );
+		bounds[0].opEquals( bounds[1].opEquals( this.p[0].ToVec3 ( ) ) );
 		for ( i = 1; i < this.numPoints; i++ ) {
 			if ( this.p[i].x < bounds[0].x ) {
 				bounds[0].x = this.p[i].x;

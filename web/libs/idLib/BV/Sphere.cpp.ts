@@ -109,10 +109,10 @@ class idSphere {
 	constructor ( point: idVec3, r: number /*float*/ )
 	constructor ( point?: idVec3, r?: number /*float*/ ) {
 		if ( arguments.length == 1 ) {
-			this.origin.equals( point );
+			this.origin.opEquals( point );
 			this.radius = 0.0;
 		} else if ( arguments.length == 2 ) {
-			this.origin.equals( point );
+			this.origin.opEquals( point );
 			this.radius = r;
 		}
 	}

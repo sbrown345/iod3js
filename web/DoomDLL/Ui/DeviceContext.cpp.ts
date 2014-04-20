@@ -280,7 +280,7 @@ class idDeviceContext {
 	}
 
 	SetTransformInfo ( org: idVec3, m: idMat3 ): void {
-		this.origin.equals( org );
+		this.origin.opEquals( org );
 		this.mat.equals( m );
 	}
 
@@ -288,7 +288,7 @@ class idDeviceContext {
 //  added method
 	GetTransformInfo ( org: idVec3, m: idMat3 ) {
 		m.equals( this.mat );
-		org.equals( this.origin );
+		org.opEquals( this.origin );
 	}
 
 

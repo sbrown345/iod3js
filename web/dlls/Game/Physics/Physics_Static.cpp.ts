@@ -512,9 +512,9 @@ idPhysics_Static::idPhysics_Static
 		if ( this.hasMaster ) {
 			todoThrow ( );
 			//this.self.GetMasterPosition( masterOrigin, masterAxis );
-			//this.current.origin .equals( masterOrigin + newOrigin * masterAxis);
+			//this.current.origin .opEquals( masterOrigin + newOrigin * masterAxis);
 		} else {
-			this.current.origin = newOrigin;
+			this.current.origin .opEquals(newOrigin);
 		}
 
 		if ( this.clipModel ) {
@@ -531,7 +531,7 @@ idPhysics_Static::idPhysics_Static
 		var masterOrigin = new idVec3;
 		var masterAxis = new idMat3;
 
-		this.current.localAxis = newAxis;
+		this.current.localAxis .equals(newAxis);
 
 		if ( this.hasMaster && this.isOrientated ) {
 			todoThrow ( );

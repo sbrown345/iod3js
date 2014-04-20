@@ -201,7 +201,7 @@ class renderEntity_t {
 		this.suppressShadowInViewID = other.suppressShadowInViewID;
 		this.suppressShadowInLightID = other.suppressShadowInLightID;
 		this.allowSurfaceInViewID = other.allowSurfaceInViewID;
-		this.origin.equals( other.origin );
+		this.origin.opEquals( other.origin );
 		this.axis.equals( other.axis );
 		this.customShader = other.customShader;
 		this.referenceShader = other.referenceShader;

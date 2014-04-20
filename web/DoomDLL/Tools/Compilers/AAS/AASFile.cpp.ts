@@ -184,8 +184,8 @@ idAASSettings::idAASSettings
 		this.allowFlyReachabilities = false;
 		this.fileExtension.equals( "aas48" );
 		// physics settings
-		this.gravity.equals( new idVec3( 0, 0, -1066 ) );
-		this.gravityDir.equals( this.gravity );
+		this.gravity.opEquals( new idVec3( 0, 0, -1066 ) );
+		this.gravityDir.opEquals( this.gravity );
 		this.gravityValue = this.gravityDir.Normalize ( );
 		this.invGravityDir = this.gravityDir.opUnaryMinus ( );
 		this.maxStepHeight = 14.0;
@@ -343,9 +343,9 @@ idAASSettings::FromParser
 				this.fileExtension.equals( token );
 			} else if ( token.data == "gravity" ) {
 				this.ParseVector( src, this.gravity );
-				this.gravityDir.equals( this.gravity );
+				this.gravityDir.opEquals( this.gravity );
 				this.gravityValue = this.gravityDir.Normalize ( );
-				this.invGravityDir.equals( this.gravityDir.opUnaryMinus ( ) );
+				this.invGravityDir.opEquals( this.gravityDir.opUnaryMinus ( ) );
 			} else if ( token.data == "maxStepHeight" ) {
 				var $maxStepHeight = new R( this.maxStepHeight );
 				if ( !this.ParseFloat( src, $maxStepHeight ) ) {

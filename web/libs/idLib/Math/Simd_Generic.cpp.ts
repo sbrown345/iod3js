@@ -2654,9 +2654,9 @@ idSIMD_Generic::DeriveTangents
 				a.tangents[0] /*+=*/.opAdditionAssignment( t0 );
 				a.tangents[1] /*+=*/.opAdditionAssignment( t1 );
 			} else {
-				a.normal /*=*/.equals( n );
-				a.tangents[0] /*=*/.equals( t0 );
-				a.tangents[1] /*=*/.equals( t1 );
+				a.normal /*=*/.opEquals( n );
+				a.tangents[0] /*=*/.opEquals( t0 );
+				a.tangents[1] /*=*/.opEquals( t1 );
 				used[v0] = true;
 			}
 
@@ -2665,9 +2665,9 @@ idSIMD_Generic::DeriveTangents
 				b.tangents[0] /*+=*/.opAdditionAssignment( t0 );
 				b.tangents[1] /*+=*/.opAdditionAssignment( t1 );
 			} else {
-				b.normal /*=*/.equals( n );
-				b.tangents[0] /*=*/.equals( t0 );
-				b.tangents[1] /*=*/.equals( t1 );
+				b.normal /*=*/.opEquals( n );
+				b.tangents[0] /*=*/.opEquals( t0 );
+				b.tangents[1] /*=*/.opEquals( t1 );
 				used[v1] = true;
 			}
 
@@ -2676,9 +2676,9 @@ idSIMD_Generic::DeriveTangents
 				c.tangents[0] /*+=*/.opAdditionAssignment( t0 );
 				c.tangents[1] /*+=*/.opAdditionAssignment( t1 );
 			} else {
-				c.normal /*=*/.equals( n );
-				c.tangents[0] /*=*/.equals( t0 );
-				c.tangents[1] /*=*/.equals( t1 );
+				c.normal /*=*/.opEquals( n );
+				c.tangents[0] /*=*/.opEquals( t0 );
+				c.tangents[1] /*=*/.opEquals( t1 );
 				used[v2] = true;
 			}
 		}

@@ -856,7 +856,7 @@ class idAF {
 
 		joint = reinterpret_cast<idAnimator>( model ).GetJointHandle( jointName );
 		if ( ( joint >= 0 ) && ( joint < reinterpret_cast<idAnimator>( model ).NumJoints ( ) ) ) {
-			origin.equals( frame[joint].ToVec3 ( ) );
+			origin.opEquals( frame[joint].ToVec3 ( ) );
 			axis.equals( frame[joint].ToMat3 ( ) );
 			return true;
 		} else {

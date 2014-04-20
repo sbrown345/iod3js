@@ -106,8 +106,8 @@ class idRotation {
 ////}
 ////
 	Set ( rotationOrigin: idVec3, rotationVec: idVec3, /*const float */rotationAngle: number ): void {
-		this.origin.equals( rotationOrigin );
-		this.vec.equals( rotationVec );
+		this.origin.opEquals( rotationOrigin );
+		this.vec.opEquals( rotationVec );
 		this.angle = rotationAngle;
 		this.axisValid = false;
 	}

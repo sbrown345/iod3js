@@ -432,7 +432,7 @@ class idMover extends idEntity {
 		this.spawnArgs.GetFloat_R("damage", "0", $damage);
 		this.damage = $damage.$;
 
-		this.dest_position.equals( this.GetPhysics ( ).GetOrigin ( ) );
+		this.dest_position.opEquals( this.GetPhysics ( ).GetOrigin ( ) );
 		this.dest_angles.opEquals( this.GetPhysics ( ).GetAxis ( ).ToAngles ( ) );
 		
 		this.physicsObj.SetSelf(this);

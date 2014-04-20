@@ -1892,7 +1892,7 @@ PushVolumeIntoTree
 		radSquared = 0;
 
 		for ( i = 0; i < numPoints; i++ ) {
-			dir.equals( points[i].opSubtraction( mid ) );
+			dir.opEquals( points[i].opSubtraction( mid ) );
 			lr = dir.timesVec( dir );
 			if ( lr > radSquared ) {
 				radSquared = lr;

@@ -618,7 +618,7 @@ class idVec3 {
 		return new idVec3( this.x + a.x, this.y + a.y, this.z + a.z );
 	}
 
-	equals ( a: idVec3 ): idVec3 {
+	opEquals ( a: idVec3 ): idVec3 {
 		this.x = a.x;
 		this.y = a.y;
 		this.z = a.z;
@@ -1104,7 +1104,7 @@ idVec3::ToMat3
 		var mat = new idMat3;
 		var /*float	*/d: number;
 
-		mat[0].equals( this );
+		mat[0].opEquals( this );
 		d = this.x * this.x + this.y * this.y;
 		if ( !d ) {
 			mat[1][0] = 1.0;

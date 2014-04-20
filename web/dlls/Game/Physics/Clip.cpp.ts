@@ -763,7 +763,7 @@ idClipModel::GetMassProperties
 
 		var entry = traceModelCache[this.traceModelIndex];
 		mass.$ = entry.volume * density;
-		centerOfMass.equals( entry.centerOfMass );
+		centerOfMass.opEquals( entry.centerOfMass );
 		inertiaTensor.equals( idMat3.opMultiplication_floatMat( density, entry.inertiaTensor ) );
 	}
 
@@ -847,8 +847,8 @@ idClipModel::Link
 			this.absBounds.FromTransformedBounds( this.bounds, this.origin, this.axis );
 		} else {
 			// normal
-			this.absBounds[0].equals( this.bounds[0].opAddition( this.origin ) );
-			this.absBounds[1].equals( this.bounds[1].opAddition( this.origin ) );
+			this.absBounds[0].opEquals( this.bounds[0].opAddition( this.origin ) );
+			this.absBounds[1].opEquals( this.bounds[1].opAddition( this.origin ) );
 		}
 
 		// because movement is clipped an epsilon away from an actual edge,
@@ -1049,7 +1049,7 @@ Builds a uniformly subdivided tree for the given world size
 			return anode;
 		}
 
-		size.equals( bounds[1].opSubtraction( bounds[0] ) );
+		size.opEquals( bounds[1].opSubtraction( bounds[0] ) );
 		if ( size[0] >= size[1] && size[0] >= size[2] ) {
 			anode.axis = 0;
 		} else if ( size[1] >= size[0] && size[1] >= size[2] ) {
@@ -1092,7 +1092,7 @@ idClip::Init
 		// create world sectors
 		this.CreateClipSectors_r( 0, this.worldBounds, maxSector );
 
-		size.equals( this.worldBounds[1].opSubtraction( this.worldBounds[0] ) );
+		size.opEquals( this.worldBounds[1].opSubtraction( this.worldBounds[0] ) );
 		gameLocal.Printf( "map bounds are (%1.1f, %1.1f, %1.1f)\n", size[0], size[1], size[2] );
 		gameLocal.Printf( "max clip sector is (%1.1f, %1.1f, %1.1f)\n", maxSector[0], maxSector[1], maxSector[2] );
 

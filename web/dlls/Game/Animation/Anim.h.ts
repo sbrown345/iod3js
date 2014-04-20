@@ -3138,7 +3138,7 @@ idAnimBlend::BlendOrigin
 		}
 		todoThrow ( );
 		//if ( !blendWeight ) {
-		//	blendPos.equals( pos );
+		//	blendPos.opEquals( pos );
 		//	blendWeight.$ = weight;
 		//} else {
 		//	lerp = weight / ( blendWeight.$ + weight );

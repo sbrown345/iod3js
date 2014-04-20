@@ -203,7 +203,7 @@ class aasArea_t {
 		dest.numFaces = this.numFaces;
 		dest.firstFace = this.firstFace;
 		dest.bounds.opEquals( this.bounds );
-		dest.center.equals( this.center );
+		dest.center.opEquals( this.center );
 		dest.flags = this.flags;
 		dest.contents = this.contents;
 		dest.cluster = this.cluster;
@@ -1001,7 +1001,7 @@ idAASFileLocal::FinishAreas
 		var /*int */i: number;
 
 		for ( i = 0; i < this.areas.Num ( ); i++ ) {
-			this.areas[i].center.equals( this.AreaReachableGoal( i ) );
+			this.areas[i].center.opEquals( this.AreaReachableGoal( i ) );
 			this.areas[i].bounds.opEquals( this.AreaBounds( i ) );
 		}
 	}
@@ -1395,7 +1395,7 @@ idAASFileLocal::FaceCenter
 		var edge: aasEdge_t;
 		var center = new idVec3;
 
-		center.equals( vec3_origin );
+		center.opEquals( vec3_origin );
 
 		face = this.faces[faceNum];
 		if ( face.numEdges > 0 ) {
@@ -1419,7 +1419,7 @@ idAASFileLocal::AreaCenter
 		var area: aasArea_t;
 		var center = new idVec3;
 
-		center.equals( vec3_origin );
+		center.opEquals( vec3_origin );
 
 		area = this.areas[areaNum];
 		if ( area.numFaces > 0 ) {
@@ -1450,7 +1450,7 @@ idAASFileLocal::AreaReachableGoal
 			return this.AreaCenter( areaNum );
 		}
 
-		center.equals( vec3_origin );
+		center.opEquals( vec3_origin );
 
 		numFaces = 0;
 		for ( i = 0; i < area.numFaces; i++ ) {
@@ -1465,7 +1465,7 @@ idAASFileLocal::AreaReachableGoal
 			center.opDivisionAssignment_float( numFaces );
 		}
 		center[2] += 1.0;
-		end.equals( center );
+		end.opEquals( center );
 		end[2] -= 1024;
 		this.Trace( trace, center, end );
 
@@ -1712,8 +1712,8 @@ idAASFileLocal::Trace
 		trace.blockingAreaNum = 0;
 
 		tstack_p = 0;
-		tracestack[tstack_p].start.equals( start );
-		tracestack[tstack_p].end.equals( end );
+		tracestack[tstack_p].start.opEquals( start );
+		tracestack[tstack_p].end.opEquals( end );
 		tracestack[tstack_p].planeNum = 0;
 		tracestack[tstack_p].nodeNum = 1; //start with the root of the tree
 		tstack_p++;
@@ -1726,11 +1726,11 @@ idAASFileLocal::Trace
 				if ( !trace.lastAreaNum ) {
 					// completely in solid
 					trace.fraction = 0.0;
-					trace.endpos.equals( start );
+					trace.endpos.opEquals( start );
 				} else {
 					// nothing was hit
 					trace.fraction = 1.0;
-					trace.endpos.equals( end );
+					trace.endpos.opEquals( end );
 				}
 				trace.planeNum = 0;
 				return false;
@@ -1745,13 +1745,13 @@ idAASFileLocal::Trace
 				if ( ( this.areas[-nodeNum].flags & trace.flags ) || ( this.areas[-nodeNum].travelFlags & trace.travelFlags ) ) {
 					if ( !trace.lastAreaNum ) {
 						trace.fraction = 0.0;
-						v1.equals( vec3_origin );
+						v1.opEquals( vec3_origin );
 					} else {
-						v1.equals( end.opSubtraction( start ) );
-						v2.equals( tracestack[tstack_p].start.opSubtraction( start ) );
+						v1.opEquals( end.opSubtraction( start ) );
+						v2.opEquals( tracestack[tstack_p].start.opSubtraction( start ) );
 						trace.fraction = v2.Length ( ) / v1.Length ( );
 					}
-					trace.endpos.equals( tracestack[tstack_p].start );
+					trace.endpos.opEquals( tracestack[tstack_p].start );
 					trace.blockingAreaNum = -nodeNum;
 					trace.planeNum = tracestack[tstack_p].planeNum;
 					// always take the plane with normal facing towards the trace start
@@ -1778,13 +1778,13 @@ idAASFileLocal::Trace
 			if ( !nodeNum ) {
 				if ( !trace.lastAreaNum ) {
 					trace.fraction = 0.0;
-					v1.equals( vec3_origin );
+					v1.opEquals( vec3_origin );
 				} else {
-					v1.equals( end.opSubtraction( start ) );
-					v2.equals( tracestack[tstack_p].start.opSubtraction( start ) );
+					v1.opEquals( end.opSubtraction( start ) );
+					v2.opEquals( tracestack[tstack_p].start.opSubtraction( start ) );
 					trace.fraction = v2.Length ( ) / v1.Length ( );
 				}
-				trace.endpos.equals( tracestack[tstack_p].start );
+				trace.endpos.opEquals( tracestack[tstack_p].start );
 				trace.blockingAreaNum = 0; // hit solid leaf
 				trace.planeNum = tracestack[tstack_p].planeNum;
 				// always take the plane with normal facing towards the trace start
@@ -1802,9 +1802,9 @@ idAASFileLocal::Trace
 			// the node to test against
 			node = this.nodes[nodeNum];
 			// start point of current line to test against node
-			cur_start.equals( tracestack[tstack_p].start );
+			cur_start.opEquals( tracestack[tstack_p].start );
 			// end point of the current line to test against node
-			cur_end.equals( tracestack[tstack_p].end );
+			cur_end.opEquals( tracestack[tstack_p].end );
 			// the current node plane
 			plane = this.planeList[node.planeNum];
 
@@ -1850,13 +1850,13 @@ idAASFileLocal::Trace
 					frac = 0.999; //1
 				}
 
-				cur_mid.equals( cur_start.opAddition( cur_end.opSubtraction( cur_start ) ).timesFloat( frac ) );
+				cur_mid.opEquals( cur_start.opAddition( cur_end.opSubtraction( cur_start ) ).timesFloat( frac ) );
 
 				// side the front part of the line is on
 				side = front < 0 ? 1 : 0;
 
 				// first put the end part of the line on the stack (back side)
-				tracestack[tstack_p].start.equals( cur_mid );
+				tracestack[tstack_p].start.opEquals( cur_mid );
 				tracestack[tstack_p].planeNum = node.planeNum;
 				tracestack[tstack_p].nodeNum = node.children[( !side ) ? 1 : 0];
 				tstack_p++;
@@ -1866,8 +1866,8 @@ idAASFileLocal::Trace
 				}
 				// now put the part near the start of the line on the stack so we will
 				// continue with that part first.
-				tracestack[tstack_p].start.equals( cur_start );
-				tracestack[tstack_p].end.equals( cur_mid );
+				tracestack[tstack_p].start.opEquals( cur_start );
+				tracestack[tstack_p].end.opEquals( cur_mid );
 				tracestack[tstack_p].planeNum = tmpPlaneNum;
 				tracestack[tstack_p].nodeNum = node.children[side];
 				tstack_p++;

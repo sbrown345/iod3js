@@ -111,8 +111,8 @@ class idFXSingleAction {
 		dest.random1 = this.random1;
 		dest.random2 = this.random2;
 
-		dest.lightColor.equals( this.lightColor );
-		dest.offset.equals( this.offset );
+		dest.lightColor.opEquals( this.lightColor );
+		dest.offset.opEquals( this.offset );
 		dest.axis.equals( this.axis );
 
 		dest.soundStarted = this.soundStarted;
@@ -237,8 +237,8 @@ idDeclFX::ParseSingleFXAction
 	FXAction.random1 = 0.0;
 	FXAction.random2 = 0.0;
 
-		FXAction.lightColor.equals( vec3_origin );
-		FXAction.offset.equals(  vec3_origin);
+		FXAction.lightColor.opEquals( vec3_origin );
+		FXAction.offset.opEquals(  vec3_origin);
 		FXAction.axis.equals(  mat3_identity);
 
 	FXAction.bindParticles = false;

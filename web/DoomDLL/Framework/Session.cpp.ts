@@ -1103,10 +1103,10 @@ idSessionLocal.prototype.StartNewGame = function ( mapName: string, devmap: bool
 	// clear the userInfo so the player starts out with the defaults
 	this.mapSpawnData.userInfo[0].Clear ( );
 	this.mapSpawnData.persistentPlayerInfo[0].Clear ( );
-	this.mapSpawnData.userInfo[0].equals( cvarSystem.MoveCVarsToDict( CVAR_USERINFO ) );
+	this.mapSpawnData.userInfo[0].opEquals( cvarSystem.MoveCVarsToDict( CVAR_USERINFO ) );
 
 	this.mapSpawnData.serverInfo.Clear ( );
-	this.mapSpawnData.serverInfo.equals( cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO ) );
+	this.mapSpawnData.serverInfo.opEquals( cvarSystem.MoveCVarsToDict( CVAR_SERVERINFO ) );
 	this.mapSpawnData.serverInfo.Set( "si_gameType", "singleplayer" );
 
 	// set the devmap key so any play testing items will be given at
@@ -1116,7 +1116,7 @@ idSessionLocal.prototype.StartNewGame = function ( mapName: string, devmap: bool
 	}
 
 	this.mapSpawnData.syncedCVars.Clear ( );
-	this.mapSpawnData.syncedCVars.equals( cvarSystem.MoveCVarsToDict( CVAR_NETWORKSYNC ) );
+	this.mapSpawnData.syncedCVars.opEquals( cvarSystem.MoveCVarsToDict( CVAR_NETWORKSYNC ) );
 
 	this.MoveToNewMap( mapName );
 //#endif
@@ -1483,7 +1483,7 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 		reloadingSameMap = true;
 	} else {
 		reloadingSameMap = false;
-		this.currentMapName.equals( fullMapName );
+		this.currentMapName.opEquals( fullMapName );
 	}
 
 	// note which media we are going to need to load

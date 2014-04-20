@@ -149,7 +149,7 @@ Load( fileName:string, clear:boolean /* _D3XP */ ) {
 			}
 			var kv = new idLangKeyValue;
 			kv.key.equals( tok.data );
-			kv.value.equals( tok2.data );
+			kv.value.opEquals( tok2.data );
 			assert( kv.key.Cmpn( STRTABLE_ID, STRTABLE_ID_LENGTH ) == 0 );
 			this.hash.Add( this.GetHashKey( kv.key.data ), this.args.Append( kv ) );
 		}

@@ -562,8 +562,8 @@ class idPhysics_Base extends idPhysics {
 	================
 	*/
 	SetGravity ( newGravity: idVec3 ): void {
-		this.gravityVector.equals( newGravity );
-		this.gravityNormal.equals( newGravity );
+		this.gravityVector.opEquals( newGravity );
+		this.gravityNormal.opEquals( newGravity );
 		this.gravityNormal.Normalize ( );
 	}
 

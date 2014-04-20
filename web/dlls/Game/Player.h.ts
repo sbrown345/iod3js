@@ -774,7 +774,7 @@ idPlayer::idPlayer
 		this.forceRespawn = false;
 		this.spectating = false;
 		this.spectator = 0;
-		this.colorBar.equals( vec3_zero );
+		this.colorBar.opEquals( vec3_zero );
 		this.colorBarIndex = 0;
 		this.forcedReady = false;
 		this.wantSpectate = false;
@@ -784,7 +784,7 @@ idPlayer::idPlayer
 		this.minRespawnTime = 0;
 		this.maxRespawnTime = 0;
 
-		this.firstPersonViewOrigin.equals( vec3_zero );
+		this.firstPersonViewOrigin.opEquals( vec3_zero );
 		this.firstPersonViewAxis.equals( mat3_identity );
 
 		this.hipJoint = jointHandle_t.INVALID_JOINT;
@@ -803,7 +803,7 @@ idPlayer::idPlayer
 		this.legsForward = true;
 		this.oldViewYaw = 0.0;
 		this.viewBobAngles.opEquals( ang_zero );
-		this.viewBob.equals( vec3_zero );
+		this.viewBob.opEquals( vec3_zero );
 		this.landChange = 0;
 		this.landTime = 0;
 
@@ -830,7 +830,7 @@ idPlayer::idPlayer
 
 		this.gibDeath = false;
 		this.gibsLaunched = false;
-		this.gibsDir.equals( vec3_zero );
+		this.gibsDir.opEquals( vec3_zero );
 
 		this.zoomFov.Init( 0, 0, 0, 0 );
 		this.centerView.Init( 0, 0, 0, 0 );
@@ -865,11 +865,11 @@ idPlayer::idPlayer
 		this.pdaVideoWave.equals( "" );
 
 		this.lastDamageDef = 0;
-		this.lastDamageDir.equals( vec3_zero );
+		this.lastDamageDir.opEquals( vec3_zero );
 		this.lastDamageLocation = 0;
 		this.smoothedFrame = 0;
 		this.smoothedOriginUpdated = false;
-		this.smoothedOrigin.equals( vec3_zero );
+		this.smoothedOrigin.opEquals( vec3_zero );
 		this.smoothedAngles.opEquals( ang_zero );
 
 		this.fl.networkSync = true;

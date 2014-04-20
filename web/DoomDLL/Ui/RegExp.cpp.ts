@@ -131,7 +131,7 @@ idRegister::SetToRegs
 
 		case REGTYPE.VEC3:
 		{
-			v3.equals( ( <idWinVec3>this.$var ).data ); // = *static_cast<idWinVec3*>(this.$var);
+			v3.opEquals( ( <idWinVec3>this.$var ).data ); // = *static_cast<idWinVec3*>(this.$var);
 			v[0] = v3[0];
 			v[1] = v3[1];
 			v[2] = v3[2];

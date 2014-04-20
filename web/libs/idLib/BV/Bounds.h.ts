@@ -121,12 +121,12 @@ class idBounds {
 
 		if ( arguments.length == 1 ) {
 			var point: idVec3 = a1;
-			this.b[0].equals( point );
-			this.b[1].equals( point );
+			this.b[0].opEquals( point );
+			this.b[1].opEquals( point );
 		} else if ( arguments.length == 2 ) {
 			var mins: idVec3 = a1, maxs: idVec3 = a1;
-			this.b[0].equals( mins );
-			this.b[1].equals( maxs );
+			this.b[0].opEquals( mins );
+			this.b[1].opEquals( maxs );
 		} else {
 			todoThrow ( );
 		}
@@ -159,8 +159,8 @@ class idBounds {
 //}
 
 	opEquals ( other: idBounds ) {
-		this.b[0].equals( other.b[0] );
-		this.b[1].equals( other.b[1] );
+		this.b[0].opEquals( other.b[0] );
+		this.b[1].opEquals( other.b[1] );
 	}
 
 //ID_INLINE idBounds &idBounds::operator+=( const idVec3 &t ) {
@@ -521,7 +521,7 @@ idBounds::PlaneSide
 		var center = new idVec3;
 		var /*float */d1: number, d2: number;
 
-		center.equals( ( this.b[0].opAddition( this.b[1] ) ).timesFloat( 0.5 ) );
+		center.opEquals( ( this.b[0].opAddition( this.b[1] ) ).timesFloat( 0.5 ) );
 
 		d1 = plane.Distance( center );
 		d2 = idMath.Fabs( ( this.b[1][0] - center[0] ) * plane.Normal ( )[0] ) +
@@ -645,8 +645,8 @@ idBounds::FromTransformedBounds
 		var /*int*/i: number;
 		var center = new idVec3, extents = new idVec3, rotatedExtents = new idVec3;
 
-		center.equals( ( bounds[0].opAddition( bounds[1] ) ).timesFloat( 0.5 ) );
-		extents.equals( bounds[1].opSubtraction( center ) );
+		center.opEquals( ( bounds[0].opAddition( bounds[1] ) ).timesFloat( 0.5 ) );
+		extents.opEquals( bounds[1].opSubtraction( center ) );
 
 		for ( i = 0; i < 3; i++ ) {
 			rotatedExtents[i] = idMath.Fabs( extents[0] * axis[0][i] ) +
@@ -654,9 +654,9 @@ idBounds::FromTransformedBounds
 				idMath.Fabs( extents[2] * axis[2][i] );
 		}
 
-		center.equals( origin.opAddition( idMat3.opMultiplication_VecMat( center, axis ) ) );
-		this.b[0].equals( center.opSubtraction( rotatedExtents ) );
-		this.b[1].equals( center.opAddition( rotatedExtents ) );
+		center.opEquals( origin.opAddition( idMat3.opMultiplication_VecMat( center, axis ) ) );
+		this.b[0].opEquals( center.opSubtraction( rotatedExtents ) );
+		this.b[1].opEquals( center.opAddition( rotatedExtents ) );
 	}
 
 ///*
