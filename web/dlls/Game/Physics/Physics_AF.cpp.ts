@@ -206,14 +206,14 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	force[0] = v[0]; force[1] = v[1]; force[2] = v[2]; force[3] = v[3]; force[4] = v[4]; force[5] = v[5];
 ////}
 ////
-/////*
-////================
-////idAFConstraint::Translate
-////================
-////*/
-////void idAFConstraint::Translate( const idVec3 &translation ) {
-////	assert( 0 );
-////}
+/*
+================
+idAFConstraint::Translate
+================
+*/
+void idAFConstraint::Translate( const idVec3 &translation ) {
+	assert( 0 );
+}
 ////
 /////*
 ////================
@@ -397,28 +397,28 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	// no friction
 ////}
 ////
-/////*
-////================
-////idAFConstraint_Fixed::Translate
-////================
-////*/
-////void idAFConstraint_Fixed::Translate( const idVec3 &translation ) {
-////	if ( !body2 ) {
-////		offset += translation;
-////	}
-////}
-////
-/////*
-////================
-////idAFConstraint_Fixed::Rotate
-////================
-////*/
-////void idAFConstraint_Fixed::Rotate( const idRotation &rotation ) {
-////	if ( !body2 ) {
-////		offset *= rotation;
-////		relAxis *= rotation.ToMat3();
-////	}
-////}
+/*
+================
+idAFConstraint_Fixed::Translate
+================
+*/
+void idAFConstraint_Fixed::Translate( const idVec3 &translation ) {
+	if ( !body2 ) {
+		offset += translation;
+	}
+}
+
+/*
+================
+idAFConstraint_Fixed::Rotate
+================
+*/
+void idAFConstraint_Fixed::Rotate( const idRotation &rotation ) {
+	if ( !body2 ) {
+		offset *= rotation;
+		relAxis *= rotation.ToMat3();
+	}
+}
 ////
 /////*
 ////================

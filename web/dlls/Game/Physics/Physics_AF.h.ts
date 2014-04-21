@@ -848,7 +848,7 @@ class idPhysics_AF extends idPhysics_Base {
 ////							// retrieve body or constraint
 ////	idAFBody *				GetBody( const char *bodyName ) const;
 ////	idAFBody *				GetBody( /*int*/ id:number ) const;
-////	idAFBody *				GetMasterBody( ) const { return masterBody; }
+////	idAFBody *				GetMasterBody( ) const { return this.masterBody; }
 ////	idAFConstraint *		GetConstraint( const char *constraintName ) const;
 ////	idAFConstraint *		GetConstraint( /*int*/ id:number ) const;
 ////							// delete body or constraint
@@ -2442,15 +2442,15 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////
 	////	// get the new master position
-	////	if ( masterBody ) {
+	////	if ( this.masterBody ) {
 	////		idVec3 masterOrigin;
 	////		idMat3 masterAxis;
 	////		this.self.GetMasterPosition( masterOrigin, masterAxis );
-	////		if ( this.current.atRest >= 0 && ( masterBody.current.worldOrigin != masterOrigin || masterBody.current.worldAxis != masterAxis ) ) {
+	////		if ( this.current.atRest >= 0 && ( this.masterBody.current.worldOrigin != masterOrigin || this.masterBody.current.worldAxis != masterAxis ) ) {
 	////			Activate();
 	////		}
-	////		masterBody.current.worldOrigin = masterOrigin;
-	////		masterBody.current.worldAxis = masterAxis;
+	////		this.masterBody.current.worldOrigin = masterOrigin;
+	////		this.masterBody.current.worldAxis = masterAxis;
 	////	}
 	////
 	////	// if the simulation is suspended because the figure is at rest
@@ -2802,7 +2802,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	contacts.Clear();
 	////	collisions.Clear();
 	////	changedAF = true;
-	////	masterBody = NULL;
+	////	this.masterBody = NULL;
 	////
 	////	lcp = idLCP::AllocSymmetric();
 	////
@@ -2881,8 +2881,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	delete lcp;
 	////
-	////	if ( masterBody ) {
-	////		delete masterBody;
+	////	if ( this.masterBody ) {
+	////		delete this.masterBody;
 	////	}
 	////}
 	////
@@ -2929,9 +2929,9 @@ class idPhysics_AF extends idPhysics_Base {
 	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////		this.bodies[i].Save( saveFile );
 	////	}
-	////	if ( masterBody ) {
+	////	if ( this.masterBody ) {
 	////		saveFile.WriteBool( true );
-	////		masterBody.Save( saveFile );
+	////		this.masterBody.Save( saveFile );
 	////	} else {
 	////		saveFile.WriteBool( false );
 	////	}
@@ -3005,8 +3005,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////	saveFile.ReadBool( hasMaster );
 	////	if ( hasMaster ) {
-	////		masterBody = new idAFBody();
-	////		masterBody.Restore( saveFile );
+	////		this.masterBody = new idAFBody();
+	////		this.masterBody.Restore( saveFile );
 	////	}
 	////
 	////	saveFile.ReadInt( num );
@@ -3665,7 +3665,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////bool idPhysics_AF::IsPushable( ) const {
-	////	return ( !noImpact && ( masterBody == NULL || forcePushable ) );
+	////	return ( !noImpact && ( this.masterBody == NULL || forcePushable ) );
 	////}
 	////
 	/////*
@@ -3705,11 +3705,12 @@ class idPhysics_AF extends idPhysics_Base {
 	idPhysics_AF::SetOrigin
 	================
 	*/
-	void idPhysics_AF::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
-		if ( masterBody ) {
-			Translate( masterBody.current.worldOrigin + masterBody.current.worldAxis * newOrigin - this.bodies[0].current.worldOrigin );
+	SetOrigin(newOrigin: idVec3, /*int*/ id: number = -1): void {
+		if (this.masterBody) {
+			debugger;// translate argument
+			this.Translate(this.masterBody.current.worldOrigin.opAddition(this.masterBody.current.worldAxis.opMultiplication_Vec( newOrigin ).opSubtraction( this.bodies[0].current.worldOrigin ) ) );
 		} else {
-			Translate( newOrigin - this.bodies[0].current.worldOrigin );
+			this.Translate( newOrigin.opSubtraction( this.bodies[0].current.worldOrigin ) );
 		}
 	}
 	
@@ -3718,12 +3719,12 @@ class idPhysics_AF extends idPhysics_Base {
 	////idPhysics_AF::SetAxis
 	////================
 	////*/
-	////void idPhysics_AF::SetAxis( const idMat3 &newAxis, /*int*/ id:number ) {
+	////void idPhysics_AF::SetAxis( const idMat3 &newAxis, /*int*/ id:number  = -1) {
 	////	idMat3 axis;
 	////	idRotation rotation;
 	////
-	////	if ( masterBody ) {
-	////		axis = this.bodies[0].current.worldAxis.Transpose() * ( newAxis * masterBody.current.worldAxis );
+	////	if ( this.masterBody ) {
+	////		axis = this.bodies[0].current.worldAxis.Transpose() * ( newAxis * this.masterBody.current.worldAxis );
 	////	} else {
 	////		axis = this.bodies[0].current.worldAxis.Transpose() * newAxis;
 	////	}
@@ -3733,40 +3734,41 @@ class idPhysics_AF extends idPhysics_Base {
 	////	Rotate( rotation );
 	////}
 	////
-	/////*
-	////================
-	////idPhysics_AF::Translate
-	////================
-	////*/
-	////void idPhysics_AF::Translate( const idVec3 &translation, /*int*/ id:number ) {
-	////	var/*int*/i:number;
-	////	idAFBody *body;
-	////
-	////	if ( !worldConstraintsLocked ) {
-	////		// translate this.constraints attached to the world
-	////		for ( i = 0; i < this.constraints.Num(); i++ ) {
-	////			this.constraints[i].Translate( translation );
-	////		}
-	////	}
-	////
-	////	// translate all the bodies
-	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
-	////
-	////		body = this.bodies[i];
-	////		body.current.worldOrigin += translation;
-	////	}
-	////
-	////	Activate();
-	////
-	////	UpdateClipModels();
-	////}
-	////
+	/*
+	================
+	idPhysics_AF::Translate
+	================
+	*/
+	Translate(translation: idVec3, /*int*/ id: number  = -1): void {
+		todoThrow ( );
+		//var/*int*/i:number;
+		//idAFBody *body;
+
+		//if ( !worldConstraintsLocked ) {
+		//	// translate this.constraints attached to the world
+		//	for ( i = 0; i < this.constraints.Num(); i++ ) {
+		//		this.constraints[i].Translate( translation );
+		//	}
+		//}
+
+		//// translate all the bodies
+		//for ( i = 0; i < this.bodies.Num(); i++ ) {
+
+		//	body = this.bodies[i];
+		//	body.current.worldOrigin += translation;
+		//}
+
+		//Activate();
+
+		//UpdateClipModels();
+	}
+
 	/////*
 	////================
 	////idPhysics_AF::Rotate
 	////================
 	////*/
-	////void idPhysics_AF::Rotate( const idRotation &rotation, /*int*/ id:number ) {
+	////void idPhysics_AF::Rotate( const idRotation &rotation, /*int*/ id:number  = -1) {
 	////	var/*int*/i:number;
 	////	idAFBody *body;
 	////
@@ -4074,8 +4076,8 @@ idPhysics_AF::EnableClip
 ////
 ////	if ( master ) {
 ////		this.self.GetMasterPosition( masterOrigin, masterAxis );
-////		if ( !masterBody ) {
-////			masterBody = new idAFBody();
+////		if ( !this.masterBody ) {
+////			this.masterBody = new idAFBody();
 ////			// translate and rotate all the constraints with body2 == NULL from world space to master space
 ////			rotation = masterAxis.Transpose().ToRotation();
 ////			for ( i = 0; i < this.constraints.Num(); i++ ) {
@@ -4086,21 +4088,21 @@ idPhysics_AF::EnableClip
 ////			}
 ////			Activate();
 ////		}
-////		masterBody.current.worldOrigin = masterOrigin;
-////		masterBody.current.worldAxis = masterAxis;
+////		this.masterBody.current.worldOrigin = masterOrigin;
+////		this.masterBody.current.worldAxis = masterAxis;
 ////	}
 ////	else {
-////		if ( masterBody ) {
+////		if ( this.masterBody ) {
 ////			// translate and rotate all the constraints with body2 == NULL from master space to world space
-////			rotation = masterBody.current.worldAxis.ToRotation();
+////			rotation = this.masterBody.current.worldAxis.ToRotation();
 ////			for ( i = 0; i < this.constraints.Num(); i++ ) {
 ////				if ( this.constraints[i].GetBody2() == NULL ) {
 ////					this.constraints[i].Rotate( rotation );
-////					this.constraints[i].Translate( masterBody.current.worldOrigin );
+////					this.constraints[i].Translate( this.masterBody.current.worldOrigin );
 ////				}
 ////			}
-////			delete masterBody;
-////			masterBody = NULL;
+////			delete this.masterBody;
+////			this.masterBody = NULL;
 ////			Activate();
 ////		}
 ////	}

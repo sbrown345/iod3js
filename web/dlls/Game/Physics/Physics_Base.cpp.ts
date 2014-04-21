@@ -469,65 +469,65 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::RestoreState
 	//================
 	//*/
-	//void idPhysics_Base::RestoreState( ) {
+	//RestoreState ( ): void {
 	//}
-	
+
 	/*
 	================
 	idPhysics_Base::SetOrigin
 	================
 	*/
-	void idPhysics_Base::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
+	SetOrigin ( newOrigin: idVec3, /*int*/ id: number = -1 ): void {
 	}
-	//
-	///*
-	//================
-	//idPhysics_Base::SetAxis
-	//================
-	//*/
-	//void idPhysics_Base::SetAxis( const idMat3 &newAxis, /*int*/ id:number ) {
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::Translate
-	//================
-	//*/
-	//void idPhysics_Base::Translate( const idVec3 &translation, /*int*/ id:number ) {
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::Rotate
-	//================
-	//*/
-	//void idPhysics_Base::Rotate( const idRotation &rotation, /*int*/ id:number ) {
-	//}
-	
+
+	/*
+	================
+	idPhysics_Base::SetAxis
+	================
+	*/
+	SetAxis ( newAxis: idMat3, /*int*/ id: number = -1 ): void {
+	}
+
+	/*
+	================
+	idPhysics_Base::Translate
+	================
+	*/
+	Translate ( translation: idVec3, /*int*/ id: number = -1 ): void {
+	}
+
+	/*
+	================
+	idPhysics_Base::Rotate
+	================
+	*/
+	Rotate ( rotation: idRotation, /*int*/ id: number = -1 ): void {
+	}
+
 	/*
 	================
 	idPhysics_Base::GetOrigin
 	================
 	*/
-	GetOrigin( /*int*/ id: number = 0): idVec3 {
+	GetOrigin ( /*int*/ id: number = 0 ): idVec3 {
 		return vec3_origin;
 	}
-	
+
 	/*
 	================
 	idPhysics_Base::GetAxis
 	================
 	*/
-	GetAxis( /*int*/ id: number = 0): idMat3 {
+	GetAxis ( /*int*/ id: number = 0 ): idMat3 {
 		return mat3_identity;
 	}
-	//
+	
 	///*
 	//================
 	//idPhysics_Base::SetLinearVelocity
 	//================
 	//*/
-	//void idPhysics_Base::SetLinearVelocity( const idVec3 &newLinearVelocity, /*int*/ id:number ) {
+	//void idPhysics_Base::SetLinearVelocity( const idVec3 &newLinearVelocity, /*int*/ id:number = 0) {
 	//}
 	//
 	///*
@@ -535,7 +535,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::SetAngularVelocity
 	//================
 	//*/
-	//void idPhysics_Base::SetAngularVelocity( const idVec3 &newAngularVelocity, /*int*/ id:number ) {
+	//void idPhysics_Base::SetAngularVelocity( const idVec3 &newAngularVelocity, /*int*/ id:number = 0) {
 	//}
 	//
 	///*
@@ -543,7 +543,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetLinearVelocity
 	//================
 	//*/
-	//const idVec3 &idPhysics_Base::GetLinearVelocity( /*int*/ id:number ) const {
+	//const idVec3 &idPhysics_Base::GetLinearVelocity( /*int*/ id:number = 0) const {
 	//	return vec3_origin;
 	//}
 	//
@@ -552,7 +552,7 @@ class idPhysics_Base extends idPhysics {
 	//idPhysics_Base::GetAngularVelocity
 	//================
 	//*/
-	//const idVec3 &idPhysics_Base::GetAngularVelocity( /*int*/ id:number ) const {
+	//const idVec3 &idPhysics_Base::GetAngularVelocity( /*int*/ id:number = 0) const {
 	//	return vec3_origin;
 	//}
 	//

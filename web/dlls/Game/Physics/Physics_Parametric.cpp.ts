@@ -892,26 +892,25 @@ idPhysics_Parametric::GetAbsBounds
 idPhysics_Parametric::SetOrigin
 ================
 */
-void idPhysics_Parametric::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
-	idVec3 masterOrigin;
-	idMat3 masterAxis;
+	SetOrigin ( newOrigin: idVec3, /*int*/ id: number = -1 ): void {
+		var masterOrigin = new idVec3;
+		var masterAxis = new idMat3;
 
-	this.current.linearExtrapolation.SetStartValue( newOrigin );
-	this.current.linearInterpolation.SetStartValue( newOrigin );
+		this.current.linearExtrapolation.SetStartValue( newOrigin );
+		this.current.linearInterpolation.SetStartValue( newOrigin );
 
-	this.current.localOrigin = this.current.linearExtrapolation.GetCurrentValue( this.current.time );
-	if ( hasMaster ) {
-		this.self.GetMasterPosition( masterOrigin, masterAxis );
-		this.current.origin = masterOrigin + this.current.localOrigin * masterAxis;
+		this.current.localOrigin = this.current.linearExtrapolation.GetCurrentValue( this.current.time );
+		if ( this.hasMaster ) {
+			this.self.GetMasterPosition( masterOrigin, masterAxis );
+			this.current.origin.opEquals( masterOrigin.opAddition( this.current.localOrigin.timesVec( masterAxis ) ) );
+		} else {
+			this.current.origin = this.current.localOrigin;
+		}
+		if ( this.clipModel ) {
+			this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
+		}
+		this.Activate ( );
 	}
-	else {
-		this.current.origin = this.current.localOrigin;
-	}
-	if ( this.clipModel ) {
-		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
-	}
-	this.Activate();
-}
 
 ///*
 //================
@@ -942,15 +941,15 @@ void idPhysics_Parametric::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number
 //	}
 //	this.Activate();
 //}
-//
-///*
-//================
-//idPhysics_Parametric::Move
-//================
-//*/
-//void idPhysics_Parametric::Translate( const idVec3 &translation, /*int*/ id:number ) {
-//}
-//
+
+/*
+================
+idPhysics_Parametric::Move
+================
+*/
+	Translate(translation: idVec3, /*int*/ id: number = -1): void {
+}
+
 ///*
 //================
 //idPhysics_Parametric::Rotate

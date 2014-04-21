@@ -227,7 +227,7 @@ idPhysics_StaticMulti::idPhysics_StaticMulti
 ////		savefile.WriteClipModel( this.clipModels[i] );
 ////	}
 ////
-////	savefile.WriteBool(hasMaster);
+////	savefile.WriteBool(this.hasMaster);
 ////	savefile.WriteBool(isOrientated);
 ////}
 ////
@@ -256,7 +256,7 @@ idPhysics_StaticMulti::idPhysics_StaticMulti
 ////		savefile.ReadClipModel( this.clipModels[i] );
 ////	}
 ////
-////	savefile.ReadBool(hasMaster);
+////	savefile.ReadBool(this.hasMaster);
 ////	savefile.ReadBool(isOrientated);
 ////}
 
@@ -490,7 +490,7 @@ static absBounds = new idBounds;
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////
-////	if ( hasMaster ) {
+////	if ( this.hasMaster ) {
 ////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////		for ( i = 0; i < this.clipModels.Num(); i++ ) {
 ////			this.current[i].origin = masterOrigin + this.current[i].localOrigin * masterAxis;
@@ -616,27 +616,27 @@ idPhysics_StaticMulti::PutToRest
 idPhysics_StaticMulti::SetOrigin
 ================
 */
-void idPhysics_StaticMulti::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
-	idVec3 masterOrigin;
-	idMat3 masterAxis;
+	SetOrigin(newOrigin: idVec3, /*int*/ id: number = -1): void {
+		var masterOrigin = new idVec3;
+		var masterAxis = new idMat3;
 
 	if ( id >= 0 && id < this.clipModels.Num() ) {
 		this.current[id].localOrigin = newOrigin;
-		if ( hasMaster ) {
+		if ( this.hasMaster ) {
 			this.self.GetMasterPosition( masterOrigin, masterAxis );
 			this.current[id].origin = masterOrigin + newOrigin * masterAxis;
 		} else {
 			this.current[id].origin = newOrigin;
 		}
 		if ( this.clipModels[id] ) {
-			this.clipModels[id].Link( gameLocal.clip, this.self, id, this.current[id].origin, this.current[id].axis );
+			this.clipModels[id].Link_ent( gameLocal.clip, this.self, id, this.current[id].origin, this.current[id].axis );
 		}
 	} else if ( id == -1 ) {
-		if ( hasMaster ) {
+		if ( this.hasMaster ) {
 			this.self.GetMasterPosition( masterOrigin, masterAxis );
-			Translate( masterOrigin + masterAxis * newOrigin - this.current[0].origin );
+			this.Translate( masterOrigin + masterAxis * newOrigin - this.current[0].origin );
 		} else {
-			Translate( newOrigin - this.current[0].origin );
+			this.Translate( newOrigin - this.current[0].origin );
 		}
 	}
 }
@@ -652,7 +652,7 @@ void idPhysics_StaticMulti::SetOrigin( const idVec3 &newOrigin, /*int*/ id:numbe
 ////
 ////	if ( id >= 0 && id < this.clipModels.Num() ) {
 ////		this.current[id].localAxis = newAxis;
-////		if ( hasMaster && isOrientated ) {
+////		if ( this.hasMaster && isOrientated ) {
 ////			this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////			this.current[id].axis = newAxis * masterAxis;
 ////		} else {
@@ -665,7 +665,7 @@ void idPhysics_StaticMulti::SetOrigin( const idVec3 &newOrigin, /*int*/ id:numbe
 ////		idMat3 axis;
 ////		idRotation rotation;
 ////
-////		if ( hasMaster ) {
+////		if ( this.hasMaster ) {
 ////			this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////			axis = this.current[0].axis.Transpose() * ( newAxis * masterAxis );
 ////		} else {
@@ -677,34 +677,34 @@ void idPhysics_StaticMulti::SetOrigin( const idVec3 &newOrigin, /*int*/ id:numbe
 ////		Rotate( rotation );
 ////	}
 ////}
-////
-/////*
-////================
-////idPhysics_StaticMulti::Translate
-////================
-////*/
-////void idPhysics_StaticMulti::Translate( const idVec3 &translation, /*int*/ id:number ) {
-////	var/*int*/i:number;
-////
-////	if ( id >= 0 && id < this.clipModels.Num() ) {
-////		this.current[id].localOrigin += translation;
-////		this.current[id].origin += translation;
-////
-////		if ( this.clipModels[id] ) {
-////			this.clipModels[id].Link( gameLocal.clip, this.self, id, this.current[id].origin, this.current[id].axis );
-////		}
-////	} else if ( id == -1 ) {
-////		for ( i = 0; i < this.clipModels.Num(); i++ ) {
-////			this.current[i].localOrigin += translation;
-////			this.current[i].origin += translation;
-////
-////			if ( this.clipModels[i] ) {
-////				this.clipModels[i].Link( gameLocal.clip, this.self, i, this.current[i].origin, this.current[i].axis );
-////			}
-////		}
-////	}
-////}
-////
+
+/*
+================
+idPhysics_StaticMulti::Translate
+================
+*/
+	Translate ( translation: idVec3, /*int*/ id: number ): void {
+		var /*int*/i: number;
+
+		if ( id >= 0 && id < this.clipModels.Num ( ) ) {
+			this.current[id].localOrigin.opAdditionAssignment( translation );
+			this.current[id].origin.opAdditionAssignment( translation );
+
+			if ( this.clipModels[id] ) {
+				this.clipModels[id].Link_ent( gameLocal.clip, this.self, id, this.current[id].origin, this.current[id].axis );
+			}
+		} else if ( id == -1 ) {
+			for ( i = 0; i < this.clipModels.Num ( ); i++ ) {
+				this.current[i].localOrigin.opAdditionAssignment( translation );
+				this.current[i].origin.opAdditionAssignment( translation );
+
+				if ( this.clipModels[i] ) {
+					this.clipModels[i].Link_ent( gameLocal.clip, this.self, i, this.current[i].origin, this.current[i].axis );
+				}
+			}
+		}
+	}
+
 /////*
 ////================
 ////idPhysics_StaticMulti::Rotate
@@ -719,7 +719,7 @@ void idPhysics_StaticMulti::SetOrigin( const idVec3 &newOrigin, /*int*/ id:numbe
 ////		this.current[id].origin *= rotation;
 ////		this.current[id].axis *= rotation.ToMat3();
 ////
-////		if ( hasMaster ) {
+////		if ( this.hasMaster ) {
 ////			this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////			this.current[id].localAxis *= rotation.ToMat3();
 ////			this.current[id].localOrigin = ( this.current[id].origin - masterOrigin ) * masterAxis.Transpose();
@@ -736,7 +736,7 @@ void idPhysics_StaticMulti::SetOrigin( const idVec3 &newOrigin, /*int*/ id:numbe
 ////			this.current[i].origin *= rotation;
 ////			this.current[i].axis *= rotation.ToMat3();
 ////
-////			if ( hasMaster ) {
+////			if ( this.hasMaster ) {
 ////				this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////				this.current[i].localAxis *= rotation.ToMat3();
 ////				this.current[i].localOrigin = ( this.current[i].origin - masterOrigin ) * masterAxis.Transpose();
@@ -1065,7 +1065,7 @@ idPhysics_StaticMulti::ClearContacts
 ////	idMat3 masterAxis;
 ////
 ////	if ( master ) {
-////		if ( !hasMaster ) {
+////		if ( !this.hasMaster ) {
 ////			// transform from world space to master space
 ////			this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////			for ( i = 0; i < this.clipModels.Num(); i++ ) {
@@ -1076,12 +1076,12 @@ idPhysics_StaticMulti::ClearContacts
 ////					this.current[i].localAxis = this.current[i].axis;
 ////				}
 ////			}
-////			hasMaster = true;
+////			this.hasMaster = true;
 ////			isOrientated = orientated;
 ////		}
 ////	} else {
-////		if ( hasMaster ) {
-////			hasMaster = false;
+////		if ( this.hasMaster ) {
+////			this.hasMaster = false;
 ////		}
 ////	}
 ////}

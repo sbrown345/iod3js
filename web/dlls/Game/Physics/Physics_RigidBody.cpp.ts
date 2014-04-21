@@ -1294,9 +1294,9 @@ idPhysics_RigidBody::GetAbsBounds
 idPhysics::SetOrigin
 ================
 */
-void idPhysics_RigidBody::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
-	idVec3 masterOrigin;
-	idMat3 masterAxis;
+	SetOrigin(newOrigin: idVec3, /*int*/ id: number = -1): void {
+		var masterOrigin = new idVec3;
+		var masterAxis = new idMat3;
 
 	this.current.localOrigin = newOrigin;
 	if ( hasMaster ) {
@@ -1334,22 +1334,22 @@ void idPhysics_RigidBody::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number 
 ////
 ////	Activate();
 ////}
-////
-/////*
-////================
-////idPhysics::Move
-////================
-////*/
-////void idPhysics_RigidBody::Translate( const idVec3 &translation, /*int*/ id:number ) {
-////
-////	this.current.localOrigin += translation;
-////	this.current.i.position += translation;
-////
-////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.clipModel.GetAxis() );
-////
-////	Activate();
-////}
-////
+
+/*
+================
+idPhysics::Move
+================
+*/
+	Translate(translation: idVec3, /*int*/ id: number = -1): void {
+
+	this.current.localOrigin += translation;
+	this.current.i.position += translation;
+
+	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.clipModel.GetAxis() );
+
+	Activate();
+}
+
 /////*
 ////================
 ////idPhysics::Rotate

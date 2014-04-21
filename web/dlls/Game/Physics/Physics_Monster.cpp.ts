@@ -181,7 +181,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	}
 	//
 	//	down = state.origin + gravityNormal * CONTACT_EPSILON;
-	//	gameLocal.clip.Translation( groundTrace, state.origin, down, clipModel, clipModel.GetAxis(), clipMask, this.self );
+	//	gameLocal.clip.Translation( groundTrace, state.origin, down, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 	//
 	//	if ( groundTrace.fraction == 1.0f ) {
 	//		state.onGround = false;
@@ -224,7 +224,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	blockingEntity = NULL;
 	//	move = delta;
 	//	for( i = 0; i < 3; i++ ) {
-	//		gameLocal.clip.Translation( tr, start, start + move, clipModel, clipModel.GetAxis(), clipMask, this.self );
+	//		gameLocal.clip.Translation( tr, start, start + move, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 	//
 	//		start = tr.endpos;
 	//
@@ -279,7 +279,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//
 	//		// try to step down so that we walk down slopes and stairs at a normal rate
 	//		down = noStepPos + gravityNormal * maxStepHeight;
-	//		gameLocal.clip.Translation( tr, noStepPos, down, clipModel, clipModel.GetAxis(), clipMask, this.self );
+	//		gameLocal.clip.Translation( tr, noStepPos, down, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 	//		if ( tr.fraction < 1.0f ) {
 	//			start = tr.endpos;
 	//			return MM_STEPPED;
@@ -292,7 +292,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	if ( blockingEntity && blockingEntity.IsType( idActor::Type ) ) {
 	//		// try to step down in case walking into an actor while going down steps
 	//		down = noStepPos + gravityNormal * maxStepHeight;
-	//		gameLocal.clip.Translation( tr, noStepPos, down, clipModel, clipModel.GetAxis(), clipMask, this.self );
+	//		gameLocal.clip.Translation( tr, noStepPos, down, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 	//		start = tr.endpos;
 	//		velocity = noStepVel;
 	//		return MM_BLOCKED;
@@ -304,7 +304,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//
 	//	// try to step up
 	//	up = start - gravityNormal * maxStepHeight;
-	//	gameLocal.clip.Translation( tr, start, up, clipModel, clipModel.GetAxis(), clipMask, this.self );
+	//	gameLocal.clip.Translation( tr, start, up, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 	//	if ( tr.fraction == 0.0f ) {
 	//		start = noStepPos;
 	//		velocity = noStepVel;
@@ -323,7 +323,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//
 	//	// step down again
 	//	down = stepPos + gravityNormal * maxStepHeight;
-	//	gameLocal.clip.Translation( tr, stepPos, down, clipModel, clipModel.GetAxis(), clipMask, this.self );
+	//	gameLocal.clip.Translation( tr, stepPos, down, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 	//	stepPos = tr.endpos;
 	//
 	//	// if the move is further without stepping up, or the slope is too steap, don't step up
@@ -475,7 +475,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//void idPhysics_Monster::SetDelta( const idVec3 &d ) {
 	//	delta = d;
 	//	if ( delta != vec3_origin ) {
-	//		Activate();
+	//		this.Activate();
 	//	}
 	//}
 	//
@@ -586,10 +586,10 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	oldOrigin = this.current.origin;
 	//
 	//	// if bound to a master
-	//	if ( masterEntity ) {
+	//	if ( this.masterEntity ) {
 	//		this.self.GetMasterPosition( masterOrigin, masterAxis );
 	//		this.current.origin = masterOrigin + this.current.localOrigin * masterAxis;
-	//		clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, clipModel.GetAxis() );
+	//		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() );
 	//		this.current.velocity = ( this.current.origin - oldOrigin ) / timeStep;
 	//		masterDeltaYaw = masterYaw;
 	//		masterYaw = masterAxis[0].ToYaw();
@@ -607,7 +607,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	// move the monster velocity into the frame of a pusher
 	//	this.current.velocity -= this.current.pushVelocity;
 	//
-	//	clipModel.Unlink();
+	//	this.clipModel.Unlink();
 	//
 	//	// check if on the ground
 	//	idPhysics_Monster::CheckGround( this.current );
@@ -654,7 +654,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//		}
 	//	}
 	//
-	//	clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, clipModel.GetAxis() );
+	//	this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() );
 	//
 	//	// get all the ground contacts
 	//	EvaluateContacts();
@@ -710,7 +710,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//		return;
 	//	}
 	//	this.current.velocity += impulse * invMass;
-	//	Activate();
+	//	this.Activate();
 	//}
 	//
 	///*
@@ -748,7 +748,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//void idPhysics_Monster::RestoreState( ) {
 	//	this.current = saved;
 	//
-	//	clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, clipModel.GetAxis() );
+	//	this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() );
 	//
 	//	EvaluateContacts();
 	//}
@@ -758,20 +758,20 @@ class idPhysics_Monster extends idPhysics_Actor {
 	idPhysics_Player::SetOrigin
 	================
 	*/
-	void idPhysics_Monster::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
-		idVec3 masterOrigin;
-		idMat3 masterAxis;
+	SetOrigin(newOrigin: idVec3, /*int*/ id: number = -1): void {
+		var masterOrigin = new idVec3;
+		var masterAxis = new idMat3;
 	
 		this.current.localOrigin = newOrigin;
-		if ( masterEntity ) {
+		if ( this.masterEntity ) {
 			this.self.GetMasterPosition( masterOrigin, masterAxis );
 			this.current.origin = masterOrigin + newOrigin * masterAxis;
 		}
 		else {
 			this.current.origin = newOrigin;
 		}
-		clipModel.Link( gameLocal.clip, this.self, 0, newOrigin, clipModel.GetAxis() );
-		Activate();
+		this.clipModel.Link( gameLocal.clip, this.self, 0, newOrigin, this.clipModel.GetAxis() );
+		this.Activate();
 	}
 	//
 	///*
@@ -780,22 +780,22 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//================
 	//*/
 	//void idPhysics_Monster::SetAxis( const idMat3 &newAxis, /*int*/ id:number ) {
-	//	clipModel.Link( gameLocal.clip, this.self, 0, clipModel.GetOrigin(), newAxis );
-	//	Activate();
+	//	this.clipModel.Link( gameLocal.clip, this.self, 0, this.clipModel.GetOrigin(), newAxis );
+	//	this.Activate();
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Monster::Translate
-	//================
-	//*/
-	//void idPhysics_Monster::Translate( const idVec3 &translation, /*int*/ id:number ) {
-	//
-	//	this.current.localOrigin += translation;
-	//	this.current.origin += translation;
-	//	clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, clipModel.GetAxis() );
-	//	Activate();
-	//}
+	
+	/*
+	================
+	idPhysics_Monster::Translate
+	================
+	*/
+	Translate(translation: idVec3, /*int*/ id: number = -1): void {
+	
+		this.current.localOrigin += translation;
+		this.current.origin += translation;
+		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() );
+		this.Activate();
+	}
 	//
 	///*
 	//================
@@ -807,15 +807,15 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	idMat3 masterAxis;
 	//
 	//	this.current.origin *= rotation;
-	//	if ( masterEntity ) {
+	//	if ( this.masterEntity ) {
 	//		this.self.GetMasterPosition( masterOrigin, masterAxis );
 	//		this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
 	//	}
 	//	else {
 	//		this.current.localOrigin = this.current.origin;
 	//	}
-	//	clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, clipModel.GetAxis() * rotation.ToMat3() );
-	//	Activate();
+	//	this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() * rotation.ToMat3() );
+	//	this.Activate();
 	//}
 	//
 	///*
@@ -825,7 +825,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//*/
 	//void idPhysics_Monster::SetLinearVelocity( const idVec3 &newLinearVelocity, /*int*/ id:number ) {
 	//	this.current.velocity = newLinearVelocity;
-	//	Activate();
+	//	this.Activate();
 	//}
 	//
 	///*
@@ -868,19 +868,19 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	idMat3 masterAxis;
 	//
 	//	if ( master ) {
-	//		if ( !masterEntity ) {
+	//		if ( !this.masterEntity ) {
 	//			// transform from world space to master space
 	//			this.self.GetMasterPosition( masterOrigin, masterAxis );
 	//			this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
-	//			masterEntity = master;
+	//			this.masterEntity = master;
 	//			masterYaw = masterAxis[0].ToYaw();
 	//		}
 	//		ClearContacts();
 	//	}
 	//	else {
-	//		if ( masterEntity ) {
-	//			masterEntity = NULL;
-	//			Activate();
+	//		if ( this.masterEntity ) {
+	//			this.masterEntity = NULL;
+	//			this.Activate();
 	//		}
 	//	}
 	//}

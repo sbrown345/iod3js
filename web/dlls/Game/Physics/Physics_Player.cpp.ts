@@ -2000,7 +2000,7 @@ Returns true if the velocity was clipped in some way
 idPhysics_Player::SetOrigin
 ================
 */
-void idPhysics_Player::SetOrigin( const idVec3 &newOrigin, /*int*/ id:number ) {
+	SetOrigin(newOrigin: idVec3, /*int*/ id: number = -1): void {
 	idVec3 masterOrigin;
 	idMat3 masterAxis;
 
@@ -2034,19 +2034,19 @@ PlayerGetOrigin(): idVec3 {
 ////	clipModel.Link( gameLocal.clip, self, 0, clipModel.GetOrigin(), newAxis );
 ////}
 ////
-/////*
-////================
-////idPhysics_Player::Translate
-////================
-////*/
-////void idPhysics_Player::Translate( const idVec3 &translation, /*int*/ id:number ) {
-////
-////	this.current.localOrigin += translation;
-////	this.current.origin += translation;
-////
-////	clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() );
-////}
-////
+/*
+================
+idPhysics_Player::Translate
+================
+*/
+	Translate(translation: idVec3, /*int*/ id: number = -1): void {
+
+	this.current.localOrigin += translation;
+	this.current.origin += translation;
+
+	clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() );
+}
+
 /////*
 ////================
 ////idPhysics_Player::Rotate

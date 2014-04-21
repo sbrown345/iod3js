@@ -503,18 +503,18 @@ idPhysics_Static::idPhysics_Static
 	idPhysics_Static::SetOrigin
 	================
 	*/
-	SetOrigin(newOrigin: idVec3, /*int*/ id: number = -1): void {
+	SetOrigin ( newOrigin: idVec3, /*int*/ id: number = -1 ): void {
 		var masterOrigin = new idVec3;
 		var masterAxis = new idMat3;
 
-		this.current.localOrigin = newOrigin;
+		this.current.localOrigin.opEquals( newOrigin );
 
 		if ( this.hasMaster ) {
 			todoThrow ( );
 			//this.self.GetMasterPosition( masterOrigin, masterAxis );
 			//this.current.origin .opEquals( masterOrigin + newOrigin * masterAxis);
 		} else {
-			this.current.origin .opEquals(newOrigin);
+			this.current.origin.opEquals( newOrigin );
 		}
 
 		if ( this.clipModel ) {
@@ -546,19 +546,19 @@ idPhysics_Static::idPhysics_Static
 		}
 	}
 
-	/////*
-	////================
-	////idPhysics_Static::Translate
-	////================
-	////*/
-	////void idPhysics_Static::Translate( const idVec3 &translation, /*int*/ id:number = -1) {
-	////	this.current.localOrigin += translation;
-	////	this.current.origin += translation;
-	////
-	////	if ( this.clipModel ) {
-	////		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
-	////	}
-	////}
+	/*
+	================
+	idPhysics_Static::Translate
+	================
+	*/
+	Translate ( translation: idVec3, /*int*/ id: number = -1 ): void {
+		this.current.localOrigin.opAdditionAssignment( translation );
+		this.current.origin.opAdditionAssignment( translation );
+
+		if ( this.clipModel ) {
+			this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
+		}
+	}
 	////
 	/////*
 	////================
