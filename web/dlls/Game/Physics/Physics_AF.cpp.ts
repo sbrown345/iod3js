@@ -91,190 +91,6 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 //////
 //////===============================================================
 ////
-/////*
-////================
-////idAFConstraint::idAFConstraint
-////================
-////*/
-////idAFConstraint::idAFConstraint( ) {
-////	type				= CONSTRAINT_INVALID;
-////	name				= "noname";
-////	body1				= NULL;
-////	body2				= NULL;
-////	physics				= NULL;
-////
-////	lo.Zero( 6 );
-////	lo.SubVec6(0)		= -vec6_infinity;
-////	hi.Zero( 6 );
-////	hi.SubVec6(0)		= vec6_infinity;
-////	e.SetSize( 6 );
-////	e.SubVec6(0)		= vec6_lcp_epsilon;
-////
-////	boxConstraint		= NULL;
-////	boxIndex[0]			= -1;
-////	boxIndex[1]			= -1;
-////	boxIndex[2]			= -1;
-////	boxIndex[3]			= -1;
-////	boxIndex[4]			= -1;
-////	boxIndex[5]			= -1;
-////
-////	firstIndex			= 0;
-////
-////	memset( &fl, 0, sizeof( fl ) );
-////}
-////
-/////*
-////================
-////idAFConstraint::~idAFConstraint
-////================
-////*/
-////idAFConstraint::~idAFConstraint( ) {
-////}
-////
-/////*
-////================
-////idAFConstraint::SetBody1
-////================
-////*/
-////void idAFConstraint::SetBody1( idAFBody *body ) {
-////	if ( body1 != body) {
-////		body1 = body;
-////		if ( physics ) {
-////			physics.SetChanged();
-////		}
-////	}
-////}
-////
-/////*
-////================
-////idAFConstraint::SetBody2
-////================
-////*/
-////void idAFConstraint::SetBody2( idAFBody *body ) {
-////	if ( body2 != body ) {
-////		body2 = body;
-////		if ( physics ) {
-////			physics.SetChanged();
-////		}
-////	}
-////}
-////
-/////*
-////================
-////idAFConstraint::GetMultiplier
-////================
-////*/
-////const idVecX &idAFConstraint::GetMultiplier( ) {
-////	return lm;
-////}
-////
-/////*
-////================
-////idAFConstraint::Evaluate
-////================
-////*/
-////void idAFConstraint::Evaluate( float invTimeStep ) {
-////	assert( 0 );
-////}
-////
-/////*
-////================
-////idAFConstraint::ApplyFriction
-////================
-////*/
-////void idAFConstraint::ApplyFriction( float invTimeStep ) {
-////}
-////
-/////*
-////================
-////idAFConstraint::GetForce
-////================
-////*/
-////void idAFConstraint::GetForce( idAFBody *body, idVec6 &force ) {
-////	idVecX v;
-////
-////	v.SetData( 6, VECX_ALLOCA( 6 ) );
-////	if ( body == body1 ) {
-////		J1.TransposeMultiply( v, lm );
-////	}
-////	else if ( body == body2 ) {
-////		J2.TransposeMultiply( v, lm );
-////	}
-////	else {
-////		v.Zero();
-////	}
-////	force[0] = v[0]; force[1] = v[1]; force[2] = v[2]; force[3] = v[3]; force[4] = v[4]; force[5] = v[5];
-////}
-////
-/*
-================
-idAFConstraint::Translate
-================
-*/
-void idAFConstraint::Translate( const idVec3 &translation ) {
-	assert( 0 );
-}
-////
-/////*
-////================
-////idAFConstraint::Rotate
-////================
-////*/
-////void idAFConstraint::Rotate( const idRotation &rotation ) {
-////	assert( 0 );
-////}
-////
-/////*
-////================
-////idAFConstraint::GetCenter
-////================
-////*/
-////void idAFConstraint::GetCenter( idVec3 &center ) {
-////	center.Zero();
-////}
-////
-/////*
-////================
-////idAFConstraint::DebugDraw
-////================
-////*/
-////void idAFConstraint::DebugDraw( ) {
-////}
-////
-/////*
-////================
-////idAFConstraint::InitSize
-////================
-////*/
-////void idAFConstraint::InitSize( int size ) {
-////	J1.Zero( size, 6 );
-////	J2.Zero( size, 6 );
-////	c1.Zero( size );
-////	c2.Zero( size );
-////	s.Zero( size );
-////	lm.Zero( size );
-////}
-////
-/////*
-////================
-////idAFConstraint::Save
-////================
-////*/
-////void idAFConstraint::Save( idSaveGame *saveFile ) const {
-////	saveFile.WriteInt( type );
-////}
-////
-/////*
-////================
-////idAFConstraint::Restore
-////================
-////*/
-////void idAFConstraint::Restore( idRestoreGame *saveFile ) {
-////	constraintType_t t;
-////	saveFile.ReadInt( (int &)t );
-////	assert( t == type );
-////}
-////
 ////
 //////===============================================================
 //////
@@ -396,29 +212,29 @@ void idAFConstraint::Translate( const idVec3 &translation ) {
 ////void idAFConstraint_Fixed::ApplyFriction( float invTimeStep ) {
 ////	// no friction
 ////}
-////
-/*
-================
-idAFConstraint_Fixed::Translate
-================
-*/
-void idAFConstraint_Fixed::Translate( const idVec3 &translation ) {
-	if ( !body2 ) {
-		offset += translation;
-	}
-}
+//////
+///*
+//================
+//idAFConstraint_Fixed::Translate
+//================
+//*/
+//void idAFConstraint_Fixed::Translate( const idVec3 &translation ) {
+//	if ( !body2 ) {
+//		offset += translation;
+//	}
+//}
 
-/*
-================
-idAFConstraint_Fixed::Rotate
-================
-*/
-void idAFConstraint_Fixed::Rotate( const idRotation &rotation ) {
-	if ( !body2 ) {
-		offset *= rotation;
-		relAxis *= rotation.ToMat3();
-	}
-}
+///*
+//================
+//idAFConstraint_Fixed::Rotate
+//================
+//*/
+//void idAFConstraint_Fixed::Rotate( const idRotation &rotation ) {
+//	if ( !body2 ) {
+//		offset *= rotation;
+//		relAxis *= rotation.ToMat3();
+//	}
+//}
 ////
 /////*
 ////================

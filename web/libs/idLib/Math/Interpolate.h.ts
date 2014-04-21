@@ -49,13 +49,13 @@ class idInterpolate<type> {
 ////	void				SetEndValue( const type &endValue ) { this.endValue = endValue; }
 ////
 ////	type				GetCurrentValue( float time ) const;
-////	bool				IsDone( float time ) const { return ( time >= startTime + duration ); }
+////	bool				IsDone( float time ) const { return ( time >= this.startTime + duration ); }
 ////
-////	float				GetStartTime( void ) const { return startTime; }
-////	float				GetEndTime( void ) const { return startTime + duration; }
-////	float				GetDuration( void ) const { return duration; }
-////	const type &		GetStartValue( void ) const { return startValue; }
-////	const type &		GetEndValue( void ) const { return endValue; }
+////	float				GetStartTime( )const { return this.startTime; }
+////	float				GetEndTime( )const { return this.startTime + duration; }
+////	float				GetDuration( )const { return duration; }
+////	const type &		GetStartValue( )const { return startValue; }
+////	const type &		GetEndValue( )const { return endValue; }
 ////
 ////private:
 	startTime:number/*float*/;
@@ -131,21 +131,21 @@ class idInterpolateAccelDecelLinear<type> {
 ////						idInterpolateAccelDecelLinear();
 ////
 ////	void				Init( const float startTime, const float accelTime, const float decelTime, const float duration, const type &startValue, const type &endValue );
-////	void				SetStartTime( float time ) { startTime = time; Invalidate(); }
-////	void				SetStartValue( const type &startValue ) { this.startValue = startValue; Invalidate(); }
-////	void				SetEndValue( const type &endValue ) { this.endValue = endValue; Invalidate(); }
+////	void				SetStartTime( float time ) { startTime = time; this.Invalidate(); }
+	SetStartValue(startValue: type ) :void{ this.startValue = startValue; this.Invalidate(); }
+////	void				SetEndValue( const type &endValue ) { this.endValue = endValue; this.Invalidate(); }
 ////
 ////	type				GetCurrentValue( float time ) const;
 ////	type				GetCurrentSpeed( float time ) const;
 ////	bool				IsDone( float time ) const { return ( time >= startTime + accelTime + linearTime + decelTime ); }
 ////
-////	float				GetStartTime( void ) const { return startTime; }
-////	float				GetEndTime( void ) const { return startTime + accelTime + linearTime + decelTime; }
-////	float				GetDuration( void ) const { return accelTime + linearTime + decelTime; }
-////	float				GetAcceleration( void ) const { return accelTime; }
-////	float				GetDeceleration( void ) const { return decelTime; }
-////	const type &		GetStartValue( void ) const { return startValue; }
-////	const type &		GetEndValue( void ) const { return endValue; }
+////	float				GetStartTime( )const { return startTime; }
+////	float				GetEndTime( )const { return startTime + accelTime + linearTime + decelTime; }
+////	float				GetDuration( )const { return accelTime + linearTime + decelTime; }
+////	float				GetAcceleration( )const { return accelTime; }
+////	float				GetDeceleration( )const { return decelTime; }
+////	const type &		GetStartValue( )const { return startValue; }
+////	const type &		GetEndValue( )const { return endValue; }
 ////
 ////private:
 	startTime :number/*float*/;
@@ -231,16 +231,16 @@ idInterpolateAccelDecelLinear::Init
 		}
 	}
 
-/////*
-////====================
-////idInterpolateAccelDecelLinear::Invalidate
-////====================
-////*/
-//////template< class type >
-////ID_INLINE void idInterpolateAccelDecelLinear<type>::Invalidate( void ) {
-////	this.extrapolate.Init( 0, 0, this.extrapolate.GetStartValue(), this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), EXTRAPOLATION_NONE );
-////}
-////
+/*
+====================
+idInterpolateAccelDecelLinear::Invalidate
+====================
+*/
+//template< class type >
+	Invalidate ( ): void {
+		this.extrapolate.Init(0, 0, this.extrapolate.GetStartValue(), this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), extrapolation_t.EXTRAPOLATION_NONE );
+	}
+
 /////*
 ////====================
 ////idInterpolateAccelDecelLinear::SetPhase
@@ -252,16 +252,16 @@ idInterpolateAccelDecelLinear::Init
 ////
 ////	deltaTime = time - startTime;
 ////	if ( deltaTime < accelTime ) {
-////		if ( this.extrapolate.GetExtrapolationType() != EXTRAPOLATION_ACCELLINEAR ) {
-////			this.extrapolate.Init( startTime, accelTime, startValue, this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), EXTRAPOLATION_ACCELLINEAR );
+////		if ( this.extrapolate.GetExtrapolationType() != extrapolation_t.EXTRAPOLATION_ACCELLINEAR ) {
+////			this.extrapolate.Init( startTime, accelTime, startValue, this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), extrapolation_t.EXTRAPOLATION_ACCELLINEAR );
 ////		}
 ////	} else if ( deltaTime < accelTime + linearTime ) {
-////		if ( this.extrapolate.GetExtrapolationType() != EXTRAPOLATION_LINEAR ) {
-////			this.extrapolate.Init( startTime + accelTime, linearTime, startValue + this.extrapolate.GetSpeed() * ( accelTime * 0.001f * 0.5f ), this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), EXTRAPOLATION_LINEAR );
+////		if ( this.extrapolate.GetExtrapolationType() != extrapolation_t.EXTRAPOLATION_LINEAR ) {
+////			this.extrapolate.Init( startTime + accelTime, linearTime, startValue + this.extrapolate.GetSpeed() * ( accelTime * 0.001f * 0.5f ), this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), extrapolation_t.EXTRAPOLATION_LINEAR );
 ////		}
 ////	} else {
-////		if ( this.extrapolate.GetExtrapolationType() != EXTRAPOLATION_DECELLINEAR ) {
-////			this.extrapolate.Init( startTime + accelTime + linearTime, decelTime, this.endValue - ( this.extrapolate.GetSpeed() * ( decelTime * 0.001f * 0.5f ) ), this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), EXTRAPOLATION_DECELLINEAR );
+////		if ( this.extrapolate.GetExtrapolationType() != extrapolation_t.EXTRAPOLATION_DECELLINEAR ) {
+////			this.extrapolate.Init( startTime + accelTime + linearTime, decelTime, this.endValue - ( this.extrapolate.GetSpeed() * ( decelTime * 0.001f * 0.5f ) ), this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), extrapolation_t.EXTRAPOLATION_DECELLINEAR );
 ////		}
 ////	}
 ////}
@@ -305,21 +305,21 @@ class idInterpolateAccelDecelSine<type>  {
 ////						idInterpolateAccelDecelSine();
 ////
 ////	void				Init( const float startTime, const float accelTime, const float decelTime, const float duration, const type &startValue, const type &endValue );
-////	void				SetStartTime( float time ) { startTime = time; Invalidate(); }
-////	void				SetStartValue( const type &startValue ) { this.startValue = startValue; Invalidate(); }
-////	void				SetEndValue( const type &endValue ) { this.endValue = endValue; Invalidate(); }
+////	void				SetStartTime( float time ) { startTime = time; this.Invalidate(); }
+////	void				SetStartValue( const type &startValue ) { this.startValue = startValue; this.Invalidate(); }
+////	void				SetEndValue( const type &endValue ) { this.endValue = endValue; this.Invalidate(); }
 ////
 ////	type				GetCurrentValue( float time ) const;
 ////	type				GetCurrentSpeed( float time ) const;
-////	bool				IsDone( float time ) const { return ( time >= startTime + accelTime + linearTime + decelTime ); }
+////	bool				IsDone( float time ) :boolean { return ( time >= startTime + accelTime + linearTime + decelTime ); }
 ////
-////	float				GetStartTime( void ) const { return startTime; }
-////	float				GetEndTime( void ) const { return startTime + accelTime + linearTime + decelTime; }
-////	float				GetDuration( void ) const { return accelTime + linearTime + decelTime; }
-////	float				GetAcceleration( void ) const { return accelTime; }
-////	float				GetDeceleration( void ) const { return decelTime; }
-////	const type &		GetStartValue( void ) const { return startValue; }
-////	const type &		GetEndValue( void ) const { return this.endValue; }
+	GetStartTime( ):number/*float*/  { return this.startTime; }
+	GetEndTime(): number/*float*/ { return this.startTime + this.accelTime + this.linearTime + this. decelTime; }
+	GetDuration(): number/*float*/ { return this.accelTime + this.linearTime + this.decelTime; }
+	GetAcceleration( ):number/*float*/ { return this.accelTime; }
+	GetDeceleration( ):number/*float*/  { return this.decelTime; }
+	GetStartValue( ):type { return this.startValue; }
+	GetEndValue( ):type{ return this.endValue; }
 ////
 ////private:
 	startTime :number/*float*/;
@@ -380,11 +380,11 @@ idInterpolateAccelDecelSine::idInterpolateAccelDecelSine
 ////	speed = ( this.endValue - startValue ) * ( 1000.0 / ( (float) this.linearTime + ( this.accelTime + this.decelTime ) * idMath::SQRT_1OVER2 ) );
 ////
 ////	if ( this.accelTime ) {
-////		this.extrapolate.Init( startTime, this.accelTime, startValue, ( startValue - startValue ), speed, EXTRAPOLATION_ACCELSINE );
+////		this.extrapolate.Init( startTime, this.accelTime, startValue, ( startValue - startValue ), speed, extrapolation_t.EXTRAPOLATION_ACCELSINE );
 ////	} else if ( this.linearTime ) {
-////		this.extrapolate.Init( startTime, this.linearTime, startValue, ( startValue - startValue ), speed, EXTRAPOLATION_LINEAR );
+////		this.extrapolate.Init( startTime, this.linearTime, startValue, ( startValue - startValue ), speed, extrapolation_t.EXTRAPOLATION_LINEAR );
 ////	} else {
-////		this.extrapolate.Init( startTime, this.decelTime, startValue, ( startValue - startValue ), speed, EXTRAPOLATION_DECELSINE );
+////		this.extrapolate.Init( startTime, this.decelTime, startValue, ( startValue - startValue ), speed, extrapolation_t.EXTRAPOLATION_DECELSINE );
 ////	}
 ////}
 ////
@@ -394,8 +394,8 @@ idInterpolateAccelDecelSine::idInterpolateAccelDecelSine
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE void idInterpolateAccelDecelSine<type>::Invalidate( void ) {
-////	this.extrapolate.Init( 0, 0, this.extrapolate.GetStartValue(), this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), EXTRAPOLATION_NONE );
+////ID_INLINE void idInterpolateAccelDecelSine<type>::Invalidate( ){
+////	this.extrapolate.Init( 0, 0, this.extrapolate.GetStartValue(), this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), extrapolation_t.EXTRAPOLATION_NONE );
 ////}
 ////
 /////*
@@ -407,18 +407,18 @@ idInterpolateAccelDecelSine::idInterpolateAccelDecelSine
 ////ID_INLINE void idInterpolateAccelDecelSine<type>::SetPhase( float time ) const {
 ////	float deltaTime;
 ////
-////	deltaTime = time - startTime;
+////	deltaTime = time - this.startTime;
 ////	if ( deltaTime < accelTime ) {
-////		if ( this.extrapolate.GetExtrapolationType() != EXTRAPOLATION_ACCELSINE ) {
-////			this.extrapolate.Init( startTime, accelTime, startValue, this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), EXTRAPOLATION_ACCELSINE );
+////		if ( this.extrapolate.GetExtrapolationType() != extrapolation_t.EXTRAPOLATION_ACCELSINE ) {
+////			this.extrapolate.Init( this.startTime, accelTime, startValue, this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), extrapolation_t.EXTRAPOLATION_ACCELSINE );
 ////		}
 ////	} else if ( deltaTime < accelTime + linearTime ) {
-////		if ( this.extrapolate.GetExtrapolationType() != EXTRAPOLATION_LINEAR ) {
-////			this.extrapolate.Init( startTime + accelTime, linearTime, startValue + this.extrapolate.GetSpeed() * ( accelTime * 0.001f * idMath::SQRT_1OVER2 ), this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), EXTRAPOLATION_LINEAR );
+////		if ( this.extrapolate.GetExtrapolationType() != extrapolation_t.EXTRAPOLATION_LINEAR ) {
+////			this.extrapolate.Init( this.startTime + accelTime, linearTime, startValue + this.extrapolate.GetSpeed() * ( accelTime * 0.001f * idMath::SQRT_1OVER2 ), this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), extrapolation_t.EXTRAPOLATION_LINEAR );
 ////		}
 ////	} else {
-////		if ( this.extrapolate.GetExtrapolationType() != EXTRAPOLATION_DECELSINE ) {
-////			this.extrapolate.Init( startTime + accelTime + linearTime, decelTime, this.endValue - ( this.extrapolate.GetSpeed() * ( decelTime * 0.001f * idMath::SQRT_1OVER2 ) ), this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), EXTRAPOLATION_DECELSINE );
+////		if ( this.extrapolate.GetExtrapolationType() != extrapolation_t.EXTRAPOLATION_DECELSINE ) {
+////			this.extrapolate.Init( this.startTime + accelTime + linearTime, decelTime, this.endValue - ( this.extrapolate.GetSpeed() * ( decelTime * 0.001f * idMath::SQRT_1OVER2 ) ), this.extrapolate.GetBaseSpeed(), this.extrapolate.GetSpeed(), extrapolation_t.EXTRAPOLATION_DECELSINE );
 ////		}
 ////	}
 ////}

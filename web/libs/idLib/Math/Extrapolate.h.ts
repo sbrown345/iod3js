@@ -55,17 +55,17 @@ class idExtrapolate<type> {
 ////	void				Init( const float startTime, const float duration, const type &startValue, const type &baseSpeed, const type &speed, const extrapolation_t extrapolationType );
 ////	type				GetCurrentValue( float time ) const;
 ////	type				GetCurrentSpeed( float time ) const;
-////	bool				IsDone( float time ) const { return ( !( extrapolationType & EXTRAPOLATION_NOSTOP ) && time >= startTime + duration ); }
-////	void				SetStartTime( float time ) { startTime = time; currentTime = -1; }
-////	float				GetStartTime( void ) const { return startTime; }
-////	float				GetEndTime( void ) const { return ( !( extrapolationType & EXTRAPOLATION_NOSTOP ) && duration > 0 ) ? startTime + duration : 0; }
-////	float				GetDuration( void ) const { return duration; }
-////	void				SetStartValue( const type &value ) { startValue = value; currentTime = -1; }
-////	const type &		GetStartValue( void ) const { return startValue; }
-////	const type &		GetBaseSpeed( void ) const { return baseSpeed; }
-////	const type &		GetSpeed( void ) const { return speed; }
-////	extrapolation_t		GetExtrapolationType( void ) const { return extrapolationType; }
-////
+////	bool				IsDone( float time ) const { return ( !( this.extrapolationType & extrapolation_t.EXTRAPOLATION_NOSTOP ) && time >= startTime + duration ); }
+////	void				SetStartTime( /*float*/ time:number ) { this.startTime = time; this.currentTime = -1; }
+	GetStartTime( ) :number/*float*/  { return this.startTime; }
+	GetEndTime( ) :number/*float*/  { return ( !( this.extrapolationType & extrapolation_t.EXTRAPOLATION_NOSTOP ) && this.duration > 0 ) ? this.startTime + this.duration : 0; }
+	GetDuration( ) :number/*float*/ { return this.duration; }
+	SetStartValue(value: type): void { this.startValue = value; this.currentTime = -1; }
+	GetStartValue( ) :type { return this.startValue; }
+	GetBaseSpeed( ) :type { return this.baseSpeed; }
+	GetSpeed( ) :type { return this.speed; }
+	GetExtrapolationType( ) :extrapolation_t { return this.extrapolationType; }
+
 ////private:
 	extrapolationType:extrapolation_t;
 	startTime :number/*float*/;
@@ -128,84 +128,89 @@ idExtrapolate::Init
 		this.currentValue = startValue;
 	}
 
-/////*
-////====================
-////idExtrapolate::GetCurrentValue
-////====================
-////*/
-//////template< class type >
-////ID_INLINE type idExtrapolate<type>::GetCurrentValue( float time ) const {
-////	float deltaTime, s;
-////
-////	if ( time == currentTime ) {
-////		return currentValue;
-////	}
-////
-////	currentTime = time;
-////
-////	if ( time < startTime ) {
-////		return startValue;
-////	}
-////
-////	if ( !( extrapolationType &	EXTRAPOLATION_NOSTOP ) && ( time > startTime + duration ) ) {
-////		time = startTime + duration;
-////	}
-////
-////	switch( extrapolationType & ~EXTRAPOLATION_NOSTOP ) {
-////		case EXTRAPOLATION_NONE: {
-////			deltaTime = ( time - startTime ) * 0.001f;
-////			currentValue = startValue + deltaTime * baseSpeed;
-////			break;
-////		}
-////		case EXTRAPOLATION_LINEAR: {
-////			deltaTime = ( time - startTime ) * 0.001f;
-////			currentValue = startValue + deltaTime * ( baseSpeed + speed );
-////			break;
-////		}
-////		case EXTRAPOLATION_ACCELLINEAR: {
-////			if ( !duration ) {
-////				currentValue = startValue;
-////			} else {
-////				deltaTime = ( time - startTime ) / duration;
-////				s = ( 0.5f * deltaTime * deltaTime ) * ( duration * 0.001f );
-////				currentValue = startValue + deltaTime * baseSpeed + s * speed;
-////			}
-////			break;
-////		}
-////		case EXTRAPOLATION_DECELLINEAR: {
-////			if ( !duration ) {
-////				currentValue = startValue;
-////			} else {
-////				deltaTime = ( time - startTime ) / duration;
-////				s = ( deltaTime - ( 0.5f * deltaTime * deltaTime ) ) * ( duration * 0.001f );
-////				currentValue = startValue + deltaTime * baseSpeed + s * speed;
-////			}
-////			break;
-////		}
-////		case EXTRAPOLATION_ACCELSINE: {
-////			if ( !duration ) {
-////				currentValue = startValue;
-////			} else {
-////				deltaTime = ( time - startTime ) / duration;
-////				s = ( 1.0 - idMath::Cos( deltaTime * idMath::HALF_PI ) ) * duration * 0.001f * idMath::SQRT_1OVER2;
-////				currentValue = startValue + deltaTime * baseSpeed + s * speed;
-////			}
-////			break;
-////		}
-////		case EXTRAPOLATION_DECELSINE: {
-////			if ( !duration ) {
-////				currentValue = startValue;
-////			} else {
-////				deltaTime = ( time - startTime ) / duration;
-////				s = idMath::Sin( deltaTime * idMath::HALF_PI ) * duration * 0.001f * idMath::SQRT_1OVER2;
-////				currentValue = startValue + deltaTime * baseSpeed + s * speed;
-////			}
-////			break;
-////		}
-////	}
-////	return currentValue;
-////}
-////
+/*
+====================
+idExtrapolate::GetCurrentValue
+====================
+*/
+//template< class type >
+	GetCurrentValue ( /*float*/ time: number ): type {
+		var /*float */deltaTime: number, s: number;
+
+		if ( time == this.currentTime ) {
+			return this.currentValue;
+		}
+		this.currentTime = time;
+
+		if ( time < this.startTime ) {
+			return this.startValue;
+		}
+
+		if ( !( this.extrapolationType & extrapolation_t.EXTRAPOLATION_NOSTOP ) && ( time > this.startTime + this.duration ) ) {
+			time = this.startTime + this.duration;
+		}
+
+		switch ( this.extrapolationType & ~extrapolation_t.EXTRAPOLATION_NOSTOP ) {
+		case extrapolation_t.EXTRAPOLATION_NONE:
+		{
+			deltaTime = ( time - this.startTime ) * 0.001;
+			this.currentValue = this.startValue + deltaTime * baseSpeed;
+			break;
+		}
+		case extrapolation_t.EXTRAPOLATION_LINEAR:
+		{
+			deltaTime = ( time - this.startTime ) * 0.001;
+			this.currentValue = this.startValue + deltaTime * ( baseSpeed + speed );
+			break;
+		}
+		case extrapolation_t.EXTRAPOLATION_ACCELLINEAR:
+		{
+			if ( !this.duration ) {
+				this.currentValue = this.startValue;
+			} else {
+				deltaTime = ( time - this.startTime ) / this.duration;
+				s = ( 0.5 * deltaTime * deltaTime ) * ( this.duration * 0.001 );
+				this.currentValue = this.startValue + deltaTime * baseSpeed + s * speed;
+			}
+			break;
+		}
+		case extrapolation_t.EXTRAPOLATION_DECELLINEAR:
+		{
+			if ( !this.duration ) {
+				this.currentValue = this.startValue;
+			} else {
+				deltaTime = ( time - this.startTime ) / this.duration;
+				s = ( deltaTime - ( 0.5 * deltaTime * deltaTime ) ) * ( this.duration * 0.001 );
+				this.currentValue = this.startValue + deltaTime * baseSpeed + s * speed;
+			}
+			break;
+		}
+		case extrapolation_t.EXTRAPOLATION_ACCELSINE:
+		{
+			if ( !this.duration ) {
+				this.currentValue = this.startValue;
+			} else {
+				deltaTime = ( time - this.startTime ) / this.duration;
+				s = ( 1.0 - idMath.Cos( deltaTime * idMath.HALF_PI ) ) * this.duration * 0.001 * idMath.SQRT_1OVER2;
+				this.currentValue = this.startValue + deltaTime * baseSpeed + s * speed;
+			}
+			break;
+		}
+		case extrapolation_t.EXTRAPOLATION_DECELSINE:
+		{
+			if ( !this.duration ) {
+				this.currentValue = this.startValue;
+			} else {
+				deltaTime = ( time - this.startTime ) / this.duration;
+				s = idMath.Sin( deltaTime * idMath.HALF_PI ) * this.duration * 0.001 * idMath.SQRT_1OVER2;
+				this.currentValue = this.startValue + deltaTime * baseSpeed + s * speed;
+			}
+			break;
+		}
+		}
+		return this.currentValue;
+	}
+
 /////*
 ////====================
 ////idExtrapolate::GetCurrentSpeed
@@ -215,39 +220,39 @@ idExtrapolate::Init
 ////ID_INLINE type idExtrapolate<type>::GetCurrentSpeed( float time ) const {
 ////	float deltaTime, s;
 ////
-////	if ( time < startTime || !duration ) {
-////		return ( startValue - startValue );
+////	if ( time < this.startTime || !this.duration ) {
+////		return ( this.startValue - this.startValue );
 ////	}
 ////
-////	if ( !( extrapolationType &	EXTRAPOLATION_NOSTOP ) && ( time > startTime + duration ) ) {
-////		return ( startValue - startValue );
+////	if ( !( this.extrapolationType &	extrapolation_t.EXTRAPOLATION_NOSTOP ) && ( time > this.startTime + this.duration ) ) {
+////		return ( this.startValue - this.startValue );
 ////	}
 ////
-////	switch( extrapolationType & ~EXTRAPOLATION_NOSTOP ) {
-////		case EXTRAPOLATION_NONE: {
+////	switch( this.extrapolationType & ~extrapolation_t.EXTRAPOLATION_NOSTOP ) {
+////		case extrapolation_t.EXTRAPOLATION_NONE: {
 ////			return baseSpeed;
 ////		}
-////		case EXTRAPOLATION_LINEAR: {
+////		case extrapolation_t.EXTRAPOLATION_LINEAR: {
 ////			return baseSpeed + speed;
 ////		}
-////		case EXTRAPOLATION_ACCELLINEAR: {
-////			deltaTime = ( time - startTime ) / duration;
+////		case extrapolation_t.EXTRAPOLATION_ACCELLINEAR: {
+////			deltaTime = ( time - this.startTime ) / this.duration;
 ////			s = deltaTime;
 ////			return baseSpeed + s * speed;
 ////		}
-////		case EXTRAPOLATION_DECELLINEAR: {
-////			deltaTime = ( time - startTime ) / duration;
+////		case extrapolation_t.EXTRAPOLATION_DECELLINEAR: {
+////			deltaTime = ( time - this.startTime ) / this.duration;
 ////			s = 1.0 - deltaTime;
 ////			return baseSpeed + s * speed;
 ////		}
-////		case EXTRAPOLATION_ACCELSINE: {
-////			deltaTime = ( time - startTime ) / duration;
-////			s = idMath::Sin( deltaTime * idMath::HALF_PI );
+////		case extrapolation_t.EXTRAPOLATION_ACCELSINE: {
+////			deltaTime = ( time - this.startTime ) / this.duration;
+////			s = idMath.Sin( deltaTime * idMath.HALF_PI );
 ////			return baseSpeed + s * speed;
 ////		}
-////		case EXTRAPOLATION_DECELSINE: {
-////			deltaTime = ( time - startTime ) / duration;
-////			s = idMath::Cos( deltaTime * idMath::HALF_PI );
+////		case extrapolation_t.EXTRAPOLATION_DECELSINE: {
+////			deltaTime = ( time - this.startTime ) / this.duration;
+////			s = idMath.Cos( deltaTime * idMath.HALF_PI );
 ////			return baseSpeed + s * speed;
 ////		}
 ////		default: {

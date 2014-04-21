@@ -728,7 +728,7 @@ idSoundEmitterLocal::UpdateEmitter
 			//this.soundWorld.writeDemo.WriteInt( parms.soundClass );
 		}
 
-		this.origin = origin;
+		this.origin.opEquals( origin );
 		this.listenerId = listenerId;
 		this.parms.opEquals( parms );
 

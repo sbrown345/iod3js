@@ -641,7 +641,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	noImpact = false;
 ////	noContact = false;
 ////
-////	hasMaster = false;
+////	this.hasMaster = false;
 ////	isOrientated = false;
 ////
 ////#ifdef RB_TIMINGS
@@ -729,7 +729,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	savefile.WriteBool( noImpact );
 ////	savefile.WriteBool( noContact );
 ////
-////	savefile.WriteBool( hasMaster );
+////	savefile.WriteBool( this.hasMaster );
 ////	savefile.WriteBool( isOrientated );
 ////}
 ////
@@ -760,7 +760,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	savefile.ReadBool( noImpact );
 ////	savefile.ReadBool( noContact );
 ////
-////	savefile.ReadBool( hasMaster );
+////	savefile.ReadBool( this.hasMaster );
 ////	savefile.ReadBool( isOrientated );
 ////}
 
@@ -1022,7 +1022,7 @@ idPhysics_RigidBody::GetAbsBounds
 ////	timeStep = MS2SEC( timeStepMSec );
 ////	this.current.lastTimeStep = timeStep;
 ////
-////	if ( hasMaster ) {
+////	if ( this.hasMaster ) {
 ////		oldOrigin = this.current.i.position;
 ////		oldAxis = this.current.i.orientation;
 ////		this.self.GetMasterPosition( masterOrigin, masterAxis );
@@ -1223,7 +1223,7 @@ idPhysics_RigidBody::GetAbsBounds
 ////	}
 ////	this.current.i.linearMomentum += impulse;
 ////	this.current.i.angularMomentum += ( point - ( this.current.i.position + this.centerOfMass * this.current.i.orientation ) ).Cross( impulse );
-////	Activate();
+////	this.Activate();
 ////}
 ////
 /////*
@@ -1237,7 +1237,7 @@ idPhysics_RigidBody::GetAbsBounds
 ////	}
 ////	this.current.externalForce += force;
 ////	this.current.externalTorque += ( point - ( this.current.i.position + this.centerOfMass * this.current.i.orientation ) ).Cross( force );
-////	Activate();
+////	this.Activate();
 ////}
 ////
 /////*
@@ -1264,7 +1264,7 @@ idPhysics_RigidBody::GetAbsBounds
 ////================
 ////*/
 ////bool idPhysics_RigidBody::IsPushable( ) const {
-////	return ( !noImpact && !hasMaster );
+////	return ( !noImpact && !this.hasMaster );
 ////}
 ////
 /////*
@@ -1294,23 +1294,23 @@ idPhysics_RigidBody::GetAbsBounds
 idPhysics::SetOrigin
 ================
 */
-	SetOrigin(newOrigin: idVec3, /*int*/ id: number = -1): void {
+	SetOrigin ( newOrigin: idVec3, /*int*/ id: number = -1 ): void {
 		var masterOrigin = new idVec3;
 		var masterAxis = new idMat3;
 
-	this.current.localOrigin = newOrigin;
-	if ( hasMaster ) {
-		this.self.GetMasterPosition( masterOrigin, masterAxis );
-		this.current.i.position = masterOrigin + newOrigin * masterAxis;
-	}
-	else {
-		this.current.i.position = newOrigin;
-	}
+		this.current.localOrigin = newOrigin;
+		if ( this.hasMaster ) {
+			todoThrow ( );
+			//this.self.GetMasterPosition( masterOrigin, masterAxis );
+			//this.current.i.position.opEquals( masterOrigin + newOrigin * masterAxis );
+		} else {
+			this.current.i.position = newOrigin;
+		}
 
-	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.clipModel.GetAxis() );
+		this.clipModel.Link_ent( gameLocal.clip, this.self, this.clipModel.GetId ( ), this.current.i.position, this.clipModel.GetAxis ( ) );
 
-	Activate();
-}
+		this.Activate ( );
+	}
 
 /////*
 ////================
@@ -1322,7 +1322,7 @@ idPhysics::SetOrigin
 ////	idMat3 masterAxis;
 ////
 ////	this.current.localAxis = newAxis;
-////	if ( hasMaster && isOrientated ) {
+////	if ( this.hasMaster && isOrientated ) {
 ////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////		this.current.i.orientation = newAxis * masterAxis;
 ////	}
@@ -1332,7 +1332,7 @@ idPhysics::SetOrigin
 ////
 ////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.clipModel.GetOrigin(), this.current.i.orientation );
 ////
-////	Activate();
+////	this.Activate();
 ////}
 
 /*
@@ -1340,15 +1340,15 @@ idPhysics::SetOrigin
 idPhysics::Move
 ================
 */
-	Translate(translation: idVec3, /*int*/ id: number = -1): void {
+	Translate ( translation: idVec3, /*int*/ id: number = -1 ): void {
 
-	this.current.localOrigin += translation;
-	this.current.i.position += translation;
+		this.current.localOrigin.opAdditionAssignment( translation );
+		this.current.i.position.opAdditionAssignment( translation );
 
-	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.clipModel.GetAxis() );
+		this.clipModel.Link_ent( gameLocal.clip, this.self, this.clipModel.GetId ( ), this.current.i.position, this.clipModel.GetAxis ( ) );
 
-	Activate();
-}
+		this.Activate ( );
+	}
 
 /////*
 ////================
@@ -1362,7 +1362,7 @@ idPhysics::Move
 ////	this.current.i.orientation *= rotation.ToMat3();
 ////	this.current.i.position *= rotation;
 ////
-////	if ( hasMaster ) {
+////	if ( this.hasMaster ) {
 ////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////		this.current.localAxis *= rotation.ToMat3();
 ////		this.current.localOrigin = ( this.current.i.position - masterOrigin ) * masterAxis.Transpose();
@@ -1374,7 +1374,7 @@ idPhysics::Move
 ////
 ////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////
-////	Activate();
+////	this.Activate();
 ////}
 
 /*
@@ -1402,7 +1402,7 @@ idPhysics_RigidBody::GetAxis
 ////*/
 ////void idPhysics_RigidBody::SetLinearVelocity( const idVec3 &newLinearVelocity, /*int*/ id:number ) {
 ////	this.current.i.linearMomentum = newLinearVelocity * this.mass;
-////	Activate();
+////	this.Activate();
 ////}
 ////
 /////*
@@ -1412,7 +1412,7 @@ idPhysics_RigidBody::GetAxis
 ////*/
 ////void idPhysics_RigidBody::SetAngularVelocity( const idVec3 &newAngularVelocity, /*int*/ id:number ) {
 ////	this.current.i.angularMomentum = newAngularVelocity * this.inertiaTensor;
-////	Activate();
+////	this.Activate();
 ////}
 ////
 /////*
@@ -1594,7 +1594,7 @@ idPhysics_RigidBody::GetAxis
 ////	idMat3 masterAxis;
 ////
 ////	if ( master ) {
-////		if ( !hasMaster ) {
+////		if ( !this.hasMaster ) {
 ////			// transform from world space to master space
 ////			this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////			this.current.localOrigin = ( this.current.i.position - masterOrigin ) * masterAxis.Transpose();
@@ -1604,15 +1604,15 @@ idPhysics_RigidBody::GetAxis
 ////			else {
 ////				this.current.localAxis = this.current.i.orientation;
 ////			}
-////			hasMaster = true;
+////			this.hasMaster = true;
 ////			isOrientated = orientated;
 ////			ClearContacts();
 ////		}
 ////	}
 ////	else {
-////		if ( hasMaster ) {
-////			hasMaster = false;
-////			Activate();
+////		if ( this.hasMaster ) {
+////			this.hasMaster = false;
+////			this.Activate();
 ////		}
 ////	}
 ////}

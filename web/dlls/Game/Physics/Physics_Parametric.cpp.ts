@@ -900,11 +900,12 @@ idPhysics_Parametric::SetOrigin
 		this.current.linearInterpolation.SetStartValue( newOrigin );
 
 		this.current.localOrigin = this.current.linearExtrapolation.GetCurrentValue( this.current.time );
-		if ( this.hasMaster ) {
-			this.self.GetMasterPosition( masterOrigin, masterAxis );
-			this.current.origin.opEquals( masterOrigin.opAddition( this.current.localOrigin.timesVec( masterAxis ) ) );
+		if (this.hasMaster) {
+			todoThrow()
+			//this.self.GetMasterPosition( masterOrigin, masterAxis );
+			//this.current.origin.opEquals( masterOrigin.opAddition( this.current.localOrigin.timesVec( masterAxis ) ) );
 		} else {
-			this.current.origin = this.current.localOrigin;
+			this.current.origin.opEquals( this.current.localOrigin );
 		}
 		if ( this.clipModel ) {
 			this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );

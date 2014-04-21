@@ -763,14 +763,15 @@ class idPhysics_Monster extends idPhysics_Actor {
 		var masterAxis = new idMat3;
 	
 		this.current.localOrigin = newOrigin;
-		if ( this.masterEntity ) {
-			this.self.GetMasterPosition( masterOrigin, masterAxis );
-			this.current.origin = masterOrigin + newOrigin * masterAxis;
+		if (this.masterEntity) {
+			todoThrow ( );
+			//this.self.GetMasterPosition( masterOrigin, masterAxis );
+			//this.current.origin = masterOrigin + newOrigin * masterAxis;
 		}
 		else {
-			this.current.origin = newOrigin;
+			this.current.origin.opEquals( newOrigin );
 		}
-		this.clipModel.Link( gameLocal.clip, this.self, 0, newOrigin, this.clipModel.GetAxis() );
+		this.clipModel.Link_ent( gameLocal.clip, this.self, 0, newOrigin, this.clipModel.GetAxis() );
 		this.Activate();
 	}
 	//
@@ -790,10 +791,10 @@ class idPhysics_Monster extends idPhysics_Actor {
 	================
 	*/
 	Translate(translation: idVec3, /*int*/ id: number = -1): void {
-	
-		this.current.localOrigin += translation;
-		this.current.origin += translation;
-		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() );
+
+		this.current.localOrigin.opAdditionAssignment( translation );
+		this.current.origin.opAdditionAssignment( translation );
+		this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() );
 		this.Activate();
 	}
 	//

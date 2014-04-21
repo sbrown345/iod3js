@@ -107,7 +107,18 @@ class playerPState_t {
 	stepUp :number/*float*/;
 	movementType :number/*int*/;
 	movementFlags :number/*int*/;
-	movementTime :number/*int*/;
+	movementTime: number/*int*/;
+
+	memset0 ( ): void {
+		this.origin.memset0 ( );
+		this.velocity.memset0 ( );
+		this.localOrigin.memset0 ( );
+		this.pushVelocity.memset0 ( );
+		this.stepUp = 0.0;
+		this.movementType = 0;
+		this.movementFlags = 0;
+		this.movementTime = 0;
+	}
 };
 
 class idPhysics_Player extends idPhysics_Actor {
@@ -197,7 +208,7 @@ class idPhysics_Player extends idPhysics_Actor {
 	// walk movement
 	walking:boolean;
 	groundPlane:boolean;
-////	trace_t					groundTrace;
+	groundTrace = new trace_t;
 	groundMaterial: idMaterial;
 
 	// ladder movement
@@ -353,7 +364,7 @@ Returns true if the velocity was clipped in some way
 ////		primal_velocity = endVelocity;
 ////		if ( groundPlane ) {
 ////			// slide along the ground plane
-////			this.current.velocity.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
+////			this.current.velocity.ProjectOntoPlane( this.groundTrace.c.normal, OVERCLIP );
 ////		}
 ////	}
 ////	else {
@@ -365,7 +376,7 @@ Returns true if the velocity was clipped in some way
 ////	// never turn against the ground plane
 ////	if ( groundPlane ) {
 ////		numplanes = 1;
-////		planes[0] = groundTrace.c.normal;
+////		planes[0] = this.groundTrace.c.normal;
 ////	} else {
 ////		numplanes = 0;
 ////	}
@@ -381,7 +392,7 @@ Returns true if the velocity was clipped in some way
 ////		end = this.current.origin + time_left * this.current.velocity;
 ////
 ////		// see if we can make it there
-////		gameLocal.clip.Translation( trace, this.current.origin, end, clipModel, clipModel.GetAxis(), clipMask, self );
+////		gameLocal.clip.Translation( trace, this.current.origin, end, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 ////
 ////		time_left -= time_left * trace.fraction;
 ////		this.current.origin = trace.endpos;
@@ -402,7 +413,7 @@ Returns true if the velocity was clipped in some way
 ////				// trace down to see if the player is near the ground
 ////				// step checking when near the ground allows the player to move up stairs smoothly while jumping
 ////				stepEnd = this.current.origin + maxStepHeight * gravityNormal;
-////				gameLocal.clip.Translation( downTrace, this.current.origin, stepEnd, clipModel, clipModel.GetAxis(), clipMask, self );
+////				gameLocal.clip.Translation( downTrace, this.current.origin, stepEnd, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 ////				nearGround = ( downTrace.fraction < 1.0 && (downTrace.c.normal * -gravityNormal) > MIN_WALK_NORMAL );
 ////			}
 ////
@@ -411,15 +422,15 @@ Returns true if the velocity was clipped in some way
 ////
 ////				// step up
 ////				stepEnd = this.current.origin - maxStepHeight * gravityNormal;
-////				gameLocal.clip.Translation( downTrace, this.current.origin, stepEnd, clipModel, clipModel.GetAxis(), clipMask, self );
+////				gameLocal.clip.Translation( downTrace, this.current.origin, stepEnd, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 ////
 ////				// trace along velocity
 ////				stepEnd = downTrace.endpos + time_left * this.current.velocity;
-////				gameLocal.clip.Translation( stepTrace, downTrace.endpos, stepEnd, clipModel, clipModel.GetAxis(), clipMask, self );
+////				gameLocal.clip.Translation( stepTrace, downTrace.endpos, stepEnd, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 ////
 ////				// step down
 ////				stepEnd = stepTrace.endpos + maxStepHeight * gravityNormal;
-////				gameLocal.clip.Translation( downTrace, stepTrace.endpos, stepEnd, clipModel, clipModel.GetAxis(), clipMask, self );
+////				gameLocal.clip.Translation( downTrace, stepTrace.endpos, stepEnd, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 ////
 ////				if ( downTrace.fraction >= 1.0 || (downTrace.c.normal * -gravityNormal) > MIN_WALK_NORMAL ) {
 ////
@@ -450,14 +461,14 @@ Returns true if the velocity was clipped in some way
 ////		// if we can push other entities and not blocked by the world
 ////		if ( push && trace.c.entityNum != ENTITYNUM_WORLD ) {
 ////
-////			clipModel.SetPosition( this.current.origin, clipModel.GetAxis() );
+////			this.clipModel.SetPosition( this.current.origin, this.clipModel.GetAxis() );
 ////
 ////			// clip movement, only push idMoveables, don't push entities the player is standing on
 ////			// apply impact to pushed objects
 ////			pushFlags = PUSHFL_CLIP|PUSHFL_ONLYMOVEABLE|PUSHFL_NOGROUNDENTITIES|PUSHFL_APPLYIMPULSE;
 ////
 ////			// clip & push
-////			totalMass = gameLocal.push.ClipTranslationalPush( trace, self, pushFlags, end, end - this.current.origin );
+////			totalMass = gameLocal.push.ClipTranslationalPush( trace, this.self, pushFlags, end, end - this.current.origin );
 ////
 ////			if ( totalMass > 0.0 ) {
 ////				// decrease velocity based on the total mass of the objects being pushed ?
@@ -476,7 +487,7 @@ Returns true if the velocity was clipped in some way
 ////
 ////		if ( !stepped ) {
 ////			// let the entity know about the collision
-////			self.Collide( trace, this.current.velocity );
+////			this.self.Collide( trace, this.current.velocity );
 ////		}
 ////
 ////		if ( numplanes >= this.MAX_CLIP_PLANES ) {
@@ -576,7 +587,7 @@ Returns true if the velocity was clipped in some way
 ////	// step down
 ////	if ( stepDown && groundPlane ) {
 ////		stepEnd = this.current.origin + gravityNormal * maxStepHeight;
-////		gameLocal.clip.Translation( downTrace, this.current.origin, stepEnd, clipModel, clipModel.GetAxis(), clipMask, self );
+////		gameLocal.clip.Translation( downTrace, this.current.origin, stepEnd, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 ////		if ( downTrace.fraction > 1e-4f && downTrace.fraction < 1.0 ) {
 ////			this.current.stepUp -= ( downTrace.endpos - this.current.origin ) * gravityNormal;
 ////			this.current.origin = downTrace.endpos;
@@ -724,10 +735,10 @@ Returns true if the velocity was clipped in some way
 ////	idPhysics_Player::Accelerate( wishdir, wishspeed, PM_WATERACCELERATE );
 ////
 ////	// make sure we can go up slopes easily under water
-////	if ( groundPlane && ( this.current.velocity * groundTrace.c.normal ) < 0.0 ) {
+////	if ( groundPlane && ( this.current.velocity * this.groundTrace.c.normal ) < 0.0 ) {
 ////		vel = this.current.velocity.Length();
 ////		// slide along the ground plane
-////		this.current.velocity.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
+////		this.current.velocity.ProjectOntoPlane( this.groundTrace.c.normal, OVERCLIP );
 ////
 ////		this.current.velocity.Normalize();
 ////		this.current.velocity *= vel;
@@ -801,7 +812,7 @@ Returns true if the velocity was clipped in some way
 ////	// though we don't have a groundentity
 ////	// slide along the steep plane
 ////	if ( groundPlane ) {
-////		this.current.velocity.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
+////		this.current.velocity.ProjectOntoPlane( this.groundTrace.c.normal, OVERCLIP );
 ////	}
 ////
 ////	idPhysics_Player::SlideMove( true, false, false, false );
@@ -821,7 +832,7 @@ Returns true if the velocity was clipped in some way
 ////	idVec3		oldVelocity, vel;
 ////	float		oldVel, newVel;
 ////
-////	if ( waterLevel > WATERLEVEL_WAIST && ( viewForward * groundTrace.c.normal ) > 0.0 ) {
+////	if ( waterLevel > WATERLEVEL_WAIST && ( viewForward * this.groundTrace.c.normal ) > 0.0 ) {
 ////		// begin swimming
 ////		idPhysics_Player::WaterMove();
 ////		return;
@@ -847,8 +858,8 @@ Returns true if the velocity was clipped in some way
 ////	viewRight -= (viewRight * gravityNormal) * gravityNormal;
 ////
 ////	// project the forward and right directions onto the ground plane
-////	viewForward.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
-////	viewRight.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
+////	viewForward.ProjectOntoPlane( this.groundTrace.c.normal, OVERCLIP );
+////	viewRight.ProjectOntoPlane( this.groundTrace.c.normal, OVERCLIP );
 ////	//
 ////	viewForward.Normalize();
 ////	viewRight.Normalize();
@@ -886,7 +897,7 @@ Returns true if the velocity was clipped in some way
 ////	oldVelocity = this.current.velocity;
 ////
 ////	// slide along the ground plane
-////	this.current.velocity.ProjectOntoPlane( groundTrace.c.normal, OVERCLIP );
+////	this.current.velocity.ProjectOntoPlane( this.groundTrace.c.normal, OVERCLIP );
 ////
 ////	// if not clipped into the opposite direction
 ////	if ( oldVelocity * this.current.velocity > 0.0 ) {
@@ -1135,43 +1146,43 @@ Returns true if the velocity was clipped in some way
 ////	hadGroundContacts = HasGroundContacts();
 ////
 ////	// set the clip model origin before getting the contacts
-////	clipModel.SetPosition( this.current.origin, clipModel.GetAxis() );
+////	this.clipModel.SetPosition( this.current.origin, this.clipModel.GetAxis() );
 ////
 ////	EvaluateContacts();
 ////
 ////	// setup a ground trace from the contacts
-////	groundTrace.endpos = this.current.origin;
-////	groundTrace.endAxis = clipModel.GetAxis();
+////	this.groundTrace.endpos = this.current.origin;
+////	this.groundTrace.endAxis = this.clipModel.GetAxis();
 ////	if ( contacts.Num() ) {
-////		groundTrace.fraction = 0.0;
-////		groundTrace.c = contacts[0];
+////		this.groundTrace.fraction = 0.0;
+////		this.groundTrace.c = contacts[0];
 ////		for ( i = 1; i < contacts.Num(); i++ ) {
-////			groundTrace.c.normal += contacts[i].normal;
+////			this.groundTrace.c.normal += contacts[i].normal;
 ////		}
-////		groundTrace.c.normal.Normalize();
+////		this.groundTrace.c.normal.Normalize();
 ////	} else {
-////		groundTrace.fraction = 1.0;
+////		this.groundTrace.fraction = 1.0;
 ////	}
 ////
-////	contents = gameLocal.clip.Contents( this.current.origin, clipModel, clipModel.GetAxis(), -1, self );
+////	contents = gameLocal.clip.Contents( this.current.origin, this.clipModel, this.clipModel.GetAxis(), -1, this.self );
 ////	if ( contents & MASK_SOLID ) {
 ////		// do something corrective if stuck in solid
-////		idPhysics_Player::CorrectAllSolid( groundTrace, contents );
+////		idPhysics_Player::CorrectAllSolid( this.groundTrace, contents );
 ////	}
 ////
 ////	// if the trace didn't hit anything, we are in free fall
-////	if ( groundTrace.fraction == 1.0 ) {
+////	if ( this.groundTrace.fraction == 1.0 ) {
 ////		groundPlane = false;
 ////		walking = false;
 ////		groundEntityPtr = NULL;
 ////		return;
 ////	}
 ////
-////	groundMaterial = groundTrace.c.material;
-////	groundEntityPtr = gameLocal.entities[ groundTrace.c.entityNum ];
+////	groundMaterial = this.groundTrace.c.material;
+////	groundEntityPtr = gameLocal.entities[ this.groundTrace.c.entityNum ];
 ////
 ////	// check if getting thrown off the ground
-////	if ( (this.current.velocity * -gravityNormal) > 0.0 && ( this.current.velocity * groundTrace.c.normal ) > 10.0 ) {
+////	if ( (this.current.velocity * -gravityNormal) > 0.0 && ( this.current.velocity * this.groundTrace.c.normal ) > 10.0 ) {
 ////		if ( debugLevel ) {
 ////			gameLocal.Printf( "%i:kickoff\n", c_pmove );
 ////		}
@@ -1182,7 +1193,7 @@ Returns true if the velocity was clipped in some way
 ////	}
 ////	
 ////	// slopes that are too steep will not be considered onground
-////	if ( ( groundTrace.c.normal * -gravityNormal ) < MIN_WALK_NORMAL ) {
+////	if ( ( this.groundTrace.c.normal * -gravityNormal ) < MIN_WALK_NORMAL ) {
 ////		if ( debugLevel ) {
 ////			gameLocal.Printf( "%i:steep\n", c_pmove );
 ////		}
@@ -1220,13 +1231,13 @@ Returns true if the velocity was clipped in some way
 ////	}
 ////
 ////	// let the entity know about the collision
-////	self.Collide( groundTrace, this.current.velocity );
+////	this.self.Collide( this.groundTrace, this.current.velocity );
 ////
 ////	if ( groundEntityPtr.GetEntity() ) {
 ////		impactInfo_t info;
-////		groundEntityPtr.GetEntity().GetImpactInfo( self, groundTrace.c.id, groundTrace.c.point, &info );
+////		groundEntityPtr.GetEntity().GetImpactInfo( this.self, this.groundTrace.c.id, this.groundTrace.c.point, &info );
 ////		if ( info.invMass != 0.0 ) {
-////			groundEntityPtr.GetEntity().ApplyImpulse( self, groundTrace.c.id, groundTrace.c.point, this.current.velocity / ( info.invMass * 10.0 ) );
+////			groundEntityPtr.GetEntity().ApplyImpulse( this.self, this.groundTrace.c.id, this.groundTrace.c.point, this.current.velocity / ( info.invMass * 10.0 ) );
 ////		}
 ////	}
 ////}
@@ -1256,7 +1267,7 @@ Returns true if the velocity was clipped in some way
 ////			if ( this.current.movementFlags & PMF_DUCKED ) {
 ////				// try to stand up
 ////				end = this.current.origin - ( pm_normalheight.GetFloat() - pm_crouchheight.GetFloat() ) * gravityNormal;
-////				gameLocal.clip.Translation( trace, this.current.origin, end, clipModel, clipModel.GetAxis(), clipMask, self );
+////				gameLocal.clip.Translation( trace, this.current.origin, end, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 ////				if ( trace.fraction >= 1.0 ) {
 ////					this.current.movementFlags &= ~PMF_DUCKED;
 ////				}
@@ -1271,14 +1282,14 @@ Returns true if the velocity was clipped in some way
 ////		}
 ////	}
 ////	// if the clipModel height should change
-////	if ( clipModel.GetBounds()[1][2] != maxZ ) {
+////	if ( this.clipModel.GetBounds()[1][2] != maxZ ) {
 ////
-////		bounds = clipModel.GetBounds();
+////		bounds = this.clipModel.GetBounds();
 ////		bounds[1][2] = maxZ;
 ////		if ( pm_usecylinder.GetBool() ) {
-////			clipModel.LoadModel( idTraceModel( bounds, 8 ) );
+////			this.clipModel.LoadModel( idTraceModel( bounds, 8 ) );
 ////		} else {
-////			clipModel.LoadModel( idTraceModel( bounds ) );
+////			this.clipModel.LoadModel( idTraceModel( bounds ) );
 ////		}
 ////	}
 ////}
@@ -1314,7 +1325,7 @@ Returns true if the velocity was clipped in some way
 ////	}
 ////
 ////	end = this.current.origin + tracedist * forward;
-////	gameLocal.clip.Translation( trace, this.current.origin, end, clipModel, clipModel.GetAxis(), clipMask, self );
+////	gameLocal.clip.Translation( trace, this.current.origin, end, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 ////
 ////	// if near a surface
 ////	if ( trace.fraction < 1.0 ) {
@@ -1324,10 +1335,10 @@ Returns true if the velocity was clipped in some way
 ////
 ////			// check a step height higher
 ////			end = this.current.origin - gravityNormal * ( maxStepHeight * 0.75f );
-////			gameLocal.clip.Translation( trace, this.current.origin, end, clipModel, clipModel.GetAxis(), clipMask, self );
+////			gameLocal.clip.Translation( trace, this.current.origin, end, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 ////			start = trace.endpos;
 ////			end = start + tracedist * forward;
-////			gameLocal.clip.Translation( trace, start, end, clipModel, clipModel.GetAxis(), clipMask, self );
+////			gameLocal.clip.Translation( trace, start, end, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 ////
 ////			// if also near a surface a step height higher
 ////			if ( trace.fraction < 1.0 ) {
@@ -1400,13 +1411,13 @@ Returns true if the velocity was clipped in some way
 ////
 ////	spot = this.current.origin + 30.0 * flatforward;
 ////	spot -= 4.0 * gravityNormal;
-////	cont = gameLocal.clip.Contents( spot, NULL, mat3_identity, -1, self );
+////	cont = gameLocal.clip.Contents( spot, NULL, mat3_identity, -1, this.self );
 ////	if ( !(cont & CONTENTS_SOLID) ) {
 ////		return false;
 ////	}
 ////
 ////	spot -= 16.0 * gravityNormal;
-////	cont = gameLocal.clip.Contents( spot, NULL, mat3_identity, -1, self );
+////	cont = gameLocal.clip.Contents( spot, NULL, mat3_identity, -1, this.self );
 ////	if ( cont ) {
 ////		return false;
 ////	}
@@ -1435,11 +1446,11 @@ Returns true if the velocity was clipped in some way
 ////	waterLevel = WATERLEVEL_NONE;
 ////	waterType = 0;
 ////
-////	bounds = clipModel.GetBounds();
+////	bounds = this.clipModel.GetBounds();
 ////
 ////	// check at feet level
 ////	point = this.current.origin - ( bounds[0][2] + 1.0 ) * gravityNormal;
-////	contents = gameLocal.clip.Contents( point, NULL, mat3_identity, -1, self );
+////	contents = gameLocal.clip.Contents( point, NULL, mat3_identity, -1, this.self );
 ////	if ( contents & MASK_WATER ) {
 ////
 ////		waterType = contents;
@@ -1447,14 +1458,14 @@ Returns true if the velocity was clipped in some way
 ////
 ////		// check at waist level
 ////		point = this.current.origin - ( bounds[1][2] - bounds[0][2] ) * 0.5 * gravityNormal;
-////		contents = gameLocal.clip.Contents( point, NULL, mat3_identity, -1, self );
+////		contents = gameLocal.clip.Contents( point, NULL, mat3_identity, -1, this.self );
 ////		if ( contents & MASK_WATER ) {
 ////
 ////			waterLevel = WATERLEVEL_WAIST;
 ////
 ////			// check at head level
 ////			point = this.current.origin - ( bounds[1][2] - 1.0 ) * gravityNormal;
-////			contents = gameLocal.clip.Contents( point, NULL, mat3_identity, -1, self );
+////			contents = gameLocal.clip.Contents( point, NULL, mat3_identity, -1, this.self );
 ////			if ( contents & MASK_WATER ) {
 ////				waterLevel = WATERLEVEL_HEAD;
 ////			}
@@ -1659,38 +1670,39 @@ Returns true if the velocity was clipped in some way
 ////	return ladder;
 ////}
 ////
-/////*
-////================
-////idPhysics_Player::idPhysics_Player
-////================
-////*/
-////idPhysics_Player::idPhysics_Player( ) {
-////	debugLevel = false;
-////	clipModel = NULL;
-////	clipMask = 0;
-////	memset( &this.current, 0, sizeof( this.current ) );
-////	saved = this.current;
-////	walkSpeed = 0;
-////	crouchSpeed = 0;
-////	maxStepHeight = 0;
-////	maxJumpHeight = 0;
-////	memset( &command, 0, sizeof( command ) );
-////	viewAngles.Zero();
-////	framemsec = 0;
-////	frametime = 0;
-////	playerSpeed = 0;
-////	viewForward.Zero();
-////	viewRight.Zero();
-////	walking = false;
-////	groundPlane = false;
-////	memset( &groundTrace, 0, sizeof( groundTrace ) );
-////	groundMaterial = NULL;
-////	ladder = false;
-////	ladderNormal.Zero();
-////	waterLevel = WATERLEVEL_NONE;
-////	waterType = 0;
-////}
-////
+/*
+================
+idPhysics_Player::idPhysics_Player
+================
+*/
+	constructor ( ) {
+		super ( );
+		this.debugLevel = 0/*false*/;
+		this.clipModel = null;
+		this.clipMask = 0;
+		this.current.memset0 ( );
+		this.saved = this.current;
+		this.walkSpeed = 0;
+		this.crouchSpeed = 0;
+		this.maxStepHeight = 0;
+		this.maxJumpHeight = 0;
+		this.command.memset0 ( );
+		this.viewAngles.Zero ( );
+		this.framemsec = 0;
+		this.frametime = 0;
+		this.playerSpeed = 0;
+		this.viewForward.Zero ( );
+		this.viewRight.Zero ( );
+		this.walking = false;
+		this.groundPlane = false;
+		this.groundTrace.memset0 ( );
+		this.groundMaterial = null;
+		this.ladder = false;
+		this.ladderNormal.Zero ( );
+		this.waterLevel = waterLevel_t.WATERLEVEL_NONE;
+		this.waterType = 0;
+	}
+
 /////*
 ////================
 ////idPhysics_Player_SavePState
@@ -1750,7 +1762,7 @@ Returns true if the velocity was clipped in some way
 ////
 ////	savefile.WriteBool( walking );
 ////	savefile.WriteBool( groundPlane );
-////	savefile.WriteTrace( groundTrace );
+////	savefile.WriteTrace( this.groundTrace );
 ////	savefile.WriteMaterial( groundMaterial );
 ////
 ////	savefile.WriteBool( ladder );
@@ -1787,7 +1799,7 @@ Returns true if the velocity was clipped in some way
 ////
 ////	savefile.ReadBool( walking );
 ////	savefile.ReadBool( groundPlane );
-////	savefile.ReadTrace( groundTrace );
+////	savefile.ReadTrace( this.groundTrace );
 ////	savefile.ReadMaterial( groundMaterial );
 ////
 ////	savefile.ReadBool( ladder );
@@ -1888,13 +1900,13 @@ Returns true if the velocity was clipped in some way
 ////	waterType = 0;
 ////	oldOrigin = this.current.origin;
 ////
-////	clipModel.Unlink();
+////	this.clipModel.Unlink();
 ////
 ////	// if bound to a master
-////	if ( masterEntity ) {
-////		self.GetMasterPosition( masterOrigin, masterAxis );
+////	if ( this.masterEntity ) {
+////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////		this.current.origin = masterOrigin + this.current.localOrigin * masterAxis;
-////		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() );
+////		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() );
 ////		this.current.velocity = ( this.current.origin - oldOrigin ) / ( timeStepMSec * 0.001f );
 ////		masterDeltaYaw = masterYaw;
 ////		masterYaw = masterAxis[0].ToYaw();
@@ -1906,10 +1918,10 @@ Returns true if the velocity was clipped in some way
 ////
 ////	idPhysics_Player::MovePlayer( timeStepMSec );
 ////
-////	clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() );
+////	this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() );
 ////
 ////	if ( IsOutsideWorld() ) {
-////		gameLocal.Warning( "clip model outside world bounds for entity '%s' at (%s)", self.name.c_str(), this.current.origin.ToString(0) );
+////		gameLocal.Warning( "clip model outside world bounds for entity '%s' at (%s)", this.self.name.c_str(), this.current.origin.ToString(0) );
 ////	}
 ////
 ////	return true; //( this.current.origin != oldOrigin );
@@ -1990,7 +2002,7 @@ Returns true if the velocity was clipped in some way
 ////void idPhysics_Player::RestoreState( ) {
 ////	this.current = saved;
 ////
-////	clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() );
+////	this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() );
 ////
 ////	EvaluateContacts();
 ////}
@@ -2000,30 +2012,31 @@ Returns true if the velocity was clipped in some way
 idPhysics_Player::SetOrigin
 ================
 */
-	SetOrigin(newOrigin: idVec3, /*int*/ id: number = -1): void {
-	idVec3 masterOrigin;
-	idMat3 masterAxis;
+	SetOrigin ( newOrigin: idVec3, /*int*/ id: number = -1 ): void {
+		var masterOrigin = new idVec3;
+		var masterAxis = new idMat3;
 
-	this.current.localOrigin = newOrigin;
-	if ( masterEntity ) {
-		self.GetMasterPosition( masterOrigin, masterAxis );
-		this.current.origin = masterOrigin + newOrigin * masterAxis;
-	}
-	else {
-		this.current.origin = newOrigin;
-	}
 
-	clipModel.Link( gameLocal.clip, self, 0, newOrigin, clipModel.GetAxis() );
-}
+		this.current.localOrigin = newOrigin;
+		if ( this.masterEntity ) {
+			todoThrow ( );
+			//this.self.GetMasterPosition( masterOrigin, masterAxis );
+			//this.current.origin.opEquals( masterOrigin.opAddition(  newOrigin.times??( masterAxis ) ) );
+		} else {
+			this.current.origin.opEquals( newOrigin );
+		}
+
+		this.clipModel.Link_ent( gameLocal.clip, this.self, 0, newOrigin, this.clipModel.GetAxis ( ) );
+	}
 
 /*
 ================
 idPhysics_Player::GetOrigin
 ================
 */
-PlayerGetOrigin(): idVec3 {
-	return this.current.origin;
-}
+	PlayerGetOrigin ( ): idVec3 {
+		return this.current.origin;
+	}
 
 /////*
 ////================
@@ -2031,7 +2044,7 @@ PlayerGetOrigin(): idVec3 {
 ////================
 ////*/
 ////void idPhysics_Player::SetAxis( const idMat3 &newAxis, /*int*/ id:number ) {
-////	clipModel.Link( gameLocal.clip, self, 0, clipModel.GetOrigin(), newAxis );
+////	this.clipModel.Link( gameLocal.clip, this.self, 0, this.clipModel.GetOrigin(), newAxis );
 ////}
 ////
 /*
@@ -2039,13 +2052,13 @@ PlayerGetOrigin(): idVec3 {
 idPhysics_Player::Translate
 ================
 */
-	Translate(translation: idVec3, /*int*/ id: number = -1): void {
+	Translate ( translation: idVec3, /*int*/ id: number = -1 ): void {
 
-	this.current.localOrigin += translation;
-	this.current.origin += translation;
+		this.current.localOrigin.opAdditionAssignment( translation );
+		this.current.origin.opAdditionAssignment( translation );
 
-	clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() );
-}
+		this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis ( ) );
+	}
 
 /////*
 ////================
@@ -2057,15 +2070,15 @@ idPhysics_Player::Translate
 ////	idMat3 masterAxis;
 ////
 ////	this.current.origin *= rotation;
-////	if ( masterEntity ) {
-////		self.GetMasterPosition( masterOrigin, masterAxis );
+////	if ( this.masterEntity ) {
+////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////		this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
 ////	}
 ////	else {
 ////		this.current.localOrigin = this.current.origin;
 ////	}
 ////
-////	clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() * rotation.ToMat3() );
+////	this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() * rotation.ToMat3() );
 ////}
 ////
 /////*
@@ -2137,18 +2150,18 @@ idPhysics_Player::Translate
 ////	idMat3 masterAxis;
 ////
 ////	if ( master ) {
-////		if ( !masterEntity ) {
+////		if ( !this.masterEntity ) {
 ////			// transform from world space to master space
-////			self.GetMasterPosition( masterOrigin, masterAxis );
+////			this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////			this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
-////			masterEntity = master;
+////			this.masterEntity = master;
 ////			masterYaw = masterAxis[0].ToYaw();
 ////		}
 ////		ClearContacts();
 ////	}
 ////	else {
-////		if ( masterEntity ) {
-////			masterEntity = NULL;
+////		if ( this.masterEntity ) {
+////			this.masterEntity = NULL;
 ////		}
 ////	}
 ////}
@@ -2207,8 +2220,8 @@ idPhysics_Player::Translate
 ////	this.current.movementFlags = msg.ReadBits( PLAYER_MOVEMENT_FLAGS_BITS );
 ////	this.current.movementTime = msg.ReadDeltaLong( 0 );
 ////
-////	if ( clipModel ) {
-////		clipModel.Link( gameLocal.clip, self, 0, this.current.origin, clipModel.GetAxis() );
+////	if ( this.clipModel ) {
+////		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() );
 ////	}
 ////}
 ////

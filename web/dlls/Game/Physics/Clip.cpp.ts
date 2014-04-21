@@ -869,8 +869,8 @@ idClipModel::Link
 
 		this.entity = ent;
 		this.id = newId;
-		this.origin = newOrigin;
-		this.axis = newAxis;
+		this.origin.opEquals( newOrigin );
+		this.axis.opEquals( newAxis );
 		if ( renderModelHandle != -1 ) {
 			this.renderModelHandle = renderModelHandle;
 			var renderEntity = gameRenderWorld.GetRenderEntity( renderModelHandle );

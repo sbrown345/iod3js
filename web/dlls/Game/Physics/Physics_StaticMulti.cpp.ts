@@ -616,30 +616,30 @@ idPhysics_StaticMulti::PutToRest
 idPhysics_StaticMulti::SetOrigin
 ================
 */
-	SetOrigin(newOrigin: idVec3, /*int*/ id: number = -1): void {
+	SetOrigin ( newOrigin: idVec3, /*int*/ id: number = -1 ): void {
 		var masterOrigin = new idVec3;
 		var masterAxis = new idMat3;
-
-	if ( id >= 0 && id < this.clipModels.Num() ) {
-		this.current[id].localOrigin = newOrigin;
-		if ( this.hasMaster ) {
-			this.self.GetMasterPosition( masterOrigin, masterAxis );
-			this.current[id].origin = masterOrigin + newOrigin * masterAxis;
-		} else {
-			this.current[id].origin = newOrigin;
-		}
-		if ( this.clipModels[id] ) {
-			this.clipModels[id].Link_ent( gameLocal.clip, this.self, id, this.current[id].origin, this.current[id].axis );
-		}
-	} else if ( id == -1 ) {
-		if ( this.hasMaster ) {
-			this.self.GetMasterPosition( masterOrigin, masterAxis );
-			this.Translate( masterOrigin + masterAxis * newOrigin - this.current[0].origin );
-		} else {
-			this.Translate( newOrigin - this.current[0].origin );
-		}
+		todoThrow ( );
+		//if ( id >= 0 && id < this.clipModels.Num() ) {
+		//	this.current[id].localOrigin = newOrigin;
+		//	if ( this.hasMaster ) {
+		//		this.self.GetMasterPosition( masterOrigin, masterAxis );
+		//		this.current[id].origin = masterOrigin + newOrigin * masterAxis;
+		//	} else {
+		//		this.current[id].origin = newOrigin;
+		//	}
+		//	if ( this.clipModels[id] ) {
+		//		this.clipModels[id].Link_ent( gameLocal.clip, this.self, id, this.current[id].origin, this.current[id].axis );
+		//	}
+		//} else if ( id == -1 ) {
+		//	if ( this.hasMaster ) {
+		//		this.self.GetMasterPosition( masterOrigin, masterAxis );
+		//		this.Translate( masterOrigin + masterAxis * newOrigin - this.current[0].origin );
+		//	} else {
+		//		this.Translate( newOrigin.opSubtraction( this.current[0].origin ) );
+		//	}
+		//}
 	}
-}
 
 /////*
 ////================

@@ -2902,7 +2902,7 @@ idEntity::GetPhysicsToSoundTransform
 	GetPhysicsToSoundTransform ( origin: idVec3, axis: idMat3 ): boolean {
 		// by default play the sound at the center of the bounding box of the first clip model
 		if ( this.GetPhysics ( ).GetNumClipModels ( ) > 0 ) {
-			origin = this.GetPhysics ( ).GetBounds ( ).GetCenter ( );
+			origin.opEquals( this.GetPhysics ( ).GetBounds ( ).GetCenter ( ) );
 			axis.Identity ( );
 			return true;
 		}
