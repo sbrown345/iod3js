@@ -258,7 +258,7 @@ class idPlayer extends idActor {
 	weapon_fists: number/*int*/;
 	
 	heartRate: number/*int*/;
-	heartInfo: idInterpolate</*float*/number>;
+	heartInfo = new idInterpolate(float);
 	lastHeartAdjust: number/*int*/;
 	lastHeartBeat: number/*int*/;
 	lastDmgTime: number/*int*/;
@@ -563,8 +563,8 @@ class idPlayer extends idActor {
 	gibsLaunched:boolean;
 	gibsDir = new idVec3;
 	
-	zoomFov: idInterpolate<number/*float*/>;
-	centerView:idInterpolate<number/*float*/>;
+	zoomFov = new idInterpolate(float);
+	centerView = new idInterpolate(float);
 	fxFov:boolean;
 	
 	influenceFov: number/*float*/;

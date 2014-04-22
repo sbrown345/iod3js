@@ -64,7 +64,7 @@ class parametricPState_t{
 	linearInterpolation = new idInterpolateAccelDecelLinear<idVec3>(idVec3);	// interpolation based description of the position over time
 	angularInterpolation = new idInterpolateAccelDecelLinear<idAngles>(idAngles);	// interpolation based description of the orientation over time
 	spline:idCurve_Spline<idVec3> [];					// spline based description of the position over time
-	splineInterpolate = new idInterpolateAccelDecelLinear</*float*/number>(Number);		// position along the spline over time
+	splineInterpolate = new idInterpolateAccelDecelLinear_Number(float);		// position along the spline over time
 	useSplineAngles:boolean;		// set the orientation using the spline
 }
 

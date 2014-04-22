@@ -91,13 +91,13 @@ var EV_IsRotating = new idEventDef( "isRotating", null, 'd' );
 
 ////CLASS_DECLARATION( idEntity, idMover )
 idMover.CreateInstance = function ( ): idClass {
-	try {
+	//try {
 		var ptr = new idMover;
 		ptr.FindUninitializedMemory ( );
 		return ptr;
-	} catch ( e ) {
-		return null;
-	}
+	//} catch ( e ) {
+	//	return null;
+	//}
 };
 
 idMover.prototype.GetType = function ( ): idTypeInfo {

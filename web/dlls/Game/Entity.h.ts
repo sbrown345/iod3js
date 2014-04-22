@@ -2632,9 +2632,8 @@ idEntity::SetPhysics
 		} else {
 			this.physics = this.defaultPhysicsObj;
 		}
-		todoThrow ( );
-		//this.physics.UpdateTime( gameLocal.time );
-		//this.physics.SetMaster( this.bindMaster, this.fl.bindOrientated );
+		this.physics.UpdateTime( gameLocal.time );
+		this.physics.SetMaster( this.bindMaster, this.fl.bindOrientated );
 	}
 
 /////*
