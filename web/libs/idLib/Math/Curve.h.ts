@@ -40,12 +40,12 @@
 //template< class type >
 class idCurve<type> {
 ////public:
-////						idCurve( void );
-////	virtual				~idCurve( void );
+////						idCurve( );
+////	virtual				~idCurve( );
 
 ////	virtual int			AddValue( const float time, const type &value );
 ////	virtual void		RemoveIndex( const int index ) { values.RemoveIndex(index); times.RemoveIndex(index); changed = true; }
-////	virtual void		Clear( void ) { values.Clear(); times.Clear(); currentIndex = -1; changed = true; }
+////	virtual void		Clear( ) { values.Clear(); times.Clear(); this.currentIndex = -1; changed = true; }
 
 ////	virtual type		GetCurrentValue( const float time ) const;
 ////	virtual type		GetCurrentFirstDerivative( const float time ) const;
@@ -53,7 +53,7 @@ class idCurve<type> {
 
 ////	virtual bool		IsDone( const float time ) const;
 
-////	int					GetNumValues( void ) const { return values.Num(); }
+////	int					GetNumValues( ) const { return values.Num(); }
 ////	void				SetValue( const int index, const type &value ) { values[index] = value; changed = true; }
 ////	type				GetValue( const int index ) const { return values[index]; }
 ////	type *				GetValueAddress( const int index ) { return &values[index]; }
@@ -70,11 +70,13 @@ class idCurve<type> {
 
 ////protected:
 
-////	idList<float>		times;			// knots
-////	idList<type>		values;			// knot values
+	times = new idList</*float*/number>(Number);			// knots
+	values:idList<type>;			// knot values
 
-////	mutable int			currentIndex;	// cached index for fast lookup
-////	mutable bool		changed;		// set whenever the curve changes
+	currentIndex:number/*mutable int*/;	// cached index for fast lookup
+	changed: boolean /*mutable*/;		// set whenever the curve changes
+
+	type:any;
 
 ////	int					IndexForTime( const float time ) const;
 ////	float				TimeForIndex( const int index ) const;
@@ -84,16 +86,18 @@ class idCurve<type> {
 ////	float				RombergIntegral( const float t0, const float t1, const int order ) const;
 ////};
 
-/////*
-////====================
-////idCurve::idCurve
-////====================
-////*/
-//////template< class type >
-////ID_INLINE idCurve<type>::idCurve( void ) {
-////	currentIndex = -1;
-////	changed = false;
-////}
+/*
+====================
+idCurve::idCurve
+====================
+*/
+//template< class type >
+	constructor ( type: any ) {
+		this.type = type;
+		this.values = new this.type;
+		this.currentIndex = -1;
+		this.changed = false;
+	}
 
 /////*
 ////====================
@@ -101,7 +105,7 @@ class idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE idCurve<type>::~idCurve( void ) {
+////ID_INLINE idCurve<type>::~idCurve( ) {
 ////}
 
 /////*
@@ -119,7 +123,7 @@ class idCurve<type> {
 ////	i = IndexForTime( time );
 ////	times.Insert( time, i );
 ////	values.Insert( value, i );
-////	changed = true;
+////	this.changed = true;
 ////	return i;
 ////}
 
@@ -323,7 +327,7 @@ class idCurve<type> {
 ////	for ( i = 0; i <= n; i++ ) {
 ////		times[i] = i * totalTime / n;
 ////	}
-////	changed = true;
+////	this.changed = true;
 ////}
 
 /////*
@@ -348,21 +352,21 @@ class idCurve<type> {
 ////		t += scale * length[i];
 ////	}
 ////	times[times.Num() - 1] = totalTime;
-////	changed = true;
+////	this.changed = true;
 ////}
 
-/////*
-////====================
-////idCurve::ShiftTime
-////====================
-////*/
-//////template< class type >
-////ID_INLINE void idCurve<type>::ShiftTime( const float deltaTime ) {
-////	for ( int i = 0; i < times.Num(); i++ ) {
-////		times[i] += deltaTime;
-////	}
-////	changed = true;
-////}
+/*
+====================
+idCurve::ShiftTime
+====================
+*/
+//template< class type >
+	ShiftTime ( /*float */deltaTime: number ): void {
+		for ( var /*int */i = 0; i < this.times.Num ( ); i++ ) {
+			this.times[i] += deltaTime;
+		}
+		this.changed = true;
+	}
 
 /////*
 ////====================
@@ -374,7 +378,7 @@ class idCurve<type> {
 ////	for ( int i = 0; i < values.Num(); i++ ) {
 ////		values[i] += translation;
 ////	}
-////	changed = true;
+////	this.changed = true;
 ////}
 
 /////*
@@ -388,35 +392,35 @@ class idCurve<type> {
 ////ID_INLINE int idCurve<type>::IndexForTime( const float time ) const {
 ////	int len, mid, offset, res;
 
-////	if ( currentIndex >= 0 && currentIndex <= times.Num() ) {
+////	if ( this.currentIndex >= 0 && this.currentIndex <= this.times.Num() ) {
 ////		// use the cached index if it is still valid
-////		if ( currentIndex == 0 ) {
-////			if ( time <= times[currentIndex] ) {
-////				return currentIndex;
+////		if ( this.currentIndex == 0 ) {
+////			if ( time <= this.times[this.currentIndex] ) {
+////				return this.currentIndex;
 ////			}
-////		} else if ( currentIndex == times.Num() ) {
-////			if ( time > times[currentIndex-1] ) {
-////				return currentIndex;
+////		} else if ( this.currentIndex == this.times.Num() ) {
+////			if ( time > this.times[this.currentIndex-1] ) {
+////				return this.currentIndex;
 ////			}
-////		} else if ( time > times[currentIndex-1] && time <= times[currentIndex] ) {
-////			return currentIndex;
-////		} else if ( time > times[currentIndex] && ( currentIndex+1 == times.Num() || time <= times[currentIndex+1] ) ) {
+////		} else if ( time > this.times[this.currentIndex-1] && time <= this.times[this.currentIndex] ) {
+////			return this.currentIndex;
+////		} else if ( time > this.times[this.currentIndex] && ( this.currentIndex+1 == this.times.Num() || time <= this.times[this.currentIndex+1] ) ) {
 ////			// use the next index
-////			currentIndex++;
-////			return currentIndex;
+////			this.currentIndex++;
+////			return this.currentIndex;
 ////		}
 ////	}
 
 ////	// use binary search to find the index for the given time
-////	len = times.Num();
+////	len = this.times.Num();
 ////	mid = len;
 ////	offset = 0;
 ////	res = 0;
 ////	while( mid > 0 ) {
 ////		mid = len >> 1;
-////		if ( time == times[offset+mid] ) {
+////		if ( time == this.times[offset+mid] ) {
 ////			return offset+mid;
-////		} else if ( time > times[offset+mid] ) {
+////		} else if ( time > this.times[offset+mid] ) {
 ////			offset += mid;
 ////			len -= mid;
 ////			res = 1;
@@ -425,8 +429,8 @@ class idCurve<type> {
 ////			res = 0;
 ////		}
 ////	}
-////	currentIndex = offset+res;
-////	return currentIndex;
+////	this.currentIndex = offset+res;
+////	return this.currentIndex;
 ////}
 
 /////*
@@ -457,14 +461,14 @@ class idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE float idCurve<type>::TimeForIndex( const int index ) const {
-////	int n = times.Num()-1;
+////	int n = this.times.Num()-1;
 
 ////	if ( index < 0 ) {
-////		return times[0] + index * ( times[1] - times[0] );
+////		return this.times[0] + index * ( this.times[1] - this.times[0] );
 ////	} else if ( index > n ) {
-////		return times[n] + ( index - n ) * ( times[n] - times[n-1] );
+////		return this.times[n] + ( index - n ) * ( this.times[n] - this.times[n-1] );
 ////	}
-////	return times[index];
+////	return this.times[index];
 ////}
 
 }
@@ -482,7 +486,7 @@ class idCurve<type> {
 //////template< class type >
 ////class idCurve_Bezier extends idCurve<type> {
 ////public:
-////						idCurve_Bezier( void );
+////						idCurve_Bezier( );
 
 ////	virtual type		GetCurrentValue( const float time ) const;
 ////	virtual type		GetCurrentFirstDerivative( const float time ) const;
@@ -500,7 +504,7 @@ class idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE idCurve_Bezier<type>::idCurve_Bezier( void ) {
+////ID_INLINE idCurve_Bezier<type>::idCurve_Bezier( ) {
 ////}
 
 /////*
@@ -516,12 +520,12 @@ class idCurve<type> {
 ////	float *bvals;
 ////	type v;
 
-////	bvals = (float *) _alloca16( this->values.Num() * sizeof( float ) );
+////	bvals = (float *) _alloca16( this.values.Num() * sizeof( float ) );
 
-////	Basis( this->values.Num(), time, bvals );
-////	v = bvals[0] * this->values[0];
-////	for ( i = 1; i < this->values.Num(); i++ ) {
-////		v += bvals[i] * this->values[i];
+////	Basis( this.values.Num(), time, bvals );
+////	v = bvals[0] * this.values[0];
+////	for ( i = 1; i < this.values.Num(); i++ ) {
+////		v += bvals[i] * this.values[i];
 ////	}
 ////	return v;
 ////}
@@ -539,15 +543,15 @@ class idCurve<type> {
 ////	float *bvals, d;
 ////	type v;
 
-////	bvals = (float *) _alloca16( this->values.Num() * sizeof( float ) );
+////	bvals = (float *) _alloca16( this.values.Num() * sizeof( float ) );
 
-////	BasisFirstDerivative( this->values.Num(), time, bvals );
-////	v = bvals[0] * this->values[0];
-////	for ( i = 1; i < this->values.Num(); i++ ) {
-////		v += bvals[i] * this->values[i];
+////	BasisFirstDerivative( this.values.Num(), time, bvals );
+////	v = bvals[0] * this.values[0];
+////	for ( i = 1; i < this.values.Num(); i++ ) {
+////		v += bvals[i] * this.values[i];
 ////	}
-////	d = ( this->times[this->times.Num()-1] - this->times[0] );
-////	return ( (float) (this->values.Num()-1) / d ) * v;
+////	d = ( this.times[this.times.Num()-1] - this.times[0] );
+////	return ( (float) (this.values.Num()-1) / d ) * v;
 ////}
 
 /////*
@@ -563,15 +567,15 @@ class idCurve<type> {
 ////	float *bvals, d;
 ////	type v;
 
-////	bvals = (float *) _alloca16( this->values.Num() * sizeof( float ) );
+////	bvals = (float *) _alloca16( this.values.Num() * sizeof( float ) );
 
-////	BasisSecondDerivative( this->values.Num(), time, bvals );
-////	v = bvals[0] * this->values[0];
-////	for ( i = 1; i < this->values.Num(); i++ ) {
-////		v += bvals[i] * this->values[i];
+////	BasisSecondDerivative( this.values.Num(), time, bvals );
+////	v = bvals[0] * this.values[0];
+////	for ( i = 1; i < this.values.Num(); i++ ) {
+////		v += bvals[i] * this.values[i];
 ////	}
-////	d = ( this->times[this->times.Num()-1] - this->times[0] );
-////	return ( (float) (this->values.Num()-2) * (this->values.Num()-1) / ( d * d ) ) * v;
+////	d = ( this.times[this.times.Num()-1] - this.times[0] );
+////	return ( (float) (this.values.Num()-2) * (this.values.Num()-1) / ( d * d ) ) * v;
 ////}
 
 /////*
@@ -593,7 +597,7 @@ class idCurve<type> {
 ////	}
 
 ////	c = (float *) _alloca16( (d+1) * sizeof( float ) );
-////	s = (float) ( t - this->times[0] ) / ( this->times[this->times.Num()-1] - this->times[0] );
+////	s = (float) ( t - this.times[0] ) / ( this.times[this.times.Num()-1] - this.times[0] );
 ////    o = 1.0 - s;
 ////	ps = s;
 ////	po = o;
@@ -670,7 +674,7 @@ class idCurve<type> {
 ////class idCurve_QuadraticBezier extends idCurve<type> {
 
 ////public:
-////						idCurve_QuadraticBezier( void );
+////						idCurve_QuadraticBezier( );
 
 ////	virtual type		GetCurrentValue( const float time ) const;
 ////	virtual type		GetCurrentFirstDerivative( const float time ) const;
@@ -688,7 +692,7 @@ class idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE idCurve_QuadraticBezier<type>::idCurve_QuadraticBezier( void ) {
+////ID_INLINE idCurve_QuadraticBezier<type>::idCurve_QuadraticBezier( ) {
 ////}
 
 
@@ -702,9 +706,9 @@ class idCurve<type> {
 //////template< class type >
 ////ID_INLINE type idCurve_QuadraticBezier<type>::GetCurrentValue( const float time ) const {
 ////	float bvals[3];
-////	assert( this->values.Num() == 3 );
+////	assert( this.values.Num() == 3 );
 ////	Basis( time, bvals );
-////	return ( bvals[0] * this->values[0] + bvals[1] * this->values[1] + bvals[2] * this->values[2] );
+////	return ( bvals[0] * this.values[0] + bvals[1] * this.values[1] + bvals[2] * this.values[2] );
 ////}
 
 /////*
@@ -717,10 +721,10 @@ class idCurve<type> {
 //////template< class type >
 ////ID_INLINE type idCurve_QuadraticBezier<type>::GetCurrentFirstDerivative( const float time ) const {
 ////	float bvals[3], d;
-////	assert( this->values.Num() == 3 );
+////	assert( this.values.Num() == 3 );
 ////	BasisFirstDerivative( time, bvals );
-////	d = ( this->times[2] - this->times[0] );
-////	return ( bvals[0] * this->values[0] + bvals[1] * this->values[1] + bvals[2] * this->values[2] ) / d;
+////	d = ( this.times[2] - this.times[0] );
+////	return ( bvals[0] * this.values[0] + bvals[1] * this.values[1] + bvals[2] * this.values[2] ) / d;
 ////}
 
 /////*
@@ -733,10 +737,10 @@ class idCurve<type> {
 //////template< class type >
 ////ID_INLINE type idCurve_QuadraticBezier<type>::GetCurrentSecondDerivative( const float time ) const {
 ////	float bvals[3], d;
-////	assert( this->values.Num() == 3 );
+////	assert( this.values.Num() == 3 );
 ////	BasisSecondDerivative( time, bvals );
-////	d = ( this->times[2] - this->times[0] );
-////	return ( bvals[0] * this->values[0] + bvals[1] * this->values[1] + bvals[2] * this->values[2] ) / ( d * d );
+////	d = ( this.times[2] - this.times[0] );
+////	return ( bvals[0] * this.values[0] + bvals[1] * this.values[1] + bvals[2] * this.values[2] ) / ( d * d );
 ////}
 
 /////*
@@ -748,7 +752,7 @@ class idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_QuadraticBezier<type>::Basis( const float t, float *bvals ) const {
-////	float s1 = (float) ( t - this->times[0] ) / ( this->times[2] - this->times[0] );
+////	float s1 = (float) ( t - this.times[0] ) / ( this.times[2] - this.times[0] );
 ////	float s2 = s1 * s1;
 ////	bvals[0] = s2 - 2.0 * s1 + 1.0;
 ////	bvals[1] = -2.0 * s2 + 2.0 * s1;
@@ -764,7 +768,7 @@ class idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_QuadraticBezier<type>::BasisFirstDerivative( const float t, float *bvals ) const {
-////	float s1 = (float) ( t - this->times[0] ) / ( this->times[2] - this->times[0] );
+////	float s1 = (float) ( t - this.times[0] ) / ( this.times[2] - this.times[0] );
 ////	bvals[0] = 2.0 * s1 - 2.0;
 ////	bvals[1] = -4.0 * s1 + 2.0;
 ////	bvals[2] = 2.0 * s1;
@@ -779,7 +783,7 @@ class idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_QuadraticBezier<type>::BasisSecondDerivative( const float t, float *bvals ) const {
-//////	float s1 = (float) ( t - this->times[0] ) / ( this->times[2] - this->times[0] );
+//////	float s1 = (float) ( t - this.times[0] ) / ( this.times[2] - this.times[0] );
 ////	bvals[0] = 2.0;
 ////	bvals[1] = -4.0;
 ////	bvals[2] = 2.0;
@@ -799,7 +803,7 @@ class idCurve<type> {
 ////class idCurve_CubicBezier extends idCurve<type> {
 
 ////public:
-////						idCurve_CubicBezier( void );
+////						idCurve_CubicBezier( );
 
 ////	virtual type		GetCurrentValue( const float time ) const;
 ////	virtual type		GetCurrentFirstDerivative( const float time ) const;
@@ -817,7 +821,7 @@ class idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE idCurve_CubicBezier<type>::idCurve_CubicBezier( void ) {
+////ID_INLINE idCurve_CubicBezier<type>::idCurve_CubicBezier( ) {
 ////}
 
 
@@ -831,9 +835,9 @@ class idCurve<type> {
 //////template< class type >
 ////ID_INLINE type idCurve_CubicBezier<type>::GetCurrentValue( const float time ) const {
 ////	float bvals[4];
-////	assert( this->values.Num() == 4 );
+////	assert( this.values.Num() == 4 );
 ////	Basis( time, bvals );
-////	return ( bvals[0] * this->values[0] + bvals[1] * this->values[1] + bvals[2] * this->values[2] + bvals[3] * this->values[3] );
+////	return ( bvals[0] * this.values[0] + bvals[1] * this.values[1] + bvals[2] * this.values[2] + bvals[3] * this.values[3] );
 ////}
 
 /////*
@@ -846,10 +850,10 @@ class idCurve<type> {
 //////template< class type >
 ////ID_INLINE type idCurve_CubicBezier<type>::GetCurrentFirstDerivative( const float time ) const {
 ////	float bvals[4], d;
-////	assert( this->values.Num() == 4 );
+////	assert( this.values.Num() == 4 );
 ////	BasisFirstDerivative( time, bvals );
-////	d = ( this->times[3] - this->times[0] );
-////	return ( bvals[0] * this->values[0] + bvals[1] * this->values[1] + bvals[2] * this->values[2] + bvals[3] * this->values[3] ) / d;
+////	d = ( this.times[3] - this.times[0] );
+////	return ( bvals[0] * this.values[0] + bvals[1] * this.values[1] + bvals[2] * this.values[2] + bvals[3] * this.values[3] ) / d;
 ////}
 
 /////*
@@ -862,10 +866,10 @@ class idCurve<type> {
 //////template< class type >
 ////ID_INLINE type idCurve_CubicBezier<type>::GetCurrentSecondDerivative( const float time ) const {
 ////	float bvals[4], d;
-////	assert( this->values.Num() == 4 );
+////	assert( this.values.Num() == 4 );
 ////	BasisSecondDerivative( time, bvals );
-////	d = ( this->times[3] - this->times[0] );
-////	return ( bvals[0] * this->values[0] + bvals[1] * this->values[1] + bvals[2] * this->values[2] + bvals[3] * this->values[3] ) / ( d * d );
+////	d = ( this.times[3] - this.times[0] );
+////	return ( bvals[0] * this.values[0] + bvals[1] * this.values[1] + bvals[2] * this.values[2] + bvals[3] * this.values[3] ) / ( d * d );
 ////}
 
 /////*
@@ -877,7 +881,7 @@ class idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_CubicBezier<type>::Basis( const float t, float *bvals ) const {
-////	float s1 = (float) ( t - this->times[0] ) / ( this->times[3] - this->times[0] );
+////	float s1 = (float) ( t - this.times[0] ) / ( this.times[3] - this.times[0] );
 ////	float s2 = s1 * s1;
 ////	float s3 = s2 * s1;
 ////	bvals[0] = -s3 + 3.0 * s2 - 3.0 * s1 + 1.0;
@@ -895,7 +899,7 @@ class idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_CubicBezier<type>::BasisFirstDerivative( const float t, float *bvals ) const {
-////	float s1 = (float) ( t - this->times[0] ) / ( this->times[3] - this->times[0] );
+////	float s1 = (float) ( t - this.times[0] ) / ( this.times[3] - this.times[0] );
 ////	float s2 = s1 * s1;
 ////	bvals[0] = -3.0 * s2 + 6.0 * s1 - 3.0;
 ////	bvals[1] = 9.0 * s2 - 12.0 * s1 + 3.0;
@@ -912,7 +916,7 @@ class idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_CubicBezier<type>::BasisSecondDerivative( const float t, float *bvals ) const {
-////	float s1 = (float) ( t - this->times[0] ) / ( this->times[3] - this->times[0] );
+////	float s1 = (float) ( t - this.times[0] ) / ( this.times[3] - this.times[0] );
 ////	bvals[0] = -6.0 * s1 + 6.0;
 ////	bvals[1] = 18.0 * s1 - 12.0;
 ////	bvals[2] = -18.0 * s1 + 6.0;
@@ -929,23 +933,24 @@ class idCurve<type> {
 ////*/
 
 //////template< class type >
+enum boundary_t { BT_FREE, BT_CLAMPED, BT_CLOSED };
 class idCurve_Spline <type> extends idCurve<type> {
 
 ////public:
-////	enum				boundary_t { BT_FREE, BT_CLAMPED, BT_CLOSED };
+////	enum				
 
-////						idCurve_Spline( void );
+////						idCurve_Spline( );
 
 ////	virtual bool		IsDone( const float time ) const;
 
-////	virtual void		SetBoundaryType( const boundary_t bt ) { boundaryType = bt; this->changed = true; }
-////	virtual boundary_t	GetBoundaryType( void ) const { return boundaryType; }
+////	virtual void		SetBoundaryType( const boundary_t bt ) { boundaryType = bt; this.changed = true; }
+////	virtual boundary_t	GetBoundaryType( ) const { return boundaryType; }
 
-////	virtual void		SetCloseTime( const float t ) { closeTime = t; this->changed = true; }
-////	virtual float		GetCloseTime( void ) { return boundaryType == BT_CLOSED ? closeTime : 0.0; }
+////	virtual void		SetCloseTime( const float t ) { closeTime = t; this.changed = true; }
+////	virtual float		GetCloseTime( ) { return boundaryType == boundary_t.BT_CLOSED ? closeTime : 0.0; }
 
 ////protected:
-////	boundary_t			boundaryType;
+	boundaryType: boundary_t;
 	closeTime :number/*float*/;
 
 ////	type				ValueForIndex( const int index ) const;
@@ -953,16 +958,17 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float				ClampedTime( const float t ) const;
 ////};
 
-/////*
-////====================
-////idCurve_Spline::idCurve_Spline
-////====================
-////*/
-//////template< class type >
-////ID_INLINE idCurve_Spline<type>::idCurve_Spline( void ) {
-////	boundaryType = BT_FREE;
-////	closeTime = 0.0;
-////}
+/*
+====================
+idCurve_Spline::idCurve_Spline
+====================
+*/
+//template< class type >
+	constructor(type: any) {
+		super (type );
+		this.boundaryType = boundary_t.BT_FREE;
+		this.closeTime = 0.0;
+	}
 
 /////*
 ////====================
@@ -973,25 +979,25 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE type idCurve_Spline<type>::ValueForIndex( const int index ) const {
-////	int n = this->values.Num()-1;
+////	int n = this.values.Num()-1;
 
 ////	if ( index < 0 ) {
-////		if ( boundaryType == BT_CLOSED ) {
-////			return this->values[ this->values.Num() + index % this->values.Num() ];
+////		if ( boundaryType == boundary_t.BT_CLOSED ) {
+////			return this.values[ this.values.Num() + index % this.values.Num() ];
 ////		}
 ////		else {
-////			return this->values[0] + index * ( this->values[1] - this->values[0] );
+////			return this.values[0] + index * ( this.values[1] - this.values[0] );
 ////		}
 ////	}
 ////	else if ( index > n ) {
-////		if ( boundaryType == BT_CLOSED ) {
-////			return this->values[ index % this->values.Num() ];
+////		if ( boundaryType == boundary_t.BT_CLOSED ) {
+////			return this.values[ index % this.values.Num() ];
 ////		}
 ////		else {
-////			return this->values[n] + ( index - n ) * ( this->values[n] - this->values[n-1] );
+////			return this.values[n] + ( index - n ) * ( this.values[n] - this.values[n-1] );
 ////		}
 ////	}
-////	return this->values[index];
+////	return this.values[index];
 ////}
 
 /////*
@@ -1003,25 +1009,25 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE float idCurve_Spline<type>::TimeForIndex( const int index ) const {
-////	int n = this->times.Num()-1;
+////	int n = this.times.Num()-1;
 
 ////	if ( index < 0 ) {
-////		if ( boundaryType == BT_CLOSED ) {
-////			return ( index / this->times.Num() ) * ( this->times[n] + closeTime ) - ( this->times[n] + closeTime - this->times[this->times.Num() + index % this->times.Num()] );
+////		if ( boundaryType == boundary_t.BT_CLOSED ) {
+////			return ( index / this.times.Num() ) * ( this.times[n] + closeTime ) - ( this.times[n] + closeTime - this.times[this.times.Num() + index % this.times.Num()] );
 ////		}
 ////		else {
-////			return this->times[0] + index * ( this->times[1] - this->times[0] );
+////			return this.times[0] + index * ( this.times[1] - this.times[0] );
 ////		}
 ////	}
 ////	else if ( index > n ) {
-////		if ( boundaryType == BT_CLOSED ) {
-////			return ( index / this->times.Num() ) * ( this->times[n] + closeTime ) + this->times[index % this->times.Num()];
+////		if ( boundaryType == boundary_t.BT_CLOSED ) {
+////			return ( index / this.times.Num() ) * ( this.times[n] + closeTime ) + this.times[index % this.times.Num()];
 ////		}
 ////		else {
-////			return this->times[n] + ( index - n ) * ( this->times[n] - this->times[n-1] );
+////			return this.times[n] + ( index - n ) * ( this.times[n] - this.times[n-1] );
 ////		}
 ////	}
-////	return this->times[index];
+////	return this.times[index];
 ////}
 
 /////*
@@ -1033,12 +1039,12 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE float idCurve_Spline<type>::ClampedTime( const float t ) const {
-////	if ( boundaryType == BT_CLAMPED ) {
-////		if ( t < this->times[0] ) {
-////			return this->times[0];
+////	if ( boundaryType == boundary_t.BT_CLAMPED ) {
+////		if ( t < this.times[0] ) {
+////			return this.times[0];
 ////		}
-////		else if ( t >= this->times[this->times.Num()-1] ) {
-////			return this->times[this->times.Num()-1];
+////		else if ( t >= this.times[this.times.Num()-1] ) {
+////			return this.times[this.times.Num()-1];
 ////		}
 ////	}
 ////	return t;
@@ -1051,7 +1057,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE bool idCurve_Spline<type>::IsDone( const float time ) const {
-////	return ( boundaryType != BT_CLOSED && time >= this->times[ this->times.Num() - 1 ] );
+////	return ( boundaryType != boundary_t.BT_CLOSED && time >= this.times[ this.times.Num() - 1 ] );
 ////}
 }
 
@@ -1067,9 +1073,9 @@ class idCurve_Spline <type> extends idCurve<type> {
 //////template< class type >
 ////class idCurve_NaturalCubicSpline extends idCurve_Spline<type> {
 ////public:
-////						idCurve_NaturalCubicSpline( void );
+////						idCurve_NaturalCubicSpline( );
 
-////	virtual void		Clear( void ) { idCurve_Spline<type>::Clear(); this->values.Clear(); b.Clear(); c.Clear(); d.Clear(); }
+////	virtual void		Clear( ) { idCurve_Spline<type>::Clear(); this.values.Clear(); b.Clear(); c.Clear(); d.Clear(); }
 
 ////	virtual type		GetCurrentValue( const float time ) const;
 ////	virtual type		GetCurrentFirstDerivative( const float time ) const;
@@ -1080,10 +1086,10 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	mutable idList<type>c;
 ////	mutable idList<type>d;
 
-////	void				Setup( void ) const;
-////	void				SetupFree( void ) const;
-////	void				SetupClamped( void ) const;
-////	void				SetupClosed( void ) const;
+////	void				Setup( ) const;
+////	void				SetupFree( ) const;
+////	void				SetupClamped( ) const;
+////	void				SetupClosed( ) const;
 ////};
 
 /////*
@@ -1092,7 +1098,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE idCurve_NaturalCubicSpline<type>::idCurve_NaturalCubicSpline( void ) {
+////ID_INLINE idCurve_NaturalCubicSpline<type>::idCurve_NaturalCubicSpline( ) {
 ////}
 
 /////*
@@ -1104,11 +1110,11 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE type idCurve_NaturalCubicSpline<type>::GetCurrentValue( const float time ) const {
-////	float clampedTime = this->ClampedTime( time );
-////	int i = this->IndexForTime( clampedTime );
-////	float s = time - this->TimeForIndex( i );
+////	float clampedTime = this.ClampedTime( time );
+////	int i = this.IndexForTime( clampedTime );
+////	float s = time - this.TimeForIndex( i );
 ////	Setup();
-////	return ( this->values[i] + s * ( b[i] + s * ( c[i] + s * d[i] ) ) );
+////	return ( this.values[i] + s * ( b[i] + s * ( c[i] + s * d[i] ) ) );
 ////}
 
 /////*
@@ -1120,9 +1126,9 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE type idCurve_NaturalCubicSpline<type>::GetCurrentFirstDerivative( const float time ) const {
-////	float clampedTime = this->ClampedTime( time );
-////	int i = this->IndexForTime( clampedTime );
-////	float s = time - this->TimeForIndex( i );
+////	float clampedTime = this.ClampedTime( time );
+////	int i = this.IndexForTime( clampedTime );
+////	float s = time - this.TimeForIndex( i );
 ////	Setup();
 ////	return ( b[i] + s * ( 2.0 * c[i] + 3.0 * s * d[i] ) );
 ////}
@@ -1136,9 +1142,9 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE type idCurve_NaturalCubicSpline<type>::GetCurrentSecondDerivative( const float time ) const {
-////	float clampedTime = this->ClampedTime( time );
-////	int i = this->IndexForTime( clampedTime );
-////	float s = time - this->TimeForIndex( i );
+////	float clampedTime = this.ClampedTime( time );
+////	int i = this.IndexForTime( clampedTime );
+////	float s = time - this.TimeForIndex( i );
 ////	Setup();
 ////	return ( 2.0 * c[i] + 6.0 * s * d[i] );
 ////}
@@ -1149,14 +1155,14 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE void idCurve_NaturalCubicSpline<type>::Setup( void ) const {
-////	if ( this->changed ) {
-////		switch( this->boundaryType ) {
-////			case idCurve_Spline<type>::BT_FREE:		SetupFree(); break;
-////			case idCurve_Spline<type>::BT_CLAMPED:	SetupClamped(); break;
-////			case idCurve_Spline<type>::BT_CLOSED:		SetupClosed(); break;
+////ID_INLINE void idCurve_NaturalCubicSpline<type>::Setup( ) const {
+////	if ( this.changed ) {
+////		switch( this.boundaryType ) {
+////			case idCurve_Spline<type>::boundary_t.BT_FREE:		SetupFree(); break;
+////			case idCurve_Spline<type>::boundary_t.BT_CLAMPED:	SetupClamped(); break;
+////			case idCurve_Spline<type>::boundary_t.BT_CLOSED:		SetupClosed(); break;
 ////		}
-////		this->changed = false;
+////		this.changed = false;
 ////	}
 ////}
 
@@ -1166,56 +1172,56 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE void idCurve_NaturalCubicSpline<type>::SetupFree( void ) const {
+////ID_INLINE void idCurve_NaturalCubicSpline<type>::SetupFree( ) const {
 ////	int i;
 ////	float inv;
 ////	float *d0, *d1, *beta, *gamma;
 ////	type *alpha, *delta;
 
-////	d0 = (float *) _alloca16( ( this->values.Num() - 1 ) * sizeof( float ) );
-////	d1 = (float *) _alloca16( ( this->values.Num() - 1 ) * sizeof( float ) );
-////	alpha = (type *) _alloca16( ( this->values.Num() - 1 ) * sizeof( type ) );
-////	beta = (float *) _alloca16( this->values.Num() * sizeof( float ) );
-////	gamma = (float *) _alloca16( ( this->values.Num() - 1 ) * sizeof( float ) );
-////	delta = (type *) _alloca16( this->values.Num() * sizeof( type ) );
+////	d0 = (float *) _alloca16( ( this.values.Num() - 1 ) * sizeof( float ) );
+////	d1 = (float *) _alloca16( ( this.values.Num() - 1 ) * sizeof( float ) );
+////	alpha = (type *) _alloca16( ( this.values.Num() - 1 ) * sizeof( type ) );
+////	beta = (float *) _alloca16( this.values.Num() * sizeof( float ) );
+////	gamma = (float *) _alloca16( ( this.values.Num() - 1 ) * sizeof( float ) );
+////	delta = (type *) _alloca16( this.values.Num() * sizeof( type ) );
 
-////	for ( i = 0; i < this->values.Num() - 1; i++ ) {
-////		d0[i] = this->times[i+1] - this->times[i];
+////	for ( i = 0; i < this.values.Num() - 1; i++ ) {
+////		d0[i] = this.times[i+1] - this.times[i];
 ////	}
 
-////	for ( i = 1; i < this->values.Num() - 1; i++ ) {
-////		d1[i] = this->times[i+1] - this->times[i-1];
+////	for ( i = 1; i < this.values.Num() - 1; i++ ) {
+////		d1[i] = this.times[i+1] - this.times[i-1];
 ////	}
 
-////	for ( i = 1; i < this->values.Num() - 1; i++ ) {
-////		type sum = 3.0 * ( d0[i-1] * this->values[i+1] - d1[i] * this->values[i] + d0[i] * this->values[i-1] );
+////	for ( i = 1; i < this.values.Num() - 1; i++ ) {
+////		type sum = 3.0 * ( d0[i-1] * this.values[i+1] - d1[i] * this.values[i] + d0[i] * this.values[i-1] );
 ////		inv = 1.0 / ( d0[i-1] * d0[i] );
 ////		alpha[i] = inv * sum;
 ////	}
 
 ////	beta[0] = 1.0;
 ////	gamma[0] = 0.0;
-////	delta[0] = this->values[0] - this->values[0];
+////	delta[0] = this.values[0] - this.values[0];
 
-////	for ( i = 1; i < this->values.Num() - 1; i++ ) {
+////	for ( i = 1; i < this.values.Num() - 1; i++ ) {
 ////		beta[i] = 2.0 * d1[i] - d0[i-1] * gamma[i-1];
 ////		inv = 1.0 / beta[i];
 ////		gamma[i] = inv * d0[i];
 ////		delta[i] = inv * ( alpha[i] - d0[i-1] * delta[i-1] );
 ////	}
-////	beta[this->values.Num() - 1] = 1.0;
-////	delta[this->values.Num() - 1] = this->values[0] - this->values[0];
+////	beta[this.values.Num() - 1] = 1.0;
+////	delta[this.values.Num() - 1] = this.values[0] - this.values[0];
 
-////	b.AssureSize( this->values.Num() );
-////	c.AssureSize( this->values.Num() );
-////	d.AssureSize( this->values.Num() );
+////	b.AssureSize( this.values.Num() );
+////	c.AssureSize( this.values.Num() );
+////	d.AssureSize( this.values.Num() );
 
-////	c[this->values.Num() - 1] = this->values[0] - this->values[0];
+////	c[this.values.Num() - 1] = this.values[0] - this.values[0];
 
-////	for ( i = this->values.Num() - 2; i >= 0; i-- ) {
+////	for ( i = this.values.Num() - 2; i >= 0; i-- ) {
 ////		c[i] = delta[i] - gamma[i] * c[i+1];
 ////		inv = 1.0 / d0[i];
-////		b[i] = inv * ( this->values[i+1] - this->values[i] ) - ( 1.0 / 3.0 ) * d0[i] * ( c[i+1] + 2.0 * c[i] );
+////		b[i] = inv * ( this.values[i+1] - this.values[i] ) - ( 1.0 / 3.0 ) * d0[i] * ( c[i+1] + 2.0 * c[i] );
 ////		d[i] = ( 1.0 / 3.0 ) * inv * ( c[i+1] - c[i] );
 ////	}
 ////}
@@ -1226,34 +1232,34 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE void idCurve_NaturalCubicSpline<type>::SetupClamped( void ) const {
+////ID_INLINE void idCurve_NaturalCubicSpline<type>::SetupClamped( ) const {
 ////	int i;
 ////	float inv;
 ////	float *d0, *d1, *beta, *gamma;
 ////	type *alpha, *delta;
 
-////	d0 = (float *) _alloca16( ( this->values.Num() - 1 ) * sizeof( float ) );
-////	d1 = (float *) _alloca16( ( this->values.Num() - 1 ) * sizeof( float ) );
-////	alpha = (type *) _alloca16( ( this->values.Num() - 1 ) * sizeof( type ) );
-////	beta = (float *) _alloca16( this->values.Num() * sizeof( float ) );
-////	gamma = (float *) _alloca16( ( this->values.Num() - 1 ) * sizeof( float ) );
-////	delta = (type *) _alloca16( this->values.Num() * sizeof( type ) );
+////	d0 = (float *) _alloca16( ( this.values.Num() - 1 ) * sizeof( float ) );
+////	d1 = (float *) _alloca16( ( this.values.Num() - 1 ) * sizeof( float ) );
+////	alpha = (type *) _alloca16( ( this.values.Num() - 1 ) * sizeof( type ) );
+////	beta = (float *) _alloca16( this.values.Num() * sizeof( float ) );
+////	gamma = (float *) _alloca16( ( this.values.Num() - 1 ) * sizeof( float ) );
+////	delta = (type *) _alloca16( this.values.Num() * sizeof( type ) );
 
-////	for ( i = 0; i < this->values.Num() - 1; i++ ) {
-////		d0[i] = this->times[i+1] - this->times[i];
+////	for ( i = 0; i < this.values.Num() - 1; i++ ) {
+////		d0[i] = this.times[i+1] - this.times[i];
 ////	}
 
-////	for ( i = 1; i < this->values.Num() - 1; i++ ) {
-////		d1[i] = this->times[i+1] - this->times[i-1];
+////	for ( i = 1; i < this.values.Num() - 1; i++ ) {
+////		d1[i] = this.times[i+1] - this.times[i-1];
 ////	}
 
 ////	inv = 1.0 / d0[0];
-////	alpha[0] = 3.0 * ( inv - 1.0 ) * ( this->values[1] - this->values[0] );
-////	inv = 1.0 / d0[this->values.Num() - 2];
-////	alpha[this->values.Num() - 1] = 3.0 * ( 1.0 - inv ) * ( this->values[this->values.Num() - 1] - this->values[this->values.Num() - 2] );
+////	alpha[0] = 3.0 * ( inv - 1.0 ) * ( this.values[1] - this.values[0] );
+////	inv = 1.0 / d0[this.values.Num() - 2];
+////	alpha[this.values.Num() - 1] = 3.0 * ( 1.0 - inv ) * ( this.values[this.values.Num() - 1] - this.values[this.values.Num() - 2] );
 
-////	for ( i = 1; i < this->values.Num() - 1; i++ ) {
-////		type sum = 3.0 * ( d0[i-1] * this->values[i+1] - d1[i] * this->values[i] + d0[i] * this->values[i-1] );
+////	for ( i = 1; i < this.values.Num() - 1; i++ ) {
+////		type sum = 3.0 * ( d0[i-1] * this.values[i+1] - d1[i] * this.values[i] + d0[i] * this.values[i-1] );
 ////		inv = 1.0 / ( d0[i-1] * d0[i] );
 ////		alpha[i] = inv * sum;
 ////	}
@@ -1263,27 +1269,27 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	inv = 1.0 / beta[0];
 ////	delta[0] = inv * alpha[0];
 
-////	for ( i = 1; i < this->values.Num() - 1; i++ ) {
+////	for ( i = 1; i < this.values.Num() - 1; i++ ) {
 ////		beta[i] = 2.0 * d1[i] - d0[i-1] * gamma[i-1];
 ////		inv = 1.0 / beta[i];
 ////		gamma[i] = inv * d0[i];
 ////		delta[i] = inv * ( alpha[i] - d0[i-1] * delta[i-1] );
 ////	}
 
-////	beta[this->values.Num() - 1] = d0[this->values.Num() - 2] * ( 2.0 - gamma[this->values.Num() - 2] );
-////	inv = 1.0 / beta[this->values.Num() - 1];
-////	delta[this->values.Num() - 1] = inv * ( alpha[this->values.Num() - 1] - d0[this->values.Num() - 2] * delta[this->values.Num() - 2] );
+////	beta[this.values.Num() - 1] = d0[this.values.Num() - 2] * ( 2.0 - gamma[this.values.Num() - 2] );
+////	inv = 1.0 / beta[this.values.Num() - 1];
+////	delta[this.values.Num() - 1] = inv * ( alpha[this.values.Num() - 1] - d0[this.values.Num() - 2] * delta[this.values.Num() - 2] );
 
-////	b.AssureSize( this->values.Num() );
-////	c.AssureSize( this->values.Num() );
-////	d.AssureSize( this->values.Num() );
+////	b.AssureSize( this.values.Num() );
+////	c.AssureSize( this.values.Num() );
+////	d.AssureSize( this.values.Num() );
 
-////	c[this->values.Num() - 1] = delta[this->values.Num() - 1];
+////	c[this.values.Num() - 1] = delta[this.values.Num() - 1];
 
-////	for ( i = this->values.Num() - 2; i >= 0; i-- ) {
+////	for ( i = this.values.Num() - 2; i >= 0; i-- ) {
 ////		c[i] = delta[i] - gamma[i] * c[i+1];
 ////		inv = 1.0 / d0[i];
-////		b[i] = inv * ( this->values[i+1] - this->values[i] ) - ( 1.0 / 3.0 ) * d0[i]* ( c[i+1] + 2.0 * c[i] );
+////		b[i] = inv * ( this.values[i+1] - this.values[i] ) - ( 1.0 / 3.0 ) * d0[i]* ( c[i+1] + 2.0 * c[i] );
 ////		d[i] = ( 1.0 / 3.0 ) * inv * ( c[i+1] - c[i] );
 ////	}
 ////}
@@ -1294,63 +1300,63 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE void idCurve_NaturalCubicSpline<type>::SetupClosed( void ) const {
+////ID_INLINE void idCurve_NaturalCubicSpline<type>::SetupClosed( ) const {
 ////	int i, j;
 ////	float c0, c1;
 ////	float *d0;
 ////	idMatX mat;
 ////	idVecX x;
 
-////	d0 = (float *) _alloca16( ( this->values.Num() - 1 ) * sizeof( float ) );
-////	x.SetData( this->values.Num(), VECX_ALLOCA( this->values.Num() ) );
-////	mat.SetData( this->values.Num(), this->values.Num(), MATX_ALLOCA( this->values.Num() * this->values.Num() ) );
+////	d0 = (float *) _alloca16( ( this.values.Num() - 1 ) * sizeof( float ) );
+////	x.SetData( this.values.Num(), VECX_ALLOCA( this.values.Num() ) );
+////	mat.SetData( this.values.Num(), this.values.Num(), MATX_ALLOCA( this.values.Num() * this.values.Num() ) );
 
-////	b.AssureSize( this->values.Num() );
-////	c.AssureSize( this->values.Num() );
-////	d.AssureSize( this->values.Num() );
+////	b.AssureSize( this.values.Num() );
+////	c.AssureSize( this.values.Num() );
+////	d.AssureSize( this.values.Num() );
 
-////	for ( i = 0; i < this->values.Num() - 1; i++ ) {
-////		d0[i] = this->times[i+1] - this->times[i];
+////	for ( i = 0; i < this.values.Num() - 1; i++ ) {
+////		d0[i] = this.times[i+1] - this.times[i];
 ////	}
 
 ////	// matrix of system
 ////	mat[0][0] = 1.0;
-////	mat[0][this->values.Num() - 1] = -1.0;
-////	for ( i = 1; i <= this->values.Num() - 2; i++ ) {
+////	mat[0][this.values.Num() - 1] = -1.0;
+////	for ( i = 1; i <= this.values.Num() - 2; i++ ) {
 ////		mat[i][i-1] = d0[i-1];
 ////		mat[i][i  ] = 2.0 * ( d0[i-1] + d0[i] );
 ////		mat[i][i+1] = d0[i];
 ////	}
-////	mat[this->values.Num() - 1][this->values.Num() - 2] = d0[this->values.Num() - 2];
-////	mat[this->values.Num() - 1][0] = 2.0 * ( d0[this->values.Num() - 2] + d0[0] );
-////	mat[this->values.Num() - 1][1] = d0[0];
+////	mat[this.values.Num() - 1][this.values.Num() - 2] = d0[this.values.Num() - 2];
+////	mat[this.values.Num() - 1][0] = 2.0 * ( d0[this.values.Num() - 2] + d0[0] );
+////	mat[this.values.Num() - 1][1] = d0[0];
 
 ////	// right-hand side
 ////	c[0].Zero();
-////	for ( i = 1; i <= this->values.Num() - 2; i++ ) {
+////	for ( i = 1; i <= this.values.Num() - 2; i++ ) {
 ////		c0 = 1.0 / d0[i];
 ////		c1 = 1.0 / d0[i-1];
-////		c[i] = 3.0 * ( c0 * ( this->values[i + 1] - this->values[i] ) - c1 * ( this->values[i] - this->values[i - 1] ) );
+////		c[i] = 3.0 * ( c0 * ( this.values[i + 1] - this.values[i] ) - c1 * ( this.values[i] - this.values[i - 1] ) );
 ////	}
 ////	c0 = 1.0 / d0[0];
-////	c1 = 1.0 / d0[this->values.Num() - 2];
-////	c[this->values.Num() - 1] = 3.0 * ( c0 * ( this->values[1] - this->values[0] ) - c1 * ( this->values[0] - this->values[this->values.Num() - 2] ) );
+////	c1 = 1.0 / d0[this.values.Num() - 2];
+////	c[this.values.Num() - 1] = 3.0 * ( c0 * ( this.values[1] - this.values[0] ) - c1 * ( this.values[0] - this.values[this.values.Num() - 2] ) );
 
 ////	// solve system for each dimension
 ////	mat.LU_Factor( NULL );
-////	for ( i = 0; i < this->values[0].GetDimension(); i++ ) {
-////		for ( j = 0; j < this->values.Num(); j++ ) {
+////	for ( i = 0; i < this.values[0].GetDimension(); i++ ) {
+////		for ( j = 0; j < this.values.Num(); j++ ) {
 ////			x[j] = c[j][i];
 ////		}
 ////		mat.LU_Solve( x, x, NULL );
-////		for ( j = 0; j < this->values.Num(); j++ ) {
+////		for ( j = 0; j < this.values.Num(); j++ ) {
 ////			c[j][i] = x[j];
 ////		}
 ////	}
 
-////	for ( i = 0; i < this->values.Num() - 1; i++ ) {
+////	for ( i = 0; i < this.values.Num() - 1; i++ ) {
 ////		c0 = 1.0 / d0[i];
-////		b[i] = c0 * ( this->values[i + 1] - this->values[i] ) - ( 1.0 / 3.0 ) * ( c[i+1] + 2.0 * c[i] ) * d0[i];
+////		b[i] = c0 * ( this.values[i + 1] - this.values[i] ) - ( 1.0 / 3.0 ) * ( c[i+1] + 2.0 * c[i] ) * d0[i];
 ////		d[i] = ( 1.0 / 3.0 ) * c0 * ( c[i + 1] - c[i] );
 ////	}
 ////}
@@ -1369,7 +1375,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////class idCurve_CatmullRomSpline extends idCurve_Spline<type> {
 
 ////public:
-////						idCurve_CatmullRomSpline( void );
+////						idCurve_CatmullRomSpline( );
 
 ////	virtual type		GetCurrentValue( const float time ) const;
 ////	virtual type		GetCurrentFirstDerivative( const float time ) const;
@@ -1387,7 +1393,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE idCurve_CatmullRomSpline<type>::idCurve_CatmullRomSpline( void ) {
+////ID_INLINE idCurve_CatmullRomSpline<type>::idCurve_CatmullRomSpline( ) {
 ////}
 
 /////*
@@ -1403,17 +1409,17 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float bvals[4], clampedTime;
 ////	type v;
 
-////	if ( this->times.Num() == 1 ) {
-////		return this->values[0];
+////	if ( this.times.Num() == 1 ) {
+////		return this.values[0];
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
 ////	Basis( i-1, clampedTime, bvals );
-////	v = this->values[0] - this->values[0];
+////	v = this.values[0] - this.values[0];
 ////	for ( j = 0; j < 4; j++ ) {
 ////		k = i + j - 2;
-////		v += bvals[j] * this->ValueForIndex( k );
+////		v += bvals[j] * this.ValueForIndex( k );
 ////	}
 ////	return v;
 ////}
@@ -1431,19 +1437,19 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float bvals[4], d, clampedTime;
 ////	type v;
 
-////	if ( this->times.Num() == 1 ) {
-////		return ( this->values[0] - this->values[0] );
+////	if ( this.times.Num() == 1 ) {
+////		return ( this.values[0] - this.values[0] );
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
 ////	BasisFirstDerivative( i-1, clampedTime, bvals );
-////	v = this->values[0] - this->values[0];
+////	v = this.values[0] - this.values[0];
 ////	for ( j = 0; j < 4; j++ ) {
 ////		k = i + j - 2;
-////		v += bvals[j] * this->ValueForIndex( k );
+////		v += bvals[j] * this.ValueForIndex( k );
 ////	}
-////	d = ( this->TimeForIndex( i ) - this->TimeForIndex( i-1 ) );
+////	d = ( this.TimeForIndex( i ) - this.TimeForIndex( i-1 ) );
 ////	return v / d;
 ////}
 
@@ -1460,19 +1466,19 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float bvals[4], d, clampedTime;
 ////	type v;
 
-////	if ( this->times.Num() == 1 ) {
-////		return ( this->values[0] - this->values[0] );
+////	if ( this.times.Num() == 1 ) {
+////		return ( this.values[0] - this.values[0] );
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
 ////	BasisSecondDerivative( i-1, clampedTime, bvals );
-////	v = this->values[0] - this->values[0];
+////	v = this.values[0] - this.values[0];
 ////	for ( j = 0; j < 4; j++ ) {
 ////		k = i + j - 2;
-////		v += bvals[j] * this->ValueForIndex( k );
+////		v += bvals[j] * this.ValueForIndex( k );
 ////	}
-////	d = ( this->TimeForIndex( i ) - this->TimeForIndex( i-1 ) );
+////	d = ( this.TimeForIndex( i ) - this.TimeForIndex( i-1 ) );
 ////	return v / ( d * d );
 ////}
 
@@ -1485,7 +1491,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_CatmullRomSpline<type>::Basis( const int index, const float t, float *bvals ) const {
-////	float s = (float) ( t - this->TimeForIndex( index ) ) / ( this->TimeForIndex( index+1 ) - this->TimeForIndex( index ) );
+////	float s = (float) ( t - this.TimeForIndex( index ) ) / ( this.TimeForIndex( index+1 ) - this.TimeForIndex( index ) );
 ////	bvals[0] = ( ( -s + 2.0 ) * s - 1.0 ) * s * 0.5f;				// -0.5f s * s * s + s * s - 0.5f * s
 ////	bvals[1] = ( ( ( 3.0 * s - 5.0 ) * s ) * s + 2.0 ) * 0.5f;	// 1.5f * s * s * s - 2.5f * s * s + 1.0
 ////	bvals[2] = ( ( -3.0 * s + 4.0 ) * s + 1.0 ) * s * 0.5f;		// -1.5f * s * s * s - 2.0 * s * s + 0.5f s
@@ -1501,7 +1507,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_CatmullRomSpline<type>::BasisFirstDerivative( const int index, const float t, float *bvals ) const {
-////	float s = (float) ( t - this->TimeForIndex( index ) ) / ( this->TimeForIndex( index+1 ) - this->TimeForIndex( index ) );
+////	float s = (float) ( t - this.TimeForIndex( index ) ) / ( this.TimeForIndex( index+1 ) - this.TimeForIndex( index ) );
 ////	bvals[0] = ( -1.5f * s + 2.0 ) * s - 0.5f;						// -1.5f * s * s + 2.0 * s - 0.5f
 ////	bvals[1] = ( 4.5f * s - 5.0 ) * s;								// 4.5f * s * s - 5.0 * s
 ////	bvals[2] = ( -4.5 * s + 4.0 ) * s + 0.5f;						// -4.5 * s * s + 4.0 * s + 0.5f
@@ -1517,7 +1523,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_CatmullRomSpline<type>::BasisSecondDerivative( const int index, const float t, float *bvals ) const {
-////	float s = (float) ( t - this->TimeForIndex( index ) ) / ( this->TimeForIndex( index+1 ) - this->TimeForIndex( index ) );
+////	float s = (float) ( t - this.TimeForIndex( index ) ) / ( this.TimeForIndex( index+1 ) - this.TimeForIndex( index ) );
 ////	bvals[0] = -3.0 * s + 2.0;
 ////	bvals[1] = 9.0 * s - 5.0;
 ////	bvals[2] = -9.0 * s + 4.0;
@@ -1540,12 +1546,12 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////class idCurve_KochanekBartelsSpline extends idCurve_Spline<type> {
 
 ////public:
-////						idCurve_KochanekBartelsSpline( void );
+////						idCurve_KochanekBartelsSpline( );
 
 ////	virtual int			AddValue( const float time, const type &value );
 ////	virtual int			AddValue( const float time, const type &value, const float tension, const float continuity, const float bias );
-////	virtual void		RemoveIndex( const int index ) { this->values.RemoveIndex(index); this->times.RemoveIndex(index); tension.RemoveIndex(index); continuity.RemoveIndex(index); bias.RemoveIndex(index); }
-////	virtual void		Clear( void ) { this->values.Clear(); this->times.Clear(); tension.Clear(); continuity.Clear(); bias.Clear(); this->currentIndex = -1; }
+////	virtual void		RemoveIndex( const int index ) { this.values.RemoveIndex(index); this.times.RemoveIndex(index); tension.RemoveIndex(index); continuity.RemoveIndex(index); bias.RemoveIndex(index); }
+////	virtual void		Clear( ) { this.values.Clear(); this.times.Clear(); tension.Clear(); continuity.Clear(); bias.Clear(); this.currentIndex = -1; }
 
 ////	virtual type		GetCurrentValue( const float time ) const;
 ////	virtual type		GetCurrentFirstDerivative( const float time ) const;
@@ -1569,7 +1575,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE idCurve_KochanekBartelsSpline<type>::idCurve_KochanekBartelsSpline( void ) {
+////ID_INLINE idCurve_KochanekBartelsSpline<type>::idCurve_KochanekBartelsSpline( ) {
 ////}
 
 /////*
@@ -1584,9 +1590,9 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////ID_INLINE int idCurve_KochanekBartelsSpline<type>::AddValue( const float time, const type &value ) {
 ////	int i;
 
-////	i = this->IndexForTime( time );
-////	this->times.Insert( time, i );
-////	this->values.Insert( value, i );
+////	i = this.IndexForTime( time );
+////	this.times.Insert( time, i );
+////	this.values.Insert( value, i );
 ////	tension.Insert( 0.0, i );
 ////	continuity.Insert( 0.0, i );
 ////	bias.Insert( 0.0, i );
@@ -1605,12 +1611,12 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////ID_INLINE int idCurve_KochanekBartelsSpline<type>::AddValue( const float time, const type &value, const float tension, const float continuity, const float bias ) {
 ////	int i;
 
-////	i = this->IndexForTime( time );
-////	this->times.Insert( time, i );
-////	this->values.Insert( value, i );
-////	this->tension.Insert( tension, i );
-////	this->continuity.Insert( continuity, i );
-////	this->bias.Insert( bias, i );
+////	i = this.IndexForTime( time );
+////	this.times.Insert( time, i );
+////	this.values.Insert( value, i );
+////	this.tension.Insert( tension, i );
+////	this.continuity.Insert( continuity, i );
+////	this.bias.Insert( bias, i );
 ////	return i;
 ////}
 
@@ -1627,16 +1633,16 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float bvals[4], clampedTime;
 ////	type v, t0, t1;
 
-////	if ( this->times.Num() == 1 ) {
-////		return this->values[0];
+////	if ( this.times.Num() == 1 ) {
+////		return this.values[0];
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
 ////	TangentsForIndex( i - 1, t0, t1 );
 ////	Basis( i - 1, clampedTime, bvals );
-////	v = bvals[0] * this->ValueForIndex( i - 1 );
-////	v += bvals[1] * this->ValueForIndex( i );
+////	v = bvals[0] * this.ValueForIndex( i - 1 );
+////	v += bvals[1] * this.ValueForIndex( i );
 ////	v += bvals[2] * t0;
 ////	v += bvals[3] * t1;
 ////	return v;
@@ -1655,19 +1661,19 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float bvals[4], d, clampedTime;
 ////	type v, t0, t1;
 
-////	if ( this->times.Num() == 1 ) {
-////		return ( this->values[0] - this->values[0] );
+////	if ( this.times.Num() == 1 ) {
+////		return ( this.values[0] - this.values[0] );
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
 ////	TangentsForIndex( i - 1, t0, t1 );
 ////	BasisFirstDerivative( i - 1, clampedTime, bvals );
-////	v = bvals[0] * this->ValueForIndex( i - 1 );
-////	v += bvals[1] * this->ValueForIndex( i );
+////	v = bvals[0] * this.ValueForIndex( i - 1 );
+////	v += bvals[1] * this.ValueForIndex( i );
 ////	v += bvals[2] * t0;
 ////	v += bvals[3] * t1;
-////	d = ( this->TimeForIndex( i ) - this->TimeForIndex( i-1 ) );
+////	d = ( this.TimeForIndex( i ) - this.TimeForIndex( i-1 ) );
 ////	return v / d;
 ////}
 
@@ -1684,19 +1690,19 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float bvals[4], d, clampedTime;
 ////	type v, t0, t1;
 
-////	if ( this->times.Num() == 1 ) {
-////		return ( this->values[0] - this->values[0] );
+////	if ( this.times.Num() == 1 ) {
+////		return ( this.values[0] - this.values[0] );
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
 ////	TangentsForIndex( i - 1, t0, t1 );
 ////	BasisSecondDerivative( i - 1, clampedTime, bvals );
-////	v = bvals[0] * this->ValueForIndex( i - 1 );
-////	v += bvals[1] * this->ValueForIndex( i );
+////	v = bvals[0] * this.ValueForIndex( i - 1 );
+////	v += bvals[1] * this.ValueForIndex( i );
 ////	v += bvals[2] * t0;
 ////	v += bvals[3] * t1;
-////	d = ( this->TimeForIndex( i ) - this->TimeForIndex( i-1 ) );
+////	d = ( this.TimeForIndex( i ) - this.TimeForIndex( i-1 ) );
 ////	return v / ( d * d );
 ////}
 
@@ -1710,32 +1716,32 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float dt, omt, omc, opc, omb, opb, adj, s0, s1;
 ////	type delta;
 
-////	delta = this->ValueForIndex( index + 1 ) - this->ValueForIndex( index );
-////	dt = this->TimeForIndex( index + 1 ) - this->TimeForIndex( index );
+////	delta = this.ValueForIndex( index + 1 ) - this.ValueForIndex( index );
+////	dt = this.TimeForIndex( index + 1 ) - this.TimeForIndex( index );
 
 ////	omt = 1.0 - tension[index];
 ////	omc = 1.0 - continuity[index];
 ////	opc = 1.0 + continuity[index];
 ////	omb = 1.0 - bias[index];
 ////	opb = 1.0 + bias[index];
-////	adj = 2.0 * dt / ( this->TimeForIndex( index + 1 ) - this->TimeForIndex( index - 1 ) );
+////	adj = 2.0 * dt / ( this.TimeForIndex( index + 1 ) - this.TimeForIndex( index - 1 ) );
 ////	s0 = 0.5f * adj * omt * opc * opb;
 ////	s1 = 0.5f * adj * omt * omc * omb;
 
 ////	// outgoing tangent at first point
-////	t0 = s1 * delta + s0 * ( this->ValueForIndex( index ) - this->ValueForIndex( index - 1 ) );
+////	t0 = s1 * delta + s0 * ( this.ValueForIndex( index ) - this.ValueForIndex( index - 1 ) );
 
 ////	omt = 1.0 - tension[index + 1];
 ////	omc = 1.0 - continuity[index + 1];
 ////	opc = 1.0 + continuity[index + 1];
 ////	omb = 1.0 - bias[index + 1];
 ////	opb = 1.0 + bias[index + 1];
-////	adj = 2.0 * dt / ( this->TimeForIndex( index + 2 ) - this->TimeForIndex( index ) );
+////	adj = 2.0 * dt / ( this.TimeForIndex( index + 2 ) - this.TimeForIndex( index ) );
 ////	s0 = 0.5f * adj * omt * omc * opb;
 ////	s1 = 0.5f * adj * omt * opc * omb;
 
 ////	// incoming tangent at second point
-////	t1 = s1 * ( this->ValueForIndex( index + 2 ) - this->ValueForIndex( index + 1 ) ) + s0 * delta;
+////	t1 = s1 * ( this.ValueForIndex( index + 2 ) - this.ValueForIndex( index + 1 ) ) + s0 * delta;
 ////}
 
 /////*
@@ -1747,7 +1753,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_KochanekBartelsSpline<type>::Basis( const int index, const float t, float *bvals ) const {
-////	float s = (float) ( t - this->TimeForIndex( index ) ) / ( this->TimeForIndex( index+1 ) - this->TimeForIndex( index ) );
+////	float s = (float) ( t - this.TimeForIndex( index ) ) / ( this.TimeForIndex( index+1 ) - this.TimeForIndex( index ) );
 ////	bvals[0] = ( ( 2.0 * s - 3.0 ) * s ) * s + 1.0;				// 2.0 * s * s * s - 3.0 * s * s + 1.0
 ////	bvals[1] = ( ( -2.0 * s + 3.0 ) * s ) * s;					// -2.0 * s * s * s + 3.0 * s * s
 ////	bvals[2] = ( ( s - 2.0 ) * s ) * s + s;						// s * s * s - 2.0 * s * s + s
@@ -1763,7 +1769,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_KochanekBartelsSpline<type>::BasisFirstDerivative( const int index, const float t, float *bvals ) const {
-////	float s = (float) ( t - this->TimeForIndex( index ) ) / ( this->TimeForIndex( index+1 ) - this->TimeForIndex( index ) );
+////	float s = (float) ( t - this.TimeForIndex( index ) ) / ( this.TimeForIndex( index+1 ) - this.TimeForIndex( index ) );
 ////	bvals[0] = ( 6.0 * s - 6.0 ) * s;								// 6.0 * s * s - 6.0 * s
 ////	bvals[1] = ( -6.0 * s + 6.0 ) * s;							// -6.0 * s * s + 6.0 * s
 ////	bvals[2] = ( 3.0 * s - 4.0 ) * s + 1.0;						// 3.0 * s * s - 4.0 * s + 1.0
@@ -1779,7 +1785,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_KochanekBartelsSpline<type>::BasisSecondDerivative( const int index, const float t, float *bvals ) const {
-////	float s = (float) ( t - this->TimeForIndex( index ) ) / ( this->TimeForIndex( index+1 ) - this->TimeForIndex( index ) );
+////	float s = (float) ( t - this.TimeForIndex( index ) ) / ( this.TimeForIndex( index+1 ) - this.TimeForIndex( index ) );
 ////	bvals[0] = 12.0 * s - 6.0;
 ////	bvals[1] = -12.0 * s + 6.0;
 ////	bvals[2] = 6.0 * s - 4.0;
@@ -1800,9 +1806,9 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////class idCurve_BSpline extends idCurve_Spline<type> {
 
 ////public:
-////						idCurve_BSpline( void );
+////						idCurve_BSpline( );
 
-////	virtual int			GetOrder( void ) const { return order; }
+////	virtual int			GetOrder( ) const { return order; }
 ////	virtual void		SetOrder( const int i ) { assert( i > 0 && i < 10 ); order = i; }
 
 ////	virtual type		GetCurrentValue( const float time ) const;
@@ -1823,7 +1829,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE idCurve_BSpline<type>::idCurve_BSpline( void ) {
+////ID_INLINE idCurve_BSpline<type>::idCurve_BSpline( ) {
 ////	order = 4;	// default to cubic
 ////}
 
@@ -1840,16 +1846,16 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float clampedTime;
 ////	type v;
 
-////	if ( this->times.Num() == 1 ) {
-////		return this->values[0];
+////	if ( this.times.Num() == 1 ) {
+////		return this.values[0];
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
-////	v = this->values[0] - this->values[0];
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
+////	v = this.values[0] - this.values[0];
 ////	for ( j = 0; j < order; j++ ) {
 ////		k = i + j - ( order >> 1 );
-////		v += Basis( k-2, order, clampedTime ) * this->ValueForIndex( k );
+////		v += Basis( k-2, order, clampedTime ) * this.ValueForIndex( k );
 ////	}
 ////	return v;
 ////}
@@ -1867,16 +1873,16 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float clampedTime;
 ////	type v;
 
-////	if ( this->times.Num() == 1 ) {
-////		return this->values[0];
+////	if ( this.times.Num() == 1 ) {
+////		return this.values[0];
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
-////	v = this->values[0] - this->values[0];
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
+////	v = this.values[0] - this.values[0];
 ////	for ( j = 0; j < order; j++ ) {
 ////		k = i + j - ( order >> 1 );
-////		v += BasisFirstDerivative( k-2, order, clampedTime ) * this->ValueForIndex( k );
+////		v += BasisFirstDerivative( k-2, order, clampedTime ) * this.ValueForIndex( k );
 ////	}
 ////	return v;
 ////}
@@ -1894,16 +1900,16 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float clampedTime;
 ////	type v;
 
-////	if ( this->times.Num() == 1 ) {
-////		return this->values[0];
+////	if ( this.times.Num() == 1 ) {
+////		return this.values[0];
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
-////	v = this->values[0] - this->values[0];
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
+////	v = this.values[0] - this.values[0];
 ////	for ( j = 0; j < order; j++ ) {
 ////		k = i + j - ( order >> 1 );
-////		v += BasisSecondDerivative( k-2, order, clampedTime ) * this->ValueForIndex( k );
+////		v += BasisSecondDerivative( k-2, order, clampedTime ) * this.ValueForIndex( k );
 ////	}
 ////	return v;
 ////}
@@ -1918,21 +1924,21 @@ class idCurve_Spline <type> extends idCurve<type> {
 //////template< class type >
 ////ID_INLINE float idCurve_BSpline<type>::Basis( const int index, const int order, const float t ) const {
 ////	if ( order <= 1 ) {
-////		if ( this->TimeForIndex( index ) < t && t <= this->TimeForIndex( index + 1 ) ) {
+////		if ( this.TimeForIndex( index ) < t && t <= this.TimeForIndex( index + 1 ) ) {
 ////			return 1.0;
 ////		} else {
 ////			return 0.0;
 ////		}
 ////	} else {
 ////		float sum = 0.0;
-////		float d1 = this->TimeForIndex( index+order-1 ) - this->TimeForIndex( index );
+////		float d1 = this.TimeForIndex( index+order-1 ) - this.TimeForIndex( index );
 ////		if ( d1 != 0.0 ) {
-////			sum += (float) ( t - this->TimeForIndex( index ) ) * Basis( index, order-1, t ) / d1;
+////			sum += (float) ( t - this.TimeForIndex( index ) ) * Basis( index, order-1, t ) / d1;
 ////		}
 
-////		float d2 = this->TimeForIndex( index+order ) - this->TimeForIndex( index+1 );
+////		float d2 = this.TimeForIndex( index+order ) - this.TimeForIndex( index+1 );
 ////		if ( d2 != 0.0 ) {
-////			sum += (float) ( this->TimeForIndex( index+order ) - t ) * Basis( index+1, order-1, t ) / d2;
+////			sum += (float) ( this.TimeForIndex( index+order ) - t ) * Basis( index+1, order-1, t ) / d2;
 ////		}
 ////		return sum;
 ////	}
@@ -1948,7 +1954,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 //////template< class type >
 ////ID_INLINE float idCurve_BSpline<type>::BasisFirstDerivative( const int index, const int order, const float t ) const {
 ////	return ( Basis( index, order-1, t ) - Basis( index+1, order-1, t ) ) *
-////			(float) ( order - 1 ) / ( this->TimeForIndex( index + ( order - 1 ) - 2 ) - this->TimeForIndex( index - 2 ) );
+////			(float) ( order - 1 ) / ( this.TimeForIndex( index + ( order - 1 ) - 2 ) - this.TimeForIndex( index - 2 ) );
 ////}
 
 /////*
@@ -1961,7 +1967,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 //////template< class type >
 ////ID_INLINE float idCurve_BSpline<type>::BasisSecondDerivative( const int index, const int order, const float t ) const {
 ////	return ( BasisFirstDerivative( index, order-1, t ) - BasisFirstDerivative( index+1, order-1, t ) ) *
-////			(float) ( order - 1 ) / ( this->TimeForIndex( index + ( order - 1 ) - 2 ) - this->TimeForIndex( index - 2 ) );
+////			(float) ( order - 1 ) / ( this.TimeForIndex( index + ( order - 1 ) - 2 ) - this.TimeForIndex( index - 2 ) );
 ////}
 
 
@@ -1977,7 +1983,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////class idCurve_UniformCubicBSpline extends idCurve_BSpline<type> {
 	
 ////public:
-////						idCurve_UniformCubicBSpline( void );
+////						idCurve_UniformCubicBSpline( );
 
 ////	virtual type		GetCurrentValue( const float time ) const;
 ////	virtual type		GetCurrentFirstDerivative( const float time ) const;
@@ -1995,8 +2001,8 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE idCurve_UniformCubicBSpline<type>::idCurve_UniformCubicBSpline( void ) {
-////	this->order = 4;	// always cubic
+////ID_INLINE idCurve_UniformCubicBSpline<type>::idCurve_UniformCubicBSpline( ) {
+////	this.order = 4;	// always cubic
 ////}
 
 /////*
@@ -2012,17 +2018,17 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float bvals[4], clampedTime;
 ////	type v;
 
-////	if ( this->times.Num() == 1 ) {
-////		return this->values[0];
+////	if ( this.times.Num() == 1 ) {
+////		return this.values[0];
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
 ////	Basis( i-1, clampedTime, bvals );
-////	v = this->values[0] - this->values[0];
+////	v = this.values[0] - this.values[0];
 ////	for ( j = 0; j < 4; j++ ) {
 ////		k = i + j - 2;
-////		v += bvals[j] * this->ValueForIndex( k );
+////		v += bvals[j] * this.ValueForIndex( k );
 ////	}
 ////	return v;
 ////}
@@ -2040,19 +2046,19 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float bvals[4], d, clampedTime;
 ////	type v;
 
-////	if ( this->times.Num() == 1 ) {
-////		return ( this->values[0] - this->values[0] );
+////	if ( this.times.Num() == 1 ) {
+////		return ( this.values[0] - this.values[0] );
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
 ////	BasisFirstDerivative( i-1, clampedTime, bvals );
-////	v = this->values[0] - this->values[0];
+////	v = this.values[0] - this.values[0];
 ////	for ( j = 0; j < 4; j++ ) {
 ////		k = i + j - 2;
-////		v += bvals[j] * this->ValueForIndex( k );
+////		v += bvals[j] * this.ValueForIndex( k );
 ////	}
-////	d = ( this->TimeForIndex( i ) - this->TimeForIndex( i-1 ) );
+////	d = ( this.TimeForIndex( i ) - this.TimeForIndex( i-1 ) );
 ////	return v / d;
 ////}
 
@@ -2069,19 +2075,19 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float bvals[4], d, clampedTime;
 ////	type v;
 
-////	if ( this->times.Num() == 1 ) {
-////		return ( this->values[0] - this->values[0] );
+////	if ( this.times.Num() == 1 ) {
+////		return ( this.values[0] - this.values[0] );
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
 ////	BasisSecondDerivative( i-1, clampedTime, bvals );
-////	v = this->values[0] - this->values[0];
+////	v = this.values[0] - this.values[0];
 ////	for ( j = 0; j < 4; j++ ) {
 ////		k = i + j - 2;
-////		v += bvals[j] * this->ValueForIndex( k );
+////		v += bvals[j] * this.ValueForIndex( k );
 ////	}
-////	d = ( this->TimeForIndex( i ) - this->TimeForIndex( i-1 ) );
+////	d = ( this.TimeForIndex( i ) - this.TimeForIndex( i-1 ) );
 ////	return v / ( d * d );
 ////}
 
@@ -2094,7 +2100,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_UniformCubicBSpline<type>::Basis( const int index, const float t, float *bvals ) const {
-////	float s = (float) ( t - this->TimeForIndex( index ) ) / ( this->TimeForIndex( index+1 ) - this->TimeForIndex( index ) );
+////	float s = (float) ( t - this.TimeForIndex( index ) ) / ( this.TimeForIndex( index+1 ) - this.TimeForIndex( index ) );
 ////	bvals[0] = ( ( ( -s + 3.0 ) * s - 3.0 ) * s + 1.0 ) * ( 1.0 / 6.0 );
 ////	bvals[1] = ( ( ( 3.0 * s - 6.0 ) * s ) * s + 4.0 ) * ( 1.0 / 6.0 );
 ////	bvals[2] = ( ( ( -3.0 * s + 3.0 ) * s + 3.0 ) * s + 1.0 ) * ( 1.0 / 6.0 );
@@ -2110,7 +2116,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_UniformCubicBSpline<type>::BasisFirstDerivative( const int index, const float t, float *bvals ) const {
-////	float s = (float) ( t - this->TimeForIndex( index ) ) / ( this->TimeForIndex( index+1 ) - this->TimeForIndex( index ) );
+////	float s = (float) ( t - this.TimeForIndex( index ) ) / ( this.TimeForIndex( index+1 ) - this.TimeForIndex( index ) );
 ////	bvals[0] = -0.5f * s * s + s - 0.5f;
 ////	bvals[1] = 1.5f * s * s - 2.0 * s;
 ////	bvals[2] = -1.5f * s * s + s + 0.5f;
@@ -2126,7 +2132,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_UniformCubicBSpline<type>::BasisSecondDerivative( const int index, const float t, float *bvals ) const {
-////	float s = (float) ( t - this->TimeForIndex( index ) ) / ( this->TimeForIndex( index+1 ) - this->TimeForIndex( index ) );
+////	float s = (float) ( t - this.TimeForIndex( index ) ) / ( this.TimeForIndex( index+1 ) - this.TimeForIndex( index ) );
 ////	bvals[0] = -s + 1.0;
 ////	bvals[1] = 3.0 * s - 2.0;
 ////	bvals[2] = -3.0 * s + 1.0;
@@ -2146,7 +2152,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////class idCurve_NonUniformBSpline extends idCurve_BSpline<type> {
 	
 ////public:
-////						idCurve_NonUniformBSpline( void );
+////						idCurve_NonUniformBSpline( );
 
 ////	virtual type		GetCurrentValue( const float time ) const;
 ////	virtual type		GetCurrentFirstDerivative( const float time ) const;
@@ -2164,7 +2170,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE idCurve_NonUniformBSpline<type>::idCurve_NonUniformBSpline( void ) {
+////ID_INLINE idCurve_NonUniformBSpline<type>::idCurve_NonUniformBSpline( ) {
 ////}
 
 /////*
@@ -2179,19 +2185,19 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	int i, j, k;
 ////	float clampedTime;
 ////	type v;
-////	float *bvals = (float *) _alloca16( this->order * sizeof(float) );
+////	float *bvals = (float *) _alloca16( this.order * sizeof(float) );
 
-////	if ( this->times.Num() == 1 ) {
-////		return this->values[0];
+////	if ( this.times.Num() == 1 ) {
+////		return this.values[0];
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
-////	Basis( i-1, this->order, clampedTime, bvals );
-////	v = this->values[0] - this->values[0];
-////	for ( j = 0; j < this->order; j++ ) {
-////		k = i + j - ( this->order >> 1 );
-////		v += bvals[j] * this->ValueForIndex( k );
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
+////	Basis( i-1, this.order, clampedTime, bvals );
+////	v = this.values[0] - this.values[0];
+////	for ( j = 0; j < this.order; j++ ) {
+////		k = i + j - ( this.order >> 1 );
+////		v += bvals[j] * this.ValueForIndex( k );
 ////	}
 ////	return v;
 ////}
@@ -2208,19 +2214,19 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	int i, j, k;
 ////	float clampedTime;
 ////	type v;
-////	float *bvals = (float *) _alloca16( this->order * sizeof(float) );
+////	float *bvals = (float *) _alloca16( this.order * sizeof(float) );
 
-////	if ( this->times.Num() == 1 ) {
-////		return ( this->values[0] - this->values[0] );
+////	if ( this.times.Num() == 1 ) {
+////		return ( this.values[0] - this.values[0] );
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
-////	BasisFirstDerivative( i-1, this->order, clampedTime, bvals );
-////	v = this->values[0] - this->values[0];
-////	for ( j = 0; j < this->order; j++ ) {
-////		k = i + j - ( this->order >> 1 );
-////		v += bvals[j] * this->ValueForIndex( k );
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
+////	BasisFirstDerivative( i-1, this.order, clampedTime, bvals );
+////	v = this.values[0] - this.values[0];
+////	for ( j = 0; j < this.order; j++ ) {
+////		k = i + j - ( this.order >> 1 );
+////		v += bvals[j] * this.ValueForIndex( k );
 ////	}
 ////	return v;
 ////}
@@ -2237,19 +2243,19 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	int i, j, k;
 ////	float clampedTime;
 ////	type v;
-////	float *bvals = (float *) _alloca16( this->order * sizeof(float) );
+////	float *bvals = (float *) _alloca16( this.order * sizeof(float) );
 
-////	if ( this->times.Num() == 1 ) {
-////		return ( this->values[0] - this->values[0] );
+////	if ( this.times.Num() == 1 ) {
+////		return ( this.values[0] - this.values[0] );
 ////	}
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
-////	BasisSecondDerivative( i-1, this->order, clampedTime, bvals );
-////	v = this->values[0] - this->values[0];
-////	for ( j = 0; j < this->order; j++ ) {
-////		k = i + j - ( this->order >> 1 );
-////		v += bvals[j] * this->ValueForIndex( k );
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
+////	BasisSecondDerivative( i-1, this.order, clampedTime, bvals );
+////	v = this.values[0] - this.values[0];
+////	for ( j = 0; j < this.order; j++ ) {
+////		k = i + j - ( this.order >> 1 );
+////		v += bvals[j] * this.ValueForIndex( k );
 ////	}
 ////	return v;
 ////}
@@ -2272,7 +2278,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////		bvals[order - r] = 0.0;
 ////		for ( s = order - r + 1; s < order; s++ ) {
 ////			i++;
-////			omega = (float) ( t - this->TimeForIndex( i ) ) / ( this->TimeForIndex( i + r - 1 ) - this->TimeForIndex( i ) );
+////			omega = (float) ( t - this.TimeForIndex( i ) ) / ( this.TimeForIndex( i + r - 1 ) - this.TimeForIndex( i ) );
 ////			bvals[s - 1] += ( 1.0 - omega ) * bvals[s];
 ////			bvals[s] *= omega;
 ////		}
@@ -2294,9 +2300,9 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	bvals[0] = 0.0;
 ////	for ( i = 0; i < order-1; i++ ) {
 ////		bvals[i] -= bvals[i+1];
-////		bvals[i] *= (float) ( order - 1) / ( this->TimeForIndex( index + i + (order-1) - 2 ) - this->TimeForIndex( index + i - 2 ) );
+////		bvals[i] *= (float) ( order - 1) / ( this.TimeForIndex( index + i + (order-1) - 2 ) - this.TimeForIndex( index + i - 2 ) );
 ////	}
-////	bvals[i] *= (float) ( order - 1) / ( this->TimeForIndex( index + i + (order-1) - 2 ) - this->TimeForIndex( index + i - 2 ) );
+////	bvals[i] *= (float) ( order - 1) / ( this.TimeForIndex( index + i + (order-1) - 2 ) - this.TimeForIndex( index + i - 2 ) );
 ////}
 
 /////*
@@ -2314,9 +2320,9 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	bvals[0] = 0.0;
 ////	for ( i = 0; i < order-1; i++ ) {
 ////		bvals[i] -= bvals[i+1];
-////		bvals[i] *= (float) ( order - 1) / ( this->TimeForIndex( index + i + (order-1) - 2 ) - this->TimeForIndex( index + i - 2 ) );
+////		bvals[i] *= (float) ( order - 1) / ( this.TimeForIndex( index + i + (order-1) - 2 ) - this.TimeForIndex( index + i - 2 ) );
 ////	}
-////	bvals[i] *= (float) ( order - 1) / ( this->TimeForIndex( index + i + (order-1) - 2 ) - this->TimeForIndex( index + i - 2 ) );
+////	bvals[i] *= (float) ( order - 1) / ( this.TimeForIndex( index + i + (order-1) - 2 ) - this.TimeForIndex( index + i - 2 ) );
 ////}
 
 
@@ -2332,12 +2338,12 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////class idCurve_NURBS extends idCurve_NonUniformBSpline<type> {
 	
 ////public:
-////						idCurve_NURBS( void );
+////						idCurve_NURBS( );
 
 ////	virtual int			AddValue( const float time, const type &value );
 ////	virtual int			AddValue( const float time, const type &value, const float weight );
-////	virtual void		RemoveIndex( const int index ) { this->values.RemoveIndex(index); this->times.RemoveIndex(index); weights.RemoveIndex(index); }
-////	virtual void		Clear( void ) { this->values.Clear(); this->times.Clear(); weights.Clear(); this->currentIndex = -1; }
+////	virtual void		RemoveIndex( const int index ) { this.values.RemoveIndex(index); this.times.RemoveIndex(index); weights.RemoveIndex(index); }
+////	virtual void		Clear( ) { this.values.Clear(); this.times.Clear(); weights.Clear(); this.currentIndex = -1; }
 
 ////	virtual type		GetCurrentValue( const float time ) const;
 ////	virtual type		GetCurrentFirstDerivative( const float time ) const;
@@ -2355,7 +2361,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////====================
 ////*/
 //////template< class type >
-////ID_INLINE idCurve_NURBS<type>::idCurve_NURBS( void ) {
+////ID_INLINE idCurve_NURBS<type>::idCurve_NURBS( ) {
 ////}
 
 /////*
@@ -2370,9 +2376,9 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////ID_INLINE int idCurve_NURBS<type>::AddValue( const float time, const type &value ) {
 ////	int i;
 
-////	i = this->IndexForTime( time );
-////	this->times.Insert( time, i );
-////	this->values.Insert( value, i );
+////	i = this.IndexForTime( time );
+////	this.times.Insert( time, i );
+////	this.values.Insert( value, i );
 ////	weights.Insert( 1.0, i );
 ////	return i;
 ////}
@@ -2389,9 +2395,9 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////ID_INLINE int idCurve_NURBS<type>::AddValue( const float time, const type &value, const float weight ) {
 ////	int i;
 
-////	i = this->IndexForTime( time );
-////	this->times.Insert( time, i );
-////	this->values.Insert( value, i );
+////	i = this.IndexForTime( time );
+////	this.times.Insert( time, i );
+////	this.values.Insert( value, i );
 ////	weights.Insert( weight, i );
 ////	return i;
 ////}
@@ -2409,22 +2415,22 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float w, b, *bvals, clampedTime;
 ////	type v;
 
-////	if ( this->times.Num() == 1 ) {
-////		return this->values[0];
+////	if ( this.times.Num() == 1 ) {
+////		return this.values[0];
 ////	}
 
-////	bvals = (float *) _alloca16( this->order * sizeof(float) );
+////	bvals = (float *) _alloca16( this.order * sizeof(float) );
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
-////	this->Basis( i-1, this->order, clampedTime, bvals );
-////	v = this->values[0] - this->values[0];
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
+////	this.Basis( i-1, this.order, clampedTime, bvals );
+////	v = this.values[0] - this.values[0];
 ////	w = 0.0;
-////	for ( j = 0; j < this->order; j++ ) {
-////		k = i + j - ( this->order >> 1 );
+////	for ( j = 0; j < this.order; j++ ) {
+////		k = i + j - ( this.order >> 1 );
 ////		b = bvals[j] * WeightForIndex( k );
 ////		w += b;
-////		v += b * this->ValueForIndex( k );
+////		v += b * this.ValueForIndex( k );
 ////	}
 ////	return v / w;
 ////}
@@ -2442,27 +2448,27 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float w, wb, wd1, b, d1, *bvals, *d1vals, clampedTime;
 ////	type v, vb, vd1;
 
-////	if ( this->times.Num() == 1 ) {
-////		return this->values[0];
+////	if ( this.times.Num() == 1 ) {
+////		return this.values[0];
 ////	}
 
-////	bvals = (float *) _alloca16( this->order * sizeof(float) );
-////	d1vals = (float *) _alloca16( this->order * sizeof(float) );
+////	bvals = (float *) _alloca16( this.order * sizeof(float) );
+////	d1vals = (float *) _alloca16( this.order * sizeof(float) );
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
-////	this->Basis( i-1, this->order, clampedTime, bvals );
-////	this->BasisFirstDerivative( i-1, this->order, clampedTime, d1vals );
-////	vb = vd1 = this->values[0] - this->values[0];
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
+////	this.Basis( i-1, this.order, clampedTime, bvals );
+////	this.BasisFirstDerivative( i-1, this.order, clampedTime, d1vals );
+////	vb = vd1 = this.values[0] - this.values[0];
 ////	wb = wd1 = 0.0;
-////	for ( j = 0; j < this->order; j++ ) {
-////		k = i + j - ( this->order >> 1 );
+////	for ( j = 0; j < this.order; j++ ) {
+////		k = i + j - ( this.order >> 1 );
 ////		w = WeightForIndex( k );
 ////		b = bvals[j] * w;
 ////		d1 = d1vals[j] * w;
 ////		wb += b;
 ////		wd1 += d1;
-////		v = this->ValueForIndex( k );
+////		v = this.ValueForIndex( k );
 ////		vb += b * v;
 ////		vd1 += d1 * v;
 ////	}
@@ -2482,23 +2488,23 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	float w, wb, wd1, wd2, b, d1, d2, *bvals, *d1vals, *d2vals, clampedTime;
 ////	type v, vb, vd1, vd2;
 
-////	if ( this->times.Num() == 1 ) {
-////		return this->values[0];
+////	if ( this.times.Num() == 1 ) {
+////		return this.values[0];
 ////	}
 
-////	bvals = (float *) _alloca16( this->order * sizeof(float) );
-////	d1vals = (float *) _alloca16( this->order * sizeof(float) );
-////	d2vals = (float *) _alloca16( this->order * sizeof(float) );
+////	bvals = (float *) _alloca16( this.order * sizeof(float) );
+////	d1vals = (float *) _alloca16( this.order * sizeof(float) );
+////	d2vals = (float *) _alloca16( this.order * sizeof(float) );
 
-////	clampedTime = this->ClampedTime( time );
-////	i = this->IndexForTime( clampedTime );
-////	this->Basis( i-1, this->order, clampedTime, bvals );
-////	this->BasisFirstDerivative( i-1, this->order, clampedTime, d1vals );
-////	this->BasisSecondDerivative( i-1, this->order, clampedTime, d2vals );
-////	vb = vd1 = vd2 = this->values[0] - this->values[0];
+////	clampedTime = this.ClampedTime( time );
+////	i = this.IndexForTime( clampedTime );
+////	this.Basis( i-1, this.order, clampedTime, bvals );
+////	this.BasisFirstDerivative( i-1, this.order, clampedTime, d1vals );
+////	this.BasisSecondDerivative( i-1, this.order, clampedTime, d2vals );
+////	vb = vd1 = vd2 = this.values[0] - this.values[0];
 ////	wb = wd1 = wd2 = 0.0;
-////	for ( j = 0; j < this->order; j++ ) {
-////		k = i + j - ( this->order >> 1 );
+////	for ( j = 0; j < this.order; j++ ) {
+////		k = i + j - ( this.order >> 1 );
 ////		w = WeightForIndex( k );
 ////		b = bvals[j] * w;
 ////		d1 = d1vals[j] * w;
@@ -2506,7 +2512,7 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////		wb += b;
 ////		wd1 += d1;
 ////		wd2 += d2;
-////		v = this->ValueForIndex( k );
+////		v = this.ValueForIndex( k );
 ////		vb += b * v;
 ////		vd1 += d1 * v;
 ////		vd2 += d2 * v;
@@ -2526,13 +2532,13 @@ class idCurve_Spline <type> extends idCurve<type> {
 ////	int n = weights.Num()-1;
 
 ////	if ( index < 0 ) {
-////		if ( this->boundaryType == idCurve_Spline<type>::BT_CLOSED ) {
+////		if ( this.boundaryType == idCurve_Spline<type>::boundary_t.BT_CLOSED ) {
 ////			return weights[ weights.Num() + index % weights.Num() ];
 ////		} else {
 ////			return weights[0] + index * ( weights[1] - weights[0] );
 ////		}
 ////	} else if ( index > n ) {
-////		if ( this->boundaryType == idCurve_Spline<type>::BT_CLOSED ) {
+////		if ( this.boundaryType == idCurve_Spline<type>::boundary_t.BT_CLOSED ) {
 ////			return weights[ index % weights.Num() ];
 ////		} else {
 ////			return weights[n] + ( index - n ) * ( weights[n] - weights[n-1] );

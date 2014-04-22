@@ -2353,44 +2353,45 @@ idEntity::FreeSoundEmitter
 ////
 ////	return pos;
 ////}
-////
-/////*
-////================
-////idEntity::GetMasterPosition
-////================
-////*/
-////bool idEntity::GetMasterPosition( idVec3 &masterOrigin, idMat3 &masterAxis ) const {
-////	idVec3		localOrigin;
-////	idMat3		localAxis;
-////	idAnimator	*masterAnimator;
-////
-////	if ( this.bindMaster ) {
-////		// if bound to a joint of an animated model
-////		if ( this.bindJoint != jointHandle_t.INVALID_JOINT ) {
-////			masterAnimator = this.bindMaster.GetAnimator();
-////			if ( !masterAnimator ) {
-////				masterOrigin = vec3_origin;
-////				masterAxis = mat3_identity;
-////				return false;
-////			} else {
-////				masterAnimator.GetJointTransform( this.bindJoint, gameLocal.time, masterOrigin, masterAxis );
-////				masterAxis *= this.bindMaster.renderEntity.axis;
-////				masterOrigin = this.bindMaster.renderEntity.origin + masterOrigin * this.bindMaster.renderEntity.axis;
-////			}
-////		} else if ( this.bindBody >= 0 && this.bindMaster.GetPhysics() ) {
-////			masterOrigin = this.bindMaster.GetPhysics().GetOrigin( this.bindBody );
-////			masterAxis = this.bindMaster.GetPhysics().GetAxis( this.bindBody );
-////		} else {
-////			masterOrigin = this.bindMaster.renderEntity.origin;
-////			masterAxis = this.bindMaster.renderEntity.axis;
-////		}
-////		return true;
-////	} else {
-////		masterOrigin = vec3_origin;
-////		masterAxis = mat3_identity;
-////		return false;
-////	}
-////}
+
+/*
+================
+idEntity::GetMasterPosition
+================
+*/
+	GetMasterPosition ( masterOrigin: idVec3, masterAxis: idMat3 ): boolean {
+		//var localOrigin = new idVec3;
+		//var localAxis = new idMat3;
+		var masterAnimator: idAnimator;
+
+		if ( this.bindMaster ) {
+			// if bound to a joint of an animated model
+			if ( this.bindJoint != jointHandle_t.INVALID_JOINT ) {
+				masterAnimator = this.bindMaster.GetAnimator ( );
+				if ( !masterAnimator ) {
+					masterOrigin.opEquals( vec3_origin );
+					masterAxis.opEquals(  mat3_identity);
+					return false;
+				} else {
+					masterAnimator.GetJointTransform( this.bindJoint, gameLocal.time, masterOrigin, masterAxis );
+					masterAxis.opMultiplicationAssignment(this.bindMaster.renderEntity.axis);
+					todoThrow ( );
+					//masterOrigin.opEquals(  this.bindMaster.renderEntity.origin + masterOrigin * this.bindMaster.renderEntity.axis;
+				}
+			} else if ( this.bindBody >= 0 && this.bindMaster.GetPhysics ( ) ) {
+				masterOrigin.opEquals(this.bindMaster.GetPhysics().GetOrigin(this.bindBody));
+				masterAxis.opEquals(this.bindMaster.GetPhysics().GetAxis(this.bindBody));
+			} else {
+				masterOrigin.opEquals(this.bindMaster.renderEntity.origin);
+				masterAxis.opEquals(this.bindMaster.renderEntity.axis);
+			}
+			return true;
+		} else {
+			masterOrigin.opEquals(  vec3_origin);
+			masterAxis.opEquals(  mat3_identity);
+			return false;
+		}
+	}
 ////
 /////*
 ////================

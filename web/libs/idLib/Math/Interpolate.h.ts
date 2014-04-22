@@ -132,7 +132,7 @@ class idInterpolateAccelDecelLinear<type> {
 ////						idInterpolateAccelDecelLinear();
 ////
 ////	void				Init( const float startTime, const float accelTime, const float decelTime, const float duration, const type &startValue, const type &endValue );
-////	void				SetStartTime( float time ) { startTime = time; this.Invalidate(); }
+	SetStartTime( /*float */time :number) { this.startTime = time; this.Invalidate(); }
 	SetStartValue(startValue: type): void { this.startValue.opEquals( startValue); this.Invalidate(); }
 ////	void				SetEndValue( const type &endValue ) { this.endValue = endValue; this.Invalidate(); }
 ////
@@ -169,7 +169,8 @@ idInterpolateAccelDecelLinear::idInterpolateAccelDecelLinear
 ====================
 */
 //template< class type >
-	constructor ( type: any ) {
+	constructor(type: any) {
+		assert( type != Number );
 		this.type = type;
 		this.extrapolate = new idExtrapolate<type>( type );
 		this.startTime = this.accelTime = this.linearTime = this.decelTime = 0;
@@ -287,7 +288,7 @@ class idInterpolateAccelDecelLinear_Number {
 ////						idInterpolateAccelDecelLinear();
 ////
 ////	void				Init( const float startTime, const float accelTime, const float decelTime, const float duration, const type &startValue, const type &endValue );
-////	void				SetStartTime( float time ) { startTime = time; this.Invalidate(); }
+	SetStartTime( /*float */time :number) { this.startTime = time; this.Invalidate(); }
 	SetStartValue(startValue: number ) :void{ this.startValue = startValue; this.Invalidate(); }
 	SetEndValue( endValue:number ) { this.endValue = endValue; this.Invalidate(); }
 	

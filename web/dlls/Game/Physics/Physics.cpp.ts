@@ -127,8 +127,8 @@ class idPhysics extends idClass {
 	//	// evaluate the physics with the given time step, returns true if the object moved
 	   //	virtual bool				Evaluate(int timeStepMSec, int endTimeMSec) = 0;
 	   //	// update the time without moving
-	   //	virtual void				UpdateTime(int endTimeMSec) = 0;
-	   //	// get the last physics update time
+	UpdateTime ( /*int*/ endTimeMSec: number ): void { throw "placeholder"; }
+	//	// get the last physics update time
 	   //	virtual int					GetTime() const = 0;
 	   //	// collision interaction between different physics objects
 	   //	virtual void				GetImpactInfo(/*int*/ id:number, const idVec3 &point, impactInfo_t *info) const = 0;
@@ -183,8 +183,8 @@ class idPhysics extends idClass {
 	   //	virtual bool				IsGroundEntity(int entityNum) const = 0;
 	   //	virtual bool				IsGroundClipModel(int entityNum, /*int*/ id:number) const = 0;
 	   //	// set the master entity for objects bound to a master
-	   //	virtual void				SetMaster(idEntity *master, const bool orientated = true) = 0;
-	   //	// set pushed state
+	SetMaster(master: idEntity, orientated: boolean = true) { throw "placeholder";}
+	//	// set pushed state
 	   //	virtual void				SetPushed(int deltaTime) = 0;
 	   //	virtual const idVec3 &		GetPushedLinearVelocity(/*int*/ id:number = 0) const = 0;
 	   //	virtual const idVec3 &		GetPushedAngularVelocity(/*int*/ id:number = 0) const = 0;

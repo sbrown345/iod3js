@@ -957,6 +957,349 @@ class idAFBody {
 		useContactMotorDir: false,	//: 1// true if a contact motor should be used
 		isZero: false				//: 1// true if 's' is zero during calculations
 	}
+
+
+	/*
+	================
+	idAFBody::idAFBody
+	================
+	*/
+	constructor() {
+		this.Init();
+	}
+	////
+	/////*
+	////================
+	////idAFBody::idAFBody
+	////================
+	////*/
+	////idAFBody::idAFBody( const idStr &name, idClipModel *clipModel, float density ) {
+	////
+	////	assert( clipModel );
+	////	assert( clipModel.IsTraceModel() );
+	////
+	////	Init();
+	////
+	////	this.name = name;
+	////	this.clipModel = NULL;
+	////
+	////	SetClipModel( clipModel );
+	////	SetDensity( density );
+	////
+	////	current.worldOrigin = clipModel.GetOrigin();
+	////	current.worldAxis = clipModel.GetAxis();
+	////	*next = *current;
+	////
+	////}
+	////
+	/////*
+	////================
+	////idAFBody::~idAFBody
+	////================
+	////*/
+	////idAFBody::~idAFBody( ) {
+	////	delete clipModel;
+	////}
+
+	/*
+	================
+	idAFBody::Init
+	================
+	*/
+	Init(): void {
+		this.name.opEquals( "noname" );
+		this.parent = null;
+		this.clipModel = null;
+		this.primaryConstraint = null;
+		this.tree = null;
+
+		this.linearFriction = -1.0;
+		this.angularFriction = -1.0;
+		this.contactFriction = -1.0;
+		this.bouncyness = -1.0;
+		this.clipMask = 0;
+
+		this.frictionDir.opEquals(vec3_zero);
+		this.contactMotorDir.opEquals(vec3_zero);
+		this.contactMotorVelocity = 0.0;
+		this.contactMotorForce = 0.0;
+
+		this.mass = 1.0;
+		this.invMass = 1.0;
+		this.centerOfMass.opEquals(vec3_zero);
+		this.inertiaTensor.opEquals(mat3_identity);
+		this.inverseInertiaTensor.opEquals(mat3_identity);
+
+		this.current = this.state[0];
+		this.next = this.state[1];
+		this.current.worldOrigin.opEquals( vec3_zero);
+		this.current.worldAxis.opEquals(mat3_identity);
+		this.current.spatialVelocity.opEquals( vec6_zero);
+		this.current.externalForce.opEquals(vec6_zero);
+	this.* next = *current;
+		this.saved = *current;
+		this.atRestOrigin.opEquals(vec3_zero);
+		this.atRestAxis.opEquals(mat3_identity);
+
+		this.s.Zero(6);
+		this.totalForce.Zero(6);
+		this.auxForce.Zero(6);
+		this.acceleration.Zero(6);
+
+		this.response = null;
+		this.responseIndex = null;
+		this.numResponses = 0;
+		this.maxAuxiliaryIndex = 0;
+		this.maxSubTreeAuxiliaryIndex = 0;
+
+		//memset( &fl, 0, sizeof(fl) );
+		this.fl.clipMaskSet = false;
+		this.fl.selfCollision = false;
+		this.fl.spatialInertiaSparse = false;
+		this.fl.useFrictionDir = false;
+		this.fl.useContactMotorDir = false;
+		this.fl.isZero = false;
+
+		this.fl.selfCollision = true;
+		this.fl.isZero = true;
+	}
+
+	/////*
+	////================
+	////idAFBody::SetClipModel
+	////================
+	////*/
+	////void idAFBody::SetClipModel( idClipModel *clipModel ) {
+	////	if ( this.clipModel && this.clipModel != clipModel ) {
+	////		delete this.clipModel;
+	////	}
+	////	this.clipModel = clipModel;
+	////}
+	////
+	/////*
+	////================
+	////idAFBody::SetFriction
+	////================
+	////*/
+	////void idAFBody::SetFriction( float linear, float angular, float contact ) {
+	////	if ( linear < 0.0 || linear > 1.0 ||
+	////			angular < 0.0 || angular > 1.0 ||
+	////				contact < 0.0 ) {
+	////		gameLocal.Warning( "idAFBody::SetFriction: friction out of range, linear = %.1f, angular = %.1f, contact = %.1f", linear, angular, contact );
+	////		return;
+	////	}
+	////	linearFriction = linear;
+	////	angularFriction = angular;
+	////	contactFriction = contact;
+	////}
+
+	/*
+	================
+	idAFBody::SetBouncyness
+	================
+	*/
+	SetBouncyness( /*float*/ bounce: number): void {
+		if (bounce < 0.0 || bounce > 1.0) {
+			gameLocal.Warning("idAFBody::SetBouncyness: bouncyness out of range, bounce = %.1f", bounce);
+			return;
+		}
+		this.bouncyness = bounce;
+	}
+////
+/////*
+////================
+////idAFBody::SetDensity
+////================
+////*/
+////void idAFBody::SetDensity( float density, const idMat3 &inertiaScale ) {
+////
+////	// get the body mass properties
+////	clipModel.GetMassProperties( density, mass, centerOfMass, inertiaTensor );
+////
+////	// make sure we have a valid mass
+////	if ( mass <= 0.0 || FLOAT_IS_NAN( mass ) ) {
+////		gameLocal.Warning( "idAFBody::SetDensity: invalid mass for body '%s'", name.c_str() );
+////		mass = 1.0;
+////		centerOfMass.Zero();
+////		inertiaTensor.Identity();
+////	}
+////
+////	// make sure the center of mass is at the body origin
+////	if ( !centerOfMass.Compare( vec3_origin, CENTER_OF_MASS_EPSILON ) ) {
+////		gameLocal.Warning( "idAFBody::SetDentity: center of mass not at origin for body '%s'", name.c_str() );
+////	}
+////	centerOfMass.Zero();
+////
+////	// calculate the inverse mass and inverse inertia tensor
+////	invMass = 1.0 / mass;
+////	if ( inertiaScale != mat3_identity ) {
+////		inertiaTensor *= inertiaScale;
+////	}
+////	if ( inertiaTensor.IsDiagonal( 1e-3f ) ) {
+////		inertiaTensor[0][1] = inertiaTensor[0][2] = 0.0;
+////		inertiaTensor[1][0] = inertiaTensor[1][2] = 0.0;
+////		inertiaTensor[2][0] = inertiaTensor[2][1] = 0.0;
+////		inverseInertiaTensor.Identity();
+////		inverseInertiaTensor[0][0] = 1.0 / inertiaTensor[0][0];
+////		inverseInertiaTensor[1][1] = 1.0 / inertiaTensor[1][1];
+////		inverseInertiaTensor[2][2] = 1.0 / inertiaTensor[2][2];
+////	}
+////	else {
+////		inverseInertiaTensor = inertiaTensor.Inverse();
+////	}
+////}
+////
+/////*
+////================
+////idAFBody::SetFrictionDirection
+////================
+////*/
+////void idAFBody::SetFrictionDirection( const idVec3 &dir ) {
+////	frictionDir = dir * current.worldAxis.Transpose();
+////	fl.useFrictionDir = true;
+////}
+////
+/////*
+////================
+////idAFBody::GetFrictionDirection
+////================
+////*/
+////bool idAFBody::GetFrictionDirection( idVec3 &dir ) const {
+////	if ( fl.useFrictionDir ) {
+////		dir = frictionDir * current.worldAxis;
+////		return true;
+////	}
+////	return false;
+////}
+////
+/////*
+////================
+////idAFBody::SetContactMotorDirection
+////================
+////*/
+////void idAFBody::SetContactMotorDirection( const idVec3 &dir ) {
+////	contactMotorDir = dir * current.worldAxis.Transpose();
+////	fl.useContactMotorDir = true;
+////}
+////
+/////*
+////================
+////idAFBody::GetContactMotorDirection
+////================
+////*/
+////bool idAFBody::GetContactMotorDirection( idVec3 &dir ) const {
+////	if ( fl.useContactMotorDir ) {
+////		dir = contactMotorDir * current.worldAxis;
+////		return true;
+////	}
+////	return false;
+////}
+////
+/////*
+////================
+////idAFBody::GetPointVelocity
+////================
+////*/
+////idVec3 idAFBody::GetPointVelocity( const idVec3 &point ) const {
+////	idVec3 r = point - current.worldOrigin;
+////	return current.spatialVelocity.SubVec3(0) + current.spatialVelocity.SubVec3(1).Cross( r );
+////}
+////
+/////*
+////================
+////idAFBody::AddForce
+////================
+////*/
+////void idAFBody::AddForce( const idVec3 &point, const idVec3 &force ) {
+////	current.externalForce.SubVec3(0) += force;
+////	current.externalForce.SubVec3(1) += (point - current.worldOrigin).Cross( force );
+////}
+////
+/////*
+////================
+////idAFBody::InverseWorldSpatialInertiaMultiply
+////
+////  dst = this.inverseWorldSpatialInertia * v;
+////================
+////*/
+////ID_INLINE void idAFBody::InverseWorldSpatialInertiaMultiply( idVecX &dst, const float *v ) const {
+////	const float *mPtr = inverseWorldSpatialInertia.ToFloatPtr();
+////	const float *vPtr = v;
+////	float *dstPtr = dst.ToFloatPtr();
+////
+////	if ( fl.spatialInertiaSparse ) {
+////		dstPtr[0] = mPtr[0*6+0] * vPtr[0];
+////		dstPtr[1] = mPtr[1*6+1] * vPtr[1];
+////		dstPtr[2] = mPtr[2*6+2] * vPtr[2];
+////		dstPtr[3] = mPtr[3*6+3] * vPtr[3] + mPtr[3*6+4] * vPtr[4] + mPtr[3*6+5] * vPtr[5];
+////		dstPtr[4] = mPtr[4*6+3] * vPtr[3] + mPtr[4*6+4] * vPtr[4] + mPtr[4*6+5] * vPtr[5];
+////		dstPtr[5] = mPtr[5*6+3] * vPtr[3] + mPtr[5*6+4] * vPtr[4] + mPtr[5*6+5] * vPtr[5];
+////	} else {
+////		gameLocal.Warning( "spatial inertia is not sparse for body %s", name.c_str() );
+////	}
+////}
+////
+/////*
+////================
+////idAFBody::Save
+////================
+////*/
+////void idAFBody::Save( idSaveGame *saveFile ) {
+////	saveFile.WriteFloat( linearFriction );
+////	saveFile.WriteFloat( angularFriction );
+////	saveFile.WriteFloat( contactFriction );
+////	saveFile.WriteFloat( this.bouncyness );
+////	saveFile.WriteInt( clipMask );
+////	saveFile.WriteVec3( frictionDir );
+////	saveFile.WriteVec3( contactMotorDir );
+////	saveFile.WriteFloat( contactMotorVelocity );
+////	saveFile.WriteFloat( contactMotorForce );
+////
+////	saveFile.WriteFloat( mass );
+////	saveFile.WriteFloat( invMass );
+////	saveFile.WriteVec3( centerOfMass );
+////	saveFile.WriteMat3( inertiaTensor );
+////	saveFile.WriteMat3( inverseInertiaTensor );
+////
+////	saveFile.WriteVec3( current.worldOrigin );
+////	saveFile.WriteMat3( current.worldAxis );
+////	saveFile.WriteVec6( current.spatialVelocity );
+////	saveFile.WriteVec6( current.externalForce );
+////	saveFile.WriteVec3( atRestOrigin );
+////	saveFile.WriteMat3( atRestAxis );
+////}
+////
+/////*
+////================
+////idAFBody::Restore
+////================
+////*/
+////void idAFBody::Restore( idRestoreGame *saveFile ) {
+////	saveFile.ReadFloat( linearFriction );
+////	saveFile.ReadFloat( angularFriction );
+////	saveFile.ReadFloat( contactFriction );
+////	saveFile.ReadFloat( this.bouncyness );
+////	saveFile.ReadInt( clipMask );
+////	saveFile.ReadVec3( frictionDir );
+////	saveFile.ReadVec3( contactMotorDir );
+////	saveFile.ReadFloat( contactMotorVelocity );
+////	saveFile.ReadFloat( contactMotorForce );
+////
+////	saveFile.ReadFloat( mass );
+////	saveFile.ReadFloat( invMass );
+////	saveFile.ReadVec3( centerOfMass );
+////	saveFile.ReadMat3( inertiaTensor );
+////	saveFile.ReadMat3( inverseInertiaTensor );
+////
+////	saveFile.ReadVec3( current.worldOrigin );
+////	saveFile.ReadMat3( current.worldAxis );
+////	saveFile.ReadVec6( current.spatialVelocity );
+////	saveFile.ReadVec6( current.externalForce );
+////	saveFile.ReadVec3( atRestOrigin );
+////	saveFile.ReadMat3( atRestAxis );
+////}
+////
+////
 };
 
 
@@ -2800,14 +3143,14 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	return true;
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::UpdateTime
-	////================
-	////*/
-	////void idPhysics_AF::UpdateTime( int endTimeMSec ) {
-	////}
+	
+	/*
+	================
+	idPhysics_AF::UpdateTime
+	================
+	*/
+	UpdateTime ( /*int*/ endTimeMSec: number ): void {
+	}
 	////
 	/////*
 	////================

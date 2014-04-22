@@ -63,7 +63,7 @@ class parametricPState_t{
 	angularExtrapolation = new idExtrapolate<idAngles>(idAngles);	// extrapolation based description of the orientation over time
 	linearInterpolation = new idInterpolateAccelDecelLinear<idVec3>(idVec3);	// interpolation based description of the position over time
 	angularInterpolation = new idInterpolateAccelDecelLinear<idAngles>(idAngles);	// interpolation based description of the orientation over time
-	spline:idCurve_Spline<idVec3> [];					// spline based description of the position over time
+	spline:idCurve_Spline<idVec3>;					// spline based description of the position over time
 	splineInterpolate = new idInterpolateAccelDecelLinear_Number(float);		// position along the spline over time
 	useSplineAngles:boolean;		// set the orientation using the spline
 }
@@ -206,8 +206,8 @@ idPhysics_Parametric::Activate
 //*/
 //bool idPhysics_Parametric::TestIfAtRest( ) const {
 //
-//	if ( ( this.current.linearExtrapolation.GetExtrapolationType() & ~EXTRAPOLATION_NOSTOP ) == EXTRAPOLATION_NONE &&
-//			( this.current.angularExtrapolation.GetExtrapolationType() & ~EXTRAPOLATION_NOSTOP ) == EXTRAPOLATION_NONE &&
+//	if ( ( this.current.linearExtrapolation.GetExtrapolationType() & ~extrapolation_t.EXTRAPOLATION_NOSTOP ) == extrapolation_t.EXTRAPOLATION_NONE &&
+//			( this.current.angularExtrapolation.GetExtrapolationType() & ~extrapolation_t.EXTRAPOLATION_NOSTOP ) == extrapolation_t.EXTRAPOLATION_NONE &&
 //				this.current.linearInterpolation.GetDuration() == 0 &&
 //					this.current.angularInterpolation.GetDuration() == 0 &&
 //						this.current.spline == NULL ) {
@@ -236,7 +236,6 @@ idPhysics_Parametric::Activate
 //
 //	return true;
 //}
-//
 ///*
 //================
 //idPhysics_Parametric::Rest
@@ -435,8 +434,8 @@ idPhysics_Parametric::~idPhysics_Parametric
 //	savefile.WriteTrace( pushResults );
 //	savefile.WriteBool( isBlocked );
 //
-//	savefile.WriteBool( hasMaster );
-//	savefile.WriteBool( isOrientated );
+//	savefile.WriteBool( this.hasMaster );
+//	savefile.WriteBool( this.isOrientated );
 //}
 //
 ///*
@@ -456,8 +455,8 @@ idPhysics_Parametric::~idPhysics_Parametric
 //	savefile.ReadTrace( pushResults );
 //	savefile.ReadBool( isBlocked );
 //
-//	savefile.ReadBool( hasMaster );
-//	savefile.ReadBool( isOrientated );
+//	savefile.ReadBool( this.hasMaster );
+//	savefile.ReadBool( this.isOrientated );
 //}
 
 /*
@@ -764,11 +763,11 @@ idPhysics_Parametric::GetAbsBounds
 //	this.current.angles = this.current.localAngles;
 //	this.current.axis = this.current.localAngles.ToMat3();
 //
-//	if ( hasMaster ) {
+//	if ( this.hasMaster ) {
 //		this.self.GetMasterPosition( masterOrigin, masterAxis );
 //		if ( masterAxis.IsRotated() ) {
 //			this.current.origin = this.current.origin * masterAxis + masterOrigin;
-//			if ( isOrientated ) {
+//			if ( this.isOrientated ) {
 //				this.current.axis *= masterAxis;
 //				this.current.angles = this.current.axis.ToAngles();
 //			}
@@ -807,27 +806,27 @@ idPhysics_Parametric::GetAbsBounds
 //
 //	return ( this.current.origin != oldOrigin || this.current.axis != oldAxis );
 //}
-//
-///*
-//================
-//idPhysics_Parametric::UpdateTime
-//================
-//*/
-//void idPhysics_Parametric::UpdateTime( int endTimeMSec ) {
-//	int timeLeap = endTimeMSec - this.current.time;
-//
-//	this.current.time = endTimeMSec;
-//	// move the trajectory start times to sync the trajectory with the this.current endTime
-//	this.current.linearExtrapolation.SetStartTime( this.current.linearExtrapolation.GetStartTime() + timeLeap );
-//	this.current.angularExtrapolation.SetStartTime( this.current.angularExtrapolation.GetStartTime() + timeLeap );
-//	this.current.linearInterpolation.SetStartTime( this.current.linearInterpolation.GetStartTime() + timeLeap );
-//	this.current.angularInterpolation.SetStartTime( this.current.angularInterpolation.GetStartTime() + timeLeap );
-//	if ( this.current.spline != NULL ) {
-//		this.current.spline.ShiftTime( timeLeap );
-//		this.current.splineInterpolate.SetStartTime( this.current.splineInterpolate.GetStartTime() + timeLeap );
-//	}
-//}
-//
+
+/*
+================
+idPhysics_Parametric::UpdateTime
+================
+*/
+	UpdateTime ( /*int*/ endTimeMSec: number ): void {
+		var /*int */timeLeap = endTimeMSec - this.current.time;
+
+		this.current.time = endTimeMSec;
+		// move the trajectory start times to sync the trajectory with the this.current endTime
+		this.current.linearExtrapolation.SetStartTime( this.current.linearExtrapolation.GetStartTime ( ) + timeLeap );
+		this.current.angularExtrapolation.SetStartTime( this.current.angularExtrapolation.GetStartTime ( ) + timeLeap );
+		this.current.linearInterpolation.SetStartTime( this.current.linearInterpolation.GetStartTime ( ) + timeLeap );
+		this.current.angularInterpolation.SetStartTime( this.current.angularInterpolation.GetStartTime ( ) + timeLeap );
+		if ( this.current.spline != null ) {
+			this.current.spline.ShiftTime( timeLeap );
+			this.current.splineInterpolate.SetStartTime( this.current.splineInterpolate.GetStartTime ( ) + timeLeap );
+		}
+	}
+
 ///*
 //================
 //idPhysics_Parametric::GetTime
@@ -928,7 +927,7 @@ idPhysics_Parametric::SetOrigin
 //	this.current.angularInterpolation.SetStartValue( this.current.localAngles );
 //
 //	this.current.localAngles = this.current.angularExtrapolation.GetCurrentValue( this.current.time );
-//	if ( hasMaster && isOrientated ) {
+//	if ( this.hasMaster && this.isOrientated ) {
 //		this.self.GetMasterPosition( masterOrigin, masterAxis );
 //		this.current.axis = this.current.localAngles.ToMat3() * masterAxis;
 //		this.current.angles = this.current.axis.ToAngles();
@@ -992,7 +991,7 @@ idPhysics_Parametric::GetAxis
 //================
 //*/
 //void idPhysics_Parametric::SetLinearVelocity( const idVec3 &newLinearVelocity, /*int*/ id:number ) {
-//	SetLinearExtrapolation( extrapolation_t(EXTRAPOLATION_LINEAR|EXTRAPOLATION_NOSTOP), gameLocal.time, 0, this.current.origin, newLinearVelocity, vec3_origin );
+//	this.SetLinearExtrapolation( extrapolation_t(extrapolation_t.EXTRAPOLATION_LINEAR|extrapolation_t.EXTRAPOLATION_NOSTOP), gameLocal.time, 0, this.current.origin, newLinearVelocity, vec3_origin );
 //	this.current.linearInterpolation.Init( 0, 0, 0, 0, vec3_zero, vec3_zero );
 //	this.Activate();
 //}
@@ -1011,7 +1010,7 @@ idPhysics_Parametric::GetAxis
 //	angle = vec.Normalize();
 //	rotation.Set( vec3_origin, vec, (float) RAD2DEG( angle ) );
 //
-//	SetAngularExtrapolation( extrapolation_t(EXTRAPOLATION_LINEAR|EXTRAPOLATION_NOSTOP), gameLocal.time, 0, this.current.angles, rotation.ToAngles(), ang_zero );
+//	this.SetAngularExtrapolation( extrapolation_t(extrapolation_t.EXTRAPOLATION_LINEAR|extrapolation_t.EXTRAPOLATION_NOSTOP), gameLocal.time, 0, this.current.angles, rotation.ToAngles(), ang_zero );
 //	this.current.angularInterpolation.Init( 0, 0, 0, 0, ang_zero, ang_zero );
 //	this.Activate();
 //}
@@ -1106,46 +1105,44 @@ idPhysics_Parametric::GetAxis
 //	}
 //	return NULL;
 //}
-//
-///*
-//================
-//idPhysics_Parametric::SetMaster
-//================
-//*/
-//void idPhysics_Parametric::SetMaster( idEntity *master, const bool orientated ) {
-//	idVec3 masterOrigin;
-//	idMat3 masterAxis;
-//
-//	if ( master ) {
-//		if ( !hasMaster ) {
-//
-//			// transform from world space to master space
-//			this.self.GetMasterPosition( masterOrigin, masterAxis );
-//			this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
-//			if ( orientated ) {
-//				this.current.localAngles = ( this.current.axis * masterAxis.Transpose() ).ToAngles();
-//			}
-//			else {
-//				this.current.localAngles = this.current.axis.ToAngles();
-//			}
-//
-//			this.current.linearExtrapolation.SetStartValue( this.current.localOrigin );
-//			this.current.angularExtrapolation.SetStartValue( this.current.localAngles );
-//			hasMaster = true;
-//			isOrientated = orientated;
-//		}
-//	}
-//	else {
-//		if ( hasMaster ) {
-//			// transform from master space to world space
-//			this.current.localOrigin = this.current.origin;
-//			this.current.localAngles = this.current.angles;
-//			SetLinearExtrapolation( EXTRAPOLATION_NONE, 0, 0, this.current.origin, vec3_origin, vec3_origin );
-//			SetAngularExtrapolation( EXTRAPOLATION_NONE, 0, 0, this.current.angles, ang_zero, ang_zero );
-//			hasMaster = false;
-//		}
-//	}
-//}
+
+/*
+================
+idPhysics_Parametric::SetMaster
+================
+*/
+	SetMaster ( master: idEntity, orientated: boolean = true ) {
+		var masterOrigin = new idVec3;
+		var masterAxis = new idMat3;
+
+		if ( master ) {
+			if ( !this.hasMaster ) {
+
+				// transform from world space to master space
+				this.self.GetMasterPosition( masterOrigin, masterAxis );
+				this.current.localOrigin.opEquals( idMat3.opMultiplication_VecMat( this.current.origin.opSubtraction( masterOrigin ), masterAxis.Transpose ( ) ) );
+				if ( orientated ) {
+					this.current.localAngles.opEquals( ( this.current.axis.opMultiplication( masterAxis.Transpose ( ) ) ).ToAngles ( ) );
+				} else {
+					this.current.localAngles.opEquals( this.current.axis.ToAngles ( ) );
+				}
+
+				this.current.linearExtrapolation.SetStartValue( this.current.localOrigin );
+				this.current.angularExtrapolation.SetStartValue( this.current.localAngles );
+				this.hasMaster = true;
+				this.isOrientated = orientated;
+			}
+		} else {
+			if ( this.hasMaster ) {
+				// transform from master space to world space
+				this.current.localOrigin.opEquals( this.current.origin );
+				this.current.localAngles.opEquals( this.current.angles );
+				this.SetLinearExtrapolation( extrapolation_t.EXTRAPOLATION_NONE, 0, 0, this.current.origin, vec3_origin, vec3_origin );
+				this.SetAngularExtrapolation( extrapolation_t.EXTRAPOLATION_NONE, 0, 0, this.current.angles, ang_zero, ang_zero );
+				this.hasMaster = false;
+			}
+		}
+	}
 //
 ///*
 //================

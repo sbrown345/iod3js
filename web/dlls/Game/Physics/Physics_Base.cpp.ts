@@ -370,14 +370,14 @@ class idPhysics_Base extends idPhysics {
 	//bool idPhysics_Base::Evaluate( int timeStepMSec, int endTimeMSec ) {
 	//	return false;
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::UpdateTime
-	//================
-	//*/
-	//void idPhysics_Base::UpdateTime( int endTimeMSec ) {
-	//}
+	
+	/*
+	================
+	idPhysics_Base::UpdateTime
+	================
+	*/
+	UpdateTime ( /*int*/ endTimeMSec: number ): void {
+	}
 	//
 	///*
 	//================
@@ -809,13 +809,13 @@ class idPhysics_Base extends idPhysics {
 	//	return vec3_origin;
 	//}
 	//
-	///*
-	//================
-	//idPhysics_Base::SetMaster
-	//================
-	//*/
-	//void idPhysics_Base::SetMaster( idEntity *master, const bool orientated ) {
-	//}
+	/*
+	================
+	idPhysics_Base::SetMaster
+	================
+	*/
+	SetMaster ( master: idEntity, orientated: boolean = true ) {
+	}
 	//
 	///*
 	//================

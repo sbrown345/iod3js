@@ -862,35 +862,36 @@ GetOrigin( /*int*/ id:number  = 0) :idVec3 {
 	////	return vec3_origin;
 	////}
 	////
-	/////*
-	////================
-	////idPhysics_Static::SetMaster
-	////================
-	////*/
-	////void idPhysics_Static::SetMaster( idEntity *master, const bool orientated ) {
-	////	idVec3 masterOrigin;
-	////	idMat3 masterAxis;
-	////
-	////	if ( master ) {
-	////		if ( !this.hasMaster ) {
-	////			// transform from world space to master space
-	////			this.self.GetMasterPosition( masterOrigin, masterAxis );
-	////			this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
-	////			if ( orientated ) {
-	////				this.current.localAxis = this.current.axis * masterAxis.Transpose();
-	////			} else {
-	////				this.current.localAxis = this.current.axis;
-	////			}
-	////			this.hasMaster = true;
-	////			this.isOrientated = orientated;
-	////		}
-	////	} else {
-	////		if ( this.hasMaster ) {
-	////			this.hasMaster = false;
-	////		}
-	////	}
-	////}
-	
+	/*
+	================
+	idPhysics_Static::SetMaster
+	================
+	*/
+	SetMaster ( master: idEntity, orientated: boolean = true ) {
+		todoThrow ( );
+		////	idVec3 masterOrigin;
+		////	idMat3 masterAxis;
+		////
+		////	if ( master ) {
+		////		if ( !this.hasMaster ) {
+		////			// transform from world space to master space
+		////			this.self.GetMasterPosition( masterOrigin, masterAxis );
+		////			this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
+		////			if ( orientated ) {
+		////				this.current.localAxis = this.current.axis * masterAxis.Transpose();
+		////			} else {
+		////				this.current.localAxis = this.current.axis;
+		////			}
+		////			this.hasMaster = true;
+		////			this.isOrientated = orientated;
+		////		}
+		////	} else {
+		////		if ( this.hasMaster ) {
+		////			this.hasMaster = false;
+		////		}
+		////	}
+	}
+
 	/*
 	================
 	idPhysics_Static::GetBlockingInfo

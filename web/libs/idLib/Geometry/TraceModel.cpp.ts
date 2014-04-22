@@ -1229,42 +1229,43 @@ idTraceModel::GenerateEdgeNormals
 ////
 ////	this.GenerateEdgeNormals();
 ////}
-////
-/////*
-////============
-////idTraceModel::Shrink
-////============
-////*/
-////void idTraceModel::Shrink( const float m ) {
-////	int i, j, edgeNum;
-////	traceModelEdge_t *edge;
-////	idVec3 dir;
-////
-////	if ( this.type == traceModel_t.TRM_POLYGON ) {
-////		for ( i = 0; i < this.numEdges; i++ ) {
-////			edgeNum = this.polys[0].edges[i];
-////			edge = &edges[abs(edgeNum)];
-////			dir = this.verts[ edge.v[ INTSIGNBITSET(edgeNum) ] ] - this.verts[ edge.v[ INTSIGNBITNOTSET(edgeNum) ] ];
-////			if ( dir.Normalize() < 2.0 * m ) {
-////				continue;
-////			}
-////			dir *= m;
-////			this.verts[ edge.v[ 0 ] ] -= dir;
-////			this.verts[ edge.v[ 1 ] ] += dir;
-////		}
-////		return;
-////	}
-////
-////	for ( i = 0; i < numPolys; i++ ) {
-////		this.polys[i].dist -= m;
-////
-////		for ( j = 0; j < this.polys[i].numEdges; j++ ) {
-////			edgeNum = this.polys[i].edges[j];
-////			edge = &edges[abs(edgeNum)];
-////			this.verts[ edge.v[ INTSIGNBITSET(edgeNum) ] ] -= this.polys[i].normal * m;
-////		}
-////	}
-////}
+
+/*
+============
+idTraceModel::Shrink
+============
+*/
+	Shrink ( /*float */m: number ): void {
+		todoThrow ( );
+		//int i, j, edgeNum;
+		//traceModelEdge_t *edge;
+		//idVec3 dir;
+
+		//if ( this.type == traceModel_t.TRM_POLYGON ) {
+		//	for ( i = 0; i < this.numEdges; i++ ) {
+		//		edgeNum = this.polys[0].edges[i];
+		//		edge = &edges[abs(edgeNum)];
+		//		dir = this.verts[ edge.v[ INTSIGNBITSET(edgeNum) ] ] - this.verts[ edge.v[ INTSIGNBITNOTSET(edgeNum) ] ];
+		//		if ( dir.Normalize() < 2.0 * m ) {
+		//			continue;
+		//		}
+		//		dir *= m;
+		//		this.verts[ edge.v[ 0 ] ] -= dir;
+		//		this.verts[ edge.v[ 1 ] ] += dir;
+		//	}
+		//	return;
+		//}
+
+		//for ( i = 0; i < numPolys; i++ ) {
+		//	this.polys[i].dist -= m;
+
+		//	for ( j = 0; j < this.polys[i].numEdges; j++ ) {
+		//		edgeNum = this.polys[i].edges[j];
+		//		edge = &edges[abs(edgeNum)];
+		//		this.verts[ edge.v[ INTSIGNBITSET(edgeNum) ] ] -= this.polys[i].normal * m;
+		//	}
+		//}
+	}
 ////
 /////*
 ////============

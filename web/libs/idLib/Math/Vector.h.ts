@@ -1926,15 +1926,19 @@ class idVec6 {
 ////ID_INLINE idVec6::idVec6( const float *a ) {
 ////	memcpy( this.p, a, 6 * sizeof( float ) );
 ////}
-
-////ID_INLINE idVec6::idVec6( const float a1, const float a2, const float a3, const float a4, const float a5, const float a6 ) {
-////	this.p[0] = a1;
-////	this.p[1] = a2;
-////	this.p[2] = a3;
-////	this.p[3] = a4;
-////	this.p[4] = a5;
-////	this.p[5] = a6;
-////}
+	constructor ( )
+	constructor ( /*float*/ a1: number, /*float*/ a2: number, /*float*/ a3: number, /*float*/ a4: number, /*float*/ a5: number, /*float*/ a6: number )
+	constructor ( /*float*/ a1?: number, /*float*/ a2?: number, /*float*/ a3?: number, /*float*/ a4?: number, /*float*/ a5?: number, /*float*/ a6?: number ) {
+		if ( arguments.length === 0 ) {
+			return;
+		}
+		this.p[0] = a1;
+		this.p[1] = a2;
+		this.p[2] = a3;
+		this.p[3] = a4;
+		this.p[4] = a5;
+		this.p[5] = a6;
+	}
 
 ////ID_INLINE idVec6 idVec6::operator-() const {
 ////	return idVec6( -this.p[0], -this.p[1], -this.p[2], -this.p[3], -this.p[4], -this.p[5] );
@@ -2753,8 +2757,8 @@ var vec2_origin = new idVec2( 0.0, 0.0 );
 var vec3_origin = new idVec3( 0.0, 0.0, 0.0 );
 var vec4_origin = new idVec4(0.0, 0.0, 0.0, 0.0);
 var vec5_origin = new idVec5(0.0, 0.0, 0.0, 0.0, 0.0);
-//var vec6_origin = new idVec6( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 );
-//var vec6_infinity = new idVec6( idMath.INFINITY, idMath.INFINITY, idMath.INFINITY, idMath.INFINITY, idMath.INFINITY, idMath.INFINITY );
+var vec6_origin = new idVec6( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 );
+var vec6_infinity = new idVec6( idMath.INFINITY, idMath.INFINITY, idMath.INFINITY, idMath.INFINITY, idMath.INFINITY, idMath.INFINITY );
 
 
 
@@ -2762,4 +2766,4 @@ var vec2_zero = vec2_origin;
 var vec3_zero = vec3_origin;
 var vec4_zero = vec4_origin;
 var vec5_zero = vec5_origin;
-//var vec6_zero = vec6_origin;
+var vec6_zero = vec6_origin;

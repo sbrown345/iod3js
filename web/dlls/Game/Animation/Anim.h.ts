@@ -4912,25 +4912,25 @@ idAnimator::ClearForceUpdate
 		this.forceUpdate = false;
 	}
 
-///*
-//=====================
-//idAnimator::GetJointTransform>	gamex86.dll!idAnimator::ForceUpdate()  Line 4268	C++
-//
-//=====================
-//*/
-//bool idAnimator::GetJointTransform( jointHandle_t jointHandle, currentTime/*int*/:number, idVec3 &offset, idMat3 &axis ) {
-//	if ( !this.modelDef || ( jointHandle < 0 ) || ( jointHandle >= this.modelDef.NumJoints() ) ) {
-//		return false;
-//	}
-//
-//	CreateFrame( currentTime, false );
-//
-//	offset = this.joints[ jointHandle ].ToVec3();
-//	axis = this.joints[ jointHandle ].ToMat3();
-//
-//	return true;
-//}
-//
+/*
+=====================
+idAnimator::GetJointTransform>	gamex86.dll!idAnimator::ForceUpdate()  Line 4268	C++
+
+=====================
+*/
+	GetJointTransform ( jointHandle: jointHandle_t, currentTime /*int*/: number, offset: idVec3, axis: idMat3 ): boolean {
+		if ( !this.modelDef || ( jointHandle < 0 ) || ( jointHandle >= this.modelDef.NumJoints ( ) ) ) {
+			return false;
+		}
+
+		this.CreateFrame( currentTime, false );
+
+		offset.opEquals( this.joints[jointHandle].ToVec3 ( ) );
+		axis.opEquals( this.joints[jointHandle].ToMat3 ( ) );
+
+		return true;
+	}
+
 ///*
 //=====================
 //idAnimator::GetJointLocalTransform
@@ -4948,7 +4948,7 @@ idAnimator::ClearForceUpdate
 //	}
 //
 //	// FIXME: overkill
-//	CreateFrame( currentTime, false );
+//	this.CreateFrame( currentTime, false );
 //
 //	if ( jointHandle > 0 ) {
 //		idJointMat m = this.joints[ jointHandle ];

@@ -510,13 +510,13 @@ static absBounds = new idBounds;
 ////	return false;
 ////}
 ////
-/////*
-////================
-////idPhysics_StaticMulti::UpdateTime
-////================
-////*/
-////void idPhysics_StaticMulti::UpdateTime( int endTimeMSec ) {
-////}
+/*
+================
+idPhysics_StaticMulti::UpdateTime
+================
+*/
+	UpdateTime( /*int*/ endTimeMSec: number): void {
+	}
 ////
 /////*
 ////================
@@ -1054,12 +1054,13 @@ idPhysics_StaticMulti::ClearContacts
 ////	return vec3_origin;
 ////}
 ////
-/////*
-////================
-////idPhysics_StaticMulti::SetMaster
-////================
-////*/
-////void idPhysics_StaticMulti::SetMaster( idEntity *master, const bool orientated ) {
+/*
+================
+idPhysics_StaticMulti::SetMaster
+================
+*/
+	SetMaster ( master: idEntity, orientated: boolean = true ) {
+		todoThrow ( );
 ////	var/*int*/i:number;
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
@@ -1084,7 +1085,7 @@ idPhysics_StaticMulti::ClearContacts
 ////			this.hasMaster = false;
 ////		}
 ////	}
-////}
+	}
 ////
 /////*
 ////================

@@ -1926,14 +1926,14 @@ idPhysics_Player::idPhysics_Player
 ////
 ////	return true; //( this.current.origin != oldOrigin );
 ////}
-////
-/////*
-////================
-////idPhysics_Player::UpdateTime
-////================
-////*/
-////void idPhysics_Player::UpdateTime( int endTimeMSec ) {
-////}
+
+/*
+================
+idPhysics_Player::UpdateTime
+================
+*/
+	UpdateTime( /*int*/ endTimeMSec: number): void {
+	}
 ////
 /////*
 ////================
@@ -2138,14 +2138,15 @@ idPhysics_Player::Translate
 ////	this.current.pushVelocity.Zero();
 ////}
 ////
-/////*
-////================
-////idPhysics_Player::SetMaster
-////
-////  the binding is never orientated
-////================
-////*/
-////void idPhysics_Player::SetMaster( idEntity *master, const bool orientated ) {
+/*
+================
+idPhysics_Player::SetMaster
+
+  the binding is never orientated
+================
+*/
+	SetMaster ( master: idEntity, orientated: boolean = true ) {
+		todoThrow ( );
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////
@@ -2164,7 +2165,7 @@ idPhysics_Player::Translate
 ////			this.masterEntity = NULL;
 ////		}
 ////	}
-////}
+	}
 ////
 ////const float	PLAYER_VELOCITY_MAX				= 4000;
 ////const int	PLAYER_VELOCITY_TOTAL_BITS		= 16;

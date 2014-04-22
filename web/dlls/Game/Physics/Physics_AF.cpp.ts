@@ -56,22 +56,22 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////END_CLASS
 ////
 ////const float ERROR_REDUCTION					= 0.5f;
-////const float ERROR_REDUCTION_MAX				= 256.0f;
+////const float ERROR_REDUCTION_MAX				= 256.0;
 ////const float LIMIT_ERROR_REDUCTION			= 0.3f;
 ////const float LCP_EPSILON						= 1e-7f;
 ////const float LIMIT_LCP_EPSILON				= 1e-4f;
 ////const float CONTACT_LCP_EPSILON				= 1e-6f;
 ////const float CENTER_OF_MASS_EPSILON			= 1e-4f;
-////const float NO_MOVE_TIME					= 1.0f;
-////const float NO_MOVE_TRANSLATION_TOLERANCE	= 10.0f;
-////const float NO_MOVE_ROTATION_TOLERANCE		= 10.0f;
-////const float MIN_MOVE_TIME					= -1.0f;
-////const float MAX_MOVE_TIME					= -1.0f;
-////const float IMPULSE_THRESHOLD				= 500.0f;
-////const float SUSPEND_LINEAR_VELOCITY			= 10.0f;
-////const float SUSPEND_ANGULAR_VELOCITY		= 15.0f;
-////const float SUSPEND_LINEAR_ACCELERATION		= 20.0f;
-////const float SUSPEND_ANGULAR_ACCELERATION	= 30.0f;
+////const float NO_MOVE_TIME					= 1.0;
+////const float NO_MOVE_TRANSLATION_TOLERANCE	= 10.0;
+////const float NO_MOVE_ROTATION_TOLERANCE		= 10.0;
+////const float MIN_MOVE_TIME					= -1.0;
+////const float MAX_MOVE_TIME					= -1.0;
+////const float IMPULSE_THRESHOLD				= 500.0;
+////const float SUSPEND_LINEAR_VELOCITY			= 10.0;
+////const float SUSPEND_ANGULAR_VELOCITY		= 15.0;
+////const float SUSPEND_LINEAR_ACCELERATION		= 20.0;
+////const float SUSPEND_ANGULAR_ACCELERATION	= 30.0;
 ////const idVec6 vec6_lcp_epsilon				= idVec6( LCP_EPSILON, LCP_EPSILON, LCP_EPSILON,
 ////													 LCP_EPSILON, LCP_EPSILON, LCP_EPSILON );
 ////
@@ -305,7 +305,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	InitSize( 3 );
 ////	coneLimit = NULL;
 ////	pyramidLimit = NULL;
-////	friction = 0.0f;
+////	friction = 0.0;
 ////	fc = NULL;
 ////	fl.allowPrimary = true;
 ////	fl.noCollision = true;
@@ -446,7 +446,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////float idAFConstraint_BallAndSocketJoint::GetFriction( ) const {
-////	if ( af_forceFriction.GetFloat() > 0.0f ) {
+////	if ( af_forceFriction.GetFloat() > 0.0 ) {
 ////		return af_forceFriction.GetFloat();
 ////	}
 ////	return friction * physics.GetJointFrictionScale();
@@ -503,7 +503,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	currentFriction = GetFriction();
 ////
-////	if ( currentFriction <= 0.0f ) {
+////	if ( currentFriction <= 0.0 ) {
 ////		return;
 ////	}
 ////
@@ -704,7 +704,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	physics = phys;
 ////
 ////	f = joint.GetFriction() * joint.GetMultiplier().Length();
-////	if ( f == 0.0f ) {
+////	if ( f == 0.0 ) {
 ////		return false;
 ////	}
 ////
@@ -712,12 +712,12 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	hi[0] = hi[1] = hi[2] = f;
 ////
 ////	J1.Zero( 3, 6 );
-////	J1[0][3] = J1[1][4] = J1[2][5] = 1.0f;
+////	J1[0][3] = J1[1][4] = J1[2][5] = 1.0;
 ////
 ////	if ( body2 ) {
 ////
 ////		J2.Zero( 3, 6 );
-////		J2[0][3] = J2[1][4] = J2[2][5] = 1.0f;
+////		J2[0][3] = J2[1][4] = J2[2][5] = 1.0;
 ////	}
 ////
 ////	physics.AddFrameConstraint( this );
@@ -762,7 +762,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	InitSize( 4 );
 ////	coneLimit = NULL;
 ////	pyramidLimit = NULL;
-////	friction = 0.0f;
+////	friction = 0.0;
 ////	fc = NULL;
 ////	fl.allowPrimary = true;
 ////	fl.noCollision = true;
@@ -833,14 +833,14 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	shaft1 = cardanShaft1;
 ////	l = shaft1.Normalize();
-////	assert( l != 0.0f );
+////	assert( l != 0.0 );
 ////	shaft2 = cardanShaft2;
 ////	l = shaft2.Normalize();
-////	assert( l != 0.0f );
+////	assert( l != 0.0 );
 ////
 ////	// the cardan axis is a vector orthogonal to both cardan shafts
 ////	cardanAxis = shaft1.Cross( shaft2 );
-////	if ( cardanAxis.Normalize() == 0.0f ) {
+////	if ( cardanAxis.Normalize() == 0.0 ) {
 ////		idVec3 vecY;
 ////		shaft1.OrthogonalBasis( cardanAxis, vecY );
 ////		cardanAxis.Normalize();
@@ -946,7 +946,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////float idAFConstraint_UniversalJoint::GetFriction( ) const {
-////	if ( af_forceFriction.GetFloat() > 0.0f ) {
+////	if ( af_forceFriction.GetFloat() > 0.0 ) {
 ////		return af_forceFriction.GetFloat();
 ////	}
 ////	return friction * physics.GetJointFrictionScale();
@@ -984,15 +984,15 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	J1.Set(	mat3_identity,	-SkewSymmetric( a1 ),
 ////				mat3_zero,		idMat3( s1[0], s1[1], s1[2],
-////										0.0f, 0.0f, 0.0f,
-////										0.0f, 0.0f, 0.0f ) );
+////										0.0, 0.0, 0.0,
+////										0.0, 0.0, 0.0 ) );
 ////	J1.SetSize( 4, 6 );
 ////
 ////	if ( body2 ) {
 ////		J2.Set(	-mat3_identity,	SkewSymmetric( a2 ),
 ////					mat3_zero,		idMat3( s2[0], s2[1], s2[2],
-////											0.0f, 0.0f, 0.0f,
-////											0.0f, 0.0f, 0.0f ) );
+////											0.0, 0.0, 0.0,
+////											0.0, 0.0, 0.0 ) );
 ////		J2.SetSize( 4, 6 );
 ////	}
 ////	else {
@@ -1000,7 +1000,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	}
 ////
 ////	v = s1.Cross( s2 );
-////	if ( v.Normalize() != 0.0f ) {
+////	if ( v.Normalize() != 0.0 ) {
 ////		idMat3 m1, m2;
 ////
 ////		m1[0] = s1;
@@ -1037,7 +1037,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	currentFriction = GetFriction();
 ////
-////	if ( currentFriction <= 0.0f ) {
+////	if ( currentFriction <= 0.0 ) {
 ////		return;
 ////	}
 ////
@@ -1149,7 +1149,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	}
 ////
 ////	v = s1.Cross( s2 );
-////	if ( v.Normalize() != 0.0f ) {
+////	if ( v.Normalize() != 0.0 ) {
 ////		idMat3 m1, m2;
 ////
 ////		m1[0] = s1;
@@ -1163,10 +1163,10 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////		d2 *= m2.Transpose() * m1;
 ////	}
 ////
-////	gameRenderWorld.DebugArrow( colorCyan, a1, a1 + s1 * 5.0f, 1.0f );
-////	gameRenderWorld.DebugArrow( colorBlue, a2, a2 + s2 * 5.0f, 1.0f );
-////	gameRenderWorld.DebugLine( colorGreen, a1, a1 + d1 * 5.0f );
-////	gameRenderWorld.DebugLine( colorGreen, a2, a2 + d2 * 5.0f );
+////	gameRenderWorld.DebugArrow( colorCyan, a1, a1 + s1 * 5.0, 1.0 );
+////	gameRenderWorld.DebugArrow( colorBlue, a2, a2 + s2 * 5.0, 1.0 );
+////	gameRenderWorld.DebugLine( colorGreen, a1, a1 + d1 * 5.0 );
+////	gameRenderWorld.DebugLine( colorGreen, a2, a2 + d2 * 5.0 );
 ////
 ////	if ( af_showLimits.GetBool() ) {
 ////		if ( coneLimit ) {
@@ -1284,7 +1284,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	physics = phys;
 ////
 ////	f = joint.GetFriction() * joint.GetMultiplier().Length();
-////	if ( f == 0.0f ) {
+////	if ( f == 0.0 ) {
 ////		return false;
 ////	}
 ////
@@ -1414,7 +1414,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	InitSize( 5 );
 ////	coneLimit = NULL;
 ////	steering = NULL;
-////	friction = 0.0f;
+////	friction = 0.0;
 ////	fc = NULL;
 ////	fl.allowPrimary = true;
 ////	fl.noCollision = true;
@@ -1555,7 +1555,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////float idAFConstraint_Hinge::GetFriction( ) const {
-////	if ( af_forceFriction.GetFloat() > 0.0f ) {
+////	if ( af_forceFriction.GetFloat() > 0.0 ) {
 ////		return af_forceFriction.GetFloat();
 ////	}
 ////	return friction * physics.GetJointFrictionScale();
@@ -1574,7 +1574,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	axis = body1.GetWorldAxis() * body2.GetWorldAxis().Transpose() * initialAxis.Transpose();
 ////	rotation = axis.ToRotation();
 ////	angle = rotation.GetAngle();
-////	if ( rotation.GetVec() * axis1 < 0.0f ) {
+////	if ( rotation.GetVec() * axis1 < 0.0 ) {
 ////		return -angle;
 ////	}
 ////	return angle;
@@ -1640,14 +1640,14 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	J1.Set(	mat3_identity,	-SkewSymmetric( a1 ),
 ////				mat3_zero,		idMat3(	vecX[0], vecX[1], vecX[2],
 ////										vecY[0], vecY[1], vecY[2],
-////										0.0f, 0.0f, 0.0f ) );
+////										0.0, 0.0, 0.0 ) );
 ////	J1.SetSize( 5, 6 );
 ////
 ////	if ( body2 ) {
 ////		J2.Set(	-mat3_identity,	SkewSymmetric( a2 ),
 ////					mat3_zero,		idMat3(	-vecX[0], -vecX[1], -vecX[2],
 ////											-vecY[0], -vecY[1], -vecY[2],
-////											0.0f, 0.0f, 0.0f ) );
+////											0.0, 0.0, 0.0 ) );
 ////		J2.SetSize( 5, 6 );
 ////	}
 ////	else {
@@ -1680,7 +1680,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	currentFriction = GetFriction();
 ////
-////	if ( currentFriction <= 0.0f ) {
+////	if ( currentFriction <= 0.0 ) {
 ////		return;
 ////	}
 ////
@@ -1769,9 +1769,9 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	idVec3 x1 = axis1 * body1.GetWorldAxis();
 ////	x1.OrthogonalBasis( vecX, vecY );
 ////
-////	gameRenderWorld.DebugArrow( colorBlue, a1 - 4.0f * x1, a1 + 4.0f * x1, 1 );
-////	gameRenderWorld.DebugLine( colorBlue, a1 - 2.0f * vecX, a1 + 2.0f * vecX );
-////	gameRenderWorld.DebugLine( colorBlue, a1 - 2.0f * vecY, a1 + 2.0f * vecY );
+////	gameRenderWorld.DebugArrow( colorBlue, a1 - 4.0 * x1, a1 + 4.0 * x1, 1 );
+////	gameRenderWorld.DebugLine( colorBlue, a1 - 2.0 * vecX, a1 + 2.0 * vecX );
+////	gameRenderWorld.DebugLine( colorBlue, a1 - 2.0 * vecY, a1 + 2.0 * vecY );
 ////
 ////	if ( af_showLimits.GetBool() ) {
 ////		if ( coneLimit ) {
@@ -1916,7 +1916,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	physics = phys;
 ////
 ////	f = hinge.GetFriction() * hinge.GetMultiplier().Length();
-////	if ( f == 0.0f ) {
+////	if ( f == 0.0 ) {
 ////		return false;
 ////	}
 ////
@@ -1979,7 +1979,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	hinge = NULL;
 ////	fl.allowPrimary = false;
 ////	fl.frameConstraint = true;
-////	steerSpeed = 0.0f;
+////	steerSpeed = 0.0;
 ////	epsilon = LCP_EPSILON;
 ////}
 ////
@@ -2063,7 +2063,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	}
 ////
 ////	speed = steerAngle - angle;
-////	if ( steerSpeed != 0.0f ) {
+////	if ( steerSpeed != 0.0 ) {
 ////		if ( speed > steerSpeed ) {
 ////			speed = steerSpeed;
 ////		}
@@ -2475,9 +2475,9 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////		normal = planeNormal;
 ////	}
 ////	normal.NormalVectors( right, up );
-////	normal *= 4.0f;
-////	right *= 4.0f;
-////	up *= 4.0f;
+////	normal *= 4.0;
+////	right *= 4.0;
+////	up *= 4.0;
 ////
 ////	gameRenderWorld.DebugLine( colorCyan, a1 - right, a1 + right );
 ////	gameRenderWorld.DebugLine( colorCyan, a1 - up, a1 + up );
@@ -2528,8 +2528,8 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	this.body2 = body2;
 ////	InitSize( 1 );
 ////	fl.allowPrimary = false;
-////	kstretch = kcompress = damping = 1.0f;
-////	minLength = maxLength = restLength = 0.0f;
+////	kstretch = kcompress = damping = 1.0;
+////	minLength = maxLength = restLength = 0.0;
 ////}
 ////
 /////*
@@ -2555,7 +2555,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idAFConstraint_Spring::SetSpring( const float stretch, const float compress, const float damping, const float restLength ) {
-////	assert( stretch >= 0.0f && compress >= 0.0f && restLength >= 0.0f );
+////	assert( stretch >= 0.0 && compress >= 0.0 && restLength >= 0.0 );
 ////	this.kstretch = stretch;
 ////	this.kcompress = compress;
 ////	this.damping = damping;
@@ -2568,7 +2568,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////================
 ////*/
 ////void idAFConstraint_Spring::SetLimit( const float minLength, const float maxLength ) {
-////	assert( minLength >= 0.0f && maxLength >= 0.0f && maxLength >= minLength );
+////	assert( minLength >= 0.0 && maxLength >= 0.0 && maxLength >= minLength );
 ////	this.minLength = minLength;
 ////	this.maxLength = maxLength;
 ////}
@@ -2601,16 +2601,16 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	force = a2 - a1;
 ////	d = force * force;
-////	if ( d != 0.0f ) {
+////	if ( d != 0.0 ) {
 ////		dampingForce = damping * idMath::Fabs( (velocity2 - velocity1) * force ) / d;
 ////	}
 ////	else {
-////		dampingForce = 0.0f;
+////		dampingForce = 0.0;
 ////	}
 ////	length = force.Normalize();
 ////
 ////	if ( length > restLength ) {
-////		if ( kstretch > 0.0f ) {
+////		if ( kstretch > 0.0 ) {
 ////			idVec3 springForce = force * ( Square( length - restLength ) * kstretch - dampingForce );
 ////			body1.AddForce( a1, springForce );
 ////			if ( master ) {
@@ -2619,7 +2619,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////		}
 ////	}
 ////	else {
-////		if ( kcompress > 0.0f ) {
+////		if ( kcompress > 0.0 ) {
 ////			idVec3 springForce = force * -( Square( restLength - length ) * kcompress - dampingForce );
 ////			body1.AddForce( a1, springForce );
 ////			if ( master ) {
@@ -2634,12 +2634,12 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////		error = minLength - length;
 ////		limit = true;
 ////	}
-////	else if ( maxLength > 0.0f && length > maxLength ) {
+////	else if ( maxLength > 0.0 && length > maxLength ) {
 ////		error = length - maxLength;
 ////		limit = true;
 ////	}
 ////	else {
-////		error = 0.0f;
+////		error = 0.0;
 ////		limit = false;
 ////	}
 ////
@@ -2655,7 +2655,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////			J2.Set( 1, 6, v2.ToFloatPtr() );
 ////		}
 ////		c1[0] = -( invTimeStep * ERROR_REDUCTION ) * error;
-////		lo[0] = 0.0f;
+////		lo[0] = 0.0;
 ////	}
 ////	else {
 ////		J1.Zero( 0, 0 );
@@ -2743,23 +2743,23 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	// draw rest length
 ////	p = restLength * 0.5f * dir;
-////	gameRenderWorld.DebugCircle( colorWhite, mid + p, dir, 1.0f, 10 );
-////	gameRenderWorld.DebugCircle( colorWhite, mid - p, dir, 1.0f, 10 );
+////	gameRenderWorld.DebugCircle( colorWhite, mid + p, dir, 1.0, 10 );
+////	gameRenderWorld.DebugCircle( colorWhite, mid - p, dir, 1.0, 10 );
 ////	if ( restLength > length ) {
 ////		gameRenderWorld.DebugLine( colorWhite, a2, mid + p );
 ////		gameRenderWorld.DebugLine( colorWhite, a1, mid - p );
 ////	}
 ////
-////	if ( minLength > 0.0f ) {
+////	if ( minLength > 0.0 ) {
 ////		// draw min length
-////		gameRenderWorld.DebugCircle( colorBlue, mid + minLength * 0.5f * dir, dir, 2.0f, 10 );
-////		gameRenderWorld.DebugCircle( colorBlue, mid - minLength * 0.5f * dir, dir, 2.0f, 10 );
+////		gameRenderWorld.DebugCircle( colorBlue, mid + minLength * 0.5f * dir, dir, 2.0, 10 );
+////		gameRenderWorld.DebugCircle( colorBlue, mid - minLength * 0.5f * dir, dir, 2.0, 10 );
 ////	}
 ////
-////	if ( maxLength > 0.0f ) {
+////	if ( maxLength > 0.0 ) {
 ////		// draw max length
-////		gameRenderWorld.DebugCircle( colorRed, mid + maxLength * 0.5f * dir, dir, 2.0f, 10 );
-////		gameRenderWorld.DebugCircle( colorRed, mid - maxLength * 0.5f * dir, dir, 2.0f, 10 );
+////		gameRenderWorld.DebugCircle( colorRed, mid + maxLength * 0.5f * dir, dir, 2.0, 10 );
+////		gameRenderWorld.DebugCircle( colorRed, mid - maxLength * 0.5f * dir, dir, 2.0, 10 );
 ////	}
 ////}
 ////
@@ -2838,7 +2838,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	idVec3 p;
 ////	idVec6 v;
 ////	float vel;
-////	float minBounceVelocity = 2.0f;
+////	float minBounceVelocity = 2.0;
 ////
 ////	assert( b1 );
 ////
@@ -2858,17 +2858,17 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////		v.SubVec3(1) = p.Cross( -c.normal );
 ////		J2.Set( 1, 6, v.ToFloatPtr() );
 ////		vel += v.SubVec3(0) * body2.GetLinearVelocity() + v.SubVec3(1) * body2.GetAngularVelocity();
-////		c2[0] = 0.0f;
+////		c2[0] = 0.0;
 ////	}
 ////
-////	if ( body1.GetBouncyness() > 0.0f && -vel > minBounceVelocity ) {
+////	if ( body1.GetBouncyness() > 0.0 && -vel > minBounceVelocity ) {
 ////		c1[0] = body1.GetBouncyness() * vel;
 ////	} else {
-////		c1[0] = 0.0f;
+////		c1[0] = 0.0;
 ////	}
 ////
 ////	e[0] = CONTACT_LCP_EPSILON;
-////	lo[0] = 0.0f;
+////	lo[0] = 0.0;
 ////	hi[0] = idMath::INFINITY;
 ////	boxConstraint = NULL;
 ////	boxIndex[0] = -1;
@@ -2900,7 +2900,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	friction *= physics.GetContactFrictionScale();
 ////
-////	if ( friction <= 0.0f ) {
+////	if ( friction <= 0.0 ) {
 ////		return;
 ////	}
 ////
@@ -2975,9 +2975,9 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////void idAFConstraint_Contact::DebugDraw( ) {
 ////	idVec3 x, y;
 ////	contact.normal.NormalVectors( x, y );
-////	gameRenderWorld.DebugLine( colorWhite, contact.point, contact.point + 6.0f * contact.normal );
-////	gameRenderWorld.DebugLine( colorWhite, contact.point - 2.0f * x, contact.point + 2.0f * x );
-////	gameRenderWorld.DebugLine( colorWhite, contact.point - 2.0f * y, contact.point + 2.0f * y );
+////	gameRenderWorld.DebugLine( colorWhite, contact.point, contact.point + 6.0 * contact.normal );
+////	gameRenderWorld.DebugLine( colorWhite, contact.point - 2.0 * x, contact.point + 2.0 * x );
+////	gameRenderWorld.DebugLine( colorWhite, contact.point - 2.0 * y, contact.point + 2.0 * y );
 ////}
 ////
 ////
@@ -3056,7 +3056,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////		J1.SubVec6(0).SubVec3(0) = dir1;
 ////		J1.SubVec6(0).SubVec3(1) = r.Cross( dir1 );
 ////		c1.SetSize( 1 );
-////		c1[0] = 0.0f;
+////		c1[0] = 0.0;
 ////
 ////		if ( body2 ) {
 ////			r = cc.GetContact().point - body2.GetWorldOrigin();
@@ -3065,7 +3065,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////			J2.SubVec6(0).SubVec3(0) = -dir1;
 ////			J2.SubVec6(0).SubVec3(1) = r.Cross( -dir1 );
 ////			c2.SetSize( 1 );
-////			c2[0] = 0.0f;
+////			c2[0] = 0.0;
 ////		}
 ////
 ////		lo[0] = -friction;
@@ -3085,7 +3085,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////		J1.SubVec6(1).SubVec3(0) = dir2;
 ////		J1.SubVec6(1).SubVec3(1) = r.Cross( dir2 );
 ////		c1.SetSize( 2 );
-////		c1[0] = c1[1] = 0.0f;
+////		c1[0] = c1[1] = 0.0;
 ////
 ////		if ( body2 ) {
 ////			r = cc.GetContact().point - body2.GetWorldOrigin();
@@ -3096,7 +3096,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////			J2.SubVec6(1).SubVec3(0) = -dir2;
 ////			J2.SubVec6(1).SubVec3(1) = r.Cross( -dir2 );
 ////			c2.SetSize( 2 );
-////			c2[0] = c2[1] = 0.0f;
+////			c2[0] = c2[1] = 0.0;
 ////
 ////			if ( body2.GetContactFriction() < friction ) {
 ////				friction = body2.GetContactFriction();
@@ -3112,7 +3112,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////		boxIndex[1] = 0;
 ////	}
 ////
-////	if ( body1.GetContactMotorDirection( dir1 ) && body1.GetContactMotorForce() > 0.0f ) {
+////	if ( body1.GetContactMotorDirection( dir1 ) && body1.GetContactMotorForce() > 0.0 ) {
 ////		// project the motor force direction into the contact plane
 ////		dir1 -= dir1 * cc.GetContact().normal * dir1;
 ////		dir1.Normalize();
@@ -3133,7 +3133,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////			J2.SubVec6(newRow).SubVec3(0) = -dir1;
 ////			J2.SubVec6(newRow).SubVec3(1) = r.Cross( -dir1 );
 ////			c2.ChangeSize( newRow+1 );
-////			c2[newRow] = 0.0f;
+////			c2[newRow] = 0.0;
 ////		}
 ////
 ////		lo[newRow] = -body1.GetContactMotorForce();
@@ -3299,26 +3299,26 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	normal = coneVector.Cross( ax ).Cross( coneVector );
 ////	normal.Normalize();
 ////
-////	p1 = anchor + 32.0f * coneVector - body1.GetWorldOrigin();
+////	p1 = anchor + 32.0 * coneVector - body1.GetWorldOrigin();
 ////
 ////	J1row.SubVec3(0) = normal;
 ////	J1row.SubVec3(1) = p1.Cross( normal );
 ////	J1.Set( 1, 6, J1row.ToFloatPtr() );
 ////
-////	c1[0] = (invTimeStep * LIMIT_ERROR_REDUCTION) * ( normal * (32.0f * body1ax) );
+////	c1[0] = (invTimeStep * LIMIT_ERROR_REDUCTION) * ( normal * (32.0 * body1ax) );
 ////
 ////	if ( body2 ) {
 ////
-////		p2 = anchor + 32.0f * coneVector - master.GetWorldOrigin();
+////		p2 = anchor + 32.0 * coneVector - master.GetWorldOrigin();
 ////
 ////		J2row.SubVec3(0) = -normal;
 ////		J2row.SubVec3(1) = p2.Cross( -normal );
 ////		J2.Set( 1, 6, J2row.ToFloatPtr() );
 ////
-////		c2[0] = 0.0f;
+////		c2[0] = 0.0;
 ////	}
 ////
-////	lo[0] = 0.0f;
+////	lo[0] = 0.0;
 ////	e[0] = LIMIT_LCP_EPSILON;
 ////
 ////	physics.AddFrameConstraint( this );
@@ -3356,7 +3356,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////*/
 ////void idAFConstraint_ConeLimit::DebugDraw( ) {
 ////	idVec3 ax, anchor, x, y, z, start, end;
-////	float sinAngle, a, size = 10.0f;
+////	float sinAngle, a, size = 10.0;
 ////	idAFBody *master;
 ////
 ////	master = body2 ? body2 : physics.GetMasterBody();
@@ -3375,13 +3375,13 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	// draw cone
 ////	ax.NormalVectors( x, y );
-////	sinAngle = idMath::Sqrt( 1.0f - cosAngle * cosAngle );
+////	sinAngle = idMath::Sqrt( 1.0 - cosAngle * cosAngle );
 ////	x *= size * sinAngle;
 ////	y *= size * sinAngle;
 ////	z = anchor + ax * size * cosAngle;
 ////	start = x + z;
-////	for ( a = 0.0f; a < 360.0f; a += 45.0f ) {
-////		end = x * (float) cos( DEG2RAD(a + 45.0f) ) + y * (float) sin( DEG2RAD(a + 45.0f) ) + z;
+////	for ( a = 0.0; a < 360.0; a += 45.0 ) {
+////		end = x * (float) cos( DEG2RAD(a + 45.0) ) + y * (float) sin( DEG2RAD(a + 45.0) ) + z;
 ////		gameRenderWorld.DebugLine( colorMagenta, anchor, start );
 ////		gameRenderWorld.DebugLine( colorMagenta, start, end );
 ////		start = end;
@@ -3568,26 +3568,26 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	normal = pyramidVector.Cross( worldBase[2] ).Cross( pyramidVector );
 ////	normal.Normalize();
 ////
-////	p1 = anchor + 32.0f * pyramidVector - body1.GetWorldOrigin();
+////	p1 = anchor + 32.0 * pyramidVector - body1.GetWorldOrigin();
 ////
 ////	J1row.SubVec3(0) = normal;
 ////	J1row.SubVec3(1) = p1.Cross( normal );
 ////	J1.Set( 1, 6, J1row.ToFloatPtr() );
 ////
-////	c1[0] = (invTimeStep * LIMIT_ERROR_REDUCTION) * ( normal * (32.0f * body1ax) );
+////	c1[0] = (invTimeStep * LIMIT_ERROR_REDUCTION) * ( normal * (32.0 * body1ax) );
 ////
 ////	if ( body2 ) {
 ////
-////		p2 = anchor + 32.0f * pyramidVector - master.GetWorldOrigin();
+////		p2 = anchor + 32.0 * pyramidVector - master.GetWorldOrigin();
 ////
 ////		J2row.SubVec3(0) = -normal;
 ////		J2row.SubVec3(1) = p2.Cross( -normal );
 ////		J2.Set( 1, 6, J2row.ToFloatPtr() );
 ////
-////		c2[0] = 0.0f;
+////		c2[0] = 0.0;
 ////	}
 ////
-////	lo[0] = 0.0f;
+////	lo[0] = 0.0;
 ////	e[0] = LIMIT_LCP_EPSILON;
 ////
 ////	physics.AddFrameConstraint( this );
@@ -3627,7 +3627,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////*/
 ////void idAFConstraint_PyramidLimit::DebugDraw( ) {
 ////	var/*int*/i:number;
-////	float size = 10.0f;
+////	float size = 10.0;
 ////	idVec3 anchor, dir, p[4];
 ////	idMat3 worldBase, m[2];
 ////	idQuat q;
@@ -3729,15 +3729,15 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	localOrigin.Zero();
 ////	localAxis.Identity();
-////	suspensionUp = 0.0f;
-////	suspensionDown = 0.0f;
-////	suspensionKCompress = 0.0f;
-////	suspensionDamping = 0.0f;
-////	steerAngle = 0.0f;
-////	friction = 2.0f;
+////	suspensionUp = 0.0;
+////	suspensionDown = 0.0;
+////	suspensionKCompress = 0.0;
+////	suspensionDamping = 0.0;
+////	steerAngle = 0.0;
+////	friction = 2.0;
 ////	motorEnabled = false;
-////	motorForce = 0.0f;
-////	motorVelocity = 0.0f;
+////	motorForce = 0.0;
+////	motorVelocity = 0.0;
 ////	wheelModel = NULL;
 ////	memset( &trace, 0, sizeof( trace ) );
 ////	epsilon = LCP_EPSILON;
@@ -3804,7 +3804,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	wheelOffset = ( trace.endpos - body1.GetWorldOrigin() ) * body1.GetWorldAxis().Transpose();
 ////
-////	if ( trace.fraction >= 1.0f ) {
+////	if ( trace.fraction >= 1.0 ) {
 ////		J1.SetSize( 0, 6 );
 ////		if ( body2 ) {
 ////			J2.SetSize( 0, 6 );
@@ -3823,7 +3823,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	suspensionLength = suspensionUp + suspensionDown;
 ////	springDir = trace.endpos - start;
 ////	springLength = trace.fraction * suspensionLength;
-////	dampingForce = suspensionDamping * idMath::Fabs( ( vel2 - vel1 ) * springDir ) / ( 1.0f + springLength * springLength );
+////	dampingForce = suspensionDamping * idMath::Fabs( ( vel2 - vel1 ) * springDir ) / ( 1.0 + springLength * springLength );
 ////	compression = suspensionLength - springLength;
 ////	springForce = compression * compression * suspensionKCompress - dampingForce;
 ////
@@ -3832,7 +3832,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////	J1.SubVec6(0).SubVec3(0) = trace.c.normal;
 ////	J1.SubVec6(0).SubVec3(1) = r.Cross( trace.c.normal );
 ////	c1.SetSize( 2 );
-////	c1[0] = 0.0f;
+////	c1[0] = 0.0;
 ////	velocity = J1.SubVec6(0).SubVec3(0) * body1.GetLinearVelocity() + J1.SubVec6(0).SubVec3(1) * body1.GetAngularVelocity();
 ////
 ////	if ( body2 ) {
@@ -3841,14 +3841,14 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////		J2.SubVec6(0).SubVec3(0) = -trace.c.normal;
 ////		J2.SubVec6(0).SubVec3(1) = r.Cross( -trace.c.normal );
 ////		c2.SetSize( 2 );
-////		c2[0] = 0.0f;
+////		c2[0] = 0.0;
 ////		velocity += J2.SubVec6(0).SubVec3(0) * body2.GetLinearVelocity() + J2.SubVec6(0).SubVec3(1) * body2.GetAngularVelocity();
 ////	}
 ////
 ////	c1[0] = -compression;		// + 0.5f * -velocity;
 ////
 ////	e[0] = 1e-4f;
-////	lo[0] = 0.0f;
+////	lo[0] = 0.0;
 ////	hi[0] = springForce;
 ////	boxConstraint = NULL;
 ////	boxIndex[0] = -1;
@@ -3861,14 +3861,14 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	J1.SubVec6(1).SubVec3(0) = frictionDir;
 ////	J1.SubVec6(1).SubVec3(1) = r.Cross( frictionDir );
-////	c1[1] = 0.0f;
+////	c1[1] = 0.0;
 ////
 ////	if ( body2 ) {
 ////		r = trace.c.point - body2.GetWorldOrigin();
 ////
 ////		J2.SubVec6(1).SubVec3(0) = -frictionDir;
 ////		J2.SubVec6(1).SubVec3(1) = r.Cross( -frictionDir );
-////		c2[1] = 0.0f;
+////		c2[1] = 0.0;
 ////	}
 ////
 ////	lo[1] = -friction * physics.GetContactFrictionScale();
@@ -3898,7 +3898,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////			J2.SubVec6(2).SubVec3(0) = -motorDir;
 ////			J2.SubVec6(2).SubVec3(1) = r.Cross( -motorDir );
 ////			c2.ChangeSize( 3 );
-////			c2[2] = 0.0f;
+////			c2[2] = 0.0;
 ////		}
 ////
 ////		lo[2] = -motorForce;
@@ -3949,357 +3949,22 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////
 ////	axis *= rotation.ToMat3();
 ////
-////	if ( trace.fraction < 1.0f ) {
+////	if ( trace.fraction < 1.0 ) {
 ////		origin = trace.c.point;
 ////
-////		gameRenderWorld.DebugLine( colorWhite, origin, origin + 6.0f * axis[2] );
-////		gameRenderWorld.DebugLine( colorWhite, origin - 4.0f * axis[0], origin + 4.0f * axis[0] );
-////		gameRenderWorld.DebugLine( colorWhite, origin - 2.0f * axis[1], origin + 2.0f * axis[1] );
+////		gameRenderWorld.DebugLine( colorWhite, origin, origin + 6.0 * axis[2] );
+////		gameRenderWorld.DebugLine( colorWhite, origin - 4.0 * axis[0], origin + 4.0 * axis[0] );
+////		gameRenderWorld.DebugLine( colorWhite, origin - 2.0 * axis[1], origin + 2.0 * axis[1] );
 ////	}
 ////}
 ////
-////
-//////===============================================================
-//////
-//////	idAFBody
-//////
-//////===============================================================
-////
-/////*
-////================
-////idAFBody::idAFBody
-////================
-////*/
-////idAFBody::idAFBody( ) {
-////	Init();
-////}
-////
-/////*
-////================
-////idAFBody::idAFBody
-////================
-////*/
-////idAFBody::idAFBody( const idStr &name, idClipModel *clipModel, float density ) {
-////
-////	assert( clipModel );
-////	assert( clipModel.IsTraceModel() );
-////
-////	Init();
-////
-////	this.name = name;
-////	this.clipModel = NULL;
-////
-////	SetClipModel( clipModel );
-////	SetDensity( density );
-////
-////	current.worldOrigin = clipModel.GetOrigin();
-////	current.worldAxis = clipModel.GetAxis();
-////	*next = *current;
-////
-////}
-////
-/////*
-////================
-////idAFBody::~idAFBody
-////================
-////*/
-////idAFBody::~idAFBody( ) {
-////	delete clipModel;
-////}
-////
-/////*
-////================
-////idAFBody::Init
-////================
-////*/
-////void idAFBody::Init( ) {
-////	name						= "noname";
-////	parent						= NULL;
-////	clipModel					= NULL;
-////	primaryConstraint			= NULL;
-////	tree						= NULL;
-////
-////	linearFriction				= -1.0f;
-////	angularFriction				= -1.0f;
-////	contactFriction				= -1.0f;
-////	bouncyness					= -1.0f;
-////	clipMask					= 0;
-////
-////	frictionDir					= vec3_zero;
-////	contactMotorDir				= vec3_zero;
-////	contactMotorVelocity		= 0.0f;
-////	contactMotorForce			= 0.0f;
-////
-////	mass						= 1.0f;
-////	invMass						= 1.0f;
-////	centerOfMass				 .opEquals(  vec3_zero);
-////	inertiaTensor				 .opEquals(  mat3_identity);
-////	inverseInertiaTensor		 .opEquals(  mat3_identity);
-////
-////	current						= &state[0];
-////	next						= &state[1];
-////	current.worldOrigin		= vec3_zero;
-////	current.worldAxis			= mat3_identity;
-////	current.spatialVelocity	= vec6_zero;
-////	current.externalForce		= vec6_zero;
-////	*next						= *current;
-////	saved						= *current;
-////	atRestOrigin				= vec3_zero;
-////	atRestAxis					= mat3_identity;
-////
-////	s.Zero( 6 );
-////	totalForce.Zero( 6 );
-////	auxForce.Zero( 6 );
-////	acceleration.Zero( 6 );
-////
-////	response					= NULL;
-////	responseIndex				= NULL;
-////	numResponses				= 0;
-////	maxAuxiliaryIndex			= 0;
-////	maxSubTreeAuxiliaryIndex	= 0;
-////
-////	memset( &fl, 0, sizeof( fl ) );
-////
-////	fl.selfCollision			= true;
-////	fl.isZero					= true;
-////}
-////
-/////*
-////================
-////idAFBody::SetClipModel
-////================
-////*/
-////void idAFBody::SetClipModel( idClipModel *clipModel ) {
-////	if ( this.clipModel && this.clipModel != clipModel ) {
-////		delete this.clipModel;
-////	}
-////	this.clipModel = clipModel;
-////}
-////
-/////*
-////================
-////idAFBody::SetFriction
-////================
-////*/
-////void idAFBody::SetFriction( float linear, float angular, float contact ) {
-////	if ( linear < 0.0f || linear > 1.0f ||
-////			angular < 0.0f || angular > 1.0f ||
-////				contact < 0.0f ) {
-////		gameLocal.Warning( "idAFBody::SetFriction: friction out of range, linear = %.1f, angular = %.1f, contact = %.1f", linear, angular, contact );
-////		return;
-////	}
-////	linearFriction = linear;
-////	angularFriction = angular;
-////	contactFriction = contact;
-////}
-////
-/////*
-////================
-////idAFBody::SetBouncyness
-////================
-////*/
-////void idAFBody::SetBouncyness( float bounce ) {
-////	if ( bounce < 0.0f || bounce > 1.0f ) {
-////		gameLocal.Warning( "idAFBody::SetBouncyness: bouncyness out of range, bounce = %.1f", bounce );
-////		return;
-////	}
-////	bouncyness = bounce;
-////}
-////
-/////*
-////================
-////idAFBody::SetDensity
-////================
-////*/
-////void idAFBody::SetDensity( float density, const idMat3 &inertiaScale ) {
-////
-////	// get the body mass properties
-////	clipModel.GetMassProperties( density, mass, centerOfMass, inertiaTensor );
-////
-////	// make sure we have a valid mass
-////	if ( mass <= 0.0f || FLOAT_IS_NAN( mass ) ) {
-////		gameLocal.Warning( "idAFBody::SetDensity: invalid mass for body '%s'", name.c_str() );
-////		mass = 1.0f;
-////		centerOfMass.Zero();
-////		inertiaTensor.Identity();
-////	}
-////
-////	// make sure the center of mass is at the body origin
-////	if ( !centerOfMass.Compare( vec3_origin, CENTER_OF_MASS_EPSILON ) ) {
-////		gameLocal.Warning( "idAFBody::SetDentity: center of mass not at origin for body '%s'", name.c_str() );
-////	}
-////	centerOfMass.Zero();
-////
-////	// calculate the inverse mass and inverse inertia tensor
-////	invMass = 1.0 / mass;
-////	if ( inertiaScale != mat3_identity ) {
-////		inertiaTensor *= inertiaScale;
-////	}
-////	if ( inertiaTensor.IsDiagonal( 1e-3f ) ) {
-////		inertiaTensor[0][1] = inertiaTensor[0][2] = 0.0f;
-////		inertiaTensor[1][0] = inertiaTensor[1][2] = 0.0f;
-////		inertiaTensor[2][0] = inertiaTensor[2][1] = 0.0f;
-////		inverseInertiaTensor.Identity();
-////		inverseInertiaTensor[0][0] = 1.0f / inertiaTensor[0][0];
-////		inverseInertiaTensor[1][1] = 1.0f / inertiaTensor[1][1];
-////		inverseInertiaTensor[2][2] = 1.0f / inertiaTensor[2][2];
-////	}
-////	else {
-////		inverseInertiaTensor = inertiaTensor.Inverse();
-////	}
-////}
-////
-/////*
-////================
-////idAFBody::SetFrictionDirection
-////================
-////*/
-////void idAFBody::SetFrictionDirection( const idVec3 &dir ) {
-////	frictionDir = dir * current.worldAxis.Transpose();
-////	fl.useFrictionDir = true;
-////}
-////
-/////*
-////================
-////idAFBody::GetFrictionDirection
-////================
-////*/
-////bool idAFBody::GetFrictionDirection( idVec3 &dir ) const {
-////	if ( fl.useFrictionDir ) {
-////		dir = frictionDir * current.worldAxis;
-////		return true;
-////	}
-////	return false;
-////}
-////
-/////*
-////================
-////idAFBody::SetContactMotorDirection
-////================
-////*/
-////void idAFBody::SetContactMotorDirection( const idVec3 &dir ) {
-////	contactMotorDir = dir * current.worldAxis.Transpose();
-////	fl.useContactMotorDir = true;
-////}
-////
-/////*
-////================
-////idAFBody::GetContactMotorDirection
-////================
-////*/
-////bool idAFBody::GetContactMotorDirection( idVec3 &dir ) const {
-////	if ( fl.useContactMotorDir ) {
-////		dir = contactMotorDir * current.worldAxis;
-////		return true;
-////	}
-////	return false;
-////}
-////
-/////*
-////================
-////idAFBody::GetPointVelocity
-////================
-////*/
-////idVec3 idAFBody::GetPointVelocity( const idVec3 &point ) const {
-////	idVec3 r = point - current.worldOrigin;
-////	return current.spatialVelocity.SubVec3(0) + current.spatialVelocity.SubVec3(1).Cross( r );
-////}
-////
-/////*
-////================
-////idAFBody::AddForce
-////================
-////*/
-////void idAFBody::AddForce( const idVec3 &point, const idVec3 &force ) {
-////	current.externalForce.SubVec3(0) += force;
-////	current.externalForce.SubVec3(1) += (point - current.worldOrigin).Cross( force );
-////}
-////
-/////*
-////================
-////idAFBody::InverseWorldSpatialInertiaMultiply
-////
-////  dst = this.inverseWorldSpatialInertia * v;
-////================
-////*/
-////ID_INLINE void idAFBody::InverseWorldSpatialInertiaMultiply( idVecX &dst, const float *v ) const {
-////	const float *mPtr = inverseWorldSpatialInertia.ToFloatPtr();
-////	const float *vPtr = v;
-////	float *dstPtr = dst.ToFloatPtr();
-////
-////	if ( fl.spatialInertiaSparse ) {
-////		dstPtr[0] = mPtr[0*6+0] * vPtr[0];
-////		dstPtr[1] = mPtr[1*6+1] * vPtr[1];
-////		dstPtr[2] = mPtr[2*6+2] * vPtr[2];
-////		dstPtr[3] = mPtr[3*6+3] * vPtr[3] + mPtr[3*6+4] * vPtr[4] + mPtr[3*6+5] * vPtr[5];
-////		dstPtr[4] = mPtr[4*6+3] * vPtr[3] + mPtr[4*6+4] * vPtr[4] + mPtr[4*6+5] * vPtr[5];
-////		dstPtr[5] = mPtr[5*6+3] * vPtr[3] + mPtr[5*6+4] * vPtr[4] + mPtr[5*6+5] * vPtr[5];
-////	} else {
-////		gameLocal.Warning( "spatial inertia is not sparse for body %s", name.c_str() );
-////	}
-////}
-////
-/////*
-////================
-////idAFBody::Save
-////================
-////*/
-////void idAFBody::Save( idSaveGame *saveFile ) {
-////	saveFile.WriteFloat( linearFriction );
-////	saveFile.WriteFloat( angularFriction );
-////	saveFile.WriteFloat( contactFriction );
-////	saveFile.WriteFloat( bouncyness );
-////	saveFile.WriteInt( clipMask );
-////	saveFile.WriteVec3( frictionDir );
-////	saveFile.WriteVec3( contactMotorDir );
-////	saveFile.WriteFloat( contactMotorVelocity );
-////	saveFile.WriteFloat( contactMotorForce );
-////
-////	saveFile.WriteFloat( mass );
-////	saveFile.WriteFloat( invMass );
-////	saveFile.WriteVec3( centerOfMass );
-////	saveFile.WriteMat3( inertiaTensor );
-////	saveFile.WriteMat3( inverseInertiaTensor );
-////
-////	saveFile.WriteVec3( current.worldOrigin );
-////	saveFile.WriteMat3( current.worldAxis );
-////	saveFile.WriteVec6( current.spatialVelocity );
-////	saveFile.WriteVec6( current.externalForce );
-////	saveFile.WriteVec3( atRestOrigin );
-////	saveFile.WriteMat3( atRestAxis );
-////}
-////
-/////*
-////================
-////idAFBody::Restore
-////================
-////*/
-////void idAFBody::Restore( idRestoreGame *saveFile ) {
-////	saveFile.ReadFloat( linearFriction );
-////	saveFile.ReadFloat( angularFriction );
-////	saveFile.ReadFloat( contactFriction );
-////	saveFile.ReadFloat( bouncyness );
-////	saveFile.ReadInt( clipMask );
-////	saveFile.ReadVec3( frictionDir );
-////	saveFile.ReadVec3( contactMotorDir );
-////	saveFile.ReadFloat( contactMotorVelocity );
-////	saveFile.ReadFloat( contactMotorForce );
-////
-////	saveFile.ReadFloat( mass );
-////	saveFile.ReadFloat( invMass );
-////	saveFile.ReadVec3( centerOfMass );
-////	saveFile.ReadMat3( inertiaTensor );
-////	saveFile.ReadMat3( inverseInertiaTensor );
-////
-////	saveFile.ReadVec3( current.worldOrigin );
-////	saveFile.ReadMat3( current.worldAxis );
-////	saveFile.ReadVec6( current.spatialVelocity );
-////	saveFile.ReadVec6( current.externalForce );
-////	saveFile.ReadVec3( atRestOrigin );
-////	saveFile.ReadMat3( atRestAxis );
-////}
-////
-////
+
+//===============================================================
+//
+//	idAFBody
+//
+//===============================================================
+
 ////
 //////===============================================================
 //////                                                        M
@@ -4562,7 +4227,7 @@ idPhysics_AF.Type = new idTypeInfo("idPhysics_AF", "idPhysics_Base",
 ////		return;
 ////	}
 ////
-////	invStep = 1.0f / timeStep;
+////	invStep = 1.0 / timeStep;
 ////
 ////	// initialize right hand side
 ////	for ( i = 0; i < sortedBodies.Num(); i++ ) {

@@ -1176,13 +1176,13 @@ idPhysics_RigidBody::GetAbsBounds
 ////	return true;
 ////}
 ////
-/////*
-////================
-////idPhysics_RigidBody::UpdateTime
-////================
-////*/
-////void idPhysics_RigidBody::UpdateTime( int endTimeMSec ) {
-////}
+/*
+================
+idPhysics_RigidBody::UpdateTime
+================
+*/
+	UpdateTime( /*int*/ endTimeMSec: number): void {
+	}
 ////
 /////*
 ////================
@@ -1583,40 +1583,41 @@ idPhysics_RigidBody::GetAxis
 ////const idVec3 &idPhysics_RigidBody::GetPushedAngularVelocity( /*int*/ id:number ) const {
 ////	return this.current.pushVelocity.SubVec3(1);
 ////}
-////
-/////*
-////================
-////idPhysics_RigidBody::SetMaster
-////================
-////*/
-////void idPhysics_RigidBody::SetMaster( idEntity *master, const bool orientated ) {
-////	idVec3 masterOrigin;
-////	idMat3 masterAxis;
-////
-////	if ( master ) {
-////		if ( !this.hasMaster ) {
-////			// transform from world space to master space
-////			this.self.GetMasterPosition( masterOrigin, masterAxis );
-////			this.current.localOrigin = ( this.current.i.position - masterOrigin ) * masterAxis.Transpose();
-////			if ( orientated ) {
-////				this.current.localAxis = this.current.i.orientation * masterAxis.Transpose();
-////			}
-////			else {
-////				this.current.localAxis = this.current.i.orientation;
-////			}
-////			this.hasMaster = true;
-////			isOrientated = orientated;
-////			ClearContacts();
-////		}
-////	}
-////	else {
-////		if ( this.hasMaster ) {
-////			this.hasMaster = false;
-////			this.Activate();
-////		}
-////	}
-////}
-////
+
+/*
+================
+idPhysics_RigidBody::SetMaster
+================
+*/
+	SetMaster ( master: idEntity, orientated: boolean = true ) {
+		todoThrow ( );
+		//idVec3 masterOrigin;
+		//idMat3 masterAxis;
+
+		//if ( master ) {
+		//	if ( !this.hasMaster ) {
+		//		// transform from world space to master space
+		//		this.self.GetMasterPosition( masterOrigin, masterAxis );
+		//		this.current.localOrigin = ( this.current.i.position - masterOrigin ) * masterAxis.Transpose();
+		//		if ( orientated ) {
+		//			this.current.localAxis = this.current.i.orientation * masterAxis.Transpose();
+		//		}
+		//		else {
+		//			this.current.localAxis = this.current.i.orientation;
+		//		}
+		//		this.hasMaster = true;
+		//		isOrientated = orientated;
+		//		ClearContacts();
+		//	}
+		//}
+		//else {
+		//	if ( this.hasMaster ) {
+		//		this.hasMaster = false;
+		//		this.Activate();
+		//	}
+		//}
+	}
+
 ////const float	RB_VELOCITY_MAX				= 16000;
 ////const int	RB_VELOCITY_TOTAL_BITS		= 16;
 ////const int	RB_VELOCITY_EXPONENT_BITS	= idMath::BitsForInteger( idMath::BitsForFloat( RB_VELOCITY_MAX ) ) + 1;

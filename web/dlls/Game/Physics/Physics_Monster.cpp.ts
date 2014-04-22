@@ -670,15 +670,15 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//
 	//	return ( this.current.origin != oldOrigin );
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Monster::UpdateTime
-	//================
-	//*/
-	//void idPhysics_Monster::UpdateTime( int endTimeMSec ) {
-	//}
-	//
+	
+	/*
+	================
+	idPhysics_Monster::UpdateTime
+	================
+	*/
+	UpdateTime( /*int*/ endTimeMSec: number): void {
+	}
+	
 	///*
 	//================
 	//idPhysics_Monster::GetTime
@@ -864,7 +864,8 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//  the binding is never orientated
 	//================
 	//*/
-	//void idPhysics_Monster::SetMaster( idEntity *master, const bool orientated ) {
+	SetMaster(master: idEntity, orientated: boolean = true) {
+		todoThrow();
 	//	idVec3 masterOrigin;
 	//	idMat3 masterAxis;
 	//
@@ -884,7 +885,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//			this.Activate();
 	//		}
 	//	}
-	//}
+	}
 	//
 	//const float	MONSTER_VELOCITY_MAX			= 4000;
 	//const int	MONSTER_VELOCITY_TOTAL_BITS		= 16;
