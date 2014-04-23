@@ -132,93 +132,95 @@ class idMoveable extends idEntity {
 	////idMoveable::Spawn
 	////================
 	////*/
-	Spawn(): void {
+	Spawn ( ): void {
 		var trm = new idTraceModel;
-		var/*float */density: number, friction: number, bouncyness: number, mass: number;
-		var/*int */clipShrink: number;
-		var clipModelName = new idStr ;
-		
-			// check if a clip model is set
-			this.spawnArgs.GetString_RidStr( "clipmodel", "", clipModelName );
-			if ( !clipModelName.data ) {
-				clipModelName.opEquals( this.spawnArgs.GetString( "model" ));		// use the visual model
-			}
-		
-			if ( !collisionModelManager.TrmFromModel( clipModelName, trm ) ) {
-				gameLocal.Error( "idMoveable '%s': cannot load collision model %s", this.name.c_str(), clipModelName.c_str() );
-				return;
-			}
-		
-			// if the model should be shrinked
-			clipShrink = this.spawnArgs.GetInt( "clipshrink" );
-			if ( clipShrink != 0 ) {
-				trm.Shrink( clipShrink * CM_CLIP_EPSILON );
-			}
-		
-			// get rigid body properties
-			this.spawnArgs.GetFloat( "density", "0.5", density );
-			density = idMath.ClampFloat( 0.001, 1000.0, density );
-			this.spawnArgs.GetFloat( "friction", "0.05", friction );
-			friction = idMath.ClampFloat( 0.0, 1.0, friction );
-			this.spawnArgs.GetFloat( "bouncyness", "0.6", bouncyness );
-			bouncyness = idMath.ClampFloat( 0.0, 1.0, bouncyness );
-			this.explode = this.spawnArgs.GetBool( "explode" );
-			this.unbindOnDeath = this.spawnArgs.GetBool( "unbindondeath" );
+		var /*float */density: number, friction: number, bouncyness: number, mass: number;
+		var /*int */clipShrink: number;
+		var clipModelName = new idStr;
+
+		// check if a clip model is set
+		this.spawnArgs.GetString_RidStr( "clipmodel", "", clipModelName );
+		if ( !clipModelName.data ) {
+			clipModelName.opEquals( this.spawnArgs.GetString( "model" ) ); // use the visual model
+		}
+
+		if ( !collisionModelManager.TrmFromModel( clipModelName.data, trm ) ) {
+			gameLocal.Error( "idMoveable '%s': cannot load collision model %s", this.name.c_str ( ), clipModelName.c_str ( ) );
+			return;
+		}
+
+		// if the model should be shrinked
+		clipShrink = this.spawnArgs.GetInt( "clipshrink" );
+		if ( clipShrink != 0 ) {
+			trm.Shrink( clipShrink * CM_CLIP_EPSILON );
+		}
+
+		// get rigid body properties
+		this.spawnArgs.GetFloat( "density", "0.5", density );
+		density = idMath.ClampFloat( 0.001, 1000.0, density );
+		this.spawnArgs.GetFloat( "friction", "0.05", friction );
+		friction = idMath.ClampFloat( 0.0, 1.0, friction );
+		this.spawnArgs.GetFloat( "bouncyness", "0.6", bouncyness );
+		bouncyness = idMath.ClampFloat( 0.0, 1.0, bouncyness );
+		this.explode = this.spawnArgs.GetBool( "explode" );
+		this.unbindOnDeath = this.spawnArgs.GetBool( "unbindondeath" );
 
 		this.fxCollide.opEquals( this.spawnArgs.GetString( "fx_collide" ) );
-			this.nextCollideFxTime = 0;
-		
-			this.fl.takedamage = true;
+		this.nextCollideFxTime = 0;
+
+		this.fl.takedamage = true;
 		this.damage.opEquals( this.spawnArgs.GetString( "def_damage", "" ) );
-			this.canDamage = this.spawnArgs.GetBool( "damageWhenActive" ) ? false : true;
-			this.minDamageVelocity = this.spawnArgs.GetFloat( "minDamageVelocity", "100" );
-			this.maxDamageVelocity = this.spawnArgs.GetFloat( "maxDamageVelocity", "200" );
-			this.nextDamageTime = 0;
-			this.nextSoundTime = 0;
-		
-			this.health = this.spawnArgs.GetInt( "health", "0" );
-			this.spawnArgs.GetString( "broken", "", this.brokenModel );
-		
-			if ( this.health ) {
-				if ( this.brokenModel.data != "" && !renderModelManager.CheckModel( this.brokenModel.data ) ) {
-					gameLocal.Error( "idMoveable '%s' at (%s): cannot load broken model '%s'", this.name.c_str(), this.GetPhysics().GetOrigin().ToString(0), this.brokenModel.c_str() );
-				}
+		this.canDamage = this.spawnArgs.GetBool( "damageWhenActive" ) ? false : true;
+		this.minDamageVelocity = this.spawnArgs.GetFloat( "minDamageVelocity", "100" );
+		this.maxDamageVelocity = this.spawnArgs.GetFloat( "maxDamageVelocity", "200" );
+		this.nextDamageTime = 0;
+		this.nextSoundTime = 0;
+
+		this.health = this.spawnArgs.GetInt( "health", "0" );
+		this.spawnArgs.GetString_RidStr( "broken", "", this.brokenModel );
+
+		if ( this.health ) {
+			if ( this.brokenModel.data != "" && !renderModelManager.CheckModel( this.brokenModel.data ) ) {
+				gameLocal.Error( "idMoveable '%s' at (%s): cannot load broken model '%s'", this.name.c_str ( ), this.GetPhysics ( ).GetOrigin ( ).ToString( 0 ), this.brokenModel.c_str ( ) );
 			}
-		
-			// setup the physics
-			this.physicsObj.SetSelf( this );
-			this.physicsObj.SetClipModel( new idClipModel( trm ), density );
-			this.physicsObj.GetClipModel().SetMaterial( this.GetRenderModelMaterial() );
-			this.physicsObj.SetOrigin( this.GetPhysics().GetOrigin() );
-			this.physicsObj.SetAxis( this.GetPhysics().GetAxis() );
-			this.physicsObj.SetBouncyness( bouncyness );
-			this.physicsObj.SetFriction( 0.6, 0.6, friction );
-			this.physicsObj.SetGravity( gameLocal.GetGravity() );
-this.physicsObj.SetContents( contentsFlags_t.CONTENTS_SOLID );
-			this.physicsObj.SetClipMask( MASK_SOLID | contentsFlags_t.CONTENTS_BODY | contentsFlags_t.CONTENTS_CORPSE | contentsFlags_t.CONTENTS_MOVEABLECLIP );
-			this.SetPhysics( this.physicsObj );
-		
-			if ( this.spawnArgs.GetFloat( "mass", "10", mass ) ) {
-				this.physicsObj.SetMass( mass );
-			}
-		
-			if ( this.spawnArgs.GetBool( "nodrop" ) ) {
-				this.physicsObj.PutToRest();
-			} else {
-				this.physicsObj.DropToFloor();
-			}
-		
-			if ( this.spawnArgs.GetBool( "noimpact" ) || this.spawnArgs.GetBool( "notPushable" ) ) {
-				this.physicsObj.DisableImpact();
-			}
-		
-			if ( this.spawnArgs.GetBool( "nonsolid" ) ) {
-				this.BecomeNonSolid();
-			}
-		
-			this.allowStep = this.spawnArgs.GetBool( "allowStep", "1" );
-		
-			this.PostEventMS( EV_SetOwnerFromSpawnArgs, 0 );
+		}
+
+		// setup the physics
+		this.physicsObj.SetSelf( this );
+		this.physicsObj.SetClipModel( new idClipModel( trm ), density );
+		this.physicsObj.GetClipModel ( ).SetMaterial( this.GetRenderModelMaterial ( ) );
+		this.physicsObj.SetOrigin( this.GetPhysics ( ).GetOrigin ( ) );
+		this.physicsObj.SetAxis( this.GetPhysics ( ).GetAxis ( ) );
+		this.physicsObj.SetBouncyness( bouncyness );
+		this.physicsObj.SetFriction( 0.6, 0.6, friction );
+		this.physicsObj.SetGravity( gameLocal.GetGravity ( ) );
+		this.physicsObj.SetContents( contentsFlags_t.CONTENTS_SOLID );
+		this.physicsObj.SetClipMask( MASK_SOLID | contentsFlags_t.CONTENTS_BODY | contentsFlags_t.CONTENTS_CORPSE | contentsFlags_t.CONTENTS_MOVEABLECLIP );
+		this.SetPhysics( this.physicsObj );
+
+		var $mass = new R( mass );
+		if ( this.spawnArgs.GetFloat( "mass", "10", $mass ) ) {
+			mass = $mass.$;
+			this.physicsObj.SetMass( mass );
+		}
+
+		if ( this.spawnArgs.GetBool( "nodrop" ) ) {
+			this.physicsObj.PutToRest ( );
+		} else {
+			this.physicsObj.DropToFloor ( );
+		}
+
+		if ( this.spawnArgs.GetBool( "noimpact" ) || this.spawnArgs.GetBool( "notPushable" ) ) {
+			this.physicsObj.DisableImpact ( );
+		}
+
+		if ( this.spawnArgs.GetBool( "nonsolid" ) ) {
+			this.BecomeNonSolid ( );
+		}
+
+		this.allowStep = this.spawnArgs.GetBool( "allowStep", "1" );
+
+		this.PostEventMS( EV_SetOwnerFromSpawnArgs, 0 );
 	}
 ////
 /////*

@@ -837,6 +837,14 @@ class AFBodyPState_t {
 	worldAxis = new idMat3;					// axis at worldOrigin
 	spatialVelocity = new idVec6;			// linear and rotational velocity of body
 	externalForce = new idVec6;				// external force and torque applied to body
+
+	opEquals ( other: AFBodyPState_t ): AFBodyPState_t {
+		this.worldOrigin.opEquals( other.worldOrigin );
+		this.worldAxis.opEquals( other.worldAxis );
+		this.spatialVelocity.opEquals( other.spatialVelocity );
+		this.externalForce.opEquals( other.externalForce );
+		return this;
+	}
 }
 
 
@@ -868,7 +876,7 @@ class idAFBody {
 ////	void					SetLinearVelocity( const idVec3 &linear ) const { this.current.spatialVelocity.SubVec3(0) = linear; }
 ////	void					SetAngularVelocity( const idVec3 &angular ) const { this.current.spatialVelocity.SubVec3(1) = angular; }
 ////	void					SetFriction( float linear, float angular, float contact );
-////	float					GetContactFriction( ) const { return contactFriction; }
+////	float					GetContactFriction( ) const { return this.contactFriction; }
 ////	void					SetBouncyness( float bounce );
 ////	float					GetBouncyness( ) const { return bouncyness; }
 ////	void					SetDensity( float density, const idMat3 &inertiaScale = mat3_identity );
@@ -926,14 +934,14 @@ class idAFBody {
 	atRestOrigin = new idVec3;				// origin at rest
 	atRestAxis = new idMat3;					// axis at rest
 	
-////							// simulation variables used during calculations
-////	idMatX					inverseWorldSpatialInertia;	// inverse spatial inertia in world space
-////	idMatX					I, invI;					// transformed inertia
-////	idMatX					J;							// transformed constraint matrix
-////	idVecX					s;							// temp solution
-////	idVecX					totalForce;					// total force acting on body
-////	idVecX					auxForce;					// force from auxiliary constraints
-////	idVecX					acceleration;				// acceleration
+	// simulation variables used during calculations
+	inverseWorldSpatialInertia = new idMatX;	// inverse spatial inertia in world space
+	I = new idMatX; invI = new idMatX;					// transformed inertia
+	J = new idMatX;							// transformed constraint matrix
+	s = new idVecX;							// temp solution
+	totalForce = new idVecX;					// total force acting on body
+	auxForce = new idVecX;					// force from auxiliary constraints
+	acceleration = new idVecX;				// acceleration
 	response:Float32Array;					// forces on body in response to auxiliary constraint forces
 	responseIndex:Int32Array;				// index to response forces
 	numResponses :number/*int*/;				// number of response forces
@@ -1006,7 +1014,7 @@ class idAFBody {
 	idAFBody::Init
 	================
 	*/
-	Init(): void {
+	Init ( ): void {
 		this.name.opEquals( "noname" );
 		this.parent = null;
 		this.clipModel = null;
@@ -1019,32 +1027,32 @@ class idAFBody {
 		this.bouncyness = -1.0;
 		this.clipMask = 0;
 
-		this.frictionDir.opEquals(vec3_zero);
-		this.contactMotorDir.opEquals(vec3_zero);
+		this.frictionDir.opEquals( vec3_zero );
+		this.contactMotorDir.opEquals( vec3_zero );
 		this.contactMotorVelocity = 0.0;
 		this.contactMotorForce = 0.0;
 
 		this.mass = 1.0;
 		this.invMass = 1.0;
-		this.centerOfMass.opEquals(vec3_zero);
-		this.inertiaTensor.opEquals(mat3_identity);
-		this.inverseInertiaTensor.opEquals(mat3_identity);
+		this.centerOfMass.opEquals( vec3_zero );
+		this.inertiaTensor.opEquals( mat3_identity );
+		this.inverseInertiaTensor.opEquals( mat3_identity );
 
 		this.current = this.state[0];
 		this.next = this.state[1];
-		this.current.worldOrigin.opEquals( vec3_zero);
-		this.current.worldAxis.opEquals(mat3_identity);
-		this.current.spatialVelocity.opEquals( vec6_zero);
-		this.current.externalForce.opEquals(vec6_zero);
-	this.* next = *current;
-		this.saved = *current;
-		this.atRestOrigin.opEquals(vec3_zero);
-		this.atRestAxis.opEquals(mat3_identity);
+		this.current.worldOrigin.opEquals( vec3_zero );
+		this.current.worldAxis.opEquals( mat3_identity );
+		this.current.spatialVelocity.opEquals( vec6_zero );
+		this.current.externalForce.opEquals( vec6_zero );
+		this.next.opEquals( this.current );
+		this.saved.opEquals( this.current );
+		this.atRestOrigin.opEquals( vec3_zero );
+		this.atRestAxis.opEquals( mat3_identity );
 
-		this.s.Zero(6);
-		this.totalForce.Zero(6);
-		this.auxForce.Zero(6);
-		this.acceleration.Zero(6);
+		this.s.Zero( 6 );
+		this.totalForce.Zero( 6 );
+		this.auxForce.Zero( 6 );
+		this.acceleration.Zero( 6 );
 
 		this.response = null;
 		this.responseIndex = null;
@@ -1064,34 +1072,34 @@ class idAFBody {
 		this.fl.isZero = true;
 	}
 
-	/////*
-	////================
-	////idAFBody::SetClipModel
-	////================
-	////*/
-	////void idAFBody::SetClipModel( idClipModel *clipModel ) {
-	////	if ( this.clipModel && this.clipModel != clipModel ) {
-	////		delete this.clipModel;
-	////	}
-	////	this.clipModel = clipModel;
-	////}
-	////
-	/////*
-	////================
-	////idAFBody::SetFriction
-	////================
-	////*/
-	////void idAFBody::SetFriction( float linear, float angular, float contact ) {
-	////	if ( linear < 0.0 || linear > 1.0 ||
-	////			angular < 0.0 || angular > 1.0 ||
-	////				contact < 0.0 ) {
-	////		gameLocal.Warning( "idAFBody::SetFriction: friction out of range, linear = %.1f, angular = %.1f, contact = %.1f", linear, angular, contact );
-	////		return;
-	////	}
-	////	linearFriction = linear;
-	////	angularFriction = angular;
-	////	contactFriction = contact;
-	////}
+	/*
+	================
+	idAFBody::SetClipModel
+	================
+	*/
+	SetClipModel ( clipModel: idClipModel ): void {
+		if ( this.clipModel && this.clipModel != clipModel ) {
+			delete this.clipModel;
+		}
+		this.clipModel = clipModel;
+	}
+
+	/*
+	================
+	idAFBody::SetFriction
+	================
+	*/
+	SetFriction( /*float */linear: number, /*float */angular: number, /*float */contact: number):void {
+		if ( linear < 0.0 || linear > 1.0 ||
+				angular < 0.0 || angular > 1.0 ||
+					contact < 0.0 ) {
+			gameLocal.Warning( "idAFBody::SetFriction: friction out of range, linear = %.1f, angular = %.1f, contact = %.1f", linear, angular, contact );
+			return;
+		}
+		this.linearFriction = linear;
+		this.angularFriction = angular;
+		this.contactFriction = contact;
+	}
 
 	/*
 	================
@@ -1245,9 +1253,9 @@ class idAFBody {
 ////================
 ////*/
 ////void idAFBody::Save( idSaveGame *saveFile ) {
-////	saveFile.WriteFloat( linearFriction );
-////	saveFile.WriteFloat( angularFriction );
-////	saveFile.WriteFloat( contactFriction );
+////	saveFile.WriteFloat( this.linearFriction );
+////	saveFile.WriteFloat( this.angularFriction );
+////	saveFile.WriteFloat( this.contactFriction );
 ////	saveFile.WriteFloat( this.bouncyness );
 ////	saveFile.WriteInt( clipMask );
 ////	saveFile.WriteVec3( frictionDir );
@@ -1275,9 +1283,9 @@ class idAFBody {
 ////================
 ////*/
 ////void idAFBody::Restore( idRestoreGame *saveFile ) {
-////	saveFile.ReadFloat( linearFriction );
-////	saveFile.ReadFloat( angularFriction );
-////	saveFile.ReadFloat( contactFriction );
+////	saveFile.ReadFloat( this.linearFriction );
+////	saveFile.ReadFloat( this.angularFriction );
+////	saveFile.ReadFloat( this.contactFriction );
 ////	saveFile.ReadFloat( this.bouncyness );
 ////	saveFile.ReadInt( clipMask );
 ////	saveFile.ReadVec3( frictionDir );
@@ -3341,8 +3349,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	saved = this.current;
 	////
 	////	this.linearFriction = 0.005f;
-	////	angularFriction = 0.005f;
-	////	contactFriction = 0.8f;
+	////	this.angularFriction = 0.005f;
+	////	this.contactFriction = 0.8f;
 	////	bouncyness = 0.4f;
 	////	this.totalMass = 0.0;
 	////	forceTotalMass = -1.0;
@@ -3473,8 +3481,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	saveFile.WriteBool( changedAF );
 	////
 	////	saveFile.WriteFloat( this.linearFriction );
-	////	saveFile.WriteFloat( angularFriction );
-	////	saveFile.WriteFloat( contactFriction );
+	////	saveFile.WriteFloat( this.angularFriction );
+	////	saveFile.WriteFloat( this.contactFriction );
 	////	saveFile.WriteFloat( bouncyness );
 	////	saveFile.WriteFloat( this.totalMass );
 	////	saveFile.WriteFloat( forceTotalMass );
@@ -3547,8 +3555,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	saveFile.ReadBool( changedAF );
 	////
 	////	saveFile.ReadFloat( this.linearFriction );
-	////	saveFile.ReadFloat( angularFriction );
-	////	saveFile.ReadFloat( contactFriction );
+	////	saveFile.ReadFloat( this.angularFriction );
+	////	saveFile.ReadFloat( this.contactFriction );
 	////	saveFile.ReadFloat( bouncyness );
 	////	saveFile.ReadFloat( this.totalMass );
 	////	saveFile.ReadFloat( forceTotalMass );
@@ -3753,8 +3761,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	body.clipModel.SetId( id );
 	////	if ( body.linearFriction < 0.0 ) {
 	////		body.linearFriction = this.linearFriction;
-	////		body.angularFriction = angularFriction;
-	////		body.contactFriction = contactFriction;
+	////		body.angularFriction = this.angularFriction;
+	////		body.contactFriction = this.contactFriction;
 	////	}
 	////	if ( body.bouncyness < 0.0 ) {
 	////		body.bouncyness = bouncyness;

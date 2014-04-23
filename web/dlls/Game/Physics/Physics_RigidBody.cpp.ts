@@ -314,7 +314,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////		impulseNumerator = STOP_SPEED;
 ////	}
 ////	else {
-////		impulseNumerator = -( 1.0 + bouncyness ) * vel;
+////		impulseNumerator = -( 1.0 + this.bouncyness ) * vel;
 ////	}
 ////	impulseDenominator = this.inverseMass + ( ( inverseWorldInertiaTensor * r.Cross( collision.c.normal ) ).Cross( r ) * collision.c.normal );
 ////	if ( info.invMass ) {
@@ -715,7 +715,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	savefile.WriteFloat( linearFriction );
 ////	savefile.WriteFloat( angularFriction );
 ////	savefile.WriteFloat( contactFriction );
-////	savefile.WriteFloat( bouncyness );
+////	savefile.WriteFloat( this.bouncyness );
 ////	savefile.WriteClipModel( this.clipModel );
 ////
 ////	savefile.WriteFloat( this.mass );
@@ -746,7 +746,7 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	savefile.ReadFloat( linearFriction );
 ////	savefile.ReadFloat( angularFriction );
 ////	savefile.ReadFloat( contactFriction );
-////	savefile.ReadFloat( bouncyness );
+////	savefile.ReadFloat( this.bouncyness );
 ////	savefile.ReadClipModel( this.clipModel );
 ////
 ////	savefile.ReadFloat( this.mass );
@@ -865,34 +865,34 @@ idPhysics_RigidBody::GetMass
 		return this.mass;
 	}
 
-/////*
-////================
-////idPhysics_RigidBody::SetFriction
-////================
-////*/
-////void idPhysics_RigidBody::SetFriction( const float linear, const float angular, const float contact ) {
-////	if (	linear < 0.0 || linear > 1.0 ||
-////			angular < 0.0 || angular > 1.0 ||
-////			contact < 0.0 || contact > 1.0 ) {
-////		return;
-////	}
-////	linearFriction = linear;
-////	angularFriction = angular;
-////	contactFriction = contact;
-////}
-////
-/////*
-////================
-////idPhysics_RigidBody::SetBouncyness
-////================
-////*/
-////void idPhysics_RigidBody::SetBouncyness( const float b ) {
-////	if ( b < 0.0 || b > 1.0 ) {
-////		return;
-////	}
-////	bouncyness = b;
-////}
-////
+/*
+================
+idPhysics_RigidBody::SetFriction
+================
+*/
+	SetFriction ( /*float */linear: number, /*float */angular: number, /*float */contact: number ): void {
+		if ( linear < 0.0 || linear > 1.0 ||
+			angular < 0.0 || angular > 1.0 ||
+			contact < 0.0 || contact > 1.0 ) {
+			return;
+		}
+		this.linearFriction = linear;
+		this.angularFriction = angular;
+		this.contactFriction = contact;
+	}
+
+/*
+================
+idPhysics_RigidBody::SetBouncyness
+================
+*/
+	SetBouncyness ( /*float */b: number ): void {
+		if ( b < 0.0 || b > 1.0 ) {
+			return;
+		}
+		this.bouncyness = b;
+	}
+
 /*
 ================
 idPhysics_RigidBody::Rest

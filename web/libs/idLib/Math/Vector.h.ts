@@ -2058,6 +2058,16 @@ class idVec6 {
 ////	return true;
 ////}
 
+	opEquals ( a: idVec6 ): idVec6 {
+		this.p[0] = a.p[0];
+		this.p[1] = a.p[1];
+		this.p[2] = a.p[2];
+		this.p[3] = a.p[3];
+		this.p[4] = a.p[4];
+		this.p[5] = a.p[5];
+		return this;
+	}
+
 ////ID_INLINE bool idVec6::operator==( const idVec6 &a ) const {
 ////	return this.Compare( a );
 ////}
@@ -2147,27 +2157,27 @@ class idVec6 {
 }
 
 
-//////===============================================================
-//////
-//////	idVecX - arbitrary sized vector
-//////
-//////  The vector lives on 16 byte aligned and 16 byte padded memory.
-//////
-//////	NOTE: due to the temporary memory pool idVecX cannot be used by multiple threads
-//////
-//////===============================================================
+//===============================================================
+//
+//	idVecX - arbitrary sized vector
+//
+//  The vector lives on 16 byte aligned and 16 byte padded memory.
+//
+//	NOTE: due to the temporary memory pool idVecX cannot be used by multiple threads
+//
+//===============================================================
 
 ////float	idVecX::temp[VECX_MAX_TEMP+4];
 ////float *	idVecX::tempPtr = (float *) ( ( (int) idVecX::temp + 15 ) & ~15 );
 ////int		idVecX::tempIndex = 0;
 
-////#define VECX_MAX_TEMP		1024
+var VECX_MAX_TEMP = 1024;
 ////#define VECX_QUAD( x )		( ( ( ( x ) + 3 ) & ~3 ) * sizeof( float ) )
 ////#define VECX_CLEAREND()		int s = size; while( s < ( ( s + 3) & ~3 ) ) { this.p[s++] = 0.0; }
 ////#define VECX_ALLOCA( n )	( (float *) _alloca16( VECX_QUAD( n ) ) )
 ////#define VECX_SIMD
 
-////class idVecX {
+class idVecX {
 ////	friend class idMatX;
 
 ////public:	
@@ -2225,69 +2235,69 @@ class idVec6 {
 ////	const char *	ToString( int precision = 2 ) const;
 
 ////private:
-////	int				size;					// size of the vector
-////	int				alloced;				// if -1 p points to data set with SetData
-////	float *			p;						// memory the vector is stored
+	size :number/*int*/;					// size of the vector
+	alloced :number/*int*/;				// if -1 p points to data set with SetData
+	p:Float32Array;						// memory the vector is stored
 
-////	static float	temp[VECX_MAX_TEMP+4];	// used to store intermediate results
+	static temp = new Float32Array(VECX_MAX_TEMP+4);	// used to store intermediate results
 ////	static float *	tempPtr;				// pointer to 16 byte aligned temporary memory
-////	static int		tempIndex;				// index into memory pool, wraps around
+	static /*int*/tempIndex:number;				// index into memory pool, wraps around
 
 ////private:
 ////	void			SetTempSize( int size );
 ////};
 
 
-////ID_INLINE idVecX::idVecX( ) {
-////	size = alloced = 0;
-////	p = NULL;
-////}
+constructor( ) {
+	this.size = this.alloced = 0;
+	this.p = null;
+}
 
 ////ID_INLINE idVecX::idVecX( int length ) {
-////	size = alloced = 0;
-////	p = NULL;
+////	this.size = this.alloced = 0;
+////	this.p = NULL;
 ////	SetSize( length );
 ////}
 
 ////ID_INLINE idVecX::idVecX( int length, float *data ) {
-////	size = alloced = 0;
-////	p = NULL;
+////	this.size = this.alloced = 0;
+////	this.p = NULL;
 ////	SetData( length, data );
 ////}
 
 ////ID_INLINE idVecX::~idVecX( ) {
 ////	// if not temp memory
-////	if ( p && ( p < idVecX::tempPtr || p >= idVecX::tempPtr + VECX_MAX_TEMP ) && alloced != -1 ) {
-////		Mem_Free16( p );
+////	if ( this.p && ( this.p < idVecX::tempPtr || this.p >= idVecX::tempPtr + VECX_MAX_TEMP ) && this.alloced != -1 ) {
+////		Mem_Free16( this.p );
 ////	}
 ////}
 
 	//[index: number]: number;
 ////ID_INLINE float idVecX::operator[]( const int index ) const {
-////	assert( index >= 0 && index < size );
-////	return p[index];
+////	assert( index >= 0 && index < this.size );
+////	return this.p[index];
 ////}
 
 ////ID_INLINE float &idVecX::operator[]( const int index ) {
-////	assert( index >= 0 && index < size );
-////	return p[index];
+////	assert( index >= 0 && index < this.size );
+////	return this.p[index];
 ////}
 
 ////ID_INLINE idVecX idVecX::operator-() const {
 ////	var/*int*/i:number;
 ////	idVecX m;
 
-////	m.SetTempSize( size );
-////	for ( i = 0; i < size; i++ ) {
-////		m.p[i] = -p[i];
+////	m.SetTempSize( this.size );
+////	for ( i = 0; i < this.size; i++ ) {
+////		m.p[i] = -this.p[i];
 ////	}
 ////	return m;
 ////}
 
 ////ID_INLINE idVecX &idVecX::operator=( const idVecX &a ) { 
-////	SetSize( a.size );
+////	SetSize( a.this.size );
 ////#ifdef VECX_SIMD
-////	SIMDProcessor.Copy16( p, a.p, a.size );
+////	SIMDProcessor.Copy16( this.p, a.p, a.size );
 ////#else
 ////	memcpy( p, a.p, a.size * sizeof( float ) );
 ////#endif
@@ -2298,13 +2308,13 @@ class idVec6 {
 ////ID_INLINE idVecX idVecX::operator+( const idVecX &a ) const {
 ////	idVecX m;
 
-////	assert( size == a.size );
-////	m.SetTempSize( size );
+////	assert( this.size == a.size );
+////	m.SetTempSize( this.size );
 ////#ifdef VECX_SIMD
-////	SIMDProcessor.Add16( m.p, p, a.p, size );
+////	SIMDProcessor.Add16( m.p, p, a.p, this.size );
 ////#else
 ////	var/*int*/i:number;
-////	for ( i = 0; i < size; i++ ) {
+////	for ( i = 0; i < this.size; i++ ) {
 ////		m.p[i] = p[i] + a.p[i];
 ////	}
 ////#endif
@@ -2314,13 +2324,13 @@ class idVec6 {
 ////ID_INLINE idVecX idVecX::operator-( const idVecX &a ) const {
 ////	idVecX m;
 
-////	assert( size == a.size );
-////	m.SetTempSize( size );
+////	assert( this.size == a.size );
+////	m.SetTempSize( this.size );
 ////#ifdef VECX_SIMD
-////	SIMDProcessor.Sub16( m.p, p, a.p, size );
+////	SIMDProcessor.Sub16( m.p, p, a.p, this.size );
 ////#else
 ////	var/*int*/i:number;
-////	for ( i = 0; i < size; i++ ) {
+////	for ( i = 0; i < this.size; i++ ) {
 ////		m.p[i] = p[i] - a.p[i];
 ////	}
 ////#endif
@@ -2328,13 +2338,13 @@ class idVec6 {
 ////}
 
 ////ID_INLINE idVecX &idVecX::operator+=( const idVecX &a ) {
-////	assert( size == a.size );
+////	assert( this.size == a.size );
 ////#ifdef VECX_SIMD
-////	SIMDProcessor.AddAssign16( p, a.p, size );
+////	SIMDProcessor.AddAssign16( p, a.p, this.size );
 ////#else
 ////	var/*int*/i:number;
-////	for ( i = 0; i < size; i++ ) {
-////		p[i] += a.p[i];
+////	for ( i = 0; i < this.size; i++ ) {
+////		this.p[i] += a.p[i];
 ////	}
 ////#endif
 ////	idVecX::tempIndex = 0;
@@ -2342,13 +2352,13 @@ class idVec6 {
 ////}
 
 ////ID_INLINE idVecX &idVecX::operator-=( const idVecX &a ) {
-////	assert( size == a.size );
+////	assert( this.size == a.size );
 ////#ifdef VECX_SIMD
-////	SIMDProcessor.SubAssign16( p, a.p, size );
+////	SIMDProcessor.SubAssign16( p, a.p, this.size );
 ////#else
 ////	var/*int*/i:number;
-////	for ( i = 0; i < size; i++ ) {
-////		p[i] -= a.p[i];
+////	for ( i = 0; i < this.size; i++ ) {
+////		this.p[i] -= a.p[i];
 ////	}
 ////#endif
 ////	idVecX::tempIndex = 0;
@@ -2358,12 +2368,12 @@ class idVec6 {
 ////ID_INLINE idVecX idVecX::operator*( /*const float */a :number ) const {
 ////	idVecX m;
 
-////	m.SetTempSize( size );
+////	m.SetTempSize( this.size );
 ////#ifdef VECX_SIMD
-////	SIMDProcessor.Mul16( m.p, p, a, size );
+////	SIMDProcessor.Mul16( m.p, p, a, this.size );
 ////#else
 ////	var/*int*/i:number;
-////	for ( i = 0; i < size; i++ ) {
+////	for ( i = 0; i < this.size; i++ ) {
 ////		m.p[i] = p[i] * a;
 ////	}
 ////#endif
@@ -2372,11 +2382,11 @@ class idVec6 {
 
 ////ID_INLINE idVecX &idVecX::operator*=( /*const float */a :number ) {
 ////#ifdef VECX_SIMD
-////	SIMDProcessor.MulAssign16( p, a, size );
+////	SIMDProcessor.MulAssign16( p, a, this.size );
 ////#else
 ////	var/*int*/i:number;
-////	for ( i = 0; i < size; i++ ) {
-////		p[i] *= a;
+////	for ( i = 0; i < this.size; i++ ) {
+////		this.p[i] *= a;
 ////	}
 ////#endif
 ////	return this;
@@ -2401,8 +2411,8 @@ class idVec6 {
 ////	var/*int*/i:number;
 ////	float sum = 0.0;
 
-////	assert( size == a.size );
-////	for ( i = 0; i < size; i++ ) {
+////	assert( this.size == a.size );
+////	for ( i = 0; i < this.size; i++ ) {
 ////		sum += p[i] * a.p[i];
 ////	}
 ////	return sum;
@@ -2411,8 +2421,8 @@ class idVec6 {
 ////ID_INLINE bool idVecX::Compare( const idVecX &a ) const {
 ////	var/*int*/i:number;
 
-////	assert( size == a.size );
-////	for ( i = 0; i < size; i++ ) {
+////	assert( this.size == a.size );
+////	for ( i = 0; i < this.size; i++ ) {
 ////		if ( p[i] != a.p[i] ) {
 ////			return false;
 ////		}
@@ -2423,8 +2433,8 @@ class idVec6 {
 ////ID_INLINE bool idVecX::Compare( const idVecX &a, const float epsilon ) const {
 ////	var/*int*/i:number;
 
-////	assert( size == a.size );
-////	for ( i = 0; i < size; i++ ) {
+////	assert( this.size == a.size );
+////	for ( i = 0; i < this.size; i++ ) {
 ////		if ( idMath.Fabs( p[i] - a.p[i] ) > epsilon ) {
 ////			return false;
 ////		}
@@ -2440,82 +2450,76 @@ class idVec6 {
 ////	return !this.Compare( a );
 ////}
 
-////ID_INLINE void idVecX::SetSize( int newSize ) {
-////	int alloc = ( newSize + 3 ) & ~3;
-////	if ( alloc > alloced && alloced != -1 ) {
-////		if ( p ) {
-////			Mem_Free16( p );
-////		}
-////		p = (float *) Mem_Alloc16( alloc * sizeof( float ) );
-////		alloced = alloc;
-////	}
-////	size = newSize;
-////	VECX_CLEAREND();
-////}
+SetSize( /*int */newSize :number):void {
+	var /*int */alloc = ( newSize + 3 ) & ~3;
+	if ( alloc > this.alloced && this.alloced != -1 ) {
+		if ( this.p ) {
+			Mem_Free16( this.p );
+		}
+		this.p = new Float32Array( alloc ); // (float *) Mem_Alloc16( alloc * sizeof( float ) );
+		this.alloced = alloc;
+	}
+	this.size = newSize;
+	VECX_CLEAREND();
+}
 
 ////ID_INLINE void idVecX::ChangeSize( int newSize, bool makeZero ) {
 ////	int alloc = ( newSize + 3 ) & ~3;
-////	if ( alloc > alloced && alloced != -1 ) {
-////		float *oldVec = p;
-////		p = (float *) Mem_Alloc16( alloc * sizeof( float ) );
-////		alloced = alloc;
+////	if ( alloc > this.alloced && this.alloced != -1 ) {
+////		float *oldVec = this.p;
+////		this.p = (float *) Mem_Alloc16( alloc * sizeof( float ) );
+////		this.alloced = alloc;
 ////		if ( oldVec ) {
-////			for ( int i = 0; i < size; i++ ) {
-////				p[i] = oldVec[i];
+////			for ( int i = 0; i < this.size; i++ ) {
+////				this.p[i] = oldVec[i];
 ////			}
 ////			Mem_Free16( oldVec );
 ////		}
 ////		if ( makeZero ) {
 ////			// zero any new elements
-////			for ( int i = size; i < newSize; i++ ) {
-////				p[i] = 0.0;
+////			for ( int i = this.size; i < newSize; i++ ) {
+////				this.p[i] = 0.0;
 ////			}
 ////		}
 ////	}
-////	size = newSize;
+////	this.size = newSize;
 ////	VECX_CLEAREND();
 ////}
 
 ////ID_INLINE void idVecX::SetTempSize( int newSize ) {
 
-////	size = newSize;
-////	alloced = ( newSize + 3 ) & ~3;
-////	assert( alloced < VECX_MAX_TEMP );
-////	if ( idVecX::tempIndex + alloced > VECX_MAX_TEMP ) {
+////	this.size = newSize;
+////	this.alloced = ( newSize + 3 ) & ~3;
+////	assert( this.alloced < VECX_MAX_TEMP );
+////	if ( idVecX::tempIndex + this.alloced > VECX_MAX_TEMP ) {
 ////		idVecX::tempIndex = 0;
 ////	}
-////	p = idVecX::tempPtr + idVecX::tempIndex;
-////	idVecX::tempIndex += alloced;
+////	this.p = idVecX::tempPtr + idVecX::tempIndex;
+////	idVecX::tempIndex += this.alloced;
 ////	VECX_CLEAREND();
 ////}
 
 ////ID_INLINE void idVecX::SetData( int length, float *data ) {
-////	if ( p && ( p < idVecX::tempPtr || p >= idVecX::tempPtr + VECX_MAX_TEMP ) && alloced != -1 ) {
-////		Mem_Free16( p );
+////	if ( this.p && ( this.p < idVecX::tempPtr || this.p >= idVecX::tempPtr + VECX_MAX_TEMP ) && this.alloced != -1 ) {
+////		Mem_Free16( this.p );
 ////	}
 ////	assert( ( ( (int) data ) & 15 ) == 0 ); // data must be 16 byte aligned
-////	p = data;
-////	size = length;
-////	alloced = -1;
+////	this.p = data;
+////	this.size = length;
+////	this.alloced = -1;
 ////	VECX_CLEAREND();
 ////}
 
-////ID_INLINE void idVecX::Zero( ) {
-////#ifdef VECX_SIMD
-////	SIMDProcessor.Zero16( p, size );
-////#else
-////	memset( p, 0, size * sizeof( float ) );
-////#endif
-////}
-
-////ID_INLINE void idVecX::Zero( int length ) {
-////	SetSize( length );
-////#ifdef VECX_SIMD
-////	SIMDProcessor.Zero16( p, length );
-////#else
-////	memset( p, 0, size * sizeof( float ) );
-////#endif
-////}
+	Zero ( ): void
+	Zero ( /*int*/length: number ): void
+	Zero ( /*int*/length?: number ): void {
+		if ( arguments.length === 0 ) {
+			SIMDProcessor.Zero16( this.p, this.size );
+		} else {
+			this.SetSize( length );
+			SIMDProcessor.Zero16( this.p, length );
+		}
+	}
 
 ////ID_INLINE void idVecX::Random( int seed, float l, float u ) {
 ////	var/*int*/i:number;
@@ -2523,8 +2527,8 @@ class idVec6 {
 ////	idRandom rnd( seed );
 
 ////	c = u - l;
-////	for ( i = 0; i < size; i++ ) {
-////		p[i] = l + rnd.RandomFloat() * c;
+////	for ( i = 0; i < this.size; i++ ) {
+////		this.p[i] = l + rnd.RandomFloat() * c;
 ////	}
 ////}
 
@@ -2535,38 +2539,38 @@ class idVec6 {
 
 ////	SetSize( length );
 ////	c = u - l;
-////	for ( i = 0; i < size; i++ ) {
-////		p[i] = l + rnd.RandomFloat() * c;
+////	for ( i = 0; i < this.size; i++ ) {
+////		this.p[i] = l + rnd.RandomFloat() * c;
 ////	}
 ////}
 
 ////ID_INLINE void idVecX::Negate( ) {
 ////#ifdef VECX_SIMD
-////	SIMDProcessor.Negate16( p, size );
+////	SIMDProcessor.Negate16( this.p, this.size );
 ////#else
 ////	var/*int*/i:number;
-////	for ( i = 0; i < size; i++ ) {
-////		p[i] = -p[i];
+////	for ( i = 0; i < this.size; i++ ) {
+////		this.p[i] = -this.p[i];
 ////	}
 ////#endif
 ////}
 
 ////ID_INLINE void idVecX::Clamp( float min, float max ) {
 ////	var/*int*/i:number;
-////	for ( i = 0; i < size; i++ ) {
-////		if ( p[i] < min ) {
-////			p[i] = min;
-////		} else if ( p[i] > max ) {
-////			p[i] = max;
+////	for ( i = 0; i < this.size; i++ ) {
+////		if ( this.p[i] < min ) {
+////			this.p[i] = min;
+////		} else if ( this.p[i] > max ) {
+////			this.p[i] = max;
 ////		}
 ////	}
 ////}
 
 ////ID_INLINE idVecX &idVecX::SwapElements( int e1, int e2 ) {
 ////	float tmp;
-////	tmp = p[e1];
-////	p[e1] = p[e2];
-////	p[e2] = tmp;
+////	tmp = this.p[e1];
+////	this.p[e1] = this.p[e2];
+////	this.p[e2] = tmp;
 ////	return this;
 ////}
 
@@ -2574,8 +2578,8 @@ class idVec6 {
 ////	var/*int*/i:number;
 ////	float sum = 0.0;
 
-////	for ( i = 0; i < size; i++ ) {
-////		sum += p[i] * p[i];
+////	for ( i = 0; i < this.size; i++ ) {
+////		sum += this.p[i] * this.p[i];
 ////	}
 ////	return idMath::Sqrt( sum );
 ////}
@@ -2584,8 +2588,8 @@ class idVec6 {
 ////	var/*int*/i:number;
 ////	float sum = 0.0;
 
-////	for ( i = 0; i < size; i++ ) {
-////		sum += p[i] * p[i];
+////	for ( i = 0; i < this.size; i++ ) {
+////		sum += this.p[i] * this.p[i];
 ////	}
 ////	return sum;
 ////}
@@ -2595,13 +2599,13 @@ class idVec6 {
 ////	idVecX m;
 ////	float invSqrt, sum = 0.0;
 
-////	m.SetTempSize( size );
-////	for ( i = 0; i < size; i++ ) {
-////		sum += p[i] * p[i];
+////	m.SetTempSize( this.size );
+////	for ( i = 0; i < this.size; i++ ) {
+////		sum += this.p[i] * this.p[i];
 ////	}
 ////	invSqrt = idMath.InvSqrt( sum );
-////	for ( i = 0; i < size; i++ ) {
-////		m.p[i] = p[i] * invSqrt;
+////	for ( i = 0; i < this.size; i++ ) {
+////		m.this.p[i] = this.p[i] * invSqrt;
 ////	}
 ////	return m;
 ////}
@@ -2609,46 +2613,46 @@ class idVec6 {
 ////ID_INLINE float idVecX::NormalizeSelf( ) {
 ////	float invSqrt, sum = 0.0;
 ////	var/*int*/i:number;
-////	for ( i = 0; i < size; i++ ) {
-////		sum += p[i] * p[i];
+////	for ( i = 0; i < this.size; i++ ) {
+////		sum += this.p[i] * this.p[i];
 ////	}
 ////	invSqrt = idMath.InvSqrt( sum );
-////	for ( i = 0; i < size; i++ ) {
-////		p[i] *= invSqrt;
+////	for ( i = 0; i < this.size; i++ ) {
+////		this.p[i] *= invSqrt;
 ////	}
 ////	return invSqrt * sum;
 ////}
 
 ////ID_INLINE int idVecX::GetDimension( ) const {
-////	return size;
+////	return this.size;
 ////}
 
 ////ID_INLINE idVec3 &idVecX::SubVec3( int index ) {
-////	assert( index >= 0 && index * 3 + 3 <= size );
-////	return *reinterpret_cast<idVec3 *>(p + index * 3);
+////	assert( index >= 0 && index * 3 + 3 <= this.size );
+////	return *reinterpret_cast<idVec3 *>(this.p + index * 3);
 ////}
 
 ////ID_INLINE const idVec3 &idVecX::SubVec3( int index ) const {
-////	assert( index >= 0 && index * 3 + 3 <= size );
-////	return *reinterpret_cast<const idVec3 *>(p + index * 3);
+////	assert( index >= 0 && index * 3 + 3 <= this.size );
+////	return *reinterpret_cast<const idVec3 *>(this.p + index * 3);
 ////}
 
 ////ID_INLINE idVec6 &idVecX::SubVec6( int index ) {
-////	assert( index >= 0 && index * 6 + 6 <= size );
-////	return *reinterpret_cast<idVec6 *>(p + index * 6);
+////	assert( index >= 0 && index * 6 + 6 <= this.size );
+////	return *reinterpret_cast<idVec6 *>(this.p + index * 6);
 ////}
 
 ////ID_INLINE const idVec6 &idVecX::SubVec6( int index ) const {
-////	assert( index >= 0 && index * 6 + 6 <= size );
-////	return *reinterpret_cast<const idVec6 *>(p + index * 6);
+////	assert( index >= 0 && index * 6 + 6 <= this.size );
+////	return *reinterpret_cast<const idVec6 *>(this.p + index * 6);
 ////}
 
 ////ID_INLINE const float *idVecX::ToFloatPtr( ) const {
-////	return p;
+////	return this.p;
 ////}
 
 ////ID_INLINE float *idVecX::ToFloatPtr( ) {
-////	return p;
+////	return this.p;
 ////}
 
 /////*
@@ -2659,7 +2663,7 @@ class idVec6 {
 ////const char *idVecX::ToString( int precision = 2) const {
 ////	return idStr.FloatArrayToString( ToFloatPtr(), GetDimension(), precision );
 ////}
-
+}
 
 
 //////===============================================================

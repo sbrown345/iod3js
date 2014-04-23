@@ -2399,7 +2399,7 @@ var mat4_default = mat4_identity;
 //#define MATX_ALLOCA( n )	( (float *) _alloca16( MATX_QUAD( n ) ) )
 //#define MATX_SIMD
 //
-//class idMatX {
+class idMatX {
 //public:
 //					idMatX( );
 //					explicit idMatX( int rows, int columns );
@@ -2485,20 +2485,20 @@ var mat4_default = mat4_identity;
 //	bool			UpperTriangularInverse( );									// in-place inversion, returns false if determinant is zero
 //
 //	idVecX			Multiply( const idVecX &vec ) const;							// (*this) * vec
-//	idVecX			TransposeMultiply( const idVecX &vec ) const;					// this->Transpose() * vec
+//	idVecX			TransposeMultiply( const idVecX &vec ) const;					// this.Transpose() * vec
 //
 //	idMatX			Multiply( const idMatX &a ) const;								// (*this) * a
-//	idMatX			TransposeMultiply( const idMatX &a ) const;						// this->Transpose() * a
+//	idMatX			TransposeMultiply( const idMatX &a ) const;						// this.Transpose() * a
 //
 //	void			Multiply( idVecX &dst, const idVecX &vec ) const;				// dst = (*this) * vec
 //	void			MultiplyAdd( idVecX &dst, const idVecX &vec ) const;			// dst += (*this) * vec
 //	void			MultiplySub( idVecX &dst, const idVecX &vec ) const;			// dst -= (*this) * vec
-//	void			TransposeMultiply( idVecX &dst, const idVecX &vec ) const;		// dst = this->Transpose() * vec
-//	void			TransposeMultiplyAdd( idVecX &dst, const idVecX &vec ) const;	// dst += this->Transpose() * vec
-//	void			TransposeMultiplySub( idVecX &dst, const idVecX &vec ) const;	// dst -= this->Transpose() * vec
+//	void			TransposeMultiply( idVecX &dst, const idVecX &vec ) const;		// dst = this.Transpose() * vec
+//	void			TransposeMultiplyAdd( idVecX &dst, const idVecX &vec ) const;	// dst += this.Transpose() * vec
+//	void			TransposeMultiplySub( idVecX &dst, const idVecX &vec ) const;	// dst -= this.Transpose() * vec
 //
 //	void			Multiply( idMatX &dst, const idMatX &a ) const;					// dst = (*this) * a
-//	void			TransposeMultiply( idMatX &dst, const idMatX &a ) const;		// dst = this->Transpose() * a
+//	void			TransposeMultiply( idMatX &dst, const idMatX &a ) const;		// dst = this.Transpose() * a
 //
 //	int				GetDimension( ) const;										// returns total number of values in matrix
 //
@@ -2633,7 +2633,7 @@ var mat4_default = mat4_identity;
 //
 //ID_INLINE void idMatX::Set( int rows, int columns, const float *src ) {
 //	SetSize( rows, columns );
-//	memcpy( this->mat, src, rows * columns * sizeof( float ) );
+//	memcpy( this.mat, src, rows * columns * sizeof( float ) );
 //}
 //
 //ID_INLINE void idMatX::Set( const idMat3 &m1, const idMat3 &m2 ) {
@@ -2675,7 +2675,7 @@ var mat4_default = mat4_identity;
 //ID_INLINE idMatX &idMatX::operator=( const idMatX &a ) {
 //	SetSize( a.numRows, a.numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->Copy16( mat, a.mat, a.numRows * a.numColumns );
+//	SIMDProcessor.Copy16( mat, a.mat, a.numRows * a.numColumns );
 //#else
 //	memcpy( mat, a.mat, a.numRows * a.numColumns * sizeof( float ) );
 //#endif
@@ -2688,7 +2688,7 @@ var mat4_default = mat4_identity;
 //
 //	m.SetTempSize( numRows, numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->Mul16( m.mat, mat, a, numRows * numColumns );
+//	SIMDProcessor.Mul16( m.mat, mat, a, numRows * numColumns );
 //#else
 //	int i, s;
 //	s = numRows * numColumns;
@@ -2706,7 +2706,7 @@ var mat4_default = mat4_identity;
 //
 //	dst.SetTempSize( numRows );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_MultiplyVecX( dst, *this, vec );
+//	SIMDProcessor.MatX_MultiplyVecX( dst, *this, vec );
 //#else
 //	Multiply( dst, vec );
 //#endif
@@ -2720,7 +2720,7 @@ var mat4_default = mat4_identity;
 //
 //	dst.SetTempSize( numRows, a.numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_MultiplyMatX( dst, *this, a );
+//	SIMDProcessor.MatX_MultiplyMatX( dst, *this, a );
 //#else
 //	Multiply( dst, a );
 //#endif
@@ -2733,7 +2733,7 @@ var mat4_default = mat4_identity;
 //	assert( numRows == a.numRows && numColumns == a.numColumns );
 //	m.SetTempSize( numRows, numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->Add16( m.mat, mat, a.mat, numRows * numColumns );
+//	SIMDProcessor.Add16( m.mat, mat, a.mat, numRows * numColumns );
 //#else
 //	int i, s;
 //	s = numRows * numColumns;
@@ -2750,7 +2750,7 @@ var mat4_default = mat4_identity;
 //	assert( numRows == a.numRows && numColumns == a.numColumns );
 //	m.SetTempSize( numRows, numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->Sub16( m.mat, mat, a.mat, numRows * numColumns );
+//	SIMDProcessor.Sub16( m.mat, mat, a.mat, numRows * numColumns );
 //#else
 //	int i, s;
 //	s = numRows * numColumns;
@@ -2763,7 +2763,7 @@ var mat4_default = mat4_identity;
 //
 //ID_INLINE idMatX &idMatX::operator*=( const float a ) {
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MulAssign16( mat, a, numRows * numColumns );
+//	SIMDProcessor.MulAssign16( mat, a, numRows * numColumns );
 //#else
 //	int i, s;
 //	s = numRows * numColumns;
@@ -2784,7 +2784,7 @@ var mat4_default = mat4_identity;
 //ID_INLINE idMatX &idMatX::operator+=( const idMatX &a ) {
 //	assert( numRows == a.numRows && numColumns == a.numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->AddAssign16( mat, a.mat, numRows * numColumns );
+//	SIMDProcessor.AddAssign16( mat, a.mat, numRows * numColumns );
 //#else
 //	int i, s;
 //	s = numRows * numColumns;
@@ -2799,7 +2799,7 @@ var mat4_default = mat4_identity;
 //ID_INLINE idMatX &idMatX::operator-=( const idMatX &a ) {
 //	assert( numRows == a.numRows && numColumns == a.numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->SubAssign16( mat, a.mat, numRows * numColumns );
+//	SIMDProcessor.SubAssign16( mat, a.mat, numRows * numColumns );
 //#else
 //	int i, s;
 //	s = numRows * numColumns;
@@ -2906,7 +2906,7 @@ var mat4_default = mat4_identity;
 //
 //ID_INLINE void idMatX::Zero( ) {
 //#ifdef MATX_SIMD
-//	SIMDProcessor->Zero16( mat, numRows * numColumns );
+//	SIMDProcessor.Zero16( mat, numRows * numColumns );
 //#else
 //	memset( mat, 0, numRows * numColumns * sizeof( float ) );
 //#endif
@@ -2915,7 +2915,7 @@ var mat4_default = mat4_identity;
 //ID_INLINE void idMatX::Zero( int rows, int columns ) {
 //	SetSize( rows, columns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->Zero16( mat, numRows * numColumns );
+//	SIMDProcessor.Zero16( mat, numRows * numColumns );
 //#else
 //	memset( mat, 0, rows * columns * sizeof( float ) );
 //#endif
@@ -2924,7 +2924,7 @@ var mat4_default = mat4_identity;
 //ID_INLINE void idMatX::Identity( ) {
 //	assert( numRows == numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->Zero16( mat, numRows * numColumns );
+//	SIMDProcessor.Zero16( mat, numRows * numColumns );
 //#else
 //	memset( mat, 0, numRows * numColumns * sizeof( float ) );
 //#endif
@@ -2973,7 +2973,7 @@ var mat4_default = mat4_identity;
 //
 //ID_INLINE void idMatX::Negate( ) {
 //#ifdef MATX_SIMD
-//	SIMDProcessor->Negate16( mat, numRows * numColumns );
+//	SIMDProcessor.Negate16( mat, numRows * numColumns );
 //#else
 //	int i, s;
 //	s = numRows * numColumns;
@@ -3160,15 +3160,15 @@ var mat4_default = mat4_identity;
 //		case 1:
 //			return mat[0];
 //		case 2:
-//			return reinterpret_cast<const idMat2 *>(mat)->Determinant();
+//			return reinterpret_cast<const idMat2 *>(mat).Determinant();
 //		case 3:
-//			return reinterpret_cast<const idMat3 *>(mat)->Determinant();
+//			return reinterpret_cast<const idMat3 *>(mat).Determinant();
 //		case 4:
-//			return reinterpret_cast<const idMat4 *>(mat)->Determinant();
+//			return reinterpret_cast<const idMat4 *>(mat).Determinant();
 //		case 5:
-//			return reinterpret_cast<const idMat5 *>(mat)->Determinant();
+//			return reinterpret_cast<const idMat5 *>(mat).Determinant();
 //		case 6:
-//			return reinterpret_cast<const idMat6 *>(mat)->Determinant();
+//			return reinterpret_cast<const idMat6 *>(mat).Determinant();
 //		default:
 //			return DeterminantGeneric();
 //	}
@@ -3220,15 +3220,15 @@ var mat4_default = mat4_identity;
 //			mat[0] = 1.0 / mat[0];
 //			return true;
 //		case 2:
-//			return reinterpret_cast<idMat2 *>(mat)->InverseSelf();
+//			return reinterpret_cast<idMat2 *>(mat).InverseSelf();
 //		case 3:
-//			return reinterpret_cast<idMat3 *>(mat)->InverseSelf();
+//			return reinterpret_cast<idMat3 *>(mat).InverseSelf();
 //		case 4:
-//			return reinterpret_cast<idMat4 *>(mat)->InverseSelf();
+//			return reinterpret_cast<idMat4 *>(mat).InverseSelf();
 //		case 5:
-//			return reinterpret_cast<idMat5 *>(mat)->InverseSelf();
+//			return reinterpret_cast<idMat5 *>(mat).InverseSelf();
 //		case 6:
-//			return reinterpret_cast<idMat6 *>(mat)->InverseSelf();
+//			return reinterpret_cast<idMat6 *>(mat).InverseSelf();
 //		default:
 //			return InverseSelfGeneric();
 //	}
@@ -3259,15 +3259,15 @@ var mat4_default = mat4_identity;
 //			mat[0] = 1.0 / mat[0];
 //			return true;
 //		case 2:
-//			return reinterpret_cast<idMat2 *>(mat)->InverseFastSelf();
+//			return reinterpret_cast<idMat2 *>(mat).InverseFastSelf();
 //		case 3:
-//			return reinterpret_cast<idMat3 *>(mat)->InverseFastSelf();
+//			return reinterpret_cast<idMat3 *>(mat).InverseFastSelf();
 //		case 4:
-//			return reinterpret_cast<idMat4 *>(mat)->InverseFastSelf();
+//			return reinterpret_cast<idMat4 *>(mat).InverseFastSelf();
 //		case 5:
-//			return reinterpret_cast<idMat5 *>(mat)->InverseFastSelf();
+//			return reinterpret_cast<idMat5 *>(mat).InverseFastSelf();
 //		case 6:
-//			return reinterpret_cast<idMat6 *>(mat)->InverseFastSelf();
+//			return reinterpret_cast<idMat6 *>(mat).InverseFastSelf();
 //		default:
 //			return InverseSelfGeneric();
 //	}
@@ -3281,7 +3281,7 @@ var mat4_default = mat4_identity;
 //
 //	dst.SetTempSize( numRows );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_MultiplyVecX( dst, *this, vec );
+//	SIMDProcessor.MatX_MultiplyVecX( dst, *this, vec );
 //#else
 //	Multiply( dst, vec );
 //#endif
@@ -3295,7 +3295,7 @@ var mat4_default = mat4_identity;
 //
 //	dst.SetTempSize( numRows, a.numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_MultiplyMatX( dst, *this, a );
+//	SIMDProcessor.MatX_MultiplyMatX( dst, *this, a );
 //#else
 //	Multiply( dst, a );
 //#endif
@@ -3309,7 +3309,7 @@ var mat4_default = mat4_identity;
 //
 //	dst.SetTempSize( numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_TransposeMultiplyVecX( dst, *this, vec );
+//	SIMDProcessor.MatX_TransposeMultiplyVecX( dst, *this, vec );
 //#else
 //	TransposeMultiply( dst, vec );
 //#endif
@@ -3323,7 +3323,7 @@ var mat4_default = mat4_identity;
 //
 //	dst.SetTempSize( numColumns, a.numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_TransposeMultiplyMatX( dst, *this, a );
+//	SIMDProcessor.MatX_TransposeMultiplyMatX( dst, *this, a );
 //#else
 //	TransposeMultiply( dst, a );
 //#endif
@@ -3332,7 +3332,7 @@ var mat4_default = mat4_identity;
 //
 //ID_INLINE void idMatX::Multiply( idVecX &dst, const idVecX &vec ) const {
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_MultiplyVecX( dst, *this, vec );
+//	SIMDProcessor.MatX_MultiplyVecX( dst, *this, vec );
 //#else
 //	var /*int */i:number, j:number;
 //	const float *mPtr, *vPtr;
@@ -3354,7 +3354,7 @@ var mat4_default = mat4_identity;
 //
 //ID_INLINE void idMatX::MultiplyAdd( idVecX &dst, const idVecX &vec ) const {
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_MultiplyAddVecX( dst, *this, vec );
+//	SIMDProcessor.MatX_MultiplyAddVecX( dst, *this, vec );
 //#else
 //	var /*int */i:number, j:number;
 //	const float *mPtr, *vPtr;
@@ -3376,7 +3376,7 @@ var mat4_default = mat4_identity;
 //
 //ID_INLINE void idMatX::MultiplySub( idVecX &dst, const idVecX &vec ) const {
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_MultiplySubVecX( dst, *this, vec );
+//	SIMDProcessor.MatX_MultiplySubVecX( dst, *this, vec );
 //#else
 //	var /*int */i:number, j:number;
 //	const float *mPtr, *vPtr;
@@ -3398,7 +3398,7 @@ var mat4_default = mat4_identity;
 //
 //ID_INLINE void idMatX::TransposeMultiply( idVecX &dst, const idVecX &vec ) const {
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_TransposeMultiplyVecX( dst, *this, vec );
+//	SIMDProcessor.MatX_TransposeMultiplyVecX( dst, *this, vec );
 //#else
 //	var /*int */i:number, j:number;
 //	const float *mPtr, *vPtr;
@@ -3420,7 +3420,7 @@ var mat4_default = mat4_identity;
 //
 //ID_INLINE void idMatX::TransposeMultiplyAdd( idVecX &dst, const idVecX &vec ) const {
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_TransposeMultiplyAddVecX( dst, *this, vec );
+//	SIMDProcessor.MatX_TransposeMultiplyAddVecX( dst, *this, vec );
 //#else
 //	var /*int */i:number, j:number;
 //	const float *mPtr, *vPtr;
@@ -3442,7 +3442,7 @@ var mat4_default = mat4_identity;
 //
 //ID_INLINE void idMatX::TransposeMultiplySub( idVecX &dst, const idVecX &vec ) const {
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_TransposeMultiplySubVecX( dst, *this, vec );
+//	SIMDProcessor.MatX_TransposeMultiplySubVecX( dst, *this, vec );
 //#else
 //	var /*int */i:number, j:number;
 //	const float *mPtr, *vPtr;
@@ -3464,7 +3464,7 @@ var mat4_default = mat4_identity;
 //
 //ID_INLINE void idMatX::Multiply( idMatX &dst, const idMatX &a ) const {
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_MultiplyMatX( dst, *this, a );
+//	SIMDProcessor.MatX_MultiplyMatX( dst, *this, a );
 //#else
 //	int i, j, k, l, n;
 //	float *dstPtr;
@@ -3496,7 +3496,7 @@ var mat4_default = mat4_identity;
 //
 //ID_INLINE void idMatX::TransposeMultiply( idMatX &dst, const idMatX &a ) const {
 //#ifdef MATX_SIMD
-//	SIMDProcessor->MatX_TransposeMultiplyMatX( dst, *this, a );
+//	SIMDProcessor.MatX_TransposeMultiplyMatX( dst, *this, a );
 //#else
 //	int i, j, k, l, n;
 //	float *dstPtr;
@@ -3562,4 +3562,6 @@ var mat4_default = mat4_identity;
 //	return mat;
 //}
 //
+
+}
 //#endif /* !__MATH_MATRIX_H__ */

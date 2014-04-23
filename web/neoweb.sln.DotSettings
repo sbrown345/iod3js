@@ -38,6 +38,17 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=606F236210C87D40B04A86780B980E7A/Shortcut/@EntryValue">tref</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=606F236210C87D40B04A86780B980E7A/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=606F236210C87D40B04A86780B980E7A/Text/@EntryValue">var $$VAR_NAME$ = new R(this.$VAR_NAME$);</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6BC4EABB9D3C6F4485E9B834BB68A262/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6BC4EABB9D3C6F4485E9B834BB68A262/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6BC4EABB9D3C6F4485E9B834BB68A262/Field/=propName/@KeyIndexDefined">True</s:Boolean>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6BC4EABB9D3C6F4485E9B834BB68A262/Field/=propName/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6BC4EABB9D3C6F4485E9B834BB68A262/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6BC4EABB9D3C6F4485E9B834BB68A262/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6BC4EABB9D3C6F4485E9B834BB68A262/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6BC4EABB9D3C6F4485E9B834BB68A262/Shortcut/@EntryValue">eq</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6BC4EABB9D3C6F4485E9B834BB68A262/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6BC4EABB9D3C6F4485E9B834BB68A262/Text/@EntryValue">this.$propName$.opEquals( other.$propName$ );&#xD;
+</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/Reformat/@EntryValue">True</s:Boolean>

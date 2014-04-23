@@ -679,16 +679,16 @@ idSIMD_Generic::Memcpy
 //void VPCALL idSIMD_Generic::Memset( void *dst, const int val, const int count ) {
 //	memset( dst, val, count );
 //}
-//
-///*
-//============
-//idSIMD_Generic::Zero16
-//============
-//*/
-//void VPCALL idSIMD_Generic::Zero16( float *dst, const int count ) {
-//	memset( dst, 0, count * sizeof( float ) );
-//}
-//
+
+/*
+============
+idSIMD_Generic::Zero16
+============
+*/
+	static Zero16 ( /*float **/dst: Float32Array, /*const int */count: number ): void {
+		memset( dst, 0, count * sizeof( float ) );
+	}
+
 ///*
 //============
 //idSIMD_Generic::Negate16
