@@ -257,12 +257,12 @@ var MATRIX_EPSILON			=	1e-6
 //}
 //
 //ID_INLINE bool idMat2::IsSymmetric( const float epsilon ) const {
-//	return ( idMath::Fabs( mat[0][1] - mat[1][0] ) < epsilon );
+//	return ( idMath.Fabs( mat[0][1] - mat[1][0] ) < epsilon );
 //}
 //
 //ID_INLINE bool idMat2::IsDiagonal( const float epsilon ) const {
-//	if ( idMath::Fabs( mat[0][1] ) > epsilon ||
-//		idMath::Fabs( mat[1][0] ) > epsilon ) {
+//	if ( idMath.Fabs( mat[0][1] ) > epsilon ||
+//		idMath.Fabs( mat[1][0] ) > epsilon ) {
 //		return false;
 //	}
 //	return true;
@@ -647,25 +647,25 @@ class idMat3 {
 	}
 
 //ID_INLINE bool idMat3::IsSymmetric( const float epsilon ) const {
-//	if ( idMath::Fabs( this.mat[0][1] - this.mat[1][0] ) > epsilon ) {
+//	if ( idMath.Fabs( this.mat[0][1] - this.mat[1][0] ) > epsilon ) {
 //		return false;
 //	}
-//	if ( idMath::Fabs( this.mat[0][2] - this.mat[2][0] ) > epsilon ) {
+//	if ( idMath.Fabs( this.mat[0][2] - this.mat[2][0] ) > epsilon ) {
 //		return false;
 //	}
-//	if ( idMath::Fabs( this.mat[1][2] - this.mat[2][1] ) > epsilon ) {
+//	if ( idMath.Fabs( this.mat[1][2] - this.mat[2][1] ) > epsilon ) {
 //		return false;
 //	}
 //	return true;
 //}
 //
 //ID_INLINE bool idMat3::IsDiagonal( const float epsilon ) const {
-//	if ( idMath::Fabs( this.mat[0][1] ) > epsilon ||
-//		idMath::Fabs( this.mat[0][2] ) > epsilon ||
-//		idMath::Fabs( this.mat[1][0] ) > epsilon ||
-//		idMath::Fabs( this.mat[1][2] ) > epsilon ||
-//		idMath::Fabs( this.mat[2][0] ) > epsilon ||
-//		idMath::Fabs( this.mat[2][1] ) > epsilon ) {
+//	if ( idMath.Fabs( this.mat[0][1] ) > epsilon ||
+//		idMath.Fabs( this.mat[0][2] ) > epsilon ||
+//		idMath.Fabs( this.mat[1][0] ) > epsilon ||
+//		idMath.Fabs( this.mat[1][2] ) > epsilon ||
+//		idMath.Fabs( this.mat[2][0] ) > epsilon ||
+//		idMath.Fabs( this.mat[2][1] ) > epsilon ) {
 //		return false;
 //	}
 //	return true;
@@ -745,18 +745,14 @@ class idMat3 {
 //
 //	return *this;
 //}
-//
-//ID_INLINE idMat3 idMat3::Inverse( ) const {
-//	idMat3 invMat;
-//
-//	invMat = *this;
-//#if !defined(NDEBUG)
-//	int r = 
-//#endif
-//		invMat.InverseSelf();
-//	assert( r );
-//	return invMat;
-//}
+
+	Inverse ( ): idMat3 {
+		var invMat = this;
+		var r = invMat.InverseSelf ( );
+
+		assert( r );
+		return invMat;
+	}
 //
 //ID_INLINE idMat3 idMat3::InverseFast( ) const {
 //	idMat3 invMat;
@@ -876,7 +872,7 @@ idMat3::ToAngles
 //	if ( trace > 0.0 ) {
 //
 //		t = trace + 1.0;
-//		s = idMath::InvSqrt( t ) * 0.5f;
+//		s = idMath.InvSqrt( t ) * 0.5;
 //
 //		q[3] = s * t;
 //		q[0] = ( this.mat[ 2 ][ 1 ] - this.mat[ 1 ][ 2 ] ) * s;
@@ -896,7 +892,7 @@ idMat3::ToAngles
 //		k = next[ j ];
 //
 //		t = ( this.mat[ i ][ i ] - ( this.mat[ j ][ j ] + this.mat[ k ][ k ] ) ) + 1.0;
-//		s = idMath::InvSqrt( t ) * 0.5f;
+//		s = idMath.InvSqrt( t ) * 0.5;
 //
 //		q[i] = s * t;
 //		q[3] = ( this.mat[ k ][ j ] - this.mat[ j ][ k ] ) * s;
@@ -924,63 +920,63 @@ idMat3::ToAngles
 idMat3::ToRotation
 ============
 */
-////idRotation idMat3::ToRotation( ) :idRotation {
-////	idRotation	r;
-////	float		trace;
-////	float		s;
-////	float		t;
-////	int     	i;
-////	int			j;
-////	int			k;
-////	static int 	next[ 3 ] = { 1, 2, 0 };
+	ToRotation ( ): idRotation {
+		var r = new idRotation;
+		var trace: number /*float*/;
+		var s: number /*float*/;
+		var t: number /*float*/;
+		var i: number /*int*/;
+		var j: number /*int*/;
+		var k: number /*int*/;
+		var /*static int*/next = [1, 2, 0];
 
-////	trace = this.mat[ 0 ][ 0 ] + this.mat[ 1 ][ 1 ] + this.mat[ 2 ][ 2 ];
-////	if ( trace > 0.0 ) {
+		trace = this.mat[0][0] + this.mat[1][1] + this.mat[2][2];
+		if ( trace > 0.0 ) {
 
-////		t = trace + 1.0;
-////		s = idMath::InvSqrt( t ) * 0.5f;
-    
-////		r.angle = s * t;
-////		r.vec[0] = ( this.mat[ 2 ][ 1 ] - this.mat[ 1 ][ 2 ] ) * s;
-////		r.vec[1] = ( this.mat[ 0 ][ 2 ] - this.mat[ 2 ][ 0 ] ) * s;
-////		r.vec[2] = ( this.mat[ 1 ][ 0 ] - this.mat[ 0 ][ 1 ] ) * s;
+			t = trace + 1.0;
+			s = idMath.InvSqrt( t ) * 0.5;
 
-////	} else {
+			r.angle = s * t;
+			r.vec[0] = ( this.mat[2][1] - this.mat[1][2] ) * s;
+			r.vec[1] = ( this.mat[0][2] - this.mat[2][0] ) * s;
+			r.vec[2] = ( this.mat[1][0] - this.mat[0][1] ) * s;
 
-////		i = 0;
-////		if ( this.mat[ 1 ][ 1 ] > this.mat[ 0 ][ 0 ] ) {
-////			i = 1;
-////		}
-////		if ( this.mat[ 2 ][ 2 ] > this.mat[ i ][ i ] ) {
-////			i = 2;
-////		}
-////		j = next[ i ];  
-////		k = next[ j ];
-    
-////		t = ( this.mat[ i ][ i ] - ( this.mat[ j ][ j ] + this.mat[ k ][ k ] ) ) + 1.0;
-////		s = idMath::InvSqrt( t ) * 0.5f;
-    
-////		r.vec[i]	= s * t;
-////		r.angle		= ( this.mat[ k ][ j ] - this.mat[ j ][ k ] ) * s;
-////		r.vec[j]	= ( this.mat[ j ][ i ] + this.mat[ i ][ j ] ) * s;
-////		r.vec[k]	= ( this.mat[ k ][ i ] + this.mat[ i ][ k ] ) * s;
-////	}
-////	r.angle = idMath::ACos( r.angle );
-////	if ( idMath::Fabs( r.angle ) < 1e-10f ) {
-////		r.vec.Set( 0.0, 0.0, 1.0 );
-////		r.angle = 0.0;
-////	} else {
-////		//vec *= (1.0 / sin( angle ));
-////		r.vec.Normalize();
-////		r.vec.FixDegenerateNormal();
-////		r.angle *= 2.0 * idMath::M_RAD2DEG;
-////	}
+		} else {
 
-////	r.origin.Zero();
-////	r.axis = *this;
-////	r.axisValid = true;
-////	return r;
-////}
+			i = 0;
+			if ( this.mat[1][1] > this.mat[0][0] ) {
+				i = 1;
+			}
+			if ( this.mat[2][2] > this.mat[i][i] ) {
+				i = 2;
+			}
+			j = next[i];
+			k = next[j];
+
+			t = ( this.mat[i][i] - ( this.mat[j][j] + this.mat[k][k] ) ) + 1.0;
+			s = idMath.InvSqrt( t ) * 0.5;
+
+			r.vec[i] = s * t;
+			r.angle = ( this.mat[k][j] - this.mat[j][k] ) * s;
+			r.vec[j] = ( this.mat[j][i] + this.mat[i][j] ) * s;
+			r.vec[k] = ( this.mat[k][i] + this.mat[i][k] ) * s;
+		}
+		r.angle = idMath.ACos( r.angle );
+		if ( idMath.Fabs( r.angle ) < 1e-10 ) {
+			r.vec.Set( 0.0, 0.0, 1.0 );
+			r.angle = 0.0;
+		} else {
+			//vec *= (1.0 / sin( angle ));
+			r.vec.Normalize ( );
+			r.vec.FixDegenerateNormal ( );
+			r.angle *= 2.0 * idMath.M_RAD2DEG;
+		}
+
+		r.origin.Zero ( );
+		r.axis.opEquals( this );
+		r.axisValid = true;
+		return r;
+	}
 //
 ///*
 //=================
@@ -1006,51 +1002,52 @@ idMat3::ToRotation
 //	return mat[0][0] * det2_12_12 - mat[0][1] * det2_12_02 + mat[0][2] * det2_12_01;
 //}
 //
-///*
-//============
-//idMat3::InverseSelf
-//============
-//*/
-//bool idMat3::InverseSelf( ) {
-//	// 18+3+9 = 30 multiplications
-//	//			 1 division
-//	idMat3 inverse;
-//	double det, invDet;
-//
-//	inverse[0][0] = mat[1][1] * mat[2][2] - mat[1][2] * mat[2][1];
-//	inverse[1][0] = mat[1][2] * mat[2][0] - mat[1][0] * mat[2][2];
-//	inverse[2][0] = mat[1][0] * mat[2][1] - mat[1][1] * mat[2][0];
-//
-//	det = mat[0][0] * inverse[0][0] + mat[0][1] * inverse[1][0] + mat[0][2] * inverse[2][0];
-//
-//	if ( idMath::Fabs( det ) < MATRIX_INVERSE_EPSILON ) {
-//		return false;
-//	}
-//
-//	invDet = 1.0 / det;
-//
-//	inverse[0][1] = mat[0][2] * mat[2][1] - mat[0][1] * mat[2][2];
-//	inverse[0][2] = mat[0][1] * mat[1][2] - mat[0][2] * mat[1][1];
-//	inverse[1][1] = mat[0][0] * mat[2][2] - mat[0][2] * mat[2][0];
-//	inverse[1][2] = mat[0][2] * mat[1][0] - mat[0][0] * mat[1][2];
-//	inverse[2][1] = mat[0][1] * mat[2][0] - mat[0][0] * mat[2][1];
-//	inverse[2][2] = mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0];
-//
-//	mat[0][0] = inverse[0][0] * invDet;
-//	mat[0][1] = inverse[0][1] * invDet;
-//	mat[0][2] = inverse[0][2] * invDet;
-//
-//	mat[1][0] = inverse[1][0] * invDet;
-//	mat[1][1] = inverse[1][1] * invDet;
-//	mat[1][2] = inverse[1][2] * invDet;
-//
-//	mat[2][0] = inverse[2][0] * invDet;
-//	mat[2][1] = inverse[2][1] * invDet;
-//	mat[2][2] = inverse[2][2] * invDet;
-//
-//	return true;
-//}
-//
+/*
+============
+idMat3::InverseSelf
+============
+*/
+	InverseSelf ( ): boolean {
+		// 18+3+9 = 30 multiplications
+		//			 1 division
+		var inverse = new idMat3;
+		var /*double */det: number, invDet: number;
+		var mat = this.mat;
+
+		inverse[0][0] = mat[1][1] * mat[2][2] - mat[1][2] * mat[2][1];
+		inverse[1][0] = mat[1][2] * mat[2][0] - mat[1][0] * mat[2][2];
+		inverse[2][0] = mat[1][0] * mat[2][1] - mat[1][1] * mat[2][0];
+
+		det = mat[0][0] * inverse[0][0] + mat[0][1] * inverse[1][0] + mat[0][2] * inverse[2][0];
+
+		if ( idMath.Fabs( det ) < MATRIX_INVERSE_EPSILON ) {
+			return false;
+		}
+
+		invDet = 1.0 / det;
+
+		inverse[0][1] = mat[0][2] * mat[2][1] - mat[0][1] * mat[2][2];
+		inverse[0][2] = mat[0][1] * mat[1][2] - mat[0][2] * mat[1][1];
+		inverse[1][1] = mat[0][0] * mat[2][2] - mat[0][2] * mat[2][0];
+		inverse[1][2] = mat[0][2] * mat[1][0] - mat[0][0] * mat[1][2];
+		inverse[2][1] = mat[0][1] * mat[2][0] - mat[0][0] * mat[2][1];
+		inverse[2][2] = mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0];
+
+		mat[0][0] = inverse[0][0] * invDet;
+		mat[0][1] = inverse[0][1] * invDet;
+		mat[0][2] = inverse[0][2] * invDet;
+
+		mat[1][0] = inverse[1][0] * invDet;
+		mat[1][1] = inverse[1][1] * invDet;
+		mat[1][2] = inverse[1][2] * invDet;
+
+		mat[2][0] = inverse[2][0] * invDet;
+		mat[2][1] = inverse[2][1] * invDet;
+		mat[2][2] = inverse[2][2] * invDet;
+
+		return true;
+	}
+
 ///*
 //============
 //idMat3::InverseFastSelf
@@ -1069,7 +1066,7 @@ idMat3::ToRotation
 //
 //	det = mat[0][0] * inverse[0][0] + mat[0][1] * inverse[1][0] + mat[0][2] * inverse[2][0];
 //
-//	if ( idMath::Fabs( det ) < MATRIX_INVERSE_EPSILON ) {
+//	if ( idMath.Fabs( det ) < MATRIX_INVERSE_EPSILON ) {
 //		return false;
 //	}
 //
@@ -1157,7 +1154,7 @@ idMat3::ToRotation
 //	// r0 = m0.Inverse();	// 2x2
 //	det = mat[0*3+0] * mat[1*3+1] - mat[0*3+1] * mat[1*3+0];
 //
-//	if ( idMath::Fabs( det ) < MATRIX_INVERSE_EPSILON ) {
+//	if ( idMath.Fabs( det ) < MATRIX_INVERSE_EPSILON ) {
 //		return false;
 //	}
 //
@@ -1179,7 +1176,7 @@ idMat3::ToRotation
 //	r3 = r2[0] - mat[2*3+2];
 //
 //	// r3.InverseSelf();
-//	if ( idMath::Fabs( r3 ) < MATRIX_INVERSE_EPSILON ) {
+//	if ( idMath.Fabs( r3 ) < MATRIX_INVERSE_EPSILON ) {
 //		return false;
 //	}
 //
@@ -1620,7 +1617,7 @@ class idMat4 {
 //	ptr1 = reinterpret_cast<const float *>(mat);
 //	ptr2 = reinterpret_cast<const float *>(a.mat);
 //	for ( i = 0; i < 4*4; i++ ) {
-//		if ( idMath::Fabs( ptr1[i] - ptr2[i] ) > epsilon ) {
+//		if ( idMath.Fabs( ptr1[i] - ptr2[i] ) > epsilon ) {
 //			return false;
 //		}
 //	}
@@ -1650,7 +1647,7 @@ class idMat4 {
 //ID_INLINE bool idMat4::IsSymmetric( const float epsilon ) const {
 //	for ( int i = 1; i < 4; i++ ) {
 //		for ( int j = 0; j < i; j++ ) {
-//			if ( idMath::Fabs( mat[i][j] - mat[j][i] ) > epsilon ) {
+//			if ( idMath.Fabs( mat[i][j] - mat[j][i] ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -1661,7 +1658,7 @@ class idMat4 {
 //ID_INLINE bool idMat4::IsDiagonal( const float epsilon ) const {
 //	for ( int i = 0; i < 4; i++ ) {
 //		for ( int j = 0; j < 4; j++ ) {
-//			if ( i != j && idMath::Fabs( mat[i][j] ) > epsilon ) {
+//			if ( i != j && idMath.Fabs( mat[i][j] ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -1960,7 +1957,7 @@ var mat4_default = mat4_identity;
 //	ptr1 = reinterpret_cast<const float *>(mat);
 //	ptr2 = reinterpret_cast<const float *>(a.mat);
 //	for ( i = 0; i < 5*5; i++ ) {
-//		if ( idMath::Fabs( ptr1[i] - ptr2[i] ) > epsilon ) {
+//		if ( idMath.Fabs( ptr1[i] - ptr2[i] ) > epsilon ) {
 //			return false;
 //		}
 //	}
@@ -1990,7 +1987,7 @@ var mat4_default = mat4_identity;
 //ID_INLINE bool idMat5::IsSymmetric( const float epsilon ) const {
 //	for ( int i = 1; i < 5; i++ ) {
 //		for ( int j = 0; j < i; j++ ) {
-//			if ( idMath::Fabs( mat[i][j] - mat[j][i] ) > epsilon ) {
+//			if ( idMath.Fabs( mat[i][j] - mat[j][i] ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -2001,7 +1998,7 @@ var mat4_default = mat4_identity;
 //ID_INLINE bool idMat5::IsDiagonal( const float epsilon ) const {
 //	for ( int i = 0; i < 5; i++ ) {
 //		for ( int j = 0; j < 5; j++ ) {
-//			if ( i != j && idMath::Fabs( mat[i][j] ) > epsilon ) {
+//			if ( i != j && idMath.Fabs( mat[i][j] ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -2283,7 +2280,7 @@ var mat4_default = mat4_identity;
 //	ptr1 = reinterpret_cast<const float *>(mat);
 //	ptr2 = reinterpret_cast<const float *>(a.mat);
 //	for ( i = 0; i < 6*6; i++ ) {
-//		if ( idMath::Fabs( ptr1[i] - ptr2[i] ) > epsilon ) {
+//		if ( idMath.Fabs( ptr1[i] - ptr2[i] ) > epsilon ) {
 //			return false;
 //		}
 //	}
@@ -2313,7 +2310,7 @@ var mat4_default = mat4_identity;
 //ID_INLINE bool idMat6::IsSymmetric( const float epsilon ) const {
 //	for ( int i = 1; i < 6; i++ ) {
 //		for ( int j = 0; j < i; j++ ) {
-//			if ( idMath::Fabs( mat[i][j] - mat[j][i] ) > epsilon ) {
+//			if ( idMath.Fabs( mat[i][j] - mat[j][i] ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -2324,7 +2321,7 @@ var mat4_default = mat4_identity;
 //ID_INLINE bool idMat6::IsDiagonal( const float epsilon ) const {
 //	for ( int i = 0; i < 6; i++ ) {
 //		for ( int j = 0; j < 6; j++ ) {
-//			if ( i != j && idMath::Fabs( mat[i][j] ) > epsilon ) {
+//			if ( i != j && idMath.Fabs( mat[i][j] ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -2845,7 +2842,7 @@ class idMatX {
 //
 //	s = numRows * numColumns;
 //	for ( i = 0; i < s; i++ ) {
-//		if ( idMath::Fabs( mat[i] - a.mat[i] ) > epsilon ) {
+//		if ( idMath.Fabs( mat[i] - a.mat[i] ) > epsilon ) {
 //			return false;
 //		}
 //	}
@@ -3059,7 +3056,7 @@ class idMatX {
 //	maxDiff = -1.0;
 //	for ( i = 0; i < numRows; i++ ) {
 //		for ( j = 0; j < numColumns; j++ ) {
-//			diff = idMath::Fabs( mat[ i * numColumns + j ] - m[i][j] );
+//			diff = idMath.Fabs( mat[ i * numColumns + j ] - m[i][j] );
 //			if ( maxDiff < 0.0 || diff > maxDiff ) {
 //				maxDiff = diff;
 //			}
@@ -3072,7 +3069,7 @@ class idMatX {
 //	// returns true if (*this) == Zero
 //	for ( int i = 0; i < numRows; i++ ) {
 //		for ( int j = 0; j < numColumns; j++ ) {
-//			if ( idMath::Fabs( mat[i * numColumns + j] ) > epsilon ) {
+//			if ( idMath.Fabs( mat[i * numColumns + j] ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -3085,7 +3082,7 @@ class idMatX {
 //	assert( numRows == numColumns );
 //	for ( int i = 0; i < numRows; i++ ) {
 //		for ( int j = 0; j < numColumns; j++ ) {
-//			if ( idMath::Fabs( mat[i * numColumns + j] - (float)( i == j ) ) > epsilon ) {
+//			if ( idMath.Fabs( mat[i * numColumns + j] - (float)( i == j ) ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -3098,7 +3095,7 @@ class idMatX {
 //	assert( numRows == numColumns );
 //	for ( int i = 0; i < numRows; i++ ) {
 //		for ( int j = 0; j < numColumns; j++ ) {
-//			if ( i != j && idMath::Fabs( mat[i * numColumns + j] ) > epsilon ) {
+//			if ( i != j && idMath.Fabs( mat[i * numColumns + j] ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -3114,10 +3111,10 @@ class idMatX {
 //	}
 //	for ( int i = 0; i < numRows-2; i++ ) {
 //		for ( int j = i+2; j < numColumns; j++ ) {
-//			if ( idMath::Fabs( (*this)[i][j] ) > epsilon ) {
+//			if ( idMath.Fabs( (*this)[i][j] ) > epsilon ) {
 //				return false;
 //			}
-//			if ( idMath::Fabs( (*this)[j][i] ) > epsilon ) {
+//			if ( idMath.Fabs( (*this)[j][i] ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -3132,7 +3129,7 @@ class idMatX {
 //	}
 //	for ( int i = 0; i < numRows; i++ ) {
 //		for ( int j = 0; j < numColumns; j++ ) {
-//			if ( idMath::Fabs( mat[ i * numColumns + j ] - mat[ j * numColumns + i ] ) > epsilon ) {
+//			if ( idMath.Fabs( mat[ i * numColumns + j ] - mat[ j * numColumns + i ] ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -3214,7 +3211,7 @@ class idMatX {
 //
 //	switch( numRows ) {
 //		case 1:
-//			if ( idMath::Fabs( mat[0] ) < MATRIX_INVERSE_EPSILON ) {
+//			if ( idMath.Fabs( mat[0] ) < MATRIX_INVERSE_EPSILON ) {
 //				return false;
 //			}
 //			mat[0] = 1.0 / mat[0];
@@ -3253,7 +3250,7 @@ class idMatX {
 //
 //	switch( numRows ) {
 //		case 1:
-//			if ( idMath::Fabs( mat[0] ) < MATRIX_INVERSE_EPSILON ) {
+//			if ( idMath.Fabs( mat[0] ) < MATRIX_INVERSE_EPSILON ) {
 //				return false;
 //			}
 //			mat[0] = 1.0 / mat[0];

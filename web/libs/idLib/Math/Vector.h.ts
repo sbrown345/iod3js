@@ -2173,7 +2173,7 @@ class idVec6 {
 
 var VECX_MAX_TEMP = 1024;
 ////#define VECX_QUAD( x )		( ( ( ( x ) + 3 ) & ~3 ) * sizeof( float ) )
-////#define VECX_CLEAREND()		int s = size; while( s < ( ( s + 3) & ~3 ) ) { this.p[s++] = 0.0; }
+function VECX_CLEAREND(_this: idVecX):void { var/*int */s = _this.size; while (s < ((s + 3) & ~3)) { _this.p[s++] = 0.0; }}
 ////#define VECX_ALLOCA( n )	( (float *) _alloca16( VECX_QUAD( n ) ) )
 ////#define VECX_SIMD
 
@@ -2460,7 +2460,7 @@ SetSize( /*int */newSize :number):void {
 		this.alloced = alloc;
 	}
 	this.size = newSize;
-	VECX_CLEAREND();
+	VECX_CLEAREND(this);
 }
 
 ////ID_INLINE void idVecX::ChangeSize( int newSize, bool makeZero ) {
@@ -2483,7 +2483,7 @@ SetSize( /*int */newSize :number):void {
 ////		}
 ////	}
 ////	this.size = newSize;
-////	VECX_CLEAREND();
+////	VECX_CLEAREND(this);
 ////}
 
 ////ID_INLINE void idVecX::SetTempSize( int newSize ) {
@@ -2496,7 +2496,7 @@ SetSize( /*int */newSize :number):void {
 ////	}
 ////	this.p = idVecX::tempPtr + idVecX::tempIndex;
 ////	idVecX::tempIndex += this.alloced;
-////	VECX_CLEAREND();
+////	VECX_CLEAREND(this);
 ////}
 
 ////ID_INLINE void idVecX::SetData( int length, float *data ) {
@@ -2507,7 +2507,7 @@ SetSize( /*int */newSize :number):void {
 ////	this.p = data;
 ////	this.size = length;
 ////	this.alloced = -1;
-////	VECX_CLEAREND();
+////	VECX_CLEAREND(this);
 ////}
 
 	Zero ( ): void

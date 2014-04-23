@@ -272,33 +272,33 @@ class idAFConstraint {
 	Translate ( translation: idVec3 ) {
 		assert( 0 );
 	}
-////
-/////*
-////================
-////idAFConstraint::Rotate
-////================
-////*/
-////void idAFConstraint::Rotate( const idRotation &rotation ) {
-////	assert( 0 );
-////}
-////
-/////*
-////================
-////idAFConstraint::GetCenter
-////================
-////*/
-////void idAFConstraint::GetCenter( idVec3 &center ) {
-////	center.Zero();
-////}
-////
-/////*
-////================
-////idAFConstraint::DebugDraw
-////================
-////*/
-////void idAFConstraint::DebugDraw( ) {
-////}
-////
+
+/*
+================
+idAFConstraint::Rotate
+================
+*/
+	Rotate ( rotation: idRotation ): void {
+		assert( 0 );
+	}
+
+/*
+================
+idAFConstraint::GetCenter
+================
+*/
+	GetCenter ( center: idVec3 ): void {
+		center.Zero ( );
+	}
+
+/*
+================
+idAFConstraint::DebugDraw
+================
+*/
+	DebugDraw ( ): void {
+	}
+
 /////*
 ////================
 ////idAFConstraint::InitSize
@@ -2984,7 +2984,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		idMat3 masterAxis;
 	////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 	////		if ( this.current.atRest >= 0 && ( this.masterBody.current.worldOrigin != masterOrigin || this.masterBody.current.worldAxis != masterAxis ) ) {
-	////			Activate();
+	////			this.Activate();
 	////		}
 	////		this.masterBody.current.worldOrigin = masterOrigin;
 	////		this.masterBody.current.worldAxis = masterAxis;
@@ -4158,7 +4158,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	idMat3 invWorldInertiaTensor = this.bodies[id].current.worldAxis.Transpose() * this.bodies[id].inverseInertiaTensor * this.bodies[id].current.worldAxis;
 	////	this.bodies[id].current.spatialVelocity.SubVec3(0) += this.bodies[id].invMass * impulse;
 	////	this.bodies[id].current.spatialVelocity.SubVec3(1) += invWorldInertiaTensor * (point - this.bodies[id].current.worldOrigin).Cross( impulse );
-	////	Activate();
+	////	this.Activate();
 	////}
 	////
 	/////*
@@ -4175,7 +4175,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////	this.bodies[id].current.externalForce.SubVec3( 0 ) += force;
 	////	this.bodies[id].current.externalForce.SubVec3( 1 ) += (point - this.bodies[id].current.worldOrigin).Cross( force );
-	////	Activate();
+	////	this.Activate();
 	////}
 	////
 	/////*
@@ -4295,7 +4295,7 @@ class idPhysics_AF extends idPhysics_Base {
 		//	body.current.worldOrigin += translation;
 		//}
 
-		//Activate();
+		//this.Activate();
 
 		//UpdateClipModels();
 	}
@@ -4324,7 +4324,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		body.current.worldAxis *= rotation.ToMat3();
 	////	}
 	////
-	////	Activate();
+	////	this.Activate();
 	////
 	////	UpdateClipModels();
 	////}
@@ -4367,7 +4367,7 @@ class idPhysics_AF extends idPhysics_Base {
 ////		return;
 ////	}
 ////	this.bodies[id].current.spatialVelocity.SubVec3( 0 ) = newLinearVelocity;
-////	Activate();
+////	this.Activate();
 ////}
 ////
 /////*
@@ -4380,7 +4380,7 @@ class idPhysics_AF extends idPhysics_Base {
 ////		return;
 ////	}
 ////	this.bodies[id].current.spatialVelocity.SubVec3( 1 ) = newAngularVelocity;
-////	Activate();
+////	this.Activate();
 ////}
 ////
 /////*
@@ -4598,54 +4598,54 @@ idPhysics_AF::EnableClip
 ////	return this.current.pushVelocity.SubVec3(1);
 ////}
 ////
-/////*
-////================
-////idPhysics_AF::SetMaster
-////
-////   the binding is orientated based on the constraints being used
-////================
-////*/
-////void idPhysics_AF::SetMaster( idEntity *master, const bool orientated ) {
-////	var/*int*/i:number;
-////	idVec3 masterOrigin;
-////	idMat3 masterAxis;
-////	idRotation rotation;
-////
-////	if ( master ) {
-////		this.self.GetMasterPosition( masterOrigin, masterAxis );
-////		if ( !this.masterBody ) {
-////			this.masterBody = new idAFBody();
-////			// translate and rotate all the constraints with body2 == NULL from world space to master space
-////			rotation = masterAxis.Transpose().ToRotation();
-////			for ( i = 0; i < this.constraints.Num(); i++ ) {
-////				if ( this.constraints[i].GetBody2() == NULL ) {
-////					this.constraints[i].Translate( -masterOrigin );
-////					this.constraints[i].Rotate( rotation );
-////				}
-////			}
-////			Activate();
-////		}
-////		this.masterBody.current.worldOrigin = masterOrigin;
-////		this.masterBody.current.worldAxis = masterAxis;
-////	}
-////	else {
-////		if ( this.masterBody ) {
-////			// translate and rotate all the constraints with body2 == NULL from master space to world space
-////			rotation = this.masterBody.current.worldAxis.ToRotation();
-////			for ( i = 0; i < this.constraints.Num(); i++ ) {
-////				if ( this.constraints[i].GetBody2() == NULL ) {
-////					this.constraints[i].Rotate( rotation );
-////					this.constraints[i].Translate( this.masterBody.current.worldOrigin );
-////				}
-////			}
-////			delete this.masterBody;
-////			this.masterBody = NULL;
-////			Activate();
-////		}
-////	}
-////}
-////
-////
+/*
+================
+idPhysics_AF::SetMaster
+
+   the binding is orientated based on the constraints being used
+================
+*/
+SetMaster(master:idEntity , orientated :boolean = true):void {
+	var/*int*/i:number;
+	var masterOrigin = new idVec3 ;
+	var masterAxis = new idMat3;
+	var rotation = new idRotation;
+
+	if ( master ) {
+		this.self.GetMasterPosition( masterOrigin, masterAxis );
+		if ( !this.masterBody ) {
+			this.masterBody = new idAFBody();
+			// translate and rotate all the constraints with body2 == NULL from world space to master space
+			rotation.opEquals( masterAxis.Transpose ( ).ToRotation ( ) );
+			for ( i = 0; i < this.constraints.Num(); i++ ) {
+				if ( this.constraints[i].GetBody2() == null ) {
+					this.constraints[i].Translate( masterOrigin.opUnaryMinus() );
+					this.constraints[i].Rotate( rotation );
+				}
+			}
+			this.Activate();
+		}
+		this.masterBody.current.worldOrigin.opEquals( masterOrigin );
+		this.masterBody.current.worldAxis.opEquals( masterAxis );
+	}
+	else {
+		if ( this.masterBody ) {
+			// translate and rotate all the constraints with body2 == NULL from master space to world space
+			rotation = this.masterBody.current.worldAxis.ToRotation();
+			for ( i = 0; i < this.constraints.Num(); i++ ) {
+				if ( this.constraints[i].GetBody2() == null ) {
+					this.constraints[i].Rotate( rotation );
+					this.constraints[i].Translate( this.masterBody.current.worldOrigin );
+				}
+			}
+			delete this.masterBody;
+			this.masterBody = null;
+			this.Activate();
+		}
+	}
+}
+
+
 ////const float	AF_VELOCITY_MAX				= 16000;
 ////const int	AF_VELOCITY_TOTAL_BITS		= 16;
 ////const int	AF_VELOCITY_EXPONENT_BITS	= idMath::BitsForInteger( idMath::BitsForFloat( AF_VELOCITY_MAX ) ) + 1;

@@ -134,7 +134,7 @@ class idMoveable extends idEntity {
 	////*/
 	Spawn ( ): void {
 		var trm = new idTraceModel;
-		var /*float */density: number, friction: number, bouncyness: number, mass: number;
+		var /*float */density = new R<number> ( ), friction = new R<number> ( ), bouncyness = new R<number> ( ), mass: number;
 		var /*int */clipShrink: number;
 		var clipModelName = new idStr;
 
@@ -144,7 +144,7 @@ class idMoveable extends idEntity {
 			clipModelName.opEquals( this.spawnArgs.GetString( "model" ) ); // use the visual model
 		}
 
-		if ( !collisionModelManager.TrmFromModel( clipModelName.data, trm ) ) {
+		if ( !collisionModelManager.TrmFromModel_name( clipModelName.data, trm ) ) {
 			gameLocal.Error( "idMoveable '%s': cannot load collision model %s", this.name.c_str ( ), clipModelName.c_str ( ) );
 			return;
 		}
@@ -156,12 +156,12 @@ class idMoveable extends idEntity {
 		}
 
 		// get rigid body properties
-		this.spawnArgs.GetFloat( "density", "0.5", density );
-		density = idMath.ClampFloat( 0.001, 1000.0, density );
-		this.spawnArgs.GetFloat( "friction", "0.05", friction );
-		friction = idMath.ClampFloat( 0.0, 1.0, friction );
-		this.spawnArgs.GetFloat( "bouncyness", "0.6", bouncyness );
-		bouncyness = idMath.ClampFloat( 0.0, 1.0, bouncyness );
+		this.spawnArgs.GetFloat_R( "density", "0.5", density );
+		density.$ = idMath.ClampFloat( 0.001, 1000.0, density.$ );
+		this.spawnArgs.GetFloat_R( "friction", "0.05", friction );
+		friction.$ = idMath.ClampFloat( 0.0, 1.0, friction.$ );
+		this.spawnArgs.GetFloat_R( "bouncyness", "0.6", bouncyness );
+		bouncyness.$ = idMath.ClampFloat( 0.0, 1.0, bouncyness.$ );
 		this.explode = this.spawnArgs.GetBool( "explode" );
 		this.unbindOnDeath = this.spawnArgs.GetBool( "unbindondeath" );
 
@@ -187,19 +187,19 @@ class idMoveable extends idEntity {
 
 		// setup the physics
 		this.physicsObj.SetSelf( this );
-		this.physicsObj.SetClipModel( new idClipModel( trm ), density );
+		this.physicsObj.SetClipModel( new idClipModel( trm ), density.$ );
 		this.physicsObj.GetClipModel ( ).SetMaterial( this.GetRenderModelMaterial ( ) );
 		this.physicsObj.SetOrigin( this.GetPhysics ( ).GetOrigin ( ) );
 		this.physicsObj.SetAxis( this.GetPhysics ( ).GetAxis ( ) );
-		this.physicsObj.SetBouncyness( bouncyness );
-		this.physicsObj.SetFriction( 0.6, 0.6, friction );
+		this.physicsObj.SetBouncyness( bouncyness.$ );
+		this.physicsObj.SetFriction( 0.6, 0.6, friction.$ );
 		this.physicsObj.SetGravity( gameLocal.GetGravity ( ) );
 		this.physicsObj.SetContents( contentsFlags_t.CONTENTS_SOLID );
 		this.physicsObj.SetClipMask( MASK_SOLID | contentsFlags_t.CONTENTS_BODY | contentsFlags_t.CONTENTS_CORPSE | contentsFlags_t.CONTENTS_MOVEABLECLIP );
 		this.SetPhysics( this.physicsObj );
 
 		var $mass = new R( mass );
-		if ( this.spawnArgs.GetFloat( "mass", "10", $mass ) ) {
+		if ( this.spawnArgs.GetFloat_R( "mass", "10", $mass ) ) {
 			mass = $mass.$;
 			this.physicsObj.SetMass( mass );
 		}

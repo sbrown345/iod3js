@@ -1452,7 +1452,7 @@ idCollisionModelManagerLocal::SetupTrmModelStructure
 ////as a reusable temporary buffer
 ////================
 ////*/
-////cmHandle_t idCollisionModelManagerLocal::SetupTrmModel( const idTraceModel &trm, material:idMaterial  ) {
+////cmHandle_t idCollisionModelManagerLocal::SetupTrmModel( const trm: idTraceModel, material:idMaterial  ) {
 ////	var /*int */i:number, j:number;
 ////	cm_vertex_t *vertex;
 ////	cm_edge_t *edge;
@@ -1472,7 +1472,7 @@ idCollisionModelManagerLocal::SetupTrmModelStructure
 ////	model.node.brushes = NULL;
 ////	model.node.polygons = NULL;
 ////	// if not a valid trace model
-////	if ( trm.type == TRM_INVALID || !trm.numPolys ) {
+////	if ( trm.type == traceModel_t.TRM_INVALID || !trm.numPolys ) {
 ////		return TRACE_MODEL_HANDLE;
 ////	}
 ////	// vertices
@@ -4209,51 +4209,51 @@ idCollisionModelManagerLocal::LoadModel
 		return 0;
 	}
 
-///*
-//==================
-//idCollisionModelManagerLocal::TrmFromModel_r
-//==================
-//*/
-//bool idCollisionModelManagerLocal::TrmFromModel_r( idTraceModel &trm, node: cm_node_t ) {
-//	var pref: cm_polygonRef_t;
-//	var p: cm_polygon_t;
-//	var i:number;
-//
-//	while ( 1 ) {
-//		for ( pref = node.polygons; pref; pref = pref.next ) {
-//			p = pref.p;
-//
-//			if ( p.checkcount == this.checkCount ) {
-//				continue;
-//			}
-//
-//			p.checkcount = this.checkCount;
-//
-//			if ( trm.numPolys >= MAX_TRACEMODEL_POLYS ) {
-//				return false;
-//			}
-//			// copy polygon properties
-//			trm.polys[ trm.numPolys ].bounds = p.bounds;
-//			trm.polys[ trm.numPolys ].normal = p.plane.Normal();
-//			trm.polys[ trm.numPolys ].dist = p.plane.Dist();
-//			trm.polys[ trm.numPolys ].numEdges = p.numEdges;
-//			// copy edge index
-//			for ( i = 0; i < p.numEdges; i++ ) {
-//				trm.polys[ trm.numPolys ].edges[ i ] = p.edges[ i ];
-//			}
-//			trm.numPolys++;
-//		}
-//		if ( node.planeType == -1 ) {
-//			break;
-//		}
-//		if ( !TrmFromModel_r( trm, node.children[1] ) ) {
-//			return false;
-//		}
-//		node = node.children[0];
-//	}
-//	return true;
-//}
-//
+/*
+==================
+idCollisionModelManagerLocal::TrmFromModel_r
+==================
+*/
+	TrmFromModel_r ( trm: idTraceModel, node: cm_node_t ): boolean {
+		var pref: cm_polygonRef_t;
+		var p: cm_polygon_t;
+		var i: number;
+
+		while ( 1 ) {
+			for ( pref = node.polygons; pref; pref = pref.next ) {
+				p = pref.p;
+
+				if ( p.checkcount == this.checkCount ) {
+					continue;
+				}
+
+				p.checkcount = this.checkCount;
+
+				if ( trm.numPolys >= MAX_TRACEMODEL_POLYS ) {
+					return false;
+				}
+				// copy polygon properties
+				trm.polys[trm.numPolys].bounds.opEquals( p.bounds );
+				trm.polys[trm.numPolys].normal.opEquals( p.plane.Normal ( ) );
+				trm.polys[trm.numPolys].dist = p.plane.Dist ( );
+				trm.polys[trm.numPolys].numEdges = p.numEdges;
+				// copy edge index
+				for ( i = 0; i < p.numEdges; i++ ) {
+					trm.polys[trm.numPolys].edges[i] = p.edges[i];
+				}
+				trm.numPolys++;
+			}
+			if ( node.planeType == -1 ) {
+				break;
+			}
+			if ( !this.TrmFromModel_r( trm, node.children[1] ) ) {
+				return false;
+			}
+			node = node.children[0];
+		}
+		return true;
+	}
+
 /*
 ==================
 idCollisionModelManagerLocal::TrmFromModel
@@ -4263,85 +4263,84 @@ idCollisionModelManagerLocal::TrmFromModel
 */
 	TrmFromModel ( model: cm_model_t, trm: idTraceModel ): boolean {
 		var /*int */i: number, j: number, numEdgeUsers = new Int32Array( MAX_TRACEMODEL_EDGES + 1 );
-		todoThrow ( );
-		//// if the model has too many vertices to fit in a trace model
-		//if ( model.numVertices > MAX_TRACEMODEL_VERTS ) {
-		//	common.Printf( "idCollisionModelManagerLocal::TrmFromModel: model %s has too many vertices.\n", model.name.c_str() );
-		//	this.PrintModelInfo( model );
-		//	return false;
-		//}
+		// if the model has too many vertices to fit in a trace model
+		if ( model.numVertices > MAX_TRACEMODEL_VERTS ) {
+			common.Printf( "idCollisionModelManagerLocal::TrmFromModel: model %s has too many vertices.\n", model.name.c_str ( ) );
+			this.PrintModelInfo( model );
+			return false;
+		}
 
-		//// plus one because the collision model accounts for the first unused edge
-		//if ( model.numEdges > MAX_TRACEMODEL_EDGES+1 ) {
-		//	common.Printf( "idCollisionModelManagerLocal::TrmFromModel: model %s has too many edges.\n", model.name.c_str() );
-		//	this.PrintModelInfo( model );
-		//	return false;
-		//}
+		// plus one because the collision model accounts for the first unused edge
+		if ( model.numEdges > MAX_TRACEMODEL_EDGES + 1 ) {
+			common.Printf( "idCollisionModelManagerLocal::TrmFromModel: model %s has too many edges.\n", model.name.c_str ( ) );
+			this.PrintModelInfo( model );
+			return false;
+		}
 
-		//trm.type = TRM_CUSTOM;
-		//trm.numVerts = 0;
-		//trm.numEdges = 1;
-		//trm.numPolys = 0;
-		//trm.bounds.Clear();
+		trm.type = traceModel_t.TRM_CUSTOM;
+		trm.numVerts = 0;
+		trm.numEdges = 1;
+		trm.numPolys = 0;
+		trm.bounds.Clear ( );
 
-		//// copy polygons
-		//this.checkCount++;
-		//if ( !TrmFromModel_r( trm, model.node ) ) {
-		//	common.Printf( "idCollisionModelManagerLocal::TrmFromModel: model %s has too many polygons.\n", model.name.c_str() );
-		//	this.PrintModelInfo( model );
-		//	return false;
-		//}
+		// copy polygons
+		this.checkCount++;
+		if ( !this.TrmFromModel_r( trm, model.node ) ) {
+			common.Printf( "idCollisionModelManagerLocal::TrmFromModel: model %s has too many polygons.\n", model.name.c_str ( ) );
+			this.PrintModelInfo( model );
+			return false;
+		}
 
-		//// copy vertices
-		//for ( i = 0; i < model.numVertices; i++ ) {
-		//	trm.verts[ i ] = model.vertices[ i ].p;
-		//	trm.bounds.AddPoint( trm.verts[ i ] );
-		//}
-		//trm.numVerts = model.numVertices;
+		// copy vertices
+		for ( i = 0; i < model.numVertices; i++ ) {
+			trm.verts[i].opEquals( model.vertices[i].p );
+			trm.bounds.AddPoint( trm.verts[i] );
+		}
+		trm.numVerts = model.numVertices;
 
-		//// copy edges
-		//for ( i = 0; i < model.numEdges; i++ ) {
-		//	trm.edges[ i ].v[0] = model.edges[ i ].vertexNum[0];
-		//	trm.edges[ i ].v[1] = model.edges[ i ].vertexNum[1];
-		//}
-		//// minus one because the collision model accounts for the first unused edge
-		//trm.numEdges = model.numEdges - 1;
+		// copy edges
+		for ( i = 0; i < model.numEdges; i++ ) {
+			trm.edges[i].v[0] = model.edges[i].vertexNum[0];
+			trm.edges[i].v[1] = model.edges[i].vertexNum[1];
+		}
+		// minus one because the collision model accounts for the first unused edge
+		trm.numEdges = model.numEdges - 1;
 
-		//// each edge should be used exactly twice
-		//memset( numEdgeUsers, 0, sizeof(numEdgeUsers) );
-		//for ( i = 0; i < trm.numPolys; i++ ) {
-		//	for ( j = 0; j < trm.polys[i].numEdges; j++ ) {
-		//		numEdgeUsers[ abs( trm.polys[i].edges[j] ) ]++;
-		//	}
-		//}
-		//for ( i = 1; i <= trm.numEdges; i++ ) {
-		//	if ( numEdgeUsers[i] != 2 ) {
-		//		common.Printf( "idCollisionModelManagerLocal::TrmFromModel: model %s has dangling edges, the model has to be an enclosed hull.\n", model.name.c_str() );
-		//		this.PrintModelInfo( model );
-		//		return false;
-		//	}
-		//}
+		// each edge should be used exactly twice
+		memset( numEdgeUsers, 0, sizeof( numEdgeUsers ) );
+		for ( i = 0; i < trm.numPolys; i++ ) {
+			for ( j = 0; j < trm.polys[i].numEdges; j++ ) {
+				numEdgeUsers[abs( trm.polys[i].edges[j] )]++;
+			}
+		}
+		for ( i = 1; i <= trm.numEdges; i++ ) {
+			if ( numEdgeUsers[i] != 2 ) {
+				common.Printf( "idCollisionModelManagerLocal::TrmFromModel: model %s has dangling edges, the model has to be an enclosed hull.\n", model.name.c_str ( ) );
+				this.PrintModelInfo( model );
+				return false;
+			}
+		}
 
-		//// assume convex
-		//trm.isConvex = true;
-		//// check if really convex
-		//for ( i = 0; i < trm.numPolys; i++ ) {
-		//	// to be convex no vertices should be in front of any polygon plane
-		//	for ( j = 0; j < trm.numVerts; j++ ) {
-		//		if ( trm.polys[ i ].normal * trm.verts[ j ] - trm.polys[ i ].dist > 0.01f ) {
-		//			trm.isConvex = false;
-		//			break;
-		//		}
-		//	}
-		//	if ( j < trm.numVerts ) {
-		//		break;
-		//	}
-		//}
+		// assume convex
+		trm.isConvex = true;
+		// check if really convex
+		for ( i = 0; i < trm.numPolys; i++ ) {
+			// to be convex no vertices should be in front of any polygon plane
+			for ( j = 0; j < trm.numVerts; j++ ) {
+				if ( trm.polys[i].normal.timesVec( trm.verts[j] ) - trm.polys[i].dist > 0.01 ) {
+					trm.isConvex = false;
+					break;
+				}
+			}
+			if ( j < trm.numVerts ) {
+				break;
+			}
+		}
 
-		//// offset to center of model
-		//trm.offset = trm.bounds.GetCenter();
+		// offset to center of model
+		trm.offset.opEquals( trm.bounds.GetCenter ( ) );
 
-		//trm.GenerateEdgeNormals();
+		trm.GenerateEdgeNormals ( );
 
 		return true;
 	}

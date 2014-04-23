@@ -155,6 +155,15 @@ class idRotation {
 ////	return this.angle;
 ////}
 ////
+
+	opEquals ( other: idRotation ): idRotation {
+		this.origin.opEquals( other.origin );
+		this.vec.opEquals( other.vec );
+		this.angle = other.angle;
+		this.axisValid = other.axisValid;
+		return this;
+	}
+
 ////ID_INLINE idRotation idRotation::operator-() const {
 ////	return idRotation( this.origin, this.vec, -this.angle );
 ////}

@@ -228,7 +228,7 @@ class idClipModel {
 		this.enabled = false;
 	}
 
-	etMaterial ( m: idMaterial ): void {
+	SetMaterial ( m: idMaterial ): void {
 		this.material = m;
 	}
 

@@ -536,15 +536,15 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	idVec3 down;
 ////	trace_t tr;
 ////
-////	if ( testSolid ) {
+////	if ( this.testSolid ) {
 ////
-////		testSolid = false;
+////		this.testSolid = false;
 ////
 ////		if ( gameLocal.clip.Contents( this.current.i.position, this.clipModel, this.current.i.orientation, clipMask, this.self ) ) {
 ////			gameLocal.DWarning( "rigid body in solid for entity '%s' type '%s' at (%s)",
 ////								this.self.name.c_str(), this.self.GetType().classname, this.current.i.position.ToString(0) );
 ////			Rest();
-////			dropToFloor = false;
+////			this.dropToFloor = false;
 ////			return;
 ////		}
 ////	}
@@ -564,12 +564,12 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////								this.self.name.c_str(), this.self.GetType().classname, this.current.i.position.ToString(0) );
 ////		}
 ////		Rest();
-////		dropToFloor = false;
+////		this.dropToFloor = false;
 ////	} else if ( IsOutsideWorld() ) {
 ////		gameLocal.Warning( "rigid body outside world bounds for entity '%s' type '%s' at (%s)",
 ////							this.self.name.c_str(), this.self.GetType().classname, this.current.i.position.ToString(0) );
 ////		Rest();
-////		dropToFloor = false;
+////		this.dropToFloor = false;
 ////	}
 ////}
 ////
@@ -637,12 +637,12 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	// use the least expensive euler integrator
 ////	integrator = new idODE_Euler( sizeof(rigidBodyIState_t) / sizeof(float), RigidBodyDerivatives, this );
 ////
-////	dropToFloor = false;
-////	noImpact = false;
-////	noContact = false;
+////	this.dropToFloor = false;
+////	this.noImpact = false;
+////	this.noContact = false;
 ////
 ////	this.hasMaster = false;
-////	isOrientated = false;
+////	this.isOrientated = false;
 ////
 ////#ifdef RB_TIMINGS
 ////	lastTimerReset = 0;
@@ -724,13 +724,13 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	savefile.WriteMat3( this.inertiaTensor );
 ////	savefile.WriteMat3( this.inverseInertiaTensor );
 ////
-////	savefile.WriteBool( dropToFloor );
-////	savefile.WriteBool( testSolid );
-////	savefile.WriteBool( noImpact );
-////	savefile.WriteBool( noContact );
+////	savefile.WriteBool( this.dropToFloor );
+////	savefile.WriteBool( this.testSolid );
+////	savefile.WriteBool( this.noImpact );
+////	savefile.WriteBool( this.noContact );
 ////
 ////	savefile.WriteBool( this.hasMaster );
-////	savefile.WriteBool( isOrientated );
+////	savefile.WriteBool( this.isOrientated );
 ////}
 ////
 /////*
@@ -755,13 +755,13 @@ class idPhysics_RigidBody extends idPhysics_Base {
 ////	savefile.ReadMat3( this.inertiaTensor );
 ////	savefile.ReadMat3( this.inverseInertiaTensor );
 ////
-////	savefile.ReadBool( dropToFloor );
-////	savefile.ReadBool( testSolid );
-////	savefile.ReadBool( noImpact );
-////	savefile.ReadBool( noContact );
+////	savefile.ReadBool( this.dropToFloor );
+////	savefile.ReadBool( this.testSolid );
+////	savefile.ReadBool( this.noImpact );
+////	savefile.ReadBool( this.noContact );
 ////
 ////	savefile.ReadBool( this.hasMaster );
-////	savefile.ReadBool( isOrientated );
+////	savefile.ReadBool( this.isOrientated );
 ////}
 
 /*
@@ -771,58 +771,59 @@ idPhysics_RigidBody::SetClipModel
 */
 static MAX_INERTIA_SCALE		= 10.0;
 
-SetClipModel(model: idClipModel, /*float*/ density: number, /*int*/ id: number = 0, freeOld = true ):void {
-	var /*int */minIndex:number;
-	var inertiaScale = new idMat3;
+	SetClipModel ( model: idClipModel, /*float*/ density: number, /*int*/ id: number = 0, freeOld = true ): void {
+		var /*int */minIndex: number;
+		var inertiaScale = new idMat3;
 
-	assert( this.self );
-	assert( model );					// we need a clip model
-	assert( model.IsTraceModel() );	// and it should be a trace model
-	assert( density > 0.0 );			// density should be valid
+		assert( this.self );
+		assert( model ); // we need a clip model
+		assert( model.IsTraceModel ( ) ); // and it should be a trace model
+		assert( density > 0.0 ); // density should be valid
 
-	if ( this.clipModel && this.clipModel != model && freeOld ) {
-		delete this.clipModel;
+		if ( this.clipModel && this.clipModel != model && freeOld ) {
+			$delete( this.clipModel );
+			delete this.clipModel;
+		}
+		this.clipModel = model;
+		this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.current.i.position, this.current.i.orientation );
+
+		// get mass properties from the trace model
+		var $mass = new R( this.mass );
+		this.clipModel.GetMassProperties( density, $mass, this.centerOfMass, this.inertiaTensor );
+		this.mass = $mass.$;
+
+		// check whether or not the clip model has valid mass properties
+		if ( this.mass <= 0.0 || FLOAT_IS_NAN( this.mass ) ) {
+			gameLocal.Warning( "idPhysics_RigidBody::SetClipModel: invalid mass for entity '%s' type '%s'",
+				this.self.name.c_str ( ), this.self.GetType ( ).classname );
+			this.mass = 1.0;
+			this.centerOfMass.Zero ( );
+			this.inertiaTensor.Identity ( );
+		}
+
+		// check whether or not the inertia tensor is balanced
+		minIndex = Min3Index( this.inertiaTensor[0][0], this.inertiaTensor[1][1], this.inertiaTensor[2][2] );
+		inertiaScale.Identity ( );
+		inertiaScale[0][0] = this.inertiaTensor[0][0] / this.inertiaTensor[minIndex][minIndex];
+		inertiaScale[1][1] = this.inertiaTensor[1][1] / this.inertiaTensor[minIndex][minIndex];
+		inertiaScale[2][2] = this.inertiaTensor[2][2] / this.inertiaTensor[minIndex][minIndex];
+
+		if ( inertiaScale[0][0] > idPhysics_RigidBody.MAX_INERTIA_SCALE || inertiaScale[1][1] > idPhysics_RigidBody.MAX_INERTIA_SCALE || inertiaScale[2][2] > idPhysics_RigidBody.MAX_INERTIA_SCALE ) {
+			gameLocal.DWarning( "idPhysics_RigidBody::SetClipModel: unbalanced inertia tensor for entity '%s' type '%s'",
+				this.self.name.c_str ( ), this.self.GetType ( ).classname );
+			var /*float */min = this.inertiaTensor[minIndex][minIndex] * idPhysics_RigidBody.MAX_INERTIA_SCALE;
+			inertiaScale[( minIndex + 1 ) % 3][( minIndex + 1 ) % 3] = min / this.inertiaTensor[( minIndex + 1 ) % 3][( minIndex + 1 ) % 3];
+			inertiaScale[( minIndex + 2 ) % 3][( minIndex + 2 ) % 3] = min / this.inertiaTensor[( minIndex + 2 ) % 3][( minIndex + 2 ) % 3];
+			this.inertiaTensor.opMultiplicationAssignment( inertiaScale );
+		}
+
+		this.inverseMass = 1.0 / this.mass;
+
+		this.inverseInertiaTensor.opEquals( this.inertiaTensor.Inverse ( ).opMultiplication_float( ( 1.0 / 6.0 ) ) );
+
+		this.current.i.linearMomentum.Zero ( );
+		this.current.i.angularMomentum.Zero ( );
 	}
-	this.clipModel = model;
-	this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.current.i.position, this.current.i.orientation );
-
-	// get mass properties from the trace model
-	var $mass = new R(this.mass );
-	this.clipModel.GetMassProperties(density, $mass, this.centerOfMass, this.inertiaTensor);
-	this.mass = $mass.$;
-
-	// check whether or not the clip model has valid mass properties
-	if ( this.mass <= 0.0 || FLOAT_IS_NAN( this.mass ) ) {
-		gameLocal.Warning( "idPhysics_RigidBody::SetClipModel: invalid mass for entity '%s' type '%s'",
-							this.self.name.c_str(), this.self.GetType().classname );
-		this.mass = 1.0;
-		this.centerOfMass.Zero();
-		this.inertiaTensor.Identity();
-	}
-
-	// check whether or not the inertia tensor is balanced
-	minIndex = Min3Index( this.inertiaTensor[0][0], this.inertiaTensor[1][1], this.inertiaTensor[2][2] );
-	inertiaScale.Identity();
-	inertiaScale[0][0] = this.inertiaTensor[0][0] / this.inertiaTensor[minIndex][minIndex];
-	inertiaScale[1][1] = this.inertiaTensor[1][1] / this.inertiaTensor[minIndex][minIndex];
-	inertiaScale[2][2] = this.inertiaTensor[2][2] / this.inertiaTensor[minIndex][minIndex];
-
-	if (inertiaScale[0][0] > idPhysics_RigidBody.MAX_INERTIA_SCALE || inertiaScale[1][1] > idPhysics_RigidBody.MAX_INERTIA_SCALE || inertiaScale[2][2] > idPhysics_RigidBody.MAX_INERTIA_SCALE ) {
-		gameLocal.DWarning( "idPhysics_RigidBody::SetClipModel: unbalanced inertia tensor for entity '%s' type '%s'",
-							this.self.name.c_str(), this.self.GetType().classname );
-		var/*float */min = this.inertiaTensor[minIndex][minIndex] * idPhysics_RigidBody.MAX_INERTIA_SCALE;
-		inertiaScale[(minIndex+1)%3][(minIndex+1)%3] = min / this.inertiaTensor[(minIndex+1)%3][(minIndex+1)%3];
-		inertiaScale[(minIndex+2)%3][(minIndex+2)%3] = min / this.inertiaTensor[(minIndex+2)%3][(minIndex+2)%3];
-		this.inertiaTensor.opMultiplicationAssignment( inertiaScale );
-	}
-
-	this.inverseMass = 1.0 / this.mass;
-	todoThrow ( );
-	//this.inverseInertiaTensor = this.inertiaTensor.Inverse() * ( 1.0 / 6.0 );
-
-	//this.current.i.linearMomentum.Zero();
-	//this.current.i.angularMomentum.Zero();
-}
 
 /*
 ================
@@ -905,34 +906,34 @@ idPhysics_RigidBody::Rest
 		this.self.BecomeInactive( TH_PHYSICS );
 	}
 
-/////*
-////================
-////idPhysics_RigidBody::DropToFloor
-////================
-////*/
-////void idPhysics_RigidBody::DropToFloor( ) {
-////	dropToFloor = true;
-////	testSolid = true;
-////}
-////
-/////*
-////================
-////idPhysics_RigidBody::NoContact
-////================
-////*/
-////void idPhysics_RigidBody::NoContact( ) {
-////	noContact = true;
-////}
-////
+/*
+================
+idPhysics_RigidBody::DropToFloor
+================
+*/
+	DropToFloor ( ): void {
+		this.dropToFloor = true;
+		this.testSolid = true;
+	}
+
+/*
+================
+idPhysics_RigidBody::NoContact
+================
+*/
+	NoContact ( ): void {
+		this.noContact = true;
+	}
+
 /*
 ================
 idPhysics_RigidBody::Activate
 ================
 */
-Activate( ):void {
-	this.current.atRest = -1;
-	this.self.BecomeActive( TH_PHYSICS );
-}
+	Activate ( ): void {
+		this.current.atRest = -1;
+		this.self.BecomeActive( TH_PHYSICS );
+	}
 
 /*
 ================
@@ -945,23 +946,23 @@ idPhysics_RigidBody::PutToRest
 		this.Rest ( );
 	}
 
-/////*
-////================
-////idPhysics_RigidBody::EnableImpact
-////================
-////*/
-////void idPhysics_RigidBody::EnableImpact( ) {
-////	noImpact = false;
-////}
-////
-/////*
-////================
-////idPhysics_RigidBody::DisableImpact
-////================
-////*/
-////void idPhysics_RigidBody::DisableImpact( ) {
-////	noImpact = true;
-////}
+/*
+================
+idPhysics_RigidBody::EnableImpact
+================
+*/
+EnableImpact( ):void {
+	this.noImpact = false;
+}
+
+/*
+================
+idPhysics_RigidBody::DisableImpact
+================
+*/
+DisableImpact( ):void {
+	this.noImpact = true;
+}
 
 /*
 ================
@@ -972,14 +973,14 @@ idPhysics_RigidBody::SetContents
 		this.clipModel.SetContents( contents );
 	}
 
-/////*
-////================
-////idPhysics_RigidBody::GetContents
-////================
-////*/
-////int idPhysics_RigidBody::GetContents( /*int*/ id:number  = -1) const {
-////	return this.clipModel.GetContents();
-////}
+/*
+================
+idPhysics_RigidBody::GetContents
+================
+*/
+GetContents( /*int*/ id:number  = -1) :number/*int*/ {
+	return this.clipModel.GetContents();
+}
 
 /*
 ================
@@ -1027,7 +1028,7 @@ idPhysics_RigidBody::GetAbsBounds
 ////		oldAxis = this.current.i.orientation;
 ////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////		this.current.i.position = masterOrigin + this.current.localOrigin * masterAxis;
-////		if ( isOrientated ) {
+////		if ( this.isOrientated ) {
 ////			this.current.i.orientation = this.current.localAxis * masterAxis;
 ////		}
 ////		else {
@@ -1049,7 +1050,7 @@ idPhysics_RigidBody::GetAbsBounds
 ////	}
 ////
 ////	// if putting the body to rest
-////	if ( dropToFloor ) {
+////	if ( this.dropToFloor ) {
 ////		DropToFloorAndRest();
 ////		this.current.externalForce.Zero();
 ////		this.current.externalTorque.Zero();
@@ -1097,7 +1098,7 @@ idPhysics_RigidBody::GetAbsBounds
 ////
 ////	DebugDraw();
 ////
-////	if ( !noContact ) {
+////	if ( !this.noContact ) {
 ////
 ////#ifdef RB_TIMINGS
 ////		timer_collision.Start();
@@ -1218,7 +1219,7 @@ idPhysics_RigidBody::UpdateTime
 ////================
 ////*/
 ////void idPhysics_RigidBody::ApplyImpulse( /*int*/ id:number, const idVec3 &point, const idVec3 &impulse ) {
-////	if ( noImpact ) {
+////	if ( this.noImpact ) {
 ////		return;
 ////	}
 ////	this.current.i.linearMomentum += impulse;
@@ -1232,7 +1233,7 @@ idPhysics_RigidBody::UpdateTime
 ////================
 ////*/
 ////void idPhysics_RigidBody::AddForce( /*int*/ id:number, const idVec3 &point, const idVec3 &force ) {
-////	if ( noImpact ) {
+////	if ( this.noImpact ) {
 ////		return;
 ////	}
 ////	this.current.externalForce += force;
@@ -1264,7 +1265,7 @@ idPhysics_RigidBody::UpdateTime
 ////================
 ////*/
 ////bool idPhysics_RigidBody::IsPushable( ) const {
-////	return ( !noImpact && !this.hasMaster );
+////	return ( !this.noImpact && !this.hasMaster );
 ////}
 ////
 /////*
@@ -1322,7 +1323,7 @@ idPhysics::SetOrigin
 ////	idMat3 masterAxis;
 ////
 ////	this.current.localAxis = newAxis;
-////	if ( this.hasMaster && isOrientated ) {
+////	if ( this.hasMaster && this.isOrientated ) {
 ////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////		this.current.i.orientation = newAxis * masterAxis;
 ////	}
@@ -1534,7 +1535,7 @@ idPhysics_RigidBody::GetAxis
 ////	idVec6 dir;
 ////	int num;
 ////
-////	ClearContacts();
+////	this.ClearContacts();
 ////
 ////	contacts.SetNum( 10, false );
 ////
@@ -1590,32 +1591,29 @@ idPhysics_RigidBody::SetMaster
 ================
 */
 	SetMaster ( master: idEntity, orientated: boolean = true ) {
-		todoThrow ( );
-		//idVec3 masterOrigin;
-		//idMat3 masterAxis;
+		var masterOrigin = new idVec3;
+		var masterAxis = new idMat3;
 
-		//if ( master ) {
-		//	if ( !this.hasMaster ) {
-		//		// transform from world space to master space
-		//		this.self.GetMasterPosition( masterOrigin, masterAxis );
-		//		this.current.localOrigin = ( this.current.i.position - masterOrigin ) * masterAxis.Transpose();
-		//		if ( orientated ) {
-		//			this.current.localAxis = this.current.i.orientation * masterAxis.Transpose();
-		//		}
-		//		else {
-		//			this.current.localAxis = this.current.i.orientation;
-		//		}
-		//		this.hasMaster = true;
-		//		isOrientated = orientated;
-		//		ClearContacts();
-		//	}
-		//}
-		//else {
-		//	if ( this.hasMaster ) {
-		//		this.hasMaster = false;
-		//		this.Activate();
-		//	}
-		//}
+		if ( master ) {
+			if ( !this.hasMaster ) {
+				// transform from world space to master space
+				this.self.GetMasterPosition( masterOrigin, masterAxis );
+				this.current.localOrigin.opEquals( idMat3.opMultiplication_VecMat( this.current.i.position.opSubtraction( masterOrigin ), masterAxis.Transpose ( ) ) );
+				if ( orientated ) {
+					this.current.localAxis.opEquals( this.current.i.orientation.opMultiplication( masterAxis.Transpose ( ) ) );
+				} else {
+					this.current.localAxis.opEquals( this.current.i.orientation );
+				}
+				this.hasMaster = true;
+				this.isOrientated = orientated;
+				this.ClearContacts ( );
+			}
+		} else {
+			if ( this.hasMaster ) {
+				this.hasMaster = false;
+				this.Activate ( );
+			}
+		}
 	}
 
 ////const float	RB_VELOCITY_MAX				= 16000;
