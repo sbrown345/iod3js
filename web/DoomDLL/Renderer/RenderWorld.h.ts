@@ -225,55 +225,78 @@ class renderEntity_t {
 
 		return this;
 	}
-};																													   
+};
 
 
 class renderLight_t {
-//	idMat3					axis;				// rotation vectors, must be unit length
-//	idVec3					origin;
-//
-//	// if non-zero, the light will not show up in the specific view,
-//	// which may be used if we want to have slightly different muzzle
-//	// flash lights for the player and other views
-//	int						suppressLightInViewID;
-//
-//	// if non-zero, the light will only show up in the specific view
-//	// which can allow player gun gui lights and such to not effect everyone
-//	int						allowLightInViewID;
-//
-//	// I am sticking the four bools together so there are no unused gaps in
-//	// the padded structure, which could confuse the memcmp that checks for redundant
-//	// updates
-//	bool					noShadows;			// (should we replace this with material parameters on the shader?)
-//	bool					noSpecular;			// (should we replace this with material parameters on the shader?)
-//
-//	bool					pointLight;			// otherwise a projection light (should probably invert the sense of this, because points are way more common)
-//	bool					parallel;			// lightCenter gives the direction to the light at infinity
-//	idVec3					lightRadius;		// xyz radius for point lights
-//	idVec3					lightCenter;		// offset the lighting direction for shading and
-//												// shadows, relative to origin
-//
-//	// frustum definition for projected lights, all reletive to origin
-//	// FIXME: we should probably have real plane equations here, and offer
-//	// a helper function for conversion from this format
-//	idVec3					target;
-//	idVec3					right;
-//	idVec3					up;
-//	idVec3					start;
-//	idVec3					end;
-//
-//	// Dmap will generate an optimized shadow volume named _prelight_<lightName>
-//	// for the light against all the _area* models in the map.  The renderer will
-//	// ignore this value if the light has been moved after initial creation
-//	idRenderModel *			prelightModel;
-//
-//	// muzzle flash lights will not cast shadows from player and weapon world models
-//	int						lightId;
-//
-//
-//	const idMaterial *		shader;				// NULL = either lights/defaultPointLight or lights/defaultProjectedLight
-//	float					shaderParms[MAX_ENTITY_SHADER_PARMS];		// can be used in any way by shader
-//	idSoundEmitter *		referenceSound;		// for shader sound tables, allowing effects to vary with sounds
+	axis = new idMat3; // rotation vectors, must be unit length
+	origin = new idVec3;
+
+	// if non-zero, the light will not show up in the specific view,
+	// which may be used if we want to have slightly different muzzle
+	// flash lights for the player and other views
+	suppressLightInViewID: number /*int*/;
+
+	// if non-zero, the light will only show up in the specific view
+	// which can allow player gun gui lights and such to not effect everyone
+	allowLightInViewID: number /*int*/;
+
+	// I am sticking the four bools together so there are no unused gaps in
+	// the padded structure, which could confuse the memcmp that checks for redundant
+	// updates
+	noShadows: boolean; // (should we replace this with material parameters on the shader?)
+	noSpecular: boolean; // (should we replace this with material parameters on the shader?)
+
+	pointLight: boolean; // otherwise a projection light (should probably invert the sense of this, because points are way more common)
+	parallel: boolean; // lightCenter gives the direction to the light at infinity
+	lightRadius = new idVec3; // xyz radius for point lights
+	lightCenter = new idVec3; // offset the lighting direction for shading and
+	// shadows, relative to origin
+
+	// frustum definition for projected lights, all reletive to origin
+	// FIXME: we should probably have real plane equations here, and offer
+	// a helper function for conversion from this format
+	target = new idVec3;
+	right = new idVec3;
+	up = new idVec3;
+	start = new idVec3;
+	end = new idVec3;
+
+	// Dmap will generate an optimized shadow volume named _prelight_<lightName>
+	// for the light against all the _area* models in the map.  The renderer will
+	// ignore this value if the light has been moved after initial creation
+	prelightModel: idRenderModel;
+
+	// muzzle flash lights will not cast shadows from player and weapon world models
+	lightId: number /*int*/;
+
+
+	shader: idMaterial; // NULL = either lights/defaultPointLight or lights/defaultProjectedLight
+	shaderParms = new Float32Array( MAX_ENTITY_SHADER_PARMS ); // can be used in any way by shader
+	referenceSound: idSoundEmitter; // for shader sound tables, allowing effects to vary with sounds
+
+	memset0 ( ): void {
+		this.axis.memset0();
+		this.origin.memset0();
+		this.suppressLightInViewID = 0;
+		this.allowLightInViewID= 0;
+		this.noShadows = false;
+		this.noSpecular = false;
+		this.pointLight = false;
+		this.parallel = false;
+		this.lightRadius.memset0();
+		this.lightCenter.memset0();
+		this.target.memset0();
+		this.right.memset0();
+		this.up.memset0();
+		this.start.memset0();
+		this.end.memset0();
+		this.prelightModel = null;
+		this.lightId = 0;
+		this.shader = null;
+		this.shaderParms = new Float32Array(MAX_ENTITY_SHADER_PARMS); // can be used in any way by shader
+		this.referenceSound = null;
+	}
 }
 
 

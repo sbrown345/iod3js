@@ -2738,5 +2738,15 @@ or returns -1 on failure or if the buffer would be overflowed.
 
 }
 
+Object.defineProperty( idStr.prototype, "0", {
+	get: function ( ): number {
+		return this.data[0];
+	},
+	set: function ( value: string ): void {
+		throw "not used";
+	},
+	enumerable: false,
+	configurable: false
+} );
 
 var va = sprintf;
