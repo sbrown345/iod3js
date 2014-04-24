@@ -600,7 +600,8 @@ Does not write to the demo file, which will only be done for visible lights
 			} else {
 				// if we are updating shadows, the prelight model is no longer valid
 				light.lightHasMoved = true;
-				R_FreeLightDefDerivedData( light );
+				todoThrow();
+				//R_FreeLightDefDerivedData( light );
 			}
 		} else {
 			// create a new one
@@ -614,18 +615,20 @@ Does not write to the demo file, which will only be done for visible lights
 		light.parms.opEquals( rlight );
 		light.lastModifiedFrameNum = tr.frameCount;
 		if ( session.writeDemo && light.archived ) {
-			WriteFreeLight( lightHandle );
-			light.archived = false;
+			todoThrow();
+			//WriteFreeLight( lightHandle );
+			//light.archived = false;
 		}
 
 		if ( light.lightHasMoved ) {
 			light.parms.prelightModel = null;
 		}
 
-		if ( !justUpdate ) {
-			R_DeriveLightData( light );
-			R_CreateLightRefs( light );
-			R_CreateLightDefFogPortals( light );
+		if (!justUpdate) {
+			todoThrow ( );
+			//R_DeriveLightData( light );
+			//R_CreateLightRefs( light );
+			//R_CreateLightDefFogPortals( light );
 		}
 	}
 

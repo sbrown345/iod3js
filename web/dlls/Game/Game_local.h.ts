@@ -3481,34 +3481,33 @@ idGameLocal::RegisterEntity
 idGameLocal::SpawnEntityType
 ================
 */
-	SpawnEntityType ( classdef: idTypeInfo, args: idDict=null, bIsClientReadSnapshot: boolean =false): idEntity {
-		todoThrow ( );
+	SpawnEntityType ( classdef: idTypeInfo, args: idDict=null, bIsClientReadSnapshot: boolean =false ): idEntity {
 		var obj: idClass;
 
-////#if _DEBUG
-////	if ( isClient ) {
-////		assert( bIsClientReadSnapshot );
-////	}
-////#endif
+//#if _DEBUG
+//	if ( isClient ) {
+//		assert( bIsClientReadSnapshot );
+//	}
+//#endif
 
-////	if ( !classdef.IsType( idEntity::Type ) ) {
-////		this.Error( "Attempted to spawn non-entity class '%s'", classdef.classname );
-////	}
+		if ( !classdef.IsType( idEntity.Type ) ) {
+			this.Error( "Attempted to spawn non-entity class '%s'", classdef.classname );
+		}
 
-////	try {
-////		if ( args ) {
-////			this.spawnArgs = *args;
-////		} else {
-////			this.spawnArgs.Clear();
-////		}
-////		obj = classdef.CreateInstance();
-////		obj.CallSpawn();
-////	}
+		//try {
+		if ( args ) {
+			this.spawnArgs.opEquals( args );
+		} else {
+			this.spawnArgs.Clear ( );
+		}
+		obj = classdef.CreateInstance ( );
+		obj.CallSpawn ( );
+		//}
 
-////	catch( idAllocError & ) {
-////		obj = NULL;
-////	}
-////	this.spawnArgs.Clear();
+		//catch( /*idAllocError &*/ ) {
+		//	obj = NULL;
+		//}
+		this.spawnArgs.Clear ( );
 
 		return static_cast<idEntity>( obj );
 	}

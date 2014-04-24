@@ -247,19 +247,19 @@ class drawSurf_t {
 }
 
 
-////typedef struct {
-////	int		numPlanes;		// this is always 6 for now
-////	idPlane	planes[6];
-////	// positive sides facing inward
-////	// plane 5 is always the plane the projection is going to, the
-////	// other planes are just clip planes
-////	// all planes are in global coordinates
+class shadowFrustum_t{
+	numPlanes: number /*int*/;		// this is always 6 for now
+	planes = newStructArray<idPlane>(idPlane, 6);
+	// positive sides facing inward
+	// plane 5 is always the plane the projection is going to, the
+	// other planes are just clip planes
+	// all planes are in global coordinates
 
-////	bool	makeClippedPlanes;
-////	// a projected light with a single frustum needs to make sil planes
-////	// from triangles that clip against side planes, but a point light
-////	// that has adjacent frustums doesn't need to
-////} shadowFrustum_t;
+	makeClippedPlanes:boolean;
+	// a projected light with a single frustum needs to make sil planes
+	// from triangles that clip against side planes, but a point light
+	// that has adjacent frustums doesn't need to
+};
 
 
 // areas have references to hold all the lights and entities in them
@@ -313,50 +313,50 @@ class idRenderLightLocal extends idRenderLight {
 ////	virtual void			ForceUpdate();
 ////	virtual int				GetIndex();
 
-////	renderLight_t			parms;					// specification
+	parms = new renderLight_t; // specification
 
-////	bool					lightHasMoved;			// the light has changed its position since it was
-////													// first added, so the prelight model is not valid
+	lightHasMoved: boolean; // the light has changed its position since it was
+	// first added, so the prelight model is not valid
 
-////	float					modelMatrix[16];		// this is just a rearrangement of parms.axis and parms.origin
+	modelMatrix = new Float32Array( 16 ); // this is just a rearrangement of parms.axis and parms.origin
 
 	world: idRenderWorldLocal;
-////	int						index;					// in world lightdefs
+	index: number /*int*/; // in world lightdefs
 
-////	int						areaNum;				// if not -1, we may be able to cull all the light's
-////													// interactions if !viewDef.connectedAreas[areaNum]
+	areaNum: number /*int*/; // if not -1, we may be able to cull all the light's
+	// interactions if !viewDef.connectedAreas[areaNum]
 
-////	int						lastModifiedFrameNum;	// to determine if it is constantly changing,
-////													// and should go in the dynamic frame memory, or kept
-////													// in the cached memory
-////	bool					archived;				// for demo writing
-
-
-////	// derived information
-////	idPlane					lightProject[4];
-
-////	const idMaterial *		lightShader;			// guaranteed to be valid, even if parms.shader isn't
-////	idImage *				falloffImage;
-
-////	idVec3					globalLightOrigin;		// accounting for lightCenter and parallel
+	lastModifiedFrameNum: number /*int*/; // to determine if it is constantly changing,
+	// and should go in the dynamic frame memory, or kept
+	// in the cached memory
+	archived: boolean; // for demo writing
 
 
-////	idPlane					frustum[6];				// in global space, positive side facing out, last two are front/back
-////	idWinding *				frustumWindings[6];		// used for culling
-////	srfTriangles_t *		frustumTris;			// triangulated frustumWindings[]
+	// derived information
+	lightProject = newStructArray<idPlane>( idPlane, 4 );
 
-////	int						numShadowFrustums;		// one for projected lights, usually six for point lights
-////	shadowFrustum_t			shadowFrustums[6];
+	lightShader: idMaterial; // guaranteed to be valid, even if parms.shader isn't
+	falloffImage: idImage;
 
-////	int						viewCount;				// if == tr.viewCount, the light is on the viewDef.viewLights list
-////	struct viewLight_s *	viewLight;
+	globalLightOrigin = new idVec3; // accounting for lightCenter and parallel
 
-	references:areaReference_t;				// each area the light is present in will have a lightRef
-////	idInteraction *			firstInteraction;		// doubly linked list
-////	idInteraction *			lastInteraction;
 
-////	struct doublePortal_s *	foggedPortals;
-};
+	frustum = newStructArray<idPlane>( idPlane, 6 ); // in global space, positive side facing out, last two are front/back
+	frustumWindings = new Array<idWinding>( 6 ); // used for culling
+	frustumTris: srfTriangles_t[]; // triangulated frustumWindings[]
+
+	numShadowFrustums: number /*int*/; // one for projected lights, usually six for point lights
+	shadowFrustums = newStructArray<shadowFrustum_t>( shadowFrustum_t, 6 );
+
+	viewCount: number /*int*/; // if == tr.viewCount, the light is on the viewDef.viewLights list
+	viewLight: viewLight_t;
+
+	references: areaReference_t; // each area the light is present in will have a lightRef
+	firstInteraction: idInteraction; // doubly linked list
+	lastInteraction: idInteraction;
+
+	foggedPortals: doublePortal_t[];
+}
 
 
 class idRenderEntityLocal extends idRenderEntity {

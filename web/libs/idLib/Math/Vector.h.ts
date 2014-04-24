@@ -182,7 +182,7 @@ class idVec2 {
 ////}
 
 ////ID_INLINE float idVec2::Length( ) const {
-////	return ( float )idMath::Sqrt( x * x + y * y );
+////	return ( float )idMath.Sqrt( x * x + y * y );
 ////}
 
 ////ID_INLINE float idVec2::LengthFast( ) const {
@@ -1014,7 +1014,7 @@ class idVec3 {
 ////			pitch = 270.0;
 ////		}
 ////	} else {
-////		forward = ( float )idMath::Sqrt( this.x * this.x + y * y );
+////		forward = ( float )idMath.Sqrt( this.x * this.x + y * y );
 ////		pitch = RAD2DEG( atan2( z, forward ) );
 ////		if ( pitch < 0.0 ) {
 ////			pitch += 360.0;
@@ -1047,7 +1047,7 @@ class idVec3 {
 ////			yaw += 360.0;
 ////		}
 
-////		forward = ( float )idMath::Sqrt( this.x * this.x + y * y );
+////		forward = ( float )idMath.Sqrt( this.x * this.x + y * y );
 ////		pitch = RAD2DEG( atan2( z, forward ) );
 ////		if ( pitch < 0.0 ) {
 ////			pitch += 360.0;
@@ -1080,13 +1080,13 @@ class idVec3 {
 ////			yaw += 360.0;
 ////		}
 
-////		forward = ( float )idMath::Sqrt( this.x * this.x + y * y );
+////		forward = ( float )idMath.Sqrt( this.x * this.x + y * y );
 ////		pitch = RAD2DEG( atan2( z, forward ) );
 ////		if ( pitch < 0.0 ) {
 ////			pitch += 360.0;
 ////		}
 ////	}
-////	return idPolar3( idMath::Sqrt( this.x * this.x + y * y + z * z ), yaw, -pitch );
+////	return idPolar3( idMath.Sqrt( this.x * this.x + y * y + z * z ), yaw, -pitch );
 ////}
 
 /*
@@ -1509,7 +1509,7 @@ class idVec4 {
 ////}
 
 ////ID_INLINE float idVec4::Length( ) const {
-////	return ( float )idMath::Sqrt( x * x + this.y * this.y + z * z + w * w );
+////	return ( float )idMath.Sqrt( x * x + this.y * this.y + z * z + w * w );
 ////}
 
 ////ID_INLINE float idVec4::LengthSqr( ) const {
@@ -2090,7 +2090,7 @@ class idVec6 {
 	}
 
 ////ID_INLINE float idVec6::Length( ) const {
-////	return ( float )idMath::Sqrt( this.p[0] * this.p[0] + this.p[1] * this.p[1] + this.p[2] * this.p[2] + this.p[3] * this.p[3] + this.p[4] * this.p[4] + this.p[5] * this.p[5] );
+////	return ( float )idMath.Sqrt( this.p[0] * this.p[0] + this.p[1] * this.p[1] + this.p[2] * this.p[2] + this.p[3] * this.p[3] + this.p[4] * this.p[4] + this.p[5] * this.p[5] );
 ////}
 
 ////ID_INLINE float idVec6::LengthSqr( ) const {
@@ -2581,7 +2581,7 @@ SetSize( /*int */newSize :number):void {
 ////	for ( i = 0; i < this.size; i++ ) {
 ////		sum += this.p[i] * this.p[i];
 ////	}
-////	return idMath::Sqrt( sum );
+////	return idMath.Sqrt( sum );
 ////}
 
 ////ID_INLINE float idVecX::LengthSqr( ) const {
@@ -2728,8 +2728,8 @@ SetSize( /*int */newSize :number):void {
 
 ////ID_INLINE idVec3 idPolar3::ToVec3( ) const {
 ////	float sp, cp, st, ct;
-////	idMath::SinCos( phi, sp, cp );
-////	idMath::SinCos( theta, st, ct );
+////	idMath.SinCos( phi, sp, cp );
+////	idMath.SinCos( theta, st, ct );
 //// 	return idVec3( cp * radius * ct, cp * radius * st, radius * sp );
 ////}
 

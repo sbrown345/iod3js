@@ -103,10 +103,10 @@ class idQuat {
 ////	}
 ////
 ////	ID_INLINE idQuat::idQuat(float x, float y, float z, float w) {
-////		this->x = x;
-////		this->y = y;
-////		this->z = z;
-////		this->w = w;
+////		this.x = x;
+////		this.y = y;
+////		this.z = z;
+////		this.w = w;
 ////	}
 ////
 ////	ID_INLINE float idQuat::operator[](int index) const {
@@ -170,7 +170,7 @@ class idQuat {
 ////		// it's faster to do the conversion to a 3x3 matrix and multiply the vector by this 3x3 matrix
 ////		return (ToMat3() * a);
 ////#else
-////		// result = this->Inverse() * idQuat( a.x, a.y, a.z, 0.0f ) * (*this)
+////		// result = this.Inverse() * idQuat( a.x, a.y, a.z, 0.0f ) * (*this)
 ////		float xxzz = x*x - z*z;
 ////		float wwyy = w*w - y*y;
 ////
@@ -221,16 +221,16 @@ class idQuat {
 ////	}
 ////
 ////	ID_INLINE bool idQuat::Compare(const idQuat &a, const float epsilon) const {
-////		if (idMath::Fabs(x - a.x) > epsilon) {
+////		if (idMath.Fabs(x - a.x) > epsilon) {
 ////			return false;
 ////		}
-////		if (idMath::Fabs(y - a.y) > epsilon) {
+////		if (idMath.Fabs(y - a.y) > epsilon) {
 ////			return false;
 ////		}
-////		if (idMath::Fabs(z - a.z) > epsilon) {
+////		if (idMath.Fabs(z - a.z) > epsilon) {
 ////			return false;
 ////		}
-////		if (idMath::Fabs(w - a.w) > epsilon) {
+////		if (idMath.Fabs(w - a.w) > epsilon) {
 ////			return false;
 ////		}
 ////		return true;
@@ -245,10 +245,10 @@ class idQuat {
 ////	}
 ////
 ////	ID_INLINE void idQuat::Set(float x, float y, float z, float w) {
-////		this->x = x;
-////		this->y = y;
-////		this->z = z;
-////		this->w = w;
+////		this.x = x;
+////		this.y = y;
+////		this.z = z;
+////		this.w = w;
 ////	}
 ////
 ////	ID_INLINE idQuat idQuat::Inverse(void) const {
@@ -259,14 +259,14 @@ class idQuat {
 ////		float len;
 ////
 ////		len = x * x + y * y + z * z + w * w;
-////		return idMath::Sqrt(len);
+////		return idMath.Sqrt(len);
 ////	}
 ////
 ////	ID_INLINE idQuat& idQuat::Normalize(void) {
 ////		float len;
 ////		float ilength;
 ////
-////		len = this->Length();
+////		len = this.Length();
 ////		if (len) {
 ////			ilength = 1 / len;
 ////			x *= ilength;
@@ -292,7 +292,10 @@ class idQuat {
 ////
 ////	ID_INLINE float *idQuat::ToFloatPtr(void) {
 ////		return &x;
-////	}
+//////	}
+//	ToFloatPtr ( ): Float32Array {
+//		return this.values;
+//	}
 ////
 ////	/*
 ////	=====================
@@ -315,7 +318,7 @@ class idQuat {
 ////		vec.x = x;
 ////		vec.y = y;
 ////		vec.z = z;
-////		angle = idMath::ACos(w);
+////		angle = idMath.ACos(w);
 ////		if (angle == 0.0f) {
 ////			vec.Set(0.0f, 0.0f, 1.0f);
 ////		}
@@ -323,7 +326,7 @@ class idQuat {
 ////			//vec *= (1.0f / sin( angle ));
 ////			vec.Normalize();
 ////			vec.FixDegenerateNormal();
-////			angle *= 2.0f * idMath::M_RAD2DEG;
+////			angle *= 2.0f * idMath.M_RAD2DEG;
 ////		}
 ////		return idRotation(vec3_origin, vec, angle);
 ////	}
@@ -404,7 +407,7 @@ class idQuat {
 ////		vec.y = y;
 ////		vec.z = z;
 ////		vec.Normalize();
-////		return vec * idMath::ACos(w);
+////		return vec * idMath.ACos(w);
 ////	}
 ////
 ////	/*
@@ -459,10 +462,10 @@ class idQuat {
 ////			scale1 = sin(t * omega) * sinom;
 ////#else
 ////			scale0 = 1.0f - cosom * cosom;
-////			sinom = idMath::InvSqrt(scale0);
-////			omega = idMath::ATan16(scale0 * sinom, cosom);
-////			scale0 = idMath::Sin16((1.0f - t) * omega) * sinom;
-////			scale1 = idMath::Sin16(t * omega) * sinom;
+////			sinom = idMath.InvSqrt(scale0);
+////			omega = idMath.ATan16(scale0 * sinom, cosom);
+////			scale0 = idMath.Sin16((1.0f - t) * omega) * sinom;
+////			scale1 = idMath.Sin16(t * omega) * sinom;
 ////#endif
 ////		}
 ////		else {
@@ -488,7 +491,34 @@ class idCQuat {
 ////	float			x;
 ////	float			y;
 ////	float			z;
-////
+	values: Float32Array;
+
+	get x(): number { return this.values[0]; }
+
+	set x(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.values[0] = value;
+	}
+
+	get y(): number { return this.values[1]; }
+
+	set y(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.values[1] = value;
+	}
+
+	get z(): number { return this.values[2]; }
+
+	set z(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.values[2] = value;
+	}
 ////	idCQuat(void);
 ////	idCQuat(float x, float y, float z);
 ////
@@ -516,19 +546,24 @@ class idCQuat {
 ////
 ////	ID_INLINE idCQuat::idCQuat(void) {
 ////	}
+
+	constructor ( ) {
+		this.values = new Float32Array( 3 );
+	}
 ////
 ////	ID_INLINE idCQuat::idCQuat(float x, float y, float z) {
-////		this->x = x;
-////		this->y = y;
-////		this->z = z;
+////		this.x = x;
+////		this.y = y;
+////		this.z = z;
 ////	}
 ////
 ////	ID_INLINE void idCQuat::Set(float x, float y, float z) {
-////		this->x = x;
-////		this->y = y;
-////		this->z = z;
+////		this.x = x;
+////		this.y = y;
+////		this.z = z;
 ////	}
 ////
+	[index: number]: number;
 ////	ID_INLINE float idCQuat::operator[](int index) const {
 ////		assert((index >= 0) && (index < 3));
 ////		return (&x)[index];
@@ -544,13 +579,13 @@ class idCQuat {
 ////	}
 ////
 ////	ID_INLINE bool idCQuat::Compare(const idCQuat &a, const float epsilon) const {
-////		if (idMath::Fabs(x - a.x) > epsilon) {
+////		if (idMath.Fabs(x - a.x) > epsilon) {
 ////			return false;
 ////		}
-////		if (idMath::Fabs(y - a.y) > epsilon) {
+////		if (idMath.Fabs(y - a.y) > epsilon) {
 ////			return false;
 ////		}
-////		if (idMath::Fabs(z - a.z) > epsilon) {
+////		if (idMath.Fabs(z - a.z) > epsilon) {
 ////			return false;
 ////		}
 ////		return true;
@@ -580,6 +615,10 @@ class idCQuat {
 ////	ID_INLINE float *idCQuat::ToFloatPtr(void) {
 ////		return &x;
 ////	}
+
+	ToFloatPtr ( ): Float32Array {
+		return this.values;
+	}
 ////
 ////#endif /* !__MATH_QUAT_H__ */
 ////
@@ -629,3 +668,55 @@ class idCQuat {
 ////		return idStr::FloatArrayToString(ToFloatPtr(), GetDimension(), precision);
 ////	}
 }
+
+
+Object.defineProperty(idCQuat.prototype, "0", {
+	get: function (): number {
+		return this.values[0];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.x = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idCQuat.prototype, "1", {
+	get: function (): number {
+		return this.values[1];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.y = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idCQuat.prototype, "2", {
+	get: function (): number {
+		return this.values[2];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.z = value;
+	},
+	enumerable: false,
+	configurable: false
+});

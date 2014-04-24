@@ -643,7 +643,7 @@ Parse( text:string, /*const int */textLength :number):boolean {
 				this.MakeDefault();
 				return false;
 			}
-			filename = token2;
+			filename.opEquals( token2 );
 			filename.ExtractFileExtension( extension );
 			if ( extension.data != MD5_MESH_EXT ) {
 				src.Warning( "Invalid model for MD5 mesh" );

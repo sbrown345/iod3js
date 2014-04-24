@@ -78,10 +78,10 @@ var MAX_RENDERENTITY_GUI		= 3;
 //
 //
 class renderEntity_t {
-	hModel: idRenderModel;				// this can only be null if callback is set
+	hModel: idRenderModel; // this can only be null if callback is set
 
-	entityNum: number;			  //int						
-	bodyId: number;				  //int						
+	entityNum: number; //int						
+	bodyId: number; //int						
 
 	// Entities that are expensive to generate, like skeletal models, can be
 	// deferred until their bounds are found to be in view, in the frustum
@@ -92,25 +92,25 @@ class renderEntity_t {
 	// The callback function should clear renderEntity->callback if it doesn't
 	// want to be called again next time the entity is referenced (ie, if the
 	// callback has now made the entity valid until the next updateEntity)
-	bounds = new idBounds;					// only needs to be set for deferred models and md5s
-	callback: (renderEntity:renderEntity_t, renderView: renderView_t)=>boolean /*deferredEntityCallback_t*/;
+	bounds = new idBounds; // only needs to be set for deferred models and md5s
+	callback: ( renderEntity: renderEntity_t, renderView: renderView_t ) => boolean /*deferredEntityCallback_t*/;
 
-	callbackData:any;	// used for whatever the callback wants
+	callbackData: any; // used for whatever the callback wants
 
 	// player bodies and possibly player shadows should be suppressed in views from
 	// that player's eyes, but will show up in mirrors and other subviews
 	// security cameras could suppress their model in their subviews if we add a way
 	// of specifying a view number for a remoteRenderMap view
-	suppressSurfaceInViewID: number;   //int
-	suppressShadowInViewID: number;	   //int
+	suppressSurfaceInViewID: number; //int
+	suppressShadowInViewID: number; //int
 
 	// world models for the player and weapons will not cast shadows from view weapon
 	// muzzle flashes
-	suppressShadowInLightID: number;//int
+	suppressShadowInLightID: number; //int
 
 	// if non-zero, the surface and shadow (if it casts one)
 	// will only show up in the specific view, ie: player weapons
-	allowSurfaceInViewID:number; //int
+	allowSurfaceInViewID: number; //int
 
 	// positioning
 	// axis rotation vectors must be unit length for many
@@ -120,37 +120,37 @@ class renderEntity_t {
 	axis = new idMat3;
 
 	// texturing
-	customShader: idMaterial;			// if non-0, all surfaces will use this											  //const idMaterial *		
-	referenceShader: idMaterial;		// used so flares can reference the proper light shader							  //const idMaterial *		
-	customSkin: idDeclSkin;				// 0 for no remappings															  //const idDeclSkin *		
-	referenceSound: idSoundEmitter;			// for shader sound tables, allowing effects to vary with sounds				  //class idSoundEmitter *	
-	shaderParms = new Float32Array(MAX_ENTITY_SHADER_PARMS) // can be used in any way by shader or model generation			  //float					
+	customShader: idMaterial; // if non-0, all surfaces will use this											  //const idMaterial *		
+	referenceShader: idMaterial; // used so flares can reference the proper light shader							  //const idMaterial *		
+	customSkin: idDeclSkin; // 0 for no remappings															  //const idDeclSkin *		
+	referenceSound: idSoundEmitter; // for shader sound tables, allowing effects to vary with sounds				  //class idSoundEmitter *	
+	shaderParms = new Float32Array( MAX_ENTITY_SHADER_PARMS ) // can be used in any way by shader or model generation			  //float					
 
 	// networking: see WriteGUIToSnapshot / ReadGUIFromSnapshot
-	gui = new Array<idUserInterface>(MAX_RENDERENTITY_GUI);
+	gui = new Array<idUserInterface>( MAX_RENDERENTITY_GUI );
 	//
-	remoteRenderView:renderView_t;		// any remote camera surfaces will use this								//struct renderView_s	*	
+	remoteRenderView: renderView_t; // any remote camera surfaces will use this								//struct renderView_s	*	
 	//
-	numJoints:number;																						//int						
-	joints: idJointMat[];					// array of joints that will modify vertices.							//idJointMat *			
+	numJoints: number; //int						
+	joints: idJointMat[]; // array of joints that will modify vertices.							//idJointMat *			
 	// NULL if non-deformable model.  NOT freed by renderer					//						
 	//
-	modelDepthHack:number;			// squash depth range so particle effects don't clip into walls			//float					
+	modelDepthHack: number; // squash depth range so particle effects don't clip into walls			//float					
 
 	// options to override surface shader flags (replace with material parameters?)
-	noSelfShadow: boolean;			// cast shadows onto other objects,but not self											   //bool					
-	noShadow: boolean;				// no shadow at all																		   //bool					
-																														//
-	noDynamicInteractions: boolean;	// don't create any light / shadow interactions after									   //bool					
-							// the level load is completed.  This is a performance hack								   //						
-							// for the gigantic outdoor meshes in the monorail map, so								   //						
-							// all the lights in the moving monorail don't touch the meshes							   //						
-																														//
-	weaponDepthHack: boolean;		// squash depth range so view weapons don't poke into walls								   //bool					
-							// this automatically implies noShadow													   //						
-	forceUpdate:number;			// force an update (NOTE: not a bool to keep this struct a multiple of 4 bytes)			   //int						
-	timeGroup: number;																										   //int						
-	xrayIndex: number;																										   //int						
+	noSelfShadow: boolean; // cast shadows onto other objects,but not self											   //bool					
+	noShadow: boolean; // no shadow at all																		   //bool					
+	//
+	noDynamicInteractions: boolean; // don't create any light / shadow interactions after									   //bool					
+	// the level load is completed.  This is a performance hack								   //						
+	// for the gigantic outdoor meshes in the monorail map, so								   //						
+	// all the lights in the moving monorail don't touch the meshes							   //						
+	//
+	weaponDepthHack: boolean; // squash depth range so view weapons don't poke into walls								   //bool					
+	// this automatically implies noShadow													   //						
+	forceUpdate: number; // force an update (NOTE: not a bool to keep this struct a multiple of 4 bytes)			   //int						
+	timeGroup: number; //int						
+	xrayIndex: number; //int						
 
 	constructor ( ) {
 		this.memset0 ( );
@@ -225,7 +225,7 @@ class renderEntity_t {
 
 		return this;
 	}
-};
+}
 
 
 class renderLight_t {
@@ -276,26 +276,51 @@ class renderLight_t {
 	referenceSound: idSoundEmitter; // for shader sound tables, allowing effects to vary with sounds
 
 	memset0 ( ): void {
-		this.axis.memset0();
-		this.origin.memset0();
+		this.axis.memset0 ( );
+		this.origin.memset0 ( );
 		this.suppressLightInViewID = 0;
-		this.allowLightInViewID= 0;
+		this.allowLightInViewID = 0;
 		this.noShadows = false;
 		this.noSpecular = false;
 		this.pointLight = false;
 		this.parallel = false;
-		this.lightRadius.memset0();
-		this.lightCenter.memset0();
-		this.target.memset0();
-		this.right.memset0();
-		this.up.memset0();
-		this.start.memset0();
-		this.end.memset0();
+		this.lightRadius.memset0 ( );
+		this.lightCenter.memset0 ( );
+		this.target.memset0 ( );
+		this.right.memset0 ( );
+		this.up.memset0 ( );
+		this.start.memset0 ( );
+		this.end.memset0 ( );
 		this.prelightModel = null;
 		this.lightId = 0;
 		this.shader = null;
-		this.shaderParms = new Float32Array(MAX_ENTITY_SHADER_PARMS); // can be used in any way by shader
+		this.shaderParms = new Float32Array( MAX_ENTITY_SHADER_PARMS ); // can be used in any way by shader
 		this.referenceSound = null;
+	}
+
+	opEquals ( other: renderLight_t ): renderLight_t {
+		this.axis.opEquals( other.axis );
+		this.origin.opEquals( other.origin );
+		this.suppressLightInViewID = other.suppressLightInViewID;
+		this.allowLightInViewID = other.allowLightInViewID;
+		this.noShadows = other.noShadows;
+		this.noSpecular = other.noSpecular;
+		this.pointLight = other.pointLight;
+		this.parallel = other.parallel;
+		this.lightRadius.opEquals( other.lightRadius );
+		this.lightCenter.opEquals( other.lightCenter );
+		this.target.opEquals( other.target );
+		this.right.opEquals( other.right );
+		this.up.opEquals( other.up );
+		this.start.opEquals( other.start );
+		this.end.opEquals( other.end );
+		this.prelightModel = other.prelightModel;
+		this.lightId = other.lightId;
+		this.shader = other.shader;
+		this.shaderParms.set( other.shaderParms );
+		this.referenceSound = other.referenceSound;
+
+		return this;
 	}
 }
 

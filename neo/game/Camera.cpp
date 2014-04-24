@@ -314,7 +314,7 @@ void idCameraAnim::Spawn( void ) {
 
 /*
 ================
-idCameraAnim::Load
+idCameraAnim::LoadAnim
 ================
 */
 void idCameraAnim::LoadAnim( void ) {
