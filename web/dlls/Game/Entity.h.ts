@@ -1878,39 +1878,39 @@ idEntity::FreeSoundEmitter
 ////PostUnbind( ):void {
 ////}
 ////
-/////*
-////================
-////idEntity::InitBind
-////================
-////*/
-////bool idEntity::InitBind( idEntity *master ) {
-////
-////	if ( master == this ) {
-////		gameLocal.Error( "Tried to bind an object to itself." );
-////		return false;
-////	}
-////
-////	if ( this == gameLocal.world ) {
-////		gameLocal.Error( "Tried to bind world to another entity" );
-////		return false;
-////	}
-////
-////	// unbind myself from my master
-////	Unbind();
-////
-////	// add any bind constraints to an articulated figure
-////	if ( master && IsType( idAFEntity_Base::Type ) ) {
-////		static_cast<idAFEntity_Base *>(this).AddBindConstraints();
-////	}
-////
-////	if ( !master || master == gameLocal.world ) {
-////		// this can happen in scripts, so safely exit out.
-////		return false;
-////	}
-////
-////	return true;
-////}
-////
+/*
+================
+idEntity::InitBind
+================
+*/
+InitBind( master:idEntity ):boolean {
+
+	if ( master == this ) {
+		gameLocal.Error( "Tried to bind an object to itself." );
+		return false;
+	}
+
+	if ( this == gameLocal.world ) {
+		gameLocal.Error( "Tried to bind world to another entity" );
+		return false;
+	}
+
+	// unbind myself from my master
+	this.Unbind();
+
+	// add any bind constraints to an articulated figure
+	if ( master && IsType( idAFEntity_Base.Type ) ) {
+		static_cast<idAFEntity_Base >(this).AddBindConstraints();
+	}
+
+	if ( !master || master == gameLocal.world ) {
+		// this can happen in scripts, so safely exit out.
+		return false;
+	}
+
+	return true;
+}
+
 /////*
 ////================
 ////idEntity::FinishBind
@@ -1942,9 +1942,9 @@ idEntity::FreeSoundEmitter
 ////  bind relative to the visual position of the master
 ////================
 ////*/
-////Bind( idEntity *master, bool orientated ) {
+////Bind( master:idEntity, orientated:boolean ) {
 ////
-////	if ( !InitBind( master ) ) {
+////	if ( !this.InitBind( master ) ) {
 ////		return;
 ////	}
 ////
@@ -1959,7 +1959,45 @@ idEntity::FreeSoundEmitter
 ////
 ////	PostBind( );
 ////}
-////
+
+/*
+================
+idEntity::BindToJoint
+
+  bind relative to a joint of the md5 model used by the master
+================
+*/
+BindToJoint( master:idEntity, jointname:string, orientated:boolean ):void {
+	var jointnum: jointHandle_t;
+	var masterAnimator: idAnimator		;
+
+	if ( !this.InitBind( master ) ) {
+		return;
+	}
+
+	masterAnimator = master.GetAnimator();
+	if ( !masterAnimator ) {
+		gameLocal.Warning( "idEntity::BindToJoint: entity '%s' cannot support skeletal models.", master.GetName() );
+		return;
+	}
+
+	jointnum = masterAnimator.GetJointHandle( jointname );
+	if ( jointnum == jointHandle_t.INVALID_JOINT ) {
+		gameLocal.Warning( "idEntity::BindToJoint: joint '%s' not found on entity '%s'.", jointname, master.GetName() );
+	}
+
+	PreBind();
+
+	this.bindJoint = jointnum;
+	this.bindBody = -1;
+	this.bindMaster = master;
+	this.fl.bindOrientated = orientated;
+
+	FinishBind();
+
+	PostBind();
+}
+
 /////*
 ////================
 ////idEntity::BindToJoint
@@ -1967,47 +2005,9 @@ idEntity::FreeSoundEmitter
 ////  bind relative to a joint of the md5 model used by the master
 ////================
 ////*/
-////BindToJoint( idEntity *master, jointname:string, bool orientated ) {
-////	jointHandle_t	jointnum;
-////	idAnimator		*masterAnimator;
+////BindToJoint( master:idEntity, jointnum:jointHandle_t, orientated:boolean ) {
 ////
-////	if ( !InitBind( master ) ) {
-////		return;
-////	}
-////
-////	masterAnimator = master.GetAnimator();
-////	if ( !masterAnimator ) {
-////		gameLocal.Warning( "idEntity::BindToJoint: entity '%s' cannot support skeletal models.", master.GetName() );
-////		return;
-////	}
-////
-////	jointnum = masterAnimator.GetJointHandle( jointname );
-////	if ( jointnum == jointHandle_t.INVALID_JOINT ) {
-////		gameLocal.Warning( "idEntity::BindToJoint: joint '%s' not found on entity '%s'.", jointname, master.GetName() );
-////	}
-////
-////	PreBind();
-////
-////	this.bindJoint = jointnum;
-////	this.bindBody = -1;
-////	this.bindMaster = master;
-////	this.fl.bindOrientated = orientated;
-////
-////	FinishBind();
-////
-////	PostBind();
-////}
-////
-/////*
-////================
-////idEntity::BindToJoint
-////
-////  bind relative to a joint of the md5 model used by the master
-////================
-////*/
-////BindToJoint( idEntity *master, jointnum:jointHandle_t, bool orientated ) {
-////
-////	if ( !InitBind( master ) ) {
+////	if ( !this.InitBind( master ) ) {
 ////		return;
 ////	}
 ////
@@ -2030,9 +2030,9 @@ idEntity::FreeSoundEmitter
 ////  bind relative to a collision model used by the physics of the master
 ////================
 ////*/
-////BindToBody( idEntity *master, int bodyId, bool orientated ) {
+////BindToBody( master:idEntity, int bodyId, orientated:boolean ) {
 ////
-////	if ( !InitBind( master ) ) {
+////	if ( !this.InitBind( master ) ) {
 ////		return;
 ////	}
 ////
@@ -2051,97 +2051,97 @@ idEntity::FreeSoundEmitter
 ////
 ////	PostBind();
 ////}
-////
-/////*
-////================
-////idEntity::Unbind
-////================
-////*/
-////Unbind( ):void {
-////	idEntity *	prev;
-////	idEntity *	next;
-////	idEntity *	last;
-////	idEntity *	ent;
-////
-////	// remove any bind constraints from an articulated figure
-////	if ( IsType( idAFEntity_Base::Type ) ) {
-////		static_cast<idAFEntity_Base *>(this).RemoveBindConstraints();
-////	}
-////
-////	if ( !this.bindMaster ) {
-////		return;
-////	}
-////
-////	if ( !this.teamMaster ) {
-////		// Teammaster already has been freed
-////		this.bindMaster = NULL;
-////		return;
-////	}
-////
-////	PreUnbind();
-////
-////	if ( this.physics ) {
-////		this.physics.SetMaster( NULL, this.fl.bindOrientated );
-////	}
-////
-////	// We're still part of a team, so that means I have to extricate myself
-////	// and any entities that are bound to me from the old team.
-////	// Find the node previous to me in the team
-////	prev = this.teamMaster;
-////	for( ent = this.teamMaster.teamChain; ent && ( ent != this ); ent = ent.teamChain ) {
-////		prev = ent;
-////	}
-////
-////	assert( ent == this ); // If ent is not pointing to this, then something is very wrong.
-////
-////	// Find the last node in my team that is bound to me.
-////	// Also find the first node not bound to me, if one exists.
-////	last = this;
-////	for( next = this.teamChain; next != NULL; next = next.teamChain ) {
-////		if ( !next.IsBoundTo( this ) ) {
-////			break;
-////		}
-////
-////		// Tell them I'm now the teamMaster
-////		next.teamMaster = this;
-////		last = next;
-////	}
-////
-////	// disconnect the last member of our team from the old team
-////	last.teamChain = NULL;
-////
-////	// connect up the previous member of the old team to the node that
-////	// follow the last node bound to me (if one exists).
-////	if ( this.teamMaster != this ) {
-////		prev.teamChain = next;
-////		if ( !next && ( this.teamMaster == prev ) ) {
-////			prev.teamMaster = NULL;
-////		}
-////	} else if ( next ) {
-////		// If we were the teamMaster, then the nodes that were not bound to me are now
-////		// a disconnected chain.  Make them into their own team.
-////		for( ent = next; ent.teamChain != NULL; ent = ent.teamChain ) {
-////			ent.teamMaster = next;
-////		}
-////		next.teamMaster = next;
-////	}
-////
-////	// If we don't have anyone on our team, then clear the team variables.
-////	if ( this.teamChain ) {
-////		// make myself my own team
-////		this.teamMaster = this;
-////	} else {
-////		// no longer a team
-////		this.teamMaster = NULL;
-////	}
-////
-////	this.bindJoint = jointHandle_t.INVALID_JOINT;
-////	this.bindBody = -1;
-////	this.bindMaster = NULL;
-////
-////	PostUnbind();
-////}
-////
+
+/*
+================
+idEntity::Unbind
+================
+*/
+Unbind( ):void {
+	var prev:idEntity;
+	var next:idEntity;
+	var last:idEntity;
+	var ent:idEntity;
+
+	// remove any bind constraints from an articulated figure
+	if ( IsType( idAFEntity_Base.Type ) ) {
+		static_cast<idAFEntity_Base *>(this).RemoveBindConstraints();
+	}
+
+	if ( !this.bindMaster ) {
+		return;
+	}
+
+	if ( !this.teamMaster ) {
+		// Teammaster already has been freed
+		this.bindMaster = NULL;
+		return;
+	}
+
+	PreUnbind();
+
+	if ( this.physics ) {
+		this.physics.SetMaster( NULL, this.fl.bindOrientated );
+	}
+
+	// We're still part of a team, so that means I have to extricate myself
+	// and any entities that are bound to me from the old team.
+	// Find the node previous to me in the team
+	prev = this.teamMaster;
+	for( ent = this.teamMaster.teamChain; ent && ( ent != this ); ent = ent.teamChain ) {
+		prev = ent;
+	}
+
+	assert( ent == this ); // If ent is not pointing to this, then something is very wrong.
+
+	// Find the last node in my team that is bound to me.
+	// Also find the first node not bound to me, if one exists.
+	last = this;
+	for( next = this.teamChain; next != NULL; next = next.teamChain ) {
+		if ( !next.IsBoundTo( this ) ) {
+			break;
+		}
+
+		// Tell them I'm now the teamMaster
+		next.teamMaster = this;
+		last = next;
+	}
+
+	// disconnect the last member of our team from the old team
+	last.teamChain = NULL;
+
+	// connect up the previous member of the old team to the node that
+	// follow the last node bound to me (if one exists).
+	if ( this.teamMaster != this ) {
+		prev.teamChain = next;
+		if ( !next && ( this.teamMaster == prev ) ) {
+			prev.teamMaster = NULL;
+		}
+	} else if ( next ) {
+		// If we were the teamMaster, then the nodes that were not bound to me are now
+		// a disconnected chain.  Make them into their own team.
+		for( ent = next; ent.teamChain != NULL; ent = ent.teamChain ) {
+			ent.teamMaster = next;
+		}
+		next.teamMaster = next;
+	}
+
+	// If we don't have anyone on our team, then clear the team variables.
+	if ( this.teamChain ) {
+		// make myself my own team
+		this.teamMaster = this;
+	} else {
+		// no longer a team
+		this.teamMaster = NULL;
+	}
+
+	this.bindJoint = jointHandle_t.INVALID_JOINT;
+	this.bindBody = -1;
+	this.bindMaster = NULL;
+
+	PostUnbind();
+}
+
 /////*
 ////================
 ////idEntity::RemoveBinds
@@ -2178,7 +2178,7 @@ idEntity::FreeSoundEmitter
 ////idEntity::IsBoundTo
 ////================
 ////*/
-////bool idEntity::IsBoundTo( idEntity *master ) const {
+////bool idEntity::IsBoundTo( master:idEntity ) const {
 ////	var ent:idEntity
 ////
 ////	if ( !this.bindMaster ) {
@@ -2426,7 +2426,7 @@ idEntity::GetMasterPosition
 ////*/
 ////JoinTeam( idEntity *teammember ) {
 ////	var ent:idEntity
-////	idEntity *master;
+////	master:idEntity;
 ////	idEntity *prev;
 ////	idEntity *next;
 ////
@@ -3947,7 +3947,7 @@ idEntity::Event_FindTargets
 ////idEntity::Event_BindToJoint
 ////================
 ////*/
-////Event_BindToJoint( idEntity *master, jointname:string, float orientated ) {
+////Event_BindToJoint( master:idEntity, jointname:string, float orientated ) {
 ////	BindToJoint( master, jointname, ( orientated != 0.0 ) );
 ////}
 ////
@@ -3965,7 +3965,7 @@ idEntity::Event_FindTargets
 ////idEntity::Event_Bind
 ////================
 ////*/
-////Event_Bind( idEntity *master ) {
+////Event_Bind( master:idEntity ) {
 ////	Bind( master, true );
 ////}
 ////
@@ -3974,7 +3974,7 @@ idEntity::Event_FindTargets
 ////idEntity::Event_BindPosition
 ////================
 ////*/
-////Event_BindPosition( idEntity *master ) {
+////Event_BindPosition( master:idEntity ) {
 ////	Bind( master, false );
 ////}
 ////
@@ -4746,7 +4746,7 @@ idEntity::Event_FindTargets
 ////ReadBindFromSnapshot( const idBitMsgDelta &msg ) {
 ////	int bindInfo, bindEntityNum, bindPos;
 ////	bool bindOrientated;
-////	idEntity *master;
+////	master:idEntity;
 ////
 ////	bindInfo = msg.ReadBits( GENTITYNUM_BITS + 3 + 9 );
 ////	bindEntityNum = bindInfo & ( ( 1 << GENTITYNUM_BITS ) - 1 );

@@ -826,14 +826,14 @@ idAFEntity_Base::LoadState
 		this.af.LoadState( args );
 	}
 
-/////*
-////================
-////idAFEntity_Base::AddBindConstraints
-////================
-////*/
-////void idAFEntity_Base::AddBindConstraints( ) {
-////	this.af.AddBindConstraints();
-////}
+/*
+================
+idAFEntity_Base::AddBindConstraints
+================
+*/
+	AddBindConstraints ( ): void {
+		this.af.AddBindConstraints ( );
+	}
 ////
 /////*
 ////================
@@ -1048,7 +1048,7 @@ idAFEntity_Base::SetCombatModel
 ////		args.Set( "classname", kv.GetValue() );
 ////		gameLocal.SpawnEntityDef( args, &newEnt );
 ////
-////		if ( newEnt && newEnt.IsType( idAFEntity_Base::Type ) ) {
+////		if ( newEnt && newEnt.IsType( idAFEntity_Base.Type ) ) {
 ////			af = static_cast<idAFEntity_Base *>(newEnt);
 ////			af.GetPhysics().SetOrigin( ent.GetPhysics().GetOrigin() );
 ////			af.GetPhysics().SetAxis( ent.GetPhysics().GetAxis() );

@@ -878,7 +878,7 @@ class idAFBody {
 ////	void					SetFriction( float linear, float angular, float contact );
 ////	float					GetContactFriction( ) const { return this.contactFriction; }
 ////	void					SetBouncyness( float bounce );
-////	float					GetBouncyness( ) const { return bouncyness; }
+////	float					GetBouncyness( ) const { return this.bouncyness; }
 ////	void					SetDensity( float density, const idMat3 &inertiaScale = mat3_identity );
 ////	float					GetInverseMass( ) const { return invMass; }
 ////	idMat3					GetInverseWorldInertia( ) const { return this.current.worldAxis.Transpose() * inverseInertiaTensor * this.current.worldAxis; }
@@ -1611,13 +1611,13 @@ class idPhysics_AF extends idPhysics_Base {
 	////	invTimeStep = 1.0 / timeStep;
 	////
 	////	// setup the constraint equations for the current position and orientation of the bodies
-	////	for ( i = 0; i < primaryConstraints.Num(); i++ ) {
-	////		c = primaryConstraints[i];
+	////	for ( i = 0; i < this.primaryConstraints.Num(); i++ ) {
+	////		c = this.primaryConstraints[i];
 	////		c.Evaluate( invTimeStep );
 	////		c.J = c.J2;
 	////	}
-	////	for ( i = 0; i < auxiliaryConstraints.Num(); i++ ) {
-	////		auxiliaryConstraints[i].Evaluate( invTimeStep );
+	////	for ( i = 0; i < this.auxiliaryConstraints.Num(); i++ ) {
+	////		this.auxiliaryConstraints[i].Evaluate( invTimeStep );
 	////	}
 	////
 	////	// add contact constraints to the list with frame constraints
@@ -1691,8 +1691,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	var/*int*/i:number;
 	////
 	////	// add frame constraints to auxiliary constraints
-	////	for ( i = 0; i < frameConstraints.Num(); i++ ) {
-	////		auxiliaryConstraints.Append( frameConstraints[i] );
+	////	for ( i = 0; i < this.frameConstraints.Num(); i++ ) {
+	////		this.auxiliaryConstraints.Append( this.frameConstraints[i] );
 	////	}
 	////}
 	////
@@ -1703,8 +1703,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////*/
 	////void idPhysics_AF::RemoveFrameConstraints( ) {
 	////	// remove all the frame constraints from the auxiliary constraints
-	////	auxiliaryConstraints.SetNum( auxiliaryConstraints.Num() - frameConstraints.Num(), false );
-	////	frameConstraints.SetNum( 0, false );
+	////	this.auxiliaryConstraints.SetNum( this.auxiliaryConstraints.Num() - this.frameConstraints.Num(), false );
+	////	this.frameConstraints.SetNum( 0, false );
 	////}
 	////
 	/////*
@@ -1744,14 +1744,14 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	invTimeStep = 1.0 / timeStep;
 	////
-	////	for ( i = 0; i < primaryConstraints.Num(); i++ ) {
-	////		primaryConstraints[i].ApplyFriction( invTimeStep );
+	////	for ( i = 0; i < this.primaryConstraints.Num(); i++ ) {
+	////		this.primaryConstraints[i].ApplyFriction( invTimeStep );
 	////	}
-	////	for ( i = 0; i < auxiliaryConstraints.Num(); i++ ) {
-	////		auxiliaryConstraints[i].ApplyFriction( invTimeStep );
+	////	for ( i = 0; i < this.auxiliaryConstraints.Num(); i++ ) {
+	////		this.auxiliaryConstraints[i].ApplyFriction( invTimeStep );
 	////	}
-	////	for ( i = 0; i < frameConstraints.Num(); i++ ) {
-	////		frameConstraints[i].ApplyFriction( invTimeStep );
+	////	for ( i = 0; i < this.frameConstraints.Num(); i++ ) {
+	////		this.frameConstraints[i].ApplyFriction( invTimeStep );
 	////	}
 	////}
 	////
@@ -1763,8 +1763,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////void idPhysics_AF::PrimaryFactor( ) {
 	////	var/*int*/i:number;
 	////
-	////	for ( i = 0; i < trees.Num(); i++ ) {
-	////		trees[i].Factor();
+	////	for ( i = 0; i < this.trees.Num(); i++ ) {
+	////		this.trees[i].Factor();
 	////	}
 	////}
 	////
@@ -1776,8 +1776,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////void idPhysics_AF::PrimaryForces( float timeStep ) {
 	////	var/*int*/i:number;
 	////
-	////	for ( i = 0; i < trees.Num(); i++ ) {
-	////		trees[i].CalculateForces( timeStep );
+	////	for ( i = 0; i < this.trees.Num(); i++ ) {
+	////		this.trees[i].CalculateForces( timeStep );
 	////	}
 	////}
 	////
@@ -1797,8 +1797,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	idVecX rhs, w, lm, lo, hi;
 	////
 	////	// get the number of one dimensional auxiliary constraints
-	////	for ( numAuxConstraints = 0, i = 0; i < auxiliaryConstraints.Num(); i++ ) {
-	////		numAuxConstraints += auxiliaryConstraints[i].J1.GetNumRows();
+	////	for ( numAuxConstraints = 0, i = 0; i < this.auxiliaryConstraints.Num(); i++ ) {
+	////		numAuxConstraints += this.auxiliaryConstraints[i].J1.GetNumRows();
 	////	}
 	////
 	////	if ( numAuxConstraints == 0 ) {
@@ -1820,8 +1820,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	// set on each body the largest index of an auxiliary constraint constraining the body
 	////	if ( af_useSymmetry.GetBool() ) {
-	////		for ( k = 0, i = 0; i < auxiliaryConstraints.Num(); i++ ) {
-	////			constraint = auxiliaryConstraints[i];
+	////		for ( k = 0, i = 0; i < this.auxiliaryConstraints.Num(); i++ ) {
+	////			constraint = this.auxiliaryConstraints[i];
 	////			for ( j = 0; j < constraint.J1.GetNumRows(); j++, k++ ) {
 	////				if ( k > constraint.body1.maxAuxiliaryIndex ) {
 	////					constraint.body1.maxAuxiliaryIndex = k;
@@ -1831,14 +1831,14 @@ class idPhysics_AF extends idPhysics_Base {
 	////				}
 	////			}
 	////		}
-	////		for ( i = 0; i < trees.Num(); i++ ) {
-	////			trees[i].SetMaxSubTreeAuxiliaryIndex();
+	////		for ( i = 0; i < this.trees.Num(); i++ ) {
+	////			this.trees[i].SetMaxSubTreeAuxiliaryIndex();
 	////		}
 	////	}
 	////
 	////	// calculate forces of primary constraints in response to the auxiliary constraint forces
-	////	for ( k = 0, i = 0; i < auxiliaryConstraints.Num(); i++ ) {
-	////		constraint = auxiliaryConstraints[i];
+	////	for ( k = 0, i = 0; i < this.auxiliaryConstraints.Num(); i++ ) {
+	////		constraint = this.auxiliaryConstraints[i];
 	////
 	////		for ( j = 0; j < constraint.J1.GetNumRows(); j++, k++ ) {
 	////
@@ -1857,8 +1857,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////	tmp.SetData( 6, VECX_ALLOCA( 6 ) );
 	////
 	////	// create constraint matrix for auxiliary constraints using a mass matrix adjusted for the primary constraints
-	////	for ( k = 0, i = 0; i < auxiliaryConstraints.Num(); i++ ) {
-	////		constraint = auxiliaryConstraints[i];
+	////	for ( k = 0, i = 0; i < this.auxiliaryConstraints.Num(); i++ ) {
+	////		constraint = this.auxiliaryConstraints[i];
 	////
 	////		for ( j = 0; j < constraint.J1.GetNumRows(); j++, k++ ) {
 	////			constraint.body1.InverseWorldSpatialInertiaMultiply( tmp, constraint.J1[j] );
@@ -1922,14 +1922,14 @@ class idPhysics_AF extends idPhysics_Base {
 	////	boxIndex = (int *) _alloca16( numAuxConstraints * sizeof( int ) );
 	////
 	////	// set first index for special box constrained variables
-	////	for ( k = 0, i = 0; i < auxiliaryConstraints.Num(); i++ ) {
-	////		auxiliaryConstraints[i].firstIndex = k;
-	////		k += auxiliaryConstraints[i].J1.GetNumRows();
+	////	for ( k = 0, i = 0; i < this.auxiliaryConstraints.Num(); i++ ) {
+	////		this.auxiliaryConstraints[i].firstIndex = k;
+	////		k += this.auxiliaryConstraints[i].J1.GetNumRows();
 	////	}
 	////
 	////	// initialize right hand side and low and high bounds for auxiliary constraints
-	////	for ( k = 0, i = 0; i < auxiliaryConstraints.Num(); i++ ) {
-	////		constraint = auxiliaryConstraints[i];
+	////	for ( k = 0, i = 0; i < this.auxiliaryConstraints.Num(); i++ ) {
+	////		constraint = this.auxiliaryConstraints[i];
 	////		n = k;
 	////
 	////		for ( j = 0; j < constraint.J1.GetNumRows(); j++, k++ ) {
@@ -1968,7 +1968,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////#endif
 	////
 	////	// calculate lagrange multipliers for auxiliary constraints
-	////	if ( !lcp.Solve( jmk, lm, rhs, lo, hi, boxIndex ) ) {
+	////	if ( !this.lcp.Solve( jmk, lm, rhs, lo, hi, boxIndex ) ) {
 	////		return;		// bad monkey!
 	////	}
 	////
@@ -1977,8 +1977,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////#endif
 	////
 	////	// calculate auxiliary constraint forces
-	////	for ( k = 0, i = 0; i < auxiliaryConstraints.Num(); i++ ) {
-	////		constraint = auxiliaryConstraints[i];
+	////	for ( k = 0, i = 0; i < this.auxiliaryConstraints.Num(); i++ ) {
+	////		constraint = this.auxiliaryConstraints[i];
 	////
 	////		for ( j = 0; j < constraint.J1.GetNumRows(); j++, k++ ) {
 	////			constraint.lm[j] = u = lm[k];
@@ -2191,8 +2191,8 @@ class idPhysics_AF extends idPhysics_Base {
 	////bool idPhysics_AF::ApplyCollisions( float timeStep ) {
 	////	var/*int*/i:number;
 	////
-	////	for ( i = 0; i < collisions.Num(); i++ ) {
-	////		if ( CollisionImpulse( timeStep, collisions[i].body, collisions[i].trace ) ) {
+	////	for ( i = 0; i < this.collisions.Num(); i++ ) {
+	////		if ( CollisionImpulse( timeStep, this.collisions[i].body, this.collisions[i].trace ) ) {
 	////			return true;
 	////		}
 	////	}
@@ -2289,7 +2289,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	idEntity *passEntity;
 	////
 	////	// clear list with collisions
-	////	collisions.SetNum( 0, false );
+	////	this.collisions.SetNum( 0, false );
 	////
 	////	if ( !enableCollision ) {
 	////		return;
@@ -2323,10 +2323,10 @@ class idPhysics_AF extends idPhysics_Base {
 	////				body.next.worldAxis = collision.endAxis;
 	////
 	////				// add collision to the list
-	////				index = collisions.Num();
-	////				collisions.SetNum( index + 1, false );
-	////				collisions[index].trace = collision;
-	////				collisions[index].body = body;
+	////				index = this.collisions.Num();
+	////				this.collisions.SetNum( index + 1, false );
+	////				this.collisions[index].trace = collision;
+	////				this.collisions[index].body = body;
 	////			}
 	////
 	////#ifdef TEST_COLLISION_DETECTION
@@ -2391,23 +2391,23 @@ class idPhysics_AF extends idPhysics_Base {
 	////		for ( j = 0; j < numContacts; j++ ) {
 	////
 	////			numBodyContacts = 0;
-	////			for ( k = 0; k < contacts.Num(); k++ ) {
-	////				if ( contacts[k].entityNum == contactInfo[j].entityNum ) {
-	////					if ( ( contacts[k].id == i && contactInfo[j].id == contactBodies[k] ) ||
-	////							( contactBodies[k] == i && contacts[k].id == contactInfo[j].id ) ) {
+	////			for ( k = 0; k < this.contacts.Num(); k++ ) {
+	////				if ( this.contacts[k].entityNum == contactInfo[j].entityNum ) {
+	////					if ( ( this.contacts[k].id == i && contactInfo[j].id == contactBodies[k] ) ||
+	////							( contactBodies[k] == i && this.contacts[k].id == contactInfo[j].id ) ) {
 	////
-	////						if ( ( contacts[k].point - contactInfo[j].point ).LengthSqr() < Square( 2.0 ) ) {
+	////						if ( ( this.contacts[k].point - contactInfo[j].point ).LengthSqr() < Square( 2.0 ) ) {
 	////							break;
 	////						}
-	////						if ( idMath::Fabs( contacts[k].normal * contactInfo[j].normal ) > 0.9f ) {
+	////						if ( idMath::Fabs( this.contacts[k].normal * contactInfo[j].normal ) > 0.9f ) {
 	////							numBodyContacts++;
 	////						}
 	////					}
 	////				}
 	////			}
 	////
-	////			if ( k >= contacts.Num() && numBodyContacts < 3 ) {
-	////				contacts.Append( contactInfo[j] );
+	////			if ( k >= this.contacts.Num() && numBodyContacts < 3 ) {
+	////				this.contacts.Append( contactInfo[j] );
 	////				contactBodies.Append( i );
 	////			}
 	////		}
@@ -2415,7 +2415,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////#else
 	////
 	////		for ( j = 0; j < numContacts; j++ ) {
-	////			contacts.Append( contactInfo[j] );
+	////			this.contacts.Append( contactInfo[j] );
 	////			contactBodies.Append( i );
 	////		}
 	////#endif
@@ -2424,7 +2424,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	AddContactEntitiesForContacts();
 	////
-	////	return ( contacts.Num() != 0 );
+	////	return ( this.contacts.Num() != 0 );
 	////}
 	////
 	/////*
@@ -2436,18 +2436,18 @@ class idPhysics_AF extends idPhysics_Base {
 	////	var/*int*/i:number;
 	////
 	////	// make sure enough contact constraints are allocated
-	////	contactConstraints.AssureSizeAlloc( contacts.Num(), idListNewElement<idAFConstraint_Contact> );
-	////	contactConstraints.SetNum( contacts.Num(), false );
+	////	contactConstraints.AssureSizeAlloc( this.contacts.Num(), idListNewElement<idAFConstraint_Contact> );
+	////	contactConstraints.SetNum( this.contacts.Num(), false );
 	////
 	////	// setup contact constraints
-	////	for ( i = 0; i < contacts.Num(); i++ ) {
+	////	for ( i = 0; i < this.contacts.Num(); i++ ) {
 	////		// add contact constraint
 	////		contactConstraints[i].physics = this;
-	////		if ( contacts[i].entityNum == this.self.entityNumber ) {
-	////			contactConstraints[i].Setup( bodies[contactBodies[i]], bodies[ contacts[i].id ], contacts[i] );
+	////		if ( this.contacts[i].entityNum == this.self.entityNumber ) {
+	////			contactConstraints[i].Setup( bodies[contactBodies[i]], bodies[ this.contacts[i].id ], this.contacts[i] );
 	////		}
 	////		else {
-	////			contactConstraints[i].Setup( bodies[contactBodies[i]], NULL, contacts[i] );
+	////			contactConstraints[i].Setup( bodies[contactBodies[i]], NULL, this.contacts[i] );
 	////		}
 	////	}
 	////}
@@ -2708,16 +2708,16 @@ class idPhysics_AF extends idPhysics_Base {
 	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////		body = this.bodies[i];
 	////
-	////		if ( body.current.spatialVelocity.SubVec3(0).LengthSqr() > Square( suspendVelocity[0] ) ) {
+	////		if ( body.current.spatialVelocity.SubVec3(0).LengthSqr() > Square( this.suspendVelocity[0] ) ) {
 	////			return false;
 	////		}
-	////		if ( body.current.spatialVelocity.SubVec3(1).LengthSqr() > Square( suspendVelocity[1] ) ) {
+	////		if ( body.current.spatialVelocity.SubVec3(1).LengthSqr() > Square( this.suspendVelocity[1] ) ) {
 	////			return false;
 	////		}
-	////		if ( body.acceleration.SubVec3(0).LengthSqr() > Square( suspendAcceleration[0] ) ) {
+	////		if ( body.acceleration.SubVec3(0).LengthSqr() > Square( this.suspendAcceleration[0] ) ) {
 	////			return false;
 	////		}
-	////		if ( body.acceleration.SubVec3(1).LengthSqr() > Square( suspendAcceleration[1] ) ) {
+	////		if ( body.acceleration.SubVec3(1).LengthSqr() > Square( this.suspendAcceleration[1] ) ) {
 	////			return false;
 	////		}
 	////	}
@@ -2972,9 +2972,9 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////
 	////	// if the articulated figure changed
-	////	if ( changedAF || ( linearTime != af_useLinearTime.GetBool() ) ) {
+	////	if ( this.changedAF || ( linearTime != af_useLinearTime.GetBool() ) ) {
 	////		BuildTrees();
-	////		changedAF = false;
+	////		this.changedAF = false;
 	////		linearTime = af_useLinearTime.GetBool();
 	////	}
 	////
@@ -3028,11 +3028,11 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////#ifdef AF_TIMINGS
 	////	int i, numPrimary = 0, numAuxiliary = 0;
-	////	for ( i = 0; i < primaryConstraints.Num(); i++ ) {
-	////		numPrimary += primaryConstraints[i].J1.GetNumRows();
+	////	for ( i = 0; i < this.primaryConstraints.Num(); i++ ) {
+	////		numPrimary += this.primaryConstraints[i].J1.GetNumRows();
 	////	}
-	////	for ( i = 0; i < auxiliaryConstraints.Num(); i++ ) {
-	////		numAuxiliary += auxiliaryConstraints[i].J1.GetNumRows();
+	////	for ( i = 0; i < this.auxiliaryConstraints.Num(); i++ ) {
+	////		numAuxiliary += this.auxiliaryConstraints[i].J1.GetNumRows();
 	////	}
 	////	timer_pc.Start();
 	////#endif
@@ -3203,7 +3203,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	idMat3 axis;
 	////
 	////	if ( af_highlightConstraint.GetString()[0] ) {
-	////		constraint = GetConstraint( af_highlightConstraint.GetString() );
+	////		constraint = this.GetConstraint( af_highlightConstraint.GetString() );
 	////		if ( constraint ) {
 	////			constraint.GetCenter( center );
 	////			axis = gameLocal.GetLocalPlayer().viewAngles.ToMat3();
@@ -3290,27 +3290,27 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////
 	////	if ( af_showConstraints.GetBool() ) {
-	////		for ( i = 0; i < primaryConstraints.Num(); i++ ) {
-	////			constraint = primaryConstraints[i];
+	////		for ( i = 0; i < this.primaryConstraints.Num(); i++ ) {
+	////			constraint = this.primaryConstraints[i];
 	////			constraint.DebugDraw();
 	////		}
 	////		if ( !af_showPrimaryOnly.GetBool() ) {
-	////			for ( i = 0; i < auxiliaryConstraints.Num(); i++ ) {
-	////				constraint = auxiliaryConstraints[i];
+	////			for ( i = 0; i < this.auxiliaryConstraints.Num(); i++ ) {
+	////				constraint = this.auxiliaryConstraints[i];
 	////				constraint.DebugDraw();
 	////			}
 	////		}
 	////	}
 	////
 	////	if ( af_showConstraintNames.GetBool() ) {
-	////		for ( i = 0; i < primaryConstraints.Num(); i++ ) {
-	////			constraint = primaryConstraints[i];
+	////		for ( i = 0; i < this.primaryConstraints.Num(); i++ ) {
+	////			constraint = this.primaryConstraints[i];
 	////			constraint.GetCenter( center );
 	////			gameRenderWorld.DrawText( constraint.GetName().c_str(), center, 0.08f, colorCyan, gameLocal.GetLocalPlayer().viewAngles.ToMat3(), 1 );
 	////		}
 	////		if ( !af_showPrimaryOnly.GetBool() ) {
-	////			for ( i = 0; i < auxiliaryConstraints.Num(); i++ ) {
-	////				constraint = auxiliaryConstraints[i];
+	////			for ( i = 0; i < this.auxiliaryConstraints.Num(); i++ ) {
+	////				constraint = this.auxiliaryConstraints[i];
 	////				constraint.GetCenter( center );
 	////				gameRenderWorld.DrawText( constraint.GetName().c_str(), center, 0.08f, colorCyan, gameLocal.GetLocalPlayer().viewAngles.ToMat3(), 1 );
 	////			}
@@ -3318,81 +3318,81 @@ class idPhysics_AF extends idPhysics_Base {
 	////	}
 	////
 	////	if ( af_showTrees.GetBool() || ( af_showActive.GetBool() && this.current.atRest < 0 ) ) {
-	////		for ( i = 0; i < trees.Num(); i++ ) {
-	////			trees[i].DebugDraw( idStr::ColorForIndex( i+3 ) );
+	////		for ( i = 0; i < this.trees.Num(); i++ ) {
+	////			this.trees[i].DebugDraw( idStr::ColorForIndex( i+3 ) );
 	////		}
 	////	}
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::idPhysics_AF
-	////================
-	////*/
-	////idPhysics_AF::idPhysics_AF( ) {
-	////	trees.Clear();
-	////	this.bodies.Clear();
-	////	constraints.Clear();
-	////	primaryConstraints.Clear();
-	////	auxiliaryConstraints.Clear();
-	////	frameConstraints.Clear();
-	////	contacts.Clear();
-	////	collisions.Clear();
-	////	changedAF = true;
-	////	this.masterBody = NULL;
-	////
-	////	lcp = idLCP::AllocSymmetric();
-	////
-	////	memset( &current, 0, sizeof( this.current ) );
-	////	this.current.atRest = -1;
-	////	this.current.lastTimeStep = USERCMD_MSEC;
-	////	saved = this.current;
-	////
-	////	this.linearFriction = 0.005f;
-	////	this.angularFriction = 0.005f;
-	////	this.contactFriction = 0.8f;
-	////	bouncyness = 0.4f;
-	////	this.totalMass = 0.0;
-	////	forceTotalMass = -1.0;
-	////
-	////	suspendVelocity.Set( SUSPEND_LINEAR_VELOCITY, SUSPEND_ANGULAR_VELOCITY );
-	////	suspendAcceleration.Set( SUSPEND_LINEAR_ACCELERATION, SUSPEND_LINEAR_ACCELERATION );
-	////	noMoveTime = NO_MOVE_TIME;
-	////	noMoveTranslation = NO_MOVE_TRANSLATION_TOLERANCE;
-	////	noMoveRotation = NO_MOVE_ROTATION_TOLERANCE;
-	////	this.minMoveTime = MIN_MOVE_TIME;
-	////	maxMoveTime = MAX_MOVE_TIME;
-	////	impulseThreshold = IMPULSE_THRESHOLD;
-	////
-	////	timeScale = 1.0;
-	////	timeScaleRampStart = 0.0;
-	////	timeScaleRampEnd = 0.0;
-	////
-	////	jointFrictionScale = 0.0;
-	////	jointFrictionDent = 0.0;
-	////	jointFrictionDentStart = 0.0;
-	////	jointFrictionDentEnd = 0.0;
-	////	jointFrictionDentScale = 0.0;
-	////
-	////	contactFrictionScale = 0.0;
-	////	contactFrictionDent = 0.0;
-	////	contactFrictionDentStart = 0.0;
-	////	contactFrictionDentEnd = 0.0;
-	////	contactFrictionDentScale = 0.0;
-	////
-	////	enableCollision = true;
-	////	selfCollision = true;
-	////	comeToRest = true;
-	////	linearTime = true;
-	////	noImpact = false;
-	////	worldConstraintsLocked = false;
-	////	forcePushable = false;
-	////
-	////#ifdef AF_TIMINGS
-	////	lastTimerReset = 0;
-	////#endif
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_AF::idPhysics_AF
+	================
+	*/
+	constructor( ) {
+		this.trees.Clear();
+		this.bodies.Clear();
+		this.constraints.Clear();
+		this.primaryConstraints.Clear();
+		this.auxiliaryConstraints.Clear();
+		this.frameConstraints.Clear();
+		this.contacts.Clear();
+		this.collisions.Clear();
+		this.changedAF = true;
+		this.masterBody = NULL;
+	
+		this.lcp = idLCP::AllocSymmetric();
+	
+		memset( &current, 0, sizeof( this.current ) );
+		this.current.atRest = -1;
+		this.current.lastTimeStep = USERCMD_MSEC;
+		this.saved = this.current;
+	
+		this.linearFriction = 0.005;
+		this.angularFriction = 0.005;
+		this.contactFriction = 0.8;
+		this.bouncyness = 0.4;
+		this.totalMass = 0.0;
+		forceTotalMass = -1.0;
+	
+		this.suspendVelocity.Set( SUSPEND_LINEAR_VELOCITY, SUSPEND_ANGULAR_VELOCITY );
+		this.suspendAcceleration.Set( SUSPEND_LINEAR_ACCELERATION, SUSPEND_LINEAR_ACCELERATION );
+		noMoveTime = NO_MOVE_TIME;
+		noMoveTranslation = NO_MOVE_TRANSLATION_TOLERANCE;
+		noMoveRotation = NO_MOVE_ROTATION_TOLERANCE;
+		this.minMoveTime = MIN_MOVE_TIME;
+		maxMoveTime = MAX_MOVE_TIME;
+		impulseThreshold = IMPULSE_THRESHOLD;
+	
+		timeScale = 1.0;
+		timeScaleRampStart = 0.0;
+		timeScaleRampEnd = 0.0;
+	
+		jointFrictionScale = 0.0;
+		jointFrictionDent = 0.0;
+		jointFrictionDentStart = 0.0;
+		jointFrictionDentEnd = 0.0;
+		jointFrictionDentScale = 0.0;
+	
+		contactFrictionScale = 0.0;
+		contactFrictionDent = 0.0;
+		contactFrictionDentStart = 0.0;
+		contactFrictionDentEnd = 0.0;
+		contactFrictionDentScale = 0.0;
+	
+		enableCollision = true;
+		selfCollision = true;
+		comeToRest = true;
+		linearTime = true;
+		noImpact = false;
+		worldConstraintsLocked = false;
+		forcePushable = false;
+	
+	//#ifdef AF_TIMINGS
+		lastTimerReset = 0;
+	//#endif
+	}
+	
 	/////*
 	////================
 	////idPhysics_AF::~idPhysics_AF
@@ -3401,7 +3401,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////idPhysics_AF::~idPhysics_AF( ) {
 	////	var/*int*/i:number;
 	////
-	////	trees.DeleteContents( true );
+	////	this.trees.DeleteContents( true );
 	////
 	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////		delete this.bodies[i];
@@ -3460,7 +3460,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	// the articulated figure structure is handled by the owner
 	////
 	////	idPhysics_AF_SavePState( saveFile, this.current );
-	////	idPhysics_AF_SavePState( saveFile, saved );
+	////	idPhysics_AF_SavePState( saveFile, this.saved );
 	////
 	////	saveFile.WriteInt( this.bodies.Num() );
 	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
@@ -3478,17 +3478,17 @@ class idPhysics_AF extends idPhysics_Base {
 	////		this.constraints[i].Save( saveFile );
 	////	}
 	////
-	////	saveFile.WriteBool( changedAF );
+	////	saveFile.WriteBool( this.changedAF );
 	////
 	////	saveFile.WriteFloat( this.linearFriction );
 	////	saveFile.WriteFloat( this.angularFriction );
 	////	saveFile.WriteFloat( this.contactFriction );
-	////	saveFile.WriteFloat( bouncyness );
+	////	saveFile.WriteFloat( this.bouncyness );
 	////	saveFile.WriteFloat( this.totalMass );
 	////	saveFile.WriteFloat( forceTotalMass );
 	////
-	////	saveFile.WriteVec2( suspendVelocity );
-	////	saveFile.WriteVec2( suspendAcceleration );
+	////	saveFile.WriteVec2( this.suspendVelocity );
+	////	saveFile.WriteVec2( this.suspendAcceleration );
 	////	saveFile.WriteFloat( noMoveTime );
 	////	saveFile.WriteFloat( noMoveTranslation );
 	////	saveFile.WriteFloat( noMoveRotation );
@@ -3533,7 +3533,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	// the articulated figure structure should have already been restored
 	////
 	////	idPhysics_AF_RestorePState( saveFile, this.current );
-	////	idPhysics_AF_RestorePState( saveFile, saved );
+	////	idPhysics_AF_RestorePState( saveFile, this.saved );
 	////
 	////	saveFile.ReadInt( num );
 	////	assert( num == this.bodies.Num() );
@@ -3552,17 +3552,17 @@ class idPhysics_AF extends idPhysics_Base {
 	////		this.constraints[i].Restore( saveFile );
 	////	}
 	////
-	////	saveFile.ReadBool( changedAF );
+	////	saveFile.ReadBool( this.changedAF );
 	////
 	////	saveFile.ReadFloat( this.linearFriction );
 	////	saveFile.ReadFloat( this.angularFriction );
 	////	saveFile.ReadFloat( this.contactFriction );
-	////	saveFile.ReadFloat( bouncyness );
+	////	saveFile.ReadFloat( this.bouncyness );
 	////	saveFile.ReadFloat( this.totalMass );
 	////	saveFile.ReadFloat( forceTotalMass );
 	////
-	////	saveFile.ReadVec2( suspendVelocity );
-	////	saveFile.ReadVec2( suspendAcceleration );
+	////	saveFile.ReadVec2( this.suspendVelocity );
+	////	saveFile.ReadVec2( this.suspendAcceleration );
 	////	saveFile.ReadFloat( noMoveTime );
 	////	saveFile.ReadFloat( noMoveTranslation );
 	////	saveFile.ReadFloat( noMoveRotation );
@@ -3594,7 +3594,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	saveFile.ReadBool( worldConstraintsLocked );
 	////	saveFile.ReadBool( forcePushable );
 	////
-	////	changedAF = true;
+	////	this.changedAF = true;
 	////
 	////	UpdateClipModels();
 	////}
@@ -3626,9 +3626,9 @@ class idPhysics_AF extends idPhysics_Base {
 	////	idAFConstraint *c;
 	////	idAFTree *tree;
 	////
-	////	primaryConstraints.Clear();
-	////	auxiliaryConstraints.Clear();
-	////	trees.DeleteContents( true );
+	////	this.primaryConstraints.Clear();
+	////	this.auxiliaryConstraints.Clear();
+	////	this.trees.DeleteContents( true );
 	////
 	////	this.totalMass = 0.0;
 	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
@@ -3671,10 +3671,10 @@ class idPhysics_AF extends idPhysics_Base {
 	////				c.body2.children.Append( c.body1 );
 	////				c.fl.isPrimary = true;
 	////				c.firstIndex = 0;
-	////				primaryConstraints.Append( c );
+	////				this.primaryConstraints.Append( c );
 	////			} else {
 	////				c.fl.isPrimary = false;
-	////				auxiliaryConstraints.Append( c );
+	////				this.auxiliaryConstraints.Append( c );
 	////			}
 	////		}
 	////
@@ -3685,7 +3685,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////				tree.sortedBodies.Clear();
 	////				tree.sortedBodies.Append( this.bodies[i] );
 	////				this.bodies[i].tree = tree;
-	////				trees.Append( tree );
+	////				this.trees.Append( tree );
 	////			}
 	////		}
 	////
@@ -3699,14 +3699,14 @@ class idPhysics_AF extends idPhysics_Base {
 	////			}
 	////		}
 	////
-	////		if ( trees.Num() > 1 ) {
+	////		if ( this.trees.Num() > 1 ) {
 	////			gameLocal.Warning( "Articulated figure has multiple seperate tree structures for entity '%s' type '%s'.",
 	////								this.self.name.c_str(), this.self.GetType().classname );
 	////		}
 	////
 	////		// sort bodies in each tree to make sure parents come first
-	////		for ( i = 0; i < trees.Num(); i++ ) {
-	////			trees[i].SortBodies();
+	////		for ( i = 0; i < this.trees.Num(); i++ ) {
+	////			this.trees[i].SortBodies();
 	////		}
 	////
 	////	} else {
@@ -3717,7 +3717,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////			tree.sortedBodies.Clear();
 	////			tree.sortedBodies.Append( this.bodies[i] );
 	////			this.bodies[i].tree = tree;
-	////			trees.Append( tree );
+	////			this.trees.Append( tree );
 	////		}
 	////
 	////		for ( i = 0; i < this.constraints.Num(); i++ ) {
@@ -3729,7 +3729,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////			}
 	////
 	////			c.fl.isPrimary = false;
-	////			auxiliaryConstraints.Append( c );
+	////			this.auxiliaryConstraints.Append( c );
 	////		}
 	////	}
 	////}
@@ -3765,7 +3765,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		body.contactFriction = this.contactFriction;
 	////	}
 	////	if ( body.bouncyness < 0.0 ) {
-	////		body.bouncyness = bouncyness;
+	////		body.bouncyness = this.bouncyness;
 	////	}
 	////	if ( !body.fl.clipMaskSet ) {
 	////		body.clipMask = this.clipMask;
@@ -3773,42 +3773,42 @@ class idPhysics_AF extends idPhysics_Base {
 	////
 	////	this.bodies.Append( body );
 	////
-	////	changedAF = true;
+	////	this.changedAF = true;
 	////
 	////	return id;
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::AddConstraint
-	////================
-	////*/
-	////void idPhysics_AF::AddConstraint( idAFConstraint *constraint ) {
-	////
-	////	if ( this.constraints.Find( constraint ) ) {
-	////		gameLocal.Error( "idPhysics_AF::AddConstraint: constraint '%s' added twice.", constraint.name.c_str() );
-	////	}
-	////	if ( GetConstraint( constraint.name ) ) {
-	////		gameLocal.Error( "idPhysics_AF::AddConstraint: a constraint with the name '%s' already exists.", constraint.name.c_str() );
-	////	}
-	////	if ( !constraint.body1 ) {
-	////		gameLocal.Error( "idPhysics_AF::AddConstraint: body1 == NULL on constraint '%s'.", constraint.name.c_str() );
-	////	}
-	////	if ( !this.bodies.Find( constraint.body1 ) ) {
-	////		gameLocal.Error( "idPhysics_AF::AddConstraint: body1 of constraint '%s' is not part of the articulated figure.", constraint.name.c_str() );
-	////	}
-	////	if ( constraint.body2 && !this.bodies.Find( constraint.body2 ) ) {
-	////		gameLocal.Error( "idPhysics_AF::AddConstraint: body2 of constraint '%s' is not part of the articulated figure.", constraint.name.c_str() );
-	////	}
-	////	if ( constraint.body1 == constraint.body2 ) {
-	////		gameLocal.Error( "idPhysics_AF::AddConstraint: body1 and body2 of constraint '%s' are the same.", constraint.name.c_str() );
-	////	}
-	////
-	////	this.constraints.Append( constraint );
-	////	constraint.physics = this;
-	////
-	////	changedAF = true;
-	////}
+	
+	/*
+	================
+	idPhysics_AF::AddConstraint
+	================
+	*/
+	AddConstraint(constraint: idAFConstraint ):void {
+	
+		if ( this.constraints.Find( constraint ) ) {
+			gameLocal.Error( "idPhysics_AF::AddConstraint: constraint '%s' added twice.", constraint.name.c_str() );
+		}
+		if ( this.GetConstraint( constraint.name ) ) {
+			gameLocal.Error( "idPhysics_AF::AddConstraint: a constraint with the name '%s' already exists.", constraint.name.c_str() );
+		}
+		if ( !constraint.body1 ) {
+			gameLocal.Error( "idPhysics_AF::AddConstraint: body1 == NULL on constraint '%s'.", constraint.name.c_str() );
+		}
+		if ( !this.bodies.Find( constraint.body1 ) ) {
+			gameLocal.Error( "idPhysics_AF::AddConstraint: body1 of constraint '%s' is not part of the articulated figure.", constraint.name.c_str() );
+		}
+		if ( constraint.body2 && !this.bodies.Find( constraint.body2 ) ) {
+			gameLocal.Error( "idPhysics_AF::AddConstraint: body2 of constraint '%s' is not part of the articulated figure.", constraint.name.c_str() );
+		}
+		if ( constraint.body1 == constraint.body2 ) {
+			gameLocal.Error( "idPhysics_AF::AddConstraint: body1 and body2 of constraint '%s' are the same.", constraint.name.c_str() );
+		}
+	
+		this.constraints.Append( constraint );
+		constraint.physics = this;
+	
+		this.changedAF = true;
+	}
 	////
 	/////*
 	////================
@@ -3816,7 +3816,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////void idPhysics_AF::AddFrameConstraint( idAFConstraint *constraint ) {
-	////	frameConstraints.Append( constraint );
+	////	this.frameConstraints.Append( constraint );
 	////	constraint.physics = this;
 	////}
 	////
@@ -3836,7 +3836,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		idAFBody *b = this.bodies[newId];
 	////		this.bodies[newId] = this.bodies[id];
 	////		this.bodies[id] = b;
-	////		changedAF = true;
+	////		this.changedAF = true;
 	////	}
 	////}
 	////
@@ -4037,7 +4037,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////		this.bodies[j].clipModel.SetId( j );
 	////	}
 	////
-	////	changedAF = true;
+	////	this.changedAF = true;
 	////}
 	////
 	/////*
@@ -4080,7 +4080,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////	delete this.constraints[id];
 	////	this.constraints.RemoveIndex( id );
 	////
-	////	changedAF = true;
+	////	this.changedAF = true;
 	////}
 	////
 	/////*
@@ -4213,7 +4213,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////void idPhysics_AF::SaveState( ) {
 	////	var/*int*/i:number;
 	////
-	////	saved = this.current;
+	////	this.saved = this.current;
 	////
 	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////		memcpy( &this.bodies[i].saved, this.bodies[i].current, sizeof( AFBodyPState_t ) );
@@ -4228,7 +4228,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////void idPhysics_AF::RestoreState( ) {
 	////	var/*int*/i:number;
 	////
-	////	this.current = saved;
+	////	this.current = this.saved;
 	////
 	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
 	////		*(this.bodies[i].current) = this.bodies[i].saved;

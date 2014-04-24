@@ -70,8 +70,8 @@ var ASYNC_PLAYER_INV_AMMO_BITS = idMath.BitsForInteger( 999 );	// 9 bits to cove
 var ASYNC_PLAYER_INV_CLIP_BITS = -7;								// -7 bits to cover the range [-1, 60]
 ////
 ////struct idItemInfo {
-////	idStr name;
-////	idStr icon;
+////	name = new idStr;
+	//icon = new idStr;
 ////};
 ////
 ////struct idObjectiveInfo {

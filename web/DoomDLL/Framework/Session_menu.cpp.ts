@@ -183,7 +183,7 @@ idSessionLocal.prototype.SetGUI = function ( gui: idUserInterface, handle: ( str
 ////*/
 ////void idSessionLocal::SetSaveGameGuiVars( void ) {
 ////	var/*int*/i:number;
-////	idStr name;
+////	var name = new idStr
 ////	idStrList fileList;
 ////	idList<fileTIME_T> fileTimes;
 ////

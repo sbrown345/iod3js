@@ -1267,7 +1267,7 @@ class idPush {
 //		}
 //
 //		// if the entity is an active articulated figure and gibs
-//		if ( check.IsType( idAFEntity_Base::Type ) && check.spawnArgs.GetBool( "gib" ) ) {
+//		if ( check.IsType( idAFEntity_Base.Type ) && check.spawnArgs.GetBool( "gib" ) ) {
 //			if ( static_cast<idAFEntity_Base *>(check).IsActiveAF() ) {
 //				check.ProcessEvent( &EV_Gib, "damage_Gib" );
 //			}
@@ -1437,7 +1437,7 @@ class idPush {
 //		}
 //
 //		// if the entity is an active articulated figure and gibs
-//		if ( check.IsType( idAFEntity_Base::Type ) && check.spawnArgs.GetBool( "gib" ) ) {
+//		if ( check.IsType( idAFEntity_Base.Type ) && check.spawnArgs.GetBool( "gib" ) ) {
 //			if ( static_cast<idAFEntity_Base *>(check).IsActiveAF() ) {
 //				check.ProcessEvent( &EV_Gib, "damage_Gib" );
 //			}

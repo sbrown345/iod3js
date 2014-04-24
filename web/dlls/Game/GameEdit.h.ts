@@ -236,7 +236,7 @@ class idDragEntity {
 ////						newEnt = newEnt.GetBindMaster();
 ////					}
 ////
-////					if ( newEnt.IsType( idAFEntity_Base::Type ) && static_cast<idAFEntity_Base *>(newEnt).IsActiveAF() ) {
+////					if ( newEnt.IsType( idAFEntity_Base.Type ) && static_cast<idAFEntity_Base *>(newEnt).IsActiveAF() ) {
 ////						idAFEntity_Base *af = static_cast<idAFEntity_Base *>(newEnt);
 ////
 ////						// joint being dragged
@@ -357,7 +357,7 @@ class idDragEntity {
 ////*/
 ////void idDragEntity::BindSelected( void ) {
 ////	int num, largestNum;
-////	idLexer lexer;
+////	var lexer = new idLexer;
 ////	idToken type, bodyName;
 ////	idStr key, value, bindBodyName;
 ////	const idKeyValue *kv;
@@ -365,7 +365,7 @@ class idDragEntity {
 ////
 ////	af = static_cast<idAFEntity_Base *>(dragEnt.GetEntity());
 ////
-////	if ( !af || !af.IsType( idAFEntity_Base::Type ) || !af.IsActiveAF() ) {
+////	if ( !af || !af.IsType( idAFEntity_Base.Type ) || !af.IsActiveAF() ) {
 ////		return;
 ////	}
 ////
@@ -417,7 +417,7 @@ class idDragEntity {
 ////
 ////	af = static_cast<idAFEntity_Base *>(selected.GetEntity());
 ////
-////	if ( !af || !af.IsType( idAFEntity_Base::Type ) || !af.IsActiveAF() ) {
+////	if ( !af || !af.IsType( idAFEntity_Base.Type ) || !af.IsActiveAF() ) {
 ////		return;
 ////	}
 ////
@@ -625,7 +625,7 @@ class idEditEntities {
 ////			selectableEntityClasses.Append( sit );
 ////			break;
 ////		case 3:
-////			sit.typeInfo = &idAFEntity_Base::Type;
+////			sit.typeInfo = &idAFEntity_Base.Type;
 ////			sit.textKey = "articulatedFigure";
 ////			selectableEntityClasses.Append( sit );
 ////			break;
@@ -672,7 +672,7 @@ class idEditEntities {
 ////		}
 ////
 ////		bool drawArrows = false;
-////		if ( ent.GetType() == &idAFEntity_Base::Type ) {
+////		if ( ent.GetType() == &idAFEntity_Base.Type ) {
 ////			if ( !static_cast<idAFEntity_Base *>(ent).IsActiveAF() ) {
 ////				continue;
 ////			}

@@ -1702,7 +1702,7 @@ Event_SetCvar( name:string, value:string ) :void {
 //Event_GetTraceJoint( ) :void{
 //	if ( idThread.trace.fraction < 1.0f && idThread.trace.c.id < 0 ) {
 //		idAFEntity_Base *af = static_cast<idAFEntity_Base *>( gameLocal.entities[ idThread.trace.c.entityNum ] );
-//		if ( af && af.IsType( idAFEntity_Base::Type ) && af.IsActiveAF() ) {
+//		if ( af && af.IsType( idAFEntity_Base.Type ) && af.IsActiveAF() ) {
 //			ReturnString( af.GetAnimator().GetJointName( CLIPMODEL_ID_TO_JOINT_HANDLE( idThread.trace.c.id ) ) );
 //			return;
 //		}
@@ -1718,7 +1718,7 @@ Event_SetCvar( name:string, value:string ) :void {
 //Event_GetTraceBody( ):void {
 //	if ( idThread.trace.fraction < 1.0f && idThread.trace.c.id < 0 ) {
 //		idAFEntity_Base *af = static_cast<idAFEntity_Base *>( gameLocal.entities[ idThread.trace.c.entityNum ] );
-//		if ( af && af.IsType( idAFEntity_Base::Type ) && af.IsActiveAF() ) {
+//		if ( af && af.IsType( idAFEntity_Base.Type ) && af.IsActiveAF() ) {
 //			int bodyId = af.BodyForClipModelId( idThread.trace.c.id );
 //			idAFBody *body = af.GetAFPhysics().GetBody( bodyId );
 //			if ( body ) {

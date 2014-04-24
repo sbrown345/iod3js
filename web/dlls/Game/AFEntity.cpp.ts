@@ -542,14 +542,14 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////void idGameEdit::AF_UpdateEntities( const char *fileName ) {
 ////	var ent:idEntity
 ////	idAFEntity_Base *af;
-////	idStr name;
+////	var name = new idStr
 ////
 ////	name = fileName;
 ////	name.StripFileExtension();
 ////
 ////	// reload any idAFEntity_Generic which uses the given articulated figure file
 ////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
-////		if ( ent.IsType( idAFEntity_Base::Type ) ) {
+////		if ( ent.IsType( idAFEntity_Base.Type ) ) {
 ////			af = static_cast<idAFEntity_Base *>(ent);
 ////			if ( name.Icmp( af.GetAFName() ) == 0 ) {
 ////				af.LoadAF();
@@ -582,7 +582,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////
 ////		// reload all AF entities using the file
 ////		for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
-////			if ( ent.IsType( idAFEntity_Base::Type ) ) {
+////			if ( ent.IsType( idAFEntity_Base.Type ) ) {
 ////				af = static_cast<idAFEntity_Base *>(ent);
 ////				if ( idStr::Icmp( decl.GetName(), af.GetAFName() ) == 0 ) {
 ////					af.LoadAF();
@@ -650,7 +650,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////	var angles = new idAngles;
 ////	const idDict *defArgs;
 ////	const idKeyValue *arg;
-////	idStr name;
+////	var name = new idStr
 ////	jointTransformData_t data;
 ////	const char *classname, *afName, *modelName;
 ////	idRenderModel *md5;

@@ -4820,7 +4820,7 @@ idCollisionModelManagerLocal::ContentsFromString
 ////void idCollisionModelManagerLocal::WriteCollisionModelsToFile( const char *filename, int firstModel, int lastModel, unsigned int mapFileCRC ) {
 ////	var i:number/*int*/;
 ////	idFile *fp;
-////	idStr name;
+////	var name = new idStr
 ////
 ////	name = filename;
 ////	name.SetFileExtension( CM_FILE_EXT );
@@ -4853,7 +4853,7 @@ idCollisionModelManagerLocal::ContentsFromString
 ////*/
 ////bool idCollisionModelManagerLocal::WriteCollisionModelForMapEntity( const idMapEntity *mapEnt, const char *filename, const bool testTraceModel ) {
 ////	idFile *fp;
-////	idStr name;
+////	var name = new idStr
 ////	cm_model_t *model;
 ////
 ////	SetupHash();

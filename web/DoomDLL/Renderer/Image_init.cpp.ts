@@ -1599,7 +1599,7 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 ////===============
 ////*/
 ////idImage *idImageManager::GetImage( _name:string ) const {
-////	idStr name;
+////	var name = new idStr
 ////	idImage	*image;
 ////	int hash;
 

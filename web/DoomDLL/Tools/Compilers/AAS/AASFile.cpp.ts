@@ -419,7 +419,7 @@ idAASSettings::FromParser
 ////*/
 ////FromFile( const idStr &fileName ):boolean {
 ////	idLexer src( LEXFL_ALLOWPATHNAMES | LEXFL_NOSTRINGESCAPECHARS | LEXFL_NOSTRINGCONCAT );
-////	idStr name;
+////	var name = new idStr
 ////
 ////	name = fileName;
 ////

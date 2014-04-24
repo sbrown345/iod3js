@@ -62,8 +62,8 @@ class idAF {
 ////
 	SetAnimator(a: idAnimator ):void { this.animator = a; }
 ////	bool					Load( ent:idEntity, const char *fileName );
-////	bool					IsLoaded( ) const { return this.isLoaded && this.self != NULL; }
-////	const char *			GetName( ) const { return this.name.c_str(); }
+	IsLoaded ( ): boolean { return this.isLoaded && this.self != null; }
+	GetName ( ): string { return this.name.c_str ( ); }
 ////	void					SetupPose( ent:idEntity, /*int*/time:number );
 ////	void					ChangePose( ent:idEntity, /*int*/time:number );
 ////	int						EntitiesTouchingAF( afTouch_t touchList[ MAX_GENTITIES ] ) const;
@@ -151,9 +151,9 @@ class idAF {
 	////void idAF::Save( idSaveGame *savefile ) const {
 	////	savefile.WriteObject( this.self );
 	////	savefile.WriteString( GetName() );
-	////	savefile.WriteBool( hasBindConstraints );
-	////	savefile.WriteVec3( baseOrigin );
-	////	savefile.WriteMat3( baseAxis );
+	////	savefile.WriteBool( this.hasBindConstraints );
+	////	savefile.WriteVec3( this.baseOrigin );
+	////	savefile.WriteMat3( this.baseAxis );
 	////	savefile.WriteInt( poseTime );
 	////	savefile.WriteInt( restStartTime );
 	////	savefile.WriteBool( this.isLoaded );
@@ -169,9 +169,9 @@ class idAF {
 	////void idAF::Restore( idRestoreGame *savefile ) {
 	////	savefile.ReadObject( reinterpret_cast<idClass *&>( this.self ) );
 	////	savefile.ReadString( this.name );
-	////	savefile.ReadBool( hasBindConstraints );
-	////	savefile.ReadVec3( baseOrigin );
-	////	savefile.ReadMat3( baseAxis );
+	////	savefile.ReadBool( this.hasBindConstraints );
+	////	savefile.ReadVec3( this.baseOrigin );
+	////	savefile.ReadMat3( this.baseAxis );
 	////	savefile.ReadInt( poseTime );
 	////	savefile.ReadInt( restStartTime );
 	////	savefile.ReadBool( this.isLoaded );
@@ -183,7 +183,7 @@ class idAF {
 	////	if ( this.self ) {
 	////		SetAnimator( this.self.GetAnimator() );
 	////		Load( this.self, this.name );
-	////		if ( hasBindConstraints ) {
+	////		if ( this.hasBindConstraints ) {
 	////			AddBindConstraints();
 	////		}
 	////	}
@@ -215,7 +215,7 @@ class idAF {
 	////	idMat3 axis, renderAxis, bodyAxis;
 	////	renderEntity_t *renderEntity;
 	////
-	////	if ( !IsLoaded() ) {
+	////	if ( !this.IsLoaded() ) {
 	////		return false;
 	////	}
 	////
@@ -238,8 +238,8 @@ class idAF {
 	////	// get the render position
 	////	origin = this.physicsObj.GetOrigin( 0 );
 	////	axis = this.physicsObj.GetAxis( 0 );
-	////	renderAxis = baseAxis.Transpose() * axis;
-	////	renderOrigin = origin - baseOrigin * renderAxis;
+	////	renderAxis = this.baseAxis.Transpose() * axis;
+	////	renderOrigin = origin - this.baseOrigin * renderAxis;
 	////
 	////	// create an animation frame which reflects the current pose of the articulated figure
 	////	this.animator.InitAFPose();
@@ -280,8 +280,8 @@ class idAF {
 	////	origin = this.physicsObj.GetOrigin( 0 );
 	////	axis = this.physicsObj.GetAxis( 0 );
 	////
-	////	entityAxis = baseAxis.Transpose() * axis;
-	////	entityOrigin = origin - baseOrigin * entityAxis;
+	////	entityAxis = this.baseAxis.Transpose() * axis;
+	////	entityOrigin = origin - this.baseOrigin * entityAxis;
 	////
 	////	// get bounds relative to base
 	////	for ( i = 0; i < this.jointMods.Num(); i++ ) {
@@ -311,7 +311,7 @@ class idAF {
 	////	idAnimator *animatorPtr;
 	////	renderEntity_t *renderEntity;
 	////
-	////	if ( !IsLoaded() || !ent ) {
+	////	if ( !this.IsLoaded() || !ent ) {
 	////		return;
 	////	}
 	////
@@ -365,7 +365,7 @@ class idAF {
 	////	idAnimator *animatorPtr;
 	////	renderEntity_t *renderEntity;
 	////
-	////	if ( !IsLoaded() || !ent ) {
+	////	if ( !this.IsLoaded() || !ent ) {
 	////		return;
 	////	}
 	////
@@ -415,7 +415,7 @@ class idAF {
 	////	idClipModel *clipModels[ MAX_GENTITIES ];
 	////	int numTouching;
 	////
-	////	if ( !IsLoaded() ) {
+	////	if ( !this.IsLoaded() ) {
 	////		return 0;
 	////	}
 	////
@@ -477,8 +477,8 @@ class idAF {
 	////================
 	////*/
 	////void idAF::GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis ) const {
-	////	origin = - baseOrigin;
-	////	axis = baseAxis.Transpose();
+	////	origin = - this.baseOrigin;
+	////	axis = this.baseAxis.Transpose();
 	////}
 	////
 	/////*
@@ -551,8 +551,8 @@ class idAF {
 	////*/
 	////void idAF::SetBase( idAFBody *body, const idJointMat *joints ) {
 	////	this.physicsObj.ForceBodyId( body, 0 );
-	////	baseOrigin = body.GetWorldOrigin();
-	////	baseAxis = body.GetWorldAxis();
+	////	this.baseOrigin = body.GetWorldOrigin();
+	////	this.baseAxis = body.GetWorldAxis();
 	////	AddBody( body, joints, this.animator.GetJointName( this.animator.GetFirstChild( "origin" ) ), AF_JOINTMOD_AXIS );
 	////}
 	
@@ -1018,7 +1018,7 @@ class idAF {
 ////================
 ////*/
 ////void idAF::Start( ) {
-////	if ( !IsLoaded() ) {
+////	if ( !this.IsLoaded() ) {
 ////		return;
 ////	}
 ////	// clear all animations
@@ -1044,7 +1044,7 @@ class idAF {
 ////	idStr str;
 ////	bool solid;
 ////
-////	if ( !IsLoaded() ) {
+////	if ( !this.IsLoaded() ) {
 ////		return false;
 ////	}
 ////
@@ -1077,7 +1077,7 @@ class idAF {
 ////*/
 ////void idAF::StartFromCurrentPose( int inheritVelocityTime ) {
 ////
-////	if ( !IsLoaded() ) {
+////	if ( !this.IsLoaded() ) {
 ////		return;
 ////	}
 ////
@@ -1207,7 +1207,7 @@ idAF::LoadState
 	LoadState(args: idDict): void {
 		todoThrow ( );
 ////	const idKeyValue *kv;
-////	idStr name;
+////	var name = new idStr
 ////	idAFBody *body;
 ////	idVec3 origin;
 ////	var angles = new idAngles;
@@ -1231,95 +1231,92 @@ idAF::LoadState
 ////
 ////	this.physicsObj.UpdateClipModels();
 	}
-////
-/////*
-////================
-////idAF::AddBindConstraints
-////================
-////*/
-////void idAF::AddBindConstraints( ) {
-////	const idKeyValue *kv;
-////	idStr name;
-////	idAFBody *body;
-////	idLexer lexer;
-////	idToken type, bodyName, jointName;
-////	idVec3 origin, renderOrigin;
-////	idMat3 axis, renderAxis;
-////
-////	if ( !IsLoaded() ) {
-////		return;
-////	}
-////
-////	const idDict &args = this.self.spawnArgs;
-////
-////	// get the render position
-////	origin = this.physicsObj.GetOrigin( 0 );
-////	axis = this.physicsObj.GetAxis( 0 );
-////	renderAxis = baseAxis.Transpose() * axis;
-////	renderOrigin = origin - baseOrigin * renderAxis;
-////
-////	// parse all the bind constraints
-////	for ( kv = args.MatchPrefix( "bindConstraint ", NULL ); kv; kv = args.MatchPrefix( "bindConstraint ", kv ) ) {
-////		name = kv.GetKey();
-////		name.Strip( "bindConstraint " );
-////
-////		lexer.LoadMemory( kv.GetValue(), kv.GetValue().Length(), kv.GetKey() );
-////		lexer.ReadToken( &type );
-////
-////		lexer.ReadToken( &bodyName );
-////		body = this.physicsObj.GetBody( bodyName );
-////		if ( !body ) {
-////			gameLocal.Warning( "idAF::AddBindConstraints: body '%s' not found on entity '%s'", bodyName.c_str(), this.self.name.c_str() );
-////			lexer.FreeSource();
-////			continue;
-////		}
-////
-////		if ( type.Icmp( "fixed" ) == 0 ) {
-////			idAFConstraint_Fixed *c;
-////
-////			c = new idAFConstraint_Fixed( name, body, NULL );
-////			this.physicsObj.AddConstraint( c );
-////		}
-////		else if ( type.Icmp( "ballAndSocket" ) == 0 ) {
-////			idAFConstraint_BallAndSocketJoint *c;
-////
-////			c = new idAFConstraint_BallAndSocketJoint( name, body, NULL );
-////			this.physicsObj.AddConstraint( c );
-////			lexer.ReadToken( &jointName );
-////
-////			jointHandle_t joint = this.animator.GetJointHandle( jointName );
-////			if ( joint == jointHandle_t.INVALID_JOINT ) {
-////				gameLocal.Warning( "idAF::AddBindConstraints: joint '%s' not found", jointName.c_str() );
-////			}
-////
-////			this.animator.GetJointTransform( joint, gameLocal.time, origin, axis );
-////			c.SetAnchor( renderOrigin + origin * renderAxis );
-////		}
-////		else if ( type.Icmp( "universal" ) == 0 ) {
-////			idAFConstraint_UniversalJoint *c;
-////
-////			c = new idAFConstraint_UniversalJoint( name, body, NULL );
-////			this.physicsObj.AddConstraint( c );
-////			lexer.ReadToken( &jointName );
-////
-////			jointHandle_t joint = this.animator.GetJointHandle( jointName );
-////			if ( joint == jointHandle_t.INVALID_JOINT ) {
-////				gameLocal.Warning( "idAF::AddBindConstraints: joint '%s' not found", jointName.c_str() );
-////			}
-////			this.animator.GetJointTransform( joint, gameLocal.time, origin, axis );
-////			c.SetAnchor( renderOrigin + origin * renderAxis );
-////			c.SetShafts( idVec3( 0, 0, 1 ), idVec3( 0, 0, -1 ) );
-////		}
-////		else {
-////			gameLocal.Warning( "idAF::AddBindConstraints: unknown constraint type '%s' on entity '%s'", type.c_str(), this.self.name.c_str() );
-////		}
-////
-////		lexer.FreeSource();
-////	}
-////
-////	hasBindConstraints = true;
-////}
-////
+
+/*
+================
+idAF::AddBindConstraints
+================
+*/
+	AddBindConstraints ( ): void {
+		var kv: idKeyValue;
+		var name = new idStr;
+		var body: idAFBody;
+		var lexer = new idLexer;
+		var type = new idToken, bodyName = new idToken, jointName = new idToken;
+		var origin = new idVec3, renderOrigin = new idVec3;
+		var axis = new idMat3, renderAxis = new idMat3;
+
+		if ( !this.IsLoaded ( ) ) {
+			return;
+		}
+
+		var args = this.self.spawnArgs;
+
+		// get the render position
+		origin = this.physicsObj.GetOrigin( 0 );
+		axis = this.physicsObj.GetAxis( 0 );
+		renderAxis.opEquals( this.baseAxis.Transpose ( ).opMultiplication( axis ) );
+		renderOrigin.opEquals( origin.opSubtraction( idMat3.opMultiplicationAssignment_vec3_mat3( this.baseOrigin, renderAxis ) ) );
+
+		// parse all the bind constraints
+		for ( kv = args.MatchPrefix( "bindConstraint ", null ); kv; kv = args.MatchPrefix( "bindConstraint ", kv ) ) {
+			name = kv.GetKey ( );
+			name.Strip( "bindConstraint " );
+
+			lexer.LoadMemory( kv.GetValue ( ).data, kv.GetValue ( ).Length ( ), kv.GetKey ( ).data );
+			lexer.ReadToken( type );
+
+			lexer.ReadToken( bodyName );
+			body = this.physicsObj.GetBody( bodyName.data );
+			if ( !body ) {
+				gameLocal.Warning( "idAF::AddBindConstraints: body '%s' not found on entity '%s'", bodyName.c_str ( ), this.self.name.c_str ( ) );
+				lexer.FreeSource ( );
+				continue;
+			}
+
+			if ( type.Icmp( "fixed" ) == 0 ) {
+				var c: idAFConstraint_Fixed;
+
+				c = new idAFConstraint_Fixed( name, body, null );
+				this.physicsObj.AddConstraint( c );
+			} else if ( type.Icmp( "ballAndSocket" ) == 0 ) {
+				var c: idAFConstraint_BallAndSocketJoint;
+
+				c = new idAFConstraint_BallAndSocketJoint( name, body, null );
+				this.physicsObj.AddConstraint( c );
+				lexer.ReadToken(  & jointName );
+
+				var /*jointHandle_t */joint = this.animator.GetJointHandle( jointName );
+				if ( joint == jointHandle_t.INVALID_JOINT ) {
+					gameLocal.Warning( "idAF::AddBindConstraints: joint '%s' not found", jointName.c_str ( ) );
+				}
+
+				this.animator.GetJointTransform( joint, gameLocal.time, origin, axis );
+				c.SetAnchor( renderOrigin + origin * renderAxis );
+			} else if ( type.Icmp( "universal" ) == 0 ) {
+				var c: idAFConstraint_UniversalJoint;
+
+				c = new idAFConstraint_UniversalJoint( name, body, null );
+				this.physicsObj.AddConstraint( c );
+				lexer.ReadToken(  & jointName );
+
+				var /*jointHandle_t*/ joint = this.animator.GetJointHandle( jointName );
+				if ( joint == jointHandle_t.INVALID_JOINT ) {
+					gameLocal.Warning( "idAF::AddBindConstraints: joint '%s' not found", jointName.c_str ( ) );
+				}
+				this.animator.GetJointTransform( joint, gameLocal.time, origin, axis );
+				c.SetAnchor( renderOrigin + origin * renderAxis );
+				c.SetShafts( new idVec3( 0, 0, 1 ), new idVec3( 0, 0, -1 ) );
+			} else {
+				gameLocal.Warning( "idAF::AddBindConstraints: unknown constraint type '%s' on entity '%s'", type.c_str ( ), this.self.name.c_str ( ) );
+			}
+
+			lexer.FreeSource ( );
+		}
+
+		this.hasBindConstraints = true;
+	}
+
 /////*
 ////================
 ////idAF::RemoveBindConstraints
@@ -1328,12 +1325,12 @@ idAF::LoadState
 ////void idAF::RemoveBindConstraints( ) {
 ////	const idKeyValue *kv;
 ////
-////	if ( !IsLoaded() ) {
+////	if ( !this.IsLoaded() ) {
 ////		return;
 ////	}
 ////
 ////	const idDict &args = this.self.spawnArgs;
-////	idStr name;
+////	var name = new idStr
 ////
 ////	kv = args.MatchPrefix( "bindConstraint ", NULL );
 ////	while ( kv ) {
@@ -1347,7 +1344,7 @@ idAF::LoadState
 ////		kv = args.MatchPrefix( "bindConstraint ", kv );
 ////	}
 ////
-////	hasBindConstraints = false;
+////	this.hasBindConstraints = false;
 ////}
 
 };

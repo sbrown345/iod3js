@@ -1267,7 +1267,7 @@ class idRestoreGame {
 	////================
 	////*/
 	////void idRestoreGame::ReadMaterial( const idMaterial *&material ) {
-	////	idStr name;
+	////	var name = new idStr
 	////
 	////	ReadString( name );
 	////	if ( !name.Length() ) {
@@ -1283,7 +1283,7 @@ class idRestoreGame {
 	////================
 	////*/
 	////void idRestoreGame::ReadSkin( const idDeclSkin *&skin ) {
-	////	idStr name;
+	////	var name = new idStr
 	////
 	////	ReadString( name );
 	////	if ( !name.Length() ) {
@@ -1299,7 +1299,7 @@ class idRestoreGame {
 	////================
 	////*/
 	////void idRestoreGame::ReadParticle( const idDeclParticle *&particle ) {
-	////	idStr name;
+	////	var name = new idStr
 	////
 	////	ReadString( name );
 	////	if ( !name.Length() ) {
@@ -1315,7 +1315,7 @@ class idRestoreGame {
 	////================
 	////*/
 	////void idRestoreGame::ReadFX( const idDeclFX *&fx ) {
-	////	idStr name;
+	////	var name = new idStr
 	////
 	////	ReadString( name );
 	////	if ( !name.Length() ) {
@@ -1331,7 +1331,7 @@ class idRestoreGame {
 	////================
 	////*/
 	////void idRestoreGame::ReadSoundShader( const idSoundShader *&shader ) {
-	////	idStr name;
+	////	var name = new idStr
 	////
 	////	ReadString( name );
 	////	if ( !name.Length() ) {
@@ -1347,7 +1347,7 @@ class idRestoreGame {
 	////================
 	////*/
 	////void idRestoreGame::ReadModelDef( const idDeclModelDef *&modelDef ) {
-	////	idStr name;
+	////	var name = new idStr
 	////
 	////	ReadString( name );
 	////	if ( !name.Length() ) {
@@ -1363,7 +1363,7 @@ class idRestoreGame {
 	////================
 	////*/
 	////void idRestoreGame::ReadModel( idRenderModel *&model ) {
-	////	idStr name;
+	////	var name = new idStr
 	////
 	////	ReadString( name );
 	////	if ( !name.Length() ) {
@@ -1379,7 +1379,7 @@ class idRestoreGame {
 	////================
 	////*/
 	////void idRestoreGame::ReadUserInterface( idUserInterface *&ui ) {
-	////	idStr name;
+	////	var name = new idStr
 	////
 	////	ReadString( name );
 	////	if ( !name.Length() ) {

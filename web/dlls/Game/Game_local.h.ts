@@ -260,8 +260,7 @@ class idEntityPtr<type> {
 		if ( ent == null ) {
 			this.spawnId = 0;
 		} else {
-			todoThrow ( );
-			//this.spawnId = ( gameLocal.spawnIds[ent.entityNumber] << GENTITYNUM_BITS ) | ent.entityNumber;
+			this.spawnId = (gameLocal.spawnIds[<number>(<any>ent).entityNumber] << GENTITYNUM_BITS ) | <number>(<any>ent).entityNumber;
 		}
 		return this;
 	}

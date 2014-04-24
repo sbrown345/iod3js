@@ -226,7 +226,7 @@ class idActor extends idAFEntity_Gibbable {
 	damageScale = new idList</*float*/number>(Number);		// damage scale per damage gruop
 
 	use_combat_bbox:boolean;	// whether to use the bounding box for combat collision
-	head = new idEntityPtr < idAFAttachment>()	;
+	head = new idEntityPtr<idAFAttachment>();
 	copyJoints = new idList<copyJoints_t>(copyJoints_t);			// copied from the body animation to the head model
 
 	// state variables
@@ -334,7 +334,7 @@ class idActor extends idAFEntity_Gibbable {
 		this.scriptThread = null; // initialized by ConstructScriptObject, which is called by idEntity::Spawn
 
 		this.use_combat_bbox = false;
-		this.head = null;
+		this.head.opEquals( null );
 
 		this.team = 0;
 		this.rank = 0;
@@ -592,7 +592,7 @@ idActor::SetupHead
 		}
 
 		headModel = this.spawnArgs.GetString( "def_head", "" );
-		if ( headModel[0] ) {
+		if ( headModel ) {
 			jointName.opEquals( this.spawnArgs.GetString( "head_joint" ) );
 			joint = this.animator.GetJointHandle( jointName.data );
 			if ( joint == jointHandle_t.INVALID_JOINT ) {
@@ -625,14 +625,13 @@ idActor::SetupHead
 			var axis = new idMat3;
 			var attach = this.attachments.Alloc ( );
 			attach.channel = this.animator.GetChannelForJoint(joint);
-			todoThrow ( );
-			//this.animator.GetJointTransform(joint, gameLocal.time, origin, axis);
-			//debugger; //check b
-			//origin.opEquals( this.renderEntity.origin.opAddition( idMat3.opMultiplication_VecMat( origin.opAddition( this.modelOffset ), this.renderEntity.axis ) ) );
-			//attach.ent.opEquals( headEnt );
-			//headEnt.SetOrigin( origin );
-			//headEnt.SetAxis( this.renderEntity.axis );
-			//headEnt.BindToJoint( this, joint, true );
+			this.animator.GetJointTransform(joint, gameLocal.time, origin, axis);
+			debugger; //check b
+			origin.opEquals( this.renderEntity.origin.opAddition( idMat3.opMultiplication_VecMat( origin.opAddition( this.modelOffset ), this.renderEntity.axis ) ) );
+			attach.ent.opEquals( headEnt );
+			headEnt.SetOrigin( origin );
+			headEnt.SetAxis( this.renderEntity.axis );
+			headEnt.BindToJoint( this, joint, true );
 		}
 	}
 ////

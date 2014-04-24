@@ -3304,7 +3304,7 @@ separate file or a ZIP file.
         //		if ( allowCopyFiles && fs_copyfiles.GetInteger() ) {
 
         //			idStr copypath;
-        //			idStr name;
+        //			var name = new idStr
         //			copypath = BuildOSPath( fs_savepath.GetString(), dir.gamedir, relativePath );
         //			netpath.ExtractFileName( name );
         //			copypath.StripFilename( );

@@ -361,7 +361,7 @@ class idMarkerWindow extends idWindow {
 ////			markerPath.StripFilename();
 ////			idFileList *markers;
 ////			markers = fileSystem.ListFiles( markerPath, ".tga", false, true );
-////			idStr name;
+////			var name = new idStr
 ////			for ( i = 0; i < markers.GetNumFiles(); i++ ) {
 ////				name = markers.GetFile( i );
 ////				markerData_t md;
