@@ -7016,7 +7016,7 @@ idPlayer::UserInfoChanged
 ////===============
 ////*/
 ////void idPlayer::GetViewPos( idVec3 &origin, idMat3 &axis ) const {
-////	idAngles angles;
+////	var angles = new idAngles;
 ////
 ////	// if dead, fix the angle and don't add any kick
 ////	if ( health <= 0 ) {

@@ -549,7 +549,7 @@ This is the same as in idEditWindow
 
 	Draw ( /*int*/ time: number, /*float */x: number, /*float */y: number ): void {
 		todoThrow ( );
-////	idVec4 color;
+////	var color = new idVec4;
 ////	idStr work;
 ////	int count = listItems.Num();
 ////	idRectangle rect = textRect;

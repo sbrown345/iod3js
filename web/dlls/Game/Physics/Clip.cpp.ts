@@ -1389,7 +1389,7 @@ idClip::Shutdown
 ////	int i, num;
 ////	idClipModel *touch, *clipModelList[MAX_GENTITIES];
 ////	idBounds traceBounds;
-////	float radius;
+////	var/*float */radius:number;
 ////	trace_t trace;
 ////	const idTraceModel *trm;
 ////
@@ -1450,7 +1450,7 @@ idClip::Shutdown
 ////	int i, num;
 ////	idClipModel *touch, *clipModelList[MAX_GENTITIES];
 ////	idBounds traceBounds;
-////	float radius;
+////	var/*float */radius:number;
 ////	trace_t trace;
 ////	const idTraceModel *trm;
 ////
@@ -1592,7 +1592,7 @@ idClip::Shutdown
 ////	idClipModel *touch, *clipModelList[MAX_GENTITIES];
 ////	idVec3 dir, endPosition;
 ////	idBounds traceBounds;
-////	float radius;
+////	var/*float */radius:number;
 ////	trace_t translationalTrace, rotationalTrace, trace;
 ////	idRotation endRotation;
 ////	const idTraceModel *trm;

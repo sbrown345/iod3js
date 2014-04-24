@@ -2032,7 +2032,7 @@ class idBFGProjectile extends idProjectile {
 ////	idBounds	bounds;
 ////	idVec3		damagePoint;
 ////
-////	float radius;
+////	var/*float */radius:number;
 ////	spawnArgs.GetFloat( "damageRadius", "512", radius );
 ////	bounds = idBounds( GetPhysics().GetOrigin() ).Expand( radius );
 ////

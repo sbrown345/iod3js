@@ -697,7 +697,7 @@ class idAF {
 	LoadConstraint(fc: idDeclAF_Constraint) :boolean {
 		todoThrow ( );
 	////	idAFBody *body1, *body2;
-	////	idAngles angles;
+	////	var angles = new idAngles;
 	////	idMat3 axis;	
 	////
 	////	body1 = this.physicsObj.GetBody( fc.body1 );
@@ -1210,7 +1210,7 @@ idAF::LoadState
 ////	idStr name;
 ////	idAFBody *body;
 ////	idVec3 origin;
-////	idAngles angles;
+////	var angles = new idAngles;
 ////
 ////	kv = args.MatchPrefix( "body ", NULL );
 ////	while ( kv ) {

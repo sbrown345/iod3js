@@ -1011,7 +1011,7 @@ idPhysics_RigidBody::GetAbsBounds
 ////*/
 ////bool idPhysics_RigidBody::Evaluate( int timeStepMSec, int endTimeMSec ) {
 ////	rigidBodyPState_t next;
-////	idAngles angles;
+////	var angles = new idAngles;
 ////	trace_t collision;
 ////	idVec3 impulse;
 ////	idEntity *ent;

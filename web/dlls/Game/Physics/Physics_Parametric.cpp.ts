@@ -1034,7 +1034,7 @@ idPhysics_Parametric::GetAxis
 //*/
 //const idVec3 &idPhysics_Parametric::GetAngularVelocity( /*int*/ id:number ) const {
 //	static idVec3 curAngularVelocity;
-//	idAngles angles;
+//	var angles = new idAngles;
 //
 //	angles = this.current.angularExtrapolation.GetCurrentSpeed( gameLocal.time );
 //	curAngularVelocity = angles.ToAngularVelocity();

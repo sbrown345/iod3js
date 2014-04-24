@@ -1134,32 +1134,32 @@ which should be used by dmap and the editor
 	idGameEdit::ANIM_CreateAnimFrame
 	=====================
 	*/
-	ANIM_CreateAnimFrame(model: idRenderModel, anim: idMD5Anim,/* int */numJoints: number, joints: idJointMat[], /*int*/time: number, offset: idVec3, remove_origin_offset: boolean): void {
+	ANIM_CreateAnimFrame ( model: idRenderModel, anim: idMD5Anim, /* int */numJoints: number, joints: idJointMat[], /*int*/time: number, offset: idVec3, remove_origin_offset: boolean ): void {
 		var i: number /*int*/;
 		var frame = new frameBlend_t;
 		var md5joints: idMD5Joint[];
 		var index: Int32Array;
 
-		if (!model || model.IsDefaultModel() || !anim) {
+		if ( !model || model.IsDefaultModel ( ) || !anim ) {
 			return;
 		}
 
-		if (numJoints != model.NumJoints()) {
-			gameLocal.Error("ANIM_CreateAnimFrame: different # of joints in renderEntity_t than in model (%s)", model.Name());
+		if ( numJoints != model.NumJoints ( ) ) {
+			gameLocal.Error( "ANIM_CreateAnimFrame: different # of joints in renderEntity_t than in model (%s)", model.Name ( ) );
 		}
 
-		if (!model.NumJoints()) {
+		if ( !model.NumJoints ( ) ) {
 			// FIXME: Print out a warning?
 			return;
 		}
 
-		if (!joints) {
-			gameLocal.Error("ANIM_CreateAnimFrame: NULL joint frame pointer on model (%s)", model.Name());
+		if ( !joints ) {
+			gameLocal.Error( "ANIM_CreateAnimFrame: NULL joint frame pointer on model (%s)", model.Name ( ) );
 		}
 
-		if (numJoints != anim.NumJoints()) {
-			gameLocal.Warning("Model '%s' has different # of joints than anim '%s'", model.Name(), anim.Name());
-			for (i = 0; i < numJoints; i++) {
+		if ( numJoints != anim.NumJoints ( ) ) {
+			gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", model.Name ( ), anim.Name ( ) );
+			for ( i = 0; i < numJoints; i++ ) {
 				todoThrow ( );
 				//joints[i].SetRotation(mat3_identity);
 				//joints[i].SetTranslation(offset);
@@ -1168,29 +1168,29 @@ which should be used by dmap and the editor
 		}
 
 		// create index for all joints
-		index = new Int32Array(numJoints);//( int * )_alloca16( numJoints * sizeof( int ) );
-		for (i = 0; i < numJoints; i++) {
+		index = new Int32Array( numJoints ); //( int * )_alloca16( numJoints * sizeof( int ) );
+		for ( i = 0; i < numJoints; i++ ) {
 			index[i] = i;
 		}
 
 		// create the frame
-		anim.ConvertTimeToFrame(time, 1, frame);
-		var jointFrame = newStructArray<idJointQuat>( idJointQuat, numJoints );// ( idJointQuat *) _alloca16(numJoints * sizeof( *jointFrame ));
-		anim.GetInterpolatedFrame(frame, jointFrame, index, numJoints);
+		anim.ConvertTimeToFrame( time, 1, frame );
+		var jointFrame = newStructArray<idJointQuat>( idJointQuat, numJoints ); // ( idJointQuat *) _alloca16(numJoints * sizeof( *jointFrame ));
+		anim.GetInterpolatedFrame( frame, jointFrame, index, numJoints );
 
 		// convert joint quaternions to joint matrices
-		SIMDProcessor.ConvertJointQuatsToJointMats(joints, jointFrame, numJoints);
+		SIMDProcessor.ConvertJointQuatsToJointMats( joints, jointFrame, numJoints );
 
 		// first joint is always root of entire hierarchy
-		if (remove_origin_offset) {
-			joints[0].SetTranslation(offset);
+		if ( remove_origin_offset ) {
+			joints[0].SetTranslation( offset );
 		} else {
 			joints[0].SetTranslation( joints[0].ToVec3 ( ).opAddition( offset ) );
 		}
 
 		// transform the children
-		md5joints = model.GetJoints();
-		for (i = 1; i < numJoints; i++) {
+		md5joints = model.GetJoints ( );
+		for ( i = 1; i < numJoints; i++ ) {
 			joints[i].opMultiplicationAssignment( joints[md5joints.indexOf( md5joints[i].parent ) /*md5joints[i].parent - md5joints*/] );
 		}
 	}
@@ -1272,6 +1272,105 @@ which should be used by dmap and the editor
 //
 //	return newmodel;
 //}
+
+
+// from Light
+	/*
+	================
+	idGameEdit::ParseSpawnArgsToRenderLight
+
+	parse the light parameters
+	this is the canonical renderLight parm parsing,
+	which should be used by dmap and the editor
+	================
+	*/
+	ParseSpawnArgsToRenderLight ( args: idDict, renderLight: renderLight_t ): void {
+		var /*bool	*/gotTarget: boolean, gotUp: boolean, gotRight: boolean;
+		var texture: string;
+		var color = new idVec3;
+
+		renderLight.memset0 ( );
+
+		if ( !args.GetVector_R( "light_origin", "", renderLight.origin ) ) {
+			args.GetVector_R( "origin", "", renderLight.origin );
+		}
+
+		gotTarget = args.GetVector_R( "light_target", "", renderLight.target );
+		gotUp = args.GetVector_R( "light_up", "", renderLight.up );
+		gotRight = args.GetVector_R( "light_right", "", renderLight.right );
+		args.GetVector_R( "light_start", "0 0 0", renderLight.start );
+		if ( !args.GetVector_R( "light_end", "", renderLight.end ) ) {
+			renderLight.end = renderLight.target;
+		}
+
+		// we should have all of the target/right/up or none of them
+		if ( ( gotTarget || gotUp || gotRight ) != ( gotTarget && gotUp && gotRight ) ) {
+			gameLocal.Printf( "Light at (%f,%f,%f) has bad target info\n",
+				renderLight.origin[0], renderLight.origin[1], renderLight.origin[2] );
+			return;
+		}
+
+		if ( !gotTarget ) {
+			renderLight.pointLight = true;
+
+			// allow an optional relative center of light and shadow offset
+			args.GetVector_R( "light_center", "0 0 0", renderLight.lightCenter );
+
+			// create a point light
+			if ( !args.GetVector_R( "light_radius", "300 300 300", renderLight.lightRadius ) ) {
+				var /*float */radius: number;
+
+				radius = args.GetFloat( "light", "300" );
+				renderLight.lightRadius[0] = renderLight.lightRadius[1] = renderLight.lightRadius[2] = radius;
+			}
+		}
+
+		// get the rotation matrix in either full form, or single angle form
+		var angles = new idAngles;
+
+		var mat = new idMat3;
+		if ( !args.GetMatrix_R( "light_rotation", "1 0 0 0 1 0 0 0 1", mat ) ) {
+			if ( !args.GetMatrix_R( "rotation", "1 0 0 0 1 0 0 0 1", mat ) ) {
+				angles[1] = args.GetFloat( "angle", "0" );
+				angles[0] = 0;
+				angles[1] = idMath.AngleNormalize360( angles[1] );
+				angles[2] = 0;
+				mat.opEquals( angles.ToMat3 ( ) );
+			}
+		}
+
+		// fix degenerate identity matrices
+		mat[0].FixDegenerateNormal ( );
+		mat[1].FixDegenerateNormal ( );
+		mat[2].FixDegenerateNormal ( );
+
+		renderLight.axis.opEquals( mat );
+
+		// check for other attributes
+		args.GetVector_R( "_color", "1 1 1", color );
+		renderLight.shaderParms[SHADERPARM_RED] = color[0];
+		renderLight.shaderParms[SHADERPARM_GREEN] = color[1];
+		renderLight.shaderParms[SHADERPARM_BLUE] = color[2];
+		renderLight.shaderParms[SHADERPARM_TIMESCALE] = args.GetFloat( "shaderParm3", "1" );
+		var $timeOffset = new R<number> ( );
+		if ( !args.GetFloat_R( "shaderParm4", "0", $timeOffset ) ) {
+			// offset the start time of the shader to sync it to the game time
+			renderLight.shaderParms[SHADERPARM_TIMEOFFSET] = -MS2SEC( gameLocal.time );
+		} else {
+			renderLight.shaderParms[SHADERPARM_TIMEOFFSET] = $timeOffset.$;
+		}
+
+		renderLight.shaderParms[5] = args.GetFloat( "shaderParm5", "0" );
+		renderLight.shaderParms[6] = args.GetFloat( "shaderParm6", "0" );
+		renderLight.shaderParms[SHADERPARM_MODE] = args.GetFloat( "shaderParm7", "0" );
+		renderLight.noShadows = args.GetBool( "noshadows", "0" );
+		renderLight.noSpecular = args.GetBool( "nospecular", "0" );
+		renderLight.parallel = args.GetBool( "parallel", "0" );
+
+		texture = args.GetString( "texture", "lights/squarelight1" );
+		// allow this to be NULL
+		renderLight.shader = declManager.FindMaterial( texture, false );
+	}
 
 }
 

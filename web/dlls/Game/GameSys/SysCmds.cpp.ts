@@ -1256,7 +1256,7 @@
 ////void D_DrawDebugLines( void ) {
 ////	var/*int*/i:number;
 ////	idVec3 forward, right, up, p1, p2;
-////	idVec4 color;
+////	var color = new idVec4;
 ////	float l;
 
 ////	for ( i = 0; i < MAX_DEBUGLINES; i++ ) {

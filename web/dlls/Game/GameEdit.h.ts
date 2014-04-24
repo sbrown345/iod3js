@@ -210,7 +210,7 @@ class idDragEntity {
 ////	idMat3 viewAxis, axis;
 ////	trace_t trace;
 ////	idEntity *newEnt;
-////	idAngles angles;
+////	var angles = new idAngles;
 ////	jointHandle_t newJoint = jointHandle_t.INVALID_JOINT;
 ////	idStr newBodyName;
 ////
@@ -664,7 +664,7 @@ class idEditEntities {
 ////
 ////	for( ent = gameLocal.spawnedEntities.Next(); ent != NULL; ent = ent.spawnNode.Next() ) {
 ////
-////		idVec4 color;
+////		var color = new idVec4;
 ////
 ////		textKey = "";
 ////		if ( !EntityIsSelectable( ent, &color, &textKey ) ) {

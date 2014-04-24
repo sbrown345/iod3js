@@ -773,7 +773,7 @@ idBounds::FromTransformedBounds
 //============
 //*/
 //void idBounds::FromPointRotation(const idVec3 &point, const idRotation &rotation) {
-//	float radius;
+//	var/*float */radius:number;
 
 //	if (idMath.Fabs(rotation.GetAngle()) < 180.0f) {
 //		(this) = BoundsForPointRotation(point, rotation);
@@ -797,7 +797,7 @@ idBounds::FromTransformedBounds
 //*/
 //void idBounds::FromBoundsRotation(bounds:idBounds, const idVec3 &origin, const idMat3 &axis, const idRotation &rotation) {
 //	var/*int*/i:number;
-//	float radius;
+//	var/*float */radius:number;
 //	idVec3 point;
 //	idBounds rBounds;
 

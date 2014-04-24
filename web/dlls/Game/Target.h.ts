@@ -1156,7 +1156,7 @@ idTarget_SetInfluence::Spawn
 ////	const char *parm;
 ////	const char *skin;
 ////	bool update;
-////	idVec3 color;
+////	var color = new idVec3;
 ////	idVec4 colorTo;
 ////	idPlayer *player;
 ////
@@ -1332,7 +1332,7 @@ idTarget_SetInfluence::Spawn
 ////	idSound *sound;
 ////	idStaticEntity *generic;
 ////	bool update;
-////	idVec3 color;
+////	var color = new idVec3;
 ////	idVec4 colorTo;
 ////
 ////	if ( flashOut ) {

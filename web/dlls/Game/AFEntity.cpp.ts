@@ -647,7 +647,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////	idVec3 origin, *bodyOrigin, *newBodyOrigin, *modifiedOrigin;
 ////	idMat3 axis, *bodyAxis, *newBodyAxis, *modifiedAxis;
 ////	declAFJointMod_t *jointMod;
-////	idAngles angles;
+////	var angles = new idAngles;
 ////	const idDict *defArgs;
 ////	const idKeyValue *arg;
 ////	idStr name;

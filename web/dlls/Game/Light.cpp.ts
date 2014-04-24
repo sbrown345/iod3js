@@ -50,98 +50,6 @@ var EV_Light_Off = new idEventDef( "Off", null );
 var EV_Light_FadeOut = new idEventDef( "fadeOutLight", "f" );
 var EV_Light_FadeIn = new idEventDef( "fadeInLight", "f" );
 
-/////*
-////================
-////idGameEdit::ParseSpawnArgsToRenderLight
-////
-////parse the light parameters
-////this is the canonical renderLight parm parsing,
-////which should be used by dmap and the editor
-////================
-////*/
-////void idGameEdit::ParseSpawnArgsToRenderLight( const idDict *args, renderLight_t *renderLight ) {
-////	bool	gotTarget, gotUp, gotRight;
-////	const char	*texture;
-////	idVec3	color;
-////
-////	memset( renderLight, 0, sizeof( *renderLight ) );
-////
-////	if (!args.GetVector("light_origin", "", renderLight.origin)) {
-////		args.GetVector( "origin", "", renderLight.origin );
-////	}
-////
-////	gotTarget = args.GetVector( "light_target", "", renderLight.target );
-////	gotUp = args.GetVector( "light_up", "", renderLight.up );
-////	gotRight = args.GetVector( "light_right", "", renderLight.right );
-////	args.GetVector( "light_start", "0 0 0", renderLight.start );
-////	if ( !args.GetVector( "light_end", "", renderLight.end ) ) {
-////		renderLight.end = renderLight.target;
-////	}
-////
-////	// we should have all of the target/right/up or none of them
-////	if ( ( gotTarget || gotUp || gotRight ) != ( gotTarget && gotUp && gotRight ) ) {
-////		gameLocal.Printf( "Light at (%f,%f,%f) has bad target info\n",
-////			renderLight.origin[0], renderLight.origin[1], renderLight.origin[2] );
-////		return;
-////	}
-////
-////	if ( !gotTarget ) {
-////		renderLight.pointLight = true;
-////
-////		// allow an optional relative center of light and shadow offset
-////		args.GetVector( "light_center", "0 0 0", renderLight.lightCenter );
-////
-////		// create a point light
-////		if (!args.GetVector( "light_radius", "300 300 300", renderLight.lightRadius ) ) {
-////			float radius;
-////
-////			args.GetFloat( "light", "300", radius );
-////			renderLight.lightRadius[0] = renderLight.lightRadius[1] = renderLight.lightRadius[2] = radius;
-////		}
-////	}
-////
-////	// get the rotation matrix in either full form, or single angle form
-////	idAngles angles;
-////	idMat3 mat;
-////	if ( !args.GetMatrix( "light_rotation", "1 0 0 0 1 0 0 0 1", mat ) ) {
-////		if ( !args.GetMatrix( "rotation", "1 0 0 0 1 0 0 0 1", mat ) ) {
-////	   		args.GetFloat( "angle", "0", angles[ 1 ] );
-////   			angles[ 0 ] = 0;
-////			angles[ 1 ] = idMath::AngleNormalize360( angles[ 1 ] );
-////	   		angles[ 2 ] = 0;
-////			mat = angles.ToMat3();
-////		}
-////	}
-////
-////	// fix degenerate identity matrices
-////	mat[0].FixDegenerateNormal();
-////	mat[1].FixDegenerateNormal();
-////	mat[2].FixDegenerateNormal();
-////
-////	renderLight.axis = mat;
-////
-////	// check for other attributes
-////	args.GetVector( "_color", "1 1 1", color );
-////	renderLight.shaderParms[ SHADERPARM_RED ]		= color[0];
-////	renderLight.shaderParms[ SHADERPARM_GREEN ]	= color[1];
-////	renderLight.shaderParms[ SHADERPARM_BLUE ]		= color[2];
-////	args.GetFloat( "shaderParm3", "1", renderLight.shaderParms[ SHADERPARM_TIMESCALE ] );
-////	if ( !args.GetFloat( "shaderParm4", "0", renderLight.shaderParms[ SHADERPARM_TIMEOFFSET ] ) ) {
-////		// offset the start time of the shader to sync it to the game time
-////		renderLight.shaderParms[ SHADERPARM_TIMEOFFSET ] = -MS2SEC( gameLocal.time );
-////	}
-////
-////	args.GetFloat( "shaderParm5", "0", renderLight.shaderParms[5] );
-////	args.GetFloat( "shaderParm6", "0", renderLight.shaderParms[6] );
-////	args.GetFloat( "shaderParm7", "0", renderLight.shaderParms[ SHADERPARM_MODE ] );
-////	args.GetBool( "noshadows", "0", renderLight.noShadows );
-////	args.GetBool( "nospecular", "0", renderLight.noSpecular );
-////	args.GetBool( "parallel", "0", renderLight.parallel );
-////
-////	args.GetString( "texture", "lights/squarelight1", &texture );
-////	// allow this to be NULL
-////	renderLight.shader = declManager.FindMaterial( texture, false );
-////}
 ////
 ////
 ////#ifndef __GAME_LIGHT_H__
@@ -334,8 +242,8 @@ idLight::idLight
 	////	savefile.WriteInt( this.currentLevel );
 	////
 	////	savefile.WriteVec3( this.baseColor );
-	////	savefile.WriteBool( breakOnTrigger );
-	////	savefile.WriteInt( count );
+	////	savefile.WriteBool( this.breakOnTrigger );
+	////	savefile.WriteInt( this.count );
 	////	savefile.WriteInt( this.triggercount );
 	////	savefile.WriteObject( lightParent );
 	////
@@ -379,8 +287,8 @@ idLight::idLight
 	////	savefile.ReadInt( this.currentLevel );
 	////
 	////	savefile.ReadVec3( this.baseColor );
-	////	savefile.ReadBool( breakOnTrigger );
-	////	savefile.ReadInt( count );
+	////	savefile.ReadBool( this.breakOnTrigger );
+	////	savefile.ReadInt( this.count );
 	////	savefile.ReadInt( this.triggercount );
 	////	savefile.ReadObject( reinterpret_cast<idClass *&>( lightParent ) );
 	////
@@ -394,14 +302,14 @@ idLight::idLight
 	////
 	////	this.SetLightLevel();
 	////}
-	////
-	/////*
-	////================
-	////idLight::Spawn
-	////================
-	////*/
+	
+	/*
+	================
+	idLight::Spawn
+	================
+	*/
 	Spawn ( ): void {
-		var /*bool */start_off: boolean;
+		var /*bool */start_off = new R<boolean> ( );
 		var /*bool */needBroken: boolean;
 		var /*const char **/demonic_shader = new R<string> ( );
 
@@ -409,14 +317,14 @@ idLight::idLight
 		gameEdit.ParseSpawnArgsToRenderLight( this.spawnArgs, this.renderLight );
 
 		// we need the origin and axis relative to the physics origin/axis
-		this.localLightOrigin.opEquals( ( this.renderLight.origin - this.GetPhysics ( ).GetOrigin ( ) ) * this.GetPhysics ( ).GetAxis ( ).Transpose ( ) );
-		this.localLightAxis.opEquals( this.renderLight.axis * this.GetPhysics ( ).GetAxis ( ).Transpose ( ) );
+		this.localLightOrigin.opEquals( idMat3.opMultiplication_VecMat( ( this.renderLight.origin.opSubtraction( this.GetPhysics ( ).GetOrigin ( ) ) ), this.GetPhysics ( ).GetAxis ( ).Transpose ( ) ) );
+		this.localLightAxis.opEquals( this.renderLight.axis.opMultiplication( this.GetPhysics ( ).GetAxis ( ).Transpose ( ) ) );
 
 		// set the base color from the shader parms
 		this.baseColor.Set( this.renderLight.shaderParms[SHADERPARM_RED], this.renderLight.shaderParms[SHADERPARM_GREEN], this.renderLight.shaderParms[SHADERPARM_BLUE] );
 
 		// set the number of light levels
-		this.spawnArgs.GetInt( "levels", "1", this.levels );
+		this.levels = this.spawnArgs.GetInt( "levels", "1" );
 		this.currentLevel = this.levels;
 		if ( this.levels <= 0 ) {
 			gameLocal.Error( "Invalid light level set on entity #%d(%s)", this.entityNumber, this.name.c_str ( ) );
@@ -446,15 +354,15 @@ idLight::idLight
 			this.renderLight.prelightModel = renderModelManager.CheckModel( va( "_prelight_%s", this.name.c_str ( ) ) );
 		}
 
-		this.spawnArgs.GetBool( "start_off", "0", start_off );
-		if ( start_off ) {
+		this.spawnArgs.GetBool_R( "start_off", "0", start_off );
+		if ( start_off.$ ) {
 			this.Off ( );
 		}
 
 		this.health = this.spawnArgs.GetInt( "health", "0" );
-		this.spawnArgs.GetString( "broken", "", this.brokenModel );
-		this.spawnArgs.GetBool( "break", "0", breakOnTrigger );
-		this.spawnArgs.GetInt( "count", "1", count );
+		this.spawnArgs.GetString_RidStr( "broken", "", this.brokenModel );
+		this.breakOnTrigger = this.spawnArgs.GetBool( "break", "0" ); 
+		this.count = this.spawnArgs.GetInt( "count", "1" ); 
 
 		this.triggercount = 0;
 
@@ -488,7 +396,7 @@ idLight::idLight
 				}
 				this.brokenModel.Append( "_broken" );
 				if ( pos > 0 ) {
-					this.brokenModel += model[pos];
+					this.brokenModel.Append( model[pos] );
 				}
 			}
 
@@ -522,7 +430,7 @@ SetLightLevel( ):void {
 	var/*float	*/intensity:number;
 
 	intensity = /*( float )*/this.currentLevel / this.levels;
-	color.opEquals( this.baseColor.timesFloat( intensity );
+	color.opEquals( this.baseColor.timesFloat( intensity ) );
 	this.renderLight.shaderParms[ SHADERPARM_RED ]	= color[ 0 ];
 	this.renderLight.shaderParms[ SHADERPARM_GREEN ]	= color[ 1 ];
 	this.renderLight.shaderParms[ SHADERPARM_BLUE ]	= color[ 2 ];
@@ -704,7 +612,7 @@ idLight::Off
 ////================
 ////*/
 ////void idLight::FadeIn( /*float*/time:number ) {
-////	idVec3 color;
+////	var color = new idVec3;
 ////	idVec4 color4;
 ////
 ////	this.currentLevel = this.levels;
@@ -856,7 +764,7 @@ idLight::PresentModelDefChange
 ////================
 ////*/
 ////void idLight::Think( ) {
-////	idVec4 color;
+////	var color = new idVec4;
 ////
 ////	if ( thinkFlags & TH_THINK ) {
 ////		if ( this.fadeEnd > 0 ) {
@@ -1032,16 +940,16 @@ idLight::PresentModelDefChange
 ////*/
 ////void idLight::Event_ToggleOnOff( activator:idEntity ) {
 ////	this.triggercount++;
-////	if ( this.triggercount < count ) {
+////	if ( this.triggercount < this.count ) {
 ////		return;
 ////	}
 ////
-////	// reset trigger count
+////	// reset trigger this.count
 ////	this.triggercount = 0;
 ////
-////	if ( breakOnTrigger ) {
+////	if ( this.breakOnTrigger ) {
 ////		BecomeBroken( activator );
-////		breakOnTrigger = false;
+////		this.breakOnTrigger = false;
 ////		return;
 ////	}
 ////

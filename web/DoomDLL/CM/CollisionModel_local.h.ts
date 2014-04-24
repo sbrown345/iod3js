@@ -462,7 +462,7 @@ class cm_traceWork_t{
 ////	idMat3 matrix;									// rotates axis of rotation to the z-axis
 ////	/*float*/angle:number;									// angle for rotational collision
 ////	float maxTan;									// max tangent of half the positive angle used instead of fraction
-////	float radius;									// rotation radius of trm start
+////	var/*float */radius:number;									// rotation radius of trm start
 ////	idRotation modelVertexRotation;					// inverse rotation for model vertices
 ////
 ////	contactInfo_t *contacts;						// array with contacts

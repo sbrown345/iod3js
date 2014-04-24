@@ -1663,7 +1663,7 @@ Spawn( ):void {
 ////			}
 ////		}
 ////		if ( this.fadeEnd > 0 ) {
-////			idVec4 color;
+////			var color = new idVec4;
 ////			if ( gameLocal.time < this.fadeEnd ) {
 ////				color.Lerp( this.fadeFrom, fadeTo, ( float )( gameLocal.time - this.fadeStart ) / ( float )( this.fadeEnd - this.fadeStart ) );
 ////			} else {

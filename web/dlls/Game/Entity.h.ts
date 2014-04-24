@@ -4781,7 +4781,7 @@ idEntity::Event_FindTargets
 ////================
 ////*/
 ////WriteColorToSnapshot( idBitMsgDelta &msg ) const {
-////	idVec4 color;
+////	var color = new idVec4;
 ////
 ////	color[0] = this.renderEntity.shaderParms[ SHADERPARM_RED ];
 ////	color[1] = this.renderEntity.shaderParms[ SHADERPARM_GREEN ];
@@ -4796,7 +4796,7 @@ idEntity::Event_FindTargets
 ////================
 ////*/
 ////ReadColorFromSnapshot( const idBitMsgDelta &msg ) {
-////	idVec4 color;
+////	var color = new idVec4;
 ////
 ////	UnpackColor( msg.ReadLong(), color );
 ////	this.renderEntity.shaderParms[ SHADERPARM_RED ] = color[0];
@@ -5535,7 +5535,7 @@ class idAnimatedEntity extends idEntity {
 ////================
 ////*/
 ////void idAnimatedEntity::Event_SetJointAngle( jointnum:jointHandle_t, transform_type:jointModTransform_t, angles:idAngles ) {
-////	idMat3 mat;
+////	var mat = new idMat3;
 ////
 ////	mat = angles.ToMat3();
 ////	this.animator.SetJointAxis( jointnum, transform_type, mat );

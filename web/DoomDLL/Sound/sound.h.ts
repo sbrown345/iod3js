@@ -129,10 +129,10 @@ class idSoundEmitter {
 ////	// to is in Db (sigh), over is in seconds
 ////	virtual void			FadeSound( const s_channelType channel, float to, float over ) = 0;
 ////
-////	// returns true if there are any sounds playing from this emitter.  There is some conservative
-////	// slop at the end to remove inconsistent race conditions with the sound thread updates.
-////	// FIXME: network game: on a dedicated server, this will always be false
-////	virtual bool			CurrentlyPlaying( ) const = 0;
+	// returns true if there are any sounds playing from this emitter.  There is some conservative
+	// slop at the end to remove inconsistent race conditions with the sound thread updates.
+	// FIXME: network game: on a dedicated server, this will always be false
+	CurrentlyPlaying(): boolean { throw "placeholder"; }
 ////
 ////	// returns a 0.0 to 1.0 value based on the current sound amplitude, allowing
 ////	// graphic effects to be modified in time with the audio.

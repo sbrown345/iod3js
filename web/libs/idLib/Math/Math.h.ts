@@ -887,20 +887,20 @@ static Sqrt( /*float */x:number):number {
 		return value;
 	}
 
-////ID_INLINE float idMath::AngleNormalize360( /*float*/angle:number ) {
-////	if ( ( angle >= 360.0 ) || ( angle < 0.0 ) ) {
-////		angle -= floor( angle / 360.0 ) * 360.0;
-////	}
-////	return angle;
-////}
+	static AngleNormalize360 ( /*float*/angle: number ): number {
+		if ( ( angle >= 360.0 ) || ( angle < 0.0 ) ) {
+			angle -= floor( angle / 360.0 ) * 360.0;
+		}
+		return angle;
+	}
 
-////ID_INLINE float idMath::AngleNormalize180( /*float*/angle:number ) {
-////	angle = AngleNormalize360( angle );
-////	if ( angle > 180.0 ) {
-////		angle -= 360.0;
-////	}
-////	return angle;
-////}
+	static AngleNormalize180 ( /*float*/angle: number ): number {
+		angle = idMath.AngleNormalize360( angle );
+		if ( angle > 180.0 ) {
+			angle -= 360.0;
+		}
+		return angle;
+	}
 
 ////ID_INLINE float idMath::AngleDelta( float angle1, float angle2 ) {
 ////	return AngleNormalize180( angle1 - angle2 );
