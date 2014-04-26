@@ -1913,7 +1913,7 @@ class idVec6 {
 ////	const char *	ToString( int precision = 2 ) const;
 
 ////private:
-	p = new Float32Array(6);
+	p: Float32Array;
 ////};
 
 ////extern idVec6 vec6_origin;
@@ -1927,17 +1927,22 @@ class idVec6 {
 ////	memcpy( this.p, a, 6 * sizeof( float ) );
 ////}
 	constructor ( )
+	constructor ( array: Float32Array )
 	constructor ( /*float*/ a1: number, /*float*/ a2: number, /*float*/ a3: number, /*float*/ a4: number, /*float*/ a5: number, /*float*/ a6: number )
-	constructor ( /*float*/ a1?: number, /*float*/ a2?: number, /*float*/ a3?: number, /*float*/ a4?: number, /*float*/ a5?: number, /*float*/ a6?: number ) {
+	constructor ( /*float*/ a1?: any, /*float*/ a2?: number, /*float*/ a3?: number, /*float*/ a4?: number, /*float*/ a5?: number, /*float*/ a6?: number ) {
+		this.p = a1 instanceof Float32Array ? a1 : new Float32Array( 6 );
+
 		if ( arguments.length === 0 ) {
 			return;
 		}
-		this.p[0] = a1;
-		this.p[1] = a2;
-		this.p[2] = a3;
-		this.p[3] = a4;
-		this.p[4] = a5;
-		this.p[5] = a6;
+		if ( arguments.length == 6 ) {
+			this.p[0] = a1;
+			this.p[1] = a2;
+			this.p[2] = a3;
+			this.p[3] = a4;
+			this.p[4] = a5;
+			this.p[5] = a6;
+		}
 	}
 
 ////ID_INLINE idVec6 idVec6::operator-() const {
@@ -2642,10 +2647,11 @@ SetSize( /*int */newSize :number):void {
 ////	return *reinterpret_cast<idVec6 *>(this.p + index * 6);
 ////}
 
-////ID_INLINE const idVec6 &idVecX::SubVec6( int index ) const {
-////	assert( index >= 0 && index * 6 + 6 <= this.size );
-////	return *reinterpret_cast<const idVec6 *>(this.p + index * 6);
-////}
+	SubVec6 ( /*int*/ index: number ): idVec6 {
+		assert( index >= 0 && index * 6 + 6 <= this.size );
+		//return reinterpret_cast<const idVec6 *>(this.p + index * 6);
+		return new idVec6( this.p.subarray( index * 6 ) );
+	}
 
 ////ID_INLINE const float *idVecX::ToFloatPtr( ) const {
 ////	return this.p;

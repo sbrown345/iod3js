@@ -834,16 +834,16 @@ idAFEntity_Base::AddBindConstraints
 	AddBindConstraints ( ): void {
 		this.af.AddBindConstraints ( );
 	}
-////
-/////*
-////================
-////idAFEntity_Base::RemoveBindConstraints
-////================
-////*/
-////void idAFEntity_Base::RemoveBindConstraints( ) {
-////	this.af.RemoveBindConstraints();
-////}
-////
+
+/*
+================
+idAFEntity_Base::RemoveBindConstraints
+================
+*/
+	RemoveBindConstraints ( ): void {
+		this.af.RemoveBindConstraints ( );
+	}
+
 /////*
 ////================
 ////idAFEntity_Base::GetImpactInfo

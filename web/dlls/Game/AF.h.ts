@@ -1284,28 +1284,28 @@ idAF::AddBindConstraints
 
 				c = new idAFConstraint_BallAndSocketJoint( name, body, null );
 				this.physicsObj.AddConstraint( c );
-				lexer.ReadToken(  & jointName );
+				lexer.ReadToken( jointName );
 
-				var /*jointHandle_t */joint = this.animator.GetJointHandle( jointName );
+				var /*jointHandle_t */joint = this.animator.GetJointHandle( jointName.data );
 				if ( joint == jointHandle_t.INVALID_JOINT ) {
 					gameLocal.Warning( "idAF::AddBindConstraints: joint '%s' not found", jointName.c_str ( ) );
 				}
 
 				this.animator.GetJointTransform( joint, gameLocal.time, origin, axis );
-				c.SetAnchor( renderOrigin + origin * renderAxis );
+				c.SetAnchor( renderOrigin.opAddition( idMat3.opMultiplication_VecMat( origin, renderAxis ) ) );
 			} else if ( type.Icmp( "universal" ) == 0 ) {
 				var c: idAFConstraint_UniversalJoint;
 
 				c = new idAFConstraint_UniversalJoint( name, body, null );
 				this.physicsObj.AddConstraint( c );
-				lexer.ReadToken(  & jointName );
+				lexer.ReadToken( jointName );
 
-				var /*jointHandle_t*/ joint = this.animator.GetJointHandle( jointName );
+				var /*jointHandle_t*/ joint = this.animator.GetJointHandle( jointName.data );
 				if ( joint == jointHandle_t.INVALID_JOINT ) {
 					gameLocal.Warning( "idAF::AddBindConstraints: joint '%s' not found", jointName.c_str ( ) );
 				}
 				this.animator.GetJointTransform( joint, gameLocal.time, origin, axis );
-				c.SetAnchor( renderOrigin + origin * renderAxis );
+				c.SetAnchor( renderOrigin.opAddition( idMat3.opMultiplication_VecMat( origin, renderAxis ) ) );
 				c.SetShafts( new idVec3( 0, 0, 1 ), new idVec3( 0, 0, -1 ) );
 			} else {
 				gameLocal.Warning( "idAF::AddBindConstraints: unknown constraint type '%s' on entity '%s'", type.c_str ( ), this.self.name.c_str ( ) );
@@ -1317,35 +1317,35 @@ idAF::AddBindConstraints
 		this.hasBindConstraints = true;
 	}
 
-/////*
-////================
-////idAF::RemoveBindConstraints
-////================
-////*/
-////void idAF::RemoveBindConstraints( ) {
-////	const idKeyValue *kv;
-////
-////	if ( !this.IsLoaded() ) {
-////		return;
-////	}
-////
-////	const idDict &args = this.self.spawnArgs;
-////	var name = new idStr
-////
-////	kv = args.MatchPrefix( "bindConstraint ", NULL );
-////	while ( kv ) {
-////		name = kv.GetKey();
-////		name.Strip( "bindConstraint " );
-////
-////		if ( this.physicsObj.GetConstraint( name ) ) {
-////            this.physicsObj.DeleteConstraint( name );
-////		}
-////
-////		kv = args.MatchPrefix( "bindConstraint ", kv );
-////	}
-////
-////	this.hasBindConstraints = false;
-////}
+/*
+================
+idAF::RemoveBindConstraints
+================
+*/
+	RemoveBindConstraints ( ): void {
+		var kv: idKeyValue;
+
+		if ( !this.IsLoaded ( ) ) {
+			return;
+		}
+
+		var args: idDict = this.self.spawnArgs;
+		var name = new idStr;
+
+		kv = args.MatchPrefix( "bindConstraint ", null );
+		while ( kv ) {
+			name.opEquals( kv.GetKey ( ) );
+			name.Strip( "bindConstraint " );
+
+			if ( this.physicsObj.GetConstraint( name.data ) ) {
+				this.physicsObj.DeleteConstraint( name.data );
+			}
+
+			kv = args.MatchPrefix( "bindConstraint ", kv );
+		}
+
+		this.hasBindConstraints = false;
+	}
 
 };
 ////

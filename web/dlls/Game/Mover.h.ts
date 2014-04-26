@@ -3075,26 +3075,28 @@ class idMover_Binary extends idEntity {
 ////	Use_BinaryMover( activator );
 ////}
 ////
-/////*
-////================
-////idMover_Binary::PreBind
-////================
-////*/
-////void idMover_Binary::PreBind( ) {
-////	pos1 = GetWorldCoordinates( pos1 );
-////	pos2 = GetWorldCoordinates( pos2 );
-////}
-////
-/////*
-////================
-////idMover_Binary::PostBind
-////================
-////*/
-////void idMover_Binary::PostBind( ) {
-////	pos1 = GetLocalCoordinates( pos1 );
-////	pos2 = GetLocalCoordinates( pos2 );
-////}
-////
+/*
+================
+idMover_Binary::PreBind
+================
+*/
+	PreBind ( ): void {
+		todoThrow ( );
+		//pos1 = GetWorldCoordinates( pos1 );
+		//pos2 = GetWorldCoordinates( pos2 );
+	}
+
+/*
+================
+idMover_Binary::PostBind
+================
+*/
+	PostBind ( ): void {
+		todoThrow ( );
+		//pos1 = GetLocalCoordinates( pos1 );
+		//pos2 = GetLocalCoordinates( pos2 );
+	}
+
 /////*
 ////================
 ////idMover_Binary::FindGuiTargets
@@ -3607,25 +3609,26 @@ class idDoor extends idMover_Binary {
 ////	}
 ////}
 ////
-/////*
-////================
-////idDoor::PreBind
-////================
-////*/
-////void idDoor::PreBind( ) {
-////	idMover_Binary::PreBind();
-////}
-////
-/////*
-////================
-////idDoor::PostBind
-////================
-////*/
-////void idDoor::PostBind( ) {
-////	idMover_Binary::PostBind();
-////	GetLocalTriggerPosition( trigger ? trigger : sndTrigger );
-////}
-////
+/*
+================
+idDoor::PreBind
+================
+*/
+	PreBind ( ): void {
+		super.PreBind ( );
+	}
+
+/*
+================
+idDoor::PostBind
+================
+*/
+	PostBind ( ): void {
+		super.PostBind ( );
+		todoThrow ( )
+		//this.GetLocalTriggerPosition( trigger ? trigger : sndTrigger );
+	}
+
 /////*
 ////================
 ////idDoor::SetAASAreaState
@@ -3947,7 +3950,7 @@ class idDoor extends idMover_Binary {
 ////	trigger.Link( gameLocal.clip, this, 255, this.GetPhysics().GetOrigin(), mat3_identity );
 ////	trigger.SetContents( CONTENTS_TRIGGER );
 ////
-////	GetLocalTriggerPosition( trigger );
+////	this.GetLocalTriggerPosition( trigger );
 ////
 ////	MatchActivateTeam( moverState, gameLocal.time );
 ////}
@@ -3973,7 +3976,7 @@ class idDoor extends idMover_Binary {
 ////	sndTrigger.Link( gameLocal.clip, this, 254, this.GetPhysics().GetOrigin(), mat3_identity );
 ////	sndTrigger.SetContents( CONTENTS_TRIGGER );
 ////
-////	GetLocalTriggerPosition( sndTrigger );
+////	this.GetLocalTriggerPosition( sndTrigger );
 ////}
 ////
 /////*
@@ -4393,25 +4396,26 @@ class idPlat extends idMover_Binary {
 ////	}
 ////}
 ////
-/////*
-////================
-////idPlat::PreBind
-////================
-////*/
-////void idPlat::PreBind( ) {
-////	idMover_Binary::PreBind();
-////}
-////
-/////*
-////================
-////idPlat::PostBind
-////================
-////*/
-////void idPlat::PostBind( ) {
-////	idMover_Binary::PostBind();
-////	GetLocalTriggerPosition( trigger );
-////}
-////
+/*
+================
+idPlat::PreBind
+================
+*/
+	PreBind ( ): void {
+		super.PreBind ( );
+	}
+
+/*
+================
+idPlat::PostBind
+================
+*/
+	PostBind ( ) {
+		super.PostBind ( );
+		todoThrow ( );
+		//this.GetLocalTriggerPosition( trigger );
+	}
+
 /////*
 ////================
 ////idPlat::GetLocalTriggerPosition

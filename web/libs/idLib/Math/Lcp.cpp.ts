@@ -67,8 +67,8 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 
 ===============================================================================
 */
-//
-//class idLCP {
+
+class idLCP {
 //public:
 //	static idLCP *	AllocSquare(void);		// A must be a square matrix
 //	static idLCP *	AllocSymmetric(void);		// A must be a symmetric matrix
@@ -80,8 +80,58 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 //	virtual int		GetMaxIterations(void);
 //
 //protected:
-//	int				maxIterations;
-//};
+	maxIterations: number/*int*/;
+
+	
+/////*
+////============
+////idLCP::AllocSquare
+////============
+////*/
+////static AllocSquare( ) :idLCP{
+////	idLCP *lcp = new idLCP_Square;
+////	lcp.SetMaxIterations( 32 );
+////	return lcp;
+////}
+
+/*
+============
+idLCP::AllocSymmetric
+============
+*/
+static AllocSymmetric( ):idLCP  {
+	var lcp: idLCP = new idLCP_Symmetric;
+	lcp.SetMaxIterations( 32 );
+	return lcp;
+}
+////
+/////*
+////============
+////idLCP::~idLCP
+////============
+////*/
+////idLCP::~idLCP( ) {
+////}
+////
+/*
+============
+idLCP::SetMaxIterations
+============
+*/
+	SetMaxIterations ( /*int*/ max: number ): void {
+		this.maxIterations = max;
+	}
+
+/////*
+////============
+////idLCP::GetMaxIterations
+////============
+////*/
+////int idLCP::GetMaxIterations( ) {
+////	return this.maxIterations;
+////}
+
+};
 //////===============================================================
 //////                                                        M
 //////  idLCP_Square                                         MrE
@@ -109,7 +159,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////	bool			padded;				// set to true if the rows of the initial matrix are 16 byte padded
 ////
 ////private:
-////	bool			FactorClamped( void );
+////	bool			FactorClamped( );
 ////	void			SolveClamped( idVecX &x, const float *b );
 ////	void			Swap( int i, int j );
 ////	void			AddClamped( int r );
@@ -126,7 +176,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////idLCP_Square::FactorClamped
 ////============
 ////*/
-////bool idLCP_Square::FactorClamped( void ) {
+////bool idLCP_Square::FactorClamped( ) {
 ////	int i, j, k;
 ////	float s, d;
 ////
@@ -326,7 +376,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////		diag += p0 * p1;
 ////
 ////		if ( diag == 0.0f ) {
-////			idLib::common->Printf( "idLCP_Square::RemoveClamped: updating factorization failed\n" );
+////			idLib::common.Printf( "idLCP_Square::RemoveClamped: updating factorization failed\n" );
 ////			return;
 ////		}
 ////
@@ -337,7 +387,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////		diag += q0 * q1;
 ////
 ////		if ( diag == 0.0f ) {
-////			idLib::common->Printf( "idLCP_Square::RemoveClamped: updating factorization failed\n" );
+////			idLib::common.Printf( "idLCP_Square::RemoveClamped: updating factorization failed\n" );
 ////			return;
 ////		}
 ////
@@ -380,7 +430,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////idLCP_Square::CalcForceDelta
 ////
-////  modifies this->delta_f
+////  modifies this.delta_f
 ////============
 ////*/
 ////ID_INLINE void idLCP_Square::CalcForceDelta( int d, float dir ) {
@@ -415,7 +465,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////idLCP_Square::CalcAccelDelta
 ////
-////  modifies this->delta_a and uses this->delta_f
+////  modifies this.delta_a and uses this.delta_f
 ////============
 ////*/
 ////ID_INLINE void idLCP_Square::CalcAccelDelta( int d ) {
@@ -425,7 +475,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////	// only the not clamped variables, including the current variable, can have a change in acceleration
 ////	for ( j = numClamped; j <= d; j++ ) {
 ////		// only the clamped variables and the current variable have a force delta unequal zero
-////		SIMDProcessor->Dot( dot, rowPtrs[j], delta_f.ToFloatPtr(), numClamped );
+////		SIMDProcessor.Dot( dot, rowPtrs[j], delta_f.ToFloatPtr(), numClamped );
 ////		delta_a[j] = dot + rowPtrs[j][d] * delta_f[d];
 ////	}
 ////}
@@ -434,12 +484,12 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////idLCP_Square::ChangeForce
 ////
-////  modifies this->f and uses this->delta_f
+////  modifies this.f and uses this.delta_f
 ////============
 ////*/
 ////ID_INLINE void idLCP_Square::ChangeForce( int d, float step ) {
 ////	// only the clamped variables and current variable have a force delta unequal zero
-////	SIMDProcessor->MulAdd( f.ToFloatPtr(), step, delta_f.ToFloatPtr(), numClamped );
+////	SIMDProcessor.MulAdd( f.ToFloatPtr(), step, delta_f.ToFloatPtr(), numClamped );
 ////	f[d] += step * delta_f[d];
 ////}
 ////
@@ -447,12 +497,12 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////idLCP_Square::ChangeAccel
 ////
-////  modifies this->a and uses this->delta_a
+////  modifies this.a and uses this.delta_a
 ////============
 ////*/
 ////ID_INLINE void idLCP_Square::ChangeAccel( int d, float step ) {
 ////	// only the not clamped variables, including the current variable, can have an acceleration unequal zero
-////	SIMDProcessor->MulAdd( a.ToFloatPtr() + numClamped, step, delta_a.ToFloatPtr() + numClamped, d - numClamped + 1 );
+////	SIMDProcessor.MulAdd( a.ToFloatPtr() + numClamped, step, delta_a.ToFloatPtr() + numClamped, d - numClamped + 1 );
 ////}
 ////
 /////*
@@ -634,7 +684,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////
 ////		// factor and solve for unbounded variables
 ////		if ( !FactorClamped() ) {
-////			idLib::common->Printf( "idLCP_Square::Solve: unbounded factorization failed\n" );
+////			idLib::common.Printf( "idLCP_Square::Solve: unbounded factorization failed\n" );
 ////			return false;
 ////		}
 ////		SolveClamped( f, b.ToFloatPtr() );
@@ -675,7 +725,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////		}
 ////
 ////		// calculate acceleration for current variable
-////		SIMDProcessor->Dot( dot, rowPtrs[i], f.ToFloatPtr(), i );
+////		SIMDProcessor.Dot( dot, rowPtrs[i], f.ToFloatPtr(), i );
 ////		a[i] = dot - b[i];
 ////
 ////		// if already at the low boundary
@@ -698,7 +748,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////		}
 ////
 ////		// drive the current variable into a valid region
-////		for ( n = 0; n < maxIterations; n++ ) {
+////		for ( n = 0; n < this.maxIterations; n++ ) {
 ////
 ////			// direction to move
 ////			if ( a[i] <= 0.0f ) {
@@ -765,8 +815,8 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////			}
 ////		}
 ////
-////		if ( n >= maxIterations ) {
-////			failed = va( "max iterations %d", maxIterations );
+////		if ( n >= this.maxIterations ) {
+////			failed = va( "max iterations %d", this.maxIterations );
 ////			break;
 ////		}
 ////
@@ -778,7 +828,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////#ifdef IGNORE_UNSATISFIABLE_VARIABLES
 ////	if ( numIgnored ) {
 ////		if ( lcp_showFailures.GetBool() ) {
-////			idLib::common->Printf( "idLCP_Symmetric::Solve: %d of %d bounded variables ignored\n", numIgnored, m.GetNumRows() - numUnbounded );
+////			idLib::common.Printf( "idLCP_Symmetric::Solve: %d of %d bounded variables ignored\n", numIgnored, m.GetNumRows() - numUnbounded );
 ////		}
 ////	}
 ////#endif
@@ -786,7 +836,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////	// if failed clear remaining forces
 ////	if ( failed ) {
 ////		if ( lcp_showFailures.GetBool() ) {
-////			idLib::common->Printf( "idLCP_Square::Solve: %s (%d of %d bounded variables ignored)\n", failed, m.GetNumRows() - i, m.GetNumRows() - numUnbounded );
+////			idLib::common.Printf( "idLCP_Square::Solve: %s (%d of %d bounded variables ignored)\n", failed, m.GetNumRows() - i, m.GetNumRows() - numUnbounded );
 ////		}
 ////		for ( j = i; j < m.GetNumRows(); j++ ) {
 ////			f[j] = 0.0f;
@@ -838,14 +888,14 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////	return true;
 ////}
 ////
-////
-//////===============================================================
-//////                                                        M
-//////  idLCP_Symmetric                                      MrE
-//////                                                        E
-//////===============================================================
-////
-////class idLCP_Symmetric : public idLCP {
+
+//===============================================================
+//                                                        M
+//  idLCP_Symmetric                                      MrE
+//                                                        E
+//===============================================================
+
+class idLCP_Symmetric extends idLCP {
 ////public:
 ////	virtual bool	Solve( const idMatX &o_m, idVecX &o_x, const idVecX &o_b, const idVecX &o_lo, const idVecX &o_hi, const int *o_boxIndex );
 ////
@@ -869,7 +919,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////	bool			padded;				// set to true if the rows of the initial matrix are 16 byte padded
 ////
 ////private:
-////	bool			FactorClamped( void );
+////	bool			FactorClamped( );
 ////	void			SolveClamped( idVecX &x, const float *b );
 ////	void			Swap( int i, int j );
 ////	void			AddClamped( int r, bool useSolveCache );
@@ -886,14 +936,14 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////idLCP_Symmetric::FactorClamped
 ////============
 ////*/
-////bool idLCP_Symmetric::FactorClamped( void ) {
+////bool idLCP_Symmetric::FactorClamped( ) {
 ////
 ////	clampedChangeStart = 0;
 ////
 ////	for ( int i = 0; i < numClamped; i++ ) {
 ////		memcpy( clamped[i], rowPtrs[i], numClamped * sizeof( float ) );
 ////	}
-////	return SIMDProcessor->MatX_LDLTFactor( clamped, diagonal, numClamped );
+////	return SIMDProcessor.MatX_LDLTFactor( clamped, diagonal, numClamped );
 ////}
 ////
 /////*
@@ -904,13 +954,13 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////void idLCP_Symmetric::SolveClamped( idVecX &x, const float *b ) {
 ////
 ////	// solve L
-////	SIMDProcessor->MatX_LowerTriangularSolve( clamped, solveCache1.ToFloatPtr(), b, numClamped, clampedChangeStart );
+////	SIMDProcessor.MatX_LowerTriangularSolve( clamped, solveCache1.ToFloatPtr(), b, numClamped, clampedChangeStart );
 ////
 ////	// solve D
-////	SIMDProcessor->Mul( solveCache2.ToFloatPtr(), solveCache1.ToFloatPtr(), diagonal.ToFloatPtr(), numClamped );
+////	SIMDProcessor.Mul( solveCache2.ToFloatPtr(), solveCache1.ToFloatPtr(), diagonal.ToFloatPtr(), numClamped );
 ////
 ////	// solve Lt
-////	SIMDProcessor->MatX_LowerTriangularSolveTranspose( clamped, x.ToFloatPtr(), solveCache2.ToFloatPtr(), numClamped );
+////	SIMDProcessor.MatX_LowerTriangularSolveTranspose( clamped, x.ToFloatPtr(), solveCache2.ToFloatPtr(), numClamped );
 ////
 ////	clampedChangeStart = numClamped;
 ////}
@@ -965,24 +1015,24 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////		// the lower triangular solve was cached in SolveClamped called by CalcForceDelta
 ////		memcpy( clamped[numClamped], solveCache2.ToFloatPtr(), numClamped * sizeof( float ) );
 ////		// calculate row dot product
-////		SIMDProcessor->Dot( dot, solveCache2.ToFloatPtr(), solveCache1.ToFloatPtr(), numClamped );
+////		SIMDProcessor.Dot( dot, solveCache2.ToFloatPtr(), solveCache1.ToFloatPtr(), numClamped );
 ////
 ////	} else {
 ////
 ////		float *v = (float *) _alloca16( numClamped * sizeof( float ) );
 ////
-////		SIMDProcessor->MatX_LowerTriangularSolve( clamped, v, rowPtrs[numClamped], numClamped );
+////		SIMDProcessor.MatX_LowerTriangularSolve( clamped, v, rowPtrs[numClamped], numClamped );
 ////		// add bottom row to L
-////		SIMDProcessor->Mul( clamped[numClamped], v, diagonal.ToFloatPtr(), numClamped );
+////		SIMDProcessor.Mul( clamped[numClamped], v, diagonal.ToFloatPtr(), numClamped );
 ////		// calculate row dot product
-////		SIMDProcessor->Dot( dot, clamped[numClamped], v, numClamped );
+////		SIMDProcessor.Dot( dot, clamped[numClamped], v, numClamped );
 ////	}
 ////
 ////	// update diagonal[numClamped]
 ////	d = rowPtrs[numClamped][numClamped] - dot;
 ////
 ////	if ( d == 0.0f ) {
-////		idLib::common->Printf( "idLCP_Symmetric::AddClamped: updating factorization failed\n" );
+////		idLib::common.Printf( "idLCP_Symmetric::AddClamped: updating factorization failed\n" );
 ////		numClamped++;
 ////		return;
 ////	}
@@ -1027,7 +1077,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////		if ( numClamped == 1 ) {
 ////			diag = rowPtrs[0][0];
 ////			if ( diag == 0.0f ) {
-////				idLib::common->Printf( "idLCP_Symmetric::RemoveClamped: updating factorization failed\n" );
+////				idLib::common.Printf( "idLCP_Symmetric::RemoveClamped: updating factorization failed\n" );
 ////				return;
 ////			}
 ////			clamped[0][0] = diag;
@@ -1048,18 +1098,18 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////		v = (float *) _alloca16( numClamped * sizeof( float ) );
 ////
 ////		// solve for v in L * v = rowPtr[r]
-////		SIMDProcessor->MatX_LowerTriangularSolve( clamped, v, rowPtrs[r], r );
+////		SIMDProcessor.MatX_LowerTriangularSolve( clamped, v, rowPtrs[r], r );
 ////
 ////		// update removed row
-////		SIMDProcessor->Mul( clamped[r], v, diagonal.ToFloatPtr(), r );
+////		SIMDProcessor.Mul( clamped[r], v, diagonal.ToFloatPtr(), r );
 ////
 ////		// if the last row/column of the matrix is updated
 ////		if ( r == numClamped - 1 ) {
 ////			// only calculate new diagonal
-////			SIMDProcessor->Dot( dot, clamped[r], v, r );
+////			SIMDProcessor.Dot( dot, clamped[r], v, r );
 ////			diag = rowPtrs[r][r] - dot;
 ////			if ( diag == 0.0f ) {
-////				idLib::common->Printf( "idLCP_Symmetric::RemoveClamped: updating factorization failed\n" );
+////				idLib::common.Printf( "idLCP_Symmetric::RemoveClamped: updating factorization failed\n" );
 ////				return;
 ////			}
 ////			clamped[r][r] = diag;
@@ -1109,7 +1159,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////		newDiag = diag + alpha1 * p1 * p1;
 ////
 ////		if ( newDiag == 0.0f ) {
-////			idLib::common->Printf( "idLCP_Symmetric::RemoveClamped: updating factorization failed\n" );
+////			idLib::common.Printf( "idLCP_Symmetric::RemoveClamped: updating factorization failed\n" );
 ////			return;
 ////		}
 ////
@@ -1122,7 +1172,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////		newDiag = diag + alpha2 * p2 * p2;
 ////
 ////		if ( newDiag == 0.0f ) {
-////			idLib::common->Printf( "idLCP_Symmetric::RemoveClamped: updating factorization failed\n" );
+////			idLib::common.Printf( "idLCP_Symmetric::RemoveClamped: updating factorization failed\n" );
 ////			return;
 ////		}
 ////
@@ -1176,7 +1226,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////idLCP_Symmetric::CalcForceDelta
 ////
-////  modifies this->delta_f
+////  modifies this.delta_f
 ////============
 ////*/
 ////ID_INLINE void idLCP_Symmetric::CalcForceDelta( int d, float dir ) {
@@ -1205,7 +1255,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////idLCP_Symmetric::CalcAccelDelta
 ////
-////  modifies this->delta_a and uses this->delta_f
+////  modifies this.delta_a and uses this.delta_f
 ////============
 ////*/
 ////ID_INLINE void idLCP_Symmetric::CalcAccelDelta( int d ) {
@@ -1215,7 +1265,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////	// only the not clamped variables, including the current variable, can have a change in acceleration
 ////	for ( j = numClamped; j <= d; j++ ) {
 ////		// only the clamped variables and the current variable have a force delta unequal zero
-////		SIMDProcessor->Dot( dot, rowPtrs[j], delta_f.ToFloatPtr(), numClamped );
+////		SIMDProcessor.Dot( dot, rowPtrs[j], delta_f.ToFloatPtr(), numClamped );
 ////		delta_a[j] = dot + rowPtrs[j][d] * delta_f[d];
 ////	}
 ////}
@@ -1224,12 +1274,12 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////idLCP_Symmetric::ChangeForce
 ////
-////  modifies this->f and uses this->delta_f
+////  modifies this.f and uses this.delta_f
 ////============
 ////*/
 ////ID_INLINE void idLCP_Symmetric::ChangeForce( int d, float step ) {
 ////	// only the clamped variables and current variable have a force delta unequal zero
-////	SIMDProcessor->MulAdd( f.ToFloatPtr(), step, delta_f.ToFloatPtr(), numClamped );
+////	SIMDProcessor.MulAdd( f.ToFloatPtr(), step, delta_f.ToFloatPtr(), numClamped );
 ////	f[d] += step * delta_f[d];
 ////}
 ////
@@ -1237,12 +1287,12 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////============
 ////idLCP_Symmetric::ChangeAccel
 ////
-////  modifies this->a and uses this->delta_a
+////  modifies this.a and uses this.delta_a
 ////============
 ////*/
 ////ID_INLINE void idLCP_Symmetric::ChangeAccel( int d, float step ) {
 ////	// only the not clamped variables, including the current variable, can have an acceleration unequal zero
-////	SIMDProcessor->MulAdd( a.ToFloatPtr() + numClamped, step, delta_a.ToFloatPtr() + numClamped, d - numClamped + 1 );
+////	SIMDProcessor.MulAdd( a.ToFloatPtr() + numClamped, step, delta_a.ToFloatPtr() + numClamped, d - numClamped + 1 );
 ////}
 ////
 /////*
@@ -1426,7 +1476,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////
 ////		// factor and solve for unbounded variables
 ////		if ( !FactorClamped() ) {
-////			idLib::common->Printf( "idLCP_Symmetric::Solve: unbounded factorization failed\n" );
+////			idLib::common.Printf( "idLCP_Symmetric::Solve: unbounded factorization failed\n" );
 ////			return false;
 ////		}
 ////		SolveClamped( f, b.ToFloatPtr() );
@@ -1469,7 +1519,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////		}
 ////
 ////		// calculate acceleration for current variable
-////		SIMDProcessor->Dot( dot, rowPtrs[i], f.ToFloatPtr(), i );
+////		SIMDProcessor.Dot( dot, rowPtrs[i], f.ToFloatPtr(), i );
 ////		a[i] = dot - b[i];
 ////
 ////		// if already at the low boundary
@@ -1492,7 +1542,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////		}
 ////
 ////		// drive the current variable into a valid region
-////		for ( n = 0; n < maxIterations; n++ ) {
+////		for ( n = 0; n < this.maxIterations; n++ ) {
 ////
 ////			// direction to move
 ////			if ( a[i] <= 0.0f ) {
@@ -1559,8 +1609,8 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////			}
 ////		}
 ////
-////		if ( n >= maxIterations ) {
-////			failed = va( "max iterations %d", maxIterations );
+////		if ( n >= this.maxIterations ) {
+////			failed = va( "max iterations %d", this.maxIterations );
 ////			break;
 ////		}
 ////
@@ -1572,7 +1622,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////#ifdef IGNORE_UNSATISFIABLE_VARIABLES
 ////	if ( numIgnored ) {
 ////		if ( lcp_showFailures.GetBool() ) {
-////			idLib::common->Printf( "idLCP_Symmetric::Solve: %d of %d bounded variables ignored\n", numIgnored, m.GetNumRows() - numUnbounded );
+////			idLib::common.Printf( "idLCP_Symmetric::Solve: %d of %d bounded variables ignored\n", numIgnored, m.GetNumRows() - numUnbounded );
 ////		}
 ////	}
 ////#endif
@@ -1580,7 +1630,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////	// if failed clear remaining forces
 ////	if ( failed ) {
 ////		if ( lcp_showFailures.GetBool() ) {
-////			idLib::common->Printf( "idLCP_Symmetric::Solve: %s (%d of %d bounded variables ignored)\n", failed, m.GetNumRows() - i, m.GetNumRows() - numUnbounded );
+////			idLib::common.Printf( "idLCP_Symmetric::Solve: %s (%d of %d bounded variables ignored)\n", failed, m.GetNumRows() - i, m.GetNumRows() - numUnbounded );
 ////		}
 ////		for ( j = i; j < m.GetNumRows(); j++ ) {
 ////			f[j] = 0.0f;
@@ -1631,7 +1681,7 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 ////
 ////	return true;
 ////}
-////
+}
 ////
 //////===============================================================
 //////
@@ -1639,50 +1689,3 @@ solver calculates all unbounded x[i] and all x[i] with boxIndex[i] == -1.
 //////
 //////===============================================================
 ////
-/////*
-////============
-////idLCP::AllocSquare
-////============
-////*/
-////idLCP *idLCP::AllocSquare( void ) {
-////	idLCP *lcp = new idLCP_Square;
-////	lcp->SetMaxIterations( 32 );
-////	return lcp;
-////}
-////
-/////*
-////============
-////idLCP::AllocSymmetric
-////============
-////*/
-////idLCP *idLCP::AllocSymmetric( void ) {
-////	idLCP *lcp = new idLCP_Symmetric;
-////	lcp->SetMaxIterations( 32 );
-////	return lcp;
-////}
-////
-/////*
-////============
-////idLCP::~idLCP
-////============
-////*/
-////idLCP::~idLCP( void ) {
-////}
-////
-/////*
-////============
-////idLCP::SetMaxIterations
-////============
-////*/
-////void idLCP::SetMaxIterations( int max ) {
-////	maxIterations = max;
-////}
-////
-/////*
-////============
-////idLCP::GetMaxIterations
-////============
-////*/
-////int idLCP::GetMaxIterations( void ) {
-////	return maxIterations;
-////}

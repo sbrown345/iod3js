@@ -1839,45 +1839,45 @@ idEntity::FreeSoundEmitter
 			//this.refSound.referenceSound = null;
 		}
 	}
-////
-/////***********************************************************************
-////
-////  entity binding
-////	
-////***********************************************************************/
-////
-/////*
-////================
-////idEntity::PreBind
-////================
-////*/
-////PreBind( ):void {
-////}
-////
-/////*
-////================
-////idEntity::PostBind
-////================
-////*/
-////PostBind( ):void {
-////}
-////
-/////*
-////================
-////idEntity::PreUnbind
-////================
-////*/
-////PreUnbind( ):void {
-////}
-////
-/////*
-////================
-////idEntity::PostUnbind
-////================
-////*/
-////PostUnbind( ):void {
-////}
-////
+
+/***********************************************************************
+
+  entity binding
+	
+***********************************************************************/
+
+/*
+================
+idEntity::PreBind
+================
+*/
+PreBind( ):void {
+}
+
+/*
+================
+idEntity::PostBind
+================
+*/
+PostBind( ):void {
+}
+
+/*
+================
+idEntity::PreUnbind
+================
+*/
+PreUnbind( ):void {
+}
+
+/*
+================
+idEntity::PostUnbind
+================
+*/
+PostUnbind( ):void {
+}
+
 /*
 ================
 idEntity::InitBind
@@ -1899,7 +1899,7 @@ InitBind( master:idEntity ):boolean {
 	this.Unbind();
 
 	// add any bind constraints to an articulated figure
-	if ( master && IsType( idAFEntity_Base.Type ) ) {
+	if ( master && this.IsType( idAFEntity_Base.Type ) ) {
 		static_cast<idAFEntity_Base >(this).AddBindConstraints();
 	}
 
@@ -1911,30 +1911,30 @@ InitBind( master:idEntity ):boolean {
 	return true;
 }
 
-/////*
-////================
-////idEntity::FinishBind
-////================
-////*/
-////FinishBind( ):void {
-////
-////	// set the master on the physics object
-////	this.physics.SetMaster( this.bindMaster, this.fl.bindOrientated );
-////
-////	// We are now separated from our previous team and are either
-////	// an individual, or have a team of our own.  Now we can join
-////	// the new bindMaster's team.  Bindmaster must be set before
-////	// joining the team, or we will be placed in the wrong position
-////	// on the team.
-////	JoinTeam( this.bindMaster );
-////
-////	// if our bindMaster is enabled during a cinematic, we must be, too
-////	this.cinematic = this.bindMaster.cinematic;
-////
-////	// make sure the team master is active so that physics get run
-////	this.teamMaster.BecomeActive( TH_PHYSICS );
-////}
-////
+/*
+================
+idEntity::FinishBind
+================
+*/
+	FinishBind ( ): void {
+
+		// set the master on the physics object
+		this.physics.SetMaster( this.bindMaster, this.fl.bindOrientated );
+
+		// We are now separated from our previous team and are either
+		// an individual, or have a team of our own.  Now we can join
+		// the new bindMaster's team.  Bindmaster must be set before
+		// joining the team, or we will be placed in the wrong position
+		// on the team.
+		this.JoinTeam( this.bindMaster );
+
+		// if our bindMaster is enabled during a cinematic, we must be, too
+		this.cinematic = this.bindMaster.cinematic;
+
+		// make sure the team master is active so that physics get run
+		this.teamMaster.BecomeActive( TH_PHYSICS );
+	}
+
 /////*
 ////================
 ////idEntity::Bind
@@ -1948,16 +1948,16 @@ InitBind( master:idEntity ):boolean {
 ////		return;
 ////	}
 ////
-////	PreBind();
+////	this.PreBind();
 ////
 ////	this.bindJoint = jointHandle_t.INVALID_JOINT;
 ////	this.bindBody = -1;
 ////	this.bindMaster = master;
 ////	this.fl.bindOrientated = orientated;
 ////
-////	FinishBind();
+////	this.FinishBind();
 ////
-////	PostBind( );
+////	this.PostBind( );
 ////}
 
 /*
@@ -1967,36 +1967,36 @@ idEntity::BindToJoint
   bind relative to a joint of the md5 model used by the master
 ================
 */
-BindToJoint( master:idEntity, jointname:string, orientated:boolean ):void {
-	var jointnum: jointHandle_t;
-	var masterAnimator: idAnimator		;
+	BindToJoint ( master: idEntity, jointname: string, orientated: boolean ): void {
+		var jointnum: jointHandle_t;
+		var masterAnimator: idAnimator;
 
-	if ( !this.InitBind( master ) ) {
-		return;
+		if ( !this.InitBind( master ) ) {
+			return;
+		}
+
+		masterAnimator = master.GetAnimator ( );
+		if ( !masterAnimator ) {
+			gameLocal.Warning( "idEntity::BindToJoint: entity '%s' cannot support skeletal models.", master.GetName ( ) );
+			return;
+		}
+
+		jointnum = masterAnimator.GetJointHandle( jointname );
+		if ( jointnum == jointHandle_t.INVALID_JOINT ) {
+			gameLocal.Warning( "idEntity::BindToJoint: joint '%s' not found on entity '%s'.", jointname, master.GetName ( ) );
+		}
+
+		this.PreBind ( );
+
+		this.bindJoint = jointnum;
+		this.bindBody = -1;
+		this.bindMaster = master;
+		this.fl.bindOrientated = orientated;
+
+		this.FinishBind ( );
+
+		this.PostBind ( );
 	}
-
-	masterAnimator = master.GetAnimator();
-	if ( !masterAnimator ) {
-		gameLocal.Warning( "idEntity::BindToJoint: entity '%s' cannot support skeletal models.", master.GetName() );
-		return;
-	}
-
-	jointnum = masterAnimator.GetJointHandle( jointname );
-	if ( jointnum == jointHandle_t.INVALID_JOINT ) {
-		gameLocal.Warning( "idEntity::BindToJoint: joint '%s' not found on entity '%s'.", jointname, master.GetName() );
-	}
-
-	PreBind();
-
-	this.bindJoint = jointnum;
-	this.bindBody = -1;
-	this.bindMaster = master;
-	this.fl.bindOrientated = orientated;
-
-	FinishBind();
-
-	PostBind();
-}
 
 /////*
 ////================
@@ -2011,16 +2011,16 @@ BindToJoint( master:idEntity, jointname:string, orientated:boolean ):void {
 ////		return;
 ////	}
 ////
-////	PreBind();
+////	this.PreBind();
 ////
 ////	this.bindJoint = jointnum;
 ////	this.bindBody = -1;
 ////	this.bindMaster = master;
 ////	this.fl.bindOrientated = orientated;
 ////
-////	FinishBind();
+////	this.FinishBind();
 ////
-////	PostBind();
+////	this.PostBind();
 ////}
 ////
 /////*
@@ -2040,16 +2040,16 @@ BindToJoint( master:idEntity, jointname:string, orientated:boolean ):void {
 ////		gameLocal.Warning( "idEntity::BindToBody: body '%d' not found.", bodyId );
 ////	}
 ////
-////	PreBind();
+////	this.PreBind();
 ////
 ////	this.bindJoint = jointHandle_t.INVALID_JOINT;
 ////	this.bindBody = bodyId;
 ////	this.bindMaster = master;
 ////	this.fl.bindOrientated = orientated;
 ////
-////	FinishBind();
+////	this.FinishBind();
 ////
-////	PostBind();
+////	this.PostBind();
 ////}
 
 /*
@@ -2064,8 +2064,8 @@ Unbind( ):void {
 	var ent:idEntity;
 
 	// remove any bind constraints from an articulated figure
-	if ( IsType( idAFEntity_Base.Type ) ) {
-		static_cast<idAFEntity_Base *>(this).RemoveBindConstraints();
+	if ( this.IsType( idAFEntity_Base.Type ) ) {
+		static_cast<idAFEntity_Base>(this).RemoveBindConstraints();
 	}
 
 	if ( !this.bindMaster ) {
@@ -2074,14 +2074,14 @@ Unbind( ):void {
 
 	if ( !this.teamMaster ) {
 		// Teammaster already has been freed
-		this.bindMaster = NULL;
+		this.bindMaster = null;
 		return;
 	}
 
-	PreUnbind();
+	this.PreUnbind();
 
 	if ( this.physics ) {
-		this.physics.SetMaster( NULL, this.fl.bindOrientated );
+		this.physics.SetMaster( null, this.fl.bindOrientated );
 	}
 
 	// We're still part of a team, so that means I have to extricate myself
@@ -2097,7 +2097,7 @@ Unbind( ):void {
 	// Find the last node in my team that is bound to me.
 	// Also find the first node not bound to me, if one exists.
 	last = this;
-	for( next = this.teamChain; next != NULL; next = next.teamChain ) {
+	for( next = this.teamChain; next != null; next = next.teamChain ) {
 		if ( !next.IsBoundTo( this ) ) {
 			break;
 		}
@@ -2108,19 +2108,19 @@ Unbind( ):void {
 	}
 
 	// disconnect the last member of our team from the old team
-	last.teamChain = NULL;
+	last.teamChain = null;
 
 	// connect up the previous member of the old team to the node that
 	// follow the last node bound to me (if one exists).
 	if ( this.teamMaster != this ) {
 		prev.teamChain = next;
 		if ( !next && ( this.teamMaster == prev ) ) {
-			prev.teamMaster = NULL;
+			prev.teamMaster = null;
 		}
 	} else if ( next ) {
 		// If we were the teamMaster, then the nodes that were not bound to me are now
 		// a disconnected chain.  Make them into their own team.
-		for( ent = next; ent.teamChain != NULL; ent = ent.teamChain ) {
+		for( ent = next; ent.teamChain != null; ent = ent.teamChain ) {
 			ent.teamMaster = next;
 		}
 		next.teamMaster = next;
@@ -2132,12 +2132,12 @@ Unbind( ):void {
 		this.teamMaster = this;
 	} else {
 		// no longer a team
-		this.teamMaster = NULL;
+		this.teamMaster = null;
 	}
 
 	this.bindJoint = jointHandle_t.INVALID_JOINT;
 	this.bindBody = -1;
-	this.bindMaster = NULL;
+	this.bindMaster = null;
 
 	PostUnbind();
 }
@@ -2151,7 +2151,7 @@ Unbind( ):void {
 ////	var ent:idEntity
 ////	idEntity *next;
 ////
-////	for( ent = this.teamChain; ent != NULL; ent = next ) {
+////	for( ent = this.teamChain; ent != null; ent = next ) {
 ////		next = ent.teamChain;
 ////		if ( ent.bindMaster == this ) {
 ////			ent.Unbind();
@@ -2185,7 +2185,7 @@ Unbind( ):void {
 ////		return false;
 ////	}
 ////
-////	for ( ent = this.bindMaster; ent != NULL; ent = ent.bindMaster ) {
+////	for ( ent = this.bindMaster; ent != null; ent = ent.bindMaster ) {
 ////		if ( ent == master ) {
 ////			return true;
 ////		}
@@ -2451,7 +2451,7 @@ idEntity::GetMasterPosition
 ////		teammember.teamChain = this;
 ////
 ////		// make anyone who's bound to me part of the new team
-////		for( ent = this.teamChain; ent != NULL; ent = ent.teamChain ) {
+////		for( ent = this.teamChain; ent != null; ent = ent.teamChain ) {
 ////			ent.teamMaster = master;
 ////		}
 ////	} else {
@@ -2475,7 +2475,7 @@ idEntity::GetMasterPosition
 ////
 ////		// make anyone who's bound to me part of the new team and
 ////		// also find the last member of my team
-////		for( ent = this; ent.teamChain != NULL; ent = ent.teamChain ) {
+////		for( ent = this; ent.teamChain != null; ent = ent.teamChain ) {
 ////			ent.teamChain.teamMaster = master;
 ////		}
 ////
@@ -2506,7 +2506,7 @@ idEntity::GetMasterPosition
 ////		// do we have more than one teammate?
 ////		if ( !teamChain.teamChain ) {
 ////			// no, break up the team
-////			this.teamChain.teamMaster = NULL;
+////			this.teamChain.teamMaster = null;
 ////		} else {
 ////			// yes, so make the first teammate the teamMaster
 ////			for( ent = this.teamChain; ent; ent = ent.teamChain ) {
@@ -2529,12 +2529,12 @@ idEntity::GetMasterPosition
 ////
 ////		// if no one is left on the team, break it up
 ////		if ( !this.teamMaster.teamChain ) {
-////			this.teamMaster.teamMaster = NULL;
+////			this.teamMaster.teamMaster = null;
 ////		}
 ////	}
 ////
-////	this.teamMaster = NULL;
-////	this.teamChain = NULL;
+////	this.teamMaster = null;
+////	this.teamChain = null;
 ////}
 
 /***********************************************************************
@@ -2643,7 +2643,7 @@ idEntity::SetPhysics
 ////================
 ////*/
 ////RestorePhysics( idPhysics *phys ) {
-////	assert( phys != NULL );
+////	assert( phys != null );
 ////	// restore physics pointer
 ////	this.physics = phys;
 ////}
@@ -2665,7 +2665,7 @@ idEntity::RunPhysics
 	RunPhysics ( ): boolean {
 		todoThrow ( );
 		//int			i, reachedTime, startTime, endTime;
-		//idEntity *	part, *blockedPart, *blockingEntity = NULL;
+		//idEntity *	part, *blockedPart, *blockingEntity = null;
 		//trace_t		results;
 		//bool		moved;
 
@@ -2687,10 +2687,10 @@ idEntity::RunPhysics
 		//endTime = gameLocal.time;
 
 		//gameLocal.push.InitSavingPushedEntityPositions();
-		//blockedPart = NULL;
+		//blockedPart = null;
 
 		//// save the physics state of the whole team and disable the team for collision detection
-		//for ( part = this; part != NULL; part = part.teamChain ) {
+		//for ( part = this; part != null; part = part.teamChain ) {
 		//	if ( part.physics ) {
 		//		if ( !part.fl.solidForTeam ) {
 		//			part.physics.DisableClip();
@@ -2700,7 +2700,7 @@ idEntity::RunPhysics
 		//}
 
 		//// move the whole team
-		//for ( part = this; part != NULL; part = part.teamChain ) {
+		//for ( part = this; part != null; part = part.teamChain ) {
 
 		//	if ( part.physics ) {
 
@@ -2728,7 +2728,7 @@ idEntity::RunPhysics
 		//}
 
 		//// enable the whole team for collision detection
-		//for ( part = this; part != NULL; part = part.teamChain ) {
+		//for ( part = this; part != null; part = part.teamChain ) {
 		//	if ( part.physics ) {
 		//		if ( !part.fl.solidForTeam ) {
 		//			part.physics.EnableClip();
@@ -2750,7 +2750,7 @@ idEntity::RunPhysics
 		//			part.UpdateFromPhysics( true );
 		//		}
 		//	}
-		//	for ( part = this; part != NULL; part = part.teamChain ) {
+		//	for ( part = this; part != null; part = part.teamChain ) {
 		//		if ( part.physics ) {
 		//			// update the physics time without moving
 		//			part.physics.UpdateTime( endTime );
@@ -2783,7 +2783,7 @@ idEntity::RunPhysics
 		//}
 
 		//// post reached event if the current time is at or past the end point of the motion
-		//for ( part = this; part != NULL; part = part.teamChain ) {
+		//for ( part = this; part != null; part = part.teamChain ) {
 
 		//	if ( part.physics ) {
 
@@ -2808,7 +2808,7 @@ idEntity::RunPhysics
 ////*/
 ////UpdateFromPhysics( bool moveBack ) {
 ////
-////	if ( IsType( idActor::Type ) ) {
+////	if ( this.IsType( idActor::Type ) ) {
 ////		idActor *actor = static_cast<idActor *>( this );
 ////
 ////		// set master delta angles for actors
@@ -2871,7 +2871,7 @@ idEntity::SetAxis
 ////	trace_t result;
 ////
 ////	if ( !this.GetPhysics().HasGroundContacts() ) {
-////		this.GetPhysics().ClipTranslation( result, this.GetPhysics().GetGravityNormal() * max_dist, NULL );
+////		this.GetPhysics().ClipTranslation( result, this.GetPhysics().GetGravityNormal() * max_dist, null );
 ////		if ( result.fraction < 1.0 ) {
 ////			floorpos = result.endpos;
 ////			return true;
@@ -3016,7 +3016,7 @@ idEntity::RemoveContactEntity
 ////	midpoint = ( this.GetPhysics().GetAbsBounds()[0] + this.GetPhysics().GetAbsBounds()[1] ) * 0.5;
 ////
 ////	dest = midpoint;
-////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, NULL );
+////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, null );
 ////	if ( tr.fraction == 1.0 || ( gameLocal.GetTraceEntity( tr ) == this ) ) {
 ////		damagePoint = tr.endpos;
 ////		return true;
@@ -3026,7 +3026,7 @@ idEntity::RemoveContactEntity
 ////	dest = midpoint;
 ////	dest[0] += 15.0;
 ////	dest[1] += 15.0;
-////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, NULL );
+////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, null );
 ////	if ( tr.fraction == 1.0 || ( gameLocal.GetTraceEntity( tr ) == this ) ) {
 ////		damagePoint = tr.endpos;
 ////		return true;
@@ -3035,7 +3035,7 @@ idEntity::RemoveContactEntity
 ////	dest = midpoint;
 ////	dest[0] += 15.0;
 ////	dest[1] -= 15.0;
-////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, NULL );
+////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, null );
 ////	if ( tr.fraction == 1.0 || ( gameLocal.GetTraceEntity( tr ) == this ) ) {
 ////		damagePoint = tr.endpos;
 ////		return true;
@@ -3044,7 +3044,7 @@ idEntity::RemoveContactEntity
 ////	dest = midpoint;
 ////	dest[0] -= 15.0;
 ////	dest[1] += 15.0;
-////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, NULL );
+////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, null );
 ////	if ( tr.fraction == 1.0 || ( gameLocal.GetTraceEntity( tr ) == this ) ) {
 ////		damagePoint = tr.endpos;
 ////		return true;
@@ -3053,7 +3053,7 @@ idEntity::RemoveContactEntity
 ////	dest = midpoint;
 ////	dest[0] -= 15.0;
 ////	dest[1] -= 15.0;
-////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, NULL );
+////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, null );
 ////	if ( tr.fraction == 1.0 || ( gameLocal.GetTraceEntity( tr ) == this ) ) {
 ////		damagePoint = tr.endpos;
 ////		return true;
@@ -3061,7 +3061,7 @@ idEntity::RemoveContactEntity
 ////
 ////	dest = midpoint;
 ////	dest[2] += 15.0;
-////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, NULL );
+////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, null );
 ////	if ( tr.fraction == 1.0 || ( gameLocal.GetTraceEntity( tr ) == this ) ) {
 ////		damagePoint = tr.endpos;
 ////		return true;
@@ -3069,7 +3069,7 @@ idEntity::RemoveContactEntity
 ////
 ////	dest = midpoint;
 ////	dest[2] -= 15.0;
-////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, NULL );
+////	gameLocal.clip.TracePoint( tr, origin, dest, MASK_SOLID, null );
 ////	if ( tr.fraction == 1.0 || ( gameLocal.GetTraceEntity( tr ) == this ) ) {
 ////		damagePoint = tr.endpos;
 ////		return true;
@@ -3153,7 +3153,7 @@ idEntity::RemoveContactEntity
 ////	const char *sound, *decal, *key;
 ////
 ////	const idDeclEntityDef *def = gameLocal.FindEntityDef( damageDefName, false );
-////	if ( def == NULL ) {
+////	if ( def == null ) {
 ////		return;
 ////	}
 ////
@@ -3166,7 +3166,7 @@ idEntity::RemoveContactEntity
 ////		sound = def.dict.GetString( key );
 ////	}
 ////	if ( *sound != '\0' ) {
-////		StartSoundShader( declManager.FindSound( sound ), SND_CHANNEL_BODY, 0, false, NULL );
+////		StartSoundShader( declManager.FindSound( sound ), SND_CHANNEL_BODY, 0, false, null );
 ////	}
 ////
 ////	if ( g_decals.GetBool() ) {
@@ -3534,7 +3534,7 @@ Can be overridden by subclasses when a thread doesn't need to be allocated.
 ////			if ( token.Icmp("play") == 0 ) {
 ////				if ( src.ReadToken( &token2 ) ) {
 ////					const idSoundShader *shader = declManager.FindSound(token2);
-////					entityGui.StartSoundShader( shader, gameSoundChannel_t.SND_CHANNEL_ANY, 0, false, NULL );
+////					entityGui.StartSoundShader( shader, gameSoundChannel_t.SND_CHANNEL_ANY, 0, false, null );
 ////				}
 ////				continue;
 ////			}
@@ -3544,7 +3544,7 @@ Can be overridden by subclasses when a thread doesn't need to be allocated.
 ////					var ent:idEntity = gameLocal.FindEntity( token2 );
 ////					if ( ent ) {
 ////						ent.spawnArgs.Set( token3, token4 );
-////						ent.UpdateChangeableSpawnArgs( NULL );
+////						ent.UpdateChangeableSpawnArgs( null );
 ////						ent.UpdateVisuals();
 ////					}
 ////				}
@@ -3793,7 +3793,7 @@ have been spawned when the entity is created at map load time, we have to wait
 ////
 ////	kv = this.spawnArgs.MatchPrefix( curveTag );
 ////	if ( !kv ) {
-////		return NULL;
+////		return null;
 ////	}
 ////
 ////	idStr str = kv.GetKey().Right( kv.GetKey().Length() - strlen( curveTag ) );
@@ -3895,7 +3895,7 @@ idEntity::Event_FindTargets
 ////
 ////	i = ( int )index;
 ////	if ( ( i < 0 ) || i >= this.targets.Num() ) {
-////		idThread::ReturnEntity( NULL );
+////		idThread::ReturnEntity( null );
 ////	} else {
 ////		idThread::ReturnEntity( this.targets[ i ].GetEntity() );
 ////	}
@@ -3914,7 +3914,7 @@ idEntity::Event_FindTargets
 ////
 ////	RemoveNullTargets();
 ////	if ( !this.targets.Num() ) {
-////		idThread::ReturnEntity( NULL );
+////		idThread::ReturnEntity( null );
 ////		return;
 ////	}
 ////
@@ -4418,7 +4418,7 @@ idEntity::Event_FindTargets
 ////	if ( *lastMatch ) {
 ////		previous = this.spawnArgs.FindKey( lastMatch );
 ////	} else {
-////		previous = NULL;
+////		previous = null;
 ////	}
 ////
 ////	kv = this.spawnArgs.MatchPrefix( prefix, previous );
@@ -4497,8 +4497,8 @@ idEntity::Event_FindTargets
 ////	var ent:idEntity
 ////	const char *entname;
 ////
-////	if ( !spawnArgs.GetString( key, NULL, &entname ) ) {
-////		idThread::ReturnEntity( NULL );
+////	if ( !spawnArgs.GetString( key, null, &entname ) ) {
+////		idThread::ReturnEntity( null );
 ////		return;
 ////	}
 ////
@@ -4532,9 +4532,9 @@ idEntity::Event_FindTargets
 ////   		angles[ 2 ] = 0;
 ////	}
 ////
-////	Teleport( org, angles, NULL );
+////	Teleport( org, angles, null );
 ////
-////	for ( part = this.teamChain; part != NULL; part = part.teamChain ) {
+////	for ( part = this.teamChain; part != null; part = part.teamChain ) {
 ////		if ( part.bindMaster != this ) {
 ////			continue;
 ////		}
@@ -4563,7 +4563,7 @@ idEntity::Event_FindTargets
 ////	this.cameraTarget = gameLocal.FindEntity( target );
 ////
 ////	if ( this.cameraTarget ) {
-////		kv = this.cameraTarget.spawnArgs.MatchPrefix( "target", NULL );
+////		kv = this.cameraTarget.spawnArgs.MatchPrefix( "target", null );
 ////		while( kv ) {
 ////			var ent:idEntity = gameLocal.FindEntity( kv.GetValue() );
 ////			if ( ent && idStr::Icmp( ent.GetEntityDefName(), "target_null" ) == 0) {
@@ -4610,7 +4610,7 @@ idEntity::Event_FindTargets
 ////================
 ////*/
 ////Event_StartFx( const char *fx ) {
-////	idEntityFx::StartFx( fx, NULL, NULL, this, true );
+////	idEntityFx::StartFx( fx, null, null, this, true );
 ////}
 ////
 /////*
@@ -4969,7 +4969,7 @@ idEntity::Event_FindTargets
 ////			if ( index >= 0 && index < declManager.GetNumDecls( DECL_SOUND ) ) {
 ////				shader = declManager.SoundByIndex( index, false );
 ////				channel = (s_channelType)msg.ReadByte();
-////				StartSoundShader( shader, channel, 0, false, NULL );
+////				StartSoundShader( shader, channel, 0, false, null );
 ////			}
 ////			return true;
 ////		}
@@ -5046,16 +5046,16 @@ class idAnimatedEntity extends idEntity {
 ////
 ////protected:
 	animator = new idAnimator;
-	damageEffects:damageEffect_t;
+	damageEffects: damageEffect_t;
 ////
 //private:
-	Event_GetJointHandle( jointname:string ): void { throw "placeholder"; }
-	Event_ClearAllJoints( ): void { throw "placeholder"; }
-	Event_ClearJoint( jointnum:jointHandle_t ): void { throw "placeholder"; }
-	Event_SetJointPos( jointnum:jointHandle_t, transform_type:jointModTransform_t, pos:idVec3 ): void { throw "placeholder"; }
-	Event_SetJointAngle( jointnum:jointHandle_t, transform_type:jointModTransform_t, angles:idAngles ): void { throw "placeholder"; }
-	Event_GetJointPos( jointnum:jointHandle_t ): void { throw "placeholder"; }
-	Event_GetJointAngle(jointnum: jointHandle_t): void { throw "placeholder"; }
+	Event_GetJointHandle ( jointname: string ): void { throw "placeholder"; }
+	Event_ClearAllJoints ( ): void { throw "placeholder"; }
+	Event_ClearJoint ( jointnum: jointHandle_t ): void { throw "placeholder"; }
+	Event_SetJointPos ( jointnum: jointHandle_t, transform_type: jointModTransform_t, pos: idVec3 ): void { throw "placeholder"; }
+	Event_SetJointAngle ( jointnum: jointHandle_t, transform_type: jointModTransform_t, angles: idAngles ): void { throw "placeholder"; }
+	Event_GetJointPos ( jointnum: jointHandle_t ): void { throw "placeholder"; }
+	Event_GetJointAngle ( jointnum: jointHandle_t ): void { throw "placeholder"; }
 
 
 	/*
@@ -5063,7 +5063,7 @@ class idAnimatedEntity extends idEntity {
 	idAnimatedEntity::idAnimatedEntity
 	================
 	*/
-	constructor() {
+	constructor ( ) {
 		super ( );
 		this.animator.SetEntity( this );
 		this.damageEffects = null;
@@ -5188,7 +5188,7 @@ class idAnimatedEntity extends idEntity {
 	idAnimatedEntity::GetAnimator
 	================
 	*/
-	GetAnimator(): idAnimator {
+	GetAnimator ( ): idAnimator {
 		return this.animator;
 	}
 
@@ -5377,7 +5377,7 @@ class idAnimatedEntity extends idEntity {
 ////	}
 ////
 ////	// can't see wounds on the player model in single player mode
-////	if ( !( IsType( idPlayer::Type ) && !gameLocal.isMultiplayer ) ) {
+////	if ( !( this.IsType( idPlayer::Type ) && !gameLocal.isMultiplayer ) ) {
 ////		// place a wound overlay on the model
 ////		key = va( "mtr_wound_%s", materialType );
 ////		decal = spawnArgs.RandomPrefix( key, gameLocal.random );
@@ -5579,6 +5579,6 @@ class idAnimatedEntity extends idEntity {
 ////	idThread::ReturnVector( vec );
 ////}
 
-};
+}
 ////
 ////#endif /* !__GAME_ENTITY_H__ */
