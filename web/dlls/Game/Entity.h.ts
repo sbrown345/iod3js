@@ -731,7 +731,7 @@ idEntity::~idEntity
 		////
 		////	// unbind from master
 		////	Unbind();
-		////	QuitTeam();
+		////	this.QuitTeam();
 		////
 		////	gameLocal.RemoveEntityFromHash( this.name.c_str(), this );
 		////
@@ -1998,31 +1998,31 @@ idEntity::BindToJoint
 		this.PostBind ( );
 	}
 
-/////*
-////================
-////idEntity::BindToJoint
-////
-////  bind relative to a joint of the md5 model used by the master
-////================
-////*/
-////BindToJoint( master:idEntity, jointnum:jointHandle_t, orientated:boolean ) {
-////
-////	if ( !this.InitBind( master ) ) {
-////		return;
-////	}
-////
-////	this.PreBind();
-////
-////	this.bindJoint = jointnum;
-////	this.bindBody = -1;
-////	this.bindMaster = master;
-////	this.fl.bindOrientated = orientated;
-////
-////	this.FinishBind();
-////
-////	this.PostBind();
-////}
-////
+/*
+================
+idEntity::BindToJoint
+
+  bind relative to a joint of the md5 model used by the master
+================
+*/
+	BindToJoint_num ( master: idEntity, jointnum: jointHandle_t, orientated: boolean ): void {
+
+		if ( !this.InitBind( master ) ) {
+			return;
+		}
+
+		this.PreBind ( );
+
+		this.bindJoint = jointnum;
+		this.bindBody = -1;
+		this.bindMaster = master;
+		this.fl.bindOrientated = orientated;
+
+		this.FinishBind ( );
+
+		this.PostBind ( );
+	}
+
 /////*
 ////================
 ////idEntity::BindToBody
@@ -2139,7 +2139,7 @@ Unbind( ):void {
 	this.bindBody = -1;
 	this.bindMaster = null;
 
-	PostUnbind();
+	this.PostUnbind();
 }
 
 /////*
@@ -2173,72 +2173,72 @@ Unbind( ):void {
 ////	return false;
 ////}
 ////
-/////*
-////================
-////idEntity::IsBoundTo
-////================
-////*/
-////bool idEntity::IsBoundTo( master:idEntity ) const {
-////	var ent:idEntity
-////
-////	if ( !this.bindMaster ) {
-////		return false;
-////	}
-////
-////	for ( ent = this.bindMaster; ent != null; ent = ent.bindMaster ) {
-////		if ( ent == master ) {
-////			return true;
-////		}
-////	}
-////
-////	return false;
-////}
-////
-/////*
-////================
-////idEntity::GetBindMaster
-////================
-////*/
-////idEntity *idEntity::GetBindMaster( ):void const {
-////	return this.bindMaster;
-////}
-////
-/////*
-////================
-////idEntity::GetBindJoint
-////================
-////*/
-////jointHandle_t idEntity::GetBindJoint( ):void const {
-////	return this.bindJoint;
-////}
-////
-/////*
-////================
-////idEntity::GetBindBody
-////================
-////*/
-////int idEntity::GetBindBody( ):void const {
-////	return this.bindBody;
-////}
-////
-/////*
-////================
-////idEntity::GetTeamMaster
-////================
-////*/
-////idEntity *idEntity::GetTeamMaster( ):void const {
-////	return this.teamMaster;
-////}
-////
-/////*
-////================
-////idEntity::GetNextTeamEntity
-////================
-////*/
-////idEntity *idEntity::GetNextTeamEntity( ):void const {
-////	return this.teamChain;
-////}
-////
+/*
+================
+idEntity::IsBoundTo
+================
+*/
+	IsBoundTo ( master: idEntity ): boolean {
+		var ent: idEntity
+
+		if ( !this.bindMaster ) {
+			return false;
+		}
+
+		for ( ent = this.bindMaster; ent != null; ent = ent.bindMaster ) {
+			if ( ent == master ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+/*
+================
+idEntity::GetBindMaster
+================
+*/
+GetBindMaster( ):idEntity  {
+	return this.bindMaster;
+}
+
+/*
+================
+idEntity::GetBindJoint
+================
+*/
+GetBindJoint( ):jointHandle_t {
+	return this.bindJoint;
+}
+
+/*
+================
+idEntity::GetBindBody
+================
+*/
+GetBindBody( ):number {
+	return this.bindBody;
+}
+
+/*
+================
+idEntity::GetTeamMaster
+================
+*/
+GetTeamMaster( ):idEntity {
+	return this.teamMaster;
+}
+
+/*
+================
+idEntity::GetNextTeamEntity
+================
+*/
+GetNextTeamEntity( ):idEntity {
+	return this.teamChain;
+}
+
 /////*
 ////=====================
 ////idEntity::ConvertLocalToWorldTransform
@@ -2419,123 +2419,123 @@ idEntity::GetMasterPosition
 ////	}
 ////}
 ////
-/////*
-////================
-////idEntity::JoinTeam
-////================
-////*/
-////JoinTeam( idEntity *teammember ) {
-////	var ent:idEntity
-////	master:idEntity;
-////	idEntity *prev;
-////	idEntity *next;
-////
-////	// if we're already on a team, quit it so we can join this one
-////	if ( this.teamMaster && ( this.teamMaster != this ) ) {
-////		QuitTeam();
-////	}
-////
-////	assert( teammember );
-////
-////	if ( teammember == this ) {
-////		this.teamMaster = this;
-////		return;
-////	}
-////
-////	// check if our new team mate is already on a team
-////	master = teammember.teamMaster;
-////	if ( !master ) {
-////		// he's not on a team, so he's the new teamMaster
-////		master = teammember;
-////		teammember.teamMaster = teammember;
-////		teammember.teamChain = this;
-////
-////		// make anyone who's bound to me part of the new team
-////		for( ent = this.teamChain; ent != null; ent = ent.teamChain ) {
-////			ent.teamMaster = master;
-////		}
-////	} else {
-////		// skip past the chain members bound to the entity we're teaming up with
-////		prev = teammember;
-////		next = teammember.teamChain;
-////		if ( this.bindMaster ) {
-////			// if we have a bindMaster, join after any entities bound to the entity
-////			// we're joining
-////			while( next && next.IsBoundTo( teammember ) ) {
-////				prev = next;
-////				next = next.teamChain;
-////			}
-////		} else {
-////			// if we're not bound to someone, then put us at the end of the team
-////			while( next ) {
-////				prev = next;
-////				next = next.teamChain;
-////			}
-////		}
-////
-////		// make anyone who's bound to me part of the new team and
-////		// also find the last member of my team
-////		for( ent = this; ent.teamChain != null; ent = ent.teamChain ) {
-////			ent.teamChain.teamMaster = master;
-////		}
-////
-////    	prev.teamChain = this;
-////		ent.teamChain = next;
-////	}
-////
-////	this.teamMaster = master;
-////
-////	// reorder the active entity list 
-////	gameLocal.sortTeamMasters = true;
-////}
-////
-/////*
-////================
-////idEntity::QuitTeam
-////================
-////*/
-////QuitTeam( ):void {
-////	var ent:idEntity
-////
-////	if ( !this.teamMaster ) {
-////		return;
-////	}
-////
-////	// check if I'm the teamMaster
-////	if ( this.teamMaster == this ) {
-////		// do we have more than one teammate?
-////		if ( !teamChain.teamChain ) {
-////			// no, break up the team
-////			this.teamChain.teamMaster = null;
-////		} else {
-////			// yes, so make the first teammate the teamMaster
-////			for( ent = this.teamChain; ent; ent = ent.teamChain ) {
-////				ent.teamMaster = this.teamChain;
-////			}
-////		}
-////	} else {
-////		assert( this.teamMaster );
-////		assert( this.teamMaster.teamChain );
-////
-////		// find the previous member of the teamChain
-////		ent = this.teamMaster;
-////		while( ent.teamChain != this ) {
-////			assert( ent.teamChain ); // this should never happen
-////			ent = ent.teamChain;
-////		}
-////
-////		// remove this from the teamChain
-////		ent.teamChain = this.teamChain;
-////
-////		// if no one is left on the team, break it up
-////		if ( !this.teamMaster.teamChain ) {
-////			this.teamMaster.teamMaster = null;
-////		}
-////	}
-////
-////	this.teamMaster = null;
-////	this.teamChain = null;
-////}
+/*
+================
+idEntity::JoinTeam
+================
+*/
+	JoinTeam(teammember: idEntity) :void{
+	var ent:idEntity
+	var master:idEntity;
+		var prev: idEntity ;
+		var next: idEntity ;
+
+	// if we're already on a team, quit it so we can join this one
+	if ( this.teamMaster && ( this.teamMaster != this ) ) {
+		this.QuitTeam();
+	}
+
+	assert( teammember );
+
+	if ( teammember == this ) {
+		this.teamMaster = this;
+		return;
+	}
+
+	// check if our new team mate is already on a team
+	master = teammember.teamMaster;
+	if ( !master ) {
+		// he's not on a team, so he's the new teamMaster
+		master = teammember;
+		teammember.teamMaster = teammember;
+		teammember.teamChain = this;
+
+		// make anyone who's bound to me part of the new team
+		for( ent = this.teamChain; ent != null; ent = ent.teamChain ) {
+			ent.teamMaster = master;
+		}
+	} else {
+		// skip past the chain members bound to the entity we're teaming up with
+		prev = teammember;
+		next = teammember.teamChain;
+		if ( this.bindMaster ) {
+			// if we have a bindMaster, join after any entities bound to the entity
+			// we're joining
+			while( next && next.IsBoundTo( teammember ) ) {
+				prev = next;
+				next = next.teamChain;
+			}
+		} else {
+			// if we're not bound to someone, then put us at the end of the team
+			while( next ) {
+				prev = next;
+				next = next.teamChain;
+			}
+		}
+
+		// make anyone who's bound to me part of the new team and
+		// also find the last member of my team
+		for( ent = this; ent.teamChain != null; ent = ent.teamChain ) {
+			ent.teamChain.teamMaster = master;
+		}
+
+    	prev.teamChain = this;
+		ent.teamChain = next;
+	}
+
+	this.teamMaster = master;
+
+	// reorder the active entity list 
+	gameLocal.sortTeamMasters = true;
+}
+
+/*
+================
+idEntity::QuitTeam
+================
+*/
+	QuitTeam ( ): void {
+		var ent: idEntity;
+
+		if ( !this.teamMaster ) {
+			return;
+		}
+
+		// check if I'm the teamMaster
+		if ( this.teamMaster == this ) {
+			// do we have more than one teammate?
+			if ( !this.teamChain.teamChain ) {
+				// no, break up the team
+				this.teamChain.teamMaster = null;
+			} else {
+				// yes, so make the first teammate the teamMaster
+				for ( ent = this.teamChain; ent; ent = ent.teamChain ) {
+					ent.teamMaster = this.teamChain;
+				}
+			}
+		} else {
+			assert( this.teamMaster );
+			assert( this.teamMaster.teamChain );
+
+			// find the previous member of the teamChain
+			ent = this.teamMaster;
+			while ( ent.teamChain != this ) {
+				assert( ent.teamChain ); // this should never happen
+				ent = ent.teamChain;
+			}
+
+			// remove this from the teamChain
+			ent.teamChain = this.teamChain;
+
+			// if no one is left on the team, break it up
+			if ( !this.teamMaster.teamChain ) {
+				this.teamMaster.teamMaster = null;
+			}
+		}
+
+		this.teamMaster = null;
+		this.teamChain = null;
+	}
 
 /***********************************************************************
 

@@ -913,30 +913,29 @@ class idVec3 {
 ////	down = left.Cross( *this );
 ////}
 
-////ID_INLINE void idVec3::OrthogonalBasis( idVec3 &left, idVec3 &up ) const {
-////	float l, s;
+	OrthogonalBasis ( left: idVec3, up: idVec3 ): void {
+		var /*float */l: number, s: number;
 
-////	if ( idMath.Fabs( this.z ) > 0.7f ) {
-////		l = this.y * this.y + this.z * this.z;
-////		s = idMath.InvSqrt( l );
-////		up[0] = 0;
-////		up[1] = this.z * s;
-////		up[2] = -y * s;
-////		left[0] = l * s;
-////		left[1] = -x * up[2];
-////		left[2] = this.x * up[1];
-////	}
-////	else {
-////		l = this.x * this.x + this.y * this.y;
-////		s = idMath.InvSqrt( l );
-////		left[0] = -y * s;
-////		left[1] = this.x * s;
-////		left[2] = 0;
-////		up[0] = -z * left[1];
-////		up[1] = this.z * left[0];
-////		up[2] = l * s;
-////	}
-////}
+		if ( idMath.Fabs( this.z ) > 0.7 ) {
+			l = this.y * this.y + this.z * this.z;
+			s = idMath.InvSqrt( l );
+			up[0] = 0;
+			up[1] = this.z * s;
+			up[2] = -this.y * s;
+			left[0] = l * s;
+			left[1] = -this.x * up[2];
+			left[2] = this.x * up[1];
+		} else {
+			l = this.x * this.x + this.y * this.y;
+			s = idMath.InvSqrt( l );
+			left[0] = -this.y * s;
+			left[1] = this.x * s;
+			left[2] = 0;
+			up[0] = -this.z * left[1];
+			up[1] = this.z * left[0];
+			up[2] = l * s;
+		}
+	}
 
 ////ID_INLINE void idVec3::ProjectOntoPlane( const idVec3 &normal, const float overBounce ) {
 ////	float backoff;
@@ -1946,8 +1945,9 @@ class idVec6 {
 	}
 
 ////ID_INLINE idVec6 idVec6::operator-() const {
-////	return idVec6( -this.p[0], -this.p[1], -this.p[2], -this.p[3], -this.p[4], -this.p[5] );
-////}
+	opUnaryMinus ( ): idVec6 {
+		return new idVec6( -this.p[0], -this.p[1], -this.p[2], -this.p[3], -this.p[4], -this.p[5] );
+	}
 
 	[index: number]: number;
 ////ID_INLINE float idVec6::operator[]( const int index ) const {

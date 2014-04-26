@@ -631,7 +631,7 @@ idActor::SetupHead
 			attach.ent.opEquals( headEnt );
 			headEnt.SetOrigin( origin );
 			headEnt.SetAxis( this.renderEntity.axis );
-			headEnt.BindToJoint( this, joint, true );
+			headEnt.BindToJoint_num( this, joint, true );
 		}
 	}
 ////

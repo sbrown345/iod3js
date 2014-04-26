@@ -2378,21 +2378,21 @@ var mat4_default = mat4_identity;
 //ID_INLINE float *idMat6::ToFloatPtr( ) {
 //	return mat[0].ToFloatPtr();
 //}
+
+
+//===============================================================
 //
+//	idMatX - arbitrary sized dense real matrix
 //
-////===============================================================
-////
-////	idMatX - arbitrary sized dense real matrix
-////
-////  The matrix lives on 16 byte aligned and 16 byte padded memory.
-////
-////	NOTE: due to the temporary memory pool idMatX cannot be used by multiple threads.
-////
-////===============================================================
+//  The matrix lives on 16 byte aligned and 16 byte padded memory.
 //
-//#define MATX_MAX_TEMP		1024
+//	NOTE: due to the temporary memory pool idMatX cannot be used by multiple threads.
+//
+//===============================================================
+
+var MATX_MAX_TEMP	=	1024
 //#define MATX_QUAD( x )		( ( ( ( x ) + 3 ) & ~3 ) * sizeof( float ) )
-//#define MATX_CLEAREND()		int s = numRows * numColumns; while( s < ( ( s + 3 ) & ~3 ) ) { mat[s++] = 0.0; }
+function MATX_CLEAREND(_this: idMatX): void { var s = _this.numRows * _this.numColumns; while (s < ((s + 3) & ~3)) { _this. mat[s++] = 0.0; }}
 //#define MATX_ALLOCA( n )	( (float *) _alloca16( MATX_QUAD( n ) ) )
 //#define MATX_SIMD
 //
@@ -2431,8 +2431,8 @@ class idMatX {
 //
 //	void			SetSize( int rows, int columns );								// set the number of rows/columns
 //	void			ChangeSize( int rows, int columns, bool makeZero = false );		// change the size keeping data intact where possible
-//	int				GetNumRows( ) const { return numRows; }					// get the number of rows
-//	int				GetNumColumns( ) const { return numColumns; }				// get the number of columns
+//	int				GetNumRows( ) const { return this.numRows; }					// get the number of rows
+//	int				GetNumColumns( ) const { return this.numColumns; }				// get the number of columns
 //	void			SetData( int rows, int columns, float *data );					// set float array pointer
 //	void			Zero( );													// clear matrix
 //	void			Zero( int rows, int columns );									// set size and clear matrix
@@ -2454,7 +2454,7 @@ class idMatX {
 //	void			SquareSubMatrix( const idMatX &m, int size );					// get square sub-matrix from 0,0 to size,size
 //	float			MaxDifference( const idMatX &m ) const;							// return maximum element difference between this and m
 //
-//	bool			IsSquare( ) const { return ( numRows == numColumns ); }
+//	bool			IsSquare( ) const { return ( this.numRows == this.numColumns ); }
 //	bool			IsZero( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsIdentity( const float epsilon = MATRIX_EPSILON ) const;
 //	bool			IsDiagonal( const float epsilon = MATRIX_EPSILON ) const;
@@ -2580,14 +2580,14 @@ class idMatX {
 //	static void		Test( );
 //
 //private:
-//	int				numRows;				// number of rows
-//	int				numColumns;				// number of columns
-//	int				alloced;				// floats allocated, if -1 then mat points to data set with SetData
-//	float *			mat;					// memory the matrix is stored
+	numRows :number/*int*/;				// number of rows
+	numColumns :number/*int*/;				// number of columns
+	alloced :number/*int*/;				// floats allocated, if -1 then mat points to data set with SetData
+	mat:Float32Array;					// memory the matrix is stored
 //
-//	static float	temp[MATX_MAX_TEMP+4];	// used to store intermediate results
-//	static float *	tempPtr;				// pointer to 16 byte aligned temporary memory
-//	static int		tempIndex;				// index into memory pool, wraps around
+	static temp = new Float32Array(MATX_MAX_TEMP+4);	// used to store intermediate results
+	static tempPtr:number;				// pointer to 16 byte aligned temporary memory
+	static tempIndex: number /*int*/;				// index into memory pool, wraps around
 //
 //private:
 //	void			SetTempSize( int rows, int columns );
@@ -2604,43 +2604,43 @@ class idMatX {
 //	bool			HessenbergToRealSchur( idMatX &H, idVecX &realEigenValues, idVecX &imaginaryEigenValues );
 //};
 //
-//ID_INLINE idMatX::idMatX( ) {
-//	numRows = numColumns = alloced = 0;
-//	mat = NULL;
-//}
+constructor( ) {
+	this.numRows = this.numColumns = this.alloced = 0;
+	this.mat = null;
+}
 //
 //ID_INLINE idMatX::~idMatX( ) {
 //	// if not temp memory
-//	if ( mat != NULL && ( mat < idMatX::tempPtr || mat > idMatX::tempPtr + MATX_MAX_TEMP ) && alloced != -1 ) {
-//		Mem_Free16( mat );
+//	if ( this.mat != NULL && ( this.mat < idMatX::tempPtr || this.mat > idMatX::tempPtr + MATX_MAX_TEMP ) && alloced != -1 ) {
+//		Mem_Free16( this.mat );
 //	}
 //}
 //
 //ID_INLINE idMatX::idMatX( int rows, int columns ) {
-//	numRows = numColumns = alloced = 0;
-//	mat = NULL;
-//	SetSize( rows, columns );
+//	this.numRows = this.numColumns = alloced = 0;
+//	this.mat = NULL;
+//	this.SetSize( rows, columns );
 //}
 //
 //ID_INLINE idMatX::idMatX( int rows, int columns, float *src ) {
-//	numRows = numColumns = alloced = 0;
-//	mat = NULL;
+//	this.numRows = this.numColumns = alloced = 0;
+//	this.mat = NULL;
 //	SetData( rows, columns, src );
 //}
 //
 //ID_INLINE void idMatX::Set( int rows, int columns, const float *src ) {
-//	SetSize( rows, columns );
+//	this.SetSize( rows, columns );
 //	memcpy( this.mat, src, rows * columns * sizeof( float ) );
 //}
 //
 //ID_INLINE void idMatX::Set( const idMat3 &m1, const idMat3 &m2 ) {
 //	var /*int */i:number, j:number;
 //
-//	SetSize( 3, 6 );
+//	this.SetSize( 3, 6 );
 //	for ( i = 0; i < 3; i++ ) {
 //		for ( j = 0; j < 3; j++ ) {
-//			mat[(i+0) * numColumns + (j+0)] = m1[i][j];
-//			mat[(i+0) * numColumns + (j+3)] = m2[i][j];
+//			this.mat[(i+0) * this.numColumns + (j+0)] = m1[i][j];
+//			this.mat[(i+0) * this.numColumns + (j+3)] = m2[i][j];
 //		}
 //	}
 //}
@@ -2648,33 +2648,33 @@ class idMatX {
 //ID_INLINE void idMatX::Set( const idMat3 &m1, const idMat3 &m2, const idMat3 &m3, const idMat3 &m4 ) {
 //	var /*int */i:number, j:number;
 //
-//	SetSize( 6, 6 );
+//	this.SetSize( 6, 6 );
 //	for ( i = 0; i < 3; i++ ) {
 //		for ( j = 0; j < 3; j++ ) {
-//			mat[(i+0) * numColumns + (j+0)] = m1[i][j];
-//			mat[(i+0) * numColumns + (j+3)] = m2[i][j];
-//			mat[(i+3) * numColumns + (j+0)] = m3[i][j];
-//			mat[(i+3) * numColumns + (j+3)] = m4[i][j];
+//			this.mat[(i+0) * this.numColumns + (j+0)] = m1[i][j];
+//			this.mat[(i+0) * this.numColumns + (j+3)] = m2[i][j];
+//			this.mat[(i+3) * this.numColumns + (j+0)] = m3[i][j];
+//			this.mat[(i+3) * this.numColumns + (j+3)] = m4[i][j];
 //		}
 //	}
 //}
 //
 //ID_INLINE const float *idMatX::operator[]( int index ) const {
-//	assert( ( index >= 0 ) && ( index < numRows ) );
-//	return mat + index * numColumns;
+//	assert( ( index >= 0 ) && ( index < this.numRows ) );
+//	return this.mat + index * this.numColumns;
 //}
 //
 //ID_INLINE float *idMatX::operator[]( int index ) {
-//	assert( ( index >= 0 ) && ( index < numRows ) );
-//	return mat + index * numColumns;
+//	assert( ( index >= 0 ) && ( index < this.numRows ) );
+//	return this.mat + index * this.numColumns;
 //}
 //
 //ID_INLINE idMatX &idMatX::operator=( const idMatX &a ) {
-//	SetSize( a.numRows, a.numColumns );
+//	this.SetSize( a.numRows, a.numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor.Copy16( mat, a.mat, a.numRows * a.numColumns );
+//	SIMDProcessor.Copy16( this.mat, a.mat, a.numRows * a.numColumns );
 //#else
-//	memcpy( mat, a.mat, a.numRows * a.numColumns * sizeof( float ) );
+//	memcpy( this.mat, a.mat, a.numRows * a.numColumns * sizeof( float ) );
 //#endif
 //	idMatX::tempIndex = 0;
 //	return *this;
@@ -2683,14 +2683,14 @@ class idMatX {
 //ID_INLINE idMatX idMatX::operator*( const float a ) const {
 //	idMatX m;
 //
-//	m.SetTempSize( numRows, numColumns );
+//	m.SetTempSize( this.numRows, this.numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor.Mul16( m.mat, mat, a, numRows * numColumns );
+//	SIMDProcessor.Mul16( m.mat, this.mat, a, this.numRows * this.numColumns );
 //#else
 //	int i, s;
-//	s = numRows * numColumns;
+//	s = this.numRows * this.numColumns;
 //	for ( i = 0; i < s; i++ ) {
-//		m.mat[i] = mat[i] * a;
+//		m.mat[i] = this.mat[i] * a;
 //	}
 //#endif
 //	return m;
@@ -2699,9 +2699,9 @@ class idMatX {
 //ID_INLINE idVecX idMatX::operator*( const idVecX &vec ) const {
 //	idVecX dst;
 //
-//	assert( numColumns == vec.GetSize() );
+//	assert( this.numColumns == vec.GetSize() );
 //
-//	dst.SetTempSize( numRows );
+//	dst.SetTempSize( this.numRows );
 //#ifdef MATX_SIMD
 //	SIMDProcessor.MatX_MultiplyVecX( dst, *this, vec );
 //#else
@@ -2713,9 +2713,9 @@ class idMatX {
 //ID_INLINE idMatX idMatX::operator*( const idMatX &a ) const {
 //	idMatX dst;
 //
-//	assert( numColumns == a.numRows );
+//	assert( this.numColumns == a.numRows );
 //
-//	dst.SetTempSize( numRows, a.numColumns );
+//	dst.SetTempSize( this.numRows, a.numColumns );
 //#ifdef MATX_SIMD
 //	SIMDProcessor.MatX_MultiplyMatX( dst, *this, a );
 //#else
@@ -2727,15 +2727,15 @@ class idMatX {
 //ID_INLINE idMatX idMatX::operator+( const idMatX &a ) const {
 //	idMatX m;
 //
-//	assert( numRows == a.numRows && numColumns == a.numColumns );
-//	m.SetTempSize( numRows, numColumns );
+//	assert(this. numRows == a.numRows && this.numColumns == a.numColumns );
+//	m.SetTempSize( this.numRows, this.numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor.Add16( m.mat, mat, a.mat, numRows * numColumns );
+//	SIMDProcessor.Add16( m.mat, this.mat, a.mat, this.numRows * this.numColumns );
 //#else
 //	int i, s;
-//	s = numRows * numColumns;
+//	s =this. numRows * this.numColumns;
 //	for ( i = 0; i < s; i++ ) {
-//		m.mat[i] = mat[i] + a.mat[i];
+//		m.mat[i] = this.mat[i] + a.mat[i];
 //	}
 //#endif
 //	return m;
@@ -2744,15 +2744,15 @@ class idMatX {
 //ID_INLINE idMatX idMatX::operator-( const idMatX &a ) const {
 //	idMatX m;
 //
-//	assert( numRows == a.numRows && numColumns == a.numColumns );
-//	m.SetTempSize( numRows, numColumns );
+//	assert( this.numRows == a.numRows && this.numColumns == a.numColumns );
+//	m.SetTempSize( this.numRows, this.numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor.Sub16( m.mat, mat, a.mat, numRows * numColumns );
+//	SIMDProcessor.Sub16( m.mat, this.mat, a.mat, this.numRows * this.numColumns );
 //#else
 //	int i, s;
-//	s = numRows * numColumns;
+//	s = this.numRows * this.numColumns;
 //	for ( i = 0; i < s; i++ ) {
-//		m.mat[i] = mat[i] - a.mat[i];
+//		m.mat[i] = this.mat[i] - a.mat[i];
 //	}
 //#endif
 //	return m;
@@ -2760,12 +2760,12 @@ class idMatX {
 //
 //ID_INLINE idMatX &idMatX::operator*=( const float a ) {
 //#ifdef MATX_SIMD
-//	SIMDProcessor.MulAssign16( mat, a, numRows * numColumns );
+//	SIMDProcessor.MulAssign16( mat, a, this.numRows * this.numColumns );
 //#else
 //	int i, s;
-//	s = numRows * numColumns;
+//	s = this.numRows * this.numColumns;
 //	for ( i = 0; i < s; i++ ) {
-//		mat[i] *= a;
+//		this.mat[i] *= a;
 //	}
 //#endif
 //	idMatX::tempIndex = 0;
@@ -2779,14 +2779,14 @@ class idMatX {
 //}
 //
 //ID_INLINE idMatX &idMatX::operator+=( const idMatX &a ) {
-//	assert( numRows == a.numRows && numColumns == a.numColumns );
+//	assert( this.numRows == a.this.numRows && this.numColumns == a.numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor.AddAssign16( mat, a.mat, numRows * numColumns );
+//	SIMDProcessor.AddAssign16( this.mat, a.mat, this.numRows * this.numColumns );
 //#else
 //	int i, s;
-//	s = numRows * numColumns;
+//	s = this.numRows * this.numColumns;
 //	for ( i = 0; i < s; i++ ) {
-//		mat[i] += a.mat[i];
+//		this.mat[i] += a.mat[i];
 //	}
 //#endif
 //	idMatX::tempIndex = 0;
@@ -2794,14 +2794,14 @@ class idMatX {
 //}
 //
 //ID_INLINE idMatX &idMatX::operator-=( const idMatX &a ) {
-//	assert( numRows == a.numRows && numColumns == a.numColumns );
+//	assert( this.numRows == a.numRows && this.numColumns == a.numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor.SubAssign16( mat, a.mat, numRows * numColumns );
+//	SIMDProcessor.SubAssign16( mat, a.mat, this.numRows * this.numColumns );
 //#else
 //	int i, s;
-//	s = numRows * numColumns;
+//	s = this.numRows * this.numColumns;
 //	for ( i = 0; i < s; i++ ) {
-//		mat[i] -= a.mat[i];
+//		this.mat[i] -= a.mat[i];
 //	}
 //#endif
 //	idMatX::tempIndex = 0;
@@ -2824,11 +2824,11 @@ class idMatX {
 //ID_INLINE bool idMatX::Compare( const idMatX &a ) const {
 //	int i, s;
 //
-//	assert( numRows == a.numRows && numColumns == a.numColumns );
+//	assert( this.numRows == a.numRows && this.numColumns == a.numColumns );
 //
-//	s = numRows * numColumns;
+//	s = this.numRows * this.numColumns;
 //	for ( i = 0; i < s; i++ ) {
-//		if ( mat[i] != a.mat[i] ) {
+//		if ( this.mat[i] != a.mat[i] ) {
 //			return false;
 //		}
 //	}
@@ -2838,11 +2838,11 @@ class idMatX {
 //ID_INLINE bool idMatX::Compare( const idMatX &a, const float epsilon ) const {
 //	int i, s;
 //
-//	assert( numRows == a.numRows && numColumns == a.numColumns );
+//	assert( this.numRows == a.numRows && this.numColumns == a.numColumns );
 //
-//	s = numRows * numColumns;
+//	s = this.numRows * this.numColumns;
 //	for ( i = 0; i < s; i++ ) {
-//		if ( idMath.Fabs( mat[i] - a.mat[i] ) > epsilon ) {
+//		if ( idMath.Fabs( this.mat[i] - a.mat[i] ) > epsilon ) {
 //			return false;
 //		}
 //	}
@@ -2856,22 +2856,22 @@ class idMatX {
 //ID_INLINE bool idMatX::operator!=( const idMatX &a ) const {
 //	return !this.Compare( a );
 //}
-//
-//ID_INLINE void idMatX::SetSize( int rows, int columns ) {
-//	assert( mat < idMatX::tempPtr || mat > idMatX::tempPtr + MATX_MAX_TEMP );
-//	int alloc = ( rows * columns + 3 ) & ~3;
-//	if ( alloc > alloced && alloced != -1 ) {
-//		if ( mat != NULL ) {
-//			Mem_Free16( mat );
-//		}
-//		mat = (float *) Mem_Alloc16( alloc * sizeof( float ) );
-//		alloced = alloc;
-//	}
-//	numRows = rows;
-//	numColumns = columns;
-//	MATX_CLEAREND();
-//}
-//
+
+	SetSize ( /*int*/ rows: number, /*int */columns: number ) {
+		assert( /*this.mat*/0 < idMatX.tempPtr || /*this.mat*/0 > idMatX.tempPtr + MATX_MAX_TEMP );
+		var alloc = ( rows * columns + 3 ) & ~3;
+		if ( alloc > this.alloced && this.alloced != -1 ) {
+			if ( this.mat != null ) {
+				Mem_Free16( this.mat );
+			}
+			this.mat = new Float32Array( alloc ); // (float *) Mem_Alloc16( alloc * sizeof( float ) );
+			this.alloced = alloc;
+		}
+		this.numRows = rows;
+		this.numColumns = columns;
+		MATX_CLEAREND( this );
+	}
+
 //ID_INLINE void idMatX::SetTempSize( int rows, int columns ) {
 //	int newSize;
 //
@@ -2880,66 +2880,70 @@ class idMatX {
 //	if ( idMatX::tempIndex + newSize > MATX_MAX_TEMP ) {
 //		idMatX::tempIndex = 0;
 //	}
-//	mat = idMatX::tempPtr + idMatX::tempIndex;
+//	this.mat = idMatX::tempPtr + idMatX::tempIndex;
 //	idMatX::tempIndex += newSize;
-//	alloced = newSize;
-//	numRows = rows;
-//	numColumns = columns;
-//	MATX_CLEAREND();
+//	this.alloced = newSize;
+//	this.numRows = rows;
+//	this.numColumns = columns;
+//	MATX_CLEAREND(this);
 //}
 //
 //ID_INLINE void idMatX::SetData( int rows, int columns, float *data ) {
-//	assert( mat < idMatX::tempPtr || mat > idMatX::tempPtr + MATX_MAX_TEMP );
-//	if ( mat != NULL && alloced != -1 ) {
-//		Mem_Free16( mat );
+//	assert( this.mat < idMatX::tempPtr || this.mat > idMatX::tempPtr + MATX_MAX_TEMP );
+//	if ( this.mat != NULL && this.alloced != -1 ) {
+//		Mem_Free16( this.mat );
 //	}
 //	assert( ( ( (int) data ) & 15 ) == 0 ); // data must be 16 byte aligned
-//	mat = data;
-//	alloced = -1;
-//	numRows = rows;
-//	numColumns = columns;
-//	MATX_CLEAREND();
+//	this.mat = data;
+//	this.alloced = -1;
+//	this.numRows = rows;
+//	this.numColumns = columns;
+//	MATX_CLEAREND(this);
 //}
-//
+
 //ID_INLINE void idMatX::Zero( ) {
 //#ifdef MATX_SIMD
-//	SIMDProcessor.Zero16( mat, numRows * numColumns );
+	//SIMDProcessor.Zero16( this.mat, numRows * this.numColumns );
 //#else
-//	memset( mat, 0, numRows * numColumns * sizeof( float ) );
+//	memset( this.mat, 0, this.numRows * this.numColumns * sizeof( float ) );
 //#endif
 //}
-//
-//ID_INLINE void idMatX::Zero( int rows, int columns ) {
-//	SetSize( rows, columns );
+
+	Zero ( ): void
+	Zero ( /*int */rows: number, /*int */columns: number ): void
+	Zero ( /*int */rows?: number, /*int */columns?: number ): void {
+		this.SetSize( rows, columns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor.Zero16( mat, numRows * numColumns );
+		if ( arguments.length === 2 ) {
+			SIMDProcessor.Zero16( this.mat, this.numRows * this.numColumns );
+		}
 //#else
 //	memset( mat, 0, rows * columns * sizeof( float ) );
 //#endif
-//}
+	}
 //
 //ID_INLINE void idMatX::Identity( ) {
-//	assert( numRows == numColumns );
+//	assert( this.numRows == this.numColumns );
 //#ifdef MATX_SIMD
-//	SIMDProcessor.Zero16( mat, numRows * numColumns );
+//	SIMDProcessor.Zero16( this.mat, this.numRows * this.numColumns );
 //#else
-//	memset( mat, 0, numRows * numColumns * sizeof( float ) );
+//	memset( this.mat, 0, this.numRows * this.numColumns * sizeof( float ) );
 //#endif
-//	for ( int i = 0; i < numRows; i++ ) {
-//		mat[i * numColumns + i] = 1.0;
+//	for ( int i = 0; i < this.numRows; i++ ) {
+//		this.mat[i * this.numColumns + i] = 1.0;
 //	}
 //}
 //
 //ID_INLINE void idMatX::Identity( int rows, int columns ) {
 //	assert( rows == columns );
-//	SetSize( rows, columns );
+//	this.SetSize( rows, columns );
 //	idMatX::Identity();
 //}
 //
 //ID_INLINE void idMatX::Diag( const idVecX &v ) {
 //	Zero( v.GetSize(), v.GetSize() );
 //	for ( int i = 0; i < v.GetSize(); i++ ) {
-//		mat[i * numColumns + i] = v[i];
+//		this.mat[i * this.numColumns + i] = v[i];
 //	}
 //}
 //
@@ -2949,9 +2953,9 @@ class idMatX {
 //	idRandom rnd(seed);
 //
 //	c = u - l;
-//	s = numRows * numColumns;
+//	s = this.numRows * this.numColumns;
 //	for ( i = 0; i < s; i++ ) {
-//		mat[i] = l + rnd.RandomFloat() * c;
+//		this.mat[i] = l + rnd.RandomFloat() * c;
 //	}
 //}
 //
@@ -2960,34 +2964,34 @@ class idMatX {
 //	float c;
 //	idRandom rnd(seed);
 //
-//	SetSize( rows, columns );
+//	this.SetSize( rows, columns );
 //	c = u - l;
-//	s = numRows * numColumns;
+//	s = this.numRows * this.numColumns;
 //	for ( i = 0; i < s; i++ ) {
-//		mat[i] = l + rnd.RandomFloat() * c;
+//		this.mat[i] = l + rnd.RandomFloat() * c;
 //	}
 //}
 //
 //ID_INLINE void idMatX::Negate( ) {
 //#ifdef MATX_SIMD
-//	SIMDProcessor.Negate16( mat, numRows * numColumns );
+//	SIMDProcessor.Negate16( this.mat, this.numRows * this.numColumns );
 //#else
 //	int i, s;
-//	s = numRows * numColumns;
+//	s = this.numRows * this.numColumns;
 //	for ( i = 0; i < s; i++ ) {
-//		mat[i] = -mat[i];
+//		this.mat[i] = -this.mat[i];
 //	}
 //#endif
 //}
 //
 //ID_INLINE void idMatX::Clamp( float min, float max ) {
 //	int i, s;
-//	s = numRows * numColumns;
+//	s = this.numRows * this.numColumns;
 //	for ( i = 0; i < s; i++ ) {
-//		if ( mat[i] < min ) {
-//			mat[i] = min;
-//		} else if ( mat[i] > max ) {
-//			mat[i] = max;
+//		if ( this.mat[i] < min ) {
+//			this.mat[i] = min;
+//		} else if ( this.mat[i] > max ) {
+//			this.mat[i] = max;
 //		}
 //	}
 //}
@@ -2995,10 +2999,10 @@ class idMatX {
 //ID_INLINE idMatX &idMatX::SwapRows( int r1, int r2 ) {
 //	float *ptr;
 //
-//	ptr = (float *) _alloca16( numColumns * sizeof( float ) );
-//	memcpy( ptr, mat + r1 * numColumns, numColumns * sizeof( float ) );
-//	memcpy( mat + r1 * numColumns, mat + r2 * numColumns, numColumns * sizeof( float ) );
-//	memcpy( mat + r2 * numColumns, ptr, numColumns * sizeof( float ) );
+//	ptr = (float *) _alloca16( this.numColumns * sizeof( float ) );
+//	memcpy( ptr, this.mat + r1 * this.numColumns, this.numColumns * sizeof( float ) );
+//	memcpy( this.mat + r1 * this.numColumns, this.mat + r2 * this.numColumns, this.numColumns * sizeof( float ) );
+//	memcpy( this.mat + r2 * this.numColumns, ptr, this.numColumns * sizeof( float ) );
 //
 //	return *this;
 //}
@@ -3007,8 +3011,8 @@ class idMatX {
 //	var/*int*/i:number;
 //	float tmp, *ptr;
 //
-//	for ( i = 0; i < numRows; i++ ) {
-//		ptr = mat + i * numColumns;
+//	for ( i = 0; i < this.numRows; i++ ) {
+//		ptr = this.mat + i * this.numColumns;
 //		tmp = ptr[r1];
 //		ptr[r1] = ptr[r2];
 //		ptr[r2] = tmp;
@@ -3025,25 +3029,25 @@ class idMatX {
 //}
 //
 //ID_INLINE void idMatX::ClearUpperTriangle( ) {
-//	assert( numRows == numColumns );
-//	for ( int i = numRows-2; i >= 0; i-- ) {
-//		memset( mat + i * numColumns + i + 1, 0, (numColumns - 1 - i) * sizeof(float) );
+//	assert( this.numRows == this.numColumns );
+//	for ( int i = this.numRows-2; i >= 0; i-- ) {
+//		memset( this.mat + i * this.numColumns + i + 1, 0, (this.numColumns - 1 - i) * sizeof(float) );
 //	}
 //}
 //
 //ID_INLINE void idMatX::ClearLowerTriangle( ) {
-//	assert( numRows == numColumns );
-//	for ( int i = 1; i < numRows; i++ ) {
-//		memset( mat + i * numColumns, 0, i * sizeof(float) );
+//	assert( this.numRows == this.numColumns );
+//	for ( int i = 1; i < this.numRows; i++ ) {
+//		memset( this.mat + i * this.numColumns, 0, i * sizeof(float) );
 //	}
 //}
 //
 //ID_INLINE void idMatX::SquareSubMatrix( const idMatX &m, int size ) {
 //	var/*int*/i:number;
-//	assert( size <= m.numRows && size <= m.numColumns );
-//	SetSize( size, size );
+//	assert( size <= m.this.numRows && size <= m.numColumns );
+//	this.SetSize( size, size );
 //	for ( i = 0; i < size; i++ ) {
-//		memcpy( mat + i * numColumns, m.mat + i * m.numColumns, size * sizeof( float ) );
+//		memcpy( this.mat + i * this.numColumns, m.this.mat + i * m.numColumns, size * sizeof( float ) );
 //	}
 //}
 //
@@ -3051,12 +3055,12 @@ class idMatX {
 //	var /*int */i:number, j:number;
 //	float diff, maxDiff;
 //
-//	assert( numRows == m.numRows && numColumns == m.numColumns );
+//	assert( this.numRows == m.this.numRows && this.numColumns == m.numColumns );
 //
 //	maxDiff = -1.0;
-//	for ( i = 0; i < numRows; i++ ) {
-//		for ( j = 0; j < numColumns; j++ ) {
-//			diff = idMath.Fabs( mat[ i * numColumns + j ] - m[i][j] );
+//	for ( i = 0; i < this.numRows; i++ ) {
+//		for ( j = 0; j < this.numColumns; j++ ) {
+//			diff = idMath.Fabs( this.mat[ i * this.numColumns + j ] - m[i][j] );
 //			if ( maxDiff < 0.0 || diff > maxDiff ) {
 //				maxDiff = diff;
 //			}
@@ -3067,9 +3071,9 @@ class idMatX {
 //
 //ID_INLINE bool idMatX::IsZero( const float epsilon ) const {
 //	// returns true if (*this) == Zero
-//	for ( int i = 0; i < numRows; i++ ) {
-//		for ( int j = 0; j < numColumns; j++ ) {
-//			if ( idMath.Fabs( mat[i * numColumns + j] ) > epsilon ) {
+//	for ( int i = 0; i < this.numRows; i++ ) {
+//		for ( int j = 0; j < this.numColumns; j++ ) {
+//			if ( idMath.Fabs( this.mat[i * this.numColumns + j] ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -3079,10 +3083,10 @@ class idMatX {
 //
 //ID_INLINE bool idMatX::IsIdentity( const float epsilon ) const {
 //	// returns true if (*this) == Identity
-//	assert( numRows == numColumns );
-//	for ( int i = 0; i < numRows; i++ ) {
-//		for ( int j = 0; j < numColumns; j++ ) {
-//			if ( idMath.Fabs( mat[i * numColumns + j] - (float)( i == j ) ) > epsilon ) {
+//	assert( this.numRows == this.numColumns );
+//	for ( int i = 0; i < this.numRows; i++ ) {
+//		for ( int j = 0; j < this.numColumns; j++ ) {
+//			if ( idMath.Fabs( this.mat[i * this.numColumns + j] - (float)( i == j ) ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -3092,10 +3096,10 @@ class idMatX {
 //
 //ID_INLINE bool idMatX::IsDiagonal( const float epsilon ) const {
 //	// returns true if all elements are zero except for the elements on the diagonal
-//	assert( numRows == numColumns );
-//	for ( int i = 0; i < numRows; i++ ) {
-//		for ( int j = 0; j < numColumns; j++ ) {
-//			if ( i != j && idMath.Fabs( mat[i * numColumns + j] ) > epsilon ) {
+//	assert( this.numRows == this.numColumns );
+//	for ( int i = 0; i < this.numRows; i++ ) {
+//		for ( int j = 0; j < this.numColumns; j++ ) {
+//			if ( i != j && idMath.Fabs( this.mat[i * this.numColumns + j] ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -3106,11 +3110,11 @@ class idMatX {
 //ID_INLINE bool idMatX::IsTriDiagonal( const float epsilon ) const {
 //	// returns true if all elements are zero except for the elements on the diagonal plus or minus one column
 //
-//	if ( numRows != numColumns ) {
+//	if ( this.numRows != this.numColumns ) {
 //		return false;
 //	}
-//	for ( int i = 0; i < numRows-2; i++ ) {
-//		for ( int j = i+2; j < numColumns; j++ ) {
+//	for ( int i = 0; i < this.numRows-2; i++ ) {
+//		for ( int j = i+2; j < this.numColumns; j++ ) {
 //			if ( idMath.Fabs( (*this)[i][j] ) > epsilon ) {
 //				return false;
 //			}
@@ -3124,12 +3128,12 @@ class idMatX {
 //
 //ID_INLINE bool idMatX::IsSymmetric( const float epsilon ) const {
 //	// (*this)[i][j] == (*this)[j][i]
-//	if ( numRows != numColumns ) {
+//	if ( this.numRows != this.numColumns ) {
 //		return false;
 //	}
-//	for ( int i = 0; i < numRows; i++ ) {
-//		for ( int j = 0; j < numColumns; j++ ) {
-//			if ( idMath.Fabs( mat[ i * numColumns + j ] - mat[ j * numColumns + i ] ) > epsilon ) {
+//	for ( int i = 0; i < this.numRows; i++ ) {
+//		for ( int j = 0; j < this.numColumns; j++ ) {
+//			if ( idMath.Fabs( this.mat[ i * this.numColumns + j ] - this.mat[ j * this.numColumns + i ] ) > epsilon ) {
 //				return false;
 //			}
 //		}
@@ -3140,32 +3144,32 @@ class idMatX {
 //ID_INLINE float idMatX::Trace( ) const {
 //	float trace = 0.0;
 //
-//	assert( numRows == numColumns );
+//	assert( this.numRows == this.numColumns );
 //
 //	// sum of elements on the diagonal
-//	for ( int i = 0; i < numRows; i++ ) {
-//		trace += mat[i * numRows + i];
+//	for ( int i = 0; i < this.numRows; i++ ) {
+//		trace += this.mat[i * this.numRows + i];
 //	}
 //	return trace;
 //}
 //
 //ID_INLINE float idMatX::Determinant( ) const {
 //
-//	assert( numRows == numColumns );
+//	assert( this.numRows == this.numColumns );
 //
-//	switch( numRows ) {
+//	switch( this.numRows ) {
 //		case 1:
-//			return mat[0];
+//			return this.mat[0];
 //		case 2:
-//			return reinterpret_cast<const idMat2 *>(mat).Determinant();
+//			return reinterpret_cast<const idMat2 *>(this.mat).Determinant();
 //		case 3:
-//			return reinterpret_cast<const idMat3 *>(mat).Determinant();
+//			return reinterpret_cast<const idMat3 *>(this.mat).Determinant();
 //		case 4:
-//			return reinterpret_cast<const idMat4 *>(mat).Determinant();
+//			return reinterpret_cast<const idMat4 *>(this.mat).Determinant();
 //		case 5:
-//			return reinterpret_cast<const idMat5 *>(mat).Determinant();
+//			return reinterpret_cast<const idMat5 *>(this.mat).Determinant();
 //		case 6:
-//			return reinterpret_cast<const idMat6 *>(mat).Determinant();
+//			return reinterpret_cast<const idMat6 *>(this.mat).Determinant();
 //		default:
 //			return DeterminantGeneric();
 //	}
@@ -3176,11 +3180,11 @@ class idMatX {
 //	idMatX transpose;
 //	var /*int */i:number, j:number;
 //
-//	transpose.SetTempSize( numColumns, numRows );
+//	transpose.SetTempSize( this.numColumns, this.numRows );
 //
-//	for ( i = 0; i < numRows; i++ ) {
-//		for ( j = 0; j < numColumns; j++ ) {
-//			transpose.mat[j * transpose.numColumns + i] = mat[i * numColumns + j];
+//	for ( i = 0; i < this.numRows; i++ ) {
+//		for ( j = 0; j < this.numColumns; j++ ) {
+//			transpose.this.mat[j * transpose.numColumns + i] = this.mat[i * this.numColumns + j];
 //		}
 //	}
 //
@@ -3195,8 +3199,8 @@ class idMatX {
 //ID_INLINE idMatX idMatX::Inverse( ) const {
 //	idMatX invMat;
 //
-//	invMat.SetTempSize( numRows, numColumns );
-//	memcpy( invMat.mat, mat, numRows * numColumns * sizeof( float ) );
+//	invMat.SetTempSize( this.numRows, this.numColumns );
+//	memcpy( invMat.this.mat, this.mat, this.numRows * this.numColumns * sizeof( float ) );
 //#if !defined(NDEBUG)
 //	int r = 
 //#endif
@@ -3207,25 +3211,25 @@ class idMatX {
 //
 //ID_INLINE bool idMatX::InverseSelf( ) {
 //
-//	assert( numRows == numColumns );
+//	assert( this.numRows == this.numColumns );
 //
-//	switch( numRows ) {
+//	switch( this.numRows ) {
 //		case 1:
-//			if ( idMath.Fabs( mat[0] ) < MATRIX_INVERSE_EPSILON ) {
+//			if ( idMath.Fabs( this.mat[0] ) < MATRIX_INVERSE_EPSILON ) {
 //				return false;
 //			}
-//			mat[0] = 1.0 / mat[0];
+//			this.mat[0] = 1.0 / this.mat[0];
 //			return true;
 //		case 2:
-//			return reinterpret_cast<idMat2 *>(mat).InverseSelf();
+//			return reinterpret_cast<idMat2 *>(this.mat).InverseSelf();
 //		case 3:
-//			return reinterpret_cast<idMat3 *>(mat).InverseSelf();
+//			return reinterpret_cast<idMat3 *>(this.mat).InverseSelf();
 //		case 4:
-//			return reinterpret_cast<idMat4 *>(mat).InverseSelf();
+//			return reinterpret_cast<idMat4 *>(this.mat).InverseSelf();
 //		case 5:
-//			return reinterpret_cast<idMat5 *>(mat).InverseSelf();
+//			return reinterpret_cast<idMat5 *>(this.mat).InverseSelf();
 //		case 6:
-//			return reinterpret_cast<idMat6 *>(mat).InverseSelf();
+//			return reinterpret_cast<idMat6 *>(this.mat).InverseSelf();
 //		default:
 //			return InverseSelfGeneric();
 //	}
@@ -3234,8 +3238,8 @@ class idMatX {
 //ID_INLINE idMatX idMatX::InverseFast( ) const {
 //	idMatX invMat;
 //
-//	invMat.SetTempSize( numRows, numColumns );
-//	memcpy( invMat.mat, mat, numRows * numColumns * sizeof( float ) );
+//	invMat.SetTempSize( this.numRows, this.numColumns );
+//	memcpy( invMat.this.mat, this.mat, this.numRows * this.numColumns * sizeof( float ) );
 //#if !defined(NDEBUG)
 //	int r = 
 //#endif
@@ -3246,25 +3250,25 @@ class idMatX {
 //
 //ID_INLINE bool idMatX::InverseFastSelf( ) {
 //
-//	assert( numRows == numColumns );
+//	assert( this.numRows == this.numColumns );
 //
-//	switch( numRows ) {
+//	switch( this.numRows ) {
 //		case 1:
-//			if ( idMath.Fabs( mat[0] ) < MATRIX_INVERSE_EPSILON ) {
+//			if ( idMath.Fabs( this.mat[0] ) < MATRIX_INVERSE_EPSILON ) {
 //				return false;
 //			}
-//			mat[0] = 1.0 / mat[0];
+//			this.mat[0] = 1.0 / this.mat[0];
 //			return true;
 //		case 2:
-//			return reinterpret_cast<idMat2 *>(mat).InverseFastSelf();
+//			return reinterpret_cast<idMat2 *>(this.mat).InverseFastSelf();
 //		case 3:
-//			return reinterpret_cast<idMat3 *>(mat).InverseFastSelf();
+//			return reinterpret_cast<idMat3 *>(this.mat).InverseFastSelf();
 //		case 4:
-//			return reinterpret_cast<idMat4 *>(mat).InverseFastSelf();
+//			return reinterpret_cast<idMat4 *>(this.mat).InverseFastSelf();
 //		case 5:
-//			return reinterpret_cast<idMat5 *>(mat).InverseFastSelf();
+//			return reinterpret_cast<idMat5 *>(this.mat).InverseFastSelf();
 //		case 6:
-//			return reinterpret_cast<idMat6 *>(mat).InverseFastSelf();
+//			return reinterpret_cast<idMat6 *>(this.mat).InverseFastSelf();
 //		default:
 //			return InverseSelfGeneric();
 //	}
@@ -3274,9 +3278,9 @@ class idMatX {
 //ID_INLINE idVecX idMatX::Multiply( const idVecX &vec ) const {
 //	idVecX dst;
 //
-//	assert( numColumns == vec.GetSize() );
+//	assert( this.numColumns == vec.GetSize() );
 //
-//	dst.SetTempSize( numRows );
+//	dst.SetTempSize( this.numRows );
 //#ifdef MATX_SIMD
 //	SIMDProcessor.MatX_MultiplyVecX( dst, *this, vec );
 //#else
@@ -3288,9 +3292,9 @@ class idMatX {
 //ID_INLINE idMatX idMatX::Multiply( const idMatX &a ) const {
 //	idMatX dst;
 //
-//	assert( numColumns == a.numRows );
+//	assert( this.numColumns == a.this.numRows );
 //
-//	dst.SetTempSize( numRows, a.numColumns );
+//	dst.SetTempSize( this.numRows, a.numColumns );
 //#ifdef MATX_SIMD
 //	SIMDProcessor.MatX_MultiplyMatX( dst, *this, a );
 //#else
@@ -3302,9 +3306,9 @@ class idMatX {
 //ID_INLINE idVecX idMatX::TransposeMultiply( const idVecX &vec ) const {
 //	idVecX dst;
 //
-//	assert( numRows == vec.GetSize() );
+//	assert( this.numRows == vec.GetSize() );
 //
-//	dst.SetTempSize( numColumns );
+//	dst.SetTempSize( this.numColumns );
 //#ifdef MATX_SIMD
 //	SIMDProcessor.MatX_TransposeMultiplyVecX( dst, *this, vec );
 //#else
@@ -3316,9 +3320,9 @@ class idMatX {
 //ID_INLINE idMatX idMatX::TransposeMultiply( const idMatX &a ) const {
 //	idMatX dst;
 //
-//	assert( numRows == a.numRows );
+//	assert( this.numRows == a.numRows );
 //
-//	dst.SetTempSize( numColumns, a.numColumns );
+//	dst.SetTempSize( this.numColumns, a.numColumns );
 //#ifdef MATX_SIMD
 //	SIMDProcessor.MatX_TransposeMultiplyMatX( dst, *this, a );
 //#else
@@ -3335,16 +3339,16 @@ class idMatX {
 //	const float *mPtr, *vPtr;
 //	float *dstPtr;
 //
-//	mPtr = mat;
+//	mPtr = this.mat;
 //	vPtr = vec.ToFloatPtr();
 //	dstPtr = dst.ToFloatPtr();
-//	for ( i = 0; i < numRows; i++ ) {
+//	for ( i = 0; i < this.numRows; i++ ) {
 //		float sum = mPtr[0] * vPtr[0];
-//		for ( j = 1; j < numColumns; j++ ) {
+//		for ( j = 1; j < this.numColumns; j++ ) {
 //			sum += mPtr[j] * vPtr[j];
 //		}
 //		dstPtr[i] = sum;
-//		mPtr += numColumns;
+//		mPtr += this.numColumns;
 //	}
 //#endif
 //}
@@ -3357,16 +3361,16 @@ class idMatX {
 //	const float *mPtr, *vPtr;
 //	float *dstPtr;
 //
-//	mPtr = mat;
+//	mPtr = this.mat;
 //	vPtr = vec.ToFloatPtr();
 //	dstPtr = dst.ToFloatPtr();
-//	for ( i = 0; i < numRows; i++ ) {
+//	for ( i = 0; i < this.numRows; i++ ) {
 //		float sum = mPtr[0] * vPtr[0];
-//		for ( j = 1; j < numColumns; j++ ) {
+//		for ( j = 1; j < this.numColumns; j++ ) {
 //			sum += mPtr[j] * vPtr[j];
 //		}
 //		dstPtr[i] += sum;
-//		mPtr += numColumns;
+//		mPtr += this.numColumns;
 //	}
 //#endif
 //}
@@ -3379,16 +3383,16 @@ class idMatX {
 //	const float *mPtr, *vPtr;
 //	float *dstPtr;
 //
-//	mPtr = mat;
+//	mPtr = this.mat;
 //	vPtr = vec.ToFloatPtr();
 //	dstPtr = dst.ToFloatPtr();
-//	for ( i = 0; i < numRows; i++ ) {
+//	for ( i = 0; i < this.numRows; i++ ) {
 //		float sum = mPtr[0] * vPtr[0];
-//		for ( j = 1; j < numColumns; j++ ) {
+//		for ( j = 1; j < this.numColumns; j++ ) {
 //			sum += mPtr[j] * vPtr[j];
 //		}
 //		dstPtr[i] -= sum;
-//		mPtr += numColumns;
+//		mPtr += this.numColumns;
 //	}
 //#endif
 //}
@@ -3403,11 +3407,11 @@ class idMatX {
 //
 //	vPtr = vec.ToFloatPtr();
 //	dstPtr = dst.ToFloatPtr();
-//	for ( i = 0; i < numColumns; i++ ) {
-//		mPtr = mat + i;
+//	for ( i = 0; i < this.numColumns; i++ ) {
+//		mPtr = this.mat + i;
 //		float sum = mPtr[0] * vPtr[0];
-//		for ( j = 1; j < numRows; j++ ) {
-//			mPtr += numColumns;
+//		for ( j = 1; j < this.numRows; j++ ) {
+//			mPtr += this.numColumns;
 //			sum += mPtr[0] * vPtr[j];
 //		}
 //		dstPtr[i] = sum;
@@ -3425,11 +3429,11 @@ class idMatX {
 //
 //	vPtr = vec.ToFloatPtr();
 //	dstPtr = dst.ToFloatPtr();
-//	for ( i = 0; i < numColumns; i++ ) {
-//		mPtr = mat + i;
+//	for ( i = 0; i < this.numColumns; i++ ) {
+//		mPtr = this.mat + i;
 //		float sum = mPtr[0] * vPtr[0];
-//		for ( j = 1; j < numRows; j++ ) {
-//			mPtr += numColumns;
+//		for ( j = 1; j < this.numRows; j++ ) {
+//			mPtr += this.numColumns;
 //			sum += mPtr[0] * vPtr[j];
 //		}
 //		dstPtr[i] += sum;
@@ -3447,11 +3451,11 @@ class idMatX {
 //
 //	vPtr = vec.ToFloatPtr();
 //	dstPtr = dst.ToFloatPtr();
-//	for ( i = 0; i < numColumns; i++ ) {
-//		mPtr = mat + i;
+//	for ( i = 0; i < this.numColumns; i++ ) {
+//		mPtr = this.mat + i;
 //		float sum = mPtr[0] * vPtr[0];
-//		for ( j = 1; j < numRows; j++ ) {
-//			mPtr += numColumns;
+//		for ( j = 1; j < this.numRows; j++ ) {
+//			mPtr += this.numColumns;
 //			sum += mPtr[0] * vPtr[j];
 //		}
 //		dstPtr[i] -= sum;
@@ -3468,25 +3472,25 @@ class idMatX {
 //	const float *m1Ptr, *m2Ptr;
 //	double sum;
 //
-//	assert( numColumns == a.numRows );
+//	assert( this.numColumns == a.this.numRows );
 //
 //	dstPtr = dst.ToFloatPtr();
 //	m1Ptr = ToFloatPtr();
 //	m2Ptr = a.ToFloatPtr();
-//	k = numRows;
+//	k = this.numRows;
 //	l = a.GetNumColumns();
 //
 //	for ( i = 0; i < k; i++ ) {
 //		for ( j = 0; j < l; j++ ) {
 //			m2Ptr = a.ToFloatPtr() + j;
 //			sum = m1Ptr[0] * m2Ptr[0];
-//			for ( n = 1; n < numColumns; n++ ) {
+//			for ( n = 1; n < this.numColumns; n++ ) {
 //				m2Ptr += l;
 //				sum += m1Ptr[n] * m2Ptr[0];
 //			}
 //			*dstPtr++ = sum;
 //		}
-//		m1Ptr += numColumns;
+//		m1Ptr += this.numColumns;
 //	}
 //#endif
 //}
@@ -3500,11 +3504,11 @@ class idMatX {
 //	const float *m1Ptr, *m2Ptr;
 //	double sum;
 //
-//	assert( numRows == a.numRows );
+//	assert( this.numRows == a.this.numRows );
 //
 //	dstPtr = dst.ToFloatPtr();
 //	m1Ptr = ToFloatPtr();
-//	k = numColumns;
+//	k = this.numColumns;
 //	l = a.numColumns;
 //
 //	for ( i = 0; i < k; i++ ) {
@@ -3512,8 +3516,8 @@ class idMatX {
 //			m1Ptr = ToFloatPtr() + i;
 //			m2Ptr = a.ToFloatPtr() + j;
 //			sum = m1Ptr[0] * m2Ptr[0];
-//			for ( n = 1; n < numRows; n++ ) {
-//				m1Ptr += numColumns;
+//			for ( n = 1; n < this.numRows; n++ ) {
+//				m1Ptr += this.numColumns;
 //				m2Ptr += a.numColumns;
 //				sum += m1Ptr[0] * m2Ptr[0];
 //			}
@@ -3524,39 +3528,39 @@ class idMatX {
 //}
 //
 //ID_INLINE int idMatX::GetDimension( ) const {
-//	return numRows * numColumns;
+//	return this.numRows * this.numColumns;
 //}
 //
 //ID_INLINE const idVec6 &idMatX::SubVec6( int row ) const {
-//	assert( numColumns >= 6 && row >= 0 && row < numRows );
-//	return *reinterpret_cast<const idVec6 *>(mat + row * numColumns);
+//	assert( this.numColumns >= 6 && row >= 0 && row < this.numRows );
+//	return *reinterpret_cast<const idVec6 *>(this.mat + row * this.numColumns);
 //}
 //
 //ID_INLINE idVec6 &idMatX::SubVec6( int row ) {
-//	assert( numColumns >= 6 && row >= 0 && row < numRows );
-//	return *reinterpret_cast<idVec6 *>(mat + row * numColumns);
+//	assert( this.numColumns >= 6 && row >= 0 && row < this.numRows );
+//	return *reinterpret_cast<idVec6 *>(this.mat + row * this.numColumns);
 //}
 //
 //ID_INLINE const idVecX idMatX::SubVecX( int row ) const {
 //	idVecX v;
-//	assert( row >= 0 && row < numRows );
-//	v.SetData( numColumns, mat + row * numColumns );
+//	assert( row >= 0 && row < this.numRows );
+//	v.SetData( this.numColumns, this.mat + row * this.numColumns );
 //	return v;
 //}
 //
 //ID_INLINE idVecX idMatX::SubVecX( int row ) {
 //	idVecX v;
-//	assert( row >= 0 && row < numRows );
-//	v.SetData( numColumns, mat + row * numColumns );
+//	assert( row >= 0 && row < this.numRows );
+//	v.SetData( this.numColumns, this.mat + row * this.numColumns );
 //	return v;
 //}
 //
 //ID_INLINE const float *idMatX::ToFloatPtr( ) const {
-//	return mat;
+//	return this.mat;
 //}
 //
 //ID_INLINE float *idMatX::ToFloatPtr( ) {
-//	return mat;
+//	return this.mat;
 //}
 //
 

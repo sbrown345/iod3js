@@ -1280,10 +1280,10 @@ idAF::AddBindConstraints
 				c = new idAFConstraint_Fixed( name, body, null );
 				this.physicsObj.AddConstraint( c );
 			} else if ( type.Icmp( "ballAndSocket" ) == 0 ) {
-				var c: idAFConstraint_BallAndSocketJoint;
+				var c_: idAFConstraint_BallAndSocketJoint;
 
-				c = new idAFConstraint_BallAndSocketJoint( name, body, null );
-				this.physicsObj.AddConstraint( c );
+				c_ = new idAFConstraint_BallAndSocketJoint( name, body, null );
+				this.physicsObj.AddConstraint(c_ );
 				lexer.ReadToken( jointName );
 
 				var /*jointHandle_t */joint = this.animator.GetJointHandle( jointName.data );
@@ -1292,12 +1292,12 @@ idAF::AddBindConstraints
 				}
 
 				this.animator.GetJointTransform( joint, gameLocal.time, origin, axis );
-				c.SetAnchor( renderOrigin.opAddition( idMat3.opMultiplication_VecMat( origin, renderAxis ) ) );
+				c_.SetAnchor( renderOrigin.opAddition( idMat3.opMultiplication_VecMat( origin, renderAxis ) ) );
 			} else if ( type.Icmp( "universal" ) == 0 ) {
-				var c: idAFConstraint_UniversalJoint;
+				var c__: idAFConstraint_UniversalJoint;
 
-				c = new idAFConstraint_UniversalJoint( name, body, null );
-				this.physicsObj.AddConstraint( c );
+				c__ = new idAFConstraint_UniversalJoint( name, body, null );
+				this.physicsObj.AddConstraint(c__ );
 				lexer.ReadToken( jointName );
 
 				var /*jointHandle_t*/ joint = this.animator.GetJointHandle( jointName.data );
@@ -1305,8 +1305,8 @@ idAF::AddBindConstraints
 					gameLocal.Warning( "idAF::AddBindConstraints: joint '%s' not found", jointName.c_str ( ) );
 				}
 				this.animator.GetJointTransform( joint, gameLocal.time, origin, axis );
-				c.SetAnchor( renderOrigin.opAddition( idMat3.opMultiplication_VecMat( origin, renderAxis ) ) );
-				c.SetShafts( new idVec3( 0, 0, 1 ), new idVec3( 0, 0, -1 ) );
+				c__.SetAnchor(renderOrigin.opAddition(idMat3.opMultiplication_VecMat(origin, renderAxis)));
+				c__.SetShafts( new idVec3( 0, 0, 1 ), new idVec3( 0, 0, -1 ) );
 			} else {
 				gameLocal.Warning( "idAF::AddBindConstraints: unknown constraint type '%s' on entity '%s'", type.c_str ( ), this.self.name.c_str ( ) );
 			}
