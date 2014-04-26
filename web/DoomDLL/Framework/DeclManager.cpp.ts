@@ -87,52 +87,52 @@ class idDeclLocal extends idDeclBase {
 ////public:
 ////								*/idDeclLocal();
 ////	virtual 					*/~idDeclLocal() {};
-	GetName( ):string {throw "placeholder";}
-	GetType( ):declType_t {throw "placeholder";}
-	GetState( ) :declState_t {throw "placeholder";}
-	IsImplicit( ) :boolean {throw "placeholder";}
-	IsValid( ) :boolean {throw "placeholder";}
-	Invalidate( ):void{throw "placeholder";}
-	Reload( ):void {throw "placeholder";}
-	EnsureNotPurged( ):void {throw "placeholder";}
-	Index( ) :number {return null;}
-	GetLineNum( ) :number {throw "placeholder";}
-	GetFileName( ) :string {throw "placeholder";}
-	Size( ):number {throw "placeholder";}
-	GetText( text:Uint8Array):void{}
-	GetTextLength( ):number {throw "placeholder";}
-	SetText( text:Uint8Array ):void{throw "placeholder";}
-	ReplaceSourceFileText( ):boolean{throw "placeholder";}
-	SourceFileChanged( ):boolean{throw "placeholder";}
-	MakeDefault(): void { throw "placeholder"; }
-	EverReferenced( ):boolean { throw "placeholder"; }
+	//GetName( ):string {throw "placeholder";}
+	//GetType( ):declType_t {throw "placeholder";}
+	//GetState( ) :declState_t {throw "placeholder";}
+	//IsImplicit( ) :boolean {throw "placeholder";}
+	//IsValid( ) :boolean {throw "placeholder";}
+	//Invalidate( ):void{throw "placeholder";}
+	//Reload( ):void {throw "placeholder";}
+	//EnsureNotPurged( ):void {throw "placeholder";}
+	//Index( ) :number {return null;}
+	//GetLineNum( ) :number {throw "placeholder";}
+	//GetFileName( ) :string {throw "placeholder";}
+	//Size( ):number {throw "placeholder";}
+	//GetText( text:Uint8Array):void{}
+	//GetTextLength( ):number {throw "placeholder";}
+	//SetText( text:Uint8Array ):void{throw "placeholder";}
+	//ReplaceSourceFileText( ):boolean{throw "placeholder";}
+	//SourceFileChanged( ):boolean{throw "placeholder";}
+	//MakeDefault(): void { throw "placeholder"; }
+	//EverReferenced( ):boolean { throw "placeholder"; }
 
 //protected:
-	SetDefaultText( ):boolean { throw "placeholder"; }
-	DefaultDefinition( ):string { throw "placeholder"; }
-	Parse( text:string, textLength:number ):boolean { throw "placeholder"; }
-	FreeData( ):void { throw "placeholder"; }
-	List( ):void { throw "placeholder"; }
-	Print( ):void { throw "placeholder"; }
+	//SetDefaultText( ):boolean { throw "placeholder"; }
+	//DefaultDefinition( ):string { throw "placeholder"; }
+	//Parse( text:string, textLength:number ):boolean { throw "placeholder"; }
+	//FreeData( ):void { throw "placeholder"; }
+	//List( ):void { throw "placeholder"; }
+	//Print( ):void { throw "placeholder"; }
 
 //protected:
-    AllocateSelf( ):void{ throw "placeholder";}
+    //AllocateSelf( ):void{ throw "placeholder";}
 
 	// Parses the decl definition.
 	// After calling parse, a decl will be guaranteed usable.
-	ParseLocal(): void { throw "placeholder";}
+	//ParseLocal(): void { throw "placeholder";}
 
 	// Does a MakeDefualt, but flags the decl so that it
 	// will Parse() the next time the decl is found.
-	Purge(): void { throw "placeholder"; }
+	//Purge(): void { throw "placeholder"; }
 
 ////								// Set textSource possible with compression.
-	SetTextLocal(text: Uint8Array, length: number): void { throw "placeholder"; }
+	//SetTextLocal(text: Uint8Array, length: number): void { throw "placeholder"; }
 
 //private:
 /*	idDecl *					*/self:idDecl;
 
-/*	idStr						*/name:idStr;					    // name of the decl
+/*	idStr						*/name = new idStr;					    // name of the decl
 /*	char *						*/textSource:string;				// decl text definition
 /*	int							*/textLength:number;				// length of textSource
 /*	int							*/compressedLength:number;		    // compressed length
@@ -152,26 +152,485 @@ class idDeclLocal extends idDeclBase {
 /*								*/						            // its source removed will be defaulted
 /*	idDeclLocal *				*/nextInFile:idDeclLocal;				// next decl in the decl file
 
-    constructor( ) {
-        super ( );
-	    this.name = new idStr("unnamed");
-	    this.textSource = /*NULL*/null;
-	    this.textLength = 0;
-	    this.compressedLength = 0;
-	    this.sourceFile = null;
-	    this.sourceTextOffset = 0;
-	    this.sourceTextLength = 0;
-	    this.sourceLine = 0;
-	    this.checksum = 0;
-	    this.type = declType_t.DECL_ENTITYDEF;
-	    this.index = 0;
-	    this.declState = declState_t.DS_UNPARSED;
-	    this.parsedOutsideLevelLoad = false;
-	    this.referencedThisLevel = false;
-	    this.everReferenced = false;
-	    this.redefinedInReload = false;
-	    this.nextInFile = /*NULL*/null;
-    }
+	constructor ( ) {
+		super ( );
+		this.name.opEquals( "unnamed" );
+		this.textSource = /*NULL*/null;
+		this.textLength = 0;
+		this.compressedLength = 0;
+		this.sourceFile = null;
+		this.sourceTextOffset = 0;
+		this.sourceTextLength = 0;
+		this.sourceLine = 0;
+		this.checksum = 0;
+		this.type = declType_t.DECL_ENTITYDEF;
+		this.index = 0;
+		this.declState = declState_t.DS_UNPARSED;
+		this.parsedOutsideLevelLoad = false;
+		this.referencedThisLevel = false;
+		this.everReferenced = false;
+		this.redefinedInReload = false;
+		this.nextInFile = /*NULL*/null;
+	}
+
+
+/*
+	=================
+	idDeclLocal::GetName
+	=================
+	*/
+	GetName(): string {
+		return this.name.c_str();
+	}
+
+	/*
+	=================
+	idDeclLocal::GetType
+	=================
+	*/
+	GetType(): declType_t {
+		return this.type;
+	}
+
+	/*
+	=================
+	idDeclLocal::GetState
+	=================
+	*/
+	GetState(): declState_t {
+		return this.declState;
+	}
+
+	/*
+	=================
+	idDeclLocal::IsImplicit
+	=================
+	*/
+	IsImplicit(): boolean {
+		return (this.sourceFile == declManagerLocal.GetImplicitDeclFile());
+	}
+
+	/*
+	=================
+	idDeclLocal::IsValid
+	=================
+	*/
+	IsValid(): boolean {
+		return (this.declState != declState_t.DS_UNPARSED);
+	}
+
+	/*
+	=================
+	idDeclLocal::Invalidate
+	=================
+	*/
+	Invalidate(): void {
+		this.declState = declState_t.DS_UNPARSED;
+	}
+
+	/*
+	=================
+	idDeclLocal::EnsureNotPurged
+	=================
+	*/
+	EnsureNotPurged(): void {
+		if (this.declState == declState_t.DS_UNPARSED) {
+			this.ParseLocal();
+		}
+	}
+
+	/*
+	=================
+	idDeclLocal::Index
+	=================
+	*/
+	/*int */
+	Index(): number {
+		return this.index;
+	}
+
+	/*
+	=================
+	idDeclLocal::GetLineNum
+	=================
+	*/
+	GetLineNum(): number {
+		return this.sourceLine;
+	}
+
+	/*
+	=================
+	idDeclLocal::GetFileName
+	=================
+	*/
+	GetFileName(): string {
+		return (this.sourceFile) ? this.sourceFile.fileName.c_str() : "*invalid*";
+	}
+
+	/////*
+	////=================
+	////idDeclLocal::Size
+	////=================
+	////*/
+	////size_t idDeclLocal::Size( ) const {
+	////	return sizeof( idDecl ) + name.Allocated();
+	////}
+
+	/*
+	=================
+	idDeclLocal::GetText
+	=================
+	*/
+	GetText  ( /*char **/text: Uint8Array): void {
+		//#ifdef USE_COMPRESSED_DECLS
+		//	HuffmanDecompressText( text, textLength, (byte *)textSource, compressedLength );
+		//#else
+		memcpy(text, this.textSource.toUint8Array(), this.textLength /*+ 1 */ );
+		//#endif
+	}
+
+	/*
+	=================
+	idDeclLocal::GetTextLength
+	=================
+	*/
+	GetTextLength(): number {
+		return this.textLength;
+	}
+
+	/*
+	=================
+	idDeclLocal::SetText
+	=================
+	*/
+	SetText  (text: Uint8Array): void {
+		this.SetTextLocal(text, idStr.Length(text));
+	}
+
+	/*
+	=================
+	idDeclLocal::SetTextLocal
+	=================
+	*/
+	SetTextLocal  (text: Uint8Array, /*const int */length: number): void {
+		Mem_Free(this.textSource);
+
+		this.checksum = MD5_BlockChecksum(text, length);
+
+		//#ifdef GET_HUFFMAN_FREQUENCIES
+		//	for( int i = 0; i < length; i++ ) {
+		//		huffmanFrequencies[((const unsigned char *)text)[i]]++;
+		//	}
+		//#endif
+
+		//#ifdef USE_COMPRESSED_DECLS
+		//	int maxBytesPerCode = ( maxHuffmanBits + 7 ) >> 3;
+		//	byte *compressed = (byte *)_alloca( length * maxBytesPerCode );
+		//	compressedLength = HuffmanCompressText( text, length, compressed, length * maxBytesPerCode );
+		//	textSource = (char *)Mem_Alloc( compressedLength );
+		//	memcpy( textSource, compressed, compressedLength );
+		//#else
+		this.compressedLength = length;
+		this.textSource = text.subarray(0, length).toString(); //this.textSource = (char *) Mem_Alloc( length + 1 );
+		//memcpy( textSource, text, length );
+		//textSource[length] = '\0';
+		//#endif
+		this.textLength = length;
+	}
+
+	/////*
+	////=================
+	////idDeclLocal::ReplaceSourceFileText
+	////=================
+	////*/
+	////bool idDeclLocal::ReplaceSourceFileText( ) {
+	////	int oldFileLength, newFileLength;
+	////	char *buffer;
+	////	idFile *file;
+
+	////	common.Printf( "Writing \'%s\' to \'%s\'...\n", GetName(), this.GetFileName() );
+
+	////	if ( sourceFile == &declManagerLocal.implicitDecls ) {
+	////		common.Warning( "Can't save implicit declaration %s.", GetName() );
+	////		return false;
+	////	}
+
+	////	// get length and allocate buffer to hold the file
+	////	oldFileLength = sourceFile.fileSize;
+	////	newFileLength = oldFileLength - sourceTextLength + textLength;
+	////	buffer = (char *) Mem_Alloc( Max( newFileLength, oldFileLength ) );
+
+	////	// read original file
+	////	if ( sourceFile.fileSize ) {
+
+	////		file = fileSystem.OpenFileRead( this.GetFileName() );
+	////		if ( !file ) {
+	////			Mem_Free( buffer );
+	////			common.Warning( "Couldn't open %s for reading.", this.GetFileName() );
+	////			return false;
+	////		}
+
+	////		if ( file.Length() != sourceFile.fileSize || file.Timestamp() != sourceFile.timestamp ) {
+	////			Mem_Free( buffer );
+	////			common.Warning( "The file %s has been modified outside of the engine.", this.GetFileName() );
+	////			return false;
+	////		}
+
+	////		file.Read( buffer, oldFileLength );
+	////		fileSystem.CloseFile( file );
+
+	////		if ( MD5_BlockChecksum( buffer, oldFileLength ) != sourceFile.checksum ) {
+	////			Mem_Free( buffer );
+	////			common.Warning( "The file %s has been modified outside of the engine.", this.GetFileName() );
+	////			return false;
+	////		}
+	////	}
+
+	////	// insert new text
+	////	char *declText = (char *) _alloca( textLength + 1 );
+	////	GetText( declText );
+	////	memmove( buffer + sourceTextOffset + textLength, buffer + sourceTextOffset + sourceTextLength, oldFileLength - sourceTextOffset - sourceTextLength );
+	////	memcpy( buffer + sourceTextOffset, declText, textLength );
+
+	////	// write out new file
+	////	file = fileSystem.OpenFileWrite( this.GetFileName(), "fs_devpath" );
+	////	if ( !file ) {
+	////		Mem_Free( buffer );
+	////		common.Warning( "Couldn't open %s for writing.", this.GetFileName() );
+	////		return false;
+	////	}
+	////	file.Write( buffer, newFileLength );
+	////	fileSystem.CloseFile( file );
+
+	////	// set new file size, checksum and timestamp
+	////	sourceFile.fileSize = newFileLength;
+	////	sourceFile.checksum = MD5_BlockChecksum( buffer, newFileLength );
+	////	fileSystem.ReadFile( this.GetFileName(), NULL, &sourceFile.timestamp );
+
+	////	// free buffer
+	////	Mem_Free( buffer );
+
+	////	// move all decls in the same file
+	////	for ( idDeclLocal *decl = sourceFile.decls; decl; decl = decl.nextInFile ) {
+	////		if (decl.sourceTextOffset > sourceTextOffset) {
+	////			decl.sourceTextOffset += textLength - sourceTextLength;
+	////		}
+	////	}
+
+	////	// set new size of text in source file
+	////	sourceTextLength = textLength;
+
+	////	return true;
+	////}
+
+	/////*
+	////=================
+	////idDeclLocal::SourceFileChanged
+	////=================
+	////*/
+	////bool idDeclLocal::SourceFileChanged( ) const {
+	////	int newLength;
+	////	ID_TIME_T newTimestamp;
+
+	////	if ( sourceFile.fileSize <= 0 ) {
+	////		return false;
+	////	}
+
+	////	newLength = fileSystem.ReadFile( this.GetFileName(), NULL, &newTimestamp );
+
+	////	if ( newLength != sourceFile.fileSize || newTimestamp != sourceFile.timestamp ) {
+	////		return true;
+	////	}
+
+	////	return false;
+	////}
+
+	/*
+	=================
+	idDeclLocal::MakeDefault
+	=================
+	*/
+	static recursionLevel = 0;
+	MakeDefault(): void {
+		var defaultText: string;
+
+		declManagerLocal.MediaPrint("DEFAULTED\n");
+		this.declState = declState_t.DS_DEFAULTED;
+
+		this.AllocateSelf();
+
+		defaultText = this.self.DefaultDefinition();
+
+		// a parse error inside a DefaultDefinition() string could
+		// cause an infinite loop, but normal default definitions could
+		// still reference other default definitions, so we can't
+		// just dump out on the first recursion
+		if (++idDeclLocal.recursionLevel > 100) {
+			common.FatalError("idDecl::MakeDefault: bad DefaultDefinition(): %s", defaultText);
+		}
+
+		// always free data before parsing
+		this.self.FreeData();
+
+		// parse
+		this.self.Parse(defaultText, strlen(defaultText));
+
+		// we could still eventually hit the recursion if we have enough Error() calls inside Parse...
+		--idDeclLocal.recursionLevel;
+	}
+
+	/*
+	=================
+	idDeclLocal::SetDefaultText
+	=================
+	*/
+	SetDefaultText(): boolean {
+		return false;
+	}
+
+	/*
+	=================
+	idDeclLocal::DefaultDefinition
+	=================
+	*/
+	DefaultDefinition(): string {
+		return "{ }";
+	}
+
+	/*
+	=================
+	idDeclLocal::Parse
+	=================
+	*/
+	Parse  (text: string, textLength: number): boolean {
+		var src = new idLexer();
+		src.LoadMemory(text, textLength, this.GetFileName(), this.GetLineNum());
+		src.SetFlags(DECL_LEXER_FLAGS);
+		src.SkipUntilString("{");
+		src.SkipBracedSection(false);
+		return true;
+	}
+
+/*
+=================
+idDeclLocal::FreeData
+=================
+*/
+FreeData(): void {
+	}
+
+	/////*
+	////=================
+	////idDeclLocal::List
+	////=================
+	////*/
+	////void idDeclLocal::List() const {
+	////	common.Printf( "%s\n", GetName() );
+	////}
+
+	/////*
+	////=================
+	////idDeclLocal::Print
+	////=================
+	////*/
+	////void idDeclLocal::Print() const {
+	////}
+
+	/////*
+	////=================
+	////idDeclLocal::Reload
+	////=================
+	////*/
+	////void idDeclLocal::Reload( ) {
+	////	this.sourceFile.Reload( false );
+	////}
+
+	/*
+	=================
+	idDeclLocal::AllocateSelf
+	=================
+	*/
+	AllocateSelf(): void {
+		if (!this.self) {
+			this.self = declManagerLocal.GetDeclType( /*(int)*/this.type).allocator();
+			this.self.base = this;
+		}
+	}
+
+	/*
+	=================
+	idDeclLocal::ParseLocal
+	=================
+	*/
+	ParseLocal(): void {
+		var generatedDefaultText = false;
+
+		this.AllocateSelf();
+
+		// always free data before parsing
+		this.self.FreeData();
+
+		declManagerLocal.MediaPrint("parsing %s %s\n", declManagerLocal.declTypes[this.type].typeName.c_str(), this.name.c_str());
+
+		// if no text source try to generate default text
+		if (!this.textSource) {
+			generatedDefaultText = this.self.SetDefaultText();
+		}
+
+		// indent for DEFAULTED or media file references
+		declManagerLocal.indent++;
+
+		// no text immediately causes a MakeDefault()
+		if (!this.textSource) {
+			this.MakeDefault();
+			declManagerLocal.indent--;
+			return;
+		}
+
+		this.declState = declState_t.DS_PARSED;
+
+		// parse
+		var /*char **/declText = new Uint8Array(this.GetTextLength() + 1);
+		this.GetText(declText);
+		this.self.Parse(declText.toString(), this.GetTextLength());
+
+		// free generated text
+		if (generatedDefaultText) {
+			Mem_Free(this.textSource);
+			this.textSource = null;
+			this.textLength = 0;
+		}
+
+		declManagerLocal.indent--;
+	}
+
+	/*
+	=================
+	idDeclLocal::Purge
+	=================
+	*/
+	Purge() {
+		// never purge things that were referenced outside level load,
+		// like the console and menu graphics
+		if (this.parsedOutsideLevelLoad) {
+			return;
+		}
+
+		this.referencedThisLevel = false;
+		this.MakeDefault();
+
+		// the next Find() for this will re-parse the real data
+		this.declState = declState_t.DS_UNPARSED;
+	}
+
+	/*
+	=================
+	idDeclLocal::EverReferenced
+	=================
+	*/
+	EverReferenced( ) :boolean {
+		return this.everReferenced;
+	}
 };
 
 class idDeclFile {
@@ -1263,7 +1722,11 @@ FindTypeWithoutParsing (type: declType_t, name: string, makeDefault: boolean = t
 		this.hashTables[typeIndex].Add(hash, this.linearLists[typeIndex].Append(decl));
 
 		return decl;
-	}
+}
+
+
+
+
 
 };
 
@@ -1788,462 +2251,3 @@ idDeclFile.prototype.LoadAndParse = function ( ): number {
 
 ====================================================================================
 */
-
-
-/*
-=================
-idDeclLocal::GetName
-=================
-*/
-idDeclLocal.prototype.GetName = function ( ): string {
-	return this.name.c_str ( );
-};
-
-/*
-=================
-idDeclLocal::GetType
-=================
-*/
-idDeclLocal.prototype.GetType = function (): declType_t {
-	return this.type;
-};
-
-/*
-=================
-idDeclLocal::GetState
-=================
-*/
-idDeclLocal.prototype.GetState = function ( ): declState_t {
-	return this.declState;
-};
-
-/*
-=================
-idDeclLocal::IsImplicit
-=================
-*/
-idDeclLocal.prototype.IsImplicit = function ( ): boolean {
-	return ( this.sourceFile == declManagerLocal.GetImplicitDeclFile ( ) );
-};
-
-/*
-=================
-idDeclLocal::IsValid
-=================
-*/
-idDeclLocal.prototype.IsValid = function ( ): boolean {
-	return ( this.declState != declState_t.DS_UNPARSED );
-};
-
-/*
-=================
-idDeclLocal::Invalidate
-=================
-*/
-idDeclLocal.prototype.Invalidate = function ( ): void {
-	this.declState = declState_t.DS_UNPARSED;
-};
-
-/*
-=================
-idDeclLocal::EnsureNotPurged
-=================
-*/
-idDeclLocal.prototype.EnsureNotPurged = function ( ): void {
-	if ( this.declState == declState_t.DS_UNPARSED ) {
-		this.ParseLocal ( );
-	}
-};
-
-/*
-=================
-idDeclLocal::Index
-=================
-*/
-/*int */
-idDeclLocal.prototype.Index = function ( ): number {
-	return this.index;
-};
-
-/*
-=================
-idDeclLocal::GetLineNum
-=================
-*/
-idDeclLocal.prototype.GetLineNum = function ( ): number {
-	return this.sourceLine;
-};
-
-/*
-=================
-idDeclLocal::GetFileName
-=================
-*/
-idDeclLocal.prototype.GetFileName = function ( ): string {
-	return ( this.sourceFile ) ? this.sourceFile.fileName.c_str ( ) : "*invalid*";
-};
-
-/////*
-////=================
-////idDeclLocal::Size
-////=================
-////*/
-////size_t idDeclLocal::Size( ) const {
-////	return sizeof( idDecl ) + name.Allocated();
-////}
-
-/*
-=================
-idDeclLocal::GetText
-=================
-*/
-idDeclLocal.prototype.GetText = function ( /*char **/text: Uint8Array ): void {
-//#ifdef USE_COMPRESSED_DECLS
-//	HuffmanDecompressText( text, textLength, (byte *)textSource, compressedLength );
-//#else
-	memcpy( text, this.textSource.toUint8Array ( ), this.textLength /*+ 1 */ );
-//#endif
-};
-
-/*
-=================
-idDeclLocal::GetTextLength
-=================
-*/
-idDeclLocal.prototype.GetTextLength = function ( ): number {
-	return this.textLength;
-};
-
-/*
-=================
-idDeclLocal::SetText
-=================
-*/
-idDeclLocal.prototype.SetText = function ( text: Uint8Array ): void {
-	this.SetTextLocal( text, idStr.Length( text ) );
-};
-
-/*
-=================
-idDeclLocal::SetTextLocal
-=================
-*/
-idDeclLocal.prototype.SetTextLocal = function ( text: Uint8Array, /*const int */length: number ): void {
-	Mem_Free( this.textSource );
-
-	this.checksum = MD5_BlockChecksum( text, length );
-
-//#ifdef GET_HUFFMAN_FREQUENCIES
-//	for( int i = 0; i < length; i++ ) {
-//		huffmanFrequencies[((const unsigned char *)text)[i]]++;
-//	}
-//#endif
-
-//#ifdef USE_COMPRESSED_DECLS
-//	int maxBytesPerCode = ( maxHuffmanBits + 7 ) >> 3;
-//	byte *compressed = (byte *)_alloca( length * maxBytesPerCode );
-//	compressedLength = HuffmanCompressText( text, length, compressed, length * maxBytesPerCode );
-//	textSource = (char *)Mem_Alloc( compressedLength );
-//	memcpy( textSource, compressed, compressedLength );
-//#else
-	this.compressedLength = length;
-	this.textSource = text.subarray( 0, length ).toString ( ); //this.textSource = (char *) Mem_Alloc( length + 1 );
-	//memcpy( textSource, text, length );
-	//textSource[length] = '\0';
-//#endif
-	this.textLength = length;
-};
-
-/////*
-////=================
-////idDeclLocal::ReplaceSourceFileText
-////=================
-////*/
-////bool idDeclLocal::ReplaceSourceFileText( ) {
-////	int oldFileLength, newFileLength;
-////	char *buffer;
-////	idFile *file;
-
-////	common.Printf( "Writing \'%s\' to \'%s\'...\n", GetName(), this.GetFileName() );
-
-////	if ( sourceFile == &declManagerLocal.implicitDecls ) {
-////		common.Warning( "Can't save implicit declaration %s.", GetName() );
-////		return false;
-////	}
-
-////	// get length and allocate buffer to hold the file
-////	oldFileLength = sourceFile.fileSize;
-////	newFileLength = oldFileLength - sourceTextLength + textLength;
-////	buffer = (char *) Mem_Alloc( Max( newFileLength, oldFileLength ) );
-
-////	// read original file
-////	if ( sourceFile.fileSize ) {
-
-////		file = fileSystem.OpenFileRead( this.GetFileName() );
-////		if ( !file ) {
-////			Mem_Free( buffer );
-////			common.Warning( "Couldn't open %s for reading.", this.GetFileName() );
-////			return false;
-////		}
-
-////		if ( file.Length() != sourceFile.fileSize || file.Timestamp() != sourceFile.timestamp ) {
-////			Mem_Free( buffer );
-////			common.Warning( "The file %s has been modified outside of the engine.", this.GetFileName() );
-////			return false;
-////		}
-
-////		file.Read( buffer, oldFileLength );
-////		fileSystem.CloseFile( file );
-
-////		if ( MD5_BlockChecksum( buffer, oldFileLength ) != sourceFile.checksum ) {
-////			Mem_Free( buffer );
-////			common.Warning( "The file %s has been modified outside of the engine.", this.GetFileName() );
-////			return false;
-////		}
-////	}
-
-////	// insert new text
-////	char *declText = (char *) _alloca( textLength + 1 );
-////	GetText( declText );
-////	memmove( buffer + sourceTextOffset + textLength, buffer + sourceTextOffset + sourceTextLength, oldFileLength - sourceTextOffset - sourceTextLength );
-////	memcpy( buffer + sourceTextOffset, declText, textLength );
-
-////	// write out new file
-////	file = fileSystem.OpenFileWrite( this.GetFileName(), "fs_devpath" );
-////	if ( !file ) {
-////		Mem_Free( buffer );
-////		common.Warning( "Couldn't open %s for writing.", this.GetFileName() );
-////		return false;
-////	}
-////	file.Write( buffer, newFileLength );
-////	fileSystem.CloseFile( file );
-
-////	// set new file size, checksum and timestamp
-////	sourceFile.fileSize = newFileLength;
-////	sourceFile.checksum = MD5_BlockChecksum( buffer, newFileLength );
-////	fileSystem.ReadFile( this.GetFileName(), NULL, &sourceFile.timestamp );
-
-////	// free buffer
-////	Mem_Free( buffer );
-
-////	// move all decls in the same file
-////	for ( idDeclLocal *decl = sourceFile.decls; decl; decl = decl.nextInFile ) {
-////		if (decl.sourceTextOffset > sourceTextOffset) {
-////			decl.sourceTextOffset += textLength - sourceTextLength;
-////		}
-////	}
-
-////	// set new size of text in source file
-////	sourceTextLength = textLength;
-
-////	return true;
-////}
-
-/////*
-////=================
-////idDeclLocal::SourceFileChanged
-////=================
-////*/
-////bool idDeclLocal::SourceFileChanged( ) const {
-////	int newLength;
-////	ID_TIME_T newTimestamp;
-
-////	if ( sourceFile.fileSize <= 0 ) {
-////		return false;
-////	}
-
-////	newLength = fileSystem.ReadFile( this.GetFileName(), NULL, &newTimestamp );
-
-////	if ( newLength != sourceFile.fileSize || newTimestamp != sourceFile.timestamp ) {
-////		return true;
-////	}
-
-////	return false;
-////}
-
-/*
-=================
-idDeclLocal::MakeDefault
-=================
-*/
-var recursionLevel = 0;
-idDeclLocal.prototype.MakeDefault = function ( ): void {
-	var defaultText: string;
-
-	declManagerLocal.MediaPrint( "DEFAULTED\n" );
-	this.declState = declState_t.DS_DEFAULTED;
-
-	this.AllocateSelf ( );
-
-	defaultText = this.self.DefaultDefinition ( );
-
-	// a parse error inside a DefaultDefinition() string could
-	// cause an infinite loop, but normal default definitions could
-	// still reference other default definitions, so we can't
-	// just dump out on the first recursion
-	if ( ++recursionLevel > 100 ) {
-		common.FatalError( "idDecl::MakeDefault: bad DefaultDefinition(): %s", defaultText );
-	}
-
-	// always free data before parsing
-	this.self.FreeData ( );
-
-	// parse
-	this.self.Parse( defaultText, strlen( defaultText ) );
-
-	// we could still eventually hit the recursion if we have enough Error() calls inside Parse...
-	--recursionLevel;
-};
-
-/*
-=================
-idDeclLocal::SetDefaultText
-=================
-*/
-idDeclLocal.prototype.SetDefaultText = function ( ): boolean {
-	return false;
-};
-
-/*
-=================
-idDeclLocal::DefaultDefinition
-=================
-*/
-idDeclLocal.prototype.DefaultDefinition = function ( ): string {
-	return "{ }";
-};
-
-/*
-=================
-idDeclLocal::Parse
-=================
-*/
-idDeclLocal.prototype.Parse = function ( text: string, textLength: number ): boolean {
-	var src = new idLexer ( );
-	src.LoadMemory( text, textLength, this.GetFileName(), this.GetLineNum() );
-	src.SetFlags( DECL_LEXER_FLAGS );
-	src.SkipUntilString( "{" );
-	src.SkipBracedSection( false );
-	return true;
-};
-
-/*
-=================
-idDeclLocal::FreeData
-=================
-*/
-idDeclLocal.prototype.FreeData = function ( ): void {
-};
-
-/////*
-////=================
-////idDeclLocal::List
-////=================
-////*/
-////void idDeclLocal::List() const {
-////	common.Printf( "%s\n", GetName() );
-////}
-
-/////*
-////=================
-////idDeclLocal::Print
-////=================
-////*/
-////void idDeclLocal::Print() const {
-////}
-
-/////*
-////=================
-////idDeclLocal::Reload
-////=================
-////*/
-////void idDeclLocal::Reload( ) {
-////	this.sourceFile.Reload( false );
-////}
-
-/*
-=================
-idDeclLocal::AllocateSelf
-=================
-*/
-idDeclLocal.prototype.AllocateSelf = function ( ): void {
-	if ( !this.self ) {
-		this.self = declManagerLocal.GetDeclType( /*(int)*/this.type ).allocator ( );
-		this.self.base = this;
-	}
-};
-
-/*
-=================
-idDeclLocal::ParseLocal
-=================
-*/
-idDeclLocal.prototype.ParseLocal = function ( ): void {
-	var generatedDefaultText = false;
-
-	this.AllocateSelf ( );
-
-	// always free data before parsing
-	this.self.FreeData ( );
-
-	declManagerLocal.MediaPrint( "parsing %s %s\n", declManagerLocal.declTypes[this.type].typeName.c_str ( ), this.name.c_str ( ) );
-
-	// if no text source try to generate default text
-	if ( !this.textSource ) {
-		generatedDefaultText = this.self.SetDefaultText ( );
-	}
-
-	// indent for DEFAULTED or media file references
-	declManagerLocal.indent++;
-
-	// no text immediately causes a MakeDefault()
-	if ( !this.textSource ) {
-		this.MakeDefault ( );
-		declManagerLocal.indent--;
-		return;
-	}
-
-	this.declState = declState_t.DS_PARSED;
-
-	// parse
-	var /*char **/declText = new Uint8Array( this.GetTextLength ( ) + 1 );
-	this.GetText( declText );
-	this.self.Parse( declText.toString(), this.GetTextLength ( ) );
-
-	// free generated text
-	if ( generatedDefaultText ) {
-		Mem_Free( this.textSource );
-		this.textSource = 0;
-		this.textLength = 0;
-	}
-
-	declManagerLocal.indent--;
-};
-
-/*
-=================
-idDeclLocal::Purge
-=================
-*/
-idDeclLocal.prototype.Purge = function ( ) {
-	// never purge things that were referenced outside level load,
-	// like the console and menu graphics
-	if ( this.parsedOutsideLevelLoad ) {
-		return;
-	}
-
-	this.referencedThisLevel = false;
-	this.MakeDefault ( );
-
-	// the next Find() for this will re-parse the real data
-	this.declState = declState_t.DS_UNPARSED;
-};
-
-/////*
-////=================
-////idDeclLocal::EverReferenced
-////=================
-////*/
-////bool idDeclLocal::EverReferenced( ) const {
-////	return everReferenced;
-////}

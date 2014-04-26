@@ -410,15 +410,16 @@ InitFromFile  (fileName: string): void {
 	this.FinishSurfaces();
 }
 
-/////*
-////================
-////idRenderModelStatic::LoadModel
-////================
-////*/
-////void idRenderModelStatic::LoadModel() {
-////	PurgeModel();
-////	InitFromFile( this.name );
-////}
+/*
+================
+idRenderModelStatic::LoadModel
+================
+*/
+	LoadModel ( ): void {
+		todoThrow ( );
+		this.PurgeModel ( );
+		this.InitFromFile( this.name );
+	}
 
 /*
 ================
@@ -2545,108 +2546,108 @@ class idRenderModelMD5 extends idRenderModelStatic {
 	////	defaultPose.q.w = defaultPose.q.CalcW();
 	////}
 
-	/////*
-	////====================
-	////idRenderModelMD5::InitFromFile
-	////====================
-	////*/
-	////void idRenderModelMD5::InitFromFile( const char *fileName ) {
-	////	this.name = fileName;
-	////	LoadModel();
-	////}
+	/*
+	====================
+	idRenderModelMD5::InitFromFile
+	====================
+	*/
+	InitFromFile ( fileName: string ): void {
+		this.name.opEquals( fileName );
+		this.LoadModel ( );
+	}
 
-	/////*
-	////====================
-	////idRenderModelMD5::LoadModel
+	/*
+	====================
+	idRenderModelMD5::LoadModel
 
-	////used for initial loads, reloadModel, and reloading the data of purged models
-	////Upon exit, the model will absolutely be valid, but possibly as a default model
-	////====================
-	////*/
-	////void idRenderModelMD5::LoadModel() {
-	////	int			version;
-	////	int			i;
-	////	int			num;
-	////	int			parentNum;
-	////	idToken		token;
-	////	idLexer		parser( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
-	////	idJointQuat	*pose;
-	////	idMD5Joint	*joint;
-	////	idJointMat *poseMat3;
+	used for initial loads, reloadModel, and reloading the data of purged models
+	Upon exit, the model will absolutely be valid, but possibly as a default model
+	====================
+	*/
+	LoadModel(): void {
+			int			version;
+			int			i;
+			int			num;
+			int			parentNum;
+			idToken		token;
+			idLexer		parser( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
+			idJointQuat	*pose;
+			idMD5Joint	*joint;
+			idJointMat *poseMat3;
 
-	////	if ( !purged ) {
-	////		PurgeModel();
-	////	}
-	////	purged = false;
+			if ( !purged ) {
+				PurgeModel();
+			}
+			purged = false;
 
-	////	if ( !parser.LoadFile( this.name ) ) {
-	////		MakeDefaultModel();
-	////		return;
-	////	}
+			if ( !parser.LoadFile( this.name ) ) {
+				MakeDefaultModel();
+				return;
+			}
 
-	////	parser.ExpectTokenString( MD5_VERSION_STRING );
-	////	version = parser.ParseInt();
+			parser.ExpectTokenString( MD5_VERSION_STRING );
+			version = parser.ParseInt();
 
-	////	if ( version != MD5_VERSION ) {
-	////		parser.Error( "Invalid version %d.  Should be version %d\n", version, MD5_VERSION );
-	////	}
+			if ( version != MD5_VERSION ) {
+				parser.Error( "Invalid version %d.  Should be version %d\n", version, MD5_VERSION );
+			}
 
-	////	//
-	////	// skip commandline
-	////	//
-	////	parser.ExpectTokenString( "commandline" );
-	////	parser.ReadToken( &token );
+			//
+			// skip commandline
+			//
+			parser.ExpectTokenString( "commandline" );
+			parser.ReadToken( &token );
 
-	////	// parse num joints
-	////	parser.ExpectTokenString( "numJoints" );
-	////	num  = parser.ParseInt();
-	////	this.joints.SetGranularity( 1 );
-	////	this.joints.SetNum( num );
-	////	defaultPose.SetGranularity( 1 );
-	////	defaultPose.SetNum( num );
-	////	poseMat3 = ( idJointMat * )_alloca16( num * sizeof( *poseMat3 ) );
+			// parse num joints
+			parser.ExpectTokenString( "numJoints" );
+			num  = parser.ParseInt();
+			this.joints.SetGranularity( 1 );
+			this.joints.SetNum( num );
+			defaultPose.SetGranularity( 1 );
+			defaultPose.SetNum( num );
+			poseMat3 = ( idJointMat * )_alloca16( num * sizeof( *poseMat3 ) );
 
-	////	// parse num meshes
-	////	parser.ExpectTokenString( "numMeshes" );
-	////	num = parser.ParseInt();
-	////	if ( num < 0 ) {
-	////		parser.Error( "Invalid size: %d", num );
-	////	}
-	////	meshes.SetGranularity( 1 );
-	////	meshes.SetNum( num );
+			// parse num meshes
+			parser.ExpectTokenString( "numMeshes" );
+			num = parser.ParseInt();
+			if ( num < 0 ) {
+				parser.Error( "Invalid size: %d", num );
+			}
+			meshes.SetGranularity( 1 );
+			meshes.SetNum( num );
 
-	////	//
-	////	// parse joints
-	////	//
-	////	parser.ExpectTokenString( "joints" );
-	////	parser.ExpectTokenString( "{" );
-	////	pose = defaultPose.Ptr();
-	////	joint = this.joints.Ptr();
-	////	for( i = 0; i < this.joints.Num(); i++, joint++, pose++ ) {
-	////		ParseJoint( parser, joint, pose );
-	////		poseMat3[ i ].SetRotation( pose.q.ToMat3() );
-	////		poseMat3[ i ].SetTranslation( pose.t );
-	////		if ( joint.parent ) {
-	////			parentNum = joint.parent - this.joints.Ptr();
-	////			pose.q = ( poseMat3[ i ].ToMat3() * poseMat3[ parentNum ].ToMat3().Transpose() ).ToQuat();
-	////			pose.t = ( poseMat3[ i ].ToVec3() - poseMat3[ parentNum ].ToVec3() ) * poseMat3[ parentNum ].ToMat3().Transpose();
-	////		}
-	////	}
-	////	parser.ExpectTokenString( "}" );
+			//
+			// parse joints
+			//
+			parser.ExpectTokenString( "joints" );
+			parser.ExpectTokenString( "{" );
+			pose = defaultPose.Ptr();
+			joint = this.joints.Ptr();
+			for( i = 0; i < this.joints.Num(); i++, joint++, pose++ ) {
+				ParseJoint( parser, joint, pose );
+				poseMat3[ i ].SetRotation( pose.q.ToMat3() );
+				poseMat3[ i ].SetTranslation( pose.t );
+				if ( joint.parent ) {
+					parentNum = joint.parent - this.joints.Ptr();
+					pose.q = ( poseMat3[ i ].ToMat3() * poseMat3[ parentNum ].ToMat3().Transpose() ).ToQuat();
+					pose.t = ( poseMat3[ i ].ToVec3() - poseMat3[ parentNum ].ToVec3() ) * poseMat3[ parentNum ].ToMat3().Transpose();
+				}
+			}
+			parser.ExpectTokenString( "}" );
 
-	////	for( i = 0; i < meshes.Num(); i++ ) {
-	////		parser.ExpectTokenString( "mesh" );
-	////		meshes[ i ].ParseMesh( parser, defaultPose.Num(), poseMat3 );
-	////	}
+			for( i = 0; i < meshes.Num(); i++ ) {
+				parser.ExpectTokenString( "mesh" );
+				meshes[ i ].ParseMesh( parser, defaultPose.Num(), poseMat3 );
+			}
 
-	////	//
-	////	// calculate the bounds of the model
-	////	//
-	////	CalculateBounds( poseMat3 );
+			//
+			// calculate the bounds of the model
+			//
+			CalculateBounds( poseMat3 );
 
-	////	// set the timestamp for reloadmodels
-	////	fileSystem.ReadFile( this.name, NULL, &timeStamp );
-	////}
+			// set the timestamp for reloadmodels
+			fileSystem.ReadFile( this.name, NULL, &timeStamp );
+	}
 
 	/////*
 	////==============
@@ -2992,20 +2993,20 @@ idRenderModelMD5::GetJointHandle
 ////	}
 ////}
 
-/////*
-////===================
-////idRenderModelMD5::PurgeModel
+/*
+===================
+idRenderModelMD5::PurgeModel
 
-////frees all the data, but leaves the class around for dangling references,
-////which can regenerate the data with LoadModel()
-////===================
-////*/
-////void idRenderModelMD5::PurgeModel() {
-////	purged = true;
-////	this.joints.Clear();
-////	defaultPose.Clear();
-////	meshes.Clear();
-////}
+frees all the data, but leaves the class around for dangling references,
+which can regenerate the data with LoadModel()
+===================
+*/
+void idRenderModelMD5::PurgeModel() {
+	purged = true;
+	this.joints.Clear();
+	defaultPose.Clear();
+	meshes.Clear();
+}
 
 /////*
 ////===================
@@ -3067,6 +3068,339 @@ class idRenderModelMD3 extends idRenderModelStatic {
 ////	int							numLods;
 
 ////	void						LerpMeshVertexes( srfTriangles_t *tri, const struct md3Surface_s *surf, const float backlerp, const int frame, const int oldframe ) const;
+
+	
+/*
+=================
+idRenderModelMD3::InitFromFile
+=================
+*/
+	InitFromFile ( fileName: string ): void {
+		todoThrow ( );
+////	int					i, j;
+////	md3Header_t			*pinmodel;
+////    md3Frame_t			*frame;
+////	md3Surface_t		*surf;
+////	md3Shader_t			*shader;
+////	md3Triangle_t		*tri;
+////	md3St_t				*st;
+////	md3XyzNormal_t		*xyz;
+////	md3Tag_t			*tag;
+////	void				*buffer;
+////	int					version;
+////	int					size;
+
+
+////	name = fileName;
+
+////	size = fileSystem.ReadFile( fileName, &buffer, NULL );
+////	if (!size || size<0 ) {
+////		return;
+////	}
+
+////	pinmodel = (md3Header_t *)buffer;
+
+////	version = LittleLong (pinmodel.version);
+////	if (version != MD3_VERSION) {
+////		fileSystem.FreeFile( buffer );
+////		common.Warning( "InitFromFile: %s has wrong version (%i should be %i)",
+////				 fileName, version, MD3_VERSION);
+////		return;
+////	}
+
+////	size = LittleLong(pinmodel.ofsEnd);
+////	dataSize += size;
+////	md3 = (md3Header_t *)Mem_Alloc( size );
+
+////	memcpy (md3, buffer, LittleLong(pinmodel.ofsEnd) );
+
+////    LL(md3.ident);
+////    LL(md3.version);
+////    LL(md3.numFrames);
+////    LL(md3.numTags);
+////    LL(md3.numSurfaces);
+////    LL(md3.ofsFrames);
+////    LL(md3.ofsTags);
+////    LL(md3.ofsSurfaces);
+////    LL(md3.ofsEnd);
+
+////	if ( md3.numFrames < 1 ) {
+////		common.Warning( "InitFromFile: %s has no frames", fileName );
+////		fileSystem.FreeFile( buffer );
+////		return;
+////	}
+
+////	// swap all the frames
+////    frame = (md3Frame_t *) ( (byte *)md3 + md3.ofsFrames );
+////    for ( i = 0 ; i < md3.numFrames ; i++, frame++) {
+////    	frame.radius = LittleFloat( frame.radius );
+////        for ( j = 0 ; j < 3 ; j++ ) {
+////            frame.bounds[0][j] = LittleFloat( frame.bounds[0][j] );
+////            frame.bounds[1][j] = LittleFloat( frame.bounds[1][j] );
+////	    	frame.localOrigin[j] = LittleFloat( frame.localOrigin[j] );
+////        }
+////	}
+
+////	// swap all the tags
+////    tag = (md3Tag_t *) ( (byte *)md3 + md3.ofsTags );
+////    for ( i = 0 ; i < md3.numTags * md3.numFrames ; i++, tag++) {
+////        for ( j = 0 ; j < 3 ; j++ ) {
+////			tag.origin[j] = LittleFloat( tag.origin[j] );
+////			tag.axis[0][j] = LittleFloat( tag.axis[0][j] );
+////			tag.axis[1][j] = LittleFloat( tag.axis[1][j] );
+////			tag.axis[2][j] = LittleFloat( tag.axis[2][j] );
+////        }
+////	}
+
+////	// swap all the surfaces
+////	surf = (md3Surface_t *) ( (byte *)md3 + md3.ofsSurfaces );
+////	for ( i = 0 ; i < md3.numSurfaces ; i++) {
+
+////        LL(surf.ident);
+////        LL(surf.flags);
+////        LL(surf.numFrames);
+////        LL(surf.numShaders);
+////        LL(surf.numTriangles);
+////        LL(surf.ofsTriangles);
+////        LL(surf.numVerts);
+////        LL(surf.ofsShaders);
+////        LL(surf.ofsSt);
+////        LL(surf.ofsXyzNormals);
+////        LL(surf.ofsEnd);
+
+////		if ( surf.numVerts > SHADER_MAX_VERTEXES ) {
+////			common.Error( "InitFromFile: %s has more than %i verts on a surface (%i)",
+////				fileName, SHADER_MAX_VERTEXES, surf.numVerts );
+////		}
+////		if ( surf.numTriangles*3 > SHADER_MAX_INDEXES ) {
+////			common.Error( "InitFromFile: %s has more than %i triangles on a surface (%i)",
+////				fileName, SHADER_MAX_INDEXES / 3, surf.numTriangles );
+////		}
+
+////		// change to surface identifier
+////		surf.ident = 0;	//SF_MD3;
+
+////		// lowercase the surface name so skin compares are faster
+////		int slen = (int)strlen( surf.name );
+////		for( j = 0; j < slen; j++ ) {
+////			surf.name[j] = tolower( surf.name[j] );
+////		}
+
+////		// strip off a trailing _1 or _2
+////		// this is a crutch for q3data being a mess
+////		j = strlen( surf.name );
+////		if ( j > 2 && surf.name[j-2] == '_' ) {
+////			surf.name[j-2] = 0;
+////		}
+
+////        // register the shaders
+////        shader = (md3Shader_t *) ( (byte *)surf + surf.ofsShaders );
+////        for ( j = 0 ; j < surf.numShaders ; j++, shader++ ) {
+////            const idMaterial *sh;
+
+////            sh = declManager.FindMaterial( shader.name );
+////			shader.shader = sh;
+////        }
+
+////		// swap all the triangles
+////		tri = (md3Triangle_t *) ( (byte *)surf + surf.ofsTriangles );
+////		for ( j = 0 ; j < surf.numTriangles ; j++, tri++ ) {
+////			LL(tri.indexes[0]);
+////			LL(tri.indexes[1]);
+////			LL(tri.indexes[2]);
+////		}
+
+////		// swap all the ST
+////        st = (md3St_t *) ( (byte *)surf + surf.ofsSt );
+////        for ( j = 0 ; j < surf.numVerts ; j++, st++ ) {
+////            st.st[0] = LittleFloat( st.st[0] );
+////            st.st[1] = LittleFloat( st.st[1] );
+////        }
+
+////		// swap all the XyzNormals
+////        xyz = (md3XyzNormal_t *) ( (byte *)surf + surf.ofsXyzNormals );
+////        for ( j = 0 ; j < surf.numVerts * surf.numFrames ; j++, xyz++ ) 
+////		{
+////            xyz.xyz[0] = LittleShort( xyz.xyz[0] );
+////            xyz.xyz[1] = LittleShort( xyz.xyz[1] );
+////            xyz.xyz[2] = LittleShort( xyz.xyz[2] );
+
+////            xyz.normal = LittleShort( xyz.normal );
+////        }
+
+
+////		// find the next surface
+////		surf = (md3Surface_t *)( (byte *)surf + surf.ofsEnd );
+////	}
+
+////	fileSystem.FreeFile( buffer );
+	}
+
+/////*
+////=================
+////idRenderModelMD3::IsDynamicModel
+////=================
+////*/
+////dynamicModel_t idRenderModelMD3::IsDynamicModel() const {
+////	return DM_CACHED;
+////}
+
+/////*
+////=================
+////idRenderModelMD3::LerpMeshVertexes
+////=================
+////*/
+////void idRenderModelMD3::LerpMeshVertexes ( srfTriangles_t *tri, const struct md3Surface_s *surf, const float backlerp, const int frame, const int oldframe ) const {
+////	short	*oldXyz, *newXyz;
+////	float	oldXyzScale, newXyzScale;
+////	int		vertNum;
+////	int		numVerts;
+
+////	newXyz = (short *)((byte *)surf + surf.ofsXyzNormals) + (frame * surf.numVerts * 4);
+
+////	newXyzScale = MD3_XYZ_SCALE * (1.0 - backlerp);
+
+////	numVerts = surf.numVerts;
+
+////	if ( backlerp == 0 ) {
+////		//
+////		// just copy the vertexes
+////		//
+////		for (vertNum=0 ; vertNum < numVerts ; vertNum++, newXyz += 4 ) {
+
+////			idDrawVert *outvert = &tri.verts[tri.numVerts];
+
+////			outvert.xyz.x = newXyz[0] * newXyzScale;
+////			outvert.xyz.y = newXyz[1] * newXyzScale;
+////			outvert.xyz.z = newXyz[2] * newXyzScale;
+
+////			tri.numVerts++;
+////		}
+////	} else {
+////		//
+////		// interpolate and copy the vertexes
+////		//
+////		oldXyz = (short *)((byte *)surf + surf.ofsXyzNormals) + (oldframe * surf.numVerts * 4);
+
+////		oldXyzScale = MD3_XYZ_SCALE * backlerp;
+
+////		for (vertNum=0 ; vertNum < numVerts ; vertNum++, oldXyz += 4, newXyz += 4 ) {
+
+////			idDrawVert *outvert = &tri.verts[tri.numVerts];
+
+////			// interpolate the xyz
+////			outvert.xyz.x = oldXyz[0] * oldXyzScale + newXyz[0] * newXyzScale;
+////			outvert.xyz.y = oldXyz[1] * oldXyzScale + newXyz[1] * newXyzScale;
+////			outvert.xyz.z = oldXyz[2] * oldXyzScale + newXyz[2] * newXyzScale;
+
+////			tri.numVerts++;
+////		}
+////   	}
+////}
+
+/////*
+////=============
+////idRenderModelMD3::InstantiateDynamicModel
+////=============
+////*/
+////idRenderModel *idRenderModelMD3::InstantiateDynamicModel( const struct renderEntity_s *ent, const struct viewDef_s *view, idRenderModel *cachedModel ) {
+////	int				i, j;
+////	float			backlerp;
+////	int *			triangles;
+////	float *			texCoords;
+////	int				indexes;
+////	int				numVerts;
+////	md3Surface_t *	surface;
+////	int				frame, oldframe;
+////	idRenderModelStatic	*staticModel;
+
+////	if ( cachedModel ) {
+////		delete cachedModel;
+////		cachedModel = NULL;
+////	}
+
+////	staticModel = new idRenderModelStatic;
+////	staticModel.bounds.Clear();
+
+////	surface = (md3Surface_t *) ((byte *)md3 + md3.ofsSurfaces);
+
+////	// TODO: these need set by an entity
+////	frame = ent.shaderParms[SHADERPARM_MD3_FRAME];			// probably want to keep frames < 1000 or so
+////	oldframe = ent.shaderParms[SHADERPARM_MD3_LASTFRAME];
+////	backlerp = ent.shaderParms[SHADERPARM_MD3_BACKLERP];
+
+////	for( i = 0; i < md3.numSurfaces; i++ ) {
+
+////		srfTriangles_t *tri = R_AllocStaticTriSurf();
+////		R_AllocStaticTriSurfVerts( tri, surface.numVerts );
+////		R_AllocStaticTriSurfIndexes( tri, surface.numTriangles * 3 );
+////		tri.bounds.Clear();
+
+////		modelSurface_t	surf;
+
+////		surf.geometry = tri;
+
+////		md3Shader_t* shaders = (md3Shader_t *) ((byte *)surface + surface.ofsShaders);
+////		surf.shader = shaders.shader;
+
+////		LerpMeshVertexes( tri, surface, backlerp, frame, oldframe );
+
+////		triangles = (int *) ((byte *)surface + surface.ofsTriangles);
+////		indexes = surface.numTriangles * 3;
+////		for (j = 0 ; j < indexes ; j++) {
+////			tri.indexes[j] = triangles[j];
+////		}
+////		tri.numIndexes += indexes;
+
+////		texCoords = (float *) ((byte *)surface + surface.ofsSt);
+
+////		numVerts = surface.numVerts;
+////		for ( j = 0; j < numVerts; j++ ) {
+////			idDrawVert *stri = &tri.verts[j];
+////			stri.st[0] = texCoords[j*2+0];
+////			stri.st[1] = texCoords[j*2+1];
+////		}
+
+////		R_BoundTriSurf( tri );
+
+////		staticModel.AddSurface( surf );
+////		staticModel.bounds.AddPoint( surf.geometry.bounds[0] );
+////		staticModel.bounds.AddPoint( surf.geometry.bounds[1] );
+
+////		// find the next surface
+////		surface = (md3Surface_t *)( (byte *)surface + surface.ofsEnd );
+////	}
+
+////	return staticModel;
+////}
+
+/////*
+////=====================
+////idRenderModelMD3::Bounds
+////=====================
+////*/
+
+////idBounds idRenderModelMD3::Bounds(const struct renderEntity_s *ent) const {
+////	idBounds		ret;
+
+////	ret.Clear();
+
+////	if (!ent || !md3) {
+////		// just give it the editor bounds
+////		ret.AddPoint(idVec3(-10,-10,-10));
+////		ret.AddPoint(idVec3( 10, 10, 10));
+////		return ret;
+////	}
+
+////	md3Frame_t	*frame = (md3Frame_t *)( (byte *)md3 + md3.ofsFrames );
+
+////	ret.AddPoint( frame.bounds[0] );
+////	ret.AddPoint( frame.bounds[1] );
+
+////	return ret;
+////}
+
+
 }
 
 /////*
@@ -3126,6 +3460,505 @@ class idRenderModelLiquid extends idRenderModelStatic {
 
 ////	int							nextDropTime;
 
+
+	/////*
+	////====================
+	////idRenderModelLiquid::idRenderModelLiquid
+	////====================
+	////*/
+	////idRenderModelLiquid::idRenderModelLiquid() {
+	////	verts_x		= 32;
+	////	verts_y		= 32;
+	////	scale_x		= 256.0f;
+	////	scale_y		= 256.0f;
+	////	liquid_type = 0;
+	////	density		= 0.97f;
+	////	drop_height = 4;
+	////	drop_radius = 4;
+	////	drop_delay	= 1000;
+	////    shader		= declManager.FindMaterial( NULL );
+	////	update_tics	= 33;  // ~30 hz
+	////	time		= 0;
+	////	seed		= 0;
+
+	////	random.SetSeed( 0 );
+	////}
+
+	/////*
+	////====================
+	////idRenderModelLiquid::GenerateSurface
+	////====================
+	////*/
+	////modelSurface_t idRenderModelLiquid::GenerateSurface( float lerp ) {
+	////	srfTriangles_t	*tri;
+	////	int				i, base;
+	////	idDrawVert		*vert;
+	////	modelSurface_t	surf;
+	////	float			inv_lerp;
+
+	////	inv_lerp = 1.0f - lerp;
+	////	vert = verts.Ptr();
+	////	for( i = 0; i < verts.Num(); i++, vert++ ) {
+	////		vert.xyz.z = page1[ i ] * lerp + page2[ i ] * inv_lerp;
+	////	}
+
+	////	tr.pc.c_deformedSurfaces++;
+	////	tr.pc.c_deformedVerts += deformInfo.numOutputVerts;
+	////	tr.pc.c_deformedIndexes += deformInfo.numIndexes;
+
+	////	tri = R_AllocStaticTriSurf();
+
+	////	// note that some of the data is references, and should not be freed
+	////	tri.deformedSurface = true;
+
+	////	tri.numIndexes = deformInfo.numIndexes;
+	////	tri.indexes = deformInfo.indexes;
+	////	tri.silIndexes = deformInfo.silIndexes;
+	////	tri.numMirroredVerts = deformInfo.numMirroredVerts;
+	////	tri.mirroredVerts = deformInfo.mirroredVerts;
+	////	tri.numDupVerts = deformInfo.numDupVerts;
+	////	tri.dupVerts = deformInfo.dupVerts;
+	////	tri.numSilEdges = deformInfo.numSilEdges;
+	////	tri.silEdges = deformInfo.silEdges;
+	////	tri.dominantTris = deformInfo.dominantTris;
+
+	////	tri.numVerts = deformInfo.numOutputVerts;
+	////	R_AllocStaticTriSurfVerts( tri, tri.numVerts );
+	////	SIMDProcessor.Memcpy( tri.verts, verts.Ptr(), deformInfo.numSourceVerts * sizeof(tri.verts[0]) );
+
+	////	// replicate the mirror seam vertexes
+	////	base = deformInfo.numOutputVerts - deformInfo.numMirroredVerts;
+	////	for ( i = 0 ; i < deformInfo.numMirroredVerts ; i++ ) {
+	////		tri.verts[base + i] = tri.verts[deformInfo.mirroredVerts[i]];
+	////	}
+
+	////	R_BoundTriSurf( tri );
+
+	////	// If a surface is going to be have a lighting interaction generated, it will also have to call
+	////	// R_DeriveTangents() to get normals, tangents, and face planes.  If it only
+	////	// needs shadows generated, it will only have to generate face planes.  If it only
+	////	// has ambient drawing, or is culled, no additional work will be necessary
+	////	if ( !r_useDeferredTangents.GetBool() ) {
+	////		// set face planes, vertex normals, tangents
+	////		R_DeriveTangents( tri );
+	////	}
+
+	////	surf.geometry	= tri;
+	////	surf.shader		= shader;
+
+	////	return surf;
+	////}
+
+	/////*
+	////====================
+	////idRenderModelLiquid::WaterDrop
+	////====================
+	////*/
+	////void idRenderModelLiquid::WaterDrop( int x, int y, float *page ) {
+	////	int		cx, cy;
+	////	int		left,top,right,bottom;
+	////	int		square;
+	////	int		radsquare = drop_radius * drop_radius;
+	////	float	invlength = 1.0f / ( float )radsquare;
+	////	float	dist;
+
+	////	if ( x < 0 ) {
+	////		x = 1 + drop_radius + random.RandomInt( verts_x - 2 * drop_radius - 1 );
+	////	}
+	////	if ( y < 0 ) {
+	////		y = 1 + drop_radius + random.RandomInt( verts_y - 2 * drop_radius - 1 );
+	////	}
+
+	////	left=-drop_radius; right = drop_radius;
+	////	top=-drop_radius; bottom = drop_radius;
+
+	////	// Perform edge clipping...
+	////	if ( x - drop_radius < 1 ) {
+	////		left -= (x-drop_radius-1);
+	////	}
+	////	if ( y - drop_radius < 1 ) {
+	////		top -= (y-drop_radius-1);
+	////	}
+	////	if ( x + drop_radius > verts_x - 1 ) {
+	////		right -= (x+drop_radius-verts_x+1);
+	////	}
+	////	if ( y + drop_radius > verts_y - 1 ) {
+	////		bottom-= (y+drop_radius-verts_y+1);
+	////	}
+
+	////	for ( cy = top; cy < bottom; cy++ ) {
+	////		for ( cx = left; cx < right; cx++ ) {
+	////			square = cy*cy + cx*cx;
+	////			if ( square < radsquare ) {
+	////				dist = idMath::Sqrt( (float)square * invlength );
+	////				page[verts_x*(cy+y) + cx+x] += idMath::Cos16( dist * idMath::PI * 0.5f ) * drop_height;
+	////			}
+	////		}
+	////	}
+	////}
+
+	/////*
+	////====================
+	////idRenderModelLiquid::IntersectBounds
+	////====================
+	////*/
+	////void idRenderModelLiquid::IntersectBounds( const idBounds &bounds, float displacement ) {
+	////	int		cx, cy;
+	////	int		left,top,right,bottom;
+	////	float	up, down;
+	////	float	*pos;
+
+	////	left	= ( int )( bounds[ 0 ].x / scale_x );
+	////	right	= ( int )( bounds[ 1 ].x / scale_x );
+	////	top		= ( int )( bounds[ 0 ].y / scale_y );
+	////	bottom	= ( int )( bounds[ 1 ].y / scale_y );
+	////	down	= bounds[ 0 ].z;
+	////	up		= bounds[ 1 ].z;
+
+	////	if ( ( right < 1 ) || ( left >= verts_x ) || ( bottom < 1 ) || ( top >= verts_x ) ) {
+	////		return;
+	////	}
+
+	////	// Perform edge clipping...
+	////	if ( left < 1 ) {
+	////		left = 1;
+	////	}
+	////	if ( right >= verts_x ) {
+	////		right = verts_x - 1;
+	////	}
+	////	if ( top < 1 ) {
+	////		top = 1;
+	////	}
+	////	if ( bottom >= verts_y ) {
+	////		bottom = verts_y - 1;
+	////	}
+
+	////	for ( cy = top; cy < bottom; cy++ ) {
+	////		for ( cx = left; cx < right; cx++ ) {
+	////			pos = &page1[ verts_x * cy + cx ];
+	////			if ( *pos > down ) {//&& ( *pos < up ) ) {
+	////				*pos = down;
+	////			}
+	////		}
+	////	}
+	////}
+
+	/////*
+	////====================
+	////idRenderModelLiquid::Update
+	////====================
+	////*/
+	////void idRenderModelLiquid::Update( void ) {
+	////	int		x, y;
+	////	float	*p2;
+	////	float	*p1;
+	////	float	value;
+
+	////	time += update_tics;
+
+	////	idSwap( page1, page2 );
+
+	////	if ( time > nextDropTime ) {
+	////		WaterDrop( -1, -1, page2 );
+	////		nextDropTime = time + drop_delay;
+	////	} else if ( time < nextDropTime - drop_delay ) {
+	////		nextDropTime = time + drop_delay;
+	////	}
+
+	////	p1 = page1;
+	////	p2 = page2;
+
+	////	switch( liquid_type ) {
+	////	case 0 :
+	////		for ( y = 1; y < verts_y - 1; y++ ) {
+	////			p2 += verts_x;
+	////			p1 += verts_x;
+	////			for ( x = 1; x < verts_x - 1; x++ ) {
+	////				value =
+	////					( p2[ x + verts_x ] +
+	////					p2[ x - verts_x ] +
+	////					p2[ x + 1 ] +
+	////					p2[ x - 1 ] +
+	////					p2[ x - verts_x - 1 ] +
+	////					p2[ x - verts_x + 1 ] +
+	////					p2[ x + verts_x - 1 ] +
+	////					p2[ x + verts_x + 1 ] +
+	////					p2[ x ] ) * ( 2.0f / 9.0f ) -
+	////					p1[ x ];
+
+	////				p1[ x ] = value * density;
+	////			}
+	////		}
+	////		break;
+
+	////	case 1 :
+	////		for ( y = 1; y < verts_y - 1; y++ ) {
+	////			p2 += verts_x;
+	////			p1 += verts_x;
+	////			for ( x = 1; x < verts_x - 1; x++ ) {
+	////				value =
+	////					( p2[ x + verts_x ] +
+	////					p2[ x - verts_x ] +
+	////					p2[ x + 1 ] +
+	////					p2[ x - 1 ] +
+	////					p2[ x - verts_x - 1 ] +
+	////					p2[ x - verts_x + 1 ] +
+	////					p2[ x + verts_x - 1 ] +
+	////					p2[ x + verts_x + 1 ] ) * 0.25f -
+	////					p1[ x ];
+
+	////				p1[ x ] = value * density;
+	////			}
+	////		}
+	////		break;
+
+	////	case 2 :
+	////		for ( y = 1; y < verts_y - 1; y++ ) {
+	////			p2 += verts_x;
+	////			p1 += verts_x;
+	////			for ( x = 1; x < verts_x - 1; x++ ) {
+	////				value =
+	////					( p2[ x + verts_x ] +
+	////					p2[ x - verts_x ] +
+	////					p2[ x + 1 ] +
+	////					p2[ x - 1 ] +
+	////					p2[ x - verts_x - 1 ] +
+	////					p2[ x - verts_x + 1 ] +
+	////					p2[ x + verts_x - 1 ] +
+	////					p2[ x + verts_x + 1 ] + 
+	////					p2[ x ] ) * ( 1.0f / 9.0f );
+
+	////				p1[ x ] = value * density;
+	////			}
+	////		}
+	////		break;
+	////	}
+	////}
+
+	/////*
+	////====================
+	////idRenderModelLiquid::Reset
+	////====================
+	////*/
+	////void idRenderModelLiquid::Reset() {
+	////	int	i, x, y;
+
+	////	if ( pages.Num() < 2 * verts_x * verts_y ) {
+	////		return;
+	////	}
+
+	////	nextDropTime = 0;
+	////	time = 0;
+	////	random.SetSeed( seed );
+
+	////	page1 = pages.Ptr();
+	////	page2 = page1 + verts_x * verts_y;
+
+	////	for ( i = 0, y = 0; y < verts_y; y++ ) {
+	////		for ( x = 0; x < verts_x; x++, i++ ) {
+	////			page1[ i ] = 0.0;
+	////			page2[ i ] = 0.0;
+	////			verts[ i ].xyz.z = 0.0;
+	////		}
+	////	}
+	////}
+
+	/*
+	====================
+	idRenderModelLiquid::InitFromFile
+	====================
+	*/
+	InitFromFile(fileName: string): void {
+		todoThrow();
+		////	int				i, x, y;
+		////	idToken			token;
+		////	idParser		parser( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
+		////	idList<int>		tris;
+		////	float			size_x, size_y;
+		////	float			rate;
+
+		////	name = fileName;
+
+		////	if ( !parser.LoadFile( fileName ) ) {
+		////		MakeDefaultModel();
+		////		return;
+		////	}
+
+		////	size_x = scale_x * verts_x;
+		////	size_y = scale_y * verts_y;
+
+		////	while( parser.ReadToken( &token ) ) {
+		////		if ( !token.Icmp( "seed" ) ) {
+		////			seed = parser.ParseInt();
+		////		} else if ( !token.Icmp( "size_x" ) ) {
+		////			size_x = parser.ParseFloat();
+		////		} else if ( !token.Icmp( "size_y" ) ) {
+		////			size_y = parser.ParseFloat();
+		////		} else if ( !token.Icmp( "verts_x" ) ) {
+		////			verts_x = parser.ParseFloat();
+		////			if ( verts_x < 2 ) {
+		////				parser.Warning( "Invalid # of verts.  Using default model." );
+		////				MakeDefaultModel();
+		////				return;
+		////			}
+		////		} else if ( !token.Icmp( "verts_y" ) ) {
+		////			verts_y = parser.ParseFloat();
+		////			if ( verts_y < 2 ) {
+		////				parser.Warning( "Invalid # of verts.  Using default model." );
+		////				MakeDefaultModel();
+		////				return;
+		////			}
+		////		} else if ( !token.Icmp( "liquid_type" ) ) {
+		////			liquid_type = parser.ParseInt() - 1;
+		////			if ( ( liquid_type < 0 ) || ( liquid_type >= LIQUID_MAX_TYPES ) ) {
+		////				parser.Warning( "Invalid liquid_type.  Using default model." );
+		////				MakeDefaultModel();
+		////				return;
+		////			}
+		////		} else if ( !token.Icmp( "density" ) ) {
+		////			density = parser.ParseFloat();
+		////		} else if ( !token.Icmp( "drop_height" ) ) {
+		////			drop_height = parser.ParseFloat();
+		////		} else if ( !token.Icmp( "drop_radius" ) ) {
+		////			drop_radius = parser.ParseInt();
+		////		} else if ( !token.Icmp( "drop_delay" ) ) {
+		////			drop_delay = SEC2MS( parser.ParseFloat() );
+		////		} else if ( !token.Icmp( "shader" ) ) {
+		////			parser.ReadToken( &token );
+		////			shader = declManager.FindMaterial( token );
+		////		} else if ( !token.Icmp( "seed" ) ) {
+		////			seed = parser.ParseInt();
+		////		} else if ( !token.Icmp( "update_rate" ) ) {
+		////			rate = parser.ParseFloat();
+		////			if ( ( rate <= 0.0 ) || ( rate > 60.0f ) ) {
+		////				parser.Warning( "Invalid update_rate.  Must be between 0 and 60.  Using default model." );
+		////				MakeDefaultModel();
+		////				return;
+		////			}
+		////			update_tics = 1000 / rate;
+		////		} else {
+		////			parser.Warning( "Unknown parameter '%s'.  Using default model.", token.c_str() );
+		////			MakeDefaultModel();
+		////			return;
+		////		}
+		////	}
+
+		////	scale_x = size_x / ( verts_x - 1 );
+		////	scale_y = size_y / ( verts_y - 1 );
+
+		////	pages.SetNum( 2 * verts_x * verts_y );
+		////	page1 = pages.Ptr();
+		////	page2 = page1 + verts_x * verts_y;
+
+		////	verts.SetNum( verts_x * verts_y );
+		////	for ( i = 0, y = 0; y < verts_y; y++ ) {
+		////		for ( x = 0; x < verts_x; x++, i++ ) {
+		////			page1[ i ] = 0.0;
+		////			page2[ i ] = 0.0;
+		////			verts[ i ].Clear();
+		////			verts[ i ].xyz.Set( x * scale_x, y * scale_y, 0.0 );
+		////			verts[ i ].st.Set( (float) x / (float)( verts_x - 1 ), (float) -y / (float)( verts_y - 1 ) );
+		////		}
+		////	}
+
+		////	tris.SetNum( ( verts_x - 1 ) * ( verts_y - 1 ) * 6 );
+		////	for( i = 0, y = 0; y < verts_y - 1; y++ ) {
+		////		for( x = 1; x < verts_x; x++, i += 6 ) {
+		////			tris[ i + 0 ] = y * verts_x + x;
+		////			tris[ i + 1 ] = y * verts_x + x - 1;
+		////			tris[ i + 2 ] = ( y + 1 ) * verts_x + x - 1;
+
+		////			tris[ i + 3 ] = ( y + 1 ) * verts_x + x - 1;
+		////			tris[ i + 4 ] = ( y + 1 ) * verts_x + x;
+		////			tris[ i + 5 ] = y * verts_x + x;
+		////		}
+		////	}
+
+		////	// build the information that will be common to all animations of this mesh:
+		////	// sil edge connectivity and normal / tangent generation information
+		////	deformInfo = R_BuildDeformInfo( verts.Num(), verts.Ptr(), tris.Num(), tris.Ptr(), true );
+
+		////	bounds.Clear();
+		////	bounds.AddPoint( idVec3( 0.0, 0.0, drop_height * -10.0f ) );
+		////	bounds.AddPoint( idVec3( ( verts_x - 1 ) * scale_x, ( verts_y - 1 ) * scale_y, drop_height * 10.0f ) );
+
+		////	// set the timestamp for reloadmodels
+		////	fileSystem.ReadFile( name, NULL, &timeStamp );
+
+		////	Reset();
+	}
+
+/////*
+////====================
+////idRenderModelLiquid::InstantiateDynamicModel
+////====================
+////*/
+////idRenderModel *idRenderModelLiquid::InstantiateDynamicModel( const struct renderEntity_s *ent, const struct viewDef_s *view, idRenderModel *cachedModel ) {
+////	idRenderModelStatic	*staticModel;
+////	int		frames;
+////	int		t;
+////	float	lerp;
+
+////	if ( cachedModel ) {
+////		delete cachedModel;
+////		cachedModel = NULL;
+////	}
+
+////	if ( !deformInfo ) {
+////		return NULL;
+////	}
+
+////	if ( !view ) {
+////		t = 0;
+////	} else {
+////		t = view.renderView.time;
+////	}
+
+////	// update the liquid model
+////	frames = ( t - time ) / update_tics;
+////	if ( frames > LIQUID_MAX_SKIP_FRAMES ) {
+////		// don't let time accumalate when skipping frames
+////		time += update_tics * ( frames - LIQUID_MAX_SKIP_FRAMES );
+
+////		frames = LIQUID_MAX_SKIP_FRAMES;
+////	}
+	
+////	while( frames > 0 ) {
+////		Update();
+////		frames--;
+////	}
+
+////	// create the surface
+////	lerp = ( float )( t - time ) / ( float )update_tics;
+////	modelSurface_t surf = GenerateSurface( lerp );
+
+////	staticModel = new idRenderModelStatic;
+////	staticModel.AddSurface( surf );
+////	staticModel.bounds = surf.geometry.bounds;
+
+////	return staticModel;
+////}
+
+/////*
+////====================
+////idRenderModelLiquid::IsDynamicModel
+////====================
+////*/
+////dynamicModel_t idRenderModelLiquid::IsDynamicModel() const {
+////	return DM_CONTINUOUS;
+////}
+
+/////*
+////====================
+////idRenderModelLiquid::Bounds
+////====================
+////*/
+////idBounds idRenderModelLiquid::Bounds(const struct renderEntity_s *ent) const {
+////	// FIXME: need to do this better
+////	return bounds;
+////}
+
+
 }
 
 /////*
@@ -3164,15 +3997,15 @@ idRenderModelPrt::idRenderModelPrt
 	}
 
 
-/////*
-////====================
-////idRenderModelPrt::InitFromFile
-////====================
-////*/
-////void idRenderModelPrt::InitFromFile( const char *fileName ) {
-////	name = fileName;
-////	particleSystem = static_cast<const idDeclParticle *>( declManager.FindType( DECL_PARTICLE, fileName ) );
-////}
+/*
+====================
+idRenderModelPrt::InitFromFile
+====================
+*/
+	InitFromFile ( fileName: string ): void {
+		this.name.opEquals( fileName );
+		this.particleSystem = static_cast<idDeclParticle>( declManager.FindType( declType_t.DECL_PARTICLE, fileName ) );
+	}
 
 /////*
 ////=================

@@ -425,7 +425,7 @@ idDeclModelDef::ParseAnim
 			this.MakeDefault ( );
 			return false;
 		}
-		alias = realname;
+		alias.opEquals( realname );
 
 		for ( i = 0; i < this.anims.Num ( ); i++ ) {
 			if ( !strcmp( this.anims[i].FullName ( ), realname.data ) ) {
