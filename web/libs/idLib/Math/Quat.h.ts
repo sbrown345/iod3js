@@ -51,8 +51,47 @@ class idQuat {
 ////	float			y;
 ////	float			z;
 ////	float			w;
-////
-////	idQuat(void);
+
+	values = new Float32Array(4);
+
+	get x(): number { return this.values[0]; }
+
+	set x(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.values[0] = value;
+	}
+
+	get y(): number { return this.values[1]; }
+
+	set y(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.values[1] = value;
+	}
+
+	get z(): number { return this.values[2]; }
+
+	set z(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.values[2] = value;
+	}
+
+
+	get w(): number { return this.values[3]; }
+
+	set w(value: number) {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		this.values[3] = value;
+	}
+
+////	idQuat( );
 ////	idQuat(float x, float y, float z, float w);
 ////
 ////	void 			Set(float x, float y, float z, float w);
@@ -79,27 +118,27 @@ class idQuat {
 ////	bool			operator==(const idQuat &a) const;					// exact compare, no epsilon
 ////	bool			operator!=(const idQuat &a) const;					// exact compare, no epsilon
 ////
-////	idQuat			Inverse(void) const;
-////	float			Length(void) const;
-////	idQuat &		Normalize(void);
+////	idQuat			Inverse( ) const;
+////	float			Length( ) const;
+////	idQuat &		Normalize( );
 ////
-////	float			CalcW(void) const;
-////	int				GetDimension(void) const;
+////	float			CalcW( ) const;
+////	int				GetDimension( ) const;
 ////
-////	idAngles		ToAngles(void) const;
-////	idRotation		ToRotation(void) const;
-////	idMat3			ToMat3(void) const;
-////	idMat4			ToMat4(void) const;
-////	idCQuat			ToCQuat(void) const;
-////	idVec3			ToAngularVelocity(void) const;
-////	const float *	ToFloatPtr(void) const;
-////	float *			ToFloatPtr(void);
+////	idAngles		ToAngles( ) const;
+////	idRotation		ToRotation( ) const;
+////	idMat3			ToMat3( ) const;
+////	idMat4			ToMat4( ) const;
+////	idCQuat			ToCQuat( ) const;
+////	idVec3			ToAngularVelocity( ) const;
+////	const float *	ToFloatPtr( ) const;
+////	float *			ToFloatPtr( );
 ////	const char *	ToString(int precision = 2) const;
 ////
 ////	idQuat &		Slerp(const idQuat &from, const idQuat &to, float t);
 ////
 ////
-////	ID_INLINE idQuat::idQuat(void) {
+////	ID_INLINE idQuat::idQuat( ) {
 ////	}
 ////
 ////	ID_INLINE idQuat::idQuat(float x, float y, float z, float w) {
@@ -123,39 +162,40 @@ class idQuat {
 ////		return idQuat(-x, -y, -z, -w);
 ////	}
 ////
-////	ID_INLINE idQuat &idQuat::operator=(const idQuat &a) {
-////		x = a.x;
-////		y = a.y;
-////		z = a.z;
-////		w = a.w;
-////
-////		return *this;
-////	}
-////
+	//ID_INLINE idQuat &idQuat::operator=(const idQuat &a) {
+	opEquals ( a: idQuat ): idQuat {
+		this.x = a.x;
+		this.y = a.y;
+		this.z = a.z;
+		this.w = a.w;
+
+		return this;
+	}
+
 ////	ID_INLINE idQuat idQuat::operator+(const idQuat &a) const {
-////		return idQuat(x + a.x, y + a.y, z + a.z, w + a.w);
+////		return idQuat(x + a.x, y + a.y, z + a.z, this.w + a.w);
 ////	}
 ////
 ////	ID_INLINE idQuat& idQuat::operator+=(const idQuat &a) {
-////		x += a.x;
-////		y += a.y;
-////		z += a.z;
+////		this.x += a.x;
+////		this.y += a.y;
+////		this.z += a.z;
 ////		w += a.w;
 ////
-////		return *this;
+////		return this;
 ////	}
 ////
 ////	ID_INLINE idQuat idQuat::operator-(const idQuat &a) const {
-////		return idQuat(x - a.x, y - a.y, z - a.z, w - a.w);
+////		return idQuat(x - a.x, y - a.y, z - a.z, this.w - a.w);
 ////	}
 ////
 ////	ID_INLINE idQuat& idQuat::operator-=(const idQuat &a) {
-////		x -= a.x;
-////		y -= a.y;
-////		z -= a.z;
+////		this.x -= a.x;
+////		this.y -= a.y;
+////		this.z -= a.z;
 ////		w -= a.w;
 ////
-////		return *this;
+////		return this;
 ////	}
 ////
 ////	ID_INLINE idQuat idQuat::operator*(const idQuat &a) const {
@@ -170,27 +210,27 @@ class idQuat {
 ////		// it's faster to do the conversion to a 3x3 matrix and multiply the vector by this 3x3 matrix
 ////		return (ToMat3() * a);
 ////#else
-////		// result = this.Inverse() * idQuat( a.x, a.y, a.z, 0.0f ) * (*this)
+////		// result = this.Inverse() * idQuat( a.x, a.y, a.z, 0.0 ) * (*this)
 ////		float xxzz = x*x - z*z;
-////		float wwyy = w*w - y*y;
+////		float wwyy = this.w*w - y*y;
 ////
-////		float xw2 = x*w*2.0f;
-////		float xy2 = x*y*2.0f;
-////		float xz2 = x*z*2.0f;
-////		float yw2 = y*w*2.0f;
-////		float yz2 = y*z*2.0f;
-////		float zw2 = z*w*2.0f;
+////		float xw2 = x*w*2.0;
+////		float xy2 = x*y*2.0;
+////		float xz2 = x*z*2.0;
+////		float yw2 = y*w*2.0;
+////		float yz2 = y*z*2.0;
+////		float zw2 = z*w*2.0;
 ////
 ////		return idVec3(
 ////			(xxzz + wwyy)*a.x + (xy2 + zw2)*a.y + (xz2 - yw2)*a.z,
-////			(xy2 - zw2)*a.x + (y*y + w*w - x*x - z*z)*a.y + (yz2 + xw2)*a.z,
+////			(xy2 - zw2)*a.x + (y*y + this.w*w - x*x - z*z)*a.y + (yz2 + xw2)*a.z,
 ////			(xz2 + yw2)*a.x + (yz2 - xw2)*a.y + (wwyy - xxzz)*a.z
 ////			);
 ////#endif
 ////	}
 ////
 ////	ID_INLINE idQuat idQuat::operator*(float a) const {
-////		return idQuat(x * a, y * a, z * a, w * a);
+////		return idQuat(x * a, y * a, z * a, this.w * a);
 ////	}
 ////
 ////	ID_INLINE idQuat operator*(const float a, const idQuat &b) {
@@ -204,16 +244,16 @@ class idQuat {
 ////	ID_INLINE idQuat& idQuat::operator*=(const idQuat &a) {
 ////		*this = *this * a;
 ////
-////		return *this;
+////		return this;
 ////	}
 ////
 ////	ID_INLINE idQuat& idQuat::operator*=(float a) {
-////		x *= a;
-////		y *= a;
-////		z *= a;
+////		this.x *= a;
+////		this.y *= a;
+////		this.z *= a;
 ////		w *= a;
 ////
-////		return *this;
+////		return this;
 ////	}
 ////
 ////	ID_INLINE bool idQuat::Compare(const idQuat &a) const {
@@ -251,58 +291,58 @@ class idQuat {
 ////		this.w = w;
 ////	}
 ////
-////	ID_INLINE idQuat idQuat::Inverse(void) const {
-////		return idQuat(-x, -y, -z, w);
+////	ID_INLINE idQuat idQuat::Inverse( ) const {
+////		return idQuat(-x, -y, -z, this.w);
 ////	}
 ////
-////	ID_INLINE float idQuat::Length(void) const {
+////	ID_INLINE float idQuat::Length( ) const {
 ////		float len;
 ////
-////		len = x * x + y * y + z * z + w * w;
+////		len = x * x + y * y + z * z + this.w * this.w;
 ////		return idMath.Sqrt(len);
 ////	}
 ////
-////	ID_INLINE idQuat& idQuat::Normalize(void) {
+////	ID_INLINE idQuat& idQuat::Normalize( ) {
 ////		float len;
 ////		float ilength;
 ////
 ////		len = this.Length();
 ////		if (len) {
 ////			ilength = 1 / len;
-////			x *= ilength;
-////			y *= ilength;
-////			z *= ilength;
+////			this.x *= ilength;
+////			this.y *= ilength;
+////			this.z *= ilength;
 ////			w *= ilength;
 ////		}
-////		return *this;
+////		return this;
 ////	}
 ////
-////	ID_INLINE float idQuat::CalcW(void) const {
-////		// take the absolute value because floating point rounding may cause the dot of x,y,z to be larger than 1
-////		return sqrt(fabs(1.0f - (x * x + y * y + z * z)));
+	CalcW ( ): number {
+		// take the absolute value because floating point rounding may cause the dot of x,y,z to be larger than 1
+		return sqrt( fabs( 1.0 - ( this.x * this.x + this.y * this.y + this.z * this.z ) ) );
+	}
+
+	GetDimension( ) :number {
+		return 4;
+	}
+////
+////	ID_INLINE const float *idQuat::ToFloatPtr( ) const {
+////		return &this.x;
 ////	}
 ////
-////	ID_INLINE int idQuat::GetDimension(void) const {
-////		return 4;
-////	}
-////
-////	ID_INLINE const float *idQuat::ToFloatPtr(void) const {
-////		return &x;
-////	}
-////
-////	ID_INLINE float *idQuat::ToFloatPtr(void) {
-////		return &x;
+////	ID_INLINE float *idQuat::ToFloatPtr( ) {
+////		return &this.x;
 //////	}
-//	ToFloatPtr ( ): Float32Array {
-//		return this.values;
-//	}
+	ToFloatPtr ( ): Float32Array {
+		return this.values;
+	}
 ////
 ////	/*
 ////	=====================
 ////	idQuat::ToAngles
 ////	=====================
 ////	*/
-////	idAngles idQuat::ToAngles(void) const {
+////	idAngles idQuat::ToAngles( ) const {
 ////		return ToMat3().ToAngles();
 ////	}
 ////
@@ -311,75 +351,75 @@ class idQuat {
 ////	idQuat::ToRotation
 ////	=====================
 ////	*/
-////	idRotation idQuat::ToRotation(void) const {
+////	idRotation idQuat::ToRotation( ) const {
 ////		idVec3 vec;
 ////		float angle;
 ////
-////		vec.x = x;
+////		vec.x = this.x;
 ////		vec.y = y;
 ////		vec.z = z;
 ////		angle = idMath.ACos(w);
-////		if (angle == 0.0f) {
-////			vec.Set(0.0f, 0.0f, 1.0f);
+////		if (angle == 0.0) {
+////			vec.Set(0.0, 0.0, 1.0);
 ////		}
 ////		else {
-////			//vec *= (1.0f / sin( angle ));
+////			//vec *= (1.0 / sin( angle ));
 ////			vec.Normalize();
 ////			vec.FixDegenerateNormal();
-////			angle *= 2.0f * idMath.M_RAD2DEG;
+////			angle *= 2.0 * idMath.M_RAD2DEG;
 ////		}
 ////		return idRotation(vec3_origin, vec, angle);
 ////	}
-////
-////	/*
-////	=====================
-////	idQuat::ToMat3
-////	=====================
-////	*/
-////	idMat3 idQuat::ToMat3(void) const {
-////		idMat3	mat;
-////		float	wx, wy, wz;
-////		float	xx, yy, yz;
-////		float	xy, xz, zz;
-////		float	x2, y2, z2;
-////
-////		x2 = x + x;
-////		y2 = y + y;
-////		z2 = z + z;
-////
-////		xx = x * x2;
-////		xy = x * y2;
-////		xz = x * z2;
-////
-////		yy = y * y2;
-////		yz = y * z2;
-////		zz = z * z2;
-////
-////		wx = w * x2;
-////		wy = w * y2;
-////		wz = w * z2;
-////
-////		mat[0][0] = 1.0f - (yy + zz);
-////		mat[0][1] = xy - wz;
-////		mat[0][2] = xz + wy;
-////
-////		mat[1][0] = xy + wz;
-////		mat[1][1] = 1.0f - (xx + zz);
-////		mat[1][2] = yz - wx;
-////
-////		mat[2][0] = xz - wy;
-////		mat[2][1] = yz + wx;
-////		mat[2][2] = 1.0f - (xx + yy);
-////
-////		return mat;
-////	}
-////
+
+	/*
+	=====================
+	idQuat::ToMat3
+	=====================
+	*/
+	ToMat3( ) :idMat3 {
+		var mat = new idMat3;
+		var/*float*/	wx: number, wy: number, wz: number;
+		var/*float*/	xx: number, yy: number, yz: number;
+		var/*float*/	xy: number, xz: number, zz: number;
+		var/*float*/	x2: number, y2: number, z2: number;
+
+		x2 = this.x + this.x;
+		y2 = this.y + this.y;
+		z2 = this.z + this.z;
+
+		xx = this.x * x2;
+		xy = this.x * y2;
+		xz = this.x * z2;
+
+		yy = this.y * y2;
+		yz = this.y * z2;
+		zz = this.z * z2;
+			 		  
+		wx = this.w * x2;
+		wy = this.w * y2;
+		wz = this.w * z2;
+
+		mat[0][0] = 1.0 - (yy + zz);
+		mat[0][1] = xy - wz;
+		mat[0][2] = xz + wy;
+
+		mat[1][0] = xy + wz;
+		mat[1][1] = 1.0 - (xx + zz);
+		mat[1][2] = yz - wx;
+
+		mat[2][0] = xz - wy;
+		mat[2][1] = yz + wx;
+		mat[2][2] = 1.0 - (xx + yy);
+
+		return mat;
+	}
+
 ////	/*
 ////	=====================
 ////	idQuat::ToMat4
 ////	=====================
 ////	*/
-////	idMat4 idQuat::ToMat4(void) const {
+////	idMat4 idQuat::ToMat4( ) const {
 ////		return ToMat3().ToMat4();
 ////	}
 ////
@@ -388,8 +428,8 @@ class idQuat {
 ////	idQuat::ToCQuat
 ////	=====================
 ////	*/
-////	idCQuat idQuat::ToCQuat(void) const {
-////		if (w < 0.0f) {
+////	idCQuat idQuat::ToCQuat( ) const {
+////		if (w < 0.0) {
 ////			return idCQuat(-x, -y, -z);
 ////		}
 ////		return idCQuat(x, y, z);
@@ -400,10 +440,10 @@ class idQuat {
 ////	idQuat::ToAngularVelocity
 ////	============
 ////	*/
-////	idVec3 idQuat::ToAngularVelocity(void) const {
+////	idVec3 idQuat::ToAngularVelocity( ) const {
 ////		idVec3 vec;
 ////
-////		vec.x = x;
+////		vec.x = this.x;
 ////		vec.y = y;
 ////		vec.z = z;
 ////		vec.Normalize();
@@ -430,23 +470,23 @@ class idQuat {
 ////		idQuat	temp;
 ////		float	omega, cosom, sinom, scale0, scale1;
 ////
-////		if (t <= 0.0f) {
+////		if (t <= 0.0) {
 ////			*this = from;
-////			return *this;
+////			return this;
 ////		}
 ////
-////		if (t >= 1.0f) {
+////		if (t >= 1.0) {
 ////			*this = to;
-////			return *this;
+////			return this;
 ////		}
 ////
 ////		if (from == to) {
 ////			*this = to;
-////			return *this;
+////			return this;
 ////		}
 ////
 ////		cosom = from.x * to.x + from.y * to.y + from.z * to.z + from.w * to.w;
-////		if (cosom < 0.0f) {
+////		if (cosom < 0.0) {
 ////			temp = -to;
 ////			cosom = -cosom;
 ////		}
@@ -454,27 +494,27 @@ class idQuat {
 ////			temp = to;
 ////		}
 ////
-////		if ((1.0f - cosom) > 1e-6f) {
+////		if ((1.0 - cosom) > 1e-6f) {
 ////#if 0
 ////			omega = acos(cosom);
-////			sinom = 1.0f / sin(omega);
-////			scale0 = sin((1.0f - t) * omega) * sinom;
+////			sinom = 1.0 / sin(omega);
+////			scale0 = sin((1.0 - t) * omega) * sinom;
 ////			scale1 = sin(t * omega) * sinom;
 ////#else
-////			scale0 = 1.0f - cosom * cosom;
+////			scale0 = 1.0 - cosom * cosom;
 ////			sinom = idMath.InvSqrt(scale0);
 ////			omega = idMath.ATan16(scale0 * sinom, cosom);
-////			scale0 = idMath.Sin16((1.0f - t) * omega) * sinom;
+////			scale0 = idMath.Sin16((1.0 - t) * omega) * sinom;
 ////			scale1 = idMath.Sin16(t * omega) * sinom;
 ////#endif
 ////		}
 ////		else {
-////			scale0 = 1.0f - t;
+////			scale0 = 1.0 - t;
 ////			scale1 = t;
 ////		}
 ////
 ////		*this = (scale0 * from) + (scale1 * temp);
-////		return *this;
+////		return this;
 ////	}
 }
 
@@ -519,7 +559,7 @@ class idCQuat {
 		}
 		this.values[2] = value;
 	}
-////	idCQuat(void);
+////	idCQuat( );
 ////	idCQuat(float x, float y, float z);
 ////
 ////	void 			Set(float x, float y, float z);
@@ -532,19 +572,19 @@ class idCQuat {
 ////	bool			operator==(const idCQuat &a) const;					// exact compare, no epsilon
 ////	bool			operator!=(const idCQuat &a) const;					// exact compare, no epsilon
 ////
-////	int				GetDimension(void) const;
+////	int				GetDimension( ) const;
 ////
-////	idAngles		ToAngles(void) const;
-////	idRotation		ToRotation(void) const;
-////	idMat3			ToMat3(void) const;
-////	idMat4			ToMat4(void) const;
-////	idQuat			ToQuat(void) const;
-////	const float *	ToFloatPtr(void) const;
-////	float *			ToFloatPtr(void);
+////	idAngles		ToAngles( ) const;
+////	idRotation		ToRotation( ) const;
+////	idMat3			ToMat3( ) const;
+////	idMat4			ToMat4( ) const;
+////	idQuat			ToQuat( ) const;
+////	const float *	ToFloatPtr( ) const;
+////	float *			ToFloatPtr( );
 ////	const char *	ToString(int precision = 2) const;
 ////
 ////
-////	ID_INLINE idCQuat::idCQuat(void) {
+////	ID_INLINE idCQuat::idCQuat( ) {
 ////	}
 
 	constructor ( ) {
@@ -599,20 +639,20 @@ class idCQuat {
 ////		return !Compare(a);
 ////	}
 ////
-////	ID_INLINE int idCQuat::GetDimension(void) const {
+////	ID_INLINE int idCQuat::GetDimension( ) const {
 ////		return 3;
 ////	}
 ////
-////	ID_INLINE idQuat idCQuat::ToQuat(void) const {
+////	ID_INLINE idQuat idCQuat::ToQuat( ) const {
 ////		// take the absolute value because floating point rounding may cause the dot of x,y,z to be larger than 1
-////		return idQuat(x, y, z, sqrt(fabs(1.0f - (x * x + y * y + z * z))));
+////		return idQuat(x, y, z, sqrt(fabs(1.0 - (x * this.x + y * y + z * z))));
 ////	}
 ////
-////	ID_INLINE const float *idCQuat::ToFloatPtr(void) const {
+////	ID_INLINE const float *idCQuat::ToFloatPtr( ) const {
 ////		return &x;
 ////	}
 ////
-////	ID_INLINE float *idCQuat::ToFloatPtr(void) {
+////	ID_INLINE float *idCQuat::ToFloatPtr( ) {
 ////		return &x;
 ////	}
 
@@ -628,7 +668,7 @@ class idCQuat {
 ////	idCQuat::ToAngles
 ////	=============
 ////	*/
-////	idAngles idCQuat::ToAngles(void) const {
+////	idAngles idCQuat::ToAngles( ) const {
 ////		return ToQuat().ToAngles();
 ////	}
 ////
@@ -637,7 +677,7 @@ class idCQuat {
 ////	idCQuat::ToRotation
 ////	=============
 ////	*/
-////	idRotation idCQuat::ToRotation(void) const {
+////	idRotation idCQuat::ToRotation( ) const {
 ////		return ToQuat().ToRotation();
 ////	}
 ////
@@ -646,7 +686,7 @@ class idCQuat {
 ////	idCQuat::ToMat3
 ////	=============
 ////	*/
-////	idMat3 idCQuat::ToMat3(void) const {
+////	idMat3 idCQuat::ToMat3( ) const {
 ////		return ToQuat().ToMat3();
 ////	}
 ////
@@ -655,7 +695,7 @@ class idCQuat {
 ////	idCQuat::ToMat4
 ////	=============
 ////	*/
-////	idMat4 idCQuat::ToMat4(void) const {
+////	idMat4 idCQuat::ToMat4( ) const {
 ////		return ToQuat().ToMat4();
 ////	}
 ////

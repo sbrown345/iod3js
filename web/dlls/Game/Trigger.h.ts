@@ -83,7 +83,7 @@ class idTrigger extends idEntity {
 ////	idBounds	box( idVec3( -4.0, -4.0, -4.0 ), idVec3( 4.0, 4.0, 4.0 ) );
 ////	idEntity	*ent;
 ////	idEntity	*target;
-////	int			i;
+////	var/*int*/i:number;
 ////	bool		show;
 ////	const function_t *func;
 ////

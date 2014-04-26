@@ -401,7 +401,7 @@ idMD5Anim::TotalMovementDelta
 //	idLexer	parser( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_NOSTRINGCONCAT );
 //	idToken	token;
 //	int		i, j;
-//	int		num;
+//	var /*int*/num:number;
 //
 //	if ( !parser.LoadFile( filename ) ) {
 //		return false;
@@ -3160,7 +3160,7 @@ idAnimBlend::BlendOrigin
 //	int		time1;
 //	int		time2;
 //	float	lerp;
-//	int		num;
+//	var /*int*/num:number;
 //	int		i;
 //	
 //	if ( this.frame || !this.allowMove || ( ( this.endtime > 0 ) && ( fromtime > this.endtime ) ) ) {
@@ -3219,7 +3219,7 @@ idAnimBlend::BlendOrigin
 //	int		time2;
 //	float	lerp;
 //	float	mixWeight;
-//	int		num;
+//	var /*int*/num:number;
 //	int		i;
 //	
 //	if ( this.frame || !this.allowMove || ( ( this.endtime > 0 ) && ( fromtime > this.endtime ) ) ) {

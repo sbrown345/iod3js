@@ -349,7 +349,7 @@
 ////==================
 ////*/
 ////void idAsyncClient::GetLANServers( ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idBitMsg	msg;
 ////	byte		msgBuf[MAX_MESSAGE_SIZE];
 ////	netadr_t	broadcastAddress;
@@ -878,7 +878,7 @@
 ////	idBitMsg	outMsg;
 ////	byte		msgBuf[ MAX_MESSAGE_SIZE ];
 ////	int			inChecksums[ MAX_PURE_PAKS ];
-////	int			i;
+////	var/*int*/i:number;
 ////	int			gamePakChecksum;
 ////	int			serverGameInitId;
 ////
@@ -1489,7 +1489,7 @@
 ////void idAsyncClient::ProcessPureMessage( const netadr_t from, const idBitMsg &msg ) {
 ////	idBitMsg	outMsg;
 ////	byte		msgBuf[ MAX_MESSAGE_SIZE ];
-////	int			i;
+////	var/*int*/i:number;
 ////	int			inChecksums[ MAX_PURE_PAKS ];
 ////	int			gamePakChecksum;
 ////

@@ -5614,7 +5614,7 @@ idPlayer::UserInfoChanged
 ////*/
 ////void idPlayer::InitAASLocation( ) {
 ////	int		i;
-////	int		num;
+////	var /*int*/num:number;
 ////	idVec3	size;
 ////	idBounds bounds;
 ////	idAAS	*aas;

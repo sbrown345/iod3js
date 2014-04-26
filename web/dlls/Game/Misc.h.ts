@@ -3580,7 +3580,7 @@ class idPhantomObjects extends idEntity {
 ////================
 ////*/
 ////void idPhantomObjects::Think( ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	int			num;
 ////	float		time;
 ////	idVec3		vel;

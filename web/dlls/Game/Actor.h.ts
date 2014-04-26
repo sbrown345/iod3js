@@ -643,7 +643,7 @@ idActor::SetupHead
 ////void idActor::CopyJointsFromBodyToHead( ) {
 ////	idEntity	*headEnt = this.head.GetEntity();
 ////	idAnimator	*headAnimator;
-////	int			i;
+////	var/*int*/i:number;
 ////	idMat3		mat;
 ////	idMat3		axis;
 ////	idVec3		pos;

@@ -75,7 +75,7 @@ class idTarget_Remove extends idTarget {
 ////================
 ////*/
 ////void idTarget_Remove::Event_Activate( activator:idEntity ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idEntity	*ent;
 ////
 ////	for( i = 0; i < targets.Num(); i++ ) {
@@ -115,7 +115,7 @@ class idTarget_Show extends idTarget {
 ////================
 ////*/
 ////void idTarget_Show::Event_Activate( activator:idEntity ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idEntity	*ent;
 ////
 ////	for( i = 0; i < targets.Num(); i++ ) {
@@ -156,7 +156,7 @@ class idTarget_Damage extends idTarget {
 ////================
 ////*/
 ////void idTarget_Damage::Event_Activate( activator:idEntity ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	const char *damage;
 ////	idEntity *	ent;
 ////
@@ -379,7 +379,7 @@ class idTarget_SetShaderParm extends idTarget {
 ////================
 ////*/
 ////void idTarget_SetShaderParm::Event_Activate( activator:idEntity ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idEntity *	ent;
 ////	float		value;
 ////	idVec3		color;
@@ -444,7 +444,7 @@ class idTarget_SetShaderTime extends idTarget {
 ////================
 ////*/
 ////void idTarget_SetShaderTime::Event_Activate( activator:idEntity ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idEntity *	ent;
 ////	float		time;
 ////
@@ -561,7 +561,7 @@ class idTarget_FadeEntity extends idTarget {
 ////================
 ////*/
 ////void idTarget_FadeEntity::Think( ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idEntity	*ent;
 ////	idVec4		color;
 ////	idVec4		fadeTo;

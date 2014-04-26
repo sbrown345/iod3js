@@ -1384,7 +1384,7 @@ GL_CheckErrors
 ////void R_EnvShot_f( args:idCmdArgs ) {
 ////	idStr		fullname;
 ////	const char	*baseName;
-////	int			i;
+////	var/*int*/i:number;
 ////	idMat3		axis[6];
 ////	renderView_t	ref;
 ////	viewDef_t	primary;
@@ -1525,7 +1525,7 @@ GL_CheckErrors
 ////void R_MakeAmbientMap_f( args:idCmdArgs ) {
 ////	idStr fullname;
 ////	const char	*baseName;
-////	int			i;
+////	var/*int*/i:number;
 ////	renderView_t	ref;
 ////	viewDef_t	primary;
 ////	int			downSample;

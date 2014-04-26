@@ -247,7 +247,7 @@
 //===================
 //*/
 //static bool	R_ClipTriangleToLight( const idVec3 &a, const idVec3 &b, const idVec3 &c, int planeBits, const idPlane frustum[6] ) {
-//	int			i;
+//	var/*int*/i:number;
 //	clipTri_t	pingPong[2];
 //	int			p;
 //
@@ -280,7 +280,7 @@
 //static srfTriangles_t *R_CreateLightTris( const idRenderEntityLocal *ent, 
 //									 const srfTriangles_t *tri, const idRenderLightLocal *light,
 //									 const idMaterial *shader, srfCullInfo_t &cullInfo ) {
-//	int			i;
+//	var/*int*/i:number;
 //	int			numIndexes;
 //	glIndex_t	*indexes;
 //	srfTriangles_t	*newTri;

@@ -288,7 +288,7 @@ class idAsyncServer {
 //==================
 //*/
 //void idAsyncServer::ExecuteMapChange( ) {
-//	int			i;
+//	var/*int*/i:number;
 //	idBitMsg	msg;
 //	byte		msgBuf[MAX_MESSAGE_SIZE];
 //	idStr		mapName;
@@ -803,7 +803,7 @@ idAsyncServer::IsClientInGame
 //==================
 //*/
 //void idAsyncServer::DropClient( int clientNum, const char *reason ) {
-//	int			i;
+//	var/*int*/i:number;
 //	idBitMsg	msg;
 //	byte		msgBuf[MAX_MESSAGE_SIZE];
 //
@@ -893,7 +893,7 @@ idAsyncServer::IsClientInGame
 //==================
 //*/
 //void idAsyncServer::SendPrintBroadcast( const char *string ) {
-//	int			i;
+//	var/*int*/i:number;
 //	idBitMsg	msg;
 //	byte		msgBuf[MAX_MESSAGE_SIZE];
 //
@@ -1040,7 +1040,7 @@ idAsyncServer::IsClientInGame
 //void idAsyncServer::SendSyncedCvarsBroadcast( const idDict &cvars ) {
 //	idBitMsg	msg;
 //	byte		msgBuf[MAX_MESSAGE_SIZE];
-//	int			i;
+//	var/*int*/i:number;
 //
 //	msg.Init( msgBuf, sizeof( msgBuf ) );
 //	msg.WriteByte( SERVER_RELIABLE_MESSAGE_SYNCEDCVARS );
@@ -1609,7 +1609,7 @@ idAsyncServer::IsClientInGame
 //	byte		msgBuf[ MAX_MESSAGE_SIZE ];
 //	int			serverChecksums[ MAX_PURE_PAKS ];
 //	int			gamePakChecksum;
-//	int			i;
+//	var/*int*/i:number;
 //
 //	fileSystem->GetPureServerChecksums( serverChecksums, OS, &gamePakChecksum );
 //	if ( !serverChecksums[ 0 ] ) {
@@ -1646,7 +1646,7 @@ idAsyncServer::IsClientInGame
 //	idBitMsg	msg;
 //	byte		msgBuf[ MAX_MESSAGE_SIZE ];
 //	int			serverChecksums[ MAX_PURE_PAKS ];
-//	int			i;
+//	var/*int*/i:number;
 //	int			gamePakChecksum;
 //
 //	fileSystem->GetPureServerChecksums( serverChecksums, clients[ clientNum ].OS, &gamePakChecksum );
@@ -2308,7 +2308,7 @@ idAsyncServer::IsClientInGame
 //==================
 //*/
 //void idAsyncServer::SendReliableGameMessage( int clientNum, const idBitMsg &msg ) {
-//	int			i;
+//	var/*int*/i:number;
 //	idBitMsg	outMsg;
 //	byte		msgBuf[MAX_MESSAGE_SIZE];
 //
@@ -2337,7 +2337,7 @@ idAsyncServer::IsClientInGame
 //==================
 //*/
 //void idAsyncServer::SendReliableGameMessageExcluding( int clientNum, const idBitMsg &msg ) {
-//	int			i;
+//	var/*int*/i:number;
 //	idBitMsg	outMsg;
 //	byte		msgBuf[MAX_MESSAGE_SIZE];
 //

@@ -2306,7 +2306,7 @@ Parses the current material definition and finds all necessary images.
 ////};
 
 ////void idMaterial::Print() const {
-////	int			i;
+////	var/*int*/i:number;
 
 ////	for ( i = expRegister_t.EXP_REG_NUM_PREDEFINED ; i < GetNumRegisters() ; i++ ) {
 ////		common.Printf( "register %i: %f\n", i, this.expressionRegisters[i] );

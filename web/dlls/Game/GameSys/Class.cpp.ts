@@ -646,7 +646,7 @@ Destructor for object.  Cancels any events that depend on this object.
 ////================
 ////*/
 ////void idClass::ListClasses_f( const idCmdArgs &args ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idTypeInfo *type;
 ////
 ////	gameLocal.Printf( "%-24s %-24s %-6s %-6s\n", "Classname", "Superclass", "Type", "Subclasses" );

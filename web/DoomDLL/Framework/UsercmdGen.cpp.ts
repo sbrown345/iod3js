@@ -572,7 +572,7 @@ idUsercmdGenLocal::idUsercmdGenLocal
 //	float		mx, my, strafeMx, strafeMy;
 //	static int	history[8][2];
 //	static int	historyCounter;
-//	int			i;
+//	var/*int*/i:number;
 //
 //	history[historyCounter&7][0] = mouseDx;
 //	history[historyCounter&7][1] = mouseDy;

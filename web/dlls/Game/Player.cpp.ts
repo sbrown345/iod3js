@@ -238,7 +238,7 @@ var MAX_INVENTORY_ITEMS = 20;
 ////*/
 ////void idInventory::GetPersistantData( idDict &dict ) {
 ////	int		i;
-////	int		num;
+////	var /*int*/num:number;
 ////	idDict	*item;
 ////	idStr	key;
 ////	const idKeyValue *kv;
@@ -326,7 +326,7 @@ var MAX_INVENTORY_ITEMS = 20;
 ////==============
 ////*/
 ////void idInventory::RestoreInventory( idPlayer *owner, const idDict &dict ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	int			num;
 ////	idDict		*item;
 ////	idStr		key;

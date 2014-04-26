@@ -3308,7 +3308,7 @@ Can be overridden by subclasses when a thread doesn't need to be allocated.
 ////================
 ////*/
 ////SetSignal( signalNum_t signalnum, idThread *thread, const function_t *function ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	int			num;
 ////	signal_t	sig;
 ////	int			threadnum;
@@ -3394,7 +3394,7 @@ Can be overridden by subclasses when a thread doesn't need to be allocated.
 ////================
 ////*/
 ////Signal( signalNum_t signalnum ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	int			num;
 ////	signal_t	sigs[ MAX_SIGNAL_THREADS ];
 ////	idThread	*thread;
@@ -3909,7 +3909,7 @@ idEntity::Event_FindTargets
 ////Event_RandomTarget( const char *ignore ) {
 ////	int			num;
 ////	idEntity	*ent;
-////	int			i;
+////	var/*int*/i:number;
 ////	int			ignoreNum;
 ////
 ////	RemoveNullTargets();

@@ -503,7 +503,7 @@ function R_GlobalPointToLocal( /*const float*/ modelMatrix: Float32Array /*[16]*
 //=================
 //*/
 //bool R_RadiusCullLocalBox( const idBounds &bounds, const float modelMatrix[16], int numPlanes, const idPlane *planes ) {
-//	int			i;
+//	var/*int*/i:number;
 //	float		d;
 //	idVec3		worldOrigin;
 //	float		worldRadius;

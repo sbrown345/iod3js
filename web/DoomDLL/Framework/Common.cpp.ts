@@ -611,7 +611,7 @@ idCommonLocal::ClearWarnings
 ////==================
 ////*/
 ////void idCommonLocal::DumpWarnings( ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idFile		*warningFile;
 
 ////	if ( !this.warningList.Num() ) {
@@ -909,7 +909,7 @@ SafeMode( ):boolean {
 ////==================
 ////*/
 ////void idCommonLocal::CheckToolMode( ) {
-////	int			i;
+////	var/*int*/i:number;
 
 ////	for ( i = 0 ; i < this.com_numConsoleLines ; i++ ) {
 ////		if ( !idStr.Icmp( this.com_consoleLines[ i ].Argv(0), "guieditor" ) ) {

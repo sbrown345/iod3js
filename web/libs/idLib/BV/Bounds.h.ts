@@ -38,7 +38,6 @@
 */
 
 class idBounds {
-	[index: number]: idVec3;
 //public:
 //					idBounds( );
 //					explicit idBounds( const idVec3 &mins, const idVec3 &maxs );
@@ -146,6 +145,7 @@ class idBounds {
 		this.Zero ( );
 	}
 
+	[index: number]: idVec3;
 //ID_INLINE const idVec3 &idBounds::operator[]( const int index ) const {
 //	return this.b[index];
 //}

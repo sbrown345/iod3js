@@ -798,7 +798,7 @@ idThread::End
 //================
 //*/
 //KillThread( name:string ) :void{
-//	int			i;
+//	var/*int*/i:number;
 //	int			num;
 //	int			len;
 //	const char	*ptr;

@@ -1979,7 +1979,7 @@ idImage.prototype.CopyFramebuffer = function ( /*int*/ x: number, /*int */y: num
 ////=============
 ////*/
 ////void idImage::UploadScratch( const byte *data, int cols, int rows ) {
-////	int			i;
+////	var/*int*/i:number;
 
 ////	// if rows = cols * 6, assume it is a cube map animation
 ////	if ( rows == cols * 6 ) {

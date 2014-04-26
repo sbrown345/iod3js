@@ -341,7 +341,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////=====================
 ////*/
 ////void idAI::Event_FindEnemy( int useFOV ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idEntity	*ent;
 ////	idActor		*actor;
 ////
@@ -792,7 +792,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////=====================
 ////*/
 ////void idAI::Event_CanBecomeSolid( ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	int			num;
 ////	idEntity *	hit;
 ////	idClipModel *cm;
@@ -2578,7 +2578,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////	idEntity *	ent;
 ////	idEntity *	entityList[ MAX_GENTITIES ];
 ////	int			numListedEntities;
-////	int			i;
+////	var/*int*/i:number;
 ////
 ////	numListedEntities = gameLocal.clip.EntitiesTouchingBounds( idBounds( mins, maxs ), CONTENTS_BODY, entityList, MAX_GENTITIES );
 ////	for( i = 0; i < numListedEntities; i++ ) {

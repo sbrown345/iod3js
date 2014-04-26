@@ -87,18 +87,18 @@ class idJointMat {
 	mat = new Float32Array(3*4);
 	//};
 	//
-	//ID_INLINE void idJointMat::SetRotation( const idMat3 &m ) {
-	//	// NOTE: idMat3 is transposed because it is column-major
-	//	this.mat[0 * 4 + 0] = m[0][0];
-	//	this.mat[0 * 4 + 1] = m[1][0];
-	//	this.mat[0 * 4 + 2] = m[2][0];
-	//	this.mat[1 * 4 + 0] = m[0][1];
-	//	this.mat[1 * 4 + 1] = m[1][1];
-	//	this.mat[1 * 4 + 2] = m[2][1];
-	//	this.mat[2 * 4 + 0] = m[0][2];
-	//	this.mat[2 * 4 + 1] = m[1][2];
-	//	this.mat[2 * 4 + 2] = m[2][2];
-	//}
+	SetRotation ( m: idMat3 ): void {
+		// NOTE: idMat3 is transposed because it is column-major
+		this.mat[0 * 4 + 0] = m[0][0];
+		this.mat[0 * 4 + 1] = m[1][0];
+		this.mat[0 * 4 + 2] = m[2][0];
+		this.mat[1 * 4 + 0] = m[0][1];
+		this.mat[1 * 4 + 1] = m[1][1];
+		this.mat[1 * 4 + 2] = m[2][1];
+		this.mat[2 * 4 + 0] = m[0][2];
+		this.mat[2 * 4 + 1] = m[1][2];
+		this.mat[2 * 4 + 2] = m[2][2];
+	}
 
 	SetTranslation ( t: idVec3 ): void {
 		this.mat[0 * 4 + 3] = t[0];

@@ -616,18 +616,19 @@ idSIMD_Generic::MinMax
 //#undef OPER
 	}
 
-//
-///*
-//============
-//idSIMD_Generic::MinMax
-//============
-//*/
-//void VPCALL idSIMD_Generic::MinMax( idVec3 &min, idVec3 &max, const idDrawVert *src, const int *indexes, const int count ) {
-//	min[0] = min[1] = min[2] = idMath.INFINITY; max[0] = max[1] = max[2] = -idMath.INFINITY;
+
+/*
+============
+idSIMD_Generic::MinMax
+============
+*/
+	static MinMax_drawVert(min: idVec3, max: idVec3, src: idDrawVert[] ,indexes:Int32Array, /*int */count :number):void {
+		min[0] = min[1] = min[2] = idMath.INFINITY; max[0] = max[1] = max[2] = -idMath.INFINITY;
+		todoThrow ( );
 //#define OPER(X) const idVec3 &v = src[indexes[(X)]].xyz; if ( v[0] < min[0] ) { min[0] = v[0]; } if ( v[0] > max[0] ) { max[0] = v[0]; } if ( v[1] < min[1] ) { min[1] = v[1]; } if ( v[1] > max[1] ) { max[1] = v[1]; } if ( v[2] < min[2] ) { min[2] = v[2]; } if ( v[2] > max[2] ) { max[2] = v[2]; }
 //	UNROLL1(OPER)
 //#undef OPER
-//}
+	}
 //
 ///*
 //============
@@ -2386,29 +2387,29 @@ idSIMD_Generic::TransformJoints
 //	}
 //}
 //
-///*
-//============
-//idSIMD_Generic::TransformVerts
-//============
-//*/
-//void VPCALL idSIMD_Generic::TransformVerts( idDrawVert *verts, const int numVerts, const idJointMat *joints, const idVec4 *weights, const int *index, int numWeights ) {
-//	var /*int */i:number, j:number;
-//	const byte *jointsPtr = (byte *)joints;
-//
-//	for( j = i = 0; i < numVerts; i++ ) {
-//		idVec3 v;
-//
-//		v = ( *(idJointMat *) ( jointsPtr + index[j*2+0] ) ) * weights[j];
-//		while( index[j*2+1] == 0 ) {
-//			j++;
-//			v += ( *(idJointMat *) ( jointsPtr + index[j*2+0] ) ) * weights[j];
-//		}
-//		j++;
-//
-//		verts[i].xyz = v;
-//	}
-//}
-//
+/*
+============
+idSIMD_Generic::TransformVerts
+============
+*/
+	static TransformVerts(verts: idDrawVert[], /*int */numVerts: number, joints: idJointMat[], weights: idVec4 [], /*const int **/index:Float32Array, /*int */numWeights :number):void {
+	var /*int */i:number, j:number;
+	//var const byte *jointsPtr = (byte *)joints;
+		todoThrow ( );
+		//for( j = i = 0; i < numVerts; i++ ) {
+		//	idVec3 v;
+
+		//	v = ( *(idJointMat *) ( jointsPtr + index[j*2+0] ) ) * weights[j];
+		//	while( index[j*2+1] == 0 ) {
+		//		j++;
+		//		v += ( *(idJointMat *) ( jointsPtr + index[j*2+0] ) ) * weights[j];
+		//	}
+		//	j++;
+
+		//	verts[i].xyz = v;
+		//}
+	}
+
 ///*
 //============
 //idSIMD_Generic::TracePointCull

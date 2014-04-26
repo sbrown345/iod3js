@@ -1940,32 +1940,32 @@ enum shaderProgram_indexes {
 ////// polarity of a triangle, the tangents will be incorrect
 ////void				R_DeriveTangents( srfTriangles_t *tri, bool allocFacePlanes = true );
 
-////// deformable meshes precalculate as much as possible from a base frame, then generate
-////// complete srfTriangles_t from just a new set of vertexes
-////typedef struct deformInfo_s {
-////	int				numSourceVerts;
+// deformable meshes precalculate as much as possible from a base frame, then generate
+// complete srfTriangles_t from just a new set of vertexes
+class deformInfo_t {
+	numSourceVerts: number /*float*/;
 
-////	// numOutputVerts may be smaller if the input had duplicated or degenerate triangles
-////	// it will often be larger if the input had mirrored texture seams that needed
-////	// to be busted for proper tangent spaces
-////	int				numOutputVerts;
+	// numOutputVerts may be smaller if the input had duplicated or degenerate triangles
+	// it will often be larger if the input had mirrored texture seams that needed
+	// to be busted for proper tangent spaces
+	numOutputVerts: number /*float*/;
 
-////	int				numMirroredVerts;
-////	int *			mirroredVerts;
+	numMirroredVerts: number /*float*/;
+	mirroredVerts: Int32Array;
 
-////	int				numIndexes;
-////	glIndex_t *		indexes;
+	numIndexes: number /*int*/;
+	indexes: Int16Array;
 
-////	glIndex_t *		silIndexes;
+	silIndexes: Int16Array;
 
-////	int				numDupVerts;
-////	int *			dupVerts;
+	numDupVerts: number /*int*/;
+	dupVerts: Int32Array;
 
-////	int				numSilEdges;
-////	silEdge_t *		silEdges;
+	numSilEdges: number /*int*/;
+	silEdges: silEdge_t[];
 
-////	dominantTri_t *	dominantTris;
-////} deformInfo_t;
+	dominantTris: dominantTri_t[];
+}
 
 
 ////deformInfo_t *		R_BuildDeformInfo( int numVerts, const idDrawVert *verts, int numIndexes, const int *indexes, bool useUnsmoothedTangents );

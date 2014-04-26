@@ -951,7 +951,7 @@ idMultiplayerGame::Reset
 ////================
 ////*/
 ////bool idMultiplayerGame::AllPlayersReady() {
-////	int			i;
+////	var/*int*/i:number;
 ////	idEntity	*ent;
 ////	idPlayer	*p;
 ////	int			team[ 2 ];
@@ -1318,7 +1318,7 @@ idMultiplayerGame::Reset
 ////void idMultiplayerGame::NewState( gameState_t news, idPlayer *player ) {
 ////	idBitMsg	outMsg;
 ////	byte		msgBuf[MAX_GAME_MESSAGE_SIZE];
-////	int			i;
+////	var/*int*/i:number;
 
 ////	assert( news != gameState );
 ////	assert( !gameLocal.isClient );
@@ -3322,7 +3322,7 @@ idMultiplayerGame::Reset
 ////	byte		msgBuf[ 256 ];
 ////	const char *prefix = NULL;
 ////	int			send_to; // 0 - all, 1 - specs, 2 - team
-////	int			i;
+////	var/*int*/i:number;
 ////	idEntity 	*ent;
 ////	idPlayer	*p;
 ////	idStr		prefixed_name;
@@ -3408,7 +3408,7 @@ idMultiplayerGame::Precache
 */
 	Precache ( ): void {
 		todoThrow ( );
-////	int			i;
+////	var/*int*/i:number;
 ////	idFile		*f;
 
 ////	if ( !gameLocal.isMultiplayer ) {
@@ -3685,7 +3685,7 @@ idMultiplayerGame::EnterGame
 ////void idMultiplayerGame::ServerWriteInitialReliableMessages( int clientNum ) {
 ////	idBitMsg	outMsg;
 ////	byte		msgBuf[ MAX_GAME_MESSAGE_SIZE ];
-////	int			i;
+////	var/*int*/i:number;
 ////	idEntity	*ent;
 
 ////	outMsg.Init( msgBuf, sizeof( msgBuf ) );

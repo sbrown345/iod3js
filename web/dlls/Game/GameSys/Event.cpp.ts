@@ -520,7 +520,7 @@ idEvent::Alloc
 ////================
 ////*/
 ////void idEvent::CopyArgs( const idEventDef *evdef, int numargs, va_list args, int data[ D_EVENT_MAXARGS ] ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	const char	*format;
 ////	idEventArg	*arg;
 ////
@@ -651,7 +651,7 @@ idEvent::ServiceEvents
 ////	int			num;
 ////	int			args[ D_EVENT_MAXARGS ];
 ////	int			offset;
-////	int			i;
+////	var/*int*/i:number;
 ////	int			numargs;
 ////	const char	*formatspec;
 ////	trace_t		**tracePtr;

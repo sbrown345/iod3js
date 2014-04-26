@@ -1708,7 +1708,7 @@ RB_ClearDebugText
 */
 function RB_ClearDebugText ( /*int*/time: number ): void {
 //#if !defined(GL_ES_VERSION_2_0)
-//	int			i;
+//	var/*int*/i:number;
 //	int			num;
 //	debugText_t	*text;
 //
@@ -1893,7 +1893,7 @@ function RB_ClearDebugText ( /*int*/time: number ): void {
 //*/
 //void RB_ShowDebugText( void ) {
 //#if !defined(GL_ES_VERSION_2_0)
-//	int			i;
+//	var/*int*/i:number;
 //	int			width;
 //	debugText_t	*text;
 //
@@ -1951,7 +1951,7 @@ RB_ClearDebugLines
 */
 function RB_ClearDebugLines ( /*int*/time: number ): void {
 //#if !defined(GL_ES_VERSION_2_0)
-//	int			i;
+//	var/*int*/i:number;
 //	int			num;
 //	debugLine_t	*line;
 //
@@ -2004,7 +2004,7 @@ function RB_ClearDebugLines ( /*int*/time: number ): void {
 //*/
 //void RB_ShowDebugLines( void ) {
 //#if !defined(GL_ES_VERSION_2_0)
-//	int			i;
+//	var/*int*/i:number;
 //	int			width;
 //	debugLine_t	*line;
 //

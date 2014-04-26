@@ -1510,7 +1510,7 @@ Initializes all map variables common to both save games and spawned games.
 ////	idBitMsg	outMsg;
 ////	byte		msgBuf[MAX_GAME_MESSAGE_SIZE];
 ////	idDict		newInfo;
-////	int			i;
+////	var/*int*/i:number;
 ////	const idKeyValue *keyval, *keyval2;
 
 ////	if ( isClient ) {
@@ -2475,7 +2475,7 @@ idGameLocal::InitScriptForMap
 ////================
 ////*/
 ////SetupPlayerPVS( ) :void {
-////	int			i;
+////	var/*int*/i:number;
 ////	idEntity *	ent;
 ////	idPlayer *	player;
 ////	pvsHandle_t	otherPVS, newPVS;
@@ -3101,7 +3101,7 @@ idGameLocal::GetMapName
 ////	idBounds	box( idVec3( -4.0f, -4.0f, -4.0f ), idVec3( 4.0f, 4.0f, 4.0f ) );
 ////	idEntity	*ent;
 ////	idEntity	*target;
-////	int			i;
+////	var/*int*/i:number;
 ////	idBounds	totalBounds;
 
 ////	viewTextBounds.ExpandSelf( 128.0f );
@@ -3953,7 +3953,7 @@ Returns the entity whose name matches the specified string.
 ////=================
 ////*/
 ////KillBox( ent: idEntity, bool catch_teleport ) :void {
-////	int			i;
+////	var/*int*/i:number;
 ////	int			num;
 ////	idEntity *	hit;
 ////	idClipModel *cm;

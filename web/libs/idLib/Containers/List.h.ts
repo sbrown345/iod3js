@@ -109,6 +109,9 @@ class idList<type> {
 		this.Clear ( );
 	}
 
+	get length ( ): number { return this.num; }
+
+
 ///*
 //================
 //idList<type>::idList( const idList<type> &other )
@@ -530,8 +533,8 @@ FIXME: Create an iterator template for this kind of thing.
 ================
 */
 //template< class type >
-	Ptr ( ): idList<type> {
-		return this.list;
+	Ptr ( ): type[] {
+		return [].slice.call( this.list );
 	}
 
 ///*

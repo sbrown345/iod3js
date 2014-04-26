@@ -1920,7 +1920,7 @@ idFileSystemLocal::FreeFileList
 ////	idStr		relativePath;
 ////	idStr		extension;
 ////	idFileList *fileList;
-////	int			i;
+////	var/*int*/i:number;
 ////
 ////	if ( args.Argc() < 2 || args.Argc() > 3 ) {
 ////		common.Printf( "usage: dir <directory> [extension]\n" );
@@ -1963,7 +1963,7 @@ idFileSystemLocal::FreeFileList
 ////	idStr		relativePath;
 ////	idStr		extension;
 ////	idFileList *fileList;
-////	int			i;
+////	var/*int*/i:number;
 ////
 ////	if ( args.Argc() < 2 || args.Argc() > 3 ) {
 ////		common.Printf( "usage: dirtree <directory> [extension]\n" );
@@ -2592,7 +2592,7 @@ idFileSystemLocal::FreeFileList
 ////===============
 ////*/
 ////int idFileSystemLocal::ValidateDownloadPakForChecksum( int checksum, char path[ MAX_STRING_CHARS ], bool isBinary ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idStrList	testList;
 ////	idStr		name;
 ////	idStr		relativePath;
@@ -4064,7 +4064,7 @@ PerformingCopyFiles( ):boolean {
 ////===============
 ////*/
 ////bool idFileSystemLocal::HasD3XP( ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idStrList	dirs, pk4s;
 ////	idStr		gamepath;
 ////

@@ -391,7 +391,7 @@ idDeclModelDef::SetupJoints
 		}
 
 		// transform the joint hierarchy
-		SIMDProcessor.TransformJoints( list, <number[]><any>this.jointParents.Ptr ( ), 1, this.joints.Num ( ) - 1 );
+		SIMDProcessor.TransformJoints( list, this.jointParents.Ptr ( ), 1, this.joints.Num ( ) - 1 );
 
 		numJoints.$ = num;
 		jointList.$ = list;

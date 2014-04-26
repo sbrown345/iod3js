@@ -354,7 +354,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////================
 ////*/
 ////void idGameLocal::ServerClientDisconnect( int clientNum ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idBitMsg	outMsg;
 ////	byte		msgBuf[MAX_GAME_MESSAGE_SIZE];
 ////
@@ -393,7 +393,7 @@ idGameLocal.prototype.ShutdownAsyncNetwork = function ( ): void {
 ////================
 ////*/
 ////void idGameLocal::ServerWriteInitialReliableMessages( int clientNum ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idBitMsg	outMsg;
 ////	byte		msgBuf[MAX_GAME_MESSAGE_SIZE];
 ////	entityNetEvent_t *event;

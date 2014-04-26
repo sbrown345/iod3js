@@ -535,7 +535,7 @@
 //	count = 0;
 //
 //	idFileList *files;
-//	int			i;
+//	var/*int*/i:number;
 //
 //	if ( !CheckMayaInstall() ) {
 //		// if Maya isn't installed, don't bother checking if we have anims to export

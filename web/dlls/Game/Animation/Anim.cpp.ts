@@ -138,7 +138,7 @@ idAnimManager::GetAnim
 //================
 //*/
 //void idAnimManager::ReloadAnims( ) {
-//	int			i;
+//	var/*int*/i:number;
 //	idMD5Anim	**animptr;
 //
 //	for( i = 0; i < animations.Num(); i++ ) {
@@ -184,7 +184,7 @@ idAnimManager::GetAnim
 //================
 //*/
 //void idAnimManager::ListAnims( ) const {
-//	int			i;
+//	var/*int*/i:number;
 //	idMD5Anim	**animptr;
 //	idMD5Anim	*anim;
 //	size_t		size;

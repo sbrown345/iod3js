@@ -37,7 +37,7 @@
 //===================
 //*/
 //void R_ListRenderLightDefs_f( const idCmdArgs &args ) {
-//	int			i;
+//	var/*int*/i:number;
 //	idRenderLightLocal	*ldef;
 //
 //	if ( !tr.primaryWorld ) {
@@ -81,7 +81,7 @@
 //===================
 //*/
 //void R_ListRenderEntityDefs_f( const idCmdArgs &args ) {
-//	int			i;
+//	var/*int*/i:number;
 //	idRenderEntityLocal	*mdef;
 //
 //	if ( !tr.primaryWorld ) {
@@ -3021,7 +3021,7 @@ AddWorldModelEntities  (): void {
 //bool idRenderWorldLocal::PortalIsFoggedOut( const portal_t *p ) {
 //	idRenderLightLocal	*ldef;
 //	const idWinding	*w;
-//	int			i;
+//	var/*int*/i:number;
 //	idPlane		forward;
 //
 //	ldef = p.doublePortal.fogLight;

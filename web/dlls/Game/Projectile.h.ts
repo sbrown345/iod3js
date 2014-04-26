@@ -1444,7 +1444,7 @@ class idGuidedProjectile extends idProjectile {
 ////	idAngles	diff;
 ////	float		dist;
 ////	float		frac;
-////	int			i;
+////	var/*int*/i:number;
 ////
 ////	if ( state == LAUNCHED && !unGuided ) {
 ////		
@@ -2122,7 +2122,7 @@ class idBFGProjectile extends idProjectile {
 ////================
 ////*/
 ////void idBFGProjectile::Explode( const trace_t &collision, idEntity *ignore ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idVec3		dmgPoint;
 ////	idVec3		dir;
 ////	float		beamWidth;

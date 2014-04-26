@@ -196,7 +196,7 @@
 ////	idEntity	*ent;
 ////	idStrList	ignore;
 ////	const char *name;
-////	int			i;
+////	var/*int*/i:number;
 
 ////	if ( !gameLocal.GetLocalPlayer() || !gameLocal.CheatsOk( false ) ) {
 ////		return;
@@ -274,7 +274,7 @@
 ////*/
 ////void Cmd_Give_f( const idCmdArgs &args ) {
 ////	const char *name;
-////	int			i;
+////	var/*int*/i:number;
 ////	bool		give_all;
 ////	idPlayer	*player;
 
@@ -673,7 +673,7 @@
 ////void Cmd_SetViewpos_f( const idCmdArgs &args ) {
 ////	idVec3		origin;
 ////	idAngles	angles;
-////	int			i;
+////	var/*int*/i:number;
 ////	idPlayer	*player;
 
 ////	player = gameLocal.GetLocalPlayer();
@@ -772,7 +772,7 @@
 ////*/
 ////void Cmd_Spawn_f( const idCmdArgs &args ) {
 ////	key:string, *value;
-////	int			i;
+////	var/*int*/i:number;
 ////	float		yaw;
 ////	idVec3		org;
 ////	idPlayer	*player;
@@ -865,7 +865,7 @@
 ////===================
 ////*/
 ////void Cmd_TestLight_f( const idCmdArgs &args ) {
-////	int			i;
+////	var/*int*/i:number;
 ////	idStr		filename;
 ////	key:string, *value, *name = NULL;
 ////	idPlayer *	player;
@@ -925,7 +925,7 @@
 ////*/
 ////void Cmd_TestPointLight_f( const idCmdArgs &args ) {
 ////	const char *key, *value, *name = NULL;
-////	int			i;
+////	var/*int*/i:number;
 ////	idPlayer	*player;
 ////	idDict		dict;
 

@@ -924,7 +924,7 @@ class idAI extends idActor {
 	////*/
 	////void idAI::Restore( idRestoreGame *savefile ) {
 	////	bool		restorePhysics;
-	////	int			i;
+	////	var/*int*/i:number;
 	////	int			num;
 	////	idBounds	bounds;
 	////
@@ -5116,7 +5116,7 @@ class idAI extends idActor {
 ////	idAFAttachment	*headEnt = head.GetEntity();
 ////	idVec3		eyepos;
 ////	idVec3		pos;
-////	int			i;
+////	var/*int*/i:number;
 ////	idAngles	jointAng;
 ////	float		orientationJointYaw;
 ////

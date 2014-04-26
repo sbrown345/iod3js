@@ -424,6 +424,28 @@ class P {
 	}
 }
 
+class arrPtr<T> {
+	arr: T[];
+	idx: number;
+
+	get $(): T { return this.arr[this.idx]; }
+
+	set $ ( value: T ) {
+		if ( value === undefined ) {
+			throw 'Undefined value';
+		}
+		this.arr[this.idx] = value;
+	}
+
+	indexOf ( v: T ): number {
+		return this.arr.indexOf( v );
+	}
+
+	constructor ( arr: T[], indexOffset: number = 0 ) {
+		this.arr = arr;
+		this.idx = indexOffset;
+	}
+}
 
 function __builtin_trap ( ): void {
 	exit(0);

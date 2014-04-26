@@ -90,7 +90,7 @@ class idRenderModelStatic extends idRenderModel {
 //////	virtual const char *		GetJointName( jointHandle_t handle ) const;
 //////	virtual const idJointQuat *	GetDefaultPose( void ) const;
 //////	virtual int					NearestJoint( int surfaceNum, int a, int b, int c ) const;
-//	Bounds ( ent: renderEntity_t = null ): idBounds { throw "placeholder"; }
+//	Bounds ( ent: renderEntity_t ): idBounds { throw "placeholder"; }
 //////	virtual void				ReadFromDemoFile( class idDemoFile *f );: void { throw "placeholder"; }
 //////	virtual void				WriteToDemoFile( class idDemoFile *f );: void { throw "placeholder"; }
 //	DepthHack() :number { throw "placeholder"; }
@@ -253,11 +253,11 @@ destructor  () {
 ////	}
 ////	common.Printf( "%c%4ik %3i %4i %4i %s", closed, totalBytes/1024, NumSurfaces(), totalVerts, totalTris, Name() );
 
-////	if ( IsDynamicModel() == DM_CACHED ) {
-////		common.Printf( " (DM_CACHED)" );
+////	if ( IsDynamicModel() == dynamicModel_t.DM_CACHED ) {
+////		common.Printf( " (dynamicModel_t.DM_CACHED)" );
 ////	}
-////	if ( IsDynamicModel() == DM_CONTINUOUS ) {
-////		common.Printf( " (DM_CONTINUOUS)" );
+////	if ( IsDynamicModel() == dynamicModel_t.DM_CONTINUOUS ) {
+////		common.Printf( " (dynamicModel_t.DM_CONTINUOUS)" );
 ////	}
 ////	if ( defaulted ) {
 ////		common.Printf( " (DEFAULTED)" );
@@ -418,7 +418,7 @@ idRenderModelStatic::LoadModel
 	LoadModel ( ): void {
 		todoThrow ( );
 		this.PurgeModel ( );
-		this.InitFromFile( this.name );
+		this.InitFromFile( this.name.data );
 	}
 
 /*
@@ -551,10 +551,10 @@ IsStaticWorldModel  (): boolean {
 idRenderModelStatic::IsDynamicModel
 ================
 */
-IsDynamicModel  (): dynamicModel_t {
-	// dynamic subclasses will override this
-	return dynamicModel_t.DM_STATIC;
-}
+	IsDynamicModel ( ): dynamicModel_t {
+		// dynamic subclasses will override this
+		return dynamicModel_t.DM_STATIC;
+	}
 
 /*
 ================
@@ -570,18 +570,18 @@ IsReloadable  (): boolean {
 idRenderModelStatic::Bounds
 ================
 */
-Bounds  (mdef: renderEntity_t = null): idBounds {
-	return this.bounds;
-}
+	Bounds ( mdef: renderEntity_t = null ): idBounds {
+		return this.bounds;
+	}
 
 /*
 ================
 idRenderModelStatic::DepthHack
 ================
 */
-DepthHack  (): number {
-	return 0.0;
-}
+	DepthHack ( ): number {
+		return 0.0;
+	}
 
 /////*
 ////================
@@ -1934,8 +1934,8 @@ idRenderModelStatic::ConvertLWOToModelSurfaces
 ////		//	vOffset = material.vOffset;
 ////		//	uTiling = material.uTiling;
 ////		//	vTiling = material.vTiling;
-////		//	textureSin = idMath::Sin( material.angle );
-////		//	textureCos = idMath::Cos( material.angle );
+////		//	textureSin = idMath.Sin( material.angle );
+////		//	textureCos = idMath.Cos( material.angle );
 ////		//}
 
 ////		// now allocate and generate the combined vertexes
@@ -2370,15 +2370,16 @@ IsLevelLoadReferenced  (): boolean {
 idRenderModelStatic::TouchData
 =================
 */
-TouchData  () {
-	for (var i = 0; i < this.surfaces.Num(); i++) {
-		var surf: modelSurface_t = this.surfaces[i];
 
-		// re-find the material to make sure it gets added to the
-		// level keep list
-		declManager.FindMaterial(surf.shader.GetName());
+	TouchData ( ): void {
+		for ( var i = 0; i < this.surfaces.Num ( ); i++ ) {
+			var surf: modelSurface_t = this.surfaces[i];
+
+			// re-find the material to make sure it gets added to the
+			// level keep list
+			declManager.FindMaterial( surf.shader.GetName ( ) );
+		}
 	}
-}
 
 /////*
 ////=================
@@ -2443,9 +2444,7 @@ TouchData  () {
 */
 
 class idMD5Mesh {
-	constructor() {
-		todoThrow()
-	}
+
 ////	friend class				idRenderModelMD5;
 
 ////public:
@@ -2461,17 +2460,395 @@ class idMD5Mesh {
 ////	int							NumWeights( void ) const;
 
 ////private:
-////	idList<idVec2>				texCoords;			// texture coordinates
-////	int							numWeights;			// number of weights
-////	idVec4 *					scaledWeights;		// joint weights
-////	int *						weightIndex;		// pairs of: joint offset + bool true if next weight is for next vertex
-////	const idMaterial *			shader;				// material applied to mesh
-////	int							numTris;			// number of triangles
-////	struct deformInfo_s *		deformInfo;			// used to create srfTriangles_t from base frames and new vertexes
-////	int							surfaceNum;			// number of the static surface created for this mesh
+	texCoords = new idList<idVec2>(idVec2);			// texture coordinates
+	numWeights :number/*int*/;			// number of weights
+	scaledWeights:idVec4[];		// joint weights
+	weightIndex:Int32Array;		// pairs of: joint offset + bool true if next weight is for next vertex
+	shader:idMaterial;				// material applied to mesh
+	numTris :number/*int*/;			// number of triangles
+	deformInfo:deformInfo_t;			// used to create srfTriangles_t from base frames and new vertexes
+	surfaceNum :number/*int*/;			// number of the static surface created for this mesh
 
 ////	void						TransformVerts( idDrawVert *verts, const idJointMat *joints );
 ////	void						TransformScaledVerts( idDrawVert *verts, const idJointMat *joints, float scale );
+
+	
+/*
+====================
+idMD5Mesh::idMD5Mesh
+====================
+*/
+	constructor ( ) {
+		this.scaledWeights = null;
+		this.weightIndex = null;
+		this.shader = null;
+		this.numTris = 0;
+		this.deformInfo = null;
+		this.surfaceNum = 0;
+	}
+
+/////*
+////====================
+////idMD5Mesh::~idMD5Mesh
+////====================
+////*/
+////idMD5Mesh::~idMD5Mesh() {
+////	Mem_Free16( this.scaledWeights );
+////	Mem_Free16( this.weightIndex );
+////	if ( deformInfo ) {
+////		R_FreeDeformInfo( deformInfo );
+////		deformInfo = NULL;
+////	}
+////}
+
+/*
+====================
+idMD5Mesh::ParseMesh
+====================
+*/
+	ParseMesh(parser: idLexer, /*int */numJoints: number, joints: idJointMat[]): void {
+	idToken		token;
+	idToken		name;
+	int			num;
+	int			count;
+	int			jointnum;
+	idStr		shaderName;
+	int			i, j;
+	idList<int>	tris;
+	idList<int>	firstWeightForVertex;
+	idList<int>	numWeightsForVertex;
+	int			maxweight;
+	idList<vertexWeight_t> tempWeights;
+
+	parser.ExpectTokenString( "{" );
+
+	//
+	// parse name
+	//
+	if ( parser.CheckTokenString( "name" ) ) {
+		parser.ReadToken( &name );
+	}
+
+	//
+	// parse shader
+	//
+	parser.ExpectTokenString( "shader" );
+
+	parser.ReadToken( &token );
+	shaderName = token;
+
+    shader = declManager.FindMaterial( shaderName );
+
+	//
+	// parse texture coordinates
+	//
+	parser.ExpectTokenString( "numverts" );
+	count = parser.ParseInt();
+	if ( count < 0 ) {
+		parser.Error( "Invalid size: %s", token.c_str() );
+	}
+
+	this.texCoords.SetNum( count );
+	firstWeightForVertex.SetNum( count );
+	numWeightsForVertex.SetNum( count );
+
+	this.numWeights = 0;
+	maxweight = 0;
+	for( i = 0; i < this.texCoords.Num(); i++ ) {
+		parser.ExpectTokenString( "vert" );
+		parser.ParseInt();
+
+		parser.Parse1DMatrix( 2, this.texCoords[ i ].ToFloatPtr() );
+
+		firstWeightForVertex[ i ]	= parser.ParseInt();
+		numWeightsForVertex[ i ]	= parser.ParseInt();
+
+		if ( !numWeightsForVertex[ i ] ) {
+			parser.Error( "Vertex without any joint weights." );
+		}
+
+		this.numWeights += numWeightsForVertex[ i ];
+		if ( numWeightsForVertex[ i ] + firstWeightForVertex[ i ] > maxweight ) {
+			maxweight = numWeightsForVertex[ i ] + firstWeightForVertex[ i ];
+		}
+	}
+
+	//
+	// parse tris
+	//
+	parser.ExpectTokenString( "numtris" );
+	count = parser.ParseInt();
+	if ( count < 0 ) {
+		parser.Error( "Invalid size: %d", count );
+	}
+
+	tris.SetNum( count * 3 );
+	this.numTris = count;
+	for( i = 0; i < count; i++ ) {
+		parser.ExpectTokenString( "tri" );
+		parser.ParseInt();
+
+		tris[ i * 3 + 0 ] = parser.ParseInt();
+		tris[ i * 3 + 1 ] = parser.ParseInt();
+		tris[ i * 3 + 2 ] = parser.ParseInt();
+	}
+
+	//
+	// parse weights
+	//
+	parser.ExpectTokenString( "numweights" );
+	count = parser.ParseInt();
+	if ( count < 0 ) {
+		parser.Error( "Invalid size: %d", count );
+	}
+
+	if ( maxweight > count ) {
+		parser.Warning( "Vertices reference out of range weights in model (%d of %d weights).", maxweight, count );
+	}
+
+	tempWeights.SetNum( count );
+
+	for( i = 0; i < count; i++ ) {
+		parser.ExpectTokenString( "weight" );
+		parser.ParseInt();
+
+		jointnum = parser.ParseInt();
+		if ( ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
+			parser.Error( "Joint Index out of range(%d): %d", numJoints, jointnum );
+		}
+
+		tempWeights[ i ].joint			= jointnum;
+		tempWeights[ i ].jointWeight	= parser.ParseFloat();
+
+		parser.Parse1DMatrix( 3, tempWeights[ i ].offset.ToFloatPtr() );
+	}
+
+	// create pre-scaled weights and an index for the vertex/joint lookup
+	this.scaledWeights = (idVec4 *) Mem_Alloc16( this.numWeights * sizeof( this.scaledWeights[0] ) );
+	this.weightIndex = (int *) Mem_Alloc16( this.numWeights * 2 * sizeof( this.weightIndex[0] ) );
+	memset( this.weightIndex, 0, this.numWeights * 2 * sizeof( this.weightIndex[0] ) );
+
+	count = 0;
+	for( i = 0; i < this.texCoords.Num(); i++ ) {
+		num = firstWeightForVertex[i];
+		for( j = 0; j < numWeightsForVertex[i]; j++, num++, count++ ) {
+			this.scaledWeights[count].ToVec3() = tempWeights[num].offset * tempWeights[num].jointWeight;
+			this.scaledWeights[count].w = tempWeights[num].jointWeight;
+			this.weightIndex[count * 2 + 0] = tempWeights[num].joint * sizeof( idJointMat );
+		}
+		this.weightIndex[count * 2 - 1] = 1;
+	}
+
+	tempWeights.Clear();
+	numWeightsForVertex.Clear();
+	firstWeightForVertex.Clear();
+
+	parser.ExpectTokenString( "}" );
+
+	// update counters
+	c_numVerts += this.texCoords.Num();
+	c_numWeights += this.numWeights;
+	c_numWeightJoints++;
+	for ( i = 0; i < this.numWeights; i++ ) {
+		c_numWeightJoints += this.weightIndex[i*2+1];
+	}
+
+	//
+	// build the information that will be common to all animations of this mesh:
+	// silhouette edge connectivity and normal / tangent generation information
+	//
+	idDrawVert *verts = (idDrawVert *) _alloca16( this.texCoords.Num() * sizeof( idDrawVert ) );
+	for ( i = 0; i < this.texCoords.Num(); i++ ) {
+		verts[i].Clear();
+		verts[i].st = this.texCoords[i];
+	}
+	this.TransformVerts( verts, joints );
+	deformInfo = R_BuildDeformInfo( this.texCoords.Num(), verts, tris.Num(), tris.Ptr(), shader.UseUnsmoothedTangents() );
+}
+
+/*
+====================
+idMD5Mesh::TransformVerts
+====================
+*/
+	TransformVerts ( verts: idDrawVert[], entJoints: idJointMat [] ): void {
+		SIMDProcessor.TransformVerts( verts, this.texCoords.Num ( ), entJoints, this.scaledWeights, this.weightIndex, this.numWeights );
+	}
+
+/////*
+////====================
+////idMD5Mesh::TransformScaledVerts
+
+////Special transform to make the mesh seem fat or skinny.  May be used for zombie deaths
+////====================
+////*/
+////void idMD5Mesh::TransformScaledVerts( idDrawVert *verts, const idJointMat *entJoints, float scale ) {
+////	idVec4 *this.scaledWeights = (idVec4 *) _alloca16( this.numWeights * sizeof( this.scaledWeights[0] ) );
+////	SIMDProcessor.Mul( this.scaledWeights[0].ToFloatPtr(), scale, this.scaledWeights[0].ToFloatPtr(), this.numWeights * 4 );
+////	SIMDProcessor.TransformVerts( verts, this.texCoords.Num(), entJoints, this.scaledWeights, this.weightIndex, this.numWeights );
+////}
+
+/////*
+////====================
+////idMD5Mesh::UpdateSurface
+////====================
+////*/
+////void idMD5Mesh::UpdateSurface( const struct renderEntity_s *ent, const idJointMat *entJoints, modelSurface_t *surf ) {
+////	int i, base;
+////	srfTriangles_t *tri;
+
+////	tr.pc.c_deformedSurfaces++;
+////	tr.pc.c_deformedVerts += deformInfo.numOutputVerts;
+////	tr.pc.c_deformedIndexes += deformInfo.numIndexes;
+
+////	surf.shader = shader;
+
+////	if ( surf.geometry ) {
+////		// if the number of verts and indexes are the same we can re-use the triangle surface
+////		// the number of indexes must be the same to assure the correct amount of memory is allocated for the facePlanes
+////		if ( surf.geometry.numVerts == deformInfo.numOutputVerts && surf.geometry.numIndexes == deformInfo.numIndexes ) {
+////			R_FreeStaticTriSurfVertexCaches( surf.geometry );
+////		} else {
+////			R_FreeStaticTriSurf( surf.geometry );
+////			surf.geometry = R_AllocStaticTriSurf();
+////		}
+////	} else {
+////		surf.geometry = R_AllocStaticTriSurf();
+////	}
+
+////	tri = surf.geometry;
+
+////	// note that some of the data is references, and should not be freed
+////	tri.deformedSurface = true;
+////	tri.tangentsCalculated = false;
+////	tri.facePlanesCalculated = false;
+
+////	tri.numIndexes = deformInfo.numIndexes;
+////	tri.indexes = deformInfo.indexes;
+////	tri.silIndexes = deformInfo.silIndexes;
+////	tri.numMirroredVerts = deformInfo.numMirroredVerts;
+////	tri.mirroredVerts = deformInfo.mirroredVerts;
+////	tri.numDupVerts = deformInfo.numDupVerts;
+////	tri.dupVerts = deformInfo.dupVerts;
+////	tri.numSilEdges = deformInfo.numSilEdges;
+////	tri.silEdges = deformInfo.silEdges;
+////	tri.dominantTris = deformInfo.dominantTris;
+////	tri.numVerts = deformInfo.numOutputVerts;
+
+////	if ( tri.verts == NULL ) {
+////		R_AllocStaticTriSurfVerts( tri, tri.numVerts );
+////		for ( i = 0; i < deformInfo.numSourceVerts; i++ ) {
+////			tri.verts[i].Clear();
+////			tri.verts[i].st = this.texCoords[i];
+////		}
+////	}
+
+////	if ( ent.shaderParms[ SHADERPARM_MD5_SKINSCALE ] != 0.0 ) {
+////		TransformScaledVerts( tri.verts, entJoints, ent.shaderParms[ SHADERPARM_MD5_SKINSCALE ] );
+////	} else {
+////		this.TransformVerts( tri.verts, entJoints );
+////	}
+
+////	// replicate the mirror seam vertexes
+////	base = deformInfo.numOutputVerts - deformInfo.numMirroredVerts;
+////	for ( i = 0; i < deformInfo.numMirroredVerts; i++ ) {
+////		tri.verts[base + i] = tri.verts[deformInfo.mirroredVerts[i]];
+////	}
+
+////	R_BoundTriSurf( tri );
+
+////	// If a surface is going to be have a lighting interaction generated, it will also have to call
+////	// R_DeriveTangents() to get normals, tangents, and face planes.  If it only
+////	// needs shadows generated, it will only have to generate face planes.  If it only
+////	// has ambient drawing, or is culled, no additional work will be necessary
+////	if ( !r_useDeferredTangents.GetBool() ) {
+////		// set face planes, vertex normals, tangents
+////		R_DeriveTangents( tri );
+////	}
+////}
+
+/*
+====================
+idMD5Mesh::CalcBounds
+====================
+*/
+	CalcBounds ( entJoints: idJointMat[] ): idBounds {
+		var bounds = new idBounds;
+		var verts = newStructArray<idDrawVert>( idDrawVert, this.texCoords.Num ( ) );
+
+		this.TransformVerts( verts, entJoints );
+
+		SIMDProcessor.MinMax_verts( bounds[0], bounds[1], verts, this.texCoords.Num ( ) );
+
+		return bounds;
+	}
+
+/////*
+////====================
+////idMD5Mesh::NearestJoint
+////====================
+////*/
+////int idMD5Mesh::NearestJoint( int a, int b, int c ) const {
+////	int i, bestJoint, vertNum, weightVertNum;
+////	float bestWeight;
+
+////	// duplicated vertices might not have weights
+////	if ( a >= 0 && a < this.texCoords.Num() ) {
+////		vertNum = a;
+////	} else if ( b >= 0 && b < this.texCoords.Num() ) {
+////		vertNum = b;
+////	} else if ( c >= 0 && c < this.texCoords.Num() ) {
+////		vertNum = c;
+////	} else {
+////		// all vertices are duplicates which shouldn't happen
+////		return 0;
+////	}
+
+////	// find the first weight for this vertex
+//// 	weightVertNum = 0;
+////	for( i = 0; weightVertNum < vertNum; i++ ) {
+////		weightVertNum += this.weightIndex[i*2+1];
+////	}
+
+////	// get the joint for the largest weight
+////	bestWeight = this.scaledWeights[i].w;
+////	bestJoint = this.weightIndex[i*2+0] / sizeof( idJointMat );
+////	for( ; this.weightIndex[i*2+1] == 0; i++ ) {
+////		if ( this.scaledWeights[i].w > bestWeight ) {
+////			bestWeight = this.scaledWeights[i].w;
+////			bestJoint = this.weightIndex[i*2+0] / sizeof( idJointMat );
+////		}
+////	}
+////	return bestJoint;
+////}
+
+/*
+====================
+idMD5Mesh::NumVerts
+====================
+*/
+	NumVerts ( ): number {
+		return this.texCoords.Num ( );
+	}
+
+/*
+====================
+idMD5Mesh::NumTris
+====================
+*/
+	NumTris ( ): number {
+		return this.numTris;
+	}
+
+/*
+====================
+idMD5Mesh::NumWeights
+====================
+*/
+	NumWeights ( ): number {
+		return this.numWeights;
+	}
+
 }
 
 class idRenderModelMD5 extends idRenderModelStatic {
@@ -2504,47 +2881,47 @@ class idRenderModelMD5 extends idRenderModelStatic {
 ////	void						ParseJoint( idLexer &parser, idMD5Joint *joint, idJointQuat *defaultPose );
 
 
-	/////***********************************************************************
+	/***********************************************************************
 
-	////	idRenderModelMD5
+		idRenderModelMD5
 
-	////***********************************************************************/
+	***********************************************************************/
 
-	/////*
-	////====================
-	////idRenderModelMD5::ParseJoint
-	////====================
-	////*/
-	////void idRenderModelMD5::ParseJoint( idLexer &parser, idMD5Joint *joint, idJointQuat *defaultPose ) {
-	////	idToken	token;
-	////	int		num;
+	/*
+	====================
+	idRenderModelMD5::ParseJoint
+	====================
+	*/
+	ParseJoint ( parser: idLexer, joint: idMD5Joint, defaultPose: idJointQuat ): void {
+		var token = new idToken;
+		var /*int*/num: number;
 
-	////	//
-	////	// parse name
-	////	//
-	////	parser.ReadToken( &token );
-	////	joint.name = token;
+		//
+		// parse name
+		//
+		parser.ReadToken( token );
+		joint.name.opEquals( token );
 
-	////	//
-	////	// parse parent
-	////	//
-	////	num = parser.ParseInt();
-	////	if ( num < 0 ) {
-	////		joint.parent = NULL;
-	////	} else {
-	////		if ( num >= this.joints.Num() - 1 ) {
-	////			parser.Error( "Invalid parent for joint '%s'", joint.name.c_str() );
-	////		}
-	////		joint.parent = &this.joints[ num ];
-	////	}
+		//
+		// parse parent
+		//
+		num = parser.ParseInt ( );
+		if ( num < 0 ) {
+			joint.parent = null;
+		} else {
+			if ( num >= this.joints.Num ( ) - 1 ) {
+				parser.Error( "Invalid parent for joint '%s'", joint.name.c_str ( ) );
+			}
+			joint.parent = this.joints[num];
+		}
 
-	////	//
-	////	// parse default pose
-	////	//
-	////	parser.Parse1DMatrix( 3, defaultPose.t.ToFloatPtr() );
-	////	parser.Parse1DMatrix( 3, defaultPose.q.ToFloatPtr() );
-	////	defaultPose.q.w = defaultPose.q.CalcW();
-	////}
+		//
+		// parse default pose
+		//
+		parser.Parse1DMatrix( 3, defaultPose.t.ToFloatPtr ( ) );
+		parser.Parse1DMatrix( 3, defaultPose.q.ToFloatPtr ( ) );
+		defaultPose.q.w = defaultPose.q.CalcW ( );
+	}
 
 	/*
 	====================
@@ -2564,89 +2941,91 @@ class idRenderModelMD5 extends idRenderModelStatic {
 	Upon exit, the model will absolutely be valid, but possibly as a default model
 	====================
 	*/
-	LoadModel(): void {
-			int			version;
-			int			i;
-			int			num;
-			int			parentNum;
-			idToken		token;
-			idLexer		parser( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
-			idJointQuat	*pose;
-			idMD5Joint	*joint;
-			idJointMat *poseMat3;
+	LoadModel ( ): void {
+		var /*int*/version: number;
+		var /*int*/i: number;
+		var /*int*/num: number;
+		var /*int*/parentNum: number;
+		var token = new idToken;
+		var parser = new idLexer( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
+		var pose: arrPtr<idJointQuat>;
+		var joint: arrPtr<idMD5Joint>;
+		var poseMat3: idJointMat [];
 
-			if ( !purged ) {
-				PurgeModel();
+		if ( !this.purged ) {
+			this.PurgeModel ( );
+		}
+		this.purged = false;
+
+		if ( !parser.LoadFile( this.name.data ) ) {
+			this.MakeDefaultModel ( );
+			return;
+		}
+
+		parser.ExpectTokenString( MD5_VERSION_STRING );
+		version = parser.ParseInt ( );
+
+		if ( version != MD5_VERSION ) {
+			parser.Error( "Invalid version %d.  Should be version %d\n", version, MD5_VERSION );
+		}
+
+		//
+		// skip commandline
+		//
+		parser.ExpectTokenString( "commandline" );
+		parser.ReadToken( token );
+
+		// parse num joints
+		parser.ExpectTokenString( "numJoints" );
+		num = parser.ParseInt ( );
+		this.joints.SetGranularity( 1 );
+		this.joints.SetNum( num );
+		this.defaultPose.SetGranularity( 1 );
+		this.defaultPose.SetNum( num );
+		poseMat3 = newStructArray<idJointMat>( idJointMat, num ); // ( idJointMat * )_alloca16( num * sizeof( *poseMat3 ) );
+
+		// parse num meshes
+		parser.ExpectTokenString( "numMeshes" );
+		num = parser.ParseInt ( );
+		if ( num < 0 ) {
+			parser.Error( "Invalid size: %d", num );
+		}
+		this.meshes.SetGranularity( 1 );
+		this.meshes.SetNum( num );
+
+		//
+		// parse joints
+		//
+		parser.ExpectTokenString( "joints" );
+		parser.ExpectTokenString( "{" );
+		pose = new arrPtr<idJointQuat>( this.defaultPose.Ptr ( ) );
+		joint = new arrPtr<idMD5Joint>( this.joints.Ptr ( ) );
+		for ( i = 0; i < this.joints.Num ( ); i++, joint.idx++, pose.idx++ ) {
+			this.ParseJoint( parser, joint.$, pose.$ );
+			poseMat3[i].SetRotation( pose.$.q.ToMat3 ( ) );
+			poseMat3[i].SetTranslation( pose.$.t );
+			if ( joint.$.parent ) {
+				parentNum = joint.indexOf( joint.$.parent ); //joint.$.parent - this.joints.Ptr ( );
+				pose.$.q.opEquals( ( poseMat3[i].ToMat3 ( ).opMultiplication( poseMat3[parentNum].ToMat3 ( ).Transpose ( ) ) ).ToQuat ( ) );
+				pose.$.t.opEquals( idMat3.opMultiplicationAssignment_vec3_mat3( ( poseMat3[i].ToVec3 ( ).opSubtraction( poseMat3[parentNum].ToVec3 ( ) ) ), poseMat3[parentNum].ToMat3 ( ).Transpose ( ) ) );
 			}
-			purged = false;
+		}
+		parser.ExpectTokenString( "}" );
 
-			if ( !parser.LoadFile( this.name ) ) {
-				MakeDefaultModel();
-				return;
-			}
+		for ( i = 0; i < this.meshes.Num ( ); i++ ) {
+			parser.ExpectTokenString( "mesh" );
+			this.meshes[i].ParseMesh( parser, this.defaultPose.Num ( ), poseMat3 );
+		}
 
-			parser.ExpectTokenString( MD5_VERSION_STRING );
-			version = parser.ParseInt();
+		//
+		// calculate the bounds of the model
+		//
+		this.CalculateBounds( poseMat3 );
 
-			if ( version != MD5_VERSION ) {
-				parser.Error( "Invalid version %d.  Should be version %d\n", version, MD5_VERSION );
-			}
-
-			//
-			// skip commandline
-			//
-			parser.ExpectTokenString( "commandline" );
-			parser.ReadToken( &token );
-
-			// parse num joints
-			parser.ExpectTokenString( "numJoints" );
-			num  = parser.ParseInt();
-			this.joints.SetGranularity( 1 );
-			this.joints.SetNum( num );
-			defaultPose.SetGranularity( 1 );
-			defaultPose.SetNum( num );
-			poseMat3 = ( idJointMat * )_alloca16( num * sizeof( *poseMat3 ) );
-
-			// parse num meshes
-			parser.ExpectTokenString( "numMeshes" );
-			num = parser.ParseInt();
-			if ( num < 0 ) {
-				parser.Error( "Invalid size: %d", num );
-			}
-			meshes.SetGranularity( 1 );
-			meshes.SetNum( num );
-
-			//
-			// parse joints
-			//
-			parser.ExpectTokenString( "joints" );
-			parser.ExpectTokenString( "{" );
-			pose = defaultPose.Ptr();
-			joint = this.joints.Ptr();
-			for( i = 0; i < this.joints.Num(); i++, joint++, pose++ ) {
-				ParseJoint( parser, joint, pose );
-				poseMat3[ i ].SetRotation( pose.q.ToMat3() );
-				poseMat3[ i ].SetTranslation( pose.t );
-				if ( joint.parent ) {
-					parentNum = joint.parent - this.joints.Ptr();
-					pose.q = ( poseMat3[ i ].ToMat3() * poseMat3[ parentNum ].ToMat3().Transpose() ).ToQuat();
-					pose.t = ( poseMat3[ i ].ToVec3() - poseMat3[ parentNum ].ToVec3() ) * poseMat3[ parentNum ].ToMat3().Transpose();
-				}
-			}
-			parser.ExpectTokenString( "}" );
-
-			for( i = 0; i < meshes.Num(); i++ ) {
-				parser.ExpectTokenString( "mesh" );
-				meshes[ i ].ParseMesh( parser, defaultPose.Num(), poseMat3 );
-			}
-
-			//
-			// calculate the bounds of the model
-			//
-			CalculateBounds( poseMat3 );
-
-			// set the timestamp for reloadmodels
-			fileSystem.ReadFile( this.name, NULL, &timeStamp );
+		// set the timestamp for reloadmodels
+		var $timeStamp = new R( this.timeStamp );
+		fileSystem.ReadFile( this.name.data, null, $timeStamp );
+		this.timeStamp = $timeStamp.$;
 	}
 
 	/////*
@@ -2656,7 +3035,7 @@ class idRenderModelMD5 extends idRenderModelStatic {
 	////*/
 	////void idRenderModelMD5::Print() const {
 	////	const idMD5Mesh	*mesh;
-	////	int			i;
+	////	var/*int*/i:number;
 
 	////	common.Printf( "%s\n", this.name.c_str() );
 	////	common.Printf( "Dynamic model.\n" );
@@ -2665,7 +3044,7 @@ class idRenderModelMD5 extends idRenderModelStatic {
 	////	int	totalVerts = 0;
 	////	int	totalTris = 0;
 	////	int	totalWeights = 0;
-	////	for( mesh = meshes.Ptr(), i = 0; i < meshes.Num(); i++, mesh++ ) {
+	////	for( mesh = this.meshes.Ptr(), i = 0; i < this.meshes.Num(); i++, mesh++ ) {
 	////		totalVerts += mesh.NumVerts();
 	////		totalTris += mesh.NumTris();
 	////		totalWeights += mesh.NumWeights();
@@ -2684,16 +3063,16 @@ class idRenderModelMD5 extends idRenderModelStatic {
 	////==============
 	////*/
 	////void idRenderModelMD5::List() const {
-	////	int			i;
+	////	var/*int*/i:number;
 	////	const idMD5Mesh	*mesh;
 	////	int			totalTris = 0;
 	////	int			totalVerts = 0;
 
-	////	for( mesh = meshes.Ptr(), i = 0; i < meshes.Num(); i++, mesh++ ) {
+	////	for( mesh = this.meshes.Ptr(), i = 0; i < this.meshes.Num(); i++, mesh++ ) {
 	////		totalTris += mesh.numTris;
 	////		totalVerts += mesh.NumVerts();
 	////	}
-	////	common.Printf( " %4ik %3i %4i %4i %s(MD5)", Memory()/1024, meshes.Num(), totalVerts, totalTris, Name() );
+	////	common.Printf( " %4ik %3i %4i %4i %s(MD5)", Memory()/1024, this.meshes.Num(), totalVerts, totalTris, Name() );
 
 	////	if ( defaulted ) {
 	////		common.Printf( " (DEFAULTED)" );
@@ -2702,46 +3081,47 @@ class idRenderModelMD5 extends idRenderModelStatic {
 	////	common.Printf( "\n" );
 	////}
 
-	/////*
-	////====================
-	////idRenderModelMD5::CalculateBounds
-	////====================
-	////*/
-	////void idRenderModelMD5::CalculateBounds( const idJointMat *entJoints ) {
-	////	int			i;
-	////	idMD5Mesh	*mesh;
+	/*
+	====================
+	idRenderModelMD5::CalculateBounds
+	====================
+	*/
+	CalculateBounds ( entJoints: idJointMat[] ): void {
+		var /*int*/i: number;
+		var mesh: arrPtr<idMD5Mesh>;
 
-	////	bounds.Clear();
-	////	for( mesh = meshes.Ptr(), i = 0; i < meshes.Num(); i++, mesh++ ) {
-	////		bounds.AddBounds( mesh.CalcBounds( entJoints ) );
-	////	}
-	////}
+		this.bounds.Clear ( );
+		for ( mesh = new arrPtr<idMD5Mesh>( <any>this.meshes.Ptr ( ) ), i = 0; i < this.meshes.Num ( ); i++, mesh.idx++ ) {
+			this.bounds.AddBounds( mesh.$.CalcBounds( entJoints ) );
+		}
+	}
 
-	/////*
-	////====================
-	////idRenderModelMD5::Bounds
+	/*
+	====================
+	idRenderModelMD5::Bounds
 
-	////This calculates a rough bounds by using the joint radii without
-	////transforming all the points
-	////====================
-	////*/
-	////idBounds idRenderModelMD5::Bounds( const renderEntity_t *ent ) const {
-	////#if 0
-	////	// we can't calculate a rational bounds without an entity,
-	////	// because joints could be positioned to deform it into an
-	////	// arbitrarily large shape
-	////	if ( !ent ) {
-	////		common.Error( "idRenderModelMD5::Bounds: called without entity" );
-	////	}
-	////#endif
+	This calculates a rough bounds by using the joint radii without
+	transforming all the points
+	====================
+	*/
+	Bounds(ent: renderEntity_t = null): idBounds {
+		todoThrow ( );
+		//#if 0
+		//	// we can't calculate a rational bounds without an entity,
+		//	// because joints could be positioned to deform it into an
+		//	// arbitrarily large shape
+		//	if ( !ent ) {
+		//		common.Error( "idRenderModelMD5::Bounds: called without entity" );
+		//	}
+		//#endif
 
-	////	if ( !ent ) {
-	////		// this is the bounds for the reference pose
-	////		return bounds;
-	////	}
+		if ( !ent ) {
+			// this is the bounds for the reference pose
+			return this.bounds;
+		}
 
-	////	return ent.bounds;
-	////}
+		return ent.bounds;
+	}
 
 	/////*
 	////====================
@@ -2773,10 +3153,10 @@ class idRenderModelMD5 extends idRenderModelStatic {
 
 	////	idBounds bounds;
 
-	////	bounds.FromTransformedBounds( ent.bounds, vec3_zero, ent.axis );
-	////	session.rw.DebugBounds( colorMagenta, bounds, ent.origin );
+	////	this.bounds.FromTransformedBounds( ent.bounds, vec3_zero, ent.axis );
+	////	session.rw.DebugBounds( colorMagenta, this.bounds, ent.origin );
 
-	////	if ( ( r_jointNameScale.GetFloat() != 0.0 ) && ( bounds.Expand( 128.0f ).ContainsPoint( view.renderView.vieworg - ent.origin ) ) ) {
+	////	if ( ( r_jointNameScale.GetFloat() != 0.0 ) && ( this.bounds.Expand( 128.0f ).ContainsPoint( view.renderView.vieworg - ent.origin ) ) ) {
 	////		idVec3	offset( 0, 0, r_jointNameOffset.GetFloat() );
 	////		float	scale;
 
@@ -2805,7 +3185,7 @@ class idRenderModelMD5 extends idRenderModelStatic {
 	////		cachedModel = NULL;
 	////	}
 
-	////	if ( purged ) {
+	////	if ( this.purged ) {
 	////		common.DWarning( "model %s instantiated while purged", Name() );
 	////		LoadModel();
 	////	}
@@ -2847,7 +3227,7 @@ class idRenderModelMD5 extends idRenderModelStatic {
 	////	}
 
 	////	// create all the surfaces
-	////	for( mesh = meshes.Ptr(), i = 0; i < meshes.Num(); i++, mesh++ ) {
+	////	for( mesh = this.meshes.Ptr(), i = 0; i < this.meshes.Num(); i++, mesh++ ) {
 	////		// avoid deforming the surface if it will be a nodraw due to a skin remapping
 	////		// FIXME: may have to still deform clipping hulls
 	////		const idMaterial *shader = mesh.shader;
@@ -2886,14 +3266,14 @@ class idRenderModelMD5 extends idRenderModelStatic {
 	////	return staticModel;
 	////}
 
-	/////*
-	////====================
-	////idRenderModelMD5::IsDynamicModel
-	////====================
-	////*/
-	////dynamicModel_t idRenderModelMD5::IsDynamicModel() const {
-	////	return DM_CACHED;
-	////}
+/*
+====================
+idRenderModelMD5::IsDynamicModel
+====================
+*/
+	IsDynamicModel ( ): dynamicModel_t {
+		return dynamicModel_t.DM_CACHED;
+	}
 
 	/*
 	====================
@@ -2904,14 +3284,14 @@ class idRenderModelMD5 extends idRenderModelStatic {
 		return this.joints.Num();
 	}
 
-/////*
-////====================
-////idRenderModelMD5::GetJoints
-////====================
-////*/
-////const idMD5Joint *idRenderModelMD5::GetJoints( ) const {
-////	return this.joints.Ptr();
-////}
+/*
+====================
+idRenderModelMD5::GetJoints
+====================
+*/
+	GetJoints ( ): idMD5Joint[] {
+		return this.joints.Ptr ( );
+	}
 
 /*
 ====================
@@ -2928,31 +3308,31 @@ idRenderModelMD5::GetJointHandle
 ====================
 */
 	GetJointHandle ( name: string ): jointHandle_t {
-		var joints: idList<idMD5Joint>, joint: idMD5Joint;
+		var joint: arrPtr<idMD5Joint>;
 		var /*int	*/i: number;
 
-		joints = this.joints.Ptr ( );
-		for ( i = 0; i < this.joints.Num ( ); i++, joint = joints[i] ) {
-			if ( idStr.Icmp( joint.name.c_str ( ), name ) == 0 ) {
-				return <jointHandle_t >i;
+		joint = new arrPtr( this.joints.Ptr ( ) );
+		for ( i = 0; i < this.joints.Num ( ); i++, joint.idx++ ) {
+			if ( idStr.Icmp( joint.$.name.c_str ( ), name ) == 0 ) {
+				return <jointHandle_t> i;
 			}
 		}
 
 		return jointHandle_t.INVALID_JOINT;
 	}
 
-/////*
-////=====================
-////idRenderModelMD5::GetJointName
-////=====================
-////*/
-////const char *idRenderModelMD5::GetJointName( jointHandle_t handle ) const {
-////	if ( ( handle < 0 ) || ( handle >= this.joints.Num() ) ) {
-////		return "<invalid joint>";
-////	}
+/*
+=====================
+idRenderModelMD5::GetJointName
+=====================
+*/
+	GetJointName ( handle: jointHandle_t ): string {
+		if ( ( handle < 0 ) || ( handle >= this.joints.Num ( ) ) ) {
+			return "<invalid joint>";
+		}
 
-////	return this.joints[ handle ].name;
-////}
+		return this.joints[handle].name.data;
+	}
 
 /////*
 ////====================
@@ -2963,11 +3343,11 @@ idRenderModelMD5::GetJointHandle
 ////	var/*int*/i:number;
 ////	const idMD5Mesh *mesh;
 
-////	if ( surfaceNum > meshes.Num() ) {
-////		common.Error( "idRenderModelMD5::NearestJoint: surfaceNum > meshes.Num()" );
+////	if ( surfaceNum > this.meshes.Num() ) {
+////		common.Error( "idRenderModelMD5::NearestJoint: surfaceNum > this.meshes.Num()" );
 ////	}
 
-////	for ( mesh = meshes.Ptr(), i = 0; i < meshes.Num(); i++, mesh++ ) {
+////	for ( mesh = this.meshes.Ptr(), i = 0; i < this.meshes.Num(); i++, mesh++ ) {
 ////		if ( mesh.surfaceNum == surfaceNum ) {
 ////			return mesh.NearestJoint( a, b, c );
 ////		}
@@ -2975,23 +3355,23 @@ idRenderModelMD5::GetJointHandle
 ////	return 0;
 ////}
 
-/////*
-////====================
-////idRenderModelMD5::TouchData
+/*
+====================
+idRenderModelMD5::TouchData
 
-////models that are already loaded at level start time
-////will still touch their materials to make sure they
-////are kept loaded
-////====================
-////*/
-////void idRenderModelMD5::TouchData() {
-////	idMD5Mesh	*mesh;
-////	int			i;
+models that are already loaded at level start time
+will still touch their materials to make sure they
+are kept loaded
+====================
+*/
+	TouchData ( ): void {
+		var mesh: arrPtr<idMD5Mesh>;
+		var /*int*/i: number;
 
-////	for( mesh = meshes.Ptr(), i = 0; i < meshes.Num(); i++, mesh++ ) {
-////		declManager.FindMaterial( mesh.shader.GetName() );
-////	}
-////}
+		for ( mesh = new arrPtr<idMD5Mesh>( this.meshes.Ptr ( ) ), i = 0; i < this.meshes.Num ( ); i++, mesh.idx++ ) {
+			declManager.FindMaterial( mesh.$.shader.GetName ( ) );
+		}
+	}
 
 /*
 ===================
@@ -3001,11 +3381,11 @@ frees all the data, but leaves the class around for dangling references,
 which can regenerate the data with LoadModel()
 ===================
 */
-void idRenderModelMD5::PurgeModel() {
-	purged = true;
+PurgeModel():void {
+	this.purged = true;
 	this.joints.Clear();
-	defaultPose.Clear();
-	meshes.Clear();
+	this.defaultPose.Clear();
+	this.meshes.Clear();
 }
 
 /////*
@@ -3017,7 +3397,7 @@ void idRenderModelMD5::PurgeModel() {
 ////	int		total, i;
 
 ////	total = sizeof( *this );
-////	total += this.joints.MemoryUsed() + defaultPose.MemoryUsed() + meshes.MemoryUsed();
+////	total += this.joints.MemoryUsed() + this.defaultPose.MemoryUsed() + this.meshes.MemoryUsed();
 
 ////	// count up strings
 ////	for ( i = 0; i < this.joints.Num(); i++ ) {
@@ -3025,8 +3405,8 @@ void idRenderModelMD5::PurgeModel() {
 ////	}
 
 ////	// count up meshes
-////	for ( i = 0 ; i < meshes.Num() ; i++ ) {
-////		const idMD5Mesh *mesh = &meshes[i];
+////	for ( i = 0 ; i < this.meshes.Num() ; i++ ) {
+////		const idMD5Mesh *mesh = &this.meshes[i];
 
 ////		total += mesh.texCoords.MemoryUsed() + mesh.numWeights * ( sizeof( mesh.scaledWeights[0] ) + sizeof( mesh.weightIndex[0] ) * 2 );
 
@@ -3236,14 +3616,14 @@ idRenderModelMD3::InitFromFile
 ////	fileSystem.FreeFile( buffer );
 	}
 
-/////*
-////=================
-////idRenderModelMD3::IsDynamicModel
-////=================
-////*/
-////dynamicModel_t idRenderModelMD3::IsDynamicModel() const {
-////	return DM_CACHED;
-////}
+/*
+=================
+idRenderModelMD3::IsDynamicModel
+=================
+*/
+	IsDynamicModel ( ): dynamicModel_t {
+		return dynamicModel_t.DM_CACHED;
+	}
 
 /////*
 ////=================
@@ -3352,13 +3732,13 @@ idRenderModelMD3::InitFromFile
 ////		}
 ////		tri.numIndexes += indexes;
 
-////		texCoords = (float *) ((byte *)surface + surface.ofsSt);
+////		this.texCoords = (float *) ((byte *)surface + surface.ofsSt);
 
 ////		numVerts = surface.numVerts;
 ////		for ( j = 0; j < numVerts; j++ ) {
 ////			idDrawVert *stri = &tri.verts[j];
-////			stri.st[0] = texCoords[j*2+0];
-////			stri.st[1] = texCoords[j*2+1];
+////			stri.st[0] = this.texCoords[j*2+0];
+////			stri.st[1] = this.texCoords[j*2+1];
 ////		}
 
 ////		R_BoundTriSurf( tri );
@@ -3374,31 +3754,32 @@ idRenderModelMD3::InitFromFile
 ////	return staticModel;
 ////}
 
-/////*
-////=====================
-////idRenderModelMD3::Bounds
-////=====================
-////*/
+/*
+=====================
+idRenderModelMD3::Bounds
+=====================
+*/
 
-////idBounds idRenderModelMD3::Bounds(const struct renderEntity_s *ent) const {
-////	idBounds		ret;
+	Bounds(ent: renderEntity_t = null): idBounds {
+		todoThrow ( );
+		var ret = new idBounds;
 
-////	ret.Clear();
+		//ret.Clear();
 
-////	if (!ent || !md3) {
-////		// just give it the editor bounds
-////		ret.AddPoint(idVec3(-10,-10,-10));
-////		ret.AddPoint(idVec3( 10, 10, 10));
-////		return ret;
-////	}
+		//if (!ent || !this.md3) {
+		//	// just give it the editor bounds
+		//	ret.AddPoint(idVec3(-10,-10,-10));
+		//	ret.AddPoint(idVec3( 10, 10, 10));
+		//	return ret;
+		//}
 
-////	md3Frame_t	*frame = (md3Frame_t *)( (byte *)md3 + md3.ofsFrames );
+		//md3Frame_t	*frame = (md3Frame_t *)( (byte *)this.md3 + this.md3.ofsFrames );
 
-////	ret.AddPoint( frame.bounds[0] );
-////	ret.AddPoint( frame.bounds[1] );
+		//ret.AddPoint( frame.bounds[0] );
+		//ret.AddPoint( frame.bounds[1] );
 
-////	return ret;
-////}
+		return ret;
+	}
 
 
 }
@@ -3414,7 +3795,7 @@ idRenderModelMD3::InitFromFile
 class idRenderModelLiquid extends idRenderModelStatic {
 	constructor() {
 		super();
-		todoThrow()
+		todoThrow ( );
 	}
 ////public:
 ////								idRenderModelLiquid();
@@ -3590,8 +3971,8 @@ class idRenderModelLiquid extends idRenderModelStatic {
 	////		for ( cx = left; cx < right; cx++ ) {
 	////			square = cy*cy + cx*cx;
 	////			if ( square < radsquare ) {
-	////				dist = idMath::Sqrt( (float)square * invlength );
-	////				page[verts_x*(cy+y) + cx+x] += idMath::Cos16( dist * idMath::PI * 0.5f ) * drop_height;
+	////				dist = idMath.Sqrt( (float)square * invlength );
+	////				page[verts_x*(cy+y) + cx+x] += idMath.Cos16( dist * idMath.PI * 0.5f ) * drop_height;
 	////			}
 	////		}
 	////	}
@@ -3608,12 +3989,12 @@ class idRenderModelLiquid extends idRenderModelStatic {
 	////	float	up, down;
 	////	float	*pos;
 
-	////	left	= ( int )( bounds[ 0 ].x / scale_x );
-	////	right	= ( int )( bounds[ 1 ].x / scale_x );
-	////	top		= ( int )( bounds[ 0 ].y / scale_y );
-	////	bottom	= ( int )( bounds[ 1 ].y / scale_y );
-	////	down	= bounds[ 0 ].z;
-	////	up		= bounds[ 1 ].z;
+	////	left	= ( int )( this.bounds[ 0 ].x / scale_x );
+	////	right	= ( int )( this.bounds[ 1 ].x / scale_x );
+	////	top		= ( int )( this.bounds[ 0 ].y / scale_y );
+	////	bottom	= ( int )( this.bounds[ 1 ].y / scale_y );
+	////	down	= this.bounds[ 0 ].z;
+	////	up		= this.bounds[ 1 ].z;
 
 	////	if ( ( right < 1 ) || ( left >= verts_x ) || ( bottom < 1 ) || ( top >= verts_x ) ) {
 	////		return;
@@ -3878,9 +4259,9 @@ class idRenderModelLiquid extends idRenderModelStatic {
 		////	// sil edge connectivity and normal / tangent generation information
 		////	deformInfo = R_BuildDeformInfo( verts.Num(), verts.Ptr(), tris.Num(), tris.Ptr(), true );
 
-		////	bounds.Clear();
-		////	bounds.AddPoint( idVec3( 0.0, 0.0, drop_height * -10.0f ) );
-		////	bounds.AddPoint( idVec3( ( verts_x - 1 ) * scale_x, ( verts_y - 1 ) * scale_y, drop_height * 10.0f ) );
+		////	this.bounds.Clear();
+		////	this.bounds.AddPoint( idVec3( 0.0, 0.0, drop_height * -10.0f ) );
+		////	this.bounds.AddPoint( idVec3( ( verts_x - 1 ) * scale_x, ( verts_y - 1 ) * scale_y, drop_height * 10.0f ) );
 
 		////	// set the timestamp for reloadmodels
 		////	fileSystem.ReadFile( name, NULL, &timeStamp );
@@ -3939,24 +4320,25 @@ class idRenderModelLiquid extends idRenderModelStatic {
 ////	return staticModel;
 ////}
 
-/////*
-////====================
-////idRenderModelLiquid::IsDynamicModel
-////====================
-////*/
-////dynamicModel_t idRenderModelLiquid::IsDynamicModel() const {
-////	return DM_CONTINUOUS;
-////}
+/*
+====================
+idRenderModelLiquid::IsDynamicModel
+====================
+*/
+	IsDynamicModel ( ): dynamicModel_t {
+		return dynamicModel_t.DM_CONTINUOUS;
+	}
 
-/////*
-////====================
-////idRenderModelLiquid::Bounds
-////====================
-////*/
-////idBounds idRenderModelLiquid::Bounds(const struct renderEntity_s *ent) const {
-////	// FIXME: need to do this better
-////	return bounds;
-////}
+/*
+====================
+idRenderModelLiquid::Bounds
+====================
+*/
+
+	Bounds(ent: renderEntity_t = null): idBounds {
+		// FIXME: need to do this better
+		return this.bounds;
+	}
 
 
 }
@@ -4007,15 +4389,15 @@ idRenderModelPrt::InitFromFile
 		this.particleSystem = static_cast<idDeclParticle>( declManager.FindType( declType_t.DECL_PARTICLE, fileName ) );
 	}
 
-/////*
-////=================
-////idRenderModelPrt::TouchData
-////=================
-////*/
-////void idRenderModelPrt::TouchData( void ) {
-////	// Ensure our particle system is added to the list of referenced decls
-////	particleSystem = static_cast<const idDeclParticle *>( declManager.FindType( DECL_PARTICLE, name ) );
-////}
+/*
+=================
+idRenderModelPrt::TouchData
+=================
+*/
+	TouchData ( ): void {
+		// Ensure our particle system is added to the list of referenced decls
+		this.particleSystem = static_cast<idDeclParticle>( declManager.FindType( declType_t.DECL_PARTICLE, name ) );
+	}
 
 /////*
 ////====================
@@ -4069,8 +4451,8 @@ idRenderModelPrt::InitFromFile
 ////	g.origin.Zero();
 ////	g.axis.Identity();
 
-////	for ( int stageNum = 0; stageNum < particleSystem.stages.Num(); stageNum++ ) {
-////		idParticleStage *stage = particleSystem.stages[stageNum];
+////	for ( int stageNum = 0; stageNum < this.particleSystem.stages.Num(); stageNum++ ) {
+////		idParticleStage *stage = this.particleSystem.stages[stageNum];
 
 ////		if ( !stage.material ) {
 ////			continue;
@@ -4195,32 +4577,33 @@ idRenderModelPrt::InitFromFile
 ////	return staticModel;
 ////}
 
-/////*
-////====================
-////idRenderModelPrt::IsDynamicModel
-////====================
-////*/
-////dynamicModel_t idRenderModelPrt::IsDynamicModel() const {
-////	return DM_CONTINUOUS;
-////}
+/*
+====================
+idRenderModelPrt::IsDynamicModel
+====================
+*/
+	IsDynamicModel ( ): dynamicModel_t {
+		return dynamicModel_t.DM_CONTINUOUS;
+	}
 
-/////*
-////====================
-////idRenderModelPrt::Bounds
-////====================
-////*/
-////idBounds idRenderModelPrt::Bounds( const struct renderEntity_s *ent ) const {
-////	return particleSystem.bounds;
-////}
+/*
+====================
+idRenderModelPrt::Bounds
+====================
+*/
 
-/////*
-////====================
-////idRenderModelPrt::DepthHack
-////====================
-////*/
-////float idRenderModelPrt::DepthHack() const {
-////	return particleSystem.depthHack;
-////}
+	Bounds(ent: renderEntity_t = null ): idBounds {
+		return this.particleSystem.bounds;
+	}
+
+/*
+====================
+idRenderModelPrt::DepthHack
+====================
+*/
+	DepthHack ( ): number {
+		return this.particleSystem.depthHack;
+	}
 
 /////*
 ////====================
@@ -4232,11 +4615,11 @@ idRenderModelPrt::InitFromFile
 
 ////	total += idRenderModelStatic::Memory();
 
-////	if ( particleSystem ) {
-////		total += sizeof( *particleSystem );
+////	if ( this.particleSystem ) {
+////		total += sizeof( *this.particleSystem );
 
-////		for ( int i = 0; i < particleSystem.stages.Num(); i++ ) {
-////			total += sizeof( particleSystem.stages[i] );
+////		for ( int i = 0; i < this.particleSystem.stages.Num(); i++ ) {
+////			total += sizeof( this.particleSystem.stages[i] );
 ////		}
 ////	}
 
@@ -4369,10 +4752,10 @@ idRenderModelBeam::IsLoaded
 ////		minor *= renderEntity.shaderParms[SHADERPARM_BEAM_WIDTH] * 0.5f;
 ////	}
 
-////	int red		= idMath::FtoiFast( renderEntity.shaderParms[SHADERPARM_RED] * 255.0f );
-////	int green	= idMath::FtoiFast( renderEntity.shaderParms[SHADERPARM_GREEN] * 255.0f );
-////	int blue	= idMath::FtoiFast( renderEntity.shaderParms[SHADERPARM_BLUE] * 255.0f );
-////	int alpha	= idMath::FtoiFast( renderEntity.shaderParms[SHADERPARM_ALPHA] * 255.0f );
+////	int red		= idMath.FtoiFast( renderEntity.shaderParms[SHADERPARM_RED] * 255.0f );
+////	int green	= idMath.FtoiFast( renderEntity.shaderParms[SHADERPARM_GREEN] * 255.0f );
+////	int blue	= idMath.FtoiFast( renderEntity.shaderParms[SHADERPARM_BLUE] * 255.0f );
+////	int alpha	= idMath.FtoiFast( renderEntity.shaderParms[SHADERPARM_ALPHA] * 255.0f );
 
 ////	tri.verts[0].xyz = minor;
 ////	tri.verts[0].color[0] = red;
@@ -4405,31 +4788,33 @@ idRenderModelBeam::IsLoaded
 ////	return staticModel;
 ////}
 
-/////*
-////===============
-////idRenderModelBeam::Bounds
-////===============
-////*/
-////idBounds idRenderModelBeam::Bounds( const struct renderEntity_s *renderEntity ) const {
-////	idBounds	b;
+/*
+===============
+idRenderModelBeam::Bounds
+===============
+*/
 
-////	b.Zero();
-////	if ( !renderEntity ) {
-////		b.ExpandSelf( 8.0f );
-////	} else {
-////		idVec3	target = *reinterpret_cast<const idVec3 *>( &renderEntity.shaderParms[SHADERPARM_BEAM_END_X] );
-////		idVec3	localTarget;
-////		float	modelMatrix[16];
-////		R_AxisToModelMatrix( renderEntity.axis, renderEntity.origin, modelMatrix );
-////		R_GlobalPointToLocal( modelMatrix, target, localTarget ); 
+	Bounds(renderEntity: renderEntity_t = null): idBounds {
+		todoThrow ( );
+		var b = new idBounds;
 
-////		b.AddPoint( localTarget );
-////		if ( renderEntity.shaderParms[SHADERPARM_BEAM_WIDTH] != 0.0 ) {
-////			b.ExpandSelf( renderEntity.shaderParms[SHADERPARM_BEAM_WIDTH] * 0.5f );
-////		}
-////	}
-////	return b;
-////}
+		b.Zero ( );
+		//if ( !renderEntity ) {
+		//	b.ExpandSelf( 8.0 );
+		//} else {
+		//	idVec3	target = *reinterpret_cast<const idVec3 *>( &renderEntity.shaderParms[SHADERPARM_BEAM_END_X] );
+		//	idVec3	localTarget;
+		//	float	modelMatrix[16];
+		//	R_AxisToModelMatrix( renderEntity.axis, renderEntity.origin, modelMatrix );
+		//	R_GlobalPointToLocal( modelMatrix, target, localTarget ); 
+
+		//	b.AddPoint( localTarget );
+		//	if ( renderEntity.shaderParms[SHADERPARM_BEAM_WIDTH] != 0.0 ) {
+		//		b.ExpandSelf( renderEntity.shaderParms[SHADERPARM_BEAM_WIDTH] * 0.5f );
+		//	}
+		//}
+		return b;
+	}
 
 
 }
@@ -4524,6 +4909,147 @@ class idRenderModelSprite extends idRenderModelStatic {
 	IsLoaded ( ): boolean {
 		return true;
 	}
+
+
+/////*
+	////===============
+	////idRenderModelSprite::InstantiateDynamicModel
+	////===============
+	////*/
+	////idRenderModel *	idRenderModelSprite::InstantiateDynamicModel( const struct renderEntity_s *renderEntity, const struct viewDef_s *viewDef, idRenderModel *cachedModel ) {
+	////	idRenderModelStatic *staticModel;
+	////	srfTriangles_t *tri;
+	////	modelSurface_t surf;
+
+	////	if ( cachedModel && !r_useCachedDynamicModels.GetBool() ) {
+	////		delete cachedModel;
+	////		cachedModel = NULL;
+	////	}
+
+	////	if ( renderEntity == NULL || viewDef == NULL ) {
+	////		delete cachedModel;
+	////		return NULL;
+	////	}
+
+	////	if ( cachedModel != NULL ) {
+
+	////		assert( dynamic_cast<idRenderModelStatic *>( cachedModel ) != NULL );
+	////		assert( idStr::Icmp( cachedModel.Name(), sprite_SnapshotName ) == 0 );
+
+	////		staticModel = static_cast<idRenderModelStatic *>( cachedModel );
+	////		surf = *staticModel.Surface( 0 );
+	////		tri = surf.geometry;
+
+	////	} else {
+
+	////		staticModel = new idRenderModelStatic;
+	////		staticModel.InitEmpty( sprite_SnapshotName );
+
+	////		tri = R_AllocStaticTriSurf();
+	////		R_AllocStaticTriSurfVerts( tri, 4 );
+	////		R_AllocStaticTriSurfIndexes( tri, 6 );
+
+	////		tri.verts[ 0 ].Clear();
+	////		tri.verts[ 0 ].normal.Set( 1.0f, 0.0, 0.0 );
+	////		tri.verts[ 0 ].tangents[0].Set( 0.0, 1.0f, 0.0 );
+	////		tri.verts[ 0 ].tangents[1].Set( 0.0, 0.0, 1.0f );
+	////		tri.verts[ 0 ].st[ 0 ] = 0.0;
+	////		tri.verts[ 0 ].st[ 1 ] = 0.0;
+
+	////		tri.verts[ 1 ].Clear();
+	////		tri.verts[ 1 ].normal.Set( 1.0f, 0.0, 0.0 );
+	////		tri.verts[ 1 ].tangents[0].Set( 0.0, 1.0f, 0.0 );
+	////		tri.verts[ 1 ].tangents[1].Set( 0.0, 0.0, 1.0f );
+	////		tri.verts[ 1 ].st[ 0 ] = 1.0f;
+	////		tri.verts[ 1 ].st[ 1 ] = 0.0;
+
+	////		tri.verts[ 2 ].Clear();
+	////		tri.verts[ 2 ].normal.Set( 1.0f, 0.0, 0.0 );
+	////		tri.verts[ 2 ].tangents[0].Set( 0.0, 1.0f, 0.0 );
+	////		tri.verts[ 2 ].tangents[1].Set( 0.0, 0.0, 1.0f );
+	////		tri.verts[ 2 ].st[ 0 ] = 1.0f;
+	////		tri.verts[ 2 ].st[ 1 ] = 1.0f;
+
+	////		tri.verts[ 3 ].Clear();
+	////		tri.verts[ 3 ].normal.Set( 1.0f, 0.0, 0.0 );
+	////		tri.verts[ 3 ].tangents[0].Set( 0.0, 1.0f, 0.0 );
+	////		tri.verts[ 3 ].tangents[1].Set( 0.0, 0.0, 1.0f );
+	////		tri.verts[ 3 ].st[ 0 ] = 0.0;
+	////		tri.verts[ 3 ].st[ 1 ] = 1.0f;
+
+	////		tri.indexes[ 0 ] = 0;
+	////		tri.indexes[ 1 ] = 1;
+	////		tri.indexes[ 2 ] = 3;
+	////		tri.indexes[ 3 ] = 1;
+	////		tri.indexes[ 4 ] = 2;
+	////		tri.indexes[ 5 ] = 3;
+
+	////		tri.numVerts = 4;
+	////		tri.numIndexes = 6;
+
+	////		surf.geometry = tri;
+	////		surf.id = 0;
+	////		surf.shader = tr.defaultMaterial;
+	////		staticModel.AddSurface( surf );
+	////	}
+
+	////	int	red			= idMath.FtoiFast( renderEntity.shaderParms[ SHADERPARM_RED ] * 255.0f );
+	////	int green		= idMath.FtoiFast( renderEntity.shaderParms[ SHADERPARM_GREEN ] * 255.0f );
+	////	int	blue		= idMath.FtoiFast( renderEntity.shaderParms[ SHADERPARM_BLUE ] * 255.0f );
+	////	int	alpha		= idMath.FtoiFast( renderEntity.shaderParms[ SHADERPARM_ALPHA ] * 255.0f );
+
+	////	idVec3 right	= idVec3( 0.0, renderEntity.shaderParms[ SHADERPARM_SPRITE_WIDTH ] * 0.5f, 0.0 );
+	////	idVec3 up		= idVec3( 0.0, 0.0, renderEntity.shaderParms[ SHADERPARM_SPRITE_HEIGHT ] * 0.5f );
+
+	////	tri.verts[ 0 ].xyz = up + right;
+	////	tri.verts[ 0 ].color[ 0 ] = red;
+	////	tri.verts[ 0 ].color[ 1 ] = green;
+	////	tri.verts[ 0 ].color[ 2 ] = blue;
+	////	tri.verts[ 0 ].color[ 3 ] = alpha;
+
+	////	tri.verts[ 1 ].xyz = up - right;
+	////	tri.verts[ 1 ].color[ 0 ] = red;
+	////	tri.verts[ 1 ].color[ 1 ] = green;
+	////	tri.verts[ 1 ].color[ 2 ] = blue;
+	////	tri.verts[ 1 ].color[ 3 ] = alpha;
+
+	////	tri.verts[ 2 ].xyz = - right - up;
+	////	tri.verts[ 2 ].color[ 0 ] = red;
+	////	tri.verts[ 2 ].color[ 1 ] = green;
+	////	tri.verts[ 2 ].color[ 2 ] = blue;
+	////	tri.verts[ 2 ].color[ 3 ] = alpha;
+
+	////	tri.verts[ 3 ].xyz = right - up;
+	////	tri.verts[ 3 ].color[ 0 ] = red;
+	////	tri.verts[ 3 ].color[ 1 ] = green;
+	////	tri.verts[ 3 ].color[ 2 ] = blue;
+	////	tri.verts[ 3 ].color[ 3 ] = alpha;
+
+	////	R_BoundTriSurf( tri );
+
+	////	staticModel.bounds = tri.bounds;
+
+	////	return staticModel;
+	////}
+
+	/*
+	===============
+	idRenderModelSprite::Bounds
+	===============
+	*/
+	Bounds(renderEntity: renderEntity_t = null): idBounds {
+		todoThrow ( );
+		var b = new idBounds;
+
+		b.Zero ( );
+		//if ( renderEntity == null ) {
+		//	b.ExpandSelf( 8.0 );
+		//} else {
+		//	b.ExpandSelf( Max( renderEntity.shaderParms[SHADERPARM_SPRITE_WIDTH], renderEntity.shaderParms[SHADERPARM_SPRITE_HEIGHT] ) * 0.5 );
+		//}
+		return b;
+	}
+
 }
 
 ////#endif /* !__MODEL_LOCAL_H__ */

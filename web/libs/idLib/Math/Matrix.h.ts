@@ -850,58 +850,58 @@ idMat3::ToAngles
 		}
 		return angles;
 	}
-//
-///*
-//============
-//idMat3::ToQuat
-//============
-//*/
-//idQuat idMat3::ToQuat( ) const {
-//	idQuat		q;
-//	float		trace;
-//	float		s;
-//	float		t;
-//	int     	i;
-//	int			j;
-//	int			k;
-//
-//	static int 	next[ 3 ] = { 1, 2, 0 };
-//
-//	trace = this.mat[ 0 ][ 0 ] + this.mat[ 1 ][ 1 ] + this.mat[ 2 ][ 2 ];
-//
-//	if ( trace > 0.0 ) {
-//
-//		t = trace + 1.0;
-//		s = idMath.InvSqrt( t ) * 0.5;
-//
-//		q[3] = s * t;
-//		q[0] = ( this.mat[ 2 ][ 1 ] - this.mat[ 1 ][ 2 ] ) * s;
-//		q[1] = ( this.mat[ 0 ][ 2 ] - this.mat[ 2 ][ 0 ] ) * s;
-//		q[2] = ( this.mat[ 1 ][ 0 ] - this.mat[ 0 ][ 1 ] ) * s;
-//
-//	} else {
-//
-//		i = 0;
-//		if ( this.mat[ 1 ][ 1 ] > this.mat[ 0 ][ 0 ] ) {
-//			i = 1;
-//		}
-//		if ( this.mat[ 2 ][ 2 ] > this.mat[ i ][ i ] ) {
-//			i = 2;
-//		}
-//		j = next[ i ];
-//		k = next[ j ];
-//
-//		t = ( this.mat[ i ][ i ] - ( this.mat[ j ][ j ] + this.mat[ k ][ k ] ) ) + 1.0;
-//		s = idMath.InvSqrt( t ) * 0.5;
-//
-//		q[i] = s * t;
-//		q[3] = ( this.mat[ k ][ j ] - this.mat[ j ][ k ] ) * s;
-//		q[j] = ( this.mat[ j ][ i ] + this.mat[ i ][ j ] ) * s;
-//		q[k] = ( this.mat[ k ][ i ] + this.mat[ i ][ k ] ) * s;
-//	}
-//	return q;
-//}
-//
+
+/*
+============
+idMat3::ToQuat
+============
+*/
+	ToQuat ( ): idQuat {
+		var q = new idQuat;
+		var trace: number /*float*/;
+		var s: number /*float*/;
+		var t: number /*float*/;
+		var i: number /*int*/;
+		var j: number /*int*/;
+		var k: number /*int*/;
+
+		var /*static int 	*/next /*[ 3 ]*/ = [1, 2, 0];
+
+		trace = this.mat[0][0] + this.mat[1][1] + this.mat[2][2];
+
+		if ( trace > 0.0 ) {
+
+			t = trace + 1.0;
+			s = idMath.InvSqrt( t ) * 0.5;
+
+			q[3] = s * t;
+			q[0] = ( this.mat[2][1] - this.mat[1][2] ) * s;
+			q[1] = ( this.mat[0][2] - this.mat[2][0] ) * s;
+			q[2] = ( this.mat[1][0] - this.mat[0][1] ) * s;
+
+		} else {
+
+			i = 0;
+			if ( this.mat[1][1] > this.mat[0][0] ) {
+				i = 1;
+			}
+			if ( this.mat[2][2] > this.mat[i][i] ) {
+				i = 2;
+			}
+			j = next[i];
+			k = next[j];
+
+			t = ( this.mat[i][i] - ( this.mat[j][j] + this.mat[k][k] ) ) + 1.0;
+			s = idMath.InvSqrt( t ) * 0.5;
+
+			q[i] = s * t;
+			q[3] = ( this.mat[k][j] - this.mat[j][k] ) * s;
+			q[j] = ( this.mat[j][i] + this.mat[i][j] ) * s;
+			q[k] = ( this.mat[k][i] + this.mat[i][k] ) * s;
+		}
+		return q;
+	}
+
 ///*
 //============
 //idMat3::ToCQuat
