@@ -119,10 +119,6 @@ class idStr implements ITrackedObject {
 		// it is added manually because not every string needs to be tracked
 	}
 
-	destructor(): void {
-		objectTracker.removeObject(this.refAddress);
-	}
-
 	constructor ( );
 	constructor ( str: idStr );
 	constructor ( str: boolean );
@@ -525,9 +521,11 @@ class idStr implements ITrackedObject {
 ////	len = l;
 ////}
 
-////ID_INLINE idStr::~idStr( ) {
-////	FreeData();
-////}
+	destructor(): void {
+		objectTracker.removeObject(this.refAddress);
+		//this.FreeData ( ); // breaks on load...
+	}
+
 	Size ( ): number {
 		return this.data.length; //sizeof( *this ) + Allocated();
 	}
@@ -684,6 +682,12 @@ class idStr implements ITrackedObject {
 		var aStr: string = idStr.getString( a ),
 			bStr: string = idStr.getString( b );
 		return aStr === bStr;
+	}
+
+	notEqualTo ( other: idStr ): boolean
+	notEqualTo ( other: string ): boolean
+	notEqualTo ( other: any ): boolean {
+		return !idStr.equalTo( this, other );
 	}
 
 	Cmp ( text: string ): number;
@@ -1079,9 +1083,9 @@ class idStr implements ITrackedObject {
 ////			 ( c >= 0xC0 && c <= 0xFF ) );
 ////}
 
-////ID_INLINE bool idStr::CharIsNumeric( int c ) {
-////	return ( c <= '9' && c >= '0' );
-////}
+	static CharIsNumeric ( /*int */c: number ): boolean {
+		return ( c <= '9'.charCodeAt( 0 ) && c >= '0'.charCodeAt( 0 ) );
+	}
 
 ////ID_INLINE bool idStr::CharIsNewLine( char c ) {
 ////	return ( c == '\n' || c == '\r' || c == '\v' );
@@ -1202,7 +1206,7 @@ idStr::ColorForIndex
 idStr::FreeData
 ============
 */
-FreeData( ):void {
+	FreeData ( ): void {
 //	if ( this.data && this.data != this.baseBuffer ) {
 ////#ifdef USE_STRING_DATA_ALLOCATOR
 //		stringDataAllocator.Free( this.data );
@@ -1211,8 +1215,8 @@ FreeData( ):void {
 ////#endif
 //		this.data = this.baseBuffer;
 //	}
-	this.data = null;
-}
+		this.data = "";
+	}
 
 /*
 ============

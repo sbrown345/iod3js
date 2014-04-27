@@ -1326,7 +1326,7 @@ idDeclManagerLocal::PrintType
 ////*/
 ////idDecl *idDeclManagerLocal::CreateNewDecl( declType_t type, name:string, const char *_fileName ) {
 ////	int typeIndex = (int)type;
-////	int i, hash;
+////	var/*int */i:number, hash:number;
 
 ////	if ( typeIndex < 0 || typeIndex >= this.declTypes.Num() || this.declTypes[typeIndex] == NULL ) {
 ////		common.FatalError( "idDeclManager::CreateNewDecl: bad type: %i", typeIndex );
@@ -1417,7 +1417,7 @@ idDeclManagerLocal::PrintType
 
 ////	// make sure it already exists
 ////	int typeIndex = (int)type;
-////	int i, hash;
+////	var/*int */i:number, hash:number;
 ////	hash = this.hashTables[typeIndex].GenerateKey( canonicalOldName, false );
 ////	for ( i = this.hashTables[typeIndex].First( hash ); i >= 0; i = this.hashTables[typeIndex].Next( i ) ) {
 ////		if ( this.linearLists[typeIndex][i].name.Icmp( canonicalOldName ) == 0 ) {

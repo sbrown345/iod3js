@@ -442,6 +442,10 @@ class arrPtr<T> {
 	}
 
 	constructor ( arr: T[], indexOffset: number = 0 ) {
+		this.set( arr, indexOffset );
+	}
+
+	set ( arr: T[], indexOffset: number = 0 ): void {
 		this.arr = arr;
 		this.idx = indexOffset;
 	}

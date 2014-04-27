@@ -66,9 +66,9 @@ class idAnimManager {
 //	void						FlushUnusedAnims( );
 //
 //private:
-//	idHashTable<idMD5Anim *>	animations;
-//	idStrList					jointnames;
-//	idHashIndex					jointnamesHash;
+	animations = new idHashTable<idMD5Anim /***/>();
+	jointnames = new idStrList;
+	jointnamesHash = new idHashIndex;
 ///*
 //====================
 //idAnimManager::idAnimManager
@@ -85,53 +85,51 @@ class idAnimManager {
 //idAnimManager::~idAnimManager() {
 //	Shutdown();
 //}
-//
-///*
-//====================
-//idAnimManager::Shutdown
-//====================
-//*/
-//void idAnimManager::Shutdown( ) {
-//	animations.DeleteContents();
-//	jointnames.Clear();
-//	jointnamesHash.Free();
-//}
-//
+
+/*
+====================
+idAnimManager::Shutdown
+====================
+*/
+	Shutdown ( ): void {
+		this.animations.DeleteContents ( );
+		this.jointnames.Clear ( );
+		this.jointnamesHash.Free ( );
+	}
+
 /*
 ====================
 idAnimManager::GetAnim
 ====================
 */
 	GetAnim ( name: string ): idMD5Anim {
-		todoThrow ( );
-		//idMD5Anim **animptrptr;
+		var animptrptr = new R<idMD5Anim> ( );
 		var anim: idMD5Anim;
 
 		// see if it has been asked for before
-		//animptrptr = NULL;
-		//if ( animations.Get( name, &animptrptr ) ) {
-		//	anim = *animptrptr;
-		//} else {
-		//	idStr extension;
-		//	idStr filename = name;
+		animptrptr.$ = null;
+		if ( this.animations.Get( name, animptrptr ) ) {
+			anim = animptrptr.$;
+		} else {
+			var extension = new idStr;
+			var filename = new idStr( name );
 
-		//	filename.ExtractFileExtension( extension );
-		//	if ( extension != MD5_ANIM_EXT ) {
-		//		return NULL;
-		//	}
+			filename.ExtractFileExtension( extension );
+			if ( extension.data != MD5_ANIM_EXT ) {
+				return null;
+			}
 
-		//	anim = new idMD5Anim();
-		//	if ( !anim->LoadAnim( filename ) ) {
-		//		gameLocal.Warning( "Couldn't load anim: '%s'", filename.c_str() );
-		//		delete anim;
-		//		anim = NULL;
-		//	}
-		//	animations.Set( filename, anim );
-		//}
+			anim = new idMD5Anim ( );
+			if ( !anim.LoadAnim( filename.data ) ) {
+				gameLocal.Warning( "Couldn't load anim: '%s'", filename.c_str ( ) );
+				delete anim;
+				anim = null;
+			}
+			this.animations.Set( filename.data, anim );
+		}
 
 		return anim;
 	}
-//
 ///*
 //================
 //idAnimManager::ReloadAnims
@@ -141,42 +139,42 @@ idAnimManager::GetAnim
 //	var/*int*/i:number;
 //	idMD5Anim	**animptr;
 //
-//	for( i = 0; i < animations.Num(); i++ ) {
-//		animptr = animations.GetIndex( i );
+//	for( i = 0; i < this.animations.Num(); i++ ) {
+//		animptr = this.animations.GetIndex( i );
 //		if ( animptr && *animptr ) {
-//			( *animptr )->Reload();
+//			( *animptr ).Reload();
 //		}
 //	}
 //}
 //
-///*
-//================
-//idAnimManager::JointIndex
-//================
-//*/
-//int	idAnimManager::JointIndex( const char *name ) {
-//	int i, hash;
-//
-//	hash = jointnamesHash.GenerateKey( name );
-//	for ( i = jointnamesHash.First( hash ); i != -1; i = jointnamesHash.Next( i ) ) {
-//		if ( jointnames[i].Cmp( name ) == 0 ) {
-//			return i;
-//		}
-//	}
-//
-//	i = jointnames.Append( name );
-//	jointnamesHash.Add( hash, i );
-//	return i;
-//}
-//
-///*
-//================
-//idAnimManager::JointName
-//================
-//*/
-//const char *idAnimManager::JointName( int index ) const {
-//	return jointnames[ index ];
-//}
+/*
+================
+idAnimManager::JointIndex
+================
+*/
+	JointIndex ( name: string ): number {
+		var /*int */i: number, hash: number;
+
+		hash = this.jointnamesHash.GenerateKey( name );
+		for ( i = this.jointnamesHash.First( hash ); i != -1; i = this.jointnamesHash.Next( i ) ) {
+			if ( this.jointnames[i].Cmp( name ) == 0 ) {
+				return i;
+			}
+		}
+
+		i = this.jointnames.Append( new idStr( name ) );
+		this.jointnamesHash.Add( hash, i );
+		return i;
+	}
+
+/*
+================
+idAnimManager::JointName
+================
+*/
+	JointName ( /*int*/ index: number ): string {
+		return this.jointnames[index].data;
+	}
 //
 ///*
 //================
@@ -194,24 +192,24 @@ idAnimManager::GetAnim
 //
 //	num = 0;
 //	size = 0;
-//	for( i = 0; i < animations.Num(); i++ ) {
-//		animptr = animations.GetIndex( i );
+//	for( i = 0; i < this.animations.Num(); i++ ) {
+//		animptr = this.animations.GetIndex( i );
 //		if ( animptr && *animptr ) {
 //			anim = *animptr;
-//			s = anim->Size();
-//			gameLocal.Printf( "%8d bytes : %2d refs : %s\n", s, anim->NumRefs(), anim->Name() );
+//			s = anim.Size();
+//			gameLocal.Printf( "%8d bytes : %2d refs : %s\n", s, anim.NumRefs(), anim.Name() );
 //			size += s;
 //			num++;
 //		}
 //	}
 //
-//	namesize = jointnames.Size() + jointnamesHash.Size();
-//	for( i = 0; i < jointnames.Num(); i++ ) {
-//		namesize += jointnames[ i ].Size();
+//	namesize = this.jointnames.Size() + this.jointnamesHash.Size();
+//	for( i = 0; i < this.jointnames.Num(); i++ ) {
+//		namesize += this.jointnames[ i ].Size();
 //	}
 //
 //	gameLocal.Printf( "\n%d memory used in %d anims\n", size, num );
-//	gameLocal.Printf( "%d memory used in %d joint names\n", namesize, jointnames.Num() );
+//	gameLocal.Printf( "%d memory used in %d joint names\n", namesize, this.jointnames.Num() );
 //}
 //
 ///*
@@ -225,17 +223,17 @@ idAnimManager::GetAnim
 //	idMD5Anim				**animptr;
 //	idList<idMD5Anim *>		removeAnims;
 //	
-//	for( i = 0; i < animations.Num(); i++ ) {
-//		animptr = animations.GetIndex( i );
+//	for( i = 0; i < this.animations.Num(); i++ ) {
+//		animptr = this.animations.GetIndex( i );
 //		if ( animptr && *animptr ) {
-//			if ( ( *animptr )->NumRefs() <= 0 ) {
+//			if ( ( *animptr ).NumRefs() <= 0 ) {
 //				removeAnims.Append( *animptr );
 //			}
 //		}
 //	}
 //
 //	for( i = 0; i < removeAnims.Num(); i++ ) {
-//		animations.Remove( removeAnims[ i ]->Name() );
+//		this.animations.Remove( removeAnims[ i ].Name() );
 //		delete removeAnims[ i ];
 //	}
 //}

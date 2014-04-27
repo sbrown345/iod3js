@@ -161,18 +161,34 @@ enum frameCommandType_t{
 class frameLookup_t{
 	num: number /*int*/;
 	firstCommand: number /*int*/;
+
+	copy ( dest: frameLookup_t = null ): frameLookup_t {
+		dest = dest || new frameLookup_t;
+		dest.num = this.num;
+		dest.firstCommand = this.firstCommand;
+		return dest;
+	}
 }
 
 class frameCommand_t {
 	type: frameCommandType_t;
 	$string = new idStr;
-//
+
 //	union {
-//		const idSoundShader	*soundShader;
-//		const function_t	*function;
-//		const idDeclSkin	*skin;
-//		int					index;
+	soundShader: idSoundShader;
+	$function: function_t;
+	skin: idDeclSkin;
+	index: number /*int*/;
 //	};
+
+	memset0 ( ): void {
+		this.type = 0;
+		this.$string.memset0 ( );
+		this.soundShader = null;
+		this.$function = null;
+		this.skin = null;
+		this.index = 0;
+	}
 }
 
 class animFlags_t {
@@ -241,10 +257,10 @@ class idMD5Anim {
 	animLength: number /*int*/;
 	numJoints: number /*int*/;
 	numAnimatedComponents: number /*int*/;
-//	idList<idBounds>		bounds;
-//	idList<jointAnimInfo_t>	jointInfo;
-//	idList<idJointQuat>		baseFrame;
-//	idList<float>			componentFrames;
+	bounds = new idList<idBounds>(idBounds);
+	jointInfo = new idList<jointAnimInfo_t>(jointAnimInfo_t);
+	baseFrame = new idList<idJointQuat>(idJointQuat);
+	componentFrames = new idList</*float*/number>(Number);
 	name = new idStr;
 	totaldelta = new idVec3;
 	ref_count: number /*mutable int*/;
@@ -293,34 +309,34 @@ idMD5Anim::idMD5Anim
 		this.animLength = 0;
 		this.totaldelta.Zero ( );
 	}
-//
-///*
-//====================
-//idMD5Anim::idMD5Anim
-//====================
-//*/
-//idMD5Anim::~idMD5Anim() {
-//	Free();
-//}
-//
-///*
-//====================
-//idMD5Anim::Free
-//====================
-//*/
-//void idMD5Anim::Free( ) {
-//	this.numFrames	= 0;
-//	this.numJoints	= 0;
-//	this.frameRate	= 24;
-//	animLength	= 0;
-//	name		= "";
-//
-//	totaldelta.Zero();
-//
-//	jointInfo.Clear();
-//	bounds.Clear();
-//	componentFrames.Clear();
-//}
+
+/*
+====================
+idMD5Anim::idMD5Anim
+====================
+*/
+destructor():void {
+	this.Free();
+}
+
+/*
+====================
+idMD5Anim::Free
+====================
+*/
+	Free ( ): void {
+		this.numFrames = 0;
+		this.numJoints = 0;
+		this.frameRate = 24;
+		this.animLength = 0;
+		this.name.opEquals( "" );
+
+		this.totaldelta.Zero ( );
+
+		this.jointInfo.Clear ( );
+		this.bounds.Clear ( );
+		this.componentFrames.Clear ( );
+	}
 
 /*
 ====================
@@ -355,7 +371,7 @@ idMD5Anim::Length
 //=====================
 //*/
 //const idVec3 &idMD5Anim::TotalMovementDelta( ) const {
-//	return totaldelta;
+//	return this.totaldelta;
 //}
 
 /*
@@ -375,8 +391,8 @@ idMD5Anim::TotalMovementDelta
 //bool idMD5Anim::Reload( ) {
 //	idStr filename;
 //
-//	filename = name;
-//	Free();
+//	filename = this.name;
+//	this.Free();
 //
 //	return LoadAnim( filename );
 //}
@@ -387,186 +403,186 @@ idMD5Anim::TotalMovementDelta
 //====================
 //*/
 //size_t idMD5Anim::Allocated( ) const {
-//	size_t	size = bounds.Allocated() + jointInfo.Allocated() + componentFrames.Allocated() + name.Allocated();
+//	size_t	size = this.bounds.Allocated() + this.jointInfo.Allocated() + this.componentFrames.Allocated() + this.name.Allocated();
 //	return size;
 //}
-//
-///*
-//====================
-//idMD5Anim::LoadAnim
-//====================
-//*/
-//bool idMD5Anim::LoadAnim( const char *filename ) {
-//	int		version;
-//	idLexer	parser( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_NOSTRINGCONCAT );
-//	idToken	token;
-//	int		i, j;
-//	var /*int*/num:number;
-//
-//	if ( !parser.LoadFile( filename ) ) {
-//		return false;
-//	}
-//
-//	Free();
-//
-//	name = filename;
-//
-//	parser.ExpectTokenString( MD5_VERSION_STRING );
-//	version = parser.ParseInt();
-//	if ( version != MD5_VERSION ) {
-//		parser.Error( "Invalid version %d.  Should be version %d\n", version, MD5_VERSION );
-//	}
-//
-//	// skip the commandline
-//	parser.ExpectTokenString( "commandline" );
-//	parser.ReadToken( &token );
-//
-//	// parse num frames
-//	parser.ExpectTokenString( "numFrames" );
-//	this.numFrames = parser.ParseInt();
-//	if ( this.numFrames <= 0 ) {
-//		parser.Error( "Invalid number of frames: %d", this.numFrames );
-//	}
-//
-//	// parse num joints
-//	parser.ExpectTokenString( "numJoints" );
-//	this.numJoints = parser.ParseInt();
-//	if ( this.numJoints <= 0 ) {
-//		parser.Error( "Invalid number of joints: %d", this.numJoints );
-//	}
-//
-//	// parse frame rate
-//	parser.ExpectTokenString( "frameRate" );
-//	this.frameRate = parser.ParseInt();
-//	if ( this.frameRate < 0 ) {
-//		parser.Error( "Invalid frame rate: %d", this.frameRate );
-//	}
-//
-//	// parse number of animated components
-//	parser.ExpectTokenString( "numAnimatedComponents" );
-//	numAnimatedComponents = parser.ParseInt();
-//	if ( ( numAnimatedComponents < 0 ) || ( numAnimatedComponents > this.numJoints * 6 ) ) {
-//		parser.Error( "Invalid number of animated components: %d", numAnimatedComponents );
-//	}
-//
-//	// parse the hierarchy
-//	jointInfo.SetGranularity( 1 );
-//	jointInfo.SetNum( this.numJoints );
-//	parser.ExpectTokenString( "hierarchy" );
-//	parser.ExpectTokenString( "{" );
-//	for( i = 0; i < this.numJoints; i++ ) {
-//		parser.ReadToken( &token );
-//		jointInfo[ i ].nameIndex = animationLib.JointIndex( token );
-//		
-//		// parse parent num
-//		jointInfo[ i ].parentNum = parser.ParseInt();
-//		if ( jointInfo[ i ].parentNum >= i ) {
-//			parser.Error( "Invalid parent num: %d", jointInfo[ i ].parentNum );
-//		}
-//
-//		if ( ( i != 0 ) && ( jointInfo[ i ].parentNum < 0 ) ) {
-//			parser.Error( "Animations may have only one root joint" );
-//		}
-//
-//		// parse anim bits
-//		jointInfo[ i ].animBits = parser.ParseInt();
-//		if ( jointInfo[ i ].animBits & ~63 ) {
-//			parser.Error( "Invalid anim bits: %d", jointInfo[ i ].animBits );
-//		}
-//
-//		// parse first component
-//		jointInfo[ i ].firstComponent = parser.ParseInt();
-//		if ( ( numAnimatedComponents > 0 ) && ( ( jointInfo[ i ].firstComponent < 0 ) || ( jointInfo[ i ].firstComponent >= numAnimatedComponents ) ) ) {
-//			parser.Error( "Invalid first component: %d", jointInfo[ i ].firstComponent );
-//		}
-//	}
-//
-//	parser.ExpectTokenString( "}" );
-//
-//	// parse bounds
-//	parser.ExpectTokenString( "bounds" );
-//	parser.ExpectTokenString( "{" );
-//	bounds.SetGranularity( 1 );
-//	bounds.SetNum( this.numFrames );
-//	for( i = 0; i < this.numFrames; i++ ) {
-//		parser.Parse1DMatrix( 3, bounds[ i ][ 0 ].ToFloatPtr() );
-//		parser.Parse1DMatrix( 3, bounds[ i ][ 1 ].ToFloatPtr() );
-//	}
-//	parser.ExpectTokenString( "}" );
-//
-//	// parse base frame
-//	baseFrame.SetGranularity( 1 );
-//	baseFrame.SetNum( this.numJoints );
-//	parser.ExpectTokenString( "baseframe" );
-//	parser.ExpectTokenString( "{" );
-//	for( i = 0; i < this.numJoints; i++ ) {
-//		idCQuat q;
-//		parser.Parse1DMatrix( 3, baseFrame[ i ].t.ToFloatPtr() );
-//		parser.Parse1DMatrix( 3, q.ToFloatPtr() );//baseFrame[ i ].q.ToFloatPtr() );
-//		baseFrame[ i ].q = q.ToQuat();//.w = baseFrame[ i ].q.CalcW();
-//	}
-//	parser.ExpectTokenString( "}" );
-//
-//	// parse frames
-//	componentFrames.SetGranularity( 1 );
-//	componentFrames.SetNum( numAnimatedComponents * this.numFrames );
-//
-//	float *componentPtr = componentFrames.Ptr();
-//	for( i = 0; i < this.numFrames; i++ ) {
-//		parser.ExpectTokenString( "frame" );
-//		num = parser.ParseInt();
-//		if ( num != i ) {
-//			parser.Error( "Expected frame number %d", i );
-//		}
-//		parser.ExpectTokenString( "{" );
-//		
-//		for( j = 0; j < numAnimatedComponents; j++, componentPtr++ ) {
-//			*componentPtr = parser.ParseFloat();
-//		}
-//
-//		parser.ExpectTokenString( "}" );
-//	}
-//
-//	// get total move delta
-//	if ( !numAnimatedComponents ) {
-//		totaldelta.Zero();
-//	} else {
-//		componentPtr = &componentFrames[ jointInfo[ 0 ].firstComponent ];
-//		if ( jointInfo[ 0 ].animBits & ANIM_TX ) {
-//			for( i = 0; i < this.numFrames; i++ ) {
-//				componentPtr[ numAnimatedComponents * i ] -= baseFrame[ 0 ].t.x;
-//			}
-//			totaldelta.x = componentPtr[ numAnimatedComponents * ( this.numFrames - 1 ) ];
-//			componentPtr++;
-//		} else {
-//			totaldelta.x = 0.0;
-//		}
-//		if ( jointInfo[ 0 ].animBits & ANIM_TY ) {
-//			for( i = 0; i < this.numFrames; i++ ) {
-//				componentPtr[ numAnimatedComponents * i ] -= baseFrame[ 0 ].t.y;
-//			}
-//			totaldelta.y = componentPtr[ numAnimatedComponents * ( this.numFrames - 1 ) ];
-//			componentPtr++;
-//		} else {
-//			totaldelta.y = 0.0;
-//		}
-//		if ( jointInfo[ 0 ].animBits & ANIM_TZ ) {
-//			for( i = 0; i < this.numFrames; i++ ) {
-//				componentPtr[ numAnimatedComponents * i ] -= baseFrame[ 0 ].t.z;
-//			}
-//			totaldelta.z = componentPtr[ numAnimatedComponents * ( this.numFrames - 1 ) ];
-//		} else {
-//			totaldelta.z = 0.0;
-//		}
-//	}
-//	baseFrame[ 0 ].t.Zero();
-//
-//	// we don't count last frame because it would cause a 1 frame pause at the end
-//	animLength = ( ( this.numFrames - 1 ) * 1000 + this.frameRate - 1 ) / this.frameRate;
-//
-//	// done
-//	return true;
-//}
+
+/*
+====================
+idMD5Anim::LoadAnim
+====================
+*/
+	LoadAnim ( filename: string ): boolean {
+		var /*int*/version: number;
+		var parser = new idLexer( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_NOSTRINGCONCAT );
+		var token = new idToken;
+		var /*int*/i: number, j: number;
+		var /*int*/num: number;
+
+		if ( !parser.LoadFile( filename ) ) {
+			return false;
+		}
+
+		this.Free ( );
+
+		this.name.opEquals( filename );
+
+		parser.ExpectTokenString( MD5_VERSION_STRING );
+		version = parser.ParseInt ( );
+		if ( version != MD5_VERSION ) {
+			parser.Error( "Invalid version %d.  Should be version %d\n", version, MD5_VERSION );
+		}
+
+		// skip the commandline
+		parser.ExpectTokenString( "commandline" );
+		parser.ReadToken( token );
+
+		// parse num frames
+		parser.ExpectTokenString( "numFrames" );
+		this.numFrames = parser.ParseInt ( );
+		if ( this.numFrames <= 0 ) {
+			parser.Error( "Invalid number of frames: %d", this.numFrames );
+		}
+
+		// parse num joints
+		parser.ExpectTokenString( "numJoints" );
+		this.numJoints = parser.ParseInt ( );
+		if ( this.numJoints <= 0 ) {
+			parser.Error( "Invalid number of joints: %d", this.numJoints );
+		}
+
+		// parse frame rate
+		parser.ExpectTokenString( "frameRate" );
+		this.frameRate = parser.ParseInt ( );
+		if ( this.frameRate < 0 ) {
+			parser.Error( "Invalid frame rate: %d", this.frameRate );
+		}
+
+		// parse number of animated components
+		parser.ExpectTokenString( "numAnimatedComponents" );
+		this.numAnimatedComponents = parser.ParseInt ( );
+		if ( ( this.numAnimatedComponents < 0 ) || ( this.numAnimatedComponents > this.numJoints * 6 ) ) {
+			parser.Error( "Invalid number of animated components: %d", this.numAnimatedComponents );
+		}
+
+		// parse the hierarchy
+		this.jointInfo.SetGranularity( 1 );
+		this.jointInfo.SetNum( this.numJoints );
+		parser.ExpectTokenString( "hierarchy" );
+		parser.ExpectTokenString( "{" );
+		for ( i = 0; i < this.numJoints; i++ ) {
+			parser.ReadToken( token );
+			this.jointInfo[i].nameIndex = animationLib.JointIndex( token.data );
+
+			// parse parent num
+			this.jointInfo[i].parentNum = parser.ParseInt ( );
+			if ( this.jointInfo[i].parentNum >= i ) {
+				parser.Error( "Invalid parent num: %d", this.jointInfo[i].parentNum );
+			}
+
+			if ( ( i != 0 ) && ( this.jointInfo[i].parentNum < 0 ) ) {
+				parser.Error( "Animations may have only one root joint" );
+			}
+
+			// parse anim bits
+			this.jointInfo[i].animBits = parser.ParseInt ( );
+			if ( this.jointInfo[i].animBits & ~63 ) {
+				parser.Error( "Invalid anim bits: %d", this.jointInfo[i].animBits );
+			}
+
+			// parse first component
+			this.jointInfo[i].firstComponent = parser.ParseInt ( );
+			if ( ( this.numAnimatedComponents > 0 ) && ( ( this.jointInfo[i].firstComponent < 0 ) || ( this.jointInfo[i].firstComponent >= this.numAnimatedComponents ) ) ) {
+				parser.Error( "Invalid first component: %d", this.jointInfo[i].firstComponent );
+			}
+		}
+
+		parser.ExpectTokenString( "}" );
+
+		// parse bounds
+		parser.ExpectTokenString( "bounds" );
+		parser.ExpectTokenString( "{" );
+		this.bounds.SetGranularity( 1 );
+		this.bounds.SetNum( this.numFrames );
+		for ( i = 0; i < this.numFrames; i++ ) {
+			parser.Parse1DMatrix( 3, this.bounds[i][0].ToFloatPtr ( ) );
+			parser.Parse1DMatrix( 3, this.bounds[i][1].ToFloatPtr ( ) );
+		}
+		parser.ExpectTokenString( "}" );
+
+		// parse base frame
+		this.baseFrame.SetGranularity( 1 );
+		this.baseFrame.SetNum( this.numJoints );
+		parser.ExpectTokenString( "baseframe" );
+		parser.ExpectTokenString( "{" );
+		for ( i = 0; i < this.numJoints; i++ ) {
+			var q = new idCQuat;
+			parser.Parse1DMatrix( 3, this.baseFrame[i].t.ToFloatPtr ( ) );
+			parser.Parse1DMatrix( 3, q.ToFloatPtr ( ) ); //this.baseFrame[ i ].q.ToFloatPtr() );
+			this.baseFrame[i].q.opEquals( q.ToQuat ( ) ); //.w = this.baseFrame[ i ].q.CalcW();
+		}
+		parser.ExpectTokenString( "}" );
+
+		// parse frames
+		this.componentFrames.SetGranularity( 1 );
+		this.componentFrames.SetNum( this.numAnimatedComponents * this.numFrames );
+
+		var /*float **/componentPtr = 0; //this.componentFrames.Ptr ( ) 
+		for ( i = 0; i < this.numFrames; i++ ) {
+			parser.ExpectTokenString( "frame" );
+			num = parser.ParseInt ( );
+			if ( num != i ) {
+				parser.Error( "Expected frame number %d", i );
+			}
+			parser.ExpectTokenString( "{" );
+
+			for ( j = 0; j < this.numAnimatedComponents; j++, componentPtr++ ) {
+				this.componentFrames[componentPtr] = parser.ParseFloat ( );
+			}
+
+			parser.ExpectTokenString( "}" );
+		}
+
+		// get total move delta
+		if ( !this.numAnimatedComponents ) {
+			this.totaldelta.Zero ( );
+		} else {
+			componentPtr = /*this.componentFrames[*/this.jointInfo[0].firstComponent /*]*/;
+			if ( this.jointInfo[0].animBits & ANIM_TX ) {
+				for ( i = 0; i < this.numFrames; i++ ) {
+					this.componentFrames[componentPtr + ( this.numAnimatedComponents * i )] -= this.baseFrame[0].t.x;
+				}
+				this.totaldelta.x = this.componentFrames[componentPtr + ( this.numAnimatedComponents * ( this.numFrames - 1 ) )];
+				componentPtr++;
+			} else {
+				this.totaldelta.x = 0.0;
+			}
+			if ( this.jointInfo[0].animBits & ANIM_TY ) {
+				for ( i = 0; i < this.numFrames; i++ ) {
+					this.componentFrames[componentPtr + ( this.numAnimatedComponents * i )] -= this.baseFrame[0].t.y;
+				}
+				this.totaldelta.y = this.componentFrames[componentPtr + this.numAnimatedComponents * ( this.numFrames - 1 )];
+				componentPtr++;
+			} else {
+				this.totaldelta.y = 0.0;
+			}
+			if ( this.jointInfo[0].animBits & ANIM_TZ ) {
+				for ( i = 0; i < this.numFrames; i++ ) {
+					this.componentFrames[componentPtr + ( this.numAnimatedComponents * i )] -= this.baseFrame[0].t.z;
+				}
+				this.totaldelta.z = this.componentFrames[componentPtr + this.numAnimatedComponents * ( this.numFrames - 1 )];
+			} else {
+				this.totaldelta.z = 0.0;
+			}
+		}
+		this.baseFrame[0].t.Zero ( );
+
+		// we don't count last frame because it would cause a 1 frame pause at the end
+		this.animLength = int( ( ( this.numFrames - 1 ) * 1000 + this.frameRate - 1 ) / this.frameRate );
+
+		//done
+		return true;
+	}
 
 /*
 ====================
@@ -676,35 +692,35 @@ idMD5Anim::GetOrigin
 		todoThrow ( );
 //	frameBlend_t frame;
 //
-//	offset = baseFrame[ 0 ].t;
-//	if ( !( jointInfo[ 0 ].animBits & ( ANIM_TX | ANIM_TY | ANIM_TZ ) ) ) {
+//	offset = this.baseFrame[ 0 ].t;
+//	if ( !( this.jointInfo[ 0 ].animBits & ( ANIM_TX | ANIM_TY | ANIM_TZ ) ) ) {
 //		// just use the baseframe		
 //		return;
 //	}
 //
 //	ConvertTimeToFrame( time, cyclecount, frame );
 //
-//	const float *componentPtr1 = &componentFrames[ numAnimatedComponents * frame.frame1 + jointInfo[ 0 ].firstComponent ];
-//	const float *componentPtr2 = &componentFrames[ numAnimatedComponents * frame.frame2 + jointInfo[ 0 ].firstComponent ];
+//	const float *componentPtr1 = &this.componentFrames[ this.numAnimatedComponents * frame.frame1 + this.jointInfo[ 0 ].firstComponent ];
+//	const float *componentPtr2 = &this.componentFrames[ this.numAnimatedComponents * frame.frame2 + this.jointInfo[ 0 ].firstComponent ];
 //
-//	if ( jointInfo[ 0 ].animBits & ANIM_TX ) {
+//	if ( this.jointInfo[ 0 ].animBits & ANIM_TX ) {
 //		offset.x = *componentPtr1 * frame.frontlerp + *componentPtr2 * frame.backlerp;
 //		componentPtr1++;
 //		componentPtr2++;
 //	}
 //
-//	if ( jointInfo[ 0 ].animBits & ANIM_TY ) {
+//	if ( this.jointInfo[ 0 ].animBits & ANIM_TY ) {
 //		offset.y = *componentPtr1 * frame.frontlerp + *componentPtr2 * frame.backlerp;
 //		componentPtr1++;
 //		componentPtr2++;
 //	}
 //
-//	if ( jointInfo[ 0 ].animBits & ANIM_TZ ) {
+//	if ( this.jointInfo[ 0 ].animBits & ANIM_TZ ) {
 //		offset.z = *componentPtr1 * frame.frontlerp + *componentPtr2 * frame.backlerp;
 //	}
 //
 //	if ( frame.cycleCount ) {
-//		offset += totaldelta * ( float )frame.cycleCount;
+//		offset += this.totaldelta * ( float )frame.cycleCount;
 //	}
 	}
 //
@@ -717,17 +733,17 @@ idMD5Anim::GetOrigin
 //	frameBlend_t	frame;
 //	int				animBits;
 //	
-//	animBits = jointInfo[ 0 ].animBits;
+//	animBits = this.jointInfo[ 0 ].animBits;
 //	if ( !( animBits & ( ANIM_QX | ANIM_QY | ANIM_QZ ) ) ) {
 //		// just use the baseframe		
-//		rotation = baseFrame[ 0 ].q;
+//		rotation = this.baseFrame[ 0 ].q;
 //		return;
 //	}
 //
 //	ConvertTimeToFrame( time, cyclecount, frame );
 //
-//	const float	*jointframe1 = &componentFrames[ numAnimatedComponents * frame.frame1 + jointInfo[ 0 ].firstComponent ];
-//	const float	*jointframe2 = &componentFrames[ numAnimatedComponents * frame.frame2 + jointInfo[ 0 ].firstComponent ];
+//	const float	*jointframe1 = &this.componentFrames[ this.numAnimatedComponents * frame.frame1 + this.jointInfo[ 0 ].firstComponent ];
+//	const float	*jointframe2 = &this.componentFrames[ this.numAnimatedComponents * frame.frame2 + this.jointInfo[ 0 ].firstComponent ];
 //
 //	if ( animBits & ANIM_TX ) {
 //		jointframe1++;
@@ -751,9 +767,9 @@ idMD5Anim::GetOrigin
 //		case ANIM_QX:
 //			q1.x = jointframe1[0];
 //			q2.x = jointframe2[0];
-//			q1.y = baseFrame[ 0 ].q.y;
+//			q1.y = this.baseFrame[ 0 ].q.y;
 //			q2.y = q1.y;
-//			q1.z = baseFrame[ 0 ].q.z;
+//			q1.z = this.baseFrame[ 0 ].q.z;
 //			q2.z = q1.z;
 //			q1.w = q1.CalcW();
 //			q2.w = q2.CalcW();
@@ -761,9 +777,9 @@ idMD5Anim::GetOrigin
 //		case ANIM_QY:
 //			q1.y = jointframe1[0];
 //			q2.y = jointframe2[0];
-//			q1.x = baseFrame[ 0 ].q.x;
+//			q1.x = this.baseFrame[ 0 ].q.x;
 //			q2.x = q1.x;
-//			q1.z = baseFrame[ 0 ].q.z;
+//			q1.z = this.baseFrame[ 0 ].q.z;
 //			q2.z = q1.z;
 //			q1.w = q1.CalcW();
 //			q2.w = q2.CalcW();
@@ -771,9 +787,9 @@ idMD5Anim::GetOrigin
 //		case ANIM_QZ:
 //			q1.z = jointframe1[0];
 //			q2.z = jointframe2[0];
-//			q1.x = baseFrame[ 0 ].q.x;
+//			q1.x = this.baseFrame[ 0 ].q.x;
 //			q2.x = q1.x;
-//			q1.y = baseFrame[ 0 ].q.y;
+//			q1.y = this.baseFrame[ 0 ].q.y;
 //			q2.y = q1.y;
 //			q1.w = q1.CalcW();
 //			q2.w = q2.CalcW();
@@ -783,7 +799,7 @@ idMD5Anim::GetOrigin
 //			q1.y = jointframe1[1];
 //			q2.x = jointframe2[0];
 //			q2.y = jointframe2[1];
-//			q1.z = baseFrame[ 0 ].q.z;
+//			q1.z = this.baseFrame[ 0 ].q.z;
 //			q2.z = q1.z;
 //			q1.w = q1.CalcW();
 //			q2.w = q2.CalcW();
@@ -793,7 +809,7 @@ idMD5Anim::GetOrigin
 //			q1.z = jointframe1[1];
 //			q2.x = jointframe2[0];
 //			q2.z = jointframe2[1];
-//			q1.y = baseFrame[ 0 ].q.y;
+//			q1.y = this.baseFrame[ 0 ].q.y;
 //			q2.y = q1.y;
 //			q1.w = q1.CalcW();
 //			q2.w = q2.CalcW();
@@ -803,7 +819,7 @@ idMD5Anim::GetOrigin
 //			q1.z = jointframe1[1];
 //			q2.y = jointframe2[0];
 //			q2.z = jointframe2[1];
-//			q1.x = baseFrame[ 0 ].q.x;
+//			q1.x = this.baseFrame[ 0 ].q.x;
 //			q2.x = q1.x;
 //			q1.w = q1.CalcW();
 //			q2.w = q2.CalcW();
@@ -835,28 +851,28 @@ idMD5Anim::GetBounds
 
 		//ConvertTimeToFrame( time, cyclecount, frame );
 
-		//bnds = bounds[ frame.frame1 ];
-		//bnds.AddBounds( bounds[ frame.frame2 ] );
+		//bnds = this.bounds[ frame.frame1 ];
+		//bnds.AddBounds( this.bounds[ frame.frame2 ] );
 
 		//// origin position
-		//offset = baseFrame[ 0 ].t;
-		//if ( jointInfo[ 0 ].animBits & ( ANIM_TX | ANIM_TY | ANIM_TZ ) ) {
-		//	const float *componentPtr1 = &componentFrames[ numAnimatedComponents * frame.frame1 + jointInfo[ 0 ].firstComponent ];
-		//	const float *componentPtr2 = &componentFrames[ numAnimatedComponents * frame.frame2 + jointInfo[ 0 ].firstComponent ];
+		//offset = this.baseFrame[ 0 ].t;
+		//if ( this.jointInfo[ 0 ].animBits & ( ANIM_TX | ANIM_TY | ANIM_TZ ) ) {
+		//	const float *componentPtr1 = &this.componentFrames[ this.numAnimatedComponents * frame.frame1 + this.jointInfo[ 0 ].firstComponent ];
+		//	const float *componentPtr2 = &this.componentFrames[ this.numAnimatedComponents * frame.frame2 + this.jointInfo[ 0 ].firstComponent ];
 
-		//	if ( jointInfo[ 0 ].animBits & ANIM_TX ) {
+		//	if ( this.jointInfo[ 0 ].animBits & ANIM_TX ) {
 		//		offset.x = *componentPtr1 * frame.frontlerp + *componentPtr2 * frame.backlerp;
 		//		componentPtr1++;
 		//		componentPtr2++;
 		//	}
 
-		//	if ( jointInfo[ 0 ].animBits & ANIM_TY ) {
+		//	if ( this.jointInfo[ 0 ].animBits & ANIM_TY ) {
 		//		offset.y = *componentPtr1 * frame.frontlerp + *componentPtr2 * frame.backlerp;
 		//		componentPtr1++;
 		//		componentPtr2++;
 		//	}
 
-		//	if ( jointInfo[ 0 ].animBits & ANIM_TZ ) {
+		//	if ( this.jointInfo[ 0 ].animBits & ANIM_TZ ) {
 		//		offset.z = *componentPtr1 * frame.frontlerp + *componentPtr2 * frame.backlerp;
 		//	}
 		//}
@@ -885,25 +901,25 @@ idMD5Anim::GetInterpolatedFrame
 //	int						*lerpIndex;
 //
 //	// copy the baseframe
-//	SIMDProcessor.Memcpy( joints, baseFrame.Ptr(), baseFrame.Num() * sizeof( baseFrame[ 0 ] ) );
+//	SIMDProcessor.Memcpy( joints, this.baseFrame.Ptr(), this.baseFrame.Num() * sizeof( this.baseFrame[ 0 ] ) );
 //
-//	if ( !numAnimatedComponents ) {
+//	if ( !this.numAnimatedComponents ) {
 //		// just use the base frame
 //		return;
 //	}
 //
-//	blendJoints = (idJointQuat *)_alloca16( baseFrame.Num() * sizeof( blendPtr[ 0 ] ) );
-//	lerpIndex = (int *)_alloca16( baseFrame.Num() * sizeof( lerpIndex[ 0 ] ) );
+//	blendJoints = (idJointQuat *)_alloca16( this.baseFrame.Num() * sizeof( blendPtr[ 0 ] ) );
+//	lerpIndex = (int *)_alloca16( this.baseFrame.Num() * sizeof( lerpIndex[ 0 ] ) );
 //	numLerpJoints = 0;
 //
-//	frame1 = &componentFrames[ frame.frame1 * numAnimatedComponents ];
-//	frame2 = &componentFrames[ frame.frame2 * numAnimatedComponents ];
+//	frame1 = &this.componentFrames[ frame.frame1 * this.numAnimatedComponents ];
+//	frame2 = &this.componentFrames[ frame.frame2 * this.numAnimatedComponents ];
 //
 //	for ( i = 0; i < numIndexes; i++ ) {
 //		int j = index[i];
 //		jointPtr = &joints[j];
 //		blendPtr = &blendJoints[j];
-//		infoPtr = &jointInfo[j];
+//		infoPtr = &this.jointInfo[j];
 //
 //		animBits = infoPtr.animBits;
 //		if ( animBits ) {
@@ -1052,7 +1068,7 @@ idMD5Anim::GetInterpolatedFrame
 //	SIMDProcessor.BlendJoints( joints, blendJoints, frame.backlerp, lerpIndex, numLerpJoints );
 //
 //	if ( frame.cycleCount ) {
-//		joints[ 0 ].t += totaldelta * ( float )frame.cycleCount;
+//		joints[ 0 ].t += this.totaldelta * ( float )frame.cycleCount;
 //	}
 	}
 
@@ -1070,19 +1086,19 @@ idMD5Anim::GetInterpolatedFrame
 //	const jointAnimInfo_t	*infoPtr;
 //
 //	// copy the baseframe
-//	SIMDProcessor.Memcpy( joints, baseFrame.Ptr(), baseFrame.Num() * sizeof( baseFrame[ 0 ] ) );
+//	SIMDProcessor.Memcpy( joints, this.baseFrame.Ptr(), this.baseFrame.Num() * sizeof( this.baseFrame[ 0 ] ) );
 //
-//	if ( ( framenum == 0 ) || !numAnimatedComponents ) {
+//	if ( ( framenum == 0 ) || !this.numAnimatedComponents ) {
 //		// just use the base frame
 //		return;
 //	}
 //
-//	frame = &componentFrames[ framenum * numAnimatedComponents ];
+//	frame = &this.componentFrames[ framenum * this.numAnimatedComponents ];
 //
 //	for ( i = 0; i < numIndexes; i++ ) {
 //		int j = index[i];
 //		jointPtr = &joints[j];
-//		infoPtr = &jointInfo[j];
+//		infoPtr = &this.jointInfo[j];
 //
 //		animBits = infoPtr.animBits;
 //		if ( animBits ) {
@@ -1133,26 +1149,26 @@ idMD5Anim::CheckModelHierarchy
 		var /*int	*/i: number;
 		var /*int	*/ jointNum: number;
 		var /*int	*/ parent: number;
-		todoThrow ( );
-		//if ( jointInfo.Num() != model.NumJoints() ) {
-		//	gameLocal.Error( "Model '%s' has different # of joints than anim '%s'", model.Name(), name.c_str() );
-		//}
+		
+		if ( this.jointInfo.Num() != model.NumJoints() ) {
+			gameLocal.Error( "Model '%s' has different # of joints than anim '%s'", model.Name(), this.name.c_str() );
+		}
 
-		//const idMD5Joint *modelJoints = model.GetJoints();
-		//for( i = 0; i < jointInfo.Num(); i++ ) {
-		//	jointNum = jointInfo[ i ].nameIndex;
-		//	if ( modelJoints[ i ].name != animationLib.JointName( jointNum ) ) {
-		//		gameLocal.Error( "Model '%s''s joint names don't match anim '%s''s", model.Name(), name.c_str() );
-		//	}
-		//	if ( modelJoints[ i ].parent ) {
-		//		parent = modelJoints[ i ].parent - modelJoints;
-		//	} else {
-		//		parent = -1;
-		//	}
-		//	if ( parent != jointInfo[ i ].parentNum ) {
-		//		gameLocal.Error( "Model '%s' has different joint hierarchy than anim '%s'", model.Name(), name.c_str() );
-		//	}
-		//}
+		var modelJoints= model.GetJoints();
+		for( i = 0; i < this.jointInfo.Num(); i++ ) {
+			jointNum = this.jointInfo[ i ].nameIndex;
+			if (modelJoints[i].name.notEqualTo( animationLib.JointName( jointNum ) )) {
+				gameLocal.Error( "Model '%s''s joint names don't match anim '%s''s", model.Name(), this.name.c_str() );
+			}
+			if ( modelJoints[ i ].parent ) {
+				parent = modelJoints.indexOf( modelJoints[i].parent ); // modelJoints[ i ].parent - modelJoints;
+			} else {
+				parent = -1;
+			}
+			if ( parent != this.jointInfo[ i ].parentNum ) {
+				gameLocal.Error( "Model '%s' has different joint hierarchy than anim '%s'", model.Name(), this.name.c_str() );
+			}
+		}
 	}
 }
 
@@ -1173,7 +1189,7 @@ class idAnim {
 	realname = new idStr;
 	frameLookup = new idList<frameLookup_t>( frameLookup_t );
 	frameCommands = new idList<frameCommand_t>( frameCommand_t );
-	flags: animFlags_t;
+	flags = new animFlags_t;
 //
 //public:
 //								idAnim();
@@ -1255,7 +1271,7 @@ idAnim::idAnim
 		for ( i = 0; i < this.frameCommands.Num ( ); i++ ) {
 			this.frameCommands[i] = anim.frameCommands[i];
 			if ( anim.frameCommands[i].$string ) {
-				this.frameCommands[i].$string = new idStr( anim.frameCommands[i].$string );
+				this.frameCommands[i].$string.opEquals(anim.frameCommands[i].$string );
 			}
 		}
 	}
@@ -1286,32 +1302,32 @@ idAnim::SetAnim
 		var /*int*/i: number;
 
 		this.modelDef = modelDef;
-		todoThrow ( );
-		//for( i = 0; i < this.numAnims; i++ ) {
-		//	this.anims[ i ].DecreaseRefs();
-		//	this.anims[ i ] = null;
-		//}
 
-		//assert( ( num > 0 ) && ( num <= ANIM_MaxSyncedAnims ) );
-		//this.numAnims	= num;
-		//this.realname	.opEquals( sourcename;
-		//name		.opEquals( animname;
+		for ( i = 0; i < this.numAnims; i++ ) {
+			this.anims[i].DecreaseRefs ( );
+			this.anims[i] = null;
+		}
 
-		//for( i = 0; i < num; i++ ) {
-		//	this.anims[ i ] = md5anims[ i ];
-		//	this.anims[ i ].IncreaseRefs();
-		//}
+		assert( ( num > 0 ) && ( num <= ANIM_MaxSyncedAnims ) );
+		this.numAnims = num;
+		this.realname.opEquals( sourcename );
+		this.name.opEquals( animname );
 
-		//memset( &this.flags, 0, sizeof( this.flags ) );
+		for ( i = 0; i < num; i++ ) {
+			this.anims[i] = md5anims[i];
+			this.anims[i].IncreaseRefs ( );
+		}
 
-		//for( i = 0; i < this.frameCommands.Num(); i++ ) {
-		//	delete this.frameCommands[ i ].string;
-		//}
+		this.flags.memset0 ( );
 
-		//this.frameLookup.Clear();
-		//this.frameCommands.Clear();
+		for ( i = 0; i < this.frameCommands.Num ( ); i++ ) {
+			$delete( this.frameCommands[i].$string );
+		}
+
+		this.frameLookup.Clear ( );
+		this.frameCommands.Clear ( );
 	}
-//
+
 /*
 =====================
 idAnim::Name
@@ -1454,377 +1470,376 @@ Returns NULL if no error.
 =====================
 */
 	AddFrameCommand ( modelDef: idDeclModelDef, framenum /*int*/: number, src: idLexer, def: idDict ): string {
-		todoThrow ( );
-//	int					i;
-//	int					index;
-//	idStr				text;
-//	idStr				funcname;
-//	frameCommand_t		fc;
-//	idToken				token;
-//	const jointInfo_t	*jointInfo;
-//
-//	// make sure we're within bounds
-//	if ( ( framenum < 1 ) || ( framenum > this.anims[ 0 ].NumFrames() ) ) {
-//		return va( "Frame %d out of range", framenum );
-//	}
-//
-//	// frame numbers are 1 based in .def files, but 0 based internally
-//	framenum--;
-//
-//	memset( &fc, 0, sizeof( fc ) );
-//
-//	if( !src.ReadTokenOnLine( token ) ) {
-//		return "Unexpected end of line";
-//	}
-//	if ( token.data == "call" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_SCRIPTFUNCTION;
-//		fc.function = gameLocal.program.FindFunction( token );
-//		if ( !fc.function ) {
-//			return va( "Function '%s' not found", token.c_str() );
-//		}
-//	} else if ( token.data == "object_call" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_SCRIPTFUNCTIONOBJECT;
-//		fc.string = new idStr( token );
-//	} else if ( token.data == "event" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_EVENTFUNCTION;
-//		const idEventDef *ev = idEventDef::FindEvent( token );
-//		if ( !ev ) {
-//			return va( "Event '%s' not found", token.c_str() );
-//		}
-//		if ( ev.GetNumArgs() != 0 ) {
-//			return va( "Event '%s' has arguments", token.c_str() );
-//		}
-//		fc.string = new idStr( token );
-//	} else if ( token.data == "sound" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_SOUND;
-//		if ( !token.Cmpn( "snd_", 4 ) ) {
-//			fc.string = new idStr( token );
-//		} else {
-//			fc.soundShader = declManager.FindSound( token );
-//			if ( fc.soundShader.GetState() == declState_t.DS_DEFAULTED ) {
-//				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
-//			}
-//		}
-//	} else if ( token.data == "sound_voice" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_SOUND_VOICE;
-//		if ( !token.Cmpn( "snd_", 4 ) ) {
-//			fc.string = new idStr( token );
-//		} else {
-//			fc.soundShader = declManager.FindSound( token );
-//			if ( fc.soundShader.GetState() == declState_t.DS_DEFAULTED ) {
-//				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
-//			}
-//		}
-//	} else if ( token.data == "sound_voice2" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_SOUND_VOICE2;
-//		if ( !token.Cmpn( "snd_", 4 ) ) {
-//			fc.string = new idStr( token );
-//		} else {
-//			fc.soundShader = declManager.FindSound( token );
-//			if ( fc.soundShader.GetState() == declState_t.DS_DEFAULTED ) {
-//				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
-//			}
-//		}
-//	} else if ( token.data == "sound_body" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_SOUND_BODY;
-//		if ( !token.Cmpn( "snd_", 4 ) ) {
-//			fc.string = new idStr( token );
-//		} else {
-//			fc.soundShader = declManager.FindSound( token );
-//			if ( fc.soundShader.GetState() == declState_t.DS_DEFAULTED ) {
-//				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
-//			}
-//		}
-//	} else if ( token.data == "sound_body2" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_SOUND_BODY2;
-//		if ( !token.Cmpn( "snd_", 4 ) ) {
-//			fc.string = new idStr( token );
-//		} else {
-//			fc.soundShader = declManager.FindSound( token );
-//			if ( fc.soundShader.GetState() == declState_t.DS_DEFAULTED ) {
-//				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
-//			}
-//		}
-//	} else if ( token.data == "sound_body3" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_SOUND_BODY3;
-//		if ( !token.Cmpn( "snd_", 4 ) ) {
-//			fc.string = new idStr( token );
-//		} else {
-//			fc.soundShader = declManager.FindSound( token );
-//			if ( fc.soundShader.GetState() == declState_t.DS_DEFAULTED ) {
-//				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
-//			}
-//		}
-//	} else if ( token.data == "sound_weapon" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_SOUND_WEAPON;
-//		if ( !token.Cmpn( "snd_", 4 ) ) {
-//			fc.string = new idStr( token );
-//		} else {
-//			fc.soundShader = declManager.FindSound( token );
-//			if ( fc.soundShader.GetState() == declState_t.DS_DEFAULTED ) {
-//				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
-//			}
-//		}
-//	} else if ( token.data == "sound_global" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_SOUND_GLOBAL;
-//		if ( !token.Cmpn( "snd_", 4 ) ) {
-//			fc.string = new idStr( token );
-//		} else {
-//			fc.soundShader = declManager.FindSound( token );
-//			if ( fc.soundShader.GetState() == declState_t.DS_DEFAULTED ) {
-//				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
-//			}
-//		}
-//	} else if ( token.data == "sound_item" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_SOUND_ITEM;
-//		if ( !token.Cmpn( "snd_", 4 ) ) {
-//			fc.string = new idStr( token );
-//		} else {
-//			fc.soundShader = declManager.FindSound( token );
-//			if ( fc.soundShader.GetState() == declState_t.DS_DEFAULTED ) {
-//				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
-//			}
-//		}
-//	} else if ( token.data == "sound_chatter" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_SOUND_CHATTER;
-//		if ( !token.Cmpn( "snd_", 4 ) ) {
-//			fc.string = new idStr( token );
-//		} else {
-//			fc.soundShader = declManager.FindSound( token );
-//			if ( fc.soundShader.GetState() == declState_t.DS_DEFAULTED ) {
-//				gameLocal.Warning( "Sound '%s' not found", token.c_str() );
-//			}
-//		}
-//	} else if ( token.data == "skin" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_SKIN;
-//		if ( token.data == "none" ) {
-//			fc.skin = NULL;
-//		} else {
-//			fc.skin = declManager.FindSkin( token );
-//			if ( !fc.skin ) {
-//				return va( "Skin '%s' not found", token.c_str() );
-//			}
-//		}
-//	} else if ( token.data == "fx" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_FX;
-//		if ( !declManager.FindType( DECL_FX, token.c_str() ) ) {
-//			return va( "fx '%s' not found", token.c_str() );
-//		}
-//		fc.string = new idStr( token );
-//	} else if ( token.data == "trigger" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_TRIGGER;
-//		fc.string = new idStr( token );
-//	} else if ( token.data == "triggerSmokeParticle" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_TRIGGER_SMOKE_PARTICLE;
-//		fc.string = new idStr( token );
-//	} else if ( token.data == "melee" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_MELEE;
-//		if ( !gameLocal.FindEntityDef( token.c_str(), false ) ) {
-//			return va( "Unknown entityDef '%s'", token.c_str() );
-//		}
-//		fc.string = new idStr( token );
-//	} else if ( token.data == "direct_damage" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_DIRECTDAMAGE;
-//		if ( !gameLocal.FindEntityDef( token.c_str(), false ) ) {
-//			return va( "Unknown entityDef '%s'", token.c_str() );
-//		}
-//		fc.string = new idStr( token );
-//	} else if ( token.data == "attack_begin" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_BEGINATTACK;
-//		if ( !gameLocal.FindEntityDef( token.c_str(), false ) ) {
-//			return va( "Unknown entityDef '%s'", token.c_str() );
-//		}
-//		fc.string = new idStr( token );
-//	} else if ( token.data == "attack_end" ) {
-//		fc.type = FC_ENDATTACK;
-//	} else if ( token.data == "muzzle_flash" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		if ( ( token != "" ) && !modelDef.FindJoint( token ) ) {
-//			return va( "Joint '%s' not found", token.c_str() );
-//		}
-//		fc.type = FC_MUZZLEFLASH;
-//		fc.string = new idStr( token );
-//	} else if ( token.data == "muzzle_flash" ) {
-//		fc.type = FC_MUZZLEFLASH;
-//		fc.string = new idStr( "" );
-//	} else if ( token.data == "create_missile" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		if ( !modelDef.FindJoint( token ) ) {
-//			return va( "Joint '%s' not found", token.c_str() );
-//		}
-//		fc.type = FC_CREATEMISSILE;
-//		fc.string = new idStr( token );
-//	} else if ( token.data == "launch_missile" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		if ( !modelDef.FindJoint( token ) ) {
-//			return va( "Joint '%s' not found", token.c_str() );
-//		}
-//		fc.type = FC_LAUNCHMISSILE;
-//		fc.string = new idStr( token );
-//	} else if ( token.data == "fire_missile_at_target" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		jointInfo = modelDef.FindJoint( token );
-//		if ( !jointInfo ) {
-//			return va( "Joint '%s' not found", token.c_str() );
-//		}
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_FIREMISSILEATTARGET;
-//		fc.string = new idStr( token );
-//		fc.index = jointInfo.num;
-//	} else if ( token.data == "footstep" ) {
-//		fc.type = FC_FOOTSTEP;
-//	} else if ( token.data == "leftfoot" ) {
-//		fc.type = FC_LEFTFOOT;
-//	} else if ( token.data == "rightfoot" ) {
-//		fc.type = FC_RIGHTFOOT;
-//	} else if ( token.data == "enableEyeFocus" ) {
-//		fc.type = FC_ENABLE_EYE_FOCUS;
-//	} else if ( token.data == "disableEyeFocus" ) {
-//		fc.type = FC_DISABLE_EYE_FOCUS;
-//	} else if ( token.data == "disableGravity" ) {
-//		fc.type = FC_DISABLE_GRAVITY;
-//	} else if ( token.data == "enableGravity" ) {
-//		fc.type = FC_ENABLE_GRAVITY;
-//	} else if ( token.data == "jump" ) {
-//		fc.type = FC_JUMP;
-//	} else if ( token.data == "enableClip" ) {
-//		fc.type = FC_ENABLE_CLIP;
-//	} else if ( token.data == "disableClip" ) {
-//		fc.type = FC_DISABLE_CLIP;
-//	} else if ( token.data == "enableWalkIK" ) {
-//		fc.type = FC_ENABLE_WALK_IK;
-//	} else if ( token.data == "disableWalkIK" ) {
-//		fc.type = FC_DISABLE_WALK_IK;
-//	} else if ( token.data == "enableLegIK" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_ENABLE_LEG_IK;
-//		fc.index = atoi( token );
-//	} else if ( token.data == "disableLegIK" ) {
-//		if( !src.ReadTokenOnLine( token ) ) {
-//			return "Unexpected end of line";
-//		}
-//		fc.type = FC_DISABLE_LEG_IK;
-//		fc.index = atoi( token );
-//	} else if ( token.data == "recordDemo" ) {
-//		fc.type = FC_RECORDDEMO;
-//		if( src.ReadTokenOnLine( token ) ) {
-//			fc.string = new idStr( token );
-//		}
-//	} else if ( token.data == "aviGame" ) {
-//		fc.type = FC_AVIGAME;
-//		if( src.ReadTokenOnLine( token ) ) {
-//			fc.string = new idStr( token );
-//		}
-//	} else {
-//		return va( "Unknown command '%s'", token.c_str() );
-//	}
-//
-//	// check if we've initialized the frame loopup table
-//	if ( !this.frameLookup.Num() ) {
-//		// we haven't, so allocate the table and initialize it
-//		this.frameLookup.SetGranularity( 1 );
-//		this.frameLookup.SetNum( this.anims[ 0 ].NumFrames() );
-//		for( i = 0; i < this.frameLookup.Num(); i++ ) {
-//			this.frameLookup[ i ].num = 0;
-//			this.frameLookup[ i ].firstCommand = 0;
-//		}
-//	}
-//
-//	// allocate space for a new command
-//	this.frameCommands.Alloc();
-//
-//	// calculate the index of the new command
-//	index = this.frameLookup[ framenum ].firstCommand + this.frameLookup[ framenum ].num;
-//
-//	// move all commands from our index onward up one to give us space for our new command
-//	for( i = this.frameCommands.Num() - 1; i > index; i-- ) {
-//		this.frameCommands[ i ] = this.frameCommands[ i - 1 ];
-//	}
-//
-//	// fix the indices of any later frames to account for the inserted command
-//	for( i = framenum + 1; i < this.frameLookup.Num(); i++ ) {
-//		this.frameLookup[ i ].firstCommand++;
-//	}
-//
-//	// store the new command 
-//	this.frameCommands[ index ] = fc;
-//
-//	// increase the number of commands on this frame
-//	this.frameLookup[ framenum ].num++;
-//
-		// return with no error
+		var /*int					*/i: number;
+		var index: number;
+		var text = new idStr;
+		var funcname = new idStr;
+		var fc = new frameCommand_t;
+		var token = new idToken;
+		var jointInfo: jointInfo_t;
+
+		// make sure we're within bounds
+		if ( ( framenum < 1 ) || ( framenum > this.anims[0].NumFrames ( ) ) ) {
+			return va( "Frame %d out of range", framenum );
+		}
+
+		// frame numbers are 1 based in .def files, but 0 based internally
+		framenum--;
+
+		fc.memset0 ( );
+
+		if ( !src.ReadTokenOnLine( token ) ) {
+			return "Unexpected end of line";
+		}
+		if ( token.data == "call" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_SCRIPTFUNCTION;
+			fc.$function = gameLocal.program.FindFunction( token.data );
+			if ( !fc.$function ) {
+				return va( "Function '%s' not found", token.c_str ( ) );
+			}
+		} else if ( token.data == "object_call" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_SCRIPTFUNCTIONOBJECT;
+			fc.$string.opEquals( token );
+		} else if ( token.data == "event" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_EVENTFUNCTION;
+			var ev = idEventDef.FindEvent( token.data );
+			if ( !ev ) {
+				return va( "Event '%s' not found", token.c_str ( ) );
+			}
+			if ( ev.GetNumArgs ( ) != 0 ) {
+				return va( "Event '%s' has arguments", token.c_str ( ) );
+			}
+			fc.$string.opEquals( token );
+		} else if ( token.data == "sound" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_SOUND;
+			if ( !token.Cmpn( "snd_", 4 ) ) {
+				fc.$string.opEquals( token );
+			} else {
+				fc.soundShader = declManager.FindSound( token.data );
+				if ( fc.soundShader.GetState ( ) == declState_t.DS_DEFAULTED ) {
+					gameLocal.Warning( "Sound '%s' not found", token.c_str ( ) );
+				}
+			}
+		} else if ( token.data == "sound_voice" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_SOUND_VOICE;
+			if ( !token.Cmpn( "snd_", 4 ) ) {
+				fc.$string.opEquals( token );
+			} else {
+				fc.soundShader = declManager.FindSound( token.data );
+				if ( fc.soundShader.GetState ( ) == declState_t.DS_DEFAULTED ) {
+					gameLocal.Warning( "Sound '%s' not found", token.c_str ( ) );
+				}
+			}
+		} else if ( token.data == "sound_voice2" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_SOUND_VOICE2;
+			if ( !token.Cmpn( "snd_", 4 ) ) {
+				fc.$string.opEquals( token );
+			} else {
+				fc.soundShader = declManager.FindSound( token.data );
+				if ( fc.soundShader.GetState ( ) == declState_t.DS_DEFAULTED ) {
+					gameLocal.Warning( "Sound '%s' not found", token.c_str ( ) );
+				}
+			}
+		} else if ( token.data == "sound_body" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_SOUND_BODY;
+			if ( !token.Cmpn( "snd_", 4 ) ) {
+				fc.$string.opEquals( token );
+			} else {
+				fc.soundShader = declManager.FindSound( token.data );
+				if ( fc.soundShader.GetState ( ) == declState_t.DS_DEFAULTED ) {
+					gameLocal.Warning( "Sound '%s' not found", token.c_str ( ) );
+				}
+			}
+		} else if ( token.data == "sound_body2" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_SOUND_BODY2;
+			if ( !token.Cmpn( "snd_", 4 ) ) {
+				fc.$string.opEquals( token );
+			} else {
+				fc.soundShader = declManager.FindSound( token.data );
+				if ( fc.soundShader.GetState ( ) == declState_t.DS_DEFAULTED ) {
+					gameLocal.Warning( "Sound '%s' not found", token.c_str ( ) );
+				}
+			}
+		} else if ( token.data == "sound_body3" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_SOUND_BODY3;
+			if ( !token.Cmpn( "snd_", 4 ) ) {
+				fc.$string.opEquals( token );
+			} else {
+				fc.soundShader = declManager.FindSound( token.data );
+				if ( fc.soundShader.GetState ( ) == declState_t.DS_DEFAULTED ) {
+					gameLocal.Warning( "Sound '%s' not found", token.c_str ( ) );
+				}
+			}
+		} else if ( token.data == "sound_weapon" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_SOUND_WEAPON;
+			if ( !token.Cmpn( "snd_", 4 ) ) {
+				fc.$string.opEquals( token );
+			} else {
+				fc.soundShader = declManager.FindSound( token.data );
+				if ( fc.soundShader.GetState ( ) == declState_t.DS_DEFAULTED ) {
+					gameLocal.Warning( "Sound '%s' not found", token.c_str ( ) );
+				}
+			}
+		} else if ( token.data == "sound_global" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_SOUND_GLOBAL;
+			if ( !token.Cmpn( "snd_", 4 ) ) {
+				fc.$string.opEquals( token );
+			} else {
+				fc.soundShader = declManager.FindSound( token.data );
+				if ( fc.soundShader.GetState ( ) == declState_t.DS_DEFAULTED ) {
+					gameLocal.Warning( "Sound '%s' not found", token.c_str ( ) );
+				}
+			}
+		} else if ( token.data == "sound_item" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_SOUND_ITEM;
+			if ( !token.Cmpn( "snd_", 4 ) ) {
+				fc.$string.opEquals( token );
+			} else {
+				fc.soundShader = declManager.FindSound( token.data );
+				if ( fc.soundShader.GetState ( ) == declState_t.DS_DEFAULTED ) {
+					gameLocal.Warning( "Sound '%s' not found", token.c_str ( ) );
+				}
+			}
+		} else if ( token.data == "sound_chatter" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_SOUND_CHATTER;
+			if ( !token.Cmpn( "snd_", 4 ) ) {
+				fc.$string.opEquals( token );
+			} else {
+				fc.soundShader = declManager.FindSound( token.data );
+				if ( fc.soundShader.GetState ( ) == declState_t.DS_DEFAULTED ) {
+					gameLocal.Warning( "Sound '%s' not found", token.c_str ( ) );
+				}
+			}
+		} else if ( token.data == "skin" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_SKIN;
+			if ( token.data == "none" ) {
+				fc.skin = null;
+			} else {
+				fc.skin = declManager.FindSkin( token.data );
+				if ( !fc.skin ) {
+					return va( "Skin '%s' not found", token.c_str ( ) );
+				}
+			}
+		} else if ( token.data == "fx" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_FX;
+			if ( !declManager.FindType( declType_t.DECL_FX, token.c_str ( ) ) ) {
+				return va( "fx '%s' not found", token.c_str ( ) );
+			}
+			fc.$string.opEquals( token );
+		} else if ( token.data == "trigger" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_TRIGGER;
+			fc.$string.opEquals( token );
+		} else if ( token.data == "triggerSmokeParticle" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_TRIGGER_SMOKE_PARTICLE;
+			fc.$string.opEquals( token );
+		} else if ( token.data == "melee" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_MELEE;
+			if ( !gameLocal.FindEntityDef( token.c_str ( ), false ) ) {
+				return va( "Unknown entityDef '%s'", token.c_str ( ) );
+			}
+			fc.$string.opEquals( token );
+		} else if ( token.data == "direct_damage" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_DIRECTDAMAGE;
+			if ( !gameLocal.FindEntityDef( token.c_str ( ), false ) ) {
+				return va( "Unknown entityDef '%s'", token.c_str ( ) );
+			}
+			fc.$string.opEquals( token );
+		} else if ( token.data == "attack_begin" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_BEGINATTACK;
+			if ( !gameLocal.FindEntityDef( token.c_str ( ), false ) ) {
+				return va( "Unknown entityDef '%s'", token.c_str ( ) );
+			}
+			fc.$string.opEquals( token );
+		} else if ( token.data == "attack_end" ) {
+			fc.type = frameCommandType_t.FC_ENDATTACK;
+		} else if ( token.data == "muzzle_flash" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			if ( ( token.data != "" ) && !modelDef.FindJoint( token.data ) ) {
+				return va( "Joint '%s' not found", token.c_str ( ) );
+			}
+			fc.type = frameCommandType_t.FC_MUZZLEFLASH;
+			fc.$string.opEquals( token );
+		} else if ( token.data == "muzzle_flash" ) {
+			fc.type = frameCommandType_t.FC_MUZZLEFLASH;
+			fc.$string.opEquals( "" );
+		} else if ( token.data == "create_missile" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			if ( !modelDef.FindJoint( token.data ) ) {
+				return va( "Joint '%s' not found", token.c_str ( ) );
+			}
+			fc.type = frameCommandType_t.FC_CREATEMISSILE;
+			fc.$string.opEquals( token );
+		} else if ( token.data == "launch_missile" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			if ( !modelDef.FindJoint( token.data ) ) {
+				return va( "Joint '%s' not found", token.c_str ( ) );
+			}
+			fc.type = frameCommandType_t.FC_LAUNCHMISSILE;
+			fc.$string.opEquals( token );
+		} else if ( token.data == "fire_missile_at_target" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			jointInfo = modelDef.FindJoint( token.data );
+			if ( !jointInfo ) {
+				return va( "Joint '%s' not found", token.c_str ( ) );
+			}
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_FIREMISSILEATTARGET;
+			fc.$string.opEquals( token );
+			fc.index = jointInfo.num;
+		} else if ( token.data == "footstep" ) {
+			fc.type = frameCommandType_t.FC_FOOTSTEP;
+		} else if ( token.data == "leftfoot" ) {
+			fc.type = frameCommandType_t.FC_LEFTFOOT;
+		} else if ( token.data == "rightfoot" ) {
+			fc.type = frameCommandType_t.FC_RIGHTFOOT;
+		} else if ( token.data == "enableEyeFocus" ) {
+			fc.type = frameCommandType_t.FC_ENABLE_EYE_FOCUS;
+		} else if ( token.data == "disableEyeFocus" ) {
+			fc.type = frameCommandType_t.FC_DISABLE_EYE_FOCUS;
+		} else if ( token.data == "disableGravity" ) {
+			fc.type = frameCommandType_t.FC_DISABLE_GRAVITY;
+		} else if ( token.data == "enableGravity" ) {
+			fc.type = frameCommandType_t.FC_ENABLE_GRAVITY;
+		} else if ( token.data == "jump" ) {
+			fc.type = frameCommandType_t.FC_JUMP;
+		} else if ( token.data == "enableClip" ) {
+			fc.type = frameCommandType_t.FC_ENABLE_CLIP;
+		} else if ( token.data == "disableClip" ) {
+			fc.type = frameCommandType_t.FC_DISABLE_CLIP;
+		} else if ( token.data == "enableWalkIK" ) {
+			fc.type = frameCommandType_t.FC_ENABLE_WALK_IK;
+		} else if ( token.data == "disableWalkIK" ) {
+			fc.type = frameCommandType_t.FC_DISABLE_WALK_IK;
+		} else if ( token.data == "enableLegIK" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_ENABLE_LEG_IK;
+			fc.index = atoi( token );
+		} else if ( token.data == "disableLegIK" ) {
+			if ( !src.ReadTokenOnLine( token ) ) {
+				return "Unexpected end of line";
+			}
+			fc.type = frameCommandType_t.FC_DISABLE_LEG_IK;
+			fc.index = atoi( token );
+		} else if ( token.data == "recordDemo" ) {
+			fc.type = frameCommandType_t.FC_RECORDDEMO;
+			if ( src.ReadTokenOnLine( token ) ) {
+				fc.$string.opEquals( token );
+			}
+		} else if ( token.data == "aviGame" ) {
+			fc.type = frameCommandType_t.FC_AVIGAME;
+			if ( src.ReadTokenOnLine( token ) ) {
+				fc.$string.opEquals( token );
+			}
+		} else {
+			return va( "Unknown command '%s'", token.c_str ( ) );
+		}
+
+		// check if we've initialized the frame loopup table
+		if ( !this.frameLookup.Num ( ) ) {
+			// we haven't, so allocate the table and initialize it
+			this.frameLookup.SetGranularity( 1 );
+			this.frameLookup.SetNum( this.anims[0].NumFrames ( ) );
+			for ( i = 0; i < this.frameLookup.Num ( ); i++ ) {
+				this.frameLookup[i].num = 0;
+				this.frameLookup[i].firstCommand = 0;
+			}
+		}
+
+		// allocate space for a new command
+		this.frameCommands.Alloc ( );
+
+		// calculate the index of the new command
+		index = this.frameLookup[framenum].firstCommand + this.frameLookup[framenum].num;
+
+		// move all commands from our index onward up one to give us space for our new command
+		for ( i = this.frameCommands.Num ( ) - 1; i > index; i-- ) {
+			this.frameCommands[i] = this.frameCommands[i - 1];
+		}
+
+		// fix the indices of any later frames to account for the inserted command
+		for ( i = framenum + 1; i < this.frameLookup.Num ( ); i++ ) {
+			this.frameLookup[i].firstCommand++;
+		}
+
+		// store the new command 
+		this.frameCommands[index] = fc;
+
+		// increase the number of commands on this frame
+		this.frameLookup[framenum].num++;
+
+		//return with no error
 		return null;
 	}
 //
@@ -1853,20 +1868,20 @@ Returns NULL if no error.
 //		while( index < end ) {
 //			const frameCommand_t &command = this.frameCommands[ index++ ];
 //			switch( command.type ) {
-//				case FC_SCRIPTFUNCTION: {
+//				case frameCommandType_t.FC_SCRIPTFUNCTION: {
 //					gameLocal.CallFrameCommand( ent, command.function );
 //					break;
 //				}
-//				case FC_SCRIPTFUNCTIONOBJECT: {
+//				case frameCommandType_t.FC_SCRIPTFUNCTIONOBJECT: {
 //					gameLocal.CallObjectFrameCommand( ent, command.string.c_str() );
 //					break;
 //				}
-//				case FC_EVENTFUNCTION: {
-//					const idEventDef *ev = idEventDef::FindEvent( command.string.c_str() );
+//				case frameCommandType_t.FC_EVENTFUNCTION: {
+//					const idEventDef *ev = idEventDef.FindEvent( command.string.c_str() );
 //					ent.ProcessEvent( ev );
 //					break;
 //				}
-//				case FC_SOUND: {
+//				case frameCommandType_t.FC_SOUND: {
 //					if ( !command.soundShader ) {
 //						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_ANY, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
@@ -1877,7 +1892,7 @@ Returns NULL if no error.
 //					}
 //					break;
 //				}
-//				case FC_SOUND_VOICE: {
+//				case frameCommandType_t.FC_SOUND_VOICE: {
 //					if ( !command.soundShader ) {
 //						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_VOICE, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_voice' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
@@ -1888,7 +1903,7 @@ Returns NULL if no error.
 //					}
 //					break;
 //				}
-//				case FC_SOUND_VOICE2: {
+//				case frameCommandType_t.FC_SOUND_VOICE2: {
 //					if ( !command.soundShader ) {
 //						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_VOICE2, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_voice2' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
@@ -1899,7 +1914,7 @@ Returns NULL if no error.
 //					}
 //					break;
 //				}
-//				case FC_SOUND_BODY: {
+//				case frameCommandType_t.FC_SOUND_BODY: {
 //					if ( !command.soundShader ) {
 //						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_BODY, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_body' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
@@ -1910,7 +1925,7 @@ Returns NULL if no error.
 //					}
 //					break;
 //				}
-//				case FC_SOUND_BODY2: {
+//				case frameCommandType_t.FC_SOUND_BODY2: {
 //					if ( !command.soundShader ) {
 //						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_BODY2, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_body2' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
@@ -1921,7 +1936,7 @@ Returns NULL if no error.
 //					}
 //					break;
 //				}
-//				case FC_SOUND_BODY3: {
+//				case frameCommandType_t.FC_SOUND_BODY3: {
 //					if ( !command.soundShader ) {
 //						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_BODY3, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_body3' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
@@ -1932,7 +1947,7 @@ Returns NULL if no error.
 //					}
 //					break;
 //									 }
-//				case FC_SOUND_WEAPON: {
+//				case frameCommandType_t.FC_SOUND_WEAPON: {
 //					if ( !command.soundShader ) {
 //						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_WEAPON, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_weapon' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
@@ -1943,7 +1958,7 @@ Returns NULL if no error.
 //					}
 //					break;
 //				}
-//				case FC_SOUND_GLOBAL: {
+//				case frameCommandType_t.FC_SOUND_GLOBAL: {
 //					if ( !command.soundShader ) {
 //						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_ANY, SSF_GLOBAL, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_global' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
@@ -1954,7 +1969,7 @@ Returns NULL if no error.
 //					}
 //					break;
 //				}
-//				case FC_SOUND_ITEM: {
+//				case frameCommandType_t.FC_SOUND_ITEM: {
 //					if ( !command.soundShader ) {
 //						if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_ITEM, 0, false, NULL ) ) {
 //							gameLocal.Warning( "Framecommand 'sound_item' on entity '%s', anim '%s', frame %d: Could not find sound '%s'",
@@ -1965,7 +1980,7 @@ Returns NULL if no error.
 //					}
 //					break;
 //				}
-//				case FC_SOUND_CHATTER: {
+//				case frameCommandType_t.FC_SOUND_CHATTER: {
 //					if ( ent.CanPlayChatterSounds() ) {
 //						if ( !command.soundShader ) {
 //							if ( !ent.StartSound( command.string.c_str(), SND_CHANNEL_VOICE, 0, false, NULL ) ) {
@@ -1978,15 +1993,15 @@ Returns NULL if no error.
 //					}
 //					break;
 //				}
-//				case FC_FX: {
+//				case frameCommandType_t.FC_FX: {
 //					idEntityFx::StartFx( command.string.c_str(), NULL, NULL, ent, true );
 //					break;
 //				}
-//				case FC_SKIN: {
+//				case frameCommandType_t.FC_SKIN: {
 //					ent.SetSkin( command.skin );
 //					break;
 //				}
-//				case FC_TRIGGER: {
+//				case frameCommandType_t.FC_TRIGGER: {
 //					idEntity *target;
 //
 //					target = gameLocal.FindEntity( command.string.c_str() );
@@ -2000,99 +2015,99 @@ Returns NULL if no error.
 //					}
 //					break;
 //				}
-//				case FC_TRIGGER_SMOKE_PARTICLE: {
+//				case frameCommandType_t.FC_TRIGGER_SMOKE_PARTICLE: {
 //					ent.ProcessEvent( &AI_TriggerParticles, command.string.c_str() );
 //					break;
 //				}
-//				case FC_MELEE: {
+//				case frameCommandType_t.FC_MELEE: {
 //					ent.ProcessEvent( &AI_AttackMelee, command.string.c_str() );
 //					break;
 //				}
-//				case FC_DIRECTDAMAGE: {
+//				case frameCommandType_t.FC_DIRECTDAMAGE: {
 //					ent.ProcessEvent( &AI_DirectDamage, command.string.c_str() );
 //					break;
 //				}
-//				case FC_BEGINATTACK: {
+//				case frameCommandType_t.FC_BEGINATTACK: {
 //					ent.ProcessEvent( &AI_BeginAttack, command.string.c_str() );
 //					break;
 //				}
-//				case FC_ENDATTACK: {
+//				case frameCommandType_t.FC_ENDATTACK: {
 //					ent.ProcessEvent( &AI_EndAttack );
 //					break;
 //				}
-//				case FC_MUZZLEFLASH: {
+//				case frameCommandType_t.FC_MUZZLEFLASH: {
 //					ent.ProcessEvent( &AI_MuzzleFlash, command.string.c_str() );
 //					break;
 //				}
-//				case FC_CREATEMISSILE: {
+//				case frameCommandType_t.FC_CREATEMISSILE: {
 //					ent.ProcessEvent( &AI_CreateMissile, command.string.c_str() );
 //					break;
 //				}
-//				case FC_LAUNCHMISSILE: {
+//				case frameCommandType_t.FC_LAUNCHMISSILE: {
 //					ent.ProcessEvent( &AI_AttackMissile, command.string.c_str() );
 //					break;
 //				}
-//				case FC_FIREMISSILEATTARGET: {
+//				case frameCommandType_t.FC_FIREMISSILEATTARGET: {
 //					ent.ProcessEvent( &AI_FireMissileAtTarget, modelDef.GetJointName( command.index ), command.string.c_str() );
 //					break;
 //				}
-//				case FC_FOOTSTEP : {
+//				case frameCommandType_t.FC_FOOTSTEP : {
 //					ent.ProcessEvent( &EV_Footstep );
 //					break;
 //				}
-//				case FC_LEFTFOOT: {
+//				case frameCommandType_t.FC_LEFTFOOT: {
 //					ent.ProcessEvent( &EV_FootstepLeft );
 //					break;
 //				}
-//				case FC_RIGHTFOOT: {
+//				case frameCommandType_t.FC_RIGHTFOOT: {
 //					ent.ProcessEvent( &EV_FootstepRight );
 //					break;
 //				}
-//				case FC_ENABLE_EYE_FOCUS: {
+//				case frameCommandType_t.FC_ENABLE_EYE_FOCUS: {
 //					ent.ProcessEvent( &AI_EnableEyeFocus );
 //					break;
 //				}
-//				case FC_DISABLE_EYE_FOCUS: {
+//				case frameCommandType_t.FC_DISABLE_EYE_FOCUS: {
 //					ent.ProcessEvent( &AI_DisableEyeFocus );
 //					break;
 //				}
-//				case FC_DISABLE_GRAVITY: {
+//				case frameCommandType_t.FC_DISABLE_GRAVITY: {
 //					ent.ProcessEvent( &AI_DisableGravity );
 //					break;
 //				}
-//				case FC_ENABLE_GRAVITY: {
+//				case frameCommandType_t.FC_ENABLE_GRAVITY: {
 //					ent.ProcessEvent( &AI_EnableGravity );
 //					break;
 //				}
-//				case FC_JUMP: {
+//				case frameCommandType_t.FC_JUMP: {
 //					ent.ProcessEvent( &AI_JumpFrame );
 //					break;
 //				}
-//				case FC_ENABLE_CLIP: {
+//				case frameCommandType_t.FC_ENABLE_CLIP: {
 //					ent.ProcessEvent( &AI_EnableClip );
 //					break;
 //				}
-//				case FC_DISABLE_CLIP: {
+//				case frameCommandType_t.FC_DISABLE_CLIP: {
 //					ent.ProcessEvent( &AI_DisableClip );
 //					break;
 //				}
-//				case FC_ENABLE_WALK_IK: {
+//				case frameCommandType_t.FC_ENABLE_WALK_IK: {
 //					ent.ProcessEvent( &EV_EnableWalkIK );
 //					break;
 //				}
-//				case FC_DISABLE_WALK_IK: {
+//				case frameCommandType_t.FC_DISABLE_WALK_IK: {
 //					ent.ProcessEvent( &EV_DisableWalkIK );
 //					break;
 //				}
-//				case FC_ENABLE_LEG_IK: {
+//				case frameCommandType_t.FC_ENABLE_LEG_IK: {
 //					ent.ProcessEvent( &EV_EnableLegIK, command.index );
 //					break;
 //				}
-//				case FC_DISABLE_LEG_IK: {
+//				case frameCommandType_t.FC_DISABLE_LEG_IK: {
 //					ent.ProcessEvent( &EV_DisableLegIK, command.index );
 //					break;
 //				}
-//				case FC_RECORDDEMO: {
+//				case frameCommandType_t.FC_RECORDDEMO: {
 //					if ( command.string ) {
 //						cmdSystem.BufferCommandText( CMD_EXEC_NOW, va( "recordDemo %s", command.string.c_str() ) );
 //					} else {
@@ -2100,7 +2115,7 @@ Returns NULL if no error.
 //					}
 //					break;
 //				}
-//				case FC_AVIGAME: {
+//				case frameCommandType_t.FC_AVIGAME: {
 //					if ( command.string ) {
 //						cmdSystem.BufferCommandText( CMD_EXEC_NOW, va( "aviGame %s", command.string.c_str() ) );
 //					} else {
@@ -2495,55 +2510,55 @@ SetWeight( /*float */newweight:number, currentTime/*int*/:number, blendTime/*int
 //	return true;
 //}
 //
-///*
-//=====================
-//idAnimBlend::SetFrame
-//=====================
-//*/
-//void idAnimBlend::SetFrame( modelDef:idDeclModelDef, int _animNum, int _frame, currentTime/*int*/:number, blendTime/*int*/:number ) {
-//	this.Reset( modelDef );
-//	if ( !modelDef ) {
-//		return;
-//	}
-//	
-//	const idAnim *_anim = modelDef.GetAnim( _animNum );
-//	if ( !_anim ) {
-//		return;
-//	}
-//
-//	const idMD5Anim *md5anim = _anim.MD5Anim( 0 );
-//	if ( modelDef.Joints().Num() != md5anim.NumJoints() ) {
-//		gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", modelDef.GetModelName(), md5anim.Name() );
-//		return;
-//	}
-//	
-//	this.animNum				= _animNum;
-//	this.starttime			= currentTime;
-//	this.endtime				= -1;
-//	this.cycle				= -1;
-//	this.animWeights[ 0 ]	= 1.0;
-//	frame				= _frame;
-//
-//	// a frame of 0 means it's not a single frame blend, so we set it to frame + 1
-//	if ( frame <= 0 ) {
-//		frame = 1;
-//	} else if ( frame > _anim.NumFrames() ) {
-//		frame = _anim.NumFrames();
-//	}
-//
-//	// set up blend
-//	this.blendEndValue		= 1.0;
-//	this.blendStartTime		= currentTime - 1;
-//	this.blendDuration		= blendTime;
-//	this.blendStartValue		= 0.0;
-//}
-//
+/*
+=====================
+idAnimBlend::SetFrame
+=====================
+*/
+	SetFrame ( modelDef: idDeclModelDef, /*int*/ _animNum: number, /*int*/ _frame: number, currentTime /*int*/: number, blendTime /*int*/: number ): void {
+		this.Reset( modelDef );
+		if ( !modelDef ) {
+			return;
+		}
+
+		var _anim = modelDef.GetAnim_index( _animNum );
+		if ( !_anim ) {
+			return;
+		}
+
+		var md5anim = _anim.MD5Anim( 0 );
+		if ( modelDef.Joints ( ).Num ( ) != md5anim.NumJoints ( ) ) {
+			gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", modelDef.GetModelName ( ), md5anim.Name ( ) );
+			return;
+		}
+
+		this.animNum = _animNum;
+		this.starttime = currentTime;
+		this.endtime = -1;
+		this.cycle = -1;
+		this.animWeights[0] = 1.0;
+		this.frame = _frame;
+
+		// a frame of 0 means it's not a single frame blend, so we set it to frame + 1
+		if ( this.frame <= 0 ) {
+			this.frame = 1;
+		} else if ( this.frame > _anim.NumFrames ( ) ) {
+			this.frame = _anim.NumFrames ( );
+		}
+
+		// set up blend
+		this.blendEndValue = 1.0;
+		this.blendStartTime = currentTime - 1;
+		this.blendDuration = blendTime;
+		this.blendStartValue = 0.0;
+	}
+
 ///*
 //=====================
 //idAnimBlend::CycleAnim
 //=====================
 //*/
-//void idAnimBlend::CycleAnim( modelDef:idDeclModelDef, int _animNum, currentTime/*int*/:number, blendTime/*int*/:number ) {
+//void idAnimBlend::CycleAnim( modelDef:idDeclModelDef,  /*int*/ _animNum:number, currentTime/*int*/:number, blendTime/*int*/:number ) {
 //	this.Reset( modelDef );
 //	if ( !modelDef ) {
 //		return;
@@ -2583,7 +2598,7 @@ SetWeight( /*float */newweight:number, currentTime/*int*/:number, blendTime/*int
 //idAnimBlend::PlayAnim
 //=====================
 //*/
-//void idAnimBlend::PlayAnim( modelDef:idDeclModelDef, int _animNum, currentTime/*int*/:number, blendTime/*int*/:number ) {
+//void idAnimBlend::PlayAnim( modelDef:idDeclModelDef,  /*int*/ _animNum:number, currentTime/*int*/:number, blendTime/*int*/:number ) {
 //	this.Reset( modelDef );
 //	if ( !modelDef ) {
 //		return;
@@ -2632,7 +2647,7 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //=====================
 //*/
 //bool idAnimBlend::IsDone( currentTime/*int*/:number ) const {
-//	if ( !frame && ( this.endtime > 0 ) && ( currentTime >= this.endtime ) ) {
+//	if ( !this.frame && ( this.endtime > 0 ) && ( currentTime >= this.endtime ) ) {
 //		return true;
 //	}
 //
@@ -2665,7 +2680,7 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 //	}
 //
 //	// if we're a single frame anim and this isn't the frame we started on, we don't need to update
-//	if ( ( frame || ( NumFrames() == 1 ) ) && ( currentTime != this.starttime ) ) {
+//	if ( ( this.frame || ( NumFrames() == 1 ) ) && ( currentTime != this.starttime ) ) {
 //		return false;
 //	}
 //
@@ -2858,7 +2873,7 @@ idAnimBlend::AnimTime
 =====================
 */
 	AnimTime ( currentTime /*int*/: number ): number /*int*/ {
-		var /*int*/time:number;
+		var /*int*/time: number;
 		var /*int */length: number;
 		var anim = this.Anim ( );
 
@@ -2871,7 +2886,7 @@ idAnimBlend::AnimTime
 			if ( this.rate == 1.0 ) {
 				time = currentTime - this.starttime + this.timeOffset;
 			} else {
-				time =/* static_cast<int>*/int( ( currentTime - this.starttime ) * this.rate ) + this.timeOffset;
+				time = /* static_cast<int>*/int( ( currentTime - this.starttime ) * this.rate ) + this.timeOffset;
 			}
 
 			// given enough time, we can easily wrap time around in our frame calculations, so
@@ -2891,7 +2906,7 @@ idAnimBlend::AnimTime
 			return 0;
 		}
 	}
-//
+
 ///*
 //=====================
 //idAnimBlend::GetFrameNumber
@@ -3524,7 +3539,7 @@ class idAnimator {
 	//size_t idAnimator::Allocated( ) const {
 	//	size_t	size;
 	//
-	//	size = this.jointMods.Allocated() + numJoints * sizeof( joints[0] ) + this.jointMods.Num() * sizeof( this.jointMods[ 0 ] ) + AFPoseJointMods.Allocated() + AFPoseJointFrame.Allocated() + this.AFPoseJoints.Allocated();
+	//	size = this.jointMods.Allocated() + numJoints * sizeof( joints[0] ) + this.jointMods.Num() * sizeof( this.jointMods[ 0 ] ) + AFPoseJointMods.Allocated() + this.AFPoseJointFrame.Allocated() + this.AFPoseJoints.Allocated();
 	//
 	//	return size;
 	//}
@@ -3561,7 +3576,7 @@ class idAnimator {
 	//	}
 	//
 	//	savefile.WriteInt( this.lastTransformTime );
-	//	savefile.WriteBool( stoppedAnimatingUpdate );
+	//	savefile.WriteBool( this.stoppedAnimatingUpdate );
 	//	savefile.WriteBool( this.forceUpdate );
 	//	savefile.WriteBounds( this.frameBounds );
 	//
@@ -3579,13 +3594,13 @@ class idAnimator {
 	//		savefile.WriteVec3( AFPoseJointMods[i].origin );
 	//	}
 	//	
-	//	savefile.WriteInt( AFPoseJointFrame.Num() );
-	//	for ( i = 0; i < AFPoseJointFrame.Num(); i++ ) {
-	//		savefile.WriteFloat( AFPoseJointFrame[i].q.x );
-	//		savefile.WriteFloat( AFPoseJointFrame[i].q.y );
-	//		savefile.WriteFloat( AFPoseJointFrame[i].q.z );
-	//		savefile.WriteFloat( AFPoseJointFrame[i].q.w );
-	//		savefile.WriteVec3( AFPoseJointFrame[i].t );
+	//	savefile.WriteInt( this.AFPoseJointFrame.Num() );
+	//	for ( i = 0; i < this.AFPoseJointFrame.Num(); i++ ) {
+	//		savefile.WriteFloat( this.AFPoseJointFrame[i].q.x );
+	//		savefile.WriteFloat( this.AFPoseJointFrame[i].q.y );
+	//		savefile.WriteFloat( this.AFPoseJointFrame[i].q.z );
+	//		savefile.WriteFloat( this.AFPoseJointFrame[i].q.w );
+	//		savefile.WriteVec3( this.AFPoseJointFrame[i].t );
 	//	}
 	//	
 	//	savefile.WriteBounds( this.AFPoseBounds );
@@ -3636,7 +3651,7 @@ class idAnimator {
 	//	}
 	//	
 	//	savefile.ReadInt( this.lastTransformTime );
-	//	savefile.ReadBool( stoppedAnimatingUpdate );
+	//	savefile.ReadBool( this.stoppedAnimatingUpdate );
 	//	savefile.ReadBool( this.forceUpdate );
 	//	savefile.ReadBounds( this.frameBounds );
 	//
@@ -3659,14 +3674,14 @@ class idAnimator {
 	//	}
 	//	
 	//	savefile.ReadInt( num );
-	//	AFPoseJointFrame.SetGranularity( 1 );
-	//	AFPoseJointFrame.SetNum( num );
-	//	for ( i = 0; i < AFPoseJointFrame.Num(); i++ ) {
-	//		savefile.ReadFloat( AFPoseJointFrame[i].q.x );
-	//		savefile.ReadFloat( AFPoseJointFrame[i].q.y );
-	//		savefile.ReadFloat( AFPoseJointFrame[i].q.z );
-	//		savefile.ReadFloat( AFPoseJointFrame[i].q.w );
-	//		savefile.ReadVec3( AFPoseJointFrame[i].t );
+	//	this.AFPoseJointFrame.SetGranularity( 1 );
+	//	this.AFPoseJointFrame.SetNum( num );
+	//	for ( i = 0; i < this.AFPoseJointFrame.Num(); i++ ) {
+	//		savefile.ReadFloat( this.AFPoseJointFrame[i].q.x );
+	//		savefile.ReadFloat( this.AFPoseJointFrame[i].q.y );
+	//		savefile.ReadFloat( this.AFPoseJointFrame[i].q.z );
+	//		savefile.ReadFloat( this.AFPoseJointFrame[i].q.w );
+	//		savefile.ReadVec3( this.AFPoseJointFrame[i].t );
 	//	}
 	//	
 	//	savefile.ReadBounds( this.AFPoseBounds );
@@ -4070,7 +4085,7 @@ class idAnimator {
 	//		jointMod = new jointMod_t;
 	//		jointMod.jointnum = jointnum;
 	//		jointMod.mat.Identity();
-	//		jointMod.transform_axis = JOINTMOD_NONE;
+	//		jointMod.transform_axis = jointModTransform_t.JOINTMOD_NONE;
 	//		this.jointMods.Insert( jointMod, i );
 	//	}
 	//
@@ -4110,7 +4125,7 @@ class idAnimator {
 	//		jointMod = new jointMod_t;
 	//		jointMod.jointnum = jointnum;
 	//		jointMod.pos.Zero();
-	//		jointMod.transform_pos = JOINTMOD_NONE;
+	//		jointMod.transform_pos = jointModTransform_t.JOINTMOD_NONE;
 	//		this.jointMods.Insert( jointMod, i );
 	//	}
 	//
@@ -4302,9 +4317,8 @@ class idAnimator {
 			count = 0;
 		}
 
-		blend = this.channels[0][0];
 		for ( i = ANIMCHANNEL_ALL; i < ANIM_NumAnimChannels; i++ ) {
-			for ( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend = this.channels[0][j] ) {
+			for (j = 0, blend = this.channels[i][0]; j < ANIM_MaxAnimsPerChannel; j++, blend = this.channels[0][j] ) {
 				if ( blend.AddBounds( currentTime, bounds, this.removeOriginOffset ) ) {
 					count++;
 				}
@@ -4352,7 +4366,7 @@ class idAnimator {
 	//	this.AFPoseJoints.SetNum( this.modelDef.Joints().Num(), false );
 	//	this.AFPoseJoints.SetNum( 0, false );
 	//	AFPoseJointMods.SetNum( this.modelDef.Joints().Num(), false );
-	//	AFPoseJointFrame.SetNum( this.modelDef.Joints().Num(), false );
+	//	this.AFPoseJointFrame.SetNum( this.modelDef.Joints().Num(), false );
 	//}
 	//
 	///*
@@ -4377,9 +4391,9 @@ class idAnimator {
 	//=====================
 	//*/
 	//void idAnimator::FinishAFPose( animNum/*int*/:number, const idBounds &bounds, /*int*/time:number ) {
-	//	int					i, j;
-	//	int					numJoints;
-	//	int					parentNum;
+	//	var/*int*/i: number, j: number;
+	//	var numJoints:number /*int*/;
+	//	var parentNum:number /*int*/;
 	//	int					jointMod;
 	//	int					jointNum;
 	//	const int *			jointParent;
@@ -4483,7 +4497,7 @@ class idAnimator {
 	//	SIMDProcessor.UntransformJoints( joints, jointParent, 1, numJoints - 1 );
 	//
 	//	// convert joint matrices back to joint quaternions
-	//	SIMDProcessor.ConvertJointMatsToJointQuats( AFPoseJointFrame.Ptr(), joints, numJoints );
+	//	SIMDProcessor.ConvertJointMatsToJointQuats( this.AFPoseJointFrame.Ptr(), joints, numJoints );
 	//
 	//	// find all modified joints and their parents
 	//	bool *blendJoints = (bool *) _alloca16( numJoints * sizeof( bool ) );
@@ -4519,21 +4533,21 @@ class idAnimator {
 	//	AFPoseBlendWeight = blendWeight;
 	//}
 	//
-	///*
-	//=====================
-	//idAnimator::BlendAFPose
-	//=====================
-	//*/
-	//bool idAnimator::BlendAFPose( idJointQuat *blendFrame ) const {
-	//
-	//	if ( !this.AFPoseJoints.Num() ) {
-	//		return false;
-	//	}
-	//
-	//	SIMDProcessor.BlendJoints( blendFrame, AFPoseJointFrame.Ptr(), AFPoseBlendWeight, this.AFPoseJoints.Ptr(), this.AFPoseJoints.Num() );
-	//
-	//	return true;
-	//}
+	/*
+	=====================
+	idAnimator::BlendAFPose
+	=====================
+	*/
+	bool idAnimator::BlendAFPose( idJointQuat *blendFrame ) const {
+	
+		if ( !this.AFPoseJoints.Num() ) {
+			return false;
+		}
+	
+		SIMDProcessor.BlendJoints( blendFrame, this.AFPoseJointFrame.Ptr(), AFPoseBlendWeight, this.AFPoseJoints.Ptr(), this.AFPoseJoints.Num() );
+	
+		return true;
+	}
 	
 	/*
 	=====================
@@ -4572,8 +4586,8 @@ class idAnimator {
 	//		}
 	//	}
 	//
-	//	if ( !IsAnimating( totime ) ) {
-	//		stoppedAnimatingUpdate = true;
+	//	if ( !this.IsAnimating( totime ) ) {
+	//		this.stoppedAnimatingUpdate = true;
 	//		if ( this.entity ) {
 	//			this.entity.BecomeInactive( TH_ANIMATE );
 	//
@@ -4589,7 +4603,7 @@ class idAnimator {
 	//=====================
 	//*/
 	//bool idAnimator::IsAnimating( currentTime/*int*/:number ) const {
-	//	int					i, j;
+	//	var/*int*/i: number, j: number;
 	//	const idAnimBlend	*blend;
 	//
 	//	if ( !this.modelDef || !this.modelDef.ModelHandle() ) {
@@ -4619,7 +4633,7 @@ class idAnimator {
 	//=====================
 	//*/
 	//bool idAnimator::FrameHasChanged( currentTime/*int*/:number ) const {
-	//	int					i, j;
+	//	var/*int*/i: number, j: number;
 	//	const idAnimBlend	*blend;
 	//
 	//	if ( !this.modelDef || !this.modelDef.ModelHandle() ) {
@@ -4640,7 +4654,7 @@ class idAnimator {
 	//		}
 	//	}
 	//
-	//	if ( this.forceUpdate && IsAnimating( currentTime ) ) {
+	//	if ( this.forceUpdate && this.IsAnimating( currentTime ) ) {
 	//		return true;
 	//	}
 	//
@@ -4653,243 +4667,242 @@ class idAnimator {
 	=====================
 	*/
 	CreateFrame( /*int */currentTime: number, force: boolean): boolean {
-		todoThrow();
-		//	int					i, j;
-		//	int					numJoints;
-		//	int					parentNum;
-		//	bool				hasAnim;
-		//	bool				debugInfo;
-		//	float				baseBlend;
-		//	float				blendWeight;
-		//	const idAnimBlend *	blend;
-		//	const int *			jointParent;
-		//	const jointMod_t *	jointMod;
-		//	const idJointQuat *	defaultPose;
-		//
-		//	static idCVar		var r_showSkel = idAnimator.r_showSkel || idAnimator.r_showSkel = new idCVar( "r_showSkel", "0", CVAR_RENDERER | CVAR_INTEGER, "", 0, 2, idCmdSystem::ArgCompletion_Integer<0,2> );
-		//
-		//	if ( gameLocal.inCinematic && gameLocal.skipCinematic ) {
-		//		return false;
-		//	}
-		//
-		//	if ( !this.modelDef || !this.modelDef.ModelHandle() ) {
-		//		return false;
-		//	}
-		//
-		//	if ( !force && !r_showSkel.GetInteger() ) {
-		//		if ( this.lastTransformTime == currentTime ) {
-		//			return false;
-		//		}
-		//		if ( this.lastTransformTime != -1 && !stoppedAnimatingUpdate && !IsAnimating( currentTime ) ) {
-		//			return false;
-		//		}
-		//	}
-		//
-		//	this.lastTransformTime = currentTime;
-		//	stoppedAnimatingUpdate = false;
-		//
-		//	if ( this.entity && ( ( g_debugAnim.GetInteger() == this.entity.entityNumber ) || ( g_debugAnim.GetInteger() == -2 ) ) ) {
-		//		debugInfo = true;
-		//		gameLocal.Printf( "---------------\n%d: entity '%s':\n", gameLocal.time, this.entity.GetName() );
-		// 		gameLocal.Printf( "model '%s':\n", this.modelDef.GetModelName() );
-		//	} else {
-		//		debugInfo = false;
-		//	}
-		//
-		//	// init the joint buffer
-		//	if ( this.AFPoseJoints.Num() ) {
-		//		// initialize with AF pose anim for the case where there are no other animations and no AF pose joint modifications
-		//		defaultPose = AFPoseJointFrame.Ptr();
-		//	} else {
-		//		defaultPose = this.modelDef.GetDefaultPose();
-		//	}
-		//
-		//	if ( !defaultPose ) {
-		//		//gameLocal.Warning( "idAnimator::CreateFrame: no defaultPose on '%s'", this.modelDef.Name() );
-		//		return false;
-		//	}
-		//
-		//	numJoints = this.modelDef.Joints().Num();
-		//	idJointQuat *jointFrame = ( idJointQuat * )_alloca16( numJoints * sizeof( jointFrame[0] ) );
-		//	SIMDProcessor.Memcpy( jointFrame, defaultPose, numJoints * sizeof( jointFrame[0] ) );
-		//
-		//	hasAnim = false;
-		//
-		//	// blend the all channel
-		//	baseBlend = 0.0;
-		//	blend = this.channels[ ANIMCHANNEL_ALL ];
-		//	for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-		//		if ( blend.BlendAnim( currentTime, ANIMCHANNEL_ALL, numJoints, jointFrame, baseBlend, this.removeOriginOffset, false, debugInfo ) ) {
-		//			hasAnim = true;
-		//			if ( baseBlend >= 1.0 ) {
-		//				break;
-		//			}
-		//		}
-		//	}
-		//
-		//	// only blend other this.channels if there's enough space to blend into
-		//	if ( baseBlend < 1.0 ) {
-		//		for( i = ANIMCHANNEL_ALL + 1; i < ANIM_NumAnimChannels; i++ ) {
-		//			if ( !this.modelDef.NumJointsOnChannel( i ) ) {
-		//				continue;
-		//			}
-		//			if ( i == ANIMCHANNEL_EYELIDS ) {
-		//				// eyelids blend over any previous anims, so skip it and blend it later
-		//				continue;
-		//			}
-		//			blendWeight = baseBlend;
-		//			blend = this.channels[ i ];
-		//			for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-		//				if ( blend.BlendAnim( currentTime, i, numJoints, jointFrame, blendWeight, this.removeOriginOffset, false, debugInfo ) ) {
-		//					hasAnim = true;
-		//					if ( blendWeight >= 1.0 ) {
-		//						// fully blended
-		//						break;
-		//					}
-		//				}
-		//			}
-		//
-		//			if ( debugInfo && !this.AFPoseJoints.Num() && !blendWeight ) {
-		//				gameLocal.Printf( "%d: %s using default pose in model '%s'\n", gameLocal.time, channelNames[ i ], this.modelDef.GetModelName() );
-		//			}
-		//		}
-		//	}
-		//
-		//	// blend in the eyelids
-		//	if ( this.modelDef.NumJointsOnChannel( ANIMCHANNEL_EYELIDS ) ) {
-		//		blend = this.channels[ ANIMCHANNEL_EYELIDS ];
-		//		blendWeight = baseBlend;
-		//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-		//			if ( blend.BlendAnim( currentTime, ANIMCHANNEL_EYELIDS, numJoints, jointFrame, blendWeight, this.removeOriginOffset, true, debugInfo ) ) {
-		//				hasAnim = true;
-		//				if ( blendWeight >= 1.0 ) {
-		//					// fully blended
-		//					break;
-		//				}
-		//			}
-		//		}
-		//	}
-		//
-		//	// blend the articulated figure pose
-		//	if ( BlendAFPose( jointFrame ) ) {
-		//		hasAnim = true;
-		//	}
-		//
-		//	if ( !hasAnim && !this.jointMods.Num() ) {
-		//		// no animations were updated
-		//		return false;
-		//	}
-		//
-		//	// convert the joint quaternions to rotation matrices
-		//	SIMDProcessor.ConvertJointQuatsToJointMats( this.joints, jointFrame, numJoints );
-		//
-		//	// check if we need to modify the origin
-		//	if ( this.jointMods.Num() && ( this.jointMods[0].jointnum == 0 ) ) {
-		//		jointMod = this.jointMods[0];
-		//
-		//		switch( jointMod.transform_axis ) {
-		//			case JOINTMOD_NONE:
-		//				break;
-		//
-		//			case JOINTMOD_LOCAL:
-		//				this.joints[0].SetRotation( jointMod.mat * this.joints[0].ToMat3() );
-		//				break;
-		//			
-		//			case JOINTMOD_WORLD:
-		//				this.joints[0].SetRotation( this.joints[0].ToMat3() * jointMod.mat );
-		//				break;
-		//
-		//			case JOINTMOD_LOCAL_OVERRIDE:
-		//			case JOINTMOD_WORLD_OVERRIDE:
-		//				this.joints[0].SetRotation( jointMod.mat );
-		//				break;
-		//		}
-		//
-		//		switch( jointMod.transform_pos ) {
-		//			case JOINTMOD_NONE:
-		//				break;
-		//
-		//			case JOINTMOD_LOCAL:
-		//				this.joints[0].SetTranslation( this.joints[0].ToVec3() + jointMod.pos );
-		//				break;
-		//			
-		//			case JOINTMOD_LOCAL_OVERRIDE:
-		//			case JOINTMOD_WORLD:
-		//			case JOINTMOD_WORLD_OVERRIDE:
-		//				this.joints[0].SetTranslation( jointMod.pos );
-		//				break;
-		//		}
-		//		j = 1;
-		//	} else {
-		//		j = 0;
-		//	}
-		//
-		//	// add in the model offset
-		//	this.joints[0].SetTranslation( this.joints[0].ToVec3() + this.modelDef.GetVisualOffset() );
-		//
-		//	// pointer to joint info
-		//	jointParent = this.modelDef.JointParents();
-		//
-		//	// add in any joint modifications
-		//	for( i = 1; j < this.jointMods.Num(); j++, i++ ) {
-		//		jointMod = this.jointMods[j];
-		//
-		//		// transform any this.joints preceding the joint modifier
-		//		SIMDProcessor.TransformJoints( this.joints, jointParent, i, jointMod.jointnum - 1 );
-		//		i = jointMod.jointnum;
-		//
-		//		parentNum = jointParent[i];
-		//
-		//		// modify the axis
-		//		switch( jointMod.transform_axis ) {
-		//			case JOINTMOD_NONE:
-		//				this.joints[i].SetRotation( this.joints[i].ToMat3() * this.joints[ parentNum ].ToMat3() );
-		//				break;
-		//
-		//			case JOINTMOD_LOCAL:
-		//				this.joints[i].SetRotation( jointMod.mat * ( this.joints[i].ToMat3() * this.joints[parentNum].ToMat3() ) );
-		//				break;
-		//			
-		//			case JOINTMOD_LOCAL_OVERRIDE:
-		//				this.joints[i].SetRotation( jointMod.mat * this.joints[parentNum].ToMat3() );
-		//				break;
-		//
-		//			case JOINTMOD_WORLD:
-		//				this.joints[i].SetRotation( ( this.joints[i].ToMat3() * this.joints[parentNum].ToMat3() ) * jointMod.mat );
-		//				break;
-		//
-		//			case JOINTMOD_WORLD_OVERRIDE:
-		//				this.joints[i].SetRotation( jointMod.mat );
-		//				break;
-		//		}
-		//
-		//		// modify the position
-		//		switch( jointMod.transform_pos ) {
-		//			case JOINTMOD_NONE:
-		//				this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + this.joints[i].ToVec3() * this.joints[parentNum].ToMat3() );
-		//				break;
-		//
-		//			case JOINTMOD_LOCAL:
-		//				this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + ( this.joints[i].ToVec3() + jointMod.pos ) * this.joints[parentNum].ToMat3() );
-		//				break;
-		//			
-		//			case JOINTMOD_LOCAL_OVERRIDE:
-		//				this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + jointMod.pos * this.joints[parentNum].ToMat3() );
-		//				break;
-		//
-		//			case JOINTMOD_WORLD:
-		//				this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + this.joints[i].ToVec3() * this.joints[parentNum].ToMat3() + jointMod.pos );
-		//				break;
-		//
-		//			case JOINTMOD_WORLD_OVERRIDE:
-		//				this.joints[i].SetTranslation( jointMod.pos );
-		//				break;
-		//		}
-		//	}
-		//
-		//	// transform the rest of the hierarchy
-		//	SIMDProcessor.TransformJoints( this.joints, jointParent, i, numJoints - 1 );
-		//
+		var/*int*/i: number, j: number;
+			var numJoints:number /*int*/;
+			var parentNum:number /*int*/;
+			var hasAnim:boolean;
+			var debugInfo: boolean;
+			var baseBlend :number /*float*/;
+			var blendWeight :number /*float*/;
+		var blend = new arrPtr<idAnimBlend>(null );
+			var jointParent:Int32Array;
+			var jointMod:jointMod_t;
+			var defaultPose:idJointQuat[];
+
+			//static idCVar		r_showSkel("r_showSkel", "0", CVAR_RENDERER | CVAR_INTEGER, "", 0, 2, idCmdSystem::ArgCompletion_Integer < 0,2>);
+
+			if ( gameLocal.inCinematic && gameLocal.skipCinematic ) {
+				return false;
+			}
+		
+			if ( !this.modelDef || !this.modelDef.ModelHandle() ) {
+				return false;
+			}
+		
+			if ( !force && !r_showSkel.GetInteger() ) {
+				if ( this.lastTransformTime == currentTime ) {
+					return false;
+				}
+				if ( this.lastTransformTime != -1 && !this.stoppedAnimatingUpdate && !this.IsAnimating( currentTime ) ) {
+					return false;
+				}
+			}
+		
+			this.lastTransformTime = currentTime;
+			this.stoppedAnimatingUpdate = false;
+		
+			if ( this.entity && ( ( g_debugAnim.GetInteger() == this.entity.entityNumber ) || ( g_debugAnim.GetInteger() == -2 ) ) ) {
+				debugInfo = true;
+				gameLocal.Printf( "---------------\n%d: entity '%s':\n", gameLocal.time, this.entity.GetName() );
+		 		gameLocal.Printf( "model '%s':\n", this.modelDef.GetModelName() );
+			} else {
+				debugInfo = false;
+			}
+		
+			// init the joint buffer
+			if ( this.AFPoseJoints.Num() ) {
+				// initialize with AF pose anim for the case where there are no other animations and no AF pose joint modifications
+				defaultPose = this.AFPoseJointFrame.Ptr();
+			} else {
+				defaultPose = this.modelDef.GetDefaultPose();
+			}
+		
+			if ( !defaultPose ) {
+				//gameLocal.Warning( "idAnimator::CreateFrame: no defaultPose on '%s'", this.modelDef.Name() );
+				return false;
+			}
+		
+			numJoints = this.modelDef.Joints().Num();
+		var jointFrame = newStructArray<idJointQuat>( idJointQuat, numJoints );// ( idJointQuat * )_alloca16( numJoints * sizeof( jointFrame[0] ) );
+			SIMDProcessor.Memcpy( jointFrame, defaultPose, numJoints * sizeof( jointFrame[0] ) );
+		
+			hasAnim = false;
+		
+			// blend the all channel
+			baseBlend = 0.0;
+		blend .set( this.channels[ANIMCHANNEL_ALL] );
+			for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend.idx++ ) {
+				if ( blend.$.BlendAnim( currentTime, ANIMCHANNEL_ALL, numJoints, jointFrame, baseBlend, this.removeOriginOffset, false, debugInfo ) ) {
+					hasAnim = true;
+					if ( baseBlend >= 1.0 ) {
+						break;
+					}
+				}
+			}
+		
+			// only blend other this.channels if there's enough space to blend into
+			if ( baseBlend < 1.0 ) {
+				for( i = ANIMCHANNEL_ALL + 1; i < ANIM_NumAnimChannels; i++ ) {
+					if ( !this.modelDef.NumJointsOnChannel( i ) ) {
+						continue;
+					}
+					if ( i == ANIMCHANNEL_EYELIDS ) {
+						// eyelids blend over any previous anims, so skip it and blend it later
+						continue;
+					}
+					blendWeight = baseBlend;
+					blend.set( this.channels[i] );
+					for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend.idx++ ) {
+						if ( blend.$.BlendAnim( currentTime, i, numJoints, jointFrame, blendWeight, this.removeOriginOffset, false, debugInfo ) ) {
+							hasAnim = true;
+							if ( blendWeight >= 1.0 ) {
+								// fully blended
+								break;
+							}
+						}
+					}
+		
+					if ( debugInfo && !this.AFPoseJoints.Num() && !blendWeight ) {
+						gameLocal.Printf( "%d: %s using default pose in model '%s'\n", gameLocal.time, channelNames[ i ], this.modelDef.GetModelName() );
+					}
+				}
+			}
+		
+			// blend in the eyelids
+			if ( this.modelDef.NumJointsOnChannel( ANIMCHANNEL_EYELIDS ) ) {
+				blend .set( this.channels[ ANIMCHANNEL_EYELIDS ]);
+				blendWeight = baseBlend;
+				for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend.idx++ ) {
+					if ( blend.BlendAnim( currentTime, ANIMCHANNEL_EYELIDS, numJoints, jointFrame, blendWeight, this.removeOriginOffset, true, debugInfo ) ) {
+						hasAnim = true;
+						if ( blendWeight >= 1.0 ) {
+							// fully blended
+							break;
+						}
+					}
+				}
+			}
+		
+			// blend the articulated figure pose
+			if ( this.BlendAFPose( jointFrame ) ) {
+				hasAnim = true;
+			}
+		
+			if ( !hasAnim && !this.jointMods.Num() ) {
+				// no animations were updated
+				return false;
+			}
+		
+			// convert the joint quaternions to rotation matrices
+			SIMDProcessor.ConvertJointQuatsToJointMats( this.joints, jointFrame, numJoints );
+		
+			// check if we need to modify the origin
+			if ( this.jointMods.Num() && ( this.jointMods[0].jointnum == 0 ) ) {
+				jointMod = this.jointMods[0];
+		
+				switch( jointMod.transform_axis ) {
+					case jointModTransform_t.JOINTMOD_NONE:
+						break;
+		
+					case jointModTransform_t.JOINTMOD_LOCAL:
+						this.joints[0].SetRotation( jointMod.mat .opMultiplication( this.joints[0].ToMat3() ));
+						break;
+					
+					case jointModTransform_t.JOINTMOD_WORLD:
+						this.joints[0].SetRotation(this.joints[0].ToMat3().opMultiplication(  jointMod.mat ));
+						break;
+		
+					case jointModTransform_t.JOINTMOD_LOCAL_OVERRIDE:
+					case jointModTransform_t.JOINTMOD_WORLD_OVERRIDE:
+						this.joints[0].SetRotation( jointMod.mat );
+						break;
+				}
+		
+				switch( jointMod.transform_pos ) {
+					case jointModTransform_t.JOINTMOD_NONE:
+						break;
+		
+					case jointModTransform_t.JOINTMOD_LOCAL:
+						this.joints[0].SetTranslation( this.joints[0].ToVec3() + jointMod.pos );
+						break;
+					
+					case jointModTransform_t.JOINTMOD_LOCAL_OVERRIDE:
+					case jointModTransform_t.JOINTMOD_WORLD:
+					case jointModTransform_t.JOINTMOD_WORLD_OVERRIDE:
+						this.joints[0].SetTranslation( jointMod.pos );
+						break;
+				}
+				j = 1;
+			} else {
+				j = 0;
+			}
+		
+			// add in the model offset
+			this.joints[0].SetTranslation( this.joints[0].ToVec3() + this.modelDef.GetVisualOffset() );
+		
+			// pointer to joint info
+			jointParent = this.modelDef.JointParents();
+		
+			// add in any joint modifications
+			for( i = 1; j < this.jointMods.Num(); j++, i++ ) {
+				jointMod = this.jointMods[j];
+		
+				// transform any this.joints preceding the joint modifier
+				SIMDProcessor.TransformJoints( this.joints, jointParent, i, jointMod.jointnum - 1 );
+				i = jointMod.jointnum;
+		
+				parentNum = jointParent[i];
+		
+				// modify the axis
+				switch ( jointMod.transform_axis ) {
+				case jointModTransform_t.JOINTMOD_NONE:
+					this.joints[i].SetRotation( this.joints[i].ToMat3 ( ) * this.joints[parentNum].ToMat3 ( ) );
+					break;
+
+				case jointModTransform_t.JOINTMOD_LOCAL:
+					this.joints[i].SetRotation( jointMod.mat * ( this.joints[i].ToMat3 ( ).opMultiplication( this.joints[parentNum].ToMat3 ( ) ) ) );
+					break;
+
+				case jointModTransform_t.JOINTMOD_LOCAL_OVERRIDE:
+					this.joints[i].SetRotation( jointMod.mat.opMultiplication( this.joints[parentNum].ToMat3 ( ) ) );
+					break;
+
+				case jointModTransform_t.JOINTMOD_WORLD:
+					this.joints[i].SetRotation( ( this.joints[i].ToMat3 ( ).opMultiplication( this.joints[parentNum].ToMat3 ( ) ) ) * jointMod.mat );
+					break;
+
+				case jointModTransform_t.JOINTMOD_WORLD_OVERRIDE:
+					this.joints[i].SetRotation( jointMod.mat );
+					break;
+				}
+
+				// modify the position
+				switch( jointMod.transform_pos ) {
+					case jointModTransform_t.JOINTMOD_NONE:
+						this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + this.joints[i].ToVec3() * this.joints[parentNum].ToMat3() );
+						break;
+		
+					case jointModTransform_t.JOINTMOD_LOCAL:
+						this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + ( this.joints[i].ToVec3() + jointMod.pos ) * this.joints[parentNum].ToMat3() );
+						break;
+					
+					case jointModTransform_t.JOINTMOD_LOCAL_OVERRIDE:
+						this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + jointMod.pos * this.joints[parentNum].ToMat3() );
+						break;
+		
+					case jointModTransform_t.JOINTMOD_WORLD:
+						this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + this.joints[i].ToVec3() * this.joints[parentNum].ToMat3() + jointMod.pos );
+						break;
+		
+					case jointModTransform_t.JOINTMOD_WORLD_OVERRIDE:
+						this.joints[i].SetTranslation( jointMod.pos );
+						break;
+				}
+			}
+		
+			// transform the rest of the hierarchy
+			SIMDProcessor.TransformJoints( this.joints, jointParent, i, numJoints - 1 );
+		
 		return true;
 	}
 

@@ -373,7 +373,7 @@ idDeclModelDef::SetupJoints
 		}
 
 		// set up initial pose for model (with no pose, model is just a jumbled mess)
-		list = new Array<idJointMat>( num ); // (idJointMat *) Mem_Alloc16( num * sizeof( list[0] ) );
+		list = newStructArray<idJointMat>( idJointMat, num ); // (idJointMat *) Mem_Alloc16( num * sizeof( list[0] ) );
 		pose = <idJointQuat[]><any>this.GetDefaultPose ( );
 
 		// convert the joint quaternions to joint matrices
@@ -415,7 +415,7 @@ idDeclModelDef::ParseAnim
 		var realname = new idToken;
 		var token = new idToken;
 		var numAnims: number /*int*/;
-		var flags: animFlags_t;
+		var flags = new animFlags_t;
 
 		numAnims = 0;
 		//memset( md5anims, 0, sizeof( md5anims ) );
@@ -804,54 +804,54 @@ Parse( text:string, /*const int */textLength :number):boolean {
 	return true;
 }
 
-///*
-//=====================
-//idDeclModelDef::HasAnim
-//=====================
-//*/
-//bool idDeclModelDef::HasAnim( name:string ) const {
-//	int	i;
-//
-//	// find any animations with same name
-//	for( i = 0; i < this.anims.Num(); i++ ) {
-//		if ( !strcmp( this.anims[ i ].Name(), name ) ) {
-//			return true;
-//		}
-//	}
-//	
-//	return false;
-//}
-//
-///*
-//=====================
-//idDeclModelDef::NumAnims
-//=====================
-//*/
-//int idDeclModelDef::NumAnims( ) const {
-//	return this.anims.Num() + 1;
-//}
-//
-///*
-//=====================
-//idDeclModelDef::GetSpecificAnim
-//
-//Gets the exact anim for the name, without randomization.
-//=====================
-//*/
-//int idDeclModelDef::GetSpecificAnim( name:string ) const {
-//	int	i;
-//
-//	// find a specific animation
-//	for( i = 0; i < this.anims.Num(); i++ ) {
-//		if ( !strcmp( this.anims[ i ].FullName(), name ) ) {
-//			return i + 1;
-//		}
-//	}
-//
-//	// didn't find it
-//	return 0;
-//}
-//
+/*
+=====================
+idDeclModelDef::HasAnim
+=====================
+*/
+	HasAnim ( name: string ): boolean {
+		var /*int	*/i: number;
+
+		// find any animations with same name
+		for ( i = 0; i < this.anims.Num ( ); i++ ) {
+			if ( !strcmp( this.anims[i].Name ( ), name ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+/*
+=====================
+idDeclModelDef::NumAnims
+=====================
+*/
+	NumAnims ( ): number {
+		return this.anims.Num ( ) + 1;
+	}
+
+/*
+=====================
+idDeclModelDef::GetSpecificAnim
+
+Gets the exact anim for the name, without randomization.
+=====================
+*/
+	GetSpecificAnim ( name: string ): number {
+		var /*int	*/i: number;
+
+		// find a specific animation
+		for ( i = 0; i < this.anims.Num ( ); i++ ) {
+			if ( !strcmp( this.anims[i].FullName ( ), name ) ) {
+				return i + 1;
+			}
+		}
+
+		// didn't find it
+		return 0;
+	}
+
 /*
 =====================
 idDeclModelDef::GetAnim
@@ -870,41 +870,39 @@ idDeclModelDef::GetAnim
 idDeclModelDef::GetAnim
 =====================
 */
-	GetAnim(name: string ) :number{
-	todoThrow();
-		return 99999999999;
-		//int				i;
-		//int				which;
-		//const int		MAX_ANIMS = 64;
-		//int				animList[ MAX_ANIMS ];
-		//int				numAnims;
-		//int				len;
+	GetAnim ( name: string ): number {
+		var /*int				*/i: number;
+		var /*int				*/which: number;
+		var /*const int		*/MAX_ANIMS = 64;
+		var animList = new Int32Array( MAX_ANIMS );
+		var /*int				*/numAnims: number;
+		var /*int				*/len: number;
 
-		//len = strlen( name );
-		//if ( len && idStr::CharIsNumeric( name[ len - 1 ] ) ) {
-		//	// find a specific animation
-		//	return GetSpecificAnim( name );
-		//}
+		len = strlen( name );
+		if ( len && idStr.CharIsNumeric( name.charCodeAt( len - 1 ) ) ) {
+			// find a specific animation
+			return this.GetSpecificAnim( name );
+		}
 
-		//// find all animations with same name
-		//numAnims = 0;
-		//for( i = 0; i < this.anims.Num(); i++ ) {
-		//	if ( !strcmp( this.anims[ i ].Name(), name ) ) {
-		//		animList[ numAnims++ ] = i;
-		//		if ( numAnims >= MAX_ANIMS ) {
-		//			break;
-		//		}
-		//	}
-		//}
+		// find all animations with same name
+		numAnims = 0;
+		for ( i = 0; i < this.anims.Num ( ); i++ ) {
+			if ( !strcmp( this.anims[i].Name ( ), name ) ) {
+				animList[numAnims++] = i;
+				if ( numAnims >= MAX_ANIMS ) {
+					break;
+				}
+			}
+		}
 
-		//if ( !numAnims ) {
-		//	return 0;
-		//}
+		if ( !numAnims ) {
+			return 0;
+		}
 
-		//// get a random anim
-		////FIXME: don't access gameLocal here?
-		//which = gameLocal.random.RandomInt( numAnims );
-		//return animList[ which ] + 1;
+		// get a random anim
+		//FIXME: don't access gameLocal here?
+		which = gameLocal.random.RandomInt_max( numAnims );
+		return animList[which] + 1;
 	}
 
 /*
@@ -988,24 +986,24 @@ idDeclModelDef::GetJointName
 		return joint[jointHandle].name.c_str ( );
 	}
 
-///*
-//=====================
-//idDeclModelDef::NumJointsOnChannel
-//=====================
-//*/
-//int idDeclModelDef::NumJointsOnChannel( int channel ) const {
-//	if ( ( channel < 0 ) || ( channel >= ANIM_NumAnimChannels ) ) {
-//		gameLocal.Error( "idDeclModelDef::NumJointsOnChannel : channel out of range" );
-//	}
-//	return this.channelJoints[ channel ].Num();
-//}
+/*
+=====================
+idDeclModelDef::NumJointsOnChannel
+=====================
+*/
+	NumJointsOnChannel ( /*int*/ channel: number ): number {
+		if ( ( channel < 0 ) || ( channel >= ANIM_NumAnimChannels ) ) {
+			gameLocal.Error( "idDeclModelDef::NumJointsOnChannel : channel out of range" );
+		}
+		return this.channelJoints[channel].Num ( );
+	}
 //
 ///*
 //=====================
 //idDeclModelDef::GetChannelJoints
 //=====================
 //*/
-//const int * idDeclModelDef::GetChannelJoints( int channel ) const {
+//const int * idDeclModelDef::GetChannelJoints( /*int*/ channel :number) const {
 //	if ( ( channel < 0 ) || ( channel >= ANIM_NumAnimChannels ) ) {
 //		gameLocal.Error( "idDeclModelDef::GetChannelJoints : channel out of range" );
 //	}

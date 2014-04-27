@@ -143,6 +143,7 @@
 
 // Containers
 /// <reference path="libs/idlib/containers/hashindex.h.ts" />
+/// <reference path="libs/idlib/containers/hashtable.h.ts" />
 /// <reference path="libs/idlib/containers/hierarchy.h.ts" />
 /// <reference path="libs/idlib/containers/list.h.ts" />
 /// <reference path="libs/idlib/containers/linklist.h.ts" />

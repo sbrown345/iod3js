@@ -660,7 +660,7 @@ idAFEntity_ClawFourFingers.Type = new idTypeInfo("idAFEntity_ClawFourFingers", "
 ////	const idMD5Joint *MD5joints;
 ////	int numMD5joints;
 ////	idJointMat *originalJoints;
-////	int parentNum;
+////	var parentNum:number /*int*/;
 ////
 ////	poseIsSet = false;
 ////	meshOrigin.Zero();

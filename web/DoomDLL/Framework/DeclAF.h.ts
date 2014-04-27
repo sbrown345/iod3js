@@ -54,17 +54,20 @@ enum declAFJointMod_t{
 	DECLAF_JOINTMOD_ORIGIN,
 	DECLAF_JOINTMOD_BOTH
 }
+
+enum idAFVector_type  {
+VEC_COORDS = 0,
+VEC_JOINT ,
+VEC_BONECENTER ,
+VEC_BONEDIR
+}
+
 ////
 ////typedef bool (*getJointTransform_t)( void *model, const idJointMat *frame, const char *jointName, idVec3 &origin, idMat3 &axis );
 ////
 class idAFVector {
 ////public:
-////	enum {
-////		VEC_COORDS = 0,
-////		VEC_JOINT,
-////		VEC_BONECENTER,
-////		VEC_BONEDIR
-////	}						type;
+	type: idAFVector_type;
 	joint1 = new idStr;
 	joint2 = new idStr;
 ////
@@ -83,23 +86,24 @@ class idAFVector {
 	negate: boolean;
 
 	
-/////*
-////================
-////idAFVector::idAFVector
-////================
-////*/
-////idAFVector::idAFVector( ) {
-////	type = VEC_COORDS;
-////	vec.Zero();
-////	negate = false;
-////}
-////
-/////*
-////================
-////idAFVector::Parse
-////================
-////*/
-////bool idAFVector::Parse( idLexer &src ) {
+/*
+================
+idAFVector::idAFVector
+================
+*/
+constructor( ) {
+	this.type = idAFVector_type.VEC_COORDS;
+	this.vec.Zero();
+	this.negate = false;
+}
+
+/*
+================
+idAFVector::Parse
+================
+*/
+	Parse(src: idLexer): boolean{
+		todoThrow()
 ////	idToken token;
 ////
 ////	if ( !src.ReadToken( &token ) ) {
@@ -117,7 +121,7 @@ class idAFVector {
 ////	}
 ////
 ////	if ( token == "(" ) {
-////		type = idAFVector::VEC_COORDS;
+////		type = idAFVector_type.VEC_COORDS;
 ////		vec.x = src.ParseFloat();
 ////		src.ExpectTokenString( "," );
 ////		vec.y = src.ParseFloat();
@@ -126,14 +130,14 @@ class idAFVector {
 ////		src.ExpectTokenString( ")" );
 ////	}
 ////	else if ( token == "joint" ) {
-////		type = idAFVector::VEC_JOINT;
+////		type = idAFVector_type.VEC_JOINT;
 ////		src.ExpectTokenString( "(" );
 ////		src.ReadToken( &token );
 ////		joint1 = token;
 ////		src.ExpectTokenString( ")" );
 ////	}
 ////	else if ( token == "bonecenter" ) {
-////		type = idAFVector::VEC_BONECENTER;
+////		type = idAFVector_type.VEC_BONECENTER;
 ////		src.ExpectTokenString( "(" );
 ////		src.ReadToken( &token );
 ////		joint1 = token;
@@ -143,7 +147,7 @@ class idAFVector {
 ////		src.ExpectTokenString( ")" );
 ////	}
 ////	else if ( token == "bonedir" ) {
-////		type = idAFVector::VEC_BONEDIR;
+////		type = idAFVector_type.VEC_BONEDIR;
 ////		src.ExpectTokenString( "(" );
 ////		src.ReadToken( &token );
 ////		joint1 = token;
@@ -157,8 +161,8 @@ class idAFVector {
 ////		return false;
 ////	}
 ////
-////	return true;
-////}
+	return true;
+}
 
 /*
 ================
@@ -171,17 +175,17 @@ idAFVector::Finish
 ////	idVec3 start, end;
 ////
 ////	switch( type ) {
-////		case idAFVector::VEC_COORDS: {
+////		case idAFVector_type.VEC_COORDS: {
 ////			break;
 ////		}
-////		case idAFVector::VEC_JOINT: {
+////		case idAFVector_type.VEC_JOINT: {
 ////			if ( !GetJointTransform( model, frame, joint1, vec, axis ) ) {
 ////				common.Warning( "invalid joint %s in joint() in '%s'", joint1.c_str(), fileName );
 ////				vec.Zero();
 ////			}
 ////			break;
 ////		}
-////		case idAFVector::VEC_BONECENTER: {
+////		case idAFVector_type.VEC_BONECENTER: {
 ////			if ( !GetJointTransform( model, frame, joint1, start, axis ) ) {
 ////				common.Warning( "invalid joint %s in bonecenter() in '%s'", joint1.c_str(), fileName );
 ////				start.Zero();
@@ -193,7 +197,7 @@ idAFVector::Finish
 ////			vec = ( start + end ) * 0.5;
 ////			break;
 ////		}
-////		case idAFVector::VEC_BONEDIR: {
+////		case idAFVector_type.VEC_BONEDIR: {
 ////			if ( !GetJointTransform( model, frame, joint1, start, axis ) ) {
 ////				common.Warning( "invalid joint %s in bonedir() in '%s'", joint1.c_str(), fileName );
 ////				start.Zero();
@@ -229,19 +233,19 @@ idAFVector::Finish
 ////		f.WriteFloatString( "-" );
 ////	}
 ////	switch( type ) {
-////		case idAFVector::VEC_COORDS: {
+////		case idAFVector_type.VEC_COORDS: {
 ////			f.WriteFloatString( "( %f, %f, %f )", vec.x, vec.y, vec.z );
 ////			break;
 ////		}
-////		case idAFVector::VEC_JOINT: {
+////		case idAFVector_type.VEC_JOINT: {
 ////			f.WriteFloatString( "joint( \"%s\" )", joint1.c_str() );
 ////			break;
 ////		}
-////		case idAFVector::VEC_BONECENTER: {
+////		case idAFVector_type.VEC_BONECENTER: {
 ////			f.WriteFloatString( "bonecenter( \"%s\", \"%s\" )", joint1.c_str(), joint2.c_str() );
 ////			break;
 ////		}
-////		case idAFVector::VEC_BONEDIR: {
+////		case idAFVector_type.VEC_BONEDIR: {
 ////			f.WriteFloatString( "bonedir( \"%s\", \"%s\" )", joint1.c_str(), joint2.c_str() );
 ////			break;
 ////		}
@@ -260,21 +264,21 @@ idAFVector::Finish
 ////const char *idAFVector::ToString( idStr &str, const int precision ) {
 ////
 ////	switch( type ) {
-////		case idAFVector::VEC_COORDS: {
+////		case idAFVector_type.VEC_COORDS: {
 ////			char format[128];
 ////			sprintf( format, "( %%.%df, %%.%df, %%.%df )", precision, precision, precision );
 ////			sprintf( str, format, vec.x, vec.y, vec.z );
 ////			break;
 ////		}
-////		case idAFVector::VEC_JOINT: {
+////		case idAFVector_type.VEC_JOINT: {
 ////			sprintf( str, "joint( \"%s\" )", joint1.c_str() );
 ////			break;
 ////		}
-////		case idAFVector::VEC_BONECENTER: {
+////		case idAFVector_type.VEC_BONECENTER: {
 ////			sprintf( str, "bonecenter( \"%s\", \"%s\" )", joint1.c_str(), joint2.c_str() );
 ////			break;
 ////		}
-////		case idAFVector::VEC_BONEDIR: {
+////		case idAFVector_type.VEC_BONEDIR: {
 ////			sprintf( str, "bonedir( \"%s\", \"%s\" )", joint1.c_str(), joint2.c_str() );
 ////			break;
 ////		}
@@ -324,9 +328,9 @@ class idDeclAF_Body {
 ////void idDeclAF_Body::SetDefault( const idDeclAF *file ) {
 ////	name = "noname";
 ////	modelType = TRM_BOX;
-////	v1.type = idAFVector::VEC_COORDS;
+////	v1.type = idAFVector_type.VEC_COORDS;
 ////	v1.ToVec3().x = v1.ToVec3().y = v1.ToVec3().z = -10.0;
-////	v2.type = idAFVector::VEC_COORDS;
+////	v2.type = idAFVector_type.VEC_COORDS;
 ////	v2.ToVec3().x = v2.ToVec3().y = v2.ToVec3().z = 10.0;
 ////	numSides = 3;
 ////	origin.ToVec3().Zero();

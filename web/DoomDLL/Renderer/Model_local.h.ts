@@ -3105,7 +3105,6 @@ class idRenderModelMD5 extends idRenderModelStatic {
 	====================
 	*/
 	Bounds(ent: renderEntity_t = null): idBounds {
-		todoThrow ( );
 		//#if 0
 		//	// we can't calculate a rational bounds without an entity,
 		//	// because joints could be positioned to deform it into an
@@ -3134,7 +3133,7 @@ class idRenderModelMD5 extends idRenderModelStatic {
 	////	idVec3				pos;
 	////	const idJointMat	*joint;
 	////	const idMD5Joint	*md5Joint;
-	////	int					parentNum;
+	////	var parentNum:number /*int*/;
 
 	////	num = ent.numJoints;
 	////	joint = ent.joints;
@@ -3457,7 +3456,7 @@ idRenderModelMD3::InitFromFile
 */
 	InitFromFile ( fileName: string ): void {
 		todoThrow ( );
-////	int					i, j;
+////	var/*int*/i: number, j: number;
 ////	md3Header_t			*pinmodel;
 ////    md3Frame_t			*frame;
 ////	md3Surface_t		*surf;

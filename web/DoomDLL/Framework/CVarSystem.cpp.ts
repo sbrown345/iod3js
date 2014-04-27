@@ -1226,7 +1226,7 @@ idCVarSystemLocal::idCVarSystemLocal
 	*/
 	static Restart_f( /*const */ args: idCmdArgs): void {
 		todoThrow();
-		//int i, hash;
+		var/*int */i: number, hash: number;
 		//var cvar: idInternalCVar;
 
 		//for ( i = 0; i < localCVarSystem.cvars.Num(); i++ ) {

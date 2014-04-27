@@ -141,12 +141,16 @@ class idQuat {
 ////	ID_INLINE idQuat::idQuat( ) {
 ////	}
 ////
-////	ID_INLINE idQuat::idQuat(float x, float y, float z, float w) {
-////		this.x = x;
-////		this.y = y;
-////		this.z = z;
-////		this.w = w;
-////	}
+	constructor ( )
+	constructor ( /*float */x: number, /*float */y: number, /*float */z: number, /*float */w: number )
+	constructor ( /*float */x?: number, /*float */y?: number, /*float */z?: number, /*float */w?: number ) {
+		if ( arguments.length == 4 ) {
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			this.w = w;
+		}
+	}
 ////
 ////	ID_INLINE float idQuat::operator[](int index) const {
 ////		assert((index >= 0) && (index < 4));
@@ -638,15 +642,15 @@ class idCQuat {
 ////	ID_INLINE bool idCQuat::operator!=(const idCQuat &a) const {
 ////		return !Compare(a);
 ////	}
-////
-////	ID_INLINE int idCQuat::GetDimension( ) const {
-////		return 3;
-////	}
-////
-////	ID_INLINE idQuat idCQuat::ToQuat( ) const {
-////		// take the absolute value because floating point rounding may cause the dot of x,y,z to be larger than 1
-////		return idQuat(x, y, z, sqrt(fabs(1.0 - (x * this.x + y * y + z * z))));
-////	}
+
+	GetDimension( ) :number {
+		return 3;
+	}
+
+	ToQuat(): idQuat {
+		// take the absolute value because floating point rounding may cause the dot of x,y,z to be larger than 1
+		return new idQuat( this.x, this.y, this.z, sqrt( fabs( 1.0 - ( this.x * this.x + this.y * this.y + this.z * this.z ) ) ) );
+	}
 ////
 ////	ID_INLINE const float *idCQuat::ToFloatPtr( ) const {
 ////		return &x;

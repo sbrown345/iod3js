@@ -950,34 +950,34 @@ void idAnimManager::Shutdown( void ) {
 idAnimManager::GetAnim
 ====================
 */
-idMD5Anim *idAnimManager::GetAnim( const char *name ) {
-	idMD5Anim **animptrptr;
-	idMD5Anim *anim;
+	idMD5Anim *idAnimManager::GetAnim( const char *name ) {
+		idMD5Anim **animptrptr;
+		idMD5Anim *anim;
 
-	// see if it has been asked for before
-	animptrptr = NULL;
-	if ( animations.Get( name, &animptrptr ) ) {
-		anim = *animptrptr;
-	} else {
-		idStr extension;
-		idStr filename = name;
+		// see if it has been asked for before
+		animptrptr = NULL;
+		if ( animations.Get( name, &animptrptr ) ) {
+			anim = *animptrptr;
+		} else {
+			idStr extension;
+			idStr filename = name;
 
-		filename.ExtractFileExtension( extension );
-		if ( extension != MD5_ANIM_EXT ) {
-			return NULL;
+			filename.ExtractFileExtension( extension );
+			if ( extension != MD5_ANIM_EXT ) {
+				return NULL;
+			}
+
+			anim = new idMD5Anim();
+			if ( !anim->LoadAnim( filename ) ) {
+				gameLocal.Warning( "Couldn't load anim: '%s'", filename.c_str() );
+				delete anim;
+				anim = NULL;
+			}
+			animations.Set( filename, anim );
 		}
 
-		anim = new idMD5Anim();
-		if ( !anim->LoadAnim( filename ) ) {
-			gameLocal.Warning( "Couldn't load anim: '%s'", filename.c_str() );
-			delete anim;
-			anim = NULL;
-		}
-		animations.Set( filename, anim );
+		return anim;
 	}
-
-	return anim;
-}
 
 /*
 ================

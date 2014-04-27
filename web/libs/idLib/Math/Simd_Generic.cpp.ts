@@ -2339,11 +2339,10 @@ idSIMD_Generic::ConvertJointQuatsToJointMats
 */
 	static ConvertJointQuatsToJointMats ( jointMats: idJointMat[], jointQuats: idJointQuat [], /*int */numJoints: number ): void {
 		var /*int*/i: number;
-		todoThrow ( );
-		//for ( i = 0; i < numJoints; i++ ) {
-		//	jointMats[i].SetRotation( jointQuats[i].q.ToMat3 ( ) );
-		//	jointMats[i].SetTranslation( jointQuats[i].t );
-		//}
+		for ( i = 0; i < numJoints; i++ ) {
+			jointMats[i].SetRotation( jointQuats[i].q.ToMat3 ( ) );
+			jointMats[i].SetTranslation( jointQuats[i].t );
+		}
 	}
 //
 ///*

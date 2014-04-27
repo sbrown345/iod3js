@@ -5243,7 +5243,7 @@ class idAnimatedEntity extends idEntity {
 ////*/
 ////bool idAnimatedEntity::GetJointTransformForAnim( jointHandle_t jointHandle, int animNum, int frameTime, idVec3 &offset, idMat3 &axis ) const {
 ////	const idAnim	*anim;
-////	int				numJoints;
+////	var numJoints:number /*int*/;
 ////	idJointMat		*frame;
 ////
 ////	anim = this.animator.GetAnim( animNum );
