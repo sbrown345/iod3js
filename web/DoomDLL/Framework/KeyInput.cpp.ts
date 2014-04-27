@@ -805,7 +805,7 @@ binds keynum to bindcommand and unbinds if there are already two binds on the ke
 ////============
 ////*/
 ////static WriteBindings( idFile *f ):void {
-////	int		i;
+////	var i:number /*int*/;
 ////
 ////	f.Printf( "unbindall\n" );
 ////

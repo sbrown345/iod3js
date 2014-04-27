@@ -1639,7 +1639,7 @@ idDeclManagerLocal::TouchDecl_f
 */
 	TouchDecl_f ( args: idCmdArgs ): void {
 		todoThrow ( );
-////	int	i;
+////	var i:number /*int*/;
 
 ////	if ( args.Argc() != 3 ) {
 ////		common.Printf( "usage: touch <type> <name>\n" );
@@ -2000,7 +2000,7 @@ var declManager = declManagerLocal;
 ////================
 ////*/
 ////void ListHuffmanFrequencies_f( const idCmdArgs &args ) {
-////	int		i;
+////	var i:number /*int*/;
 ////	float compression;
 ////	compression = !totalUncompressedLength ? 100 : 100 * totalCompressedLength / totalUncompressedLength;
 ////	common.Printf( "// compression ratio = %d%%\n", (int)compression );

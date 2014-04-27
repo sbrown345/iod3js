@@ -1632,7 +1632,7 @@ idImageManager.prototype.ImageFromFile = function ( _name: string, filter: textu
 ////===============
 ////*/
 ////void idImageManager::PurgeAllImages() {
-////	int		i;
+////	var i:number /*int*/;
 ////	idImage	*image;
 
 ////	for ( i = 0; i < this.images.Num() ; i++ ) {

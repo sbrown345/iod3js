@@ -528,7 +528,7 @@ class idFileSystemLocal extends idFileSystem {
 ////================
 ////*/
 ////long idFileSystemLocal::HashFileName( const char *fname ) const {
-////	int		i;
+////	var i:number /*int*/;
 ////	long	hash;
 ////	char	letter;
 ////
@@ -1305,7 +1305,7 @@ idFileSystemLocal::FreeFile
 ////	unz_global_info gi;
 ////	char			filename_inzip[MAX_ZIPPED_FILE_NAME];
 ////	unz_file_info	file_info;
-////	int				i;
+////	var i:number /*int*/;
 ////	long			hash;
 ////	int				fs_numHeaderLongs;
 ////	int *			fs_headerLongs;
@@ -1735,7 +1735,7 @@ idFileSystemLocal::FreeFileList
 ////===============
 ////*/
 ////idModList *idFileSystemLocal::ListMods( ) {
-////	int 		i;
+////	var i:number /*int*/;
 ////	const int 	MAX_DESCRIPTION = 256;
 ////	char 		desc[ MAX_DESCRIPTION ];
 ////
@@ -2134,7 +2134,7 @@ idFileSystemLocal::FreeFileList
 ////================
 ////*/
 ////void idFileSystemLocal::AddGameDirectory( const char *path, const char *dir ) {
-////	int				i;
+////	var i:number /*int*/;
 ////	searchpath_t *	search;
 ////	pack_t *		pak;
 ////	idStr			pakfile;
@@ -2261,7 +2261,7 @@ idFileSystemLocal::FreeFileList
 ////*/
 ////void idFileSystemLocal::Startup( ) {
 ////	searchpath_t	**search;
-////	int				i;
+////	var i:number /*int*/;
 ////	pack_t			*pak;
 ////	int				addon_index;
 ////
@@ -2465,7 +2465,7 @@ idFileSystemLocal::FreeFileList
 ////*/
 ////void idFileSystemLocal::UpdatePureServerChecksums( ) {
 ////	searchpath_t	*search;
-////	int				i;
+////	var i:number /*int*/;
 ////	pureStatus_t	status;
 ////
 ////	serverPaks.Clear();
@@ -2837,7 +2837,7 @@ idFileSystemLocal::FreeFileList
 ////=====================
 ////*/
 ////void idFileSystemLocal::SetRestartChecksums( const int pureChecksums[ MAX_PURE_PAKS ], int gamePakChecksum ) {
-////	int		i;
+////	var i:number /*int*/;
 ////	pack_t	*pack;
 ////
 ////	restartChecksums.Clear();
@@ -4201,7 +4201,7 @@ idFileSystemLocal::FindFile
 ////===============
 ////*/
 ////int idFileSystemLocal::GetNumMaps() {
-////	int				i;
+////	var i:number /*int*/;
 ////	searchpath_t	*search = NULL;
 ////	int				ret = declManager.GetNumDecls( DECL_MAPDEF );
 ////	
@@ -4229,7 +4229,7 @@ idFileSystemLocal::FindFile
 ////===============
 ////*/
 ////const idDict * idFileSystemLocal::GetMapDecl( int idecl ) {
-////	int 					i;
+////	var i:number /*int*/;
 ////	const idDecl			*mapDecl;
 ////	const idDeclEntityDef	*mapDef;
 ////	int						numdecls = declManager.GetNumDecls( DECL_MAPDEF );

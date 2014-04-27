@@ -42,6 +42,13 @@ class idJointQuat {
 	
 	q = new idQuat;
 	t = new idVec3;
+
+	copy ( dest: idJointQuat = null ): idJointQuat {
+		dest = dest || new idJointQuat ( );
+		dest.q.opEquals( this.q );
+		dest.t.opEquals( this.t );
+		return dest;
+	}
 };
 //
 //
@@ -258,7 +265,7 @@ class idJointMat {
 	//	float		trace;
 	//	float		s;
 	//	float		t;
-	//	int     	i;
+	//	var i:number;
 	//	int			j;
 	//	int			k;
 	//

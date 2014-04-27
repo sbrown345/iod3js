@@ -237,7 +237,7 @@ var MAX_INVENTORY_ITEMS = 20;
 ////==============
 ////*/
 ////void idInventory::GetPersistantData( idDict &dict ) {
-////	int		i;
+////	var i:number /*int*/;
 ////	var /*int*/num:number;
 ////	idDict	*item;
 ////	idStr	key;
@@ -743,7 +743,7 @@ var MAX_INVENTORY_ITEMS = 20;
 ////==============
 ////*/
 ////bool idInventory::Give( idPlayer *owner, const idDict &spawnArgs, const char *statname, value:string, int *idealWeapon, bool updateHud ) {
-////	int						i;
+////	var i:number /*int*/;
 ////	const char				*pos;
 ////	const char				*end;
 ////	int						len;

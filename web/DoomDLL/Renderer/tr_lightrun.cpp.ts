@@ -295,7 +295,7 @@ function R_CreateEntityRefs ( def: idRenderEntityLocal ): void {
 //===================
 //*/
 //void R_SetLightFrustum( const idPlane lightProject[4], idPlane frustum[6] ) {
-//	int		i;
+//	var i:number /*int*/;
 //
 //	// we want the planes of s=0, s=q, t=0, and t=q
 //	frustum[0] = lightProject[0];
@@ -446,7 +446,7 @@ function R_CreateEntityRefs ( def: idRenderEntityLocal ): void {
 //#define	MAX_LIGHT_VERTS	40
 //void R_CreateLightRefs( idRenderLightLocal *light ) {
 //	idVec3	points[MAX_LIGHT_VERTS];
-//	int		i;
+//	var i:number /*int*/;
 //	srfTriangles_t	*tri;
 //
 //	tri = light.frustumTris;

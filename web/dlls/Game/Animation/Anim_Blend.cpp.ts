@@ -936,14 +936,14 @@ idDeclModelDef::Joints
 		return this.joints;
 	}
 
-///*
-//=====================
-//idDeclModelDef::JointParents
-//=====================
-//*/
-//const int * idDeclModelDef::JointParents( ) const {
-//	return this.jointParents.Ptr();
-//}
+/*
+=====================
+idDeclModelDef::JointParents
+=====================
+*/
+	JointParents ( ): number[] {
+		return this.jointParents.Ptr ( );
+	}
 
 /*
 =====================
@@ -997,19 +997,20 @@ idDeclModelDef::NumJointsOnChannel
 		}
 		return this.channelJoints[channel].Num ( );
 	}
-//
-///*
-//=====================
-//idDeclModelDef::GetChannelJoints
-//=====================
-//*/
-//const int * idDeclModelDef::GetChannelJoints( /*int*/ channel :number) const {
-//	if ( ( channel < 0 ) || ( channel >= ANIM_NumAnimChannels ) ) {
-//		gameLocal.Error( "idDeclModelDef::GetChannelJoints : channel out of range" );
-//	}
-//	return this.channelJoints[ channel ].Ptr();
-//}
-//
+
+/*
+=====================
+idDeclModelDef::GetChannelJoints
+=====================
+*/
+/*const int * idDeclModelDef::*/
+	GetChannelJoints ( /*int*/ channel: number ): number[] {
+		if ( ( channel < 0 ) || ( channel >= ANIM_NumAnimChannels ) ) {
+			gameLocal.Error( "idDeclModelDef::GetChannelJoints : channel out of range" );
+		}
+		return this.channelJoints[channel].Ptr ( );
+	}
+
 /*
 =====================
 idDeclModelDef::GetVisualOffset

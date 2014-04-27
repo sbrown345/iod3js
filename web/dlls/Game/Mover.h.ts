@@ -3845,7 +3845,7 @@ idDoor::PostBind
 ////*/
 ////void idDoor::CalcTriggerBounds( float size, idBounds &bounds ) {
 ////	idMover_Binary	*other;
-////	int				i;
+////	var i:number /*int*/;
 ////	int				best;
 ////
 ////	// find the bounds of everything on the team

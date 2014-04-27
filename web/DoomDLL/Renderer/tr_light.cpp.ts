@@ -151,7 +151,7 @@ function R_SkyboxTexGen(surf: drawSurf_t, viewOrg: idVec3):void {
 //==================
 //*/
 //void R_WobbleskyTexGen( drawSurf_t *surf, const idVec3 &viewOrg ) {
-//	int		i;
+//	var i:number /*int*/;
 //	idVec3	localViewOrigin;
 //
 //	const int *parms = surf.material.GetTexGenRegisters();
@@ -281,7 +281,7 @@ function R_SkyboxTexGen(surf: drawSurf_t, viewOrg: idVec3):void {
 //static const float INSIDE_LIGHT_FRUSTUM_SLOP = 32;
 //// this needs to be greater than the dist from origin to corner of near clip plane
 //static bool R_TestPointInViewLight( const idVec3 &org, const idRenderLightLocal *light ) {
-//	int		i;
+//	var i:number /*int*/;
 //	idVec3	local;
 //
 //	for ( i = 0 ; i < 6 ; i++ ) {

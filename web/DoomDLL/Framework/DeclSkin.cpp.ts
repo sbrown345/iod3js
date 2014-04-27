@@ -202,7 +202,7 @@ idDeclSkin::SetDefaultText
 ////===============
 ////*/
 ////const idMaterial *idDeclSkin::RemapShaderBySkin( const idMaterial *shader ) const {
-////	int		i;
+////	var i:number /*int*/;
 ////
 ////	if ( !shader ) {
 ////		return NULL;

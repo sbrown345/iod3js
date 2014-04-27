@@ -442,7 +442,7 @@ idPathCorner::Spawn
 ////============
 ////*/
 ////idPathCorner *idPathCorner::RandomPath( const idEntity *source, const idEntity *ignore ) {
-////	int	i;
+////	var i:number /*int*/;
 ////	int	num;
 ////	int which;
 ////	var ent:idEntity

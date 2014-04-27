@@ -617,7 +617,7 @@ idCameraAnim::Load
 ////	float			lerp;
 ////	float			invlerp;
 ////	cameraFrame_t	*camFrame;
-////	int				i;
+////	var i:number /*int*/;
 ////	int				cut;
 ////	idQuat			q1, q2, q3;
 ////

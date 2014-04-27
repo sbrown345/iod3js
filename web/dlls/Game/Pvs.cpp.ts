@@ -1550,7 +1550,7 @@ idPVS::Shutdown
 ////*/
 ////void idPVS::ReadPVS( const pvsHandle_t handle, const idBitMsg &msg ) {
 ////	byte	l_pvs[ 256 ];
-////	int		i;
+////	var i:number /*int*/;
 ////
 ////	assert( this.areaVisBytes <= 256 );
 ////	msg.ReadData( l_pvs, this.areaVisBytes );

@@ -1404,7 +1404,7 @@
 ////	idAnimator *	animator;
 ////	const char *	classname;
 ////	const idDict *	dict;
-////	int				i;
+////	var i:number /*int*/;
 
 ////	if ( args.Argc() > 1 ) {
 ////		idAnimator animator;
@@ -2109,7 +2109,7 @@
 ////	idRenderModel			*renderModel;
 ////	const modelSurface_t	*surf;
 ////	const idMaterial		*shader;
-////	int						i;
+////	var i:number /*int*/;
 
 ////	assert( surfaces != NULL );
 ////	assert( ent != NULL );
@@ -2268,7 +2268,7 @@
 ////*/
 ////void Cmd_TestId_f( const idCmdArgs &args ) {
 ////	idStr	id;
-////	int		i;
+////	var i:number /*int*/;
 ////	if ( args.Argc() == 1 ) {
 ////		common.Printf( "usage: testid <string id>\n" );
 ////		return;

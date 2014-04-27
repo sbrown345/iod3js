@@ -936,7 +936,7 @@ idInterpreter::LeaveFunction
 //================
 //*/
 //void idInterpreter::CallEvent( const function_t *func, int argsize ) {
-//	int 				i;
+//	var i:number /*int*/;
 //	int					j;
 //	varEval_t			var;
 //	int 				pos;

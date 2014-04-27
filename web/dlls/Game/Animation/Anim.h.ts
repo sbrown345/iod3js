@@ -63,7 +63,11 @@ class frameBlend_t {
 	frame1 :number/*int*/;
 	frame2 :number/*int*/;
 	frontlerp :number/*float*/;
-	backlerp :number/*float*/;
+	backlerp: number/*float*/;
+
+	memset0 ( ): void {
+		this.cycleCount = this.frame1 = this.frame2 = this.frontlerp = this.backlerp = 0;
+	}
 };
 
 class jointAnimInfo_t {
@@ -1072,73 +1076,74 @@ idMD5Anim::GetInterpolatedFrame
 //	}
 	}
 
-///*
-//====================
-//idMD5Anim::GetSingleFrame
-//====================
-//*/
-//void idMD5Anim::GetSingleFrame( framenum/*int*/:number, idJointQuat *joints, const int *index, int numIndexes ) const {
-//	int						i;
-//	const float				*frame;
-//	const float				*jointframe;
-//	int						animBits;
-//	idJointQuat				*jointPtr;
-//	const jointAnimInfo_t	*infoPtr;
-//
-//	// copy the baseframe
-//	SIMDProcessor.Memcpy( joints, this.baseFrame.Ptr(), this.baseFrame.Num() * sizeof( this.baseFrame[ 0 ] ) );
-//
-//	if ( ( framenum == 0 ) || !this.numAnimatedComponents ) {
-//		// just use the base frame
-//		return;
-//	}
-//
-//	frame = &this.componentFrames[ framenum * this.numAnimatedComponents ];
-//
-//	for ( i = 0; i < numIndexes; i++ ) {
-//		int j = index[i];
-//		jointPtr = &joints[j];
-//		infoPtr = &this.jointInfo[j];
-//
-//		animBits = infoPtr.animBits;
-//		if ( animBits ) {
-//
-//			jointframe = frame + infoPtr.firstComponent;
-//
-//			if ( animBits & (ANIM_TX|ANIM_TY|ANIM_TZ) ) {
-//
-//				if ( animBits & ANIM_TX ) {
-//					jointPtr.t.x = *jointframe++;
-//				}
-//
-//				if ( animBits & ANIM_TY ) {
-//					jointPtr.t.y = *jointframe++;
-//				}
-//
-//				if ( animBits & ANIM_TZ ) {
-//					jointPtr.t.z = *jointframe++;
-//				}
-//			}
-//
-//			if ( animBits & (ANIM_QX|ANIM_QY|ANIM_QZ) ) {
-//
-//				if ( animBits & ANIM_QX ) {
-//					jointPtr.q.x = *jointframe++;
-//				}
-//
-//				if ( animBits & ANIM_QY ) {
-//					jointPtr.q.y = *jointframe++;
-//				}
-//
-//				if ( animBits & ANIM_QZ ) {
-//					jointPtr.q.z = *jointframe;
-//				}
-//
-//				jointPtr.q.w = jointPtr.q.CalcW();
-//			}
-//		}
-//	}
-//}
+/*
+====================
+idMD5Anim::GetSingleFrame
+====================
+*/
+	GetSingleFrame ( framenum /*int*/: number, joints: idJointQuat[], /*const int **/index: number[], /*int */numIndexes: number ): void {
+		todoThrow ( );
+		var i: number;
+		//const float				*frame;
+		//const float				*jointframe;
+		//int						animBits;
+		//idJointQuat				*jointPtr;
+		//const jointAnimInfo_t	*infoPtr;
+
+		//// copy the baseframe
+		//SIMDProcessor.Memcpy( joints, this.baseFrame.Ptr(), this.baseFrame.Num() * sizeof( this.baseFrame[ 0 ] ) );
+
+		//if ( ( framenum == 0 ) || !this.numAnimatedComponents ) {
+		//	// just use the base frame
+		//	return;
+		//}
+
+		//frame = &this.componentFrames[ framenum * this.numAnimatedComponents ];
+
+		//for ( i = 0; i < numIndexes; i++ ) {
+		//	int j = index[i];
+		//	jointPtr = &joints[j];
+		//	infoPtr = &this.jointInfo[j];
+
+		//	animBits = infoPtr.animBits;
+		//	if ( animBits ) {
+
+		//		jointframe = frame + infoPtr.firstComponent;
+
+		//		if ( animBits & (ANIM_TX|ANIM_TY|ANIM_TZ) ) {
+
+		//			if ( animBits & ANIM_TX ) {
+		//				jointPtr.t.x = *jointframe++;
+		//			}
+
+		//			if ( animBits & ANIM_TY ) {
+		//				jointPtr.t.y = *jointframe++;
+		//			}
+
+		//			if ( animBits & ANIM_TZ ) {
+		//				jointPtr.t.z = *jointframe++;
+		//			}
+		//		}
+
+		//		if ( animBits & (ANIM_QX|ANIM_QY|ANIM_QZ) ) {
+
+		//			if ( animBits & ANIM_QX ) {
+		//				jointPtr.q.x = *jointframe++;
+		//			}
+
+		//			if ( animBits & ANIM_QY ) {
+		//				jointPtr.q.y = *jointframe++;
+		//			}
+
+		//			if ( animBits & ANIM_QZ ) {
+		//				jointPtr.q.z = *jointframe;
+		//			}
+
+		//			jointPtr.q.w = jointPtr.q.CalcW();
+		//		}
+		//	}
+		//}
+	}
 
 /*
 ====================
@@ -2318,7 +2323,7 @@ idAnimBlend::idAnimBlend
 //=====================
 //*/
 //void idAnimBlend::Restore( idRestoreGame *savefile, modelDef:idDeclModelDef ) {
-//	int	i;
+//	var i:number;
 //
 //	this.modelDef = modelDef;
 //
@@ -2640,23 +2645,24 @@ Clear( currentTime/*int*/:number, /*int */clearTime :number):void {
 		this.SetWeight( 0.0, currentTime, clearTime );
 	}
 }
-//
-///*
-//=====================
-//idAnimBlend::IsDone
-//=====================
-//*/
-//bool idAnimBlend::IsDone( currentTime/*int*/:number ) const {
-//	if ( !this.frame && ( this.endtime > 0 ) && ( currentTime >= this.endtime ) ) {
-//		return true;
-//	}
-//
-//	if ( ( this.blendEndValue <= 0.0 ) && ( currentTime >= ( this.blendStartTime + this.blendDuration ) ) ) {
-//		return true;
-//	}
-//
-//	return false;
-//}
+
+/*
+=====================
+idAnimBlend::IsDone
+=====================
+*/
+	IsDone ( currentTime /*int*/: number ): boolean {
+		if ( !this.frame && ( this.endtime > 0 ) && ( currentTime >= this.endtime ) ) {
+			return true;
+		}
+
+		if ( ( this.blendEndValue <= 0.0 ) && ( currentTime >= ( this.blendStartTime + this.blendDuration ) ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
 //
 ///*
 //=====================
@@ -2977,140 +2983,141 @@ idAnimBlend::AnimTime
 //		anim.CallFrameCommands( ent, frame1.frame1, frame2.frame1 );
 //	}
 //}
-//
-///*
-//=====================
-//idAnimBlend::BlendAnim
-//=====================
-//*/
-//bool idAnimBlend::BlendAnim( currentTime/*int*/:number, int channel, int numJoints, idJointQuat *blendFrame, float &blendWeight, bool removeOriginOffset, bool overrideBlend, bool printInfo ) const {
-//	int				i;
-//	float			lerp;
-//	float			mixWeight;
-//	const idMD5Anim	*md5anim;
-//	idJointQuat		*ptr;
-//	frameBlend_t	frametime = {0};
-//	idJointQuat		*jointFrame;
-//	idJointQuat		*mixFrame;
-//	int				numAnims;
-//	int				time;
-//
-//	var anim = this.Anim();
-//	if ( !anim ) {
-//		return false;
-//	}
-//
-//	float weight = this.GetWeight( currentTime );
-//	if ( blendWeight > 0.0 ) {
-//		if ( ( this.endtime >= 0 ) && ( currentTime >= this.endtime ) ) {
-//			return false;
-//		}
-//		if ( !weight ) {
-//			return false;
-//		}
-//		if ( overrideBlend ) {
-//			blendWeight = 1.0 - weight;
-//		}
-//	}
-//
-//	if ( ( channel == ANIMCHANNEL_ALL ) && !blendWeight ) {
-//		// we don't need a temporary buffer, so just store it directly in the blend frame
-//		jointFrame = blendFrame;
-//	} else {
-//		// allocate a temporary buffer to copy the joints from
-//		jointFrame = ( idJointQuat * )_alloca16( numJoints * sizeof( *jointFrame ) );
-//	}
-//
-//	time = this.AnimTime( currentTime );
-//
-//	numAnims = anim.NumAnims();
-//	if ( numAnims == 1 ) {
-//		md5anim = anim.MD5Anim( 0 );
-//		if ( this.frame ) {
-//			md5anim.GetSingleFrame( this.frame - 1, jointFrame, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
-//		} else {
-//			md5anim.ConvertTimeToFrame( time, this.cycle, frametime );
-//			md5anim.GetInterpolatedFrame( frametime, jointFrame, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
-//		}
-//	} else {
-//		//
-//		// need to mix the multipoint anim together first
-//		//
-//		// allocate a temporary buffer to copy the joints to
-//		mixFrame = ( idJointQuat * )_alloca16( numJoints * sizeof( *jointFrame ) );
-//
-//		if ( !this.frame ) {
-//			anim.MD5Anim( 0 ).ConvertTimeToFrame( time, this.cycle, frametime );
-//		}
-//
-//		ptr = jointFrame;
-//		mixWeight = 0.0;
-//		for( i = 0; i < numAnims; i++ ) {
-//			if ( this.animWeights[ i ] > 0.0 ) {
-//				mixWeight += this.animWeights[ i ];
-//				lerp = this.animWeights[ i ] / mixWeight;
-//				md5anim = anim.MD5Anim( i );
-//				if ( this.frame ) {
-//					md5anim.GetSingleFrame( this.frame - 1, ptr, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
-//				} else {
-//					md5anim.GetInterpolatedFrame( frametime, ptr, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
-//				}
-//
-//				// only blend after the first anim is mixed in
-//				if ( ptr != jointFrame ) {
-//					SIMDProcessor.BlendJoints( jointFrame, ptr, lerp, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
-//				}
-//
-//				ptr = mixFrame;
-//			}
-//		}
-//
-//		if ( !mixWeight ) {
-//			return false;
-//		}
-//	}
-//
-//	if ( removeOriginOffset ) {
-//		if ( this.allowMove ) {
+
+/*
+=====================
+idAnimBlend::BlendAnim
+=====================
+*/
+	BlendAnim(currentTime/*int*/: number, /*int */channel: number, /*int */numJoints: number, blendFrame: idJointQuat[], /*float &*/blendWeight:R<number>, removeOriginOffset: boolean, overrideBlend: boolean, printInfo: boolean) :boolean {
+	var i:number;
+		var/*float			*/lerp: number;
+		var/*float			*/mixWeight: number;
+		var md5anim: idMD5Anim;
+		var ptr: idJointQuat;
+		var frametime = new frameBlend_t;// {0};
+		frametime.memset0 ( );
+var 	jointFrame:idJointQuat[];
+var 	mixFrame:idJointQuat;
+		var/*int				*/numAnims: number;
+		var/*int				*/time: number;
+
+	var anim = this.Anim();
+	if ( !anim ) {
+		return false;
+	}
+
+	var/*float */weight = this.GetWeight( currentTime );
+	if ( blendWeight.$ > 0.0 ) {
+		if ( ( this.endtime >= 0 ) && ( currentTime >= this.endtime ) ) {
+			return false;
+		}
+		if ( !weight ) {
+			return false;
+		}
+		if ( overrideBlend ) {
+			blendWeight.$ = 1.0 - weight;
+		}
+	}
+
+	if ( ( channel == ANIMCHANNEL_ALL ) && !blendWeight ) {
+		// we don't need a temporary buffer, so just store it directly in the blend frame
+		jointFrame = blendFrame;
+	} else {
+		// allocate a temporary buffer to copy the joints from
+		jointFrame = newStructArray<idJointQuat>( idJointQuat, numJoints );// ( idJointQuat * )_alloca16( numJoints * sizeof( *jointFrame ) );
+	}
+
+	time = this.AnimTime( currentTime );
+
+	numAnims = anim.NumAnims();
+	if ( numAnims == 1 ) {
+		md5anim = anim.MD5Anim( 0 );
+		if ( this.frame ) {
+			md5anim.GetSingleFrame( this.frame - 1, jointFrame, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
+		} else {
+			md5anim.ConvertTimeToFrame( time, this.cycle, frametime );
+			md5anim.GetInterpolatedFrame( frametime, jointFrame, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
+		}
+	} else {
+		//
+		// need to mix the multipoint anim together first
+		//
+		// allocate a temporary buffer to copy the joints to
+		mixFrame = newStructArray<idJointQuat>( idJointQuat, numJoints );//( idJointQuat * )_alloca16( numJoints * sizeof( *jointFrame ) );
+
+		if ( !this.frame ) {
+			anim.MD5Anim( 0 ).ConvertTimeToFrame( time, this.cycle, frametime );
+		}
+
+		ptr = jointFrame;
+		mixWeight = 0.0;
+		for( i = 0; i < numAnims; i++ ) {
+			if ( this.animWeights[ i ] > 0.0 ) {
+				mixWeight += this.animWeights[ i ];
+				lerp = this.animWeights[ i ] / mixWeight;
+				md5anim = anim.MD5Anim( i );
+				if ( this.frame ) {
+					md5anim.GetSingleFrame( this.frame - 1, ptr, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
+				} else {
+					md5anim.GetInterpolatedFrame( frametime, ptr, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
+				}
+
+				// only blend after the first anim is mixed in
+				if ( ptr != jointFrame ) {
+					SIMDProcessor.BlendJoints( jointFrame, ptr, lerp, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
+				}
+
+				ptr = mixFrame;
+			}
+		}
+
+		if ( !mixWeight ) {
+			return false;
+		}
+	}
+
+	if ( removeOriginOffset ) {
+		if ( this.allowMove ) {
 //#ifdef VELOCITY_MOVE
 //			jointFrame[ 0 ].t.x = 0.0;
 //#else
-//			jointFrame[ 0 ].t.Zero();
+			jointFrame[ 0 ].t.Zero();
 //#endif
-//		}
-//
-//		if ( anim.GetAnimFlags().anim_turn ) {
-//			jointFrame[ 0 ].q.Set( -0.70710677f, 0.0, 0.0, 0.70710677f );
-//		}
-//	}
-//
-//	if ( !blendWeight ) {
-//		blendWeight = weight;
-//		if ( channel != ANIMCHANNEL_ALL ) {
-//			const int *index = this.modelDef.GetChannelJoints( channel );
-//			const /*int*/num:number = this.modelDef.NumJointsOnChannel( channel );
-//			for( i = 0; i < num; i++ ) {
-//				int j = index[i];
-//				blendFrame[j].t = jointFrame[j].t;
-//				blendFrame[j].q = jointFrame[j].q;
-//			}
-//		}
-//    } else {
-//		blendWeight += weight;
-//		lerp = weight / blendWeight;
-//		SIMDProcessor.BlendJoints( blendFrame, jointFrame, lerp, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
-//	}
-//
-//	if ( printInfo ) {
-//		if ( this.frame ) {
-//			gameLocal.Printf( "  %s: '%s', %d, %.2f%%\n", channelNames[ channel ], anim.FullName(), this.frame, weight * 100.0 );
-//		} else {
-//			gameLocal.Printf( "  %s: '%s', %.3f, %.2f%%\n", channelNames[ channel ], anim.FullName(), ( float )frametime.frame1 + frametime.backlerp, weight * 100.0 );
-//		}
-//	}
-//
-//	return true;
-//}
+		}
+
+		if ( anim.GetAnimFlags().anim_turn ) {
+			jointFrame[ 0 ].q.Set( -0.70710677, 0.0, 0.0, 0.70710677);
+		}
+	}
+
+		if (!blendWeight.$ ) {
+			blendWeight.$ = weight;
+		if ( channel != ANIMCHANNEL_ALL ) {
+			var/*const int **/index = this.modelDef.GetChannelJoints( channel );
+			var /*int*/num:number = this.modelDef.NumJointsOnChannel( channel );
+			for( i = 0; i < num; i++ ) {
+				var/*int */j = index[i];
+				blendFrame[j].t = jointFrame[j].t;
+				blendFrame[j].q = jointFrame[j].q;
+			}
+		}
+    } else {
+		blendWeight.$ += weight;
+		lerp = weight / blendWeight.$;
+		SIMDProcessor.BlendJoints( blendFrame, jointFrame, lerp, this.modelDef.GetChannelJoints( channel ), this.modelDef.NumJointsOnChannel( channel ) );
+	}
+
+	if ( printInfo ) {
+		if ( this.frame ) {
+			gameLocal.Printf( "  %s: '%s', %d, %.2f%%\n", channelNames[ channel ], anim.FullName(), this.frame, weight * 100.0 );
+		} else {
+			gameLocal.Printf( "  %s: '%s', %.3f, %.2f%%\n", channelNames[ channel ], anim.FullName(), /*( float )*/frametime.frame1 + frametime.backlerp, weight * 100.0 );
+		}
+	}
+
+	return true;
+}
 
 /*
 =====================
@@ -3176,7 +3183,7 @@ idAnimBlend::BlendOrigin
 //	int		time2;
 //	float	lerp;
 //	var /*int*/num:number;
-//	int		i;
+//	var i:number;
 //	
 //	if ( this.frame || !this.allowMove || ( ( this.endtime > 0 ) && ( fromtime > this.endtime ) ) ) {
 //		return;
@@ -3235,7 +3242,7 @@ idAnimBlend::BlendOrigin
 //	float	lerp;
 //	float	mixWeight;
 //	var /*int*/num:number;
-//	int		i;
+//	var i:number;
 //	
 //	if ( this.frame || !this.allowMove || ( ( this.endtime > 0 ) && ( fromtime > this.endtime ) ) ) {
 //		return;
@@ -3580,7 +3587,7 @@ class idAnimator {
 	//	savefile.WriteBool( this.forceUpdate );
 	//	savefile.WriteBounds( this.frameBounds );
 	//
-	//	savefile.WriteFloat( AFPoseBlendWeight );
+	//	savefile.WriteFloat( this.AFPoseBlendWeight );
 	//
 	//	savefile.WriteInt( this.AFPoseJoints.Num() );
 	//	for ( i = 0; i < this.AFPoseJoints.Num(); i++ ) {
@@ -3655,7 +3662,7 @@ class idAnimator {
 	//	savefile.ReadBool( this.forceUpdate );
 	//	savefile.ReadBounds( this.frameBounds );
 	//
-	//	savefile.ReadFloat( AFPoseBlendWeight );
+	//	savefile.ReadFloat( this.AFPoseBlendWeight );
 	//
 	//	savefile.ReadInt( num );
 	//	this.AFPoseJoints.SetGranularity( 1 );
@@ -4196,7 +4203,7 @@ class idAnimator {
 	//====================
 	//*/
 	//void idAnimator::GetDelta( int fromtime, int totime, idVec3 &delta ) const {
-	//	int					i;
+	//	var i:number;
 	//	const idAnimBlend	*blend;
 	//	float				blendWeight;
 	//
@@ -4227,7 +4234,7 @@ class idAnimator {
 	//====================
 	//*/
 	//bool idAnimator::GetDeltaRotation( int fromtime, int totime, idMat3 &delta ) const {
-	//	int					i;
+	//	var i:number;
 	//	const idAnimBlend	*blend;
 	//	float				blendWeight;
 	//	idQuat				q;
@@ -4523,32 +4530,32 @@ class idAnimator {
 	//
 	//	this.ForceUpdate();
 	//}
-	//
-	///*
-	//=====================
-	//idAnimator::SetAFPoseBlendWeight
-	//=====================
-	//*/
-	//void idAnimator::SetAFPoseBlendWeight( float blendWeight ) {
-	//	AFPoseBlendWeight = blendWeight;
-	//}
-	//
+	
+	/*
+	=====================
+	idAnimator::SetAFPoseBlendWeight
+	=====================
+	*/
+	SetAFPoseBlendWeight ( /*float*/ blendWeight: number ): void {
+		this.AFPoseBlendWeight = blendWeight;
+	}
+
 	/*
 	=====================
 	idAnimator::BlendAFPose
 	=====================
 	*/
-	bool idAnimator::BlendAFPose( idJointQuat *blendFrame ) const {
-	
-		if ( !this.AFPoseJoints.Num() ) {
+	BlendAFPose ( blendFrame: idJointQuat[] ): boolean {
+
+		if ( !this.AFPoseJoints.Num ( ) ) {
 			return false;
 		}
-	
-		SIMDProcessor.BlendJoints( blendFrame, this.AFPoseJointFrame.Ptr(), AFPoseBlendWeight, this.AFPoseJoints.Ptr(), this.AFPoseJoints.Num() );
-	
+
+		SIMDProcessor.BlendJoints( blendFrame, this.AFPoseJointFrame.Ptr ( ), this.AFPoseBlendWeight, this.AFPoseJoints.Ptr ( ), this.AFPoseJoints.Num ( ) );
+
 		return true;
 	}
-	
+
 	/*
 	=====================
 	idAnimator::ClearAFPose
@@ -4563,7 +4570,7 @@ class idAnimator {
 		this.AFPoseBounds.Clear ( );
 		this.AFPoseTime = 0;
 	}
-	//
+	
 	///*
 	//=====================
 	//idAnimator::ServiceAnims
@@ -4596,37 +4603,36 @@ class idAnimator {
 	//		}
 	//	}
 	//}
-	//
-	///*
-	//=====================
-	//idAnimator::IsAnimating
-	//=====================
-	//*/
-	//bool idAnimator::IsAnimating( currentTime/*int*/:number ) const {
-	//	var/*int*/i: number, j: number;
-	//	const idAnimBlend	*blend;
-	//
-	//	if ( !this.modelDef || !this.modelDef.ModelHandle() ) {
-	//		return false;
-	//	}
-	//
-	//	// if animating with an articulated figure
-	//	if ( this.AFPoseJoints.Num() && currentTime <= AFPoseTime ) {
-	//		return true;
-	//	}
-	//
-	//	blend = this.channels[ 0 ];
-	//	for( i = 0; i < ANIM_NumAnimChannels; i++ ) {
-	//		for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend++ ) {
-	//			if ( !blend.IsDone( currentTime ) ) {
-	//				return true;
-	//			}
-	//		}
-	//	}
-	//
-	//	return false;
-	//}
-	//
+	
+	/*
+	=====================
+	idAnimator::IsAnimating
+	=====================
+	*/
+	IsAnimating( currentTime/*int*/:number ) :boolean {
+		var/*int*/i: number, j: number;
+		var blend: idAnimBlend	;
+	
+		if ( !this.modelDef || !this.modelDef.ModelHandle() ) {
+			return false;
+		}
+	
+		// if animating with an articulated figure
+		if ( this.AFPoseJoints.Num() && currentTime <= this.AFPoseTime ) {
+			return true;
+		}
+	
+		for (i = 0; i < ANIM_NumAnimChannels; i++ ) {
+			for(j = 0, blend = this.channels[i][0]; j < ANIM_MaxAnimsPerChannel; j++, blend = this.channels[i][j]  ) {
+				if ( !blend.IsDone( currentTime ) ) {
+					return true;
+				}
+			}
+		}
+	
+		return false;
+	}
+	
 	///*
 	//=====================
 	//idAnimator::FrameHasChanged
@@ -4666,114 +4672,94 @@ class idAnimator {
 	idAnimator::CreateFrame
 	=====================
 	*/
-	CreateFrame( /*int */currentTime: number, force: boolean): boolean {
-		var/*int*/i: number, j: number;
-			var numJoints:number /*int*/;
-			var parentNum:number /*int*/;
-			var hasAnim:boolean;
-			var debugInfo: boolean;
-			var baseBlend :number /*float*/;
-			var blendWeight :number /*float*/;
-		var blend = new arrPtr<idAnimBlend>(null );
-			var jointParent:Int32Array;
-			var jointMod:jointMod_t;
-			var defaultPose:idJointQuat[];
+	CreateFrame ( /*int */currentTime: number, force: boolean ): boolean {
+		var /*int*/i: number, j: number;
+		var numJoints: number /*int*/;
+		var parentNum: number /*int*/;
+		var hasAnim: boolean;
+		var debugInfo: boolean;
+		var baseBlend: number /*float*/;
+		var blendWeight: number /*float*/;
+		var blend = new arrPtr<idAnimBlend>( null );
+		var jointParent: Int32Array;
+		var jointMod: jointMod_t;
+		var defaultPose: idJointQuat[];
 
-			//static idCVar		r_showSkel("r_showSkel", "0", CVAR_RENDERER | CVAR_INTEGER, "", 0, 2, idCmdSystem::ArgCompletion_Integer < 0,2>);
+		//static idCVar		r_showSkel("r_showSkel", "0", CVAR_RENDERER | CVAR_INTEGER, "", 0, 2, idCmdSystem::ArgCompletion_Integer < 0,2>);
 
-			if ( gameLocal.inCinematic && gameLocal.skipCinematic ) {
+		if ( gameLocal.inCinematic && gameLocal.skipCinematic ) {
+			return false;
+		}
+
+		if ( !this.modelDef || !this.modelDef.ModelHandle ( ) ) {
+			return false;
+		}
+
+		if ( !force && !r_showSkel.GetInteger ( ) ) {
+			if ( this.lastTransformTime == currentTime ) {
 				return false;
 			}
-		
-			if ( !this.modelDef || !this.modelDef.ModelHandle() ) {
+			if ( this.lastTransformTime != -1 && !this.stoppedAnimatingUpdate && !this.IsAnimating( currentTime ) ) {
 				return false;
 			}
-		
-			if ( !force && !r_showSkel.GetInteger() ) {
-				if ( this.lastTransformTime == currentTime ) {
-					return false;
-				}
-				if ( this.lastTransformTime != -1 && !this.stoppedAnimatingUpdate && !this.IsAnimating( currentTime ) ) {
-					return false;
-				}
-			}
-		
-			this.lastTransformTime = currentTime;
-			this.stoppedAnimatingUpdate = false;
-		
-			if ( this.entity && ( ( g_debugAnim.GetInteger() == this.entity.entityNumber ) || ( g_debugAnim.GetInteger() == -2 ) ) ) {
-				debugInfo = true;
-				gameLocal.Printf( "---------------\n%d: entity '%s':\n", gameLocal.time, this.entity.GetName() );
-		 		gameLocal.Printf( "model '%s':\n", this.modelDef.GetModelName() );
-			} else {
-				debugInfo = false;
-			}
-		
-			// init the joint buffer
-			if ( this.AFPoseJoints.Num() ) {
-				// initialize with AF pose anim for the case where there are no other animations and no AF pose joint modifications
-				defaultPose = this.AFPoseJointFrame.Ptr();
-			} else {
-				defaultPose = this.modelDef.GetDefaultPose();
-			}
-		
-			if ( !defaultPose ) {
-				//gameLocal.Warning( "idAnimator::CreateFrame: no defaultPose on '%s'", this.modelDef.Name() );
-				return false;
-			}
-		
-			numJoints = this.modelDef.Joints().Num();
-		var jointFrame = newStructArray<idJointQuat>( idJointQuat, numJoints );// ( idJointQuat * )_alloca16( numJoints * sizeof( jointFrame[0] ) );
-			SIMDProcessor.Memcpy( jointFrame, defaultPose, numJoints * sizeof( jointFrame[0] ) );
-		
-			hasAnim = false;
-		
-			// blend the all channel
-			baseBlend = 0.0;
-		blend .set( this.channels[ANIMCHANNEL_ALL] );
-			for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend.idx++ ) {
-				if ( blend.$.BlendAnim( currentTime, ANIMCHANNEL_ALL, numJoints, jointFrame, baseBlend, this.removeOriginOffset, false, debugInfo ) ) {
-					hasAnim = true;
-					if ( baseBlend >= 1.0 ) {
-						break;
-					}
+		}
+
+		this.lastTransformTime = currentTime;
+		this.stoppedAnimatingUpdate = false;
+
+		if ( this.entity && ( ( g_debugAnim.GetInteger ( ) == this.entity.entityNumber ) || ( g_debugAnim.GetInteger ( ) == -2 ) ) ) {
+			debugInfo = true;
+			gameLocal.Printf( "---------------\n%d: entity '%s':\n", gameLocal.time, this.entity.GetName ( ) );
+			gameLocal.Printf( "model '%s':\n", this.modelDef.GetModelName ( ) );
+		} else {
+			debugInfo = false;
+		}
+
+		// init the joint buffer
+		if ( this.AFPoseJoints.Num ( ) ) {
+			// initialize with AF pose anim for the case where there are no other animations and no AF pose joint modifications
+			defaultPose = this.AFPoseJointFrame.Ptr ( );
+		} else {
+			defaultPose = this.modelDef.GetDefaultPose ( );
+		}
+
+		if ( !defaultPose ) {
+			//gameLocal.Warning( "idAnimator::CreateFrame: no defaultPose on '%s'", this.modelDef.Name() );
+			return false;
+		}
+
+		numJoints = this.modelDef.Joints ( ).Num ( );
+		var jointFrame = newStructArray<idJointQuat>( idJointQuat, numJoints ); // ( idJointQuat * )_alloca16( numJoints * sizeof( jointFrame[0] ) );
+		memcpyStructs( jointFrame, defaultPose, numJoints ); //SIMDProcessor.Memcpy( jointFrame, defaultPose, numJoints * sizeof( jointFrame[0] ) );
+
+		hasAnim = false;
+
+		// blend the all channel
+		baseBlend = 0.0;
+		blend.set( this.channels[ANIMCHANNEL_ALL] );
+		for ( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend.idx++ ) {
+			if ( blend.$.BlendAnim( currentTime, ANIMCHANNEL_ALL, numJoints, jointFrame, baseBlend, this.removeOriginOffset, false, debugInfo ) ) {
+				hasAnim = true;
+				if ( baseBlend >= 1.0 ) {
+					break;
 				}
 			}
-		
-			// only blend other this.channels if there's enough space to blend into
-			if ( baseBlend < 1.0 ) {
-				for( i = ANIMCHANNEL_ALL + 1; i < ANIM_NumAnimChannels; i++ ) {
-					if ( !this.modelDef.NumJointsOnChannel( i ) ) {
-						continue;
-					}
-					if ( i == ANIMCHANNEL_EYELIDS ) {
-						// eyelids blend over any previous anims, so skip it and blend it later
-						continue;
-					}
-					blendWeight = baseBlend;
-					blend.set( this.channels[i] );
-					for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend.idx++ ) {
-						if ( blend.$.BlendAnim( currentTime, i, numJoints, jointFrame, blendWeight, this.removeOriginOffset, false, debugInfo ) ) {
-							hasAnim = true;
-							if ( blendWeight >= 1.0 ) {
-								// fully blended
-								break;
-							}
-						}
-					}
-		
-					if ( debugInfo && !this.AFPoseJoints.Num() && !blendWeight ) {
-						gameLocal.Printf( "%d: %s using default pose in model '%s'\n", gameLocal.time, channelNames[ i ], this.modelDef.GetModelName() );
-					}
+		}
+
+		// only blend other this.channels if there's enough space to blend into
+		if ( baseBlend < 1.0 ) {
+			for ( i = ANIMCHANNEL_ALL + 1; i < ANIM_NumAnimChannels; i++ ) {
+				if ( !this.modelDef.NumJointsOnChannel( i ) ) {
+					continue;
 				}
-			}
-		
-			// blend in the eyelids
-			if ( this.modelDef.NumJointsOnChannel( ANIMCHANNEL_EYELIDS ) ) {
-				blend .set( this.channels[ ANIMCHANNEL_EYELIDS ]);
+				if ( i == ANIMCHANNEL_EYELIDS ) {
+					// eyelids blend over any previous anims, so skip it and blend it later
+					continue;
+				}
 				blendWeight = baseBlend;
-				for( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend.idx++ ) {
-					if ( blend.BlendAnim( currentTime, ANIMCHANNEL_EYELIDS, numJoints, jointFrame, blendWeight, this.removeOriginOffset, true, debugInfo ) ) {
+				blend.set( this.channels[i] );
+				for ( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend.idx++ ) {
+					if ( blend.$.BlendAnim( currentTime, i, numJoints, jointFrame, blendWeight, this.removeOriginOffset, false, debugInfo ) ) {
 						hasAnim = true;
 						if ( blendWeight >= 1.0 ) {
 							// fully blended
@@ -4781,128 +4767,148 @@ class idAnimator {
 						}
 					}
 				}
-			}
-		
-			// blend the articulated figure pose
-			if ( this.BlendAFPose( jointFrame ) ) {
-				hasAnim = true;
-			}
-		
-			if ( !hasAnim && !this.jointMods.Num() ) {
-				// no animations were updated
-				return false;
-			}
-		
-			// convert the joint quaternions to rotation matrices
-			SIMDProcessor.ConvertJointQuatsToJointMats( this.joints, jointFrame, numJoints );
-		
-			// check if we need to modify the origin
-			if ( this.jointMods.Num() && ( this.jointMods[0].jointnum == 0 ) ) {
-				jointMod = this.jointMods[0];
-		
-				switch( jointMod.transform_axis ) {
-					case jointModTransform_t.JOINTMOD_NONE:
-						break;
-		
-					case jointModTransform_t.JOINTMOD_LOCAL:
-						this.joints[0].SetRotation( jointMod.mat .opMultiplication( this.joints[0].ToMat3() ));
-						break;
-					
-					case jointModTransform_t.JOINTMOD_WORLD:
-						this.joints[0].SetRotation(this.joints[0].ToMat3().opMultiplication(  jointMod.mat ));
-						break;
-		
-					case jointModTransform_t.JOINTMOD_LOCAL_OVERRIDE:
-					case jointModTransform_t.JOINTMOD_WORLD_OVERRIDE:
-						this.joints[0].SetRotation( jointMod.mat );
-						break;
-				}
-		
-				switch( jointMod.transform_pos ) {
-					case jointModTransform_t.JOINTMOD_NONE:
-						break;
-		
-					case jointModTransform_t.JOINTMOD_LOCAL:
-						this.joints[0].SetTranslation( this.joints[0].ToVec3() + jointMod.pos );
-						break;
-					
-					case jointModTransform_t.JOINTMOD_LOCAL_OVERRIDE:
-					case jointModTransform_t.JOINTMOD_WORLD:
-					case jointModTransform_t.JOINTMOD_WORLD_OVERRIDE:
-						this.joints[0].SetTranslation( jointMod.pos );
-						break;
-				}
-				j = 1;
-			} else {
-				j = 0;
-			}
-		
-			// add in the model offset
-			this.joints[0].SetTranslation( this.joints[0].ToVec3() + this.modelDef.GetVisualOffset() );
-		
-			// pointer to joint info
-			jointParent = this.modelDef.JointParents();
-		
-			// add in any joint modifications
-			for( i = 1; j < this.jointMods.Num(); j++, i++ ) {
-				jointMod = this.jointMods[j];
-		
-				// transform any this.joints preceding the joint modifier
-				SIMDProcessor.TransformJoints( this.joints, jointParent, i, jointMod.jointnum - 1 );
-				i = jointMod.jointnum;
-		
-				parentNum = jointParent[i];
-		
-				// modify the axis
-				switch ( jointMod.transform_axis ) {
-				case jointModTransform_t.JOINTMOD_NONE:
-					this.joints[i].SetRotation( this.joints[i].ToMat3 ( ) * this.joints[parentNum].ToMat3 ( ) );
-					break;
 
-				case jointModTransform_t.JOINTMOD_LOCAL:
-					this.joints[i].SetRotation( jointMod.mat * ( this.joints[i].ToMat3 ( ).opMultiplication( this.joints[parentNum].ToMat3 ( ) ) ) );
-					break;
-
-				case jointModTransform_t.JOINTMOD_LOCAL_OVERRIDE:
-					this.joints[i].SetRotation( jointMod.mat.opMultiplication( this.joints[parentNum].ToMat3 ( ) ) );
-					break;
-
-				case jointModTransform_t.JOINTMOD_WORLD:
-					this.joints[i].SetRotation( ( this.joints[i].ToMat3 ( ).opMultiplication( this.joints[parentNum].ToMat3 ( ) ) ) * jointMod.mat );
-					break;
-
-				case jointModTransform_t.JOINTMOD_WORLD_OVERRIDE:
-					this.joints[i].SetRotation( jointMod.mat );
-					break;
-				}
-
-				// modify the position
-				switch( jointMod.transform_pos ) {
-					case jointModTransform_t.JOINTMOD_NONE:
-						this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + this.joints[i].ToVec3() * this.joints[parentNum].ToMat3() );
-						break;
-		
-					case jointModTransform_t.JOINTMOD_LOCAL:
-						this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + ( this.joints[i].ToVec3() + jointMod.pos ) * this.joints[parentNum].ToMat3() );
-						break;
-					
-					case jointModTransform_t.JOINTMOD_LOCAL_OVERRIDE:
-						this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + jointMod.pos * this.joints[parentNum].ToMat3() );
-						break;
-		
-					case jointModTransform_t.JOINTMOD_WORLD:
-						this.joints[i].SetTranslation( this.joints[parentNum].ToVec3() + this.joints[i].ToVec3() * this.joints[parentNum].ToMat3() + jointMod.pos );
-						break;
-		
-					case jointModTransform_t.JOINTMOD_WORLD_OVERRIDE:
-						this.joints[i].SetTranslation( jointMod.pos );
-						break;
+				if ( debugInfo && !this.AFPoseJoints.Num ( ) && !blendWeight ) {
+					gameLocal.Printf( "%d: %s using default pose in model '%s'\n", gameLocal.time, channelNames[i], this.modelDef.GetModelName ( ) );
 				}
 			}
-		
-			// transform the rest of the hierarchy
-			SIMDProcessor.TransformJoints( this.joints, jointParent, i, numJoints - 1 );
-		
+		}
+
+		// blend in the eyelids
+		if ( this.modelDef.NumJointsOnChannel( ANIMCHANNEL_EYELIDS ) ) {
+			blend.set( this.channels[ANIMCHANNEL_EYELIDS] );
+			blendWeight = baseBlend;
+			for ( j = 0; j < ANIM_MaxAnimsPerChannel; j++, blend.idx++ ) {
+				if ( blend.BlendAnim( currentTime, ANIMCHANNEL_EYELIDS, numJoints, jointFrame, blendWeight, this.removeOriginOffset, true, debugInfo ) ) {
+					hasAnim = true;
+					if ( blendWeight >= 1.0 ) {
+						// fully blended
+						break;
+					}
+				}
+			}
+		}
+
+		// blend the articulated figure pose
+		if ( this.BlendAFPose( jointFrame ) ) {
+			hasAnim = true;
+		}
+
+		if ( !hasAnim && !this.jointMods.Num ( ) ) {
+			// no animations were updated
+			return false;
+		}
+
+		// convert the joint quaternions to rotation matrices
+		SIMDProcessor.ConvertJointQuatsToJointMats( this.joints, jointFrame, numJoints );
+
+		// check if we need to modify the origin
+		if ( this.jointMods.Num ( ) && ( this.jointMods[0].jointnum == 0 ) ) {
+			jointMod = this.jointMods[0];
+
+			switch ( jointMod.transform_axis ) {
+			case jointModTransform_t.JOINTMOD_NONE:
+				break;
+
+			case jointModTransform_t.JOINTMOD_LOCAL:
+				this.joints[0].SetRotation( jointMod.mat.opMultiplication( this.joints[0].ToMat3 ( ) ) );
+				break;
+
+			case jointModTransform_t.JOINTMOD_WORLD:
+				this.joints[0].SetRotation( this.joints[0].ToMat3 ( ).opMultiplication( jointMod.mat ) );
+				break;
+
+			case jointModTransform_t.JOINTMOD_LOCAL_OVERRIDE:
+			case jointModTransform_t.JOINTMOD_WORLD_OVERRIDE:
+				this.joints[0].SetRotation( jointMod.mat );
+				break;
+			}
+
+			switch ( jointMod.transform_pos ) {
+			case jointModTransform_t.JOINTMOD_NONE:
+				break;
+
+			case jointModTransform_t.JOINTMOD_LOCAL:
+				this.joints[0].SetTranslation( this.joints[0].ToVec3 ( ) + jointMod.pos );
+				break;
+
+			case jointModTransform_t.JOINTMOD_LOCAL_OVERRIDE:
+			case jointModTransform_t.JOINTMOD_WORLD:
+			case jointModTransform_t.JOINTMOD_WORLD_OVERRIDE:
+				this.joints[0].SetTranslation( jointMod.pos );
+				break;
+			}
+			j = 1;
+		} else {
+			j = 0;
+		}
+
+		// add in the model offset
+		this.joints[0].SetTranslation( this.joints[0].ToVec3 ( ).opAddition( this.modelDef.GetVisualOffset ( ) ) );
+
+		// pointer to joint info
+		jointParent = this.modelDef.JointParents ( );
+
+		// add in any joint modifications
+		for ( i = 1; j < this.jointMods.Num ( ); j++, i++ ) {
+			jointMod = this.jointMods[j];
+
+			// transform any this.joints preceding the joint modifier
+			SIMDProcessor.TransformJoints( this.joints, jointParent, i, jointMod.jointnum - 1 );
+			i = jointMod.jointnum;
+
+			parentNum = jointParent[i];
+
+			// modify the axis
+			switch ( jointMod.transform_axis ) {
+			case jointModTransform_t.JOINTMOD_NONE:
+				this.joints[i].SetRotation( this.joints[i].ToMat3 ( ).opMultiplication( this.joints[parentNum].ToMat3 ( ) ) );
+				break;
+
+			case jointModTransform_t.JOINTMOD_LOCAL:
+				this.joints[i].SetRotation( jointMod.mat * ( this.joints[i].ToMat3 ( ).opMultiplication( this.joints[parentNum].ToMat3 ( ) ) ) );
+				break;
+
+			case jointModTransform_t.JOINTMOD_LOCAL_OVERRIDE:
+				this.joints[i].SetRotation( jointMod.mat.opMultiplication( this.joints[parentNum].ToMat3 ( ) ) );
+				break;
+
+			case jointModTransform_t.JOINTMOD_WORLD:
+				this.joints[i].SetRotation( ( this.joints[i].ToMat3 ( ).opMultiplication( this.joints[parentNum].ToMat3 ( ) ) ) * jointMod.mat );
+				break;
+
+			case jointModTransform_t.JOINTMOD_WORLD_OVERRIDE:
+				this.joints[i].SetRotation( jointMod.mat );
+				break;
+			}
+
+			// modify the position
+			switch ( jointMod.transform_pos ) {
+			case jointModTransform_t.JOINTMOD_NONE:
+				this.joints[i].SetTranslation( this.joints[parentNum].ToVec3 ( ) + this.joints[i].ToVec3 ( ) * this.joints[parentNum].ToMat3 ( ) );
+				break;
+
+			case jointModTransform_t.JOINTMOD_LOCAL:
+				this.joints[i].SetTranslation( this.joints[parentNum].ToVec3 ( ) + ( this.joints[i].ToVec3 ( ) + jointMod.pos ) * this.joints[parentNum].ToMat3 ( ) );
+				break;
+
+			case jointModTransform_t.JOINTMOD_LOCAL_OVERRIDE:
+				this.joints[i].SetTranslation( this.joints[parentNum].ToVec3 ( ).opAddition( idMat3.opMultiplication_VecMat( jointMod.pos, this.joints[parentNum].ToMat3 ( ) ) ) );
+				break;
+
+			case jointModTransform_t.JOINTMOD_WORLD:
+				this.joints[i].SetTranslation( this.joints[parentNum].ToVec3 ( ) + this.joints[i].ToVec3 ( ) * this.joints[parentNum].ToMat3 ( ) + jointMod.pos );
+				break;
+
+			case jointModTransform_t.JOINTMOD_WORLD_OVERRIDE:
+				this.joints[i].SetTranslation( jointMod.pos );
+				break;
+			}
+		}
+
+		// transform the rest of the hierarchy
+		SIMDProcessor.TransformJoints( this.joints, jointParent, i, numJoints - 1 );
+
 		return true;
 	}
 
@@ -5034,7 +5040,7 @@ idAnimator::GetChannelForJoint
 //=====================
 //*/
 //jointHandle_t idAnimator::GetFirstChild( jointnum:jointHandle_t ) const {
-//	int					i;
+//	var i:number;
 //	int					num;
 //	const jointInfo_t	*joint;
 //

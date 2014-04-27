@@ -366,7 +366,7 @@ class idItem extends idEntity {
 ////================
 ////*/
 ////void idItem::GetAttributes( idDict &attributes ) {
-////	int					i;
+////	var i:number /*int*/;
 ////	const idKeyValue	*arg;
 ////
 ////	for( i = 0; i < spawnArgs.GetNumKeyVals(); i++ ) {

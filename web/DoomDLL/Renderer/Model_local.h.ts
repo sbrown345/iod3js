@@ -2095,7 +2095,7 @@ LoadFLT( fileName:string ):boolean {
 ////	// find the island above sea level
 ////	int	minX, maxX, minY, maxY;
 ////	{
-////		int	i;	
+////		var i:number;	
 ////		for ( minX = 0 ; minX < size ; minX++ ) {
 ////			for ( i = 0 ; i < size ; i++ ) {
 ////				if ( data[i*size + minX] > 1.0 ) {
@@ -3128,7 +3128,7 @@ class idRenderModelMD5 extends idRenderModelStatic {
 	////====================
 	////*/
 	////void idRenderModelMD5::DrawJoints( const renderEntity_t *ent, const struct viewDef_s *view ) const {
-	////	int					i;
+	////	var i:number;
 	////	int					num;
 	////	idVec3				pos;
 	////	const idJointMat	*joint;

@@ -323,33 +323,35 @@ static Sqrt( /*float */x:number):number {
 		return sinf( a );
 	}
 
-////ID_INLINE float idMath::Sin16( /*float*/ a: number ) {
-////	float s;
+	static Sin16( /*float*/ a: number): number {
+		todo( "?" );
+		return Math.sin( a );
+//	float s;
 
-////	if ( ( a < 0.0 ) || ( a >= TWO_PI ) ) {
-////		a -= floorf( a / TWO_PI ) * TWO_PI;
-////	}
-////#if 1
-////	if ( a < idMath.PI ) {
-////		if ( a > HALF_PI ) {
-////			a = idMath.PI - a;
-////		}
-////	} else {
-////		if ( a > idMath.PI + HALF_PI ) {
-////			a = a - TWO_PI;
-////		} else {
-////			a = idMath.PI - a;
-////		}
-////	}
-////#else
-////	a = idMath.PI - a;
-////	if ( fabs( a ) >= HALF_PI ) {
-////		a = ( ( a < 0.0 ) ? -idMath.PI : idMath.PI ) - a;
-////	}
-////#endif
-////	s = a * a;
-////	return a * ( ( ( ( ( -2.39e-08f * s + 2.7526e-06f ) * s - 1.98409e-04f ) * s + 8.3333315e-03f ) * s - 1.666666664e-01f ) * s + 1.0 );
-////}
+//	if ( ( a < 0.0 ) || ( a >= TWO_PI ) ) {
+//		a -= floorf( a / TWO_PI ) * TWO_PI;
+//	}
+//#if 1
+//	if ( a < idMath.PI ) {
+//		if ( a > HALF_PI ) {
+//			a = idMath.PI - a;
+//		}
+//	} else {
+//		if ( a > idMath.PI + HALF_PI ) {
+//			a = a - TWO_PI;
+//		} else {
+//			a = idMath.PI - a;
+//		}
+//	}
+//#else
+//	a = idMath.PI - a;
+//	if ( fabs( a ) >= HALF_PI ) {
+//		a = ( ( a < 0.0 ) ? -idMath.PI : idMath.PI ) - a;
+//	}
+//#endif
+//	s = a * a;
+//	return a * ( ( ( ( ( -2.39e-08f * s + 2.7526e-06f ) * s - 1.98409e-04f ) * s + 8.3333315e-03f ) * s - 1.666666664e-01f ) * s + 1.0 );
+	}
 
 ////ID_INLINE double idMath::Sin64( /*float*/ a: number ) {
 ////	return sin( a );
@@ -620,26 +622,28 @@ static Sqrt( /*float */x:number):number {
 ////	return atan2f( y, x );
 ////}
 
-////ID_INLINE float idMath::ATan16( float y, float x ) {
-////	float a, s;
+	static ATan16( /*float*/ y: number, /*float */x: number): number/*float*/ {
+		todo( "?" );
+		return Math.atan2( y, x );
+		//float a, s;
 
-////	if ( fabs( y ) > fabs( x ) ) {
-////		a = x / y;
-////		s = a * a;
-////		s = - ( ( ( ( ( ( ( ( ( 0.0028662257f * s - 0.0161657367f ) * s + 0.0429096138f ) * s - 0.0752896400f )
-////				* s + 0.1065626393f ) * s - 0.1420889944f ) * s + 0.1999355085f ) * s - 0.3333314528f ) * s ) + 1.0 ) * a;
-////		if ( FLOATSIGNBITSET( a ) ) {
-////			return s - HALF_PI;
-////		} else {
-////			return s + HALF_PI;
-////		}
-////	} else {
-////		a = y / x;
-////		s = a * a;
-////		return ( ( ( ( ( ( ( ( ( 0.0028662257f * s - 0.0161657367f ) * s + 0.0429096138f ) * s - 0.0752896400f )
-////			* s + 0.1065626393f ) * s - 0.1420889944f ) * s + 0.1999355085f ) * s - 0.3333314528f ) * s ) + 1.0 ) * a;
-////	}
-////}
+		//if ( fabs( y ) > fabs( x ) ) {
+		//	a = x / y;
+		//	s = a * a;
+		//	s = - ( ( ( ( ( ( ( ( ( 0.0028662257f * s - 0.0161657367f ) * s + 0.0429096138f ) * s - 0.0752896400f )
+		//			* s + 0.1065626393f ) * s - 0.1420889944f ) * s + 0.1999355085f ) * s - 0.3333314528f ) * s ) + 1.0 ) * a;
+		//	if ( FLOATSIGNBITSET( a ) ) {
+		//		return s - HALF_PI;
+		//	} else {
+		//		return s + HALF_PI;
+		//	}
+		//} else {
+		//	a = y / x;
+		//	s = a * a;
+		//	return ( ( ( ( ( ( ( ( ( 0.0028662257f * s - 0.0161657367f ) * s + 0.0429096138f ) * s - 0.0752896400f )
+		//		* s + 0.1065626393f ) * s - 0.1420889944f ) * s + 0.1999355085f ) * s - 0.3333314528f ) * s ) + 1.0 ) * a;
+		//}
+	}
 
 ////ID_INLINE double idMath::ATan64( float y, float x ) {
 ////	return atan2( y, x );

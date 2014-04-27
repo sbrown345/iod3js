@@ -2992,7 +2992,7 @@ AddWorldModelEntities  (): void {
 //*/
 //idScreenRect idRenderWorldLocal::ScreenRectFromWinding( const idWinding *w, viewEntity_t *space ) {
 //	idScreenRect	r;
-//	int				i;
+//	var i:number /*int*/;
 //	idVec3			v;
 //	idVec3			ndc;
 //	float			windowX, windowY;
@@ -3209,7 +3209,7 @@ AddWorldModelEntities  (): void {
 //*/
 //void idRenderWorldLocal::FlowViewThroughPortals( const idVec3 origin, int numPlanes, const idPlane *planes ) {
 //	portalStack_t	ps;
-//	int				i;
+//	var i:number /*int*/;
 //
 //	ps.next = NULL;
 //	ps.p = NULL;
@@ -3368,7 +3368,7 @@ AddWorldModelEntities  (): void {
 //*/
 //void idRenderWorldLocal::FlowLightThroughPortals( idRenderLightLocal *light ) {
 //	portalStack_t	ps;
-//	int				i;
+//	var i:number /*int*/;
 //	const idVec3 origin = light.globalLightOrigin;
 //
 //	// if the light origin areaNum is not in a valid area,
@@ -3733,7 +3733,7 @@ AddWorldModelEntities  (): void {
 //===================
 //*/
 //void idRenderWorldLocal::BuildConnectedAreas( void ) {
-//	int		i;
+//	var i:number /*int*/;
 //
 //	tr.viewDef.connectedAreas = (bool *)R_FrameAlloc( this.numPortalAreas
 //		* sizeof( tr.viewDef.connectedAreas[0] ) );
@@ -3789,7 +3789,7 @@ AddWorldModelEntities  (): void {
 //		// if we are outside the world, don't draw anything
 //		if ( tr.viewDef.areaNum >= 0 ) {
 //			portalStack_t	ps;
-//			int				i;
+//			var i:number /*int*/;
 //			static int lastPrintedAreaNum;
 //
 //			if ( tr.viewDef.areaNum != lastPrintedAreaNum ) {

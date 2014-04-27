@@ -3051,7 +3051,7 @@ idWeapon::Spawn
 ////void idWeapon::Event_LaunchProjectiles( int num_projectiles, float spread, float fuseOffset, float launchPower, float dmgPower ) {
 ////	idProjectile	*proj;
 ////	idEntity		*ent;
-////	int				i;
+////	var i:number /*int*/;
 ////	idVec3			dir;
 ////	float			ang;
 ////	float			spin;

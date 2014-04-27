@@ -1452,7 +1452,7 @@ idWinding::GetBounds
 //#define	EDGE_LENGTH		0.2f
 //
 //bool idWinding::IsTiny() const {
-//	int		i;
+//	var i:number /*int*/;
 //	float	len;
 //	idVec3	delta;
 //	int		edges;
@@ -1507,7 +1507,7 @@ idWinding::IsHuge
 //=============
 //*/
 //float idWinding::PlaneDistance(const idPlane &plane) const {
-//	int		i;
+//	var i:number /*int*/;
 //	float	d, min, max;
 //
 //	min = idMath::INFINITY;
@@ -1543,7 +1543,7 @@ idWinding::IsHuge
 //*/
 //int idWinding::PlaneSide(const idPlane &plane, const float epsilon) const {
 //	bool	front, back;
-//	int		i;
+//	var i:number /*int*/;
 //	float	d;
 //
 //	front = false;

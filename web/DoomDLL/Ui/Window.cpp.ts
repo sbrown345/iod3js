@@ -4517,7 +4517,7 @@ idWindow::ClientToScreen
 ////*/
 ////bool idWindow::UpdateFromDictionary ( idDict& dict ) {
 ////	const idKeyValue*	kv;
-////	int					i;
+////	var i:number /*int*/;
 ////	
 ////	SetDefaults ( );
 ////	

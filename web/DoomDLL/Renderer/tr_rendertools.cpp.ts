@@ -203,7 +203,7 @@
 //*/
 //void RB_ScanStencilBuffer( void ) {
 //	int		counts[256];
-//	int		i;
+//	var i:number /*int*/;
 //	byte	*stencilReadback;
 //
 //	memset( counts, 0, sizeof( counts ) );
@@ -236,7 +236,7 @@
 //*/
 //void RB_CountStencilBuffer( void ) {
 //	int		count;
-//	int		i;
+//	var i:number /*int*/;
 //	byte	*stencilReadback;
 //
 //
@@ -265,7 +265,7 @@
 //*/
 //static void R_ColorByStencilBuffer( void ) {
 //#if !defined(GL_ES_VERSION_2_0)
-//	int		i;
+//	var i:number /*int*/;
 //	static float	colors[8][3] = {
 //		{0,0,0},
 //		{1,0,0},
@@ -304,7 +304,7 @@ RB_ShowOverdraw
 function RB_ShowOverdraw ( ): void {
 //#if !defined(GL_ES_VERSION_2_0)
 //	const idMaterial *	material;
-//	int					i;
+//	var i:number /*int*/;
 //	drawSurf_t * *		drawSurfs;
 //	const drawSurf_t *	surf;
 //	int					numDrawSurfs;
@@ -492,7 +492,7 @@ function RB_ShowOverdraw ( ): void {
 //*/
 //void RB_ShowLightCount( void ) {
 //#if !defined(GL_ES_VERSION_2_0)
-//	int		i;
+//	var i:number /*int*/;
 //	const drawSurf_t	*surf;
 //	const viewLight_t	*vLight;
 //
@@ -554,7 +554,7 @@ function RB_ShowOverdraw ( ): void {
 //*/
 //void RB_ShowSilhouette( void ) {
 //#if !defined(GL_ES_VERSION_2_0)
-//	int		i;
+//	var i:number /*int*/;
 //	const drawSurf_t	*surf;
 //	const viewLight_t	*vLight;
 //
@@ -640,7 +640,7 @@ function RB_ShowOverdraw ( ): void {
 //*/
 //static void RB_ShowShadowCount( void ) {
 //#if !defined(GL_ES_VERSION_2_0)
-//	int		i;
+//	var i:number /*int*/;
 //	const drawSurf_t	*surf;
 //	const viewLight_t	*vLight;
 //
@@ -2073,7 +2073,7 @@ RB_ClearDebugPolygons
 */
 function RB_ClearDebugPolygons ( /*int*/time: number ): void {
 //#if !defined(GL_ES_VERSION_2_0)
-//	int				i;
+//	var i:number /*int*/;
 //	int				num;
 //	debugPolygon_t	*poly;
 //

@@ -604,7 +604,7 @@ class idVec3 {
 	}
 
 	/*operator**/
-	static times ( /*const float */a: number, b: idVec3 ): idVec3 {
+	static opMultiplication_float_vec3 ( /*const float */a: number, b: idVec3 ): idVec3 {
 		return new idVec3( b.x * a, b.y * a, b.z * a );
 	}
 
@@ -1114,22 +1114,22 @@ idVec3::ToMat3
 		return mat;
 	}
 
-/////*
-////=============
-////Lerp
+/*
+=============
+Lerp
 
-////Linearly inperpolates one vector to another.
-////=============
-////*/
-////void idVec3::Lerp( const idVec3 &v1, const idVec3 &v2, const float l ) {
-////	if ( l <= 0.0 ) {
-////		(*this) = v1;
-////	} else if ( l >= 1.0 ) {
-////		(*this) = v2;
-////	} else {
-////		(*this) = v1 + l * ( v2 - v1 );
-////	}
-////}
+Linearly inperpolates one vector to another.
+=============
+*/
+	Lerp ( v1: idVec3, v2: idVec3, /*float */l: number ): void {
+		if ( l <= 0.0 ) {
+			( this ).opEquals( v1 );
+		} else if ( l >= 1.0 ) {
+			( this ).opEquals( v2 );
+		} else {
+			( this ).opEquals( v1.opAddition( idVec3.opMultiplication_float_vec3( l, ( v2.opSubtraction( v1 ) ) ) ) );
+		}
+	}
 
 /////*
 ////=============

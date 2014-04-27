@@ -1037,7 +1037,7 @@
 ////=================
 ////*/
 ////void MA_Free( maModel_t *ma ) {
-////	int					i;
+////	var i:number /*int*/;
 ////	maObject_t			*obj;
 ////	maMesh_t			*mesh;
 ////	maMaterial_t		*material;

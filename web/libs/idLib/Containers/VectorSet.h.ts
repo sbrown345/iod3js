@@ -80,7 +80,7 @@
 	////
 	
 	////ID_INLINE void idVectorSet<type,dimension>::Init( const type &mins, const type &maxs, const int boxHashSize, const int initialSize ) {
-	////	int i;
+	////	var i:number /*int*/;
 	////	float boxSize;
 	////
 	////	idList<type>::AssureSize( initialSize );

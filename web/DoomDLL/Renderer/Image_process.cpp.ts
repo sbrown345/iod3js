@@ -554,7 +554,7 @@ function R_MipMap3D( /*const byte **/$in: Uint8Array, /*int */width: number, /*i
 ////==================
 ////*/
 ////void R_BlendOverTexture( byte *data, int pixelCount, const byte blend[4] ) {
-////	int		i;
+////	var i:number /*int*/;
 ////	int		inverseAlpha;
 ////	int		premult[3];
 

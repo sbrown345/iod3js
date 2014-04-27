@@ -1117,7 +1117,7 @@ idTraceModel::VolumeFromPolygon
 		trm.$.numEdges = this.numEdges * 3;
 		trm.$.numPolys = this.numEdges + 2;
 		for ( i = 0; i < this.numEdges; i++ ) {
-			trm.$.verts[this.numVerts + i].opEquals( this.verts[i].opSubtraction( idVec3.times( thickness, this.polys[0].normal ) ) );
+			trm.$.verts[this.numVerts + i].opEquals( this.verts[i].opSubtraction( idVec3.opMultiplication_float_vec3( thickness, this.polys[0].normal ) ) );
 			trm.$.edges[this.numEdges + i + 1].v[0] = this.numVerts + i;
 			trm.$.edges[this.numEdges + i + 1].v[1] = this.numVerts + ( i + 1 ) % this.numVerts;
 			trm.$.edges[this.numEdges * 2 + i + 1].v[0] = i;
@@ -1173,7 +1173,7 @@ idTraceModel::GenerateEdgeNormals
 						edge.normal.opMultiplicationAssignment( 0.5 / ( 0.5 + 0.5 * idTraceModel.SHARP_EDGE_DOT ) / edge.normal.Length ( ) );
 						numSharpEdges++;
 					} else {
-						edge.normal.opEquals( idVec3.times( ( 0.5 / ( 0.5 + 0.5 * dot ) ), ( edge.normal.opAddition( poly.normal ) ) ) );
+						edge.normal.opEquals( idVec3.opMultiplication_float_vec3( ( 0.5 / ( 0.5 + 0.5 * dot ) ), ( edge.normal.opAddition( poly.normal ) ) ) );
 					}
 				}
 			}

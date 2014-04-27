@@ -4307,7 +4307,7 @@ class idAI extends idActor {
 ////void idAI::CalculateAttackOffsets( ) {
 ////	const idDeclModelDef	*modelDef;
 ////	int						num;
-////	int						i;
+////	var i:number /*int*/;
 ////	int						frame;
 ////	const frameCommand_t	*command;
 ////	idMat3					axis;
@@ -4487,7 +4487,7 @@ class idAI extends idActor {
 ////	float				spin;
 ////	idAngles			ang;
 ////	int					num_projectiles;
-////	int					i;
+////	var i:number /*int*/;
 ////	idMat3				axis;
 ////	idVec3				tmp;
 ////	idProjectile		*lastProjectile;

@@ -287,7 +287,7 @@ Spawn(): void {
 //	idVec3 pos;
 //	idMat3 axis;
 //	idAngles ang;
-//	int	i;
+//	var i:number /*int*/;
 //
 //	if ( thinkFlags & TH_THINK ) {
 //		if ( anim && ( gameLocal.testmodel == this ) && ( mode != g_testModelAnimate.GetInteger() ) ) {

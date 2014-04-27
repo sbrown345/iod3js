@@ -144,7 +144,7 @@ idExtrapolate::GetCurrentValue
 		case extrapolation_t.EXTRAPOLATION_NONE:
 		{
 			deltaTime = ( time - this.startTime ) * 0.001;
-			this.currentValue.opEquals( this.startValue.opAddition( idVec3.times( deltaTime, this.baseSpeed ) ) );
+			this.currentValue.opEquals( this.startValue.opAddition( idVec3.opMultiplication_float_vec3( deltaTime, this.baseSpeed ) ) );
 			break;
 		}
 		case extrapolation_t.EXTRAPOLATION_LINEAR:

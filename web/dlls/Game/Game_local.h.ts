@@ -1570,7 +1570,7 @@ Initializes all map variables common to both save games and spawned games.
 ////	idThread			*thread;
 ////	idDict				newInfo;
 ////	const idKeyValue	*keyval, *keyval2;
-////	int					i;
+////	var i:number /*int*/;
 
 ////	if ( !g_mapCycle.GetString()[0] ) {
 ////		this.Printf( common.GetLanguageDict().GetString( "#str_04294" ) );

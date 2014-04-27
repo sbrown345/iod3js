@@ -281,7 +281,7 @@ class idSurface {
 ////	int *			onPlaneEdges[2];
 ////	int				numOnPlaneEdges[2];
 ////	int				maxOnPlaneEdges;
-////	int				i;
+////	var i:number /*int*/;
 ////	idSurface *		surface[2];
 ////	idDrawVert		v;
 ////
@@ -588,7 +588,7 @@ class idSurface {
 ////	float			f;
 ////	byte *			sides;
 ////	int				counts[3];
-////	int				i;
+////	var i:number /*int*/;
 ////	int *			edgeSplitVertex;
 ////	int *			vertexRemap;
 ////	int				vertexIndexNum[2];
@@ -913,7 +913,7 @@ class idSurface {
 ////=============
 ////*/
 ////float idSurface::PlaneDistance( const idPlane &plane ) const {
-////	int		i;
+////	var i:number /*int*/;
 ////	float	d, min, max;
 ////
 ////	min = idMath::INFINITY;
@@ -949,7 +949,7 @@ class idSurface {
 ////*/
 ////int idSurface::PlaneSide( const idPlane &plane, const float epsilon ) const {
 ////	bool	front, back;
-////	int		i;
+////	var i:number /*int*/;
 ////	float	d;
 ////
 ////	front = false;

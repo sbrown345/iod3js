@@ -46,7 +46,7 @@
 //==============
 //*/
 //void		idRenderWorldLocal::StartWritingDemo( idDemoFile *demo ) {
-//	int		i;
+//	var i:number /*int*/;
 //
 //	// FIXME: we should track the idDemoFile locally, instead of snooping into session for it
 //

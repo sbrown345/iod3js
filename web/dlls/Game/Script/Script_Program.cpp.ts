@@ -455,7 +455,7 @@ idScriptObject::GetFunction
 //============
 //*/
 //byte *idScriptObject::GetVariable( name:string, etype_t etype ) const {
-//	int				i;
+//	var i:number /*int*/;
 //	int				pos;
 //	const idTypeDef	*t;
 //	const idTypeDef	*parm;

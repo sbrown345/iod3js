@@ -121,7 +121,7 @@ idHashTable<Type>::idHashTable
 ////*/
 ////template< class Type >
 ////ID_INLINE idHashTable<Type>::idHashTable( const idHashTable<Type> &map ) {
-////	int			i;
+////	var i:number /*int*/;
 ////	hashnode_s	*node;
 ////	hashnode_s	**prev;
 ////
@@ -258,7 +258,7 @@ idHashTable<Type>::Get
 ////ID_INLINE Type *idHashTable<Type>::GetIndex( int index ) const {
 ////	hashnode_s	*node;
 ////	int			count;
-////	int			i;
+////	var i:number /*int*/;
 ////
 ////	if ( ( index < 0 ) || ( index > this.numentries ) ) {
 ////		assert( 0 );

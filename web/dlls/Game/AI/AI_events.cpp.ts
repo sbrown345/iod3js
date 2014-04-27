@@ -1124,7 +1124,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////=====================
 ////*/
 ////void idAI::Event_GetCombatNode( ) {
-////	int				i;
+////	var i:number /*int*/;
 ////	float			dist;
 ////	idEntity		*targetEnt;
 ////	idCombatNode	*node;
@@ -2166,7 +2166,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////=====================
 ////*/
 ////void idAI::Event_GetClosestHiddenTarget( const char *type ) {
-////	int	i;
+////	var i:number /*int*/;
 ////	var ent:idEntity
 ////	idEntity *bestEnt;
 ////	var /*float*/time:number;
@@ -2216,7 +2216,7 @@ idAI.Type = new idTypeInfo( "idAI", "idActor",
 ////=====================
 ////*/
 ////void idAI::Event_GetRandomTarget( const char *type ) {
-////	int	i;
+////	var i:number /*int*/;
 ////	int	num;
 ////	int which;
 ////	var ent:idEntity

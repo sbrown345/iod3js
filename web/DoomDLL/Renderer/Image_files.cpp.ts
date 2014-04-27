@@ -84,7 +84,7 @@
 ////*/
 ////void R_WriteTGA( const char *filename, const byte *data, int width, int height, bool flipVertical ) {
 ////	byte	*buffer;
-////	int		i;
+////	var i:number /*int*/;
 ////	int		bufferSize = widthheight.$*4 + 18;
 ////	int     imgStart = 18;
 
@@ -121,7 +121,7 @@
 ////*/
 ////void R_WritePalTGA( const char *filename, const byte *data, const byte *palette, int width, int height, bool flipVertical ) {
 ////	byte	*buffer;
-////	int		i;
+////	var i:number /*int*/;
 ////	int		bufferSize = (width * height) + (256 * 3) + 18;
 ////	int     palStart = 18;
 ////	int     imgStart = 18 + (256 * 3);

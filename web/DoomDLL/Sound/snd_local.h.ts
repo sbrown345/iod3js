@@ -4244,7 +4244,7 @@ idSoundSample::LengthIn44kHzSamples
 ////===================
 ////*/
 ////void idSoundSample::MakeDefault( ) {	
-////	int		i;
+////	var i:number /*int*/;
 ////	float	v;
 ////	int		sample;
 ////

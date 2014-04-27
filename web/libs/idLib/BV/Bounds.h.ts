@@ -447,7 +447,7 @@ Zero( ):void {
 //============
 //*/
 //float idBounds::GetRadius(void) const {
-//	int		i;
+//	var i:number /*int*/;
 //	float	total, b0, b1;
 
 //	total = 0.0;
@@ -470,7 +470,7 @@ Zero( ):void {
 //============
 //*/
 //float idBounds::GetRadius(const idVec3 &center) const {
-//	int		i;
+//	var i:number /*int*/;
 //	float	total, b0, b1;
 
 //	total = 0.0;

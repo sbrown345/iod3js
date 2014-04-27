@@ -219,7 +219,7 @@ idAnimManager::JointName
 //*/
 	FlushUnusedAnims(): void {
 		todoThrow ( );
-//	int						i;
+//	var i:number /*int*/;
 //	idMD5Anim				**animptr;
 //	idList<idMD5Anim *>		removeAnims;
 //	

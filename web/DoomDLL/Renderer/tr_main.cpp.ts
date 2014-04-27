@@ -630,7 +630,7 @@ function R_GlobalPointToLocal( /*const float*/ modelMatrix: Float32Array /*[16]*
 //==========================
 //*/
 //void R_GlobalToNormalizedDeviceCoordinates( const idVec3 &global, idVec3 &ndc ) {
-//	int		i;
+//	var i:number /*int*/;
 //	idPlane	view;
 //	idPlane	clip;
 //
@@ -865,7 +865,7 @@ function myGlMultMatrix ( a: Float32Array /*[16]*/, b: Float32Array /*[16]*/, ou
 //=================
 //*/
 //static void R_SetupViewFrustum( void ) {
-//	int		i;
+//	var i:number /*int*/;
 //	float	xs, xc;
 //	float	ang;
 //

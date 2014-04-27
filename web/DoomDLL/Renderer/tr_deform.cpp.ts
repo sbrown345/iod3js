@@ -73,7 +73,7 @@
 //=====================
 //*/
 //static void R_AutospriteDeform( drawSurf_t *surf ) {
-//	int		i;
+//	var i:number /*int*/;
 //	const idDrawVert	*v;
 //	idVec3	mid, delta;
 //	float	radius;
@@ -699,7 +699,7 @@
 //=====================
 //*/
 //static void R_ExpandDeform( drawSurf_t *surf ) {
-//	int		i;
+//	var i:number /*int*/;
 //	const srfTriangles_t	*tri;
 //	srfTriangles_t	*newTri;
 //
@@ -731,7 +731,7 @@
 //=====================
 //*/
 //static void  R_MoveDeform( drawSurf_t *surf ) {
-//	int		i;
+//	var i:number /*int*/;
 //	const srfTriangles_t	*tri;
 //	srfTriangles_t	*newTri;
 //
@@ -765,7 +765,7 @@
 //=====================
 //*/
 //static void  R_TurbulentDeform( drawSurf_t *surf ) {
-//	int		i;
+//	var i:number /*int*/;
 //	const srfTriangles_t	*tri;
 //	srfTriangles_t	*newTri;
 //

@@ -1603,7 +1603,7 @@ idPlayer::idPlayer
 ////===========
 ////*/
 ////void idPlayer::Restore( idRestoreGame *savefile ) {
-////	int	  i;
+////	var i:number /*int*/;
 ////	int	  num;
 ////	float set;
 ////
@@ -2708,7 +2708,7 @@ idPlayer::UserInfoChanged
 ////===============
 ////*/
 ////bool idPlayer::GiveItem( idItem *item ) {
-////	int					i;
+////	var i:number /*int*/;
 ////	const idKeyValue	*arg;
 ////	idDict				attr;
 ////	bool				gave;
@@ -5613,7 +5613,7 @@ idPlayer::UserInfoChanged
 ////==============
 ////*/
 ////void idPlayer::InitAASLocation( ) {
-////	int		i;
+////	var i:number /*int*/;
 ////	var /*int*/num:number;
 ////	idVec3	size;
 ////	idBounds bounds;
@@ -5646,7 +5646,7 @@ idPlayer::UserInfoChanged
 ////==============
 ////*/
 ////void idPlayer::SetAASLocation( ) {
-////	int		i;
+////	var i:number /*int*/;
 ////	int		areaNum;
 ////	idVec3	size;
 ////	idBounds bounds;

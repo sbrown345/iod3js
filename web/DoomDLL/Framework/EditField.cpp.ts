@@ -63,7 +63,7 @@ class autoComplete_t {
 ////===============
 ////*/
 ////static void FindMatches( const char *s ) {
-////	int		i;
+////	var i:number /*int*/;
 ////
 ////	if ( idStr::Icmpn( s, globalAutoComplete.completionString, strlen( globalAutoComplete.completionString ) ) != 0 ) {
 ////		return;

@@ -219,7 +219,7 @@ function RB_DrawElementsWithCounters(tri: srfTriangles_t  ): void {
 //void RB_RenderDrawSurfListWithFunction(drawSurf_t **drawSurfs, int numDrawSurfs,
 //                                       void (*triFunc_)(const drawSurf_t *))
 //{
-//	int				i;
+//	var i:number /*int*/;
 //	const drawSurf_t		*drawSurf;
 //
 //	backEnd.currentSpace = NULL;

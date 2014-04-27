@@ -3146,7 +3146,7 @@ idMultiplayerGame::Reset
 ////				return;
 ////			}
 ////			int				num = fileSystem.GetNumMaps();
-////			int				i;
+////			var i:number /*int*/;
 ////			const idDict	*dict = NULL;
 ////			bool			haveMap = false;
 ////			for ( i = 0; i < num; i++ ) {

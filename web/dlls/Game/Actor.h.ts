@@ -1258,7 +1258,7 @@ idActor::SetupBody
 ////=====================
 ////*/
 ////void idActor::UpdateScript( ) {
-////	int	i;
+////	var i:number /*int*/;
 ////
 ////	if ( ai_debugScript.GetInteger() == entityNumber ) {
 ////		this.scriptThread.EnableDebugInfo();

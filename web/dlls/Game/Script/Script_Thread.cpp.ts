@@ -692,7 +692,7 @@ idThread::GetThread
 //================
 //*/
 //ListThreads_f( const idCmdArgs &args ) :void{
-//	int	i;
+//	var i:number /*int*/;
 //	int	n;
 //
 //	n = idThread.threadList.Num();

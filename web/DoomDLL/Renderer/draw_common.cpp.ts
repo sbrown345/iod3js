@@ -1275,7 +1275,7 @@ function RB_STD_DrawShaderPasses(drawSurfs: drawSurf_t[], /*int */numDrawSurfs :
 //
 //	if ( backEnd.currentSpace != surf.space ) {
 //		idPlane	lightProject[4];
-//		int		i;
+//		var i:number /*int*/;
 //
 //		for ( i = 0 ; i < 4 ; i++ ) {
 //			R_GlobalPlaneToLocal( surf.space.modelMatrix, backEnd.vLight.lightProject[i], lightProject[i] );
@@ -1317,7 +1317,7 @@ function RB_STD_DrawShaderPasses(drawSurfs: drawSurf_t[], /*int */numDrawSurfs :
 //#if !defined(GL_ES_VERSION_2_0)
 //	const idMaterial	*lightShader;
 //	const shaderStage_t	*stage;
-//	int					i;
+//	var i:number /*int*/;
 //	const float	*regs;
 //
 //	if (!drawSurfs) {

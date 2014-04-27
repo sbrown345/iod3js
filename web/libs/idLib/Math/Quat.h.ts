@@ -163,9 +163,10 @@ class idQuat {
 ////	}
 ////
 ////	ID_INLINE idQuat idQuat::operator-() const {
-////		return idQuat(-x, -y, -z, -w);
-////	}
-////
+	opUnaryMinus ( ): idQuat {
+		return new idQuat( -this.x, -this.y, -this.z, -this.w );
+	}
+
 	//ID_INLINE idQuat &idQuat::operator=(const idQuat &a) {
 	opEquals ( a: idQuat ): idQuat {
 		this.x = a.x;
@@ -462,64 +463,64 @@ class idQuat {
 ////	const char *idQuat::ToString(int precision) const {
 ////		return idStr::FloatArrayToString(ToFloatPtr(), GetDimension(), precision);
 ////	}
-////
-////	/*
-////	=====================
-////	idQuat::Slerp
-////
-////	Spherical linear interpolation between two quaternions.
-////	=====================
-////	*/
-////	idQuat &idQuat::Slerp(const idQuat &from, const idQuat &to, float t) {
-////		idQuat	temp;
-////		float	omega, cosom, sinom, scale0, scale1;
-////
-////		if (t <= 0.0) {
-////			*this = from;
-////			return this;
-////		}
-////
-////		if (t >= 1.0) {
-////			*this = to;
-////			return this;
-////		}
-////
-////		if (from == to) {
-////			*this = to;
-////			return this;
-////		}
-////
-////		cosom = from.x * to.x + from.y * to.y + from.z * to.z + from.w * to.w;
-////		if (cosom < 0.0) {
-////			temp = -to;
-////			cosom = -cosom;
-////		}
-////		else {
-////			temp = to;
-////		}
-////
-////		if ((1.0 - cosom) > 1e-6f) {
-////#if 0
-////			omega = acos(cosom);
-////			sinom = 1.0 / sin(omega);
-////			scale0 = sin((1.0 - t) * omega) * sinom;
-////			scale1 = sin(t * omega) * sinom;
-////#else
-////			scale0 = 1.0 - cosom * cosom;
-////			sinom = idMath.InvSqrt(scale0);
-////			omega = idMath.ATan16(scale0 * sinom, cosom);
-////			scale0 = idMath.Sin16((1.0 - t) * omega) * sinom;
-////			scale1 = idMath.Sin16(t * omega) * sinom;
-////#endif
-////		}
-////		else {
-////			scale0 = 1.0 - t;
-////			scale1 = t;
-////		}
-////
-////		*this = (scale0 * from) + (scale1 * temp);
-////		return this;
-////	}
+
+	/*
+	=====================
+	idQuat::Slerp
+
+	Spherical linear interpolation between two quaternions.
+	=====================
+	*/
+	Slerp(from: idQuat, to: idQuat , /*float */t:number) :idQuat{
+		var temp = new idQuat	;
+		var/*float	*/omega: number, cosom: number, sinom: number, scale0: number, scale1: number;
+
+		if (t <= 0.0) {
+			this.opEquals(from);
+			return this;
+		}
+
+		if (t >= 1.0) {
+			this.opEquals( to );
+			return this;
+		}
+
+		if (from == to) {
+			this.opEquals(to);
+			return this;
+		}
+
+		cosom = from.x * to.x + from.y * to.y + from.z * to.z + from.w * to.w;
+		if (cosom < 0.0) {
+			temp.opEquals( to.opUnaryMinus ( ) );
+			cosom = -cosom;
+		}
+		else {
+			temp = to;
+		}
+
+		if ((1.0 - cosom) > 1e-6) {
+//#if 0
+//			omega = acos(cosom);
+//			sinom = 1.0 / sin(omega);
+//			scale0 = sin((1.0 - t) * omega) * sinom;
+//			scale1 = sin(t * omega) * sinom;
+//#else
+			scale0 = 1.0 - cosom * cosom;
+			sinom = idMath.InvSqrt(scale0);
+			omega = idMath.ATan16(scale0 * sinom, cosom);
+			scale0 = idMath.Sin16((1.0 - t) * omega) * sinom;
+			scale1 = idMath.Sin16(t * omega) * sinom;
+//#endif
+		}
+		else {
+			scale0 = 1.0 - t;
+			scale1 = t;
+		}
+
+		this.opEquals( ( scale0 * from ) + ( scale1 * temp ) );
+		return this;
+	}
 }
 
 /*

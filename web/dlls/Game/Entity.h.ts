@@ -3363,7 +3363,7 @@ Can be overridden by subclasses when a thread doesn't need to be allocated.
 ////================
 ////*/
 ////ClearSignalThread( signalNum_t signalnum, idThread *thread ) {
-////	int	i;
+////	var i:number;
 ////	int	num;
 ////	int	threadnum;
 ////

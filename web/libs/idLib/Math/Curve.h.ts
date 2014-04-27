@@ -118,7 +118,7 @@ idCurve::idCurve
 ////*/
 //////template< class type >
 ////ID_INLINE int idCurve<type>::AddValue( const float time, const type &value ) {
-////	int i;
+////	var i:number /*int*/;
 
 ////	i = IndexForTime( time );
 ////	times.Insert( time, i );
@@ -136,7 +136,7 @@ idCurve::idCurve
 ////*/
 //////template< class type >
 ////ID_INLINE type idCurve<type>::GetCurrentValue( const float time ) const {
-////	int i;
+////	var i:number /*int*/;
 
 ////	i = IndexForTime( time );
 ////	if ( i >= values.Num() ) {
@@ -187,7 +187,7 @@ idCurve::idCurve
 ////*/
 //////template< class type >
 ////ID_INLINE float idCurve<type>::GetSpeed( const float time ) const {
-////	int i;
+////	var i:number /*int*/;
 ////	float speed;
 ////	type value;
 
@@ -337,7 +337,7 @@ idCurve::idCurve
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve<type>::SetConstantSpeed( const float totalTime ) {
-////	int i;
+////	var i:number /*int*/;
 ////	float *length, totalLength, scale, t;
 
 ////	length = (float *) _alloca16( values.Num() * sizeof( float ) );
@@ -516,7 +516,7 @@ idCurve::ShiftTime
 ////*/
 //////template< class type >
 ////ID_INLINE type idCurve_Bezier<type>::GetCurrentValue( const float time ) const {
-////	int i;
+////	var i:number /*int*/;
 ////	float *bvals;
 ////	type v;
 
@@ -539,7 +539,7 @@ idCurve::ShiftTime
 ////*/
 //////template< class type >
 ////ID_INLINE type idCurve_Bezier<type>::GetCurrentFirstDerivative( const float time ) const {
-////	int i;
+////	var i:number /*int*/;
 ////	float *bvals, d;
 ////	type v;
 
@@ -563,7 +563,7 @@ idCurve::ShiftTime
 ////*/
 //////template< class type >
 ////ID_INLINE type idCurve_Bezier<type>::GetCurrentSecondDerivative( const float time ) const {
-////	int i;
+////	var i:number /*int*/;
 ////	float *bvals, d;
 ////	type v;
 
@@ -633,7 +633,7 @@ idCurve::ShiftTime
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_Bezier<type>::BasisFirstDerivative( const int order, const float t, float *bvals ) const {
-////	int i;
+////	var i:number /*int*/;
 
 ////	Basis( order-1, t, bvals+1 );
 ////	bvals[0] = 0.0;
@@ -651,7 +651,7 @@ idCurve::ShiftTime
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_Bezier<type>::BasisSecondDerivative( const int order, const float t, float *bvals ) const {
-////	int i;
+////	var i:number /*int*/;
 
 ////	BasisFirstDerivative( order-1, t, bvals+1 );
 ////	bvals[0] = 0.0;
@@ -1173,7 +1173,7 @@ idCurve_Spline::idCurve_Spline
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_NaturalCubicSpline<type>::SetupFree( ) const {
-////	int i;
+////	var i:number /*int*/;
 ////	float inv;
 ////	float *d0, *d1, *beta, *gamma;
 ////	type *alpha, *delta;
@@ -1233,7 +1233,7 @@ idCurve_Spline::idCurve_Spline
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_NaturalCubicSpline<type>::SetupClamped( ) const {
-////	int i;
+////	var i:number /*int*/;
 ////	float inv;
 ////	float *d0, *d1, *beta, *gamma;
 ////	type *alpha, *delta;
@@ -1588,7 +1588,7 @@ idCurve_Spline::idCurve_Spline
 ////*/
 //////template< class type >
 ////ID_INLINE int idCurve_KochanekBartelsSpline<type>::AddValue( const float time, const type &value ) {
-////	int i;
+////	var i:number /*int*/;
 
 ////	i = this.IndexForTime( time );
 ////	this.times.Insert( time, i );
@@ -1609,7 +1609,7 @@ idCurve_Spline::idCurve_Spline
 ////*/
 //////template< class type >
 ////ID_INLINE int idCurve_KochanekBartelsSpline<type>::AddValue( const float time, const type &value, const float tension, const float continuity, const float bias ) {
-////	int i;
+////	var i:number /*int*/;
 
 ////	i = this.IndexForTime( time );
 ////	this.times.Insert( time, i );
@@ -1629,7 +1629,7 @@ idCurve_Spline::idCurve_Spline
 ////*/
 //////template< class type >
 ////ID_INLINE type idCurve_KochanekBartelsSpline<type>::GetCurrentValue( const float time ) const {
-////	int i;
+////	var i:number /*int*/;
 ////	float bvals[4], clampedTime;
 ////	type v, t0, t1;
 
@@ -1657,7 +1657,7 @@ idCurve_Spline::idCurve_Spline
 ////*/
 //////template< class type >
 ////ID_INLINE type idCurve_KochanekBartelsSpline<type>::GetCurrentFirstDerivative( const float time ) const {
-////	int i;
+////	var i:number /*int*/;
 ////	float bvals[4], d, clampedTime;
 ////	type v, t0, t1;
 
@@ -1686,7 +1686,7 @@ idCurve_Spline::idCurve_Spline
 ////*/
 //////template< class type >
 ////ID_INLINE type idCurve_KochanekBartelsSpline<type>::GetCurrentSecondDerivative( const float time ) const {
-////	int i;
+////	var i:number /*int*/;
 ////	float bvals[4], d, clampedTime;
 ////	type v, t0, t1;
 
@@ -2294,7 +2294,7 @@ idCurve_Spline::idCurve_Spline
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_NonUniformBSpline<type>::BasisFirstDerivative( const int index, const int order, const float t, float *bvals ) const {
-////	int i;
+////	var i:number /*int*/;
 
 ////	Basis( index, order-1, t, bvals+1 );
 ////	bvals[0] = 0.0;
@@ -2314,7 +2314,7 @@ idCurve_Spline::idCurve_Spline
 ////*/
 //////template< class type >
 ////ID_INLINE void idCurve_NonUniformBSpline<type>::BasisSecondDerivative( const int index, const int order, const float t, float *bvals ) const {
-////	int i;
+////	var i:number /*int*/;
 
 ////	BasisFirstDerivative( index, order-1, t, bvals+1 );
 ////	bvals[0] = 0.0;
@@ -2374,7 +2374,7 @@ idCurve_Spline::idCurve_Spline
 ////*/
 //////template< class type >
 ////ID_INLINE int idCurve_NURBS<type>::AddValue( const float time, const type &value ) {
-////	int i;
+////	var i:number /*int*/;
 
 ////	i = this.IndexForTime( time );
 ////	this.times.Insert( time, i );
@@ -2393,7 +2393,7 @@ idCurve_Spline::idCurve_Spline
 ////*/
 //////template< class type >
 ////ID_INLINE int idCurve_NURBS<type>::AddValue( const float time, const type &value, const float weight ) {
-////	int i;
+////	var i:number /*int*/;
 
 ////	i = this.IndexForTime( time );
 ////	this.times.Insert( time, i );

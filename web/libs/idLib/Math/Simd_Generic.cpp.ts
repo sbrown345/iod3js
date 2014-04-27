@@ -2316,21 +2316,21 @@ idSIMD_Generic::Zero16
 //
 //#endif
 //}
-//
-///*
-//============
-//idSIMD_Generic::BlendJoints
-//============
-//*/
-//void VPCALL idSIMD_Generic::BlendJoints( idJointQuat *joints, const idJointQuat *blendJoints, const float lerp, const int *index, const int numJoints ) {
-//	var/*int*/i:number;
-//
-//	for ( i = 0; i < numJoints; i++ ) {
-//		int j = index[i];
-//		joints[j].q.Slerp( joints[j].q, blendJoints[j].q, lerp );
-//		joints[j].t.Lerp( joints[j].t, blendJoints[j].t, lerp );
-//	}
-//}
+
+/*
+============
+idSIMD_Generic::BlendJoints
+============
+*/
+	static BlendJoints ( joints: idJointQuat[], blendJoints: idJointQuat [], /*float */lerp: number, /*int **/index: number[], /*int */numJoints: number ): void {
+		var /*int*/i: number;
+
+		for ( i = 0; i < numJoints; i++ ) {
+			var /*int */j = index[i];
+			joints[j].q.Slerp( joints[j].q, blendJoints[j].q, lerp );
+			joints[j].t.Lerp( joints[j].t, blendJoints[j].t, lerp );
+		}
+	}
 
 /*
 ============
@@ -2781,7 +2781,7 @@ idSIMD_Generic::NormalizeTangents
 			for ( var /*int */j = 0; j < 2; j++ ) {
 				var t: idVec3 = verts[i].tangents[j];
 
-				t.opSubtractionAssignment( idVec3.times( t.timesVec( v ), v ) ); //t -= ( t * v ) * v;  // todo: check precedence 
+				t.opSubtractionAssignment( idVec3.opMultiplication_float_vec3( t.timesVec( v ), v ) ); //t -= ( t * v ) * v;  // todo: check precedence 
 				f = idMath.RSqrt( t.x * t.x + t.y * t.y + t.z * t.z );
 				t.x *= f;
 				t.y *= f;

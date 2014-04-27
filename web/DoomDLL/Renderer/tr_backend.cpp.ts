@@ -629,7 +629,7 @@ function	RB_SetBuffer(/*const void **/data:any):void
 ////void RB_ShowImages(void)
 ////{
 ////#if !defined(GL_ES_VERSION_2_0)
-////	int		i;
+////	var i:number /*int*/;
 ////	idImage	*image;
 ////	float	x, y, w, h;
 ////	int		start, end;

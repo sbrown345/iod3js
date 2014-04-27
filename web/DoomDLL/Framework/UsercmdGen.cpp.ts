@@ -688,7 +688,7 @@ idUsercmdGenLocal::idUsercmdGenLocal
 //==============
 //*/
 //void idUsercmdGenLocal::CmdButtons( ) {
-//	int		i;
+//	var i:number /*int*/;
 //
 //	cmd.buttons = 0;
 //
@@ -750,7 +750,7 @@ idUsercmdGenLocal::idUsercmdGenLocal
 //*/
 //void idUsercmdGenLocal::MakeCurrent( ) {
 //	idVec3		oldAngles;
-//	int		i;
+//	var i:number /*int*/;
 //
 //	oldAngles = viewangles;
 //	

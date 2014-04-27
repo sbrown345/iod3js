@@ -548,7 +548,7 @@ idDict::Clear
 ////================
 ////*/
 ////size_t idDict::Allocated( ) const {
-////	int		i;
+////	var i:number /*int*/;
 ////	size_t	size;
 ////
 ////	size = this.args.Allocated() + this.argHash.Allocated();

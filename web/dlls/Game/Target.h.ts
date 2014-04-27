@@ -1674,7 +1674,7 @@ class idTarget_CallObjectFunction extends idTarget {
 ////================
 ////*/
 ////void idTarget_CallObjectFunction::Event_Activate( activator:idEntity ) {
-////	int					i;
+////	var i:number /*int*/;
 ////	idEntity			*ent;
 ////	const function_t	*func;
 ////	const char			*funcName;
