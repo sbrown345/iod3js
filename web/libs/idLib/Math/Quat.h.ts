@@ -177,10 +177,11 @@ class idQuat {
 		return this;
 	}
 
-////	ID_INLINE idQuat idQuat::operator+(const idQuat &a) const {
-////		return idQuat(x + a.x, y + a.y, z + a.z, this.w + a.w);
-////	}
-////
+//	ID_INLINE idQuat idQuat::operator+(const idQuat &a) const {
+	opAddition ( a: idQuat ): idQuat {
+		return new idQuat( this.x + a.x, this.y + a.y, this.z + a.z, this.w + a.w );
+	}
+
 ////	ID_INLINE idQuat& idQuat::operator+=(const idQuat &a) {
 ////		this.x += a.x;
 ////		this.y += a.y;
@@ -235,9 +236,14 @@ class idQuat {
 ////	}
 ////
 ////	ID_INLINE idQuat idQuat::operator*(float a) const {
-////		return idQuat(x * a, y * a, z * a, this.w * a);
-////	}
-////
+	opMultiplication_float ( /*float*/a: number ): idQuat {
+		return new idQuat( this.x * a, this.y * a, this.z * a, this.w * a );
+	}
+
+	static opMultiplication_float_quat ( /*float*/a: number, quat: idQuat ): idQuat {
+		return quat.opMultiplication_float( a );
+	}
+
 ////	ID_INLINE idQuat operator*(const float a, const idQuat &b) {
 ////		return b * a;
 ////	}
@@ -289,13 +295,13 @@ class idQuat {
 ////		return !Compare(a);
 ////	}
 ////
-////	ID_INLINE void idQuat::Set(float x, float y, float z, float w) {
-////		this.x = x;
-////		this.y = y;
-////		this.z = z;
-////		this.w = w;
-////	}
-////
+	Set ( /*float*/ x: number, /*float */y: number, /*float */z: number, /*float */w: number ): void {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
+	}
+
 ////	ID_INLINE idQuat idQuat::Inverse( ) const {
 ////		return idQuat(-x, -y, -z, this.w);
 ////	}
@@ -518,7 +524,7 @@ class idQuat {
 			scale1 = t;
 		}
 
-		this.opEquals( ( scale0 * from ) + ( scale1 * temp ) );
+		this.opEquals( ( idQuat.opMultiplication_float_quat( scale0, from ) ).opAddition( ( idQuat.opMultiplication_float_quat( scale1, temp ) ) ) );
 		return this;
 	}
 }

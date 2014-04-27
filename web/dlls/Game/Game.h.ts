@@ -1138,7 +1138,7 @@ which should be used by dmap and the editor
 		var i: number /*int*/;
 		var frame = new frameBlend_t;
 		var md5joints: idMD5Joint[];
-		var index: Int32Array;
+		var index: number[];
 
 		if ( !model || model.IsDefaultModel ( ) || !anim ) {
 			return;
@@ -1168,7 +1168,7 @@ which should be used by dmap and the editor
 		}
 
 		// create index for all joints
-		index = new Int32Array( numJoints ); //( int * )_alloca16( numJoints * sizeof( int ) );
+		index = Array.apply( [], new Int32Array( numJoints ) ); //( int * )_alloca16( numJoints * sizeof( int ) );
 		for ( i = 0; i < numJoints; i++ ) {
 			index[i] = i;
 		}

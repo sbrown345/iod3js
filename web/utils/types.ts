@@ -143,7 +143,7 @@ function newStructArray<T>($class: any, count: number): T[] {
     return array;
 }
 
-function new2dStructArray<T> ( $class: any, count: number, count2: number ): T[] {
+function new2dStructArray<T> ( $class: any, count: number, count2: number ): T[][] {
 	assert( $class );
 	assert( count !== undefined );
 	var array = new Array( count );
