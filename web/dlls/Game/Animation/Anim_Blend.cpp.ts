@@ -201,15 +201,15 @@ idDeclModelDef::FindJoint
 */
 	FindJoint ( name: string ): jointInfo_t {
 		var i: number /*int*/;
-		var joints: idMD5Joint[], joint: idMD5Joint;
+		var joint: arrPtr<idMD5Joint>;
 
 		if ( !this.modelHandle ) {
 			return null;
 		}
 
-		joints = this.modelHandle.GetJoints ( );
-		for ( i = 0; i < this.joints.Num ( ); i++, joint = joints[i] ) {
-			if ( !joint.name.Icmp( name ) ) {
+		joint = new arrPtr<idMD5Joint>( this.modelHandle.GetJoints ( ) );
+		for ( i = 0; i < this.joints.Num ( ); i++, joint.idx++ ) {
+			if ( !joint.$.name.Icmp( name ) ) {
 				return this.joints[i];
 			}
 		}
@@ -235,7 +235,7 @@ idDeclModelDef::GetJointList
 		var pos: number;
 		var jointname = new idStr;
 		var joint: jointInfo_t;
-		var child: jointInfo_t;
+		var child: arrPtr<jointInfo_t>;
 		var i: number /*int*/;
 		var num: number /*int*/;
 		var getChildren: boolean;
@@ -297,24 +297,24 @@ idDeclModelDef::GetJointList
 			}
 
 			if ( getChildren ) {
-				todoThrow ( );
-				//	// include all joint's children
-				//	child = joint + 1;
-				//	for( i = joint.num + 1; i < num; i++, child++ ) {
-				//		// all children of the joint should follow it in the list.
-				//		// once we reach a joint without a parent or with a parent
-				//		// who is earlier in the list than the specified joint, then
-				//		// we've gone through all it's children.
-				//		if ( child.parentNum < joint.num ) {
-				//			break;
-				//		}
+				// include all joint's children
+				child = new arrPtr<jointInfo_t>( this.joints.Ptr ( ) ); //(this.joints[ this.joints.indexOf(joint) + 1];
+				child.idx = child.arr.indexOf( joint ) + 1;
+				for ( i = joint.num + 1; i < num; i++, child.idx++ ) {
+					// all children of the joint should follow it in the list.
+					// once we reach a joint without a parent or with a parent
+					// who is earlier in the list than the specified joint, then
+					// we've gone through all it's children.
+					if ( child.$.parentNum < joint.num ) {
+						break;
+					}
 
-				//		if ( !subtract ) {
-				//			jointList.AddUnique( child.num );
-				//		} else {
-				//			jointList.Remove( child.num );
-				//		}
-				//	}
+					if ( !subtract ) {
+						jointList.AddUnique( child.$.num );
+					} else {
+						jointList.Remove( child.$.num );
+					}
+				}
 			}
 		}
 	}
@@ -590,7 +590,7 @@ Parse( text:string, /*const int */textLength :number):boolean {
 	var jointnames = new idStr;
 	var channel:number /*int*/
 	var jointnum: jointHandle_t;
-	var jointList = new idList<jointHandle_t>(jointHandle_t);
+	var jointList = new idList<jointHandle_t>(Number);
 	var numDefaultAnims:/*int*/ number;
 
 	src.LoadMemory( text, textLength, this.GetFileName(), this.GetLineNum() );

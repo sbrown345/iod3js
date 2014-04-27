@@ -737,7 +737,7 @@ Searches for the specified data in the list and returns it's index.  Returns -1 
 		var /*int */i: number;
 
 		for ( i = 0; i < this.num; i++ ) {
-			if ( this.listOfReferences ) {
+			if ( this.listOfReferences || this.type == Number ) {
 				if ( this.list[i] == obj ) {
 					return i;
 				}

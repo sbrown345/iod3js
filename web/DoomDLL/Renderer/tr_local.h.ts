@@ -1965,6 +1965,20 @@ class deformInfo_t {
 	silEdges: silEdge_t[];
 
 	dominantTris: dominantTri_t[];
+
+	memset0 ( ): void {
+		this.numSourceVerts = 0;
+		this.numOutputVerts = 0;
+		this.numMirroredVerts = 0;
+		this.mirroredVerts = null;
+		this.numIndexes = 0;
+		this.silIndexes = null;
+		this.numDupVerts = 0;
+		this.dupVerts = null;
+		this.numSilEdges = 0;
+		this.silEdges = null;
+		this.dominantTris = null;
+	}
 }
 
 

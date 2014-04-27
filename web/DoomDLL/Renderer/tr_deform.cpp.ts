@@ -123,16 +123,16 @@
 //		left = leftDir * radius;
 //		up = upDir * radius;
 //
-//		ac[i+0].xyz = mid + left + up;
+//		ac[i+0].xyz .opEquals( mid + left + up;
 //		ac[i+0].st[0] = 0;
 //		ac[i+0].st[1] = 0;
-//		ac[i+1].xyz = mid - left + up;
+//		ac[i+1].xyz .opEquals( mid - left + up;
 //		ac[i+1].st[0] = 1;
 //		ac[i+1].st[1] = 0;
-//		ac[i+2].xyz = mid - left - up;
+//		ac[i+2].xyz .opEquals( mid - left - up;
 //		ac[i+2].st[0] = 1;
 //		ac[i+2].st[1] = 1;
-//		ac[i+3].xyz = mid + left - up;
+//		ac[i+3].xyz .opEquals( mid + left - up;
 //		ac[i+3].st[0] = 0;
 //		ac[i+3].st[1] = 1;
 //
@@ -264,11 +264,11 @@
 //			minor.Normalize();
 //
 //			if ( j ) {
-//				av1.xyz = mid[j] - l * minor;
-//				av2.xyz = mid[j] + l * minor;
+//				av1.xyz .opEquals( mid[j] - l * minor;
+//				av2.xyz .opEquals( mid[j] + l * minor;
 //			} else {
-//				av1.xyz = mid[j] + l * minor;
-//				av2.xyz = mid[j] - l * minor;
+//				av1.xyz .opEquals( mid[j] + l * minor;
+//				av2.xyz .opEquals( mid[j] - l * minor;
 //			}
 //		}
 //	}

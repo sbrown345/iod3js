@@ -286,37 +286,37 @@ IsDefaultModel  (): boolean {
 AddCubeFace
 ================
 */
- AddCubeFace(tri: srfTriangles_t, v1: idVec3, v2: idVec3, v3: idVec3, v4: idVec3): void {
-	tri.verts[tri.numVerts + 0].Clear();
-	tri.verts[tri.numVerts + 0].xyz = v1.timesFloat(8);
-	tri.verts[tri.numVerts + 0].st[0] = 0;
-	tri.verts[tri.numVerts + 0].st[1] = 0;
+	AddCubeFace ( tri: srfTriangles_t, v1: idVec3, v2: idVec3, v3: idVec3, v4: idVec3 ): void {
+		tri.verts[tri.numVerts + 0].Clear ( );
+		tri.verts[tri.numVerts + 0].xyz.opEquals( v1.timesFloat( 8 ) );
+		tri.verts[tri.numVerts + 0].st[0] = 0;
+		tri.verts[tri.numVerts + 0].st[1] = 0;
 
-	tri.verts[tri.numVerts + 1].Clear();
-	tri.verts[tri.numVerts + 1].xyz = v2.timesFloat(8);
-	tri.verts[tri.numVerts + 1].st[0] = 1;
-	tri.verts[tri.numVerts + 1].st[1] = 0;
+		tri.verts[tri.numVerts + 1].Clear ( );
+		tri.verts[tri.numVerts + 1].xyz.opEquals( v2.timesFloat( 8 ) );
+		tri.verts[tri.numVerts + 1].st[0] = 1;
+		tri.verts[tri.numVerts + 1].st[1] = 0;
 
-	tri.verts[tri.numVerts + 2].Clear();
-	tri.verts[tri.numVerts + 2].xyz = v3.timesFloat(8);
-	tri.verts[tri.numVerts + 2].st[0] = 1;
-	tri.verts[tri.numVerts + 2].st[1] = 1;
+		tri.verts[tri.numVerts + 2].Clear ( );
+		tri.verts[tri.numVerts + 2].xyz.opEquals( v3.timesFloat( 8 ) );
+		tri.verts[tri.numVerts + 2].st[0] = 1;
+		tri.verts[tri.numVerts + 2].st[1] = 1;
 
-	tri.verts[tri.numVerts + 3].Clear();
-	tri.verts[tri.numVerts + 3].xyz = v4.timesFloat(8);
-	tri.verts[tri.numVerts + 3].st[0] = 0;
-	tri.verts[tri.numVerts + 3].st[1] = 1;
+		tri.verts[tri.numVerts + 3].Clear ( );
+		tri.verts[tri.numVerts + 3].xyz.opEquals( v4.timesFloat( 8 ) );
+		tri.verts[tri.numVerts + 3].st[0] = 0;
+		tri.verts[tri.numVerts + 3].st[1] = 1;
 
-	tri.indexes[tri.numIndexes + 0] = tri.numVerts + 0;
-	tri.indexes[tri.numIndexes + 1] = tri.numVerts + 1;
-	tri.indexes[tri.numIndexes + 2] = tri.numVerts + 2;
-	tri.indexes[tri.numIndexes + 3] = tri.numVerts + 0;
-	tri.indexes[tri.numIndexes + 4] = tri.numVerts + 2;
-	tri.indexes[tri.numIndexes + 5] = tri.numVerts + 3;
+		tri.indexes[tri.numIndexes + 0] = tri.numVerts + 0;
+		tri.indexes[tri.numIndexes + 1] = tri.numVerts + 1;
+		tri.indexes[tri.numIndexes + 2] = tri.numVerts + 2;
+		tri.indexes[tri.numIndexes + 3] = tri.numVerts + 0;
+		tri.indexes[tri.numIndexes + 4] = tri.numVerts + 2;
+		tri.indexes[tri.numIndexes + 5] = tri.numVerts + 3;
 
-	tri.numVerts += 4;
-	tri.numIndexes += 6;
-}
+		tri.numVerts += 4;
+		tri.numIndexes += 6;
+	}
 
 /*
 ================
@@ -1095,8 +1095,8 @@ ConvertASEToModelSurfaces(ase :aseModel_t) :boolean{
 		for (j = 0; j < tri.numVerts; j++) {
 			mv = mvTable[j];
 			tri.verts[j].Clear();
-			tri.verts[j].xyz = mesh.vertexes[mv.v];
-			tri.verts[j].normal = mv.normal;
+			tri.verts[j].xyz.opEquals( mesh.vertexes[mv.v] );
+			tri.verts[j].normal.opEquals( mv.normal );
 			tri.verts[j].color.set(mv.color);//*(unsigned *) tri.verts[j].color = * (unsigned *) mv.color;
 			if (mesh.numTVFaces == mesh.numFaces && mesh.numTVertexes != 0) {
 				var tv_ = mesh.tvertexes[mv.tv];
@@ -1943,8 +1943,8 @@ idRenderModelStatic::ConvertLWOToModelSurfaces
 ////		for ( j = 0; j < tri.numVerts; j++ ) {
 ////			mv = &mvTable[j];
 ////			tri.verts[ j ].Clear();
-////			tri.verts[ j ].xyz = mesh.vertexes[ mv.v ];
-////			tri.verts[ j ].normal = mv.normal;
+////			tri.verts[ j ].xyz .opEquals( mesh.vertexes[ mv.v ]);
+////			tri.verts[ j ].normal .opEquals( mv.normal);
 ////			*(unsigned *)tri.verts[j].color = *(unsigned *)mv.color;
 ////			if ( mesh.numTVertexes != 0 ) {
 ////				const idVec2 &tv = mesh.tvertexes[ mv.tv ];
@@ -2495,9 +2495,9 @@ idMD5Mesh::idMD5Mesh
 ////idMD5Mesh::~idMD5Mesh() {
 ////	Mem_Free16( this.scaledWeights );
 ////	Mem_Free16( this.weightIndex );
-////	if ( deformInfo ) {
-////		R_FreeDeformInfo( deformInfo );
-////		deformInfo = NULL;
+////	if ( this.deformInfo ) {
+////		R_FreeDeformInfo( this.deformInfo );
+////		this.deformInfo = NULL;
 ////	}
 ////}
 
@@ -2506,165 +2506,165 @@ idMD5Mesh::idMD5Mesh
 idMD5Mesh::ParseMesh
 ====================
 */
-	ParseMesh(parser: idLexer, /*int */numJoints: number, joints: idJointMat[]): void {
-	idToken		token;
-	idToken		name;
-	int			num;
-	int			count;
-	int			jointnum;
-	idStr		shaderName;
-	int			i, j;
-	idList<int>	tris;
-	idList<int>	firstWeightForVertex;
-	idList<int>	numWeightsForVertex;
-	int			maxweight;
-	idList<vertexWeight_t> tempWeights;
+	ParseMesh ( parser: idLexer, /*int */numJoints: number, joints: idJointMat[] ): void {
+		var token = new idToken;
+		var name = new idToken;
+		var num: number /*int*/;
+		var count: number /*int*/;
+		var jointnum: number /*int*/;
+		var shaderName = new idStr;
+		var i: number /*int*/, j: number /*int*/;
+		var tris = new idList< /*int*/number>( Number );
+		var firstWeightForVertex = new idList< /*int*/number>( Number );
+		var numWeightsForVertex = new idList< /*int*/number>( Number );
+		var maxweight: number /*int*/;
+		var tempWeights = new idList< /*int*/vertexWeight_t>( vertexWeight_t );
 
-	parser.ExpectTokenString( "{" );
+		parser.ExpectTokenString( "{" );
 
-	//
-	// parse name
-	//
-	if ( parser.CheckTokenString( "name" ) ) {
-		parser.ReadToken( &name );
-	}
-
-	//
-	// parse shader
-	//
-	parser.ExpectTokenString( "shader" );
-
-	parser.ReadToken( &token );
-	shaderName = token;
-
-    shader = declManager.FindMaterial( shaderName );
-
-	//
-	// parse texture coordinates
-	//
-	parser.ExpectTokenString( "numverts" );
-	count = parser.ParseInt();
-	if ( count < 0 ) {
-		parser.Error( "Invalid size: %s", token.c_str() );
-	}
-
-	this.texCoords.SetNum( count );
-	firstWeightForVertex.SetNum( count );
-	numWeightsForVertex.SetNum( count );
-
-	this.numWeights = 0;
-	maxweight = 0;
-	for( i = 0; i < this.texCoords.Num(); i++ ) {
-		parser.ExpectTokenString( "vert" );
-		parser.ParseInt();
-
-		parser.Parse1DMatrix( 2, this.texCoords[ i ].ToFloatPtr() );
-
-		firstWeightForVertex[ i ]	= parser.ParseInt();
-		numWeightsForVertex[ i ]	= parser.ParseInt();
-
-		if ( !numWeightsForVertex[ i ] ) {
-			parser.Error( "Vertex without any joint weights." );
+		//
+		// parse name
+		//
+		if ( parser.CheckTokenString( "name" ) ) {
+			parser.ReadToken( name );
 		}
 
-		this.numWeights += numWeightsForVertex[ i ];
-		if ( numWeightsForVertex[ i ] + firstWeightForVertex[ i ] > maxweight ) {
-			maxweight = numWeightsForVertex[ i ] + firstWeightForVertex[ i ];
-		}
-	}
+		//
+		// parse shader
+		//
+		parser.ExpectTokenString( "shader" );
 
-	//
-	// parse tris
-	//
-	parser.ExpectTokenString( "numtris" );
-	count = parser.ParseInt();
-	if ( count < 0 ) {
-		parser.Error( "Invalid size: %d", count );
-	}
+		parser.ReadToken( token );
+		shaderName.opEquals( token );
 
-	tris.SetNum( count * 3 );
-	this.numTris = count;
-	for( i = 0; i < count; i++ ) {
-		parser.ExpectTokenString( "tri" );
-		parser.ParseInt();
+		this.shader = declManager.FindMaterial( shaderName.data );
 
-		tris[ i * 3 + 0 ] = parser.ParseInt();
-		tris[ i * 3 + 1 ] = parser.ParseInt();
-		tris[ i * 3 + 2 ] = parser.ParseInt();
-	}
-
-	//
-	// parse weights
-	//
-	parser.ExpectTokenString( "numweights" );
-	count = parser.ParseInt();
-	if ( count < 0 ) {
-		parser.Error( "Invalid size: %d", count );
-	}
-
-	if ( maxweight > count ) {
-		parser.Warning( "Vertices reference out of range weights in model (%d of %d weights).", maxweight, count );
-	}
-
-	tempWeights.SetNum( count );
-
-	for( i = 0; i < count; i++ ) {
-		parser.ExpectTokenString( "weight" );
-		parser.ParseInt();
-
-		jointnum = parser.ParseInt();
-		if ( ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
-			parser.Error( "Joint Index out of range(%d): %d", numJoints, jointnum );
+		//
+		// parse texture coordinates
+		//
+		parser.ExpectTokenString( "numverts" );
+		count = parser.ParseInt ( );
+		if ( count < 0 ) {
+			parser.Error( "Invalid size: %s", token.c_str ( ) );
 		}
 
-		tempWeights[ i ].joint			= jointnum;
-		tempWeights[ i ].jointWeight	= parser.ParseFloat();
+		this.texCoords.SetNum( count );
+		firstWeightForVertex.SetNum( count );
+		numWeightsForVertex.SetNum( count );
 
-		parser.Parse1DMatrix( 3, tempWeights[ i ].offset.ToFloatPtr() );
-	}
+		this.numWeights = 0;
+		maxweight = 0;
+		for ( i = 0; i < this.texCoords.Num ( ); i++ ) {
+			parser.ExpectTokenString( "vert" );
+			parser.ParseInt ( );
 
-	// create pre-scaled weights and an index for the vertex/joint lookup
-	this.scaledWeights = (idVec4 *) Mem_Alloc16( this.numWeights * sizeof( this.scaledWeights[0] ) );
-	this.weightIndex = (int *) Mem_Alloc16( this.numWeights * 2 * sizeof( this.weightIndex[0] ) );
-	memset( this.weightIndex, 0, this.numWeights * 2 * sizeof( this.weightIndex[0] ) );
+			parser.Parse1DMatrix( 2, this.texCoords[i].ToFloatPtr ( ) );
 
-	count = 0;
-	for( i = 0; i < this.texCoords.Num(); i++ ) {
-		num = firstWeightForVertex[i];
-		for( j = 0; j < numWeightsForVertex[i]; j++, num++, count++ ) {
-			this.scaledWeights[count].ToVec3() = tempWeights[num].offset * tempWeights[num].jointWeight;
-			this.scaledWeights[count].w = tempWeights[num].jointWeight;
-			this.weightIndex[count * 2 + 0] = tempWeights[num].joint * sizeof( idJointMat );
+			firstWeightForVertex[i] = parser.ParseInt ( );
+			numWeightsForVertex[i] = parser.ParseInt ( );
+
+			if ( !numWeightsForVertex[i] ) {
+				parser.Error( "Vertex without any joint weights." );
+			}
+
+			this.numWeights += numWeightsForVertex[i];
+			if ( numWeightsForVertex[i] + firstWeightForVertex[i] > maxweight ) {
+				maxweight = numWeightsForVertex[i] + firstWeightForVertex[i];
+			}
 		}
-		this.weightIndex[count * 2 - 1] = 1;
+
+		//
+		// parse tris
+		//
+		parser.ExpectTokenString( "numtris" );
+		count = parser.ParseInt ( );
+		if ( count < 0 ) {
+			parser.Error( "Invalid size: %d", count );
+		}
+
+		tris.SetNum( count * 3 );
+		this.numTris = count;
+		for ( i = 0; i < count; i++ ) {
+			parser.ExpectTokenString( "tri" );
+			parser.ParseInt ( );
+
+			tris[i * 3 + 0] = parser.ParseInt ( );
+			tris[i * 3 + 1] = parser.ParseInt ( );
+			tris[i * 3 + 2] = parser.ParseInt ( );
+		}
+
+		//
+		// parse weights
+		//
+		parser.ExpectTokenString( "numweights" );
+		count = parser.ParseInt ( );
+		if ( count < 0 ) {
+			parser.Error( "Invalid size: %d", count );
+		}
+
+		if ( maxweight > count ) {
+			parser.Warning( "Vertices reference out of range weights in model (%d of %d weights).", maxweight, count );
+		}
+
+		tempWeights.SetNum( count );
+
+		for ( i = 0; i < count; i++ ) {
+			parser.ExpectTokenString( "weight" );
+			parser.ParseInt ( );
+
+			jointnum = parser.ParseInt ( );
+			if ( ( jointnum < 0 ) || ( jointnum >= numJoints ) ) {
+				parser.Error( "Joint Index out of range(%d): %d", numJoints, jointnum );
+			}
+
+			tempWeights[i].joint = jointnum;
+			tempWeights[i].jointWeight = parser.ParseFloat ( );
+
+			parser.Parse1DMatrix( 3, tempWeights[i].offset.ToFloatPtr ( ) );
+		}
+
+		// create pre-scaled weights and an index for the vertex/joint lookup
+		this.scaledWeights = newStructArray<idVec4>( idVec4, this.numWeights );
+		this.weightIndex = new Int32Array( this.numWeights * 2 ); // (int *) Mem_Alloc16( this.numWeights * 2 * sizeof( this.weightIndex[0] ) );
+		memset( this.weightIndex, 0, this.numWeights * 2 * 4/*sizeof( this.weightIndex[0] )*/ );
+
+		count = 0;
+		for ( i = 0; i < this.texCoords.Num ( ); i++ ) {
+			num = firstWeightForVertex[i];
+			for ( j = 0; j < numWeightsForVertex[i]; j++, num++, count++ ) {
+				this.scaledWeights[count].ToVec3 ( ).opEquals( tempWeights[num].offset.timesFloat( tempWeights[num].jointWeight ) );
+				this.scaledWeights[count].w = tempWeights[num].jointWeight;
+				this.weightIndex[count * 2 + 0] = tempWeights[num].joint * sizeof( idJointMat );
+			}
+			this.weightIndex[count * 2 - 1] = 1;
+		}
+
+		tempWeights.Clear ( );
+		numWeightsForVertex.Clear ( );
+		firstWeightForVertex.Clear ( );
+
+		parser.ExpectTokenString( "}" );
+
+		// update counters
+		c_numVerts += this.texCoords.Num ( );
+		c_numWeights += this.numWeights;
+		c_numWeightJoints++;
+		for ( i = 0; i < this.numWeights; i++ ) {
+			c_numWeightJoints += this.weightIndex[i * 2 + 1];
+		}
+
+		//
+		// build the information that will be common to all animations of this mesh:
+		// silhouette edge connectivity and normal / tangent generation information
+		//
+		var verts = newStructArray<idDrawVert>( idDrawVert, this.texCoords.Num ( ) ); //(idDrawVert *) _alloca16( this.texCoords.Num() * sizeof( idDrawVert ) );
+		for ( i = 0; i < this.texCoords.Num ( ); i++ ) {
+			verts[i].Clear ( );
+			verts[i].st = this.texCoords[i];
+		}
+		this.TransformVerts( verts, joints );
+		this.deformInfo = R_BuildDeformInfo( this.texCoords.Num ( ), verts, tris.Num ( ), tris.Ptr ( ), this.shader.UseUnsmoothedTangents ( ) );
 	}
-
-	tempWeights.Clear();
-	numWeightsForVertex.Clear();
-	firstWeightForVertex.Clear();
-
-	parser.ExpectTokenString( "}" );
-
-	// update counters
-	c_numVerts += this.texCoords.Num();
-	c_numWeights += this.numWeights;
-	c_numWeightJoints++;
-	for ( i = 0; i < this.numWeights; i++ ) {
-		c_numWeightJoints += this.weightIndex[i*2+1];
-	}
-
-	//
-	// build the information that will be common to all animations of this mesh:
-	// silhouette edge connectivity and normal / tangent generation information
-	//
-	idDrawVert *verts = (idDrawVert *) _alloca16( this.texCoords.Num() * sizeof( idDrawVert ) );
-	for ( i = 0; i < this.texCoords.Num(); i++ ) {
-		verts[i].Clear();
-		verts[i].st = this.texCoords[i];
-	}
-	this.TransformVerts( verts, joints );
-	deformInfo = R_BuildDeformInfo( this.texCoords.Num(), verts, tris.Num(), tris.Ptr(), shader.UseUnsmoothedTangents() );
-}
 
 /*
 ====================
@@ -2698,15 +2698,15 @@ idMD5Mesh::TransformVerts
 ////	srfTriangles_t *tri;
 
 ////	tr.pc.c_deformedSurfaces++;
-////	tr.pc.c_deformedVerts += deformInfo.numOutputVerts;
-////	tr.pc.c_deformedIndexes += deformInfo.numIndexes;
+////	tr.pc.c_deformedVerts += this.deformInfo.numOutputVerts;
+////	tr.pc.c_deformedIndexes += this.deformInfo.numIndexes;
 
-////	surf.shader = shader;
+////	surf.shader = this.shader;
 
 ////	if ( surf.geometry ) {
 ////		// if the number of verts and indexes are the same we can re-use the triangle surface
 ////		// the number of indexes must be the same to assure the correct amount of memory is allocated for the facePlanes
-////		if ( surf.geometry.numVerts == deformInfo.numOutputVerts && surf.geometry.numIndexes == deformInfo.numIndexes ) {
+////		if ( surf.geometry.numVerts == this.deformInfo.numOutputVerts && surf.geometry.numIndexes == this.deformInfo.numIndexes ) {
 ////			R_FreeStaticTriSurfVertexCaches( surf.geometry );
 ////		} else {
 ////			R_FreeStaticTriSurf( surf.geometry );
@@ -2723,21 +2723,21 @@ idMD5Mesh::TransformVerts
 ////	tri.tangentsCalculated = false;
 ////	tri.facePlanesCalculated = false;
 
-////	tri.numIndexes = deformInfo.numIndexes;
-////	tri.indexes = deformInfo.indexes;
-////	tri.silIndexes = deformInfo.silIndexes;
-////	tri.numMirroredVerts = deformInfo.numMirroredVerts;
-////	tri.mirroredVerts = deformInfo.mirroredVerts;
-////	tri.numDupVerts = deformInfo.numDupVerts;
-////	tri.dupVerts = deformInfo.dupVerts;
-////	tri.numSilEdges = deformInfo.numSilEdges;
-////	tri.silEdges = deformInfo.silEdges;
-////	tri.dominantTris = deformInfo.dominantTris;
-////	tri.numVerts = deformInfo.numOutputVerts;
+////	tri.numIndexes = this.deformInfo.numIndexes;
+////	tri.indexes = this.deformInfo.indexes;
+////	tri.silIndexes = this.deformInfo.silIndexes;
+////	tri.numMirroredVerts = this.deformInfo.numMirroredVerts;
+////	tri.mirroredVerts = this.deformInfo.mirroredVerts;
+////	tri.numDupVerts = this.deformInfo.numDupVerts;
+////	tri.dupVerts = this.deformInfo.dupVerts;
+////	tri.numSilEdges = this.deformInfo.numSilEdges;
+////	tri.silEdges = this.deformInfo.silEdges;
+////	tri.dominantTris = this.deformInfo.dominantTris;
+////	tri.numVerts = this.deformInfo.numOutputVerts;
 
 ////	if ( tri.verts == NULL ) {
 ////		R_AllocStaticTriSurfVerts( tri, tri.numVerts );
-////		for ( i = 0; i < deformInfo.numSourceVerts; i++ ) {
+////		for ( i = 0; i < this.deformInfo.numSourceVerts; i++ ) {
 ////			tri.verts[i].Clear();
 ////			tri.verts[i].st = this.texCoords[i];
 ////		}
@@ -2750,9 +2750,9 @@ idMD5Mesh::TransformVerts
 ////	}
 
 ////	// replicate the mirror seam vertexes
-////	base = deformInfo.numOutputVerts - deformInfo.numMirroredVerts;
-////	for ( i = 0; i < deformInfo.numMirroredVerts; i++ ) {
-////		tri.verts[base + i] = tri.verts[deformInfo.mirroredVerts[i]];
+////	base = this.deformInfo.numOutputVerts - this.deformInfo.numMirroredVerts;
+////	for ( i = 0; i < this.deformInfo.numMirroredVerts; i++ ) {
+////		tri.verts[base + i] = tri.verts[this.deformInfo.mirroredVerts[i]];
 ////	}
 
 ////	R_BoundTriSurf( tri );
@@ -3813,33 +3813,33 @@ class idRenderModelLiquid extends idRenderModelStatic {
 ////	void						WaterDrop( int x, int y, float *page );
 ////	void						Update( void );
 						
-////	int							verts_x;
-////	int							verts_y;
-////	float						scale_x;
-////	float						scale_y;
-////	int							time;
-////	int							liquid_type;
-////	int							update_tics;
-////	int							seed;
-
-////	idRandom					random;
+	verts_x :number/*int*/;
+	verts_y :number/*int*/;
+	scale_x :number/*float*/;
+	scale_y :number/*float*/;
+	time :number/*int*/;
+	liquid_type :number/*int*/;
+	update_tics :number/*int*/;
+	seed :number/*int*/;
+	
+	random = new idRandom;
 						
-////	const idMaterial *			shader;
-////	struct deformInfo_s	*		deformInfo;		// used to create srfTriangles_t from base frames
-////											// and new vertexes
+	shader:idMaterial;
+	deformInfo:deformInfo_t;		// used to create srfTriangles_t from base frames
+									// and new vertexes
 						
-////	float						density;
-////	float						drop_height;
-////	int							drop_radius;
-////	float						drop_delay;
-
-////	idList<float>				pages;
-////	float *						page1;
-////	float *						page2;
-
-////	idList<idDrawVert>			verts;
-
-////	int							nextDropTime;
+	density:number/*float*/;
+	drop_height:number/*float*/;
+	drop_radius :number/*int*/;
+	drop_delay:number/*float*/;
+	
+	pages = new idList</*float*/number>(Number);	
+	page1:Float32Array;
+	page2:Float32Array;
+	
+	verts = new 	idList<idDrawVert>(idDrawVert);
+	
+	nextDropTime :number/*int*/;
 
 
 	/////*
@@ -3884,33 +3884,33 @@ class idRenderModelLiquid extends idRenderModelStatic {
 	////	}
 
 	////	tr.pc.c_deformedSurfaces++;
-	////	tr.pc.c_deformedVerts += deformInfo.numOutputVerts;
-	////	tr.pc.c_deformedIndexes += deformInfo.numIndexes;
+	////	tr.pc.c_deformedVerts += this.deformInfo.numOutputVerts;
+	////	tr.pc.c_deformedIndexes += this.deformInfo.numIndexes;
 
 	////	tri = R_AllocStaticTriSurf();
 
 	////	// note that some of the data is references, and should not be freed
 	////	tri.deformedSurface = true;
 
-	////	tri.numIndexes = deformInfo.numIndexes;
-	////	tri.indexes = deformInfo.indexes;
-	////	tri.silIndexes = deformInfo.silIndexes;
-	////	tri.numMirroredVerts = deformInfo.numMirroredVerts;
-	////	tri.mirroredVerts = deformInfo.mirroredVerts;
-	////	tri.numDupVerts = deformInfo.numDupVerts;
-	////	tri.dupVerts = deformInfo.dupVerts;
-	////	tri.numSilEdges = deformInfo.numSilEdges;
-	////	tri.silEdges = deformInfo.silEdges;
-	////	tri.dominantTris = deformInfo.dominantTris;
+	////	tri.numIndexes = this.deformInfo.numIndexes;
+	////	tri.indexes = this.deformInfo.indexes;
+	////	tri.silIndexes = this.deformInfo.silIndexes;
+	////	tri.numMirroredVerts = this.deformInfo.numMirroredVerts;
+	////	tri.mirroredVerts = this.deformInfo.mirroredVerts;
+	////	tri.numDupVerts = this.deformInfo.numDupVerts;
+	////	tri.dupVerts = this.deformInfo.dupVerts;
+	////	tri.numSilEdges = this.deformInfo.numSilEdges;
+	////	tri.silEdges = this.deformInfo.silEdges;
+	////	tri.dominantTris = this.deformInfo.dominantTris;
 
-	////	tri.numVerts = deformInfo.numOutputVerts;
+	////	tri.numVerts = this.deformInfo.numOutputVerts;
 	////	R_AllocStaticTriSurfVerts( tri, tri.numVerts );
-	////	SIMDProcessor.Memcpy( tri.verts, verts.Ptr(), deformInfo.numSourceVerts * sizeof(tri.verts[0]) );
+	////	SIMDProcessor.Memcpy( tri.verts, verts.Ptr(), this.deformInfo.numSourceVerts * sizeof(tri.verts[0]) );
 
 	////	// replicate the mirror seam vertexes
-	////	base = deformInfo.numOutputVerts - deformInfo.numMirroredVerts;
-	////	for ( i = 0 ; i < deformInfo.numMirroredVerts ; i++ ) {
-	////		tri.verts[base + i] = tri.verts[deformInfo.mirroredVerts[i]];
+	////	base = this.deformInfo.numOutputVerts - this.deformInfo.numMirroredVerts;
+	////	for ( i = 0 ; i < this.deformInfo.numMirroredVerts ; i++ ) {
+	////		tri.verts[base + i] = tri.verts[this.deformInfo.mirroredVerts[i]];
 	////	}
 
 	////	R_BoundTriSurf( tri );
@@ -4257,7 +4257,7 @@ class idRenderModelLiquid extends idRenderModelStatic {
 
 		////	// build the information that will be common to all animations of this mesh:
 		////	// sil edge connectivity and normal / tangent generation information
-		////	deformInfo = R_BuildDeformInfo( verts.Num(), verts.Ptr(), tris.Num(), tris.Ptr(), true );
+		////	this.deformInfo = R_BuildDeformInfo( verts.Num(), verts.Ptr(), tris.Num(), tris.Ptr(), true );
 
 		////	this.bounds.Clear();
 		////	this.bounds.AddPoint( idVec3( 0.0, 0.0, drop_height * -10.0f ) );
@@ -4285,7 +4285,7 @@ class idRenderModelLiquid extends idRenderModelStatic {
 ////		cachedModel = NULL;
 ////	}
 
-////	if ( !deformInfo ) {
+////	if ( !this.deformInfo ) {
 ////		return NULL;
 ////	}
 
@@ -4757,25 +4757,25 @@ idRenderModelBeam::IsLoaded
 ////	int blue	= idMath.FtoiFast( renderEntity.shaderParms[SHADERPARM_BLUE] * 255.0f );
 ////	int alpha	= idMath.FtoiFast( renderEntity.shaderParms[SHADERPARM_ALPHA] * 255.0f );
 
-////	tri.verts[0].xyz = minor;
+////	tri.verts[0].xyz.opEquals( minor);
 ////	tri.verts[0].color[0] = red;
 ////	tri.verts[0].color[1] = green;
 ////	tri.verts[0].color[2] = blue;
 ////	tri.verts[0].color[3] = alpha;
 
-////	tri.verts[1].xyz = -minor;
+////	tri.verts[1].xyz .opEquals( -minor;
 ////	tri.verts[1].color[0] = red;
 ////	tri.verts[1].color[1] = green;
 ////	tri.verts[1].color[2] = blue;
 ////	tri.verts[1].color[3] = alpha;
 
-////	tri.verts[2].xyz = localTarget + minor;
+////	tri.verts[2].xyz .opEquals(localTarget + minor;
 ////	tri.verts[2].color[0] = red;
 ////	tri.verts[2].color[1] = green;
 ////	tri.verts[2].color[2] = blue;
 ////	tri.verts[2].color[3] = alpha;
 
-////	tri.verts[3].xyz = localTarget - minor;
+////	tri.verts[3].xyz .opEquals( localTarget - minor;
 ////	tri.verts[3].color[0] = red;
 ////	tri.verts[3].color[1] = green;
 ////	tri.verts[3].color[2] = blue;
@@ -5001,25 +5001,25 @@ class idRenderModelSprite extends idRenderModelStatic {
 	////	idVec3 right	= idVec3( 0.0, renderEntity.shaderParms[ SHADERPARM_SPRITE_WIDTH ] * 0.5f, 0.0 );
 	////	idVec3 up		= idVec3( 0.0, 0.0, renderEntity.shaderParms[ SHADERPARM_SPRITE_HEIGHT ] * 0.5f );
 
-	////	tri.verts[ 0 ].xyz = up + right;
+	////	tri.verts[ 0 ].xyz .opEquals( up + right;
 	////	tri.verts[ 0 ].color[ 0 ] = red;
 	////	tri.verts[ 0 ].color[ 1 ] = green;
 	////	tri.verts[ 0 ].color[ 2 ] = blue;
 	////	tri.verts[ 0 ].color[ 3 ] = alpha;
 
-	////	tri.verts[ 1 ].xyz = up - right;
+	////	tri.verts[ 1 ].xyz .opEquals( up - right;
 	////	tri.verts[ 1 ].color[ 0 ] = red;
 	////	tri.verts[ 1 ].color[ 1 ] = green;
 	////	tri.verts[ 1 ].color[ 2 ] = blue;
 	////	tri.verts[ 1 ].color[ 3 ] = alpha;
 
-	////	tri.verts[ 2 ].xyz = - right - up;
+	////	tri.verts[ 2 ].xyz .opEquals( - right - up;
 	////	tri.verts[ 2 ].color[ 0 ] = red;
 	////	tri.verts[ 2 ].color[ 1 ] = green;
 	////	tri.verts[ 2 ].color[ 2 ] = blue;
 	////	tri.verts[ 2 ].color[ 3 ] = alpha;
 
-	////	tri.verts[ 3 ].xyz = right - up;
+	////	tri.verts[ 3 ].xyz .opEquals( right - up;
 	////	tri.verts[ 3 ].color[ 0 ] = red;
 	////	tri.verts[ 3 ].color[ 1 ] = green;
 	////	tri.verts[ 3 ].color[ 2 ] = blue;

@@ -233,7 +233,7 @@
 ////			}
 ////			fade = 1.0f - fade;
 ////			vertDepthFade[tri.numVerts + i] = fade;
-////			tri.verts[tri.numVerts + i].xyz = w[i].ToVec3();
+////			tri.verts[tri.numVerts + i].xyz .opEquals( w[i].ToVec3();
 ////			tri.verts[tri.numVerts + i].st[0] = w[i].s;
 ////			tri.verts[tri.numVerts + i].st[1] = w[i].t;
 ////			for ( int k = 0 ; k < 4 ; k++ ) {

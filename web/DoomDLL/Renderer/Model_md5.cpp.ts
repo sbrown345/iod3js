@@ -45,9 +45,9 @@ var c_numVerts = 0;
 var c_numWeights = 0;
 var c_numWeightJoints = 0;
 
-////typedef struct vertexWeight_s {
-////	int							vert;
-////	int							joint;
-////	idVec3						offset;
-////	float						jointWeight;
-////} vertexWeight_t;
+class vertexWeight_t {
+	vert :number/*int*/;
+	joint :number/*int*/;
+	offset = new idVec3;
+	jointWeight :number/*float*/;
+}

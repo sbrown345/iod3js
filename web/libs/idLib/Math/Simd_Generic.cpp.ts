@@ -2392,22 +2392,21 @@ idSIMD_Generic::TransformJoints
 idSIMD_Generic::TransformVerts
 ============
 */
-	static TransformVerts(verts: idDrawVert[], /*int */numVerts: number, joints: idJointMat[], weights: idVec4 [], /*const int **/index:Float32Array, /*int */numWeights :number):void {
-	var /*int */i:number, j:number;
-	//var const byte *jointsPtr = (byte *)joints;
-		todoThrow ( );
-		//for( j = i = 0; i < numVerts; i++ ) {
-		//	idVec3 v;
+	static TransformVerts ( verts: idDrawVert[], /*int */numVerts: number, joints: idJointMat[], weights: idVec4 [], /*const int **/index: Float32Array, /*int */numWeights: number ): void {
+		var /*int */i: number, j: number;
+		var jointsPtr = joints;
+		var v = new idVec3;
+		for ( j = i = 0; i < numVerts; i++ ) {
 
-		//	v = ( *(idJointMat *) ( jointsPtr + index[j*2+0] ) ) * weights[j];
-		//	while( index[j*2+1] == 0 ) {
-		//		j++;
-		//		v += ( *(idJointMat *) ( jointsPtr + index[j*2+0] ) ) * weights[j];
-		//	}
-		//	j++;
+			v.opEquals( jointsPtr[index[j * 2 + 0] / idJointMat.size].opMultiplication_vec4( weights[j] ) );
+			while ( index[j * 2 + 1] == 0 ) {
+				j++;
+				v.opAdditionAssignment( jointsPtr[index[j * 2 + 0] / idJointMat.size].opMultiplication_vec4( weights[j] ) );
+			}
+			j++;
 
-		//	verts[i].xyz = v;
-		//}
+			verts[i].xyz.opEquals( v );
+		}
 	}
 
 ///*

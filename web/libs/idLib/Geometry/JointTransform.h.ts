@@ -61,6 +61,7 @@ class idJointQuat {
 //*/
 //
 class idJointMat {
+	static size = 48;
 	//public:
 	//
 	//	void			SetRotation( const idMat3 &m );
@@ -113,11 +114,12 @@ class idJointMat {
 	//}
 	//
 	//ID_INLINE idVec3 idJointMat::operator*( const idVec4 &v ) const {
-	//	return idVec3(	this.mat[0 * 4 + 0] * v[0] + this.mat[0 * 4 + 1] * v[1] + this.mat[0 * 4 + 2] * v[2] + this.mat[0 * 4 + 3] * v[3],
-	//					this.mat[1 * 4 + 0] * v[0] + this.mat[1 * 4 + 1] * v[1] + this.mat[1 * 4 + 2] * v[2] + this.mat[1 * 4 + 3] * v[3],
-	//					this.mat[2 * 4 + 0] * v[0] + this.mat[2 * 4 + 1] * v[1] + this.mat[2 * 4 + 2] * v[2] + this.mat[2 * 4 + 3] * v[3] );
-	//}
-	//
+	opMultiplication_vec4 ( v: idVec4 ): idVec3 {
+		return new idVec3( this.mat[0 * 4 + 0] * v[0] + this.mat[0 * 4 + 1] * v[1] + this.mat[0 * 4 + 2] * v[2] + this.mat[0 * 4 + 3] * v[3],
+			this.mat[1 * 4 + 0] * v[0] + this.mat[1 * 4 + 1] * v[1] + this.mat[1 * 4 + 2] * v[2] + this.mat[1 * 4 + 3] * v[3],
+			this.mat[2 * 4 + 0] * v[0] + this.mat[2 * 4 + 1] * v[1] + this.mat[2 * 4 + 2] * v[2] + this.mat[2 * 4 + 3] * v[3] );
+	}
+
 	//ID_INLINE idJointMat &idJointMat::operator*=( const idJointMat &a ) {
 	opMultiplicationAssignment ( a: idJointMat ): idJointMat {
 		var dst = new Float32Array( 3 );
