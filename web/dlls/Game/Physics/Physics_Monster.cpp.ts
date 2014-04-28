@@ -591,9 +591,9 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//		this.current.origin = masterOrigin + this.current.localOrigin * masterAxis;
 	//		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() );
 	//		this.current.velocity = ( this.current.origin - oldOrigin ) / timeStep;
-	//		masterDeltaYaw = masterYaw;
-	//		masterYaw = masterAxis[0].ToYaw();
-	//		masterDeltaYaw = masterYaw - masterDeltaYaw;
+	//		masterDeltaYaw = this.masterYaw;
+	//		this.masterYaw = masterAxis[0].ToYaw();
+	//		masterDeltaYaw = this.masterYaw - masterDeltaYaw;
 	//		return true;
 	//	}
 	//
@@ -864,29 +864,27 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//  the binding is never orientated
 	//================
 	//*/
-	SetMaster(master: idEntity, orientated: boolean = true) {
-		todoThrow();
-	//	idVec3 masterOrigin;
-	//	idMat3 masterAxis;
-	//
-	//	if ( master ) {
-	//		if ( !this.masterEntity ) {
-	//			// transform from world space to master space
-	//			this.self.GetMasterPosition( masterOrigin, masterAxis );
-	//			this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
-	//			this.masterEntity = master;
-	//			masterYaw = masterAxis[0].ToYaw();
-	//		}
-	//		ClearContacts();
-	//	}
-	//	else {
-	//		if ( this.masterEntity ) {
-	//			this.masterEntity = NULL;
-	//			this.Activate();
-	//		}
-	//	}
+	SetMaster ( master: idEntity, orientated: boolean = true ) {
+		var masterOrigin = new idVec3;
+		var masterAxis = new idMat3;
+
+		if ( master ) {
+			if ( !this.masterEntity ) {
+				// transform from world space to master space
+				this.self.GetMasterPosition( masterOrigin, masterAxis );
+				this.current.localOrigin.opEquals( idMat3.opMultiplication_VecMat( this.current.origin.opSubtraction( masterOrigin ), masterAxis.Transpose ( ) ) );
+				this.masterEntity = master;
+				this.masterYaw = masterAxis[0].ToYaw ( );
+			}
+			this.ClearContacts ( );
+		} else {
+			if ( this.masterEntity ) {
+				this.masterEntity = null;
+				this.Activate ( );
+			}
+		}
 	}
-	//
+	
 	//const float	MONSTER_VELOCITY_MAX			= 4000;
 	//const int	MONSTER_VELOCITY_TOTAL_BITS		= 16;
 	//const int	MONSTER_VELOCITY_EXPONENT_BITS	= idMath::BitsForInteger( idMath::BitsForFloat( MONSTER_VELOCITY_MAX ) ) + 1;

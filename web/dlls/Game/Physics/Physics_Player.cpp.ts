@@ -287,7 +287,7 @@ class idPhysics_Player extends idPhysics_Actor {
 ////		return 0.0;
 ////	}
 ////
-////	total = idMath::Sqrt( (float) forwardmove * forwardmove + rightmove * rightmove + upmove * upmove );
+////	total = idMath.Sqrt( (float) forwardmove * forwardmove + rightmove * rightmove + upmove * upmove );
 ////	scale = (float) playerSpeed * max / ( 127.0 * total );
 ////
 ////	return scale;
@@ -472,7 +472,7 @@ Returns true if the velocity was clipped in some way
 ////
 ////			if ( totalMass > 0.0 ) {
 ////				// decrease velocity based on the total mass of the objects being pushed ?
-////				this.current.velocity *= 1.0 - idMath::ClampFloat( 0.0, 1000.0, totalMass - 20.0 ) * ( 1.0 / 950.0 );
+////				this.current.velocity *= 1.0 - idMath.ClampFloat( 0.0, 1000.0, totalMass - 20.0 ) * ( 1.0 / 950.0 );
 ////				pushed = true;
 ////			}
 ////	
@@ -906,7 +906,7 @@ Returns true if the velocity was clipped in some way
 ////			oldVel = oldVelocity.LengthSqr();
 ////			if ( oldVel > 1.0 ) {
 ////				// don't decrease velocity when going up or down a slope
-////				this.current.velocity *= idMath::Sqrt( oldVel / newVel );
+////				this.current.velocity *= idMath.Sqrt( oldVel / newVel );
 ////			}
 ////		}
 ////	}
@@ -1381,7 +1381,7 @@ Returns true if the velocity was clipped in some way
 ////	this.current.movementFlags |= PMF_JUMP_HELD | PMF_JUMPED;
 ////
 ////	addVelocity = 2.0 * maxJumpHeight * -gravityVector;
-////	addVelocity *= idMath::Sqrt( addVelocity.Normalize() );
+////	addVelocity *= idMath.Sqrt( addVelocity.Normalize() );
 ////	this.current.velocity += addVelocity;
 ////
 ////	return true;
@@ -1908,9 +1908,9 @@ idPhysics_Player::idPhysics_Player
 ////		this.current.origin = masterOrigin + this.current.localOrigin * masterAxis;
 ////		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() );
 ////		this.current.velocity = ( this.current.origin - oldOrigin ) / ( timeStepMSec * 0.001f );
-////		masterDeltaYaw = masterYaw;
-////		masterYaw = masterAxis[0].ToYaw();
-////		masterDeltaYaw = masterYaw - masterDeltaYaw;
+////		masterDeltaYaw = this.masterYaw;
+////		this.masterYaw = masterAxis[0].ToYaw();
+////		masterDeltaYaw = this.masterYaw - masterDeltaYaw;
 ////		return true;
 ////	}
 ////
@@ -2109,7 +2109,7 @@ idPhysics_Player::Translate
 ////	float d;
 ////
 ////	// velocity with which the player is pushed
-////	velocity = ( this.current.origin - saved.origin ) / ( deltaTime * idMath::M_MS2SEC );
+////	velocity = ( this.current.origin - saved.origin ) / ( deltaTime * idMath.M_MS2SEC );
 ////
 ////	// remove any downward push velocity
 ////	d = velocity * gravityNormal;
@@ -2146,33 +2146,31 @@ idPhysics_Player::SetMaster
 ================
 */
 	SetMaster ( master: idEntity, orientated: boolean = true ) {
-		todoThrow ( );
-////	idVec3 masterOrigin;
-////	idMat3 masterAxis;
-////
-////	if ( master ) {
-////		if ( !this.masterEntity ) {
-////			// transform from world space to master space
-////			this.self.GetMasterPosition( masterOrigin, masterAxis );
-////			this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
-////			this.masterEntity = master;
-////			masterYaw = masterAxis[0].ToYaw();
-////		}
-////		ClearContacts();
-////	}
-////	else {
-////		if ( this.masterEntity ) {
-////			this.masterEntity = NULL;
-////		}
-////	}
+		var masterOrigin = new idVec3;
+		var masterAxis = new idMat3;
+
+		if ( master ) {
+			if ( !this.masterEntity ) {
+				// transform from world space to master space
+				this.self.GetMasterPosition( masterOrigin, masterAxis );
+				this.current.localOrigin.opEquals( idMat3.opMultiplication_VecMat( this.current.origin.opSubtraction( masterOrigin ), masterAxis.Transpose ( ) ) );
+				this.masterEntity = master;
+				this.masterYaw = masterAxis[0].ToYaw ( );
+			}
+			this.ClearContacts ( );
+		} else {
+			if ( this.masterEntity ) {
+				this.masterEntity = null;
+			}
+		}
 	}
-////
-////const float	PLAYER_VELOCITY_MAX				= 4000;
-////const int	PLAYER_VELOCITY_TOTAL_BITS		= 16;
-////const int	PLAYER_VELOCITY_EXPONENT_BITS	= idMath::BitsForInteger( idMath::BitsForFloat( PLAYER_VELOCITY_MAX ) ) + 1;
-////const int	PLAYER_VELOCITY_MANTISSA_BITS	= PLAYER_VELOCITY_TOTAL_BITS - 1 - PLAYER_VELOCITY_EXPONENT_BITS;
-////const int	PLAYER_MOVEMENT_TYPE_BITS		= 3;
-////const int	PLAYER_MOVEMENT_FLAGS_BITS		= 8;
+
+///*float*/	PLAYER_VELOCITY_MAX				= 4000;
+///*int*/PLAYER_VELOCITY_TOTAL_BITS = 16;
+///*int*/PLAYER_VELOCITY_EXPONENT_BITS	= idMath.BitsForInteger(idMath.BitsForFloat(PLAYER_VELOCITY_MAX)) + 1;
+///*int*/PLAYER_VELOCITY_MANTISSA_BITS = PLAYER_VELOCITY_TOTAL_BITS - 1 - PLAYER_VELOCITY_EXPONENT_BITS;
+///*int*/PLAYER_MOVEMENT_TYPE_BITS		= 3;
+///*int*/	PLAYER_MOVEMENT_FLAGS_BITS		= 8;
 ////
 /////*
 ////================

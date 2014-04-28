@@ -550,22 +550,23 @@ class idMat3 {
 //ID_INLINE idMat3 &idMat3::operator*=( const idMat3 &a ) {
 	opMultiplicationAssignment ( a: idMat3 ): idMat3 {
 		var /*int */i: number, j: number;
-		todoThrow ( );
-		//const float *m2Ptr;
-		//float *m1Ptr, dst[3];
+		var m2Ptr: Float32Array;
+		var m1Ptr: Float32Array, m1PtrIdx: number, dst = [0, 0, 0];
 
-		//m1Ptr = reinterpret_cast<float *>(this);
-		//m2Ptr = reinterpret_cast<const float *>(&a);
+		m1Ptr = this.ToFloatPtr ( ), m1PtrIdx = 0;
+		m2Ptr = a.ToFloatPtr ( ); 
 
-		//for ( i = 0; i < 3; i++ ) {
-		//	for ( j = 0; j < 3; j++ ) {
-		//		dst[j]  = m1Ptr[0] * m2Ptr[ 0 * 3 + j ]
-		//				+ m1Ptr[1] * m2Ptr[ 1 * 3 + j ]
-		//				+ m1Ptr[2] * m2Ptr[ 2 * 3 + j ];
-		//	}
-		//	m1Ptr[0] = dst[0]; m1Ptr[1] = dst[1]; m1Ptr[2] = dst[2];
-		//	m1Ptr += 3;
-		//}
+		for ( i = 0; i < 3; i++ ) {
+			for ( j = 0; j < 3; j++ ) {
+				dst[j] = m1Ptr[m1PtrIdx + 0] * m2Ptr[0 * 3 + j]
+					+ m1Ptr[m1PtrIdx + 1] * m2Ptr[1 * 3 + j]
+					+ m1Ptr[m1PtrIdx + 2] * m2Ptr[2 * 3 + j];
+			}
+			m1Ptr[m1PtrIdx + 0] = dst[0];
+			m1Ptr[m1PtrIdx + 1] = dst[1];
+			m1Ptr[m1PtrIdx + 2] = dst[2];
+			m1PtrIdx += 3;
+		}
 		return this;
 	}
 //
@@ -799,7 +800,7 @@ class idMat3 {
 	}
 
 	ToFloatPtr ( ): Float32Array {
-		return this.mat[0].ToFloatPtr ( );
+		return this.values;//this.mat[0].ToFloatPtr ( );
 	}
 
 //ID_INLINE float *idMat3::ToFloatPtr( ) {

@@ -2370,25 +2370,25 @@ idEntity::GetMasterPosition
 				masterAnimator = this.bindMaster.GetAnimator ( );
 				if ( !masterAnimator ) {
 					masterOrigin.opEquals( vec3_origin );
-					masterAxis.opEquals(  mat3_identity);
+					masterAxis.opEquals( mat3_identity );
 					return false;
 				} else {
 					masterAnimator.GetJointTransform( this.bindJoint, gameLocal.time, masterOrigin, masterAxis );
-					masterAxis.opMultiplicationAssignment(this.bindMaster.renderEntity.axis);
-					todoThrow ( );
-					//masterOrigin.opEquals(  this.bindMaster.renderEntity.origin + masterOrigin * this.bindMaster.renderEntity.axis;
+					masterAxis.opMultiplicationAssignment( this.bindMaster.renderEntity.axis );
+					debugger; //values dont match
+					masterOrigin.opEquals( this.bindMaster.renderEntity.origin.opAddition( idMat3.opMultiplication_VecMat( masterOrigin, this.bindMaster.renderEntity.axis ) ) );
 				}
 			} else if ( this.bindBody >= 0 && this.bindMaster.GetPhysics ( ) ) {
-				masterOrigin.opEquals(this.bindMaster.GetPhysics().GetOrigin(this.bindBody));
-				masterAxis.opEquals(this.bindMaster.GetPhysics().GetAxis(this.bindBody));
+				masterOrigin.opEquals( this.bindMaster.GetPhysics ( ).GetOrigin( this.bindBody ) );
+				masterAxis.opEquals( this.bindMaster.GetPhysics ( ).GetAxis( this.bindBody ) );
 			} else {
-				masterOrigin.opEquals(this.bindMaster.renderEntity.origin);
-				masterAxis.opEquals(this.bindMaster.renderEntity.axis);
+				masterOrigin.opEquals( this.bindMaster.renderEntity.origin );
+				masterAxis.opEquals( this.bindMaster.renderEntity.axis );
 			}
 			return true;
 		} else {
-			masterOrigin.opEquals(  vec3_origin);
-			masterAxis.opEquals(  mat3_identity);
+			masterOrigin.opEquals( vec3_origin );
+			masterAxis.opEquals( mat3_identity );
 			return false;
 		}
 	}

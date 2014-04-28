@@ -101,7 +101,15 @@ class idAttachInfo {
 class copyJoints_t {
 	mod:jointModTransform_t;
 	from:jointHandle_t;
-	to:jointHandle_t;
+	to: jointHandle_t;
+
+	copy ( dest: copyJoints_t = null ): copyJoints_t {
+		dest = dest || new copyJoints_t;
+		dest.mod = this.mod;
+		dest.from = this.from;
+		dest.to = this.to;
+		return dest;
+	}
 };
 
 class idActor extends idAFEntity_Gibbable {
@@ -1007,71 +1015,70 @@ idActor::SetupBody
 	SetupBody ( ): void {
 		var jointname: string;
 
-		todoThrow();
-		////this.animator.ClearAllAnims( gameLocal.time, 0 );
-		////this.animator.ClearAllJoints ( );
+		this.animator.ClearAllAnims( gameLocal.time, 0 );
+		this.animator.ClearAllJoints ( );
 
-		////var headEnt: idEntity = this.head.GetEntity ( );
-		////if ( headEnt ) {
-		////	jointname = this.spawnArgs.GetString( "bone_leftEye" );
-		////	this.leftEyeJoint = headEnt.GetAnimator ( ).GetJointHandle( jointname );
+		var headEnt: idEntity = this.head.GetEntity ( );
+		if ( headEnt ) {
+			jointname = this.spawnArgs.GetString( "bone_leftEye" );
+			this.leftEyeJoint = headEnt.GetAnimator ( ).GetJointHandle( jointname );
 
-		////	jointname = this.spawnArgs.GetString( "bone_rightEye" );
-		////	this.rightEyeJoint = headEnt.GetAnimator ( ).GetJointHandle( jointname );
+			jointname = this.spawnArgs.GetString( "bone_rightEye" );
+			this.rightEyeJoint = headEnt.GetAnimator ( ).GetJointHandle( jointname );
 
-		////	// set up the eye height.  check if it's specified in the def.
-		////	var $z = new R<number>();
-		////	var gotEyeHeight = this.spawnArgs.GetFloat_R("eye_height", "0", $z);
-		////	this.eyeOffset.z = $z.$;
-		////	if (!gotEyeHeight ) {
-		////		// if not in the def, then try to base it off the idle animation
-		////		var /*int */anim = headEnt.GetAnimator ( ).GetAnim( "idle" );
-		////		if ( anim && ( this.leftEyeJoint != jointHandle_t.INVALID_JOINT ) ) {
-		////			var pos = new idVec3;
-		////			var axis = new idMat3;
-		////			headEnt.GetAnimator ( ).PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, 0 );
-		////			headEnt.GetAnimator ( ).GetJointTransform( this.leftEyeJoint, gameLocal.time, pos, axis );
-		////			headEnt.GetAnimator ( ).ClearAllAnims( gameLocal.time, 0 );
-		////			headEnt.GetAnimator ( ).ForceUpdate ( );
-		////			pos.opAdditionAssignment( headEnt.GetPhysics ( ).GetOrigin ( ).opSubtraction( this.GetPhysics ( ).GetOrigin ( ) ) );
-		////			this.eyeOffset.opEquals( pos.opAddition( this.modelOffset ) );
-		////		} else {
-		////			// just base it off the bounding box size
-		////			this.eyeOffset.z = this.GetPhysics ( ).GetBounds ( )[1].z - 6;
-		////		}
-		////	}
-		////	this.headAnim.Init( this, headEnt.GetAnimator ( ), ANIMCHANNEL_ALL );
-		////} else {
-		////	jointname = this.spawnArgs.GetString( "bone_leftEye" );
-		////	this.leftEyeJoint = this.animator.GetJointHandle( jointname );
+			// set up the eye height.  check if it's specified in the def.
+			var $z = new R<number>();
+			var gotEyeHeight = this.spawnArgs.GetFloat_R("eye_height", "0", $z);
+			this.eyeOffset.z = $z.$;
+			if (!gotEyeHeight ) {
+				// if not in the def, then try to base it off the idle animation
+				var /*int */anim = headEnt.GetAnimator ( ).GetAnim( "idle" );
+				if ( anim && ( this.leftEyeJoint != jointHandle_t.INVALID_JOINT ) ) {
+					var pos = new idVec3;
+					var axis = new idMat3;
+					headEnt.GetAnimator ( ).PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, 0 );
+					headEnt.GetAnimator ( ).GetJointTransform( this.leftEyeJoint, gameLocal.time, pos, axis );
+					headEnt.GetAnimator ( ).ClearAllAnims( gameLocal.time, 0 );
+					headEnt.GetAnimator ( ).ForceUpdate ( );
+					pos.opAdditionAssignment( headEnt.GetPhysics ( ).GetOrigin ( ).opSubtraction( this.GetPhysics ( ).GetOrigin ( ) ) );
+					this.eyeOffset.opEquals( pos.opAddition( this.modelOffset ) );
+				} else {
+					// just base it off the bounding box size
+					this.eyeOffset.z = this.GetPhysics ( ).GetBounds ( )[1].z - 6;
+				}
+			}
+			this.headAnim.Init( this, headEnt.GetAnimator ( ), ANIMCHANNEL_ALL );
+		} else {
+			jointname = this.spawnArgs.GetString( "bone_leftEye" );
+			this.leftEyeJoint = this.animator.GetJointHandle( jointname );
 
-		////	jointname = this.spawnArgs.GetString( "bone_rightEye" );
-		////	this.rightEyeJoint = this.animator.GetJointHandle( jointname );
+			jointname = this.spawnArgs.GetString( "bone_rightEye" );
+			this.rightEyeJoint = this.animator.GetJointHandle( jointname );
 
-		////	// set up the eye height.  check if it's specified in the def.
-		////	if ( !this.spawnArgs.GetFloat( "eye_height", "0", this.eyeOffset.z ) ) {
-		////		// if not in the def, then try to base it off the idle animation
-		////		var /*int */anim = this.animator.GetAnim( "idle" );
-		////		if ( anim && ( this.leftEyeJoint != jointHandle_t.INVALID_JOINT ) ) {
-		////			var pos = new idVec3;
-		////			var axis = new idMat3;
-		////			this.animator.PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, 0 );
-		////			this.animator.GetJointTransform( this.leftEyeJoint, gameLocal.time, pos, axis );
-		////			this.animator.ClearAllAnims( gameLocal.time, 0 );
-		////			this.animator.ForceUpdate ( );
-		////			this.eyeOffset.opEquals( pos.opAddition( this.modelOffset ) );
-		////		} else {
-		////			// just base it off the bounding box size
-		////			this.eyeOffset.z = this.GetPhysics ( ).GetBounds ( )[1].z - 6;
-		////		}
-		////	}
-		////	this.headAnim.Init( this, this.animator, ANIMCHANNEL_HEAD );
-		////}
+			// set up the eye height.  check if it's specified in the def.
+			if ( !this.spawnArgs.GetFloat( "eye_height", "0", this.eyeOffset.z ) ) {
+				// if not in the def, then try to base it off the idle animation
+				var /*int */anim = this.animator.GetAnim( "idle" );
+				if ( anim && ( this.leftEyeJoint != jointHandle_t.INVALID_JOINT ) ) {
+					var pos = new idVec3;
+					var axis = new idMat3;
+					this.animator.PlayAnim( ANIMCHANNEL_ALL, anim, gameLocal.time, 0 );
+					this.animator.GetJointTransform( this.leftEyeJoint, gameLocal.time, pos, axis );
+					this.animator.ClearAllAnims( gameLocal.time, 0 );
+					this.animator.ForceUpdate ( );
+					this.eyeOffset.opEquals( pos.opAddition( this.modelOffset ) );
+				} else {
+					// just base it off the bounding box size
+					this.eyeOffset.z = this.GetPhysics ( ).GetBounds ( )[1].z - 6;
+				}
+			}
+			this.headAnim.Init( this, this.animator, ANIMCHANNEL_HEAD );
+		}
 
-		////this.waitState.opEquals( "" );
+		this.waitState.opEquals( "" );
 
-		////this.torsoAnim.Init( this, this.animator, ANIMCHANNEL_TORSO );
-		////this.legsAnim.Init( this, this.animator, ANIMCHANNEL_LEGS );
+		this.torsoAnim.Init( this, this.animator, ANIMCHANNEL_TORSO );
+		this.legsAnim.Init( this, this.animator, ANIMCHANNEL_LEGS );
 	}
 
 /////*

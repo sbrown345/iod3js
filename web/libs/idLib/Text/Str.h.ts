@@ -1590,17 +1590,12 @@ idStr::StripLeadingOnce
 	StripLeadingOnce ( $string: string ): boolean {
 		var /*int */l: number;
 
-		var data = this.data.toUint8Array();
-		debugger;
 		l = strlen( $string );
 		if ( ( l > 0 ) && !this.Cmpn( $string, l ) ) {
-			//todo memmove( data, data + l, this.len - l + 1 );
+			this.data = this.data.substring( l ); //	memmove( data, data + l, len - l + 1 );
 			this.len -= l;
 			return true;
 		}
-
-
-		this.data = data.toString();
 		return false;
 	}
 
@@ -1657,6 +1652,7 @@ idStr::Replace
 		}
 
 		this.data = this.data.replace( new RegExp( escapeRegExp( old ), 'g' ), nw );
+		this.len = this.data.length;
 	}
 
 /*

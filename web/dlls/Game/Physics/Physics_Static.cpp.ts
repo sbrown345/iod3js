@@ -868,28 +868,27 @@ GetOrigin( /*int*/ id:number  = 0) :idVec3 {
 	================
 	*/
 	SetMaster ( master: idEntity, orientated: boolean = true ) {
-		todoThrow ( );
-		////	idVec3 masterOrigin;
-		////	idMat3 masterAxis;
-		////
-		////	if ( master ) {
-		////		if ( !this.hasMaster ) {
-		////			// transform from world space to master space
-		////			this.self.GetMasterPosition( masterOrigin, masterAxis );
-		////			this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
-		////			if ( orientated ) {
-		////				this.current.localAxis = this.current.axis * masterAxis.Transpose();
-		////			} else {
-		////				this.current.localAxis = this.current.axis;
-		////			}
-		////			this.hasMaster = true;
-		////			this.isOrientated = orientated;
-		////		}
-		////	} else {
-		////		if ( this.hasMaster ) {
-		////			this.hasMaster = false;
-		////		}
-		////	}
+		var masterOrigin = new idVec3;
+		var masterAxis = new idMat3;
+		
+			if ( master ) {
+				if ( !this.hasMaster ) {
+					// transform from world space to master space
+					this.self.GetMasterPosition( masterOrigin, masterAxis );
+					this.current.localOrigin.opEquals(idMat3.opMultiplication_VecMat(this.current.origin.opSubtraction(masterOrigin), masterAxis.Transpose()));
+					if ( orientated ) {
+						this.current.localAxis.opEquals( this.current.axis.opMultiplication( masterAxis.Transpose ( ) ) );
+					} else {
+						this.current.localAxis.opEquals(  this.current.axis);
+					}
+					this.hasMaster = true;
+					this.isOrientated = orientated;
+				}
+			} else {
+				if ( this.hasMaster ) {
+					this.hasMaster = false;
+				}
+			}
 	}
 
 	/*

@@ -228,7 +228,7 @@ idPhysics_StaticMulti::idPhysics_StaticMulti
 ////	}
 ////
 ////	savefile.WriteBool(this.hasMaster);
-////	savefile.WriteBool(isOrientated);
+////	savefile.WriteBool(this.isOrientated);
 ////}
 ////
 /////*
@@ -257,7 +257,7 @@ idPhysics_StaticMulti::idPhysics_StaticMulti
 ////	}
 ////
 ////	savefile.ReadBool(this.hasMaster);
-////	savefile.ReadBool(isOrientated);
+////	savefile.ReadBool(this.isOrientated);
 ////}
 
 /*
@@ -494,7 +494,7 @@ static absBounds = new idBounds;
 ////		this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////		for ( i = 0; i < this.clipModels.Num(); i++ ) {
 ////			this.current[i].origin = masterOrigin + this.current[i].localOrigin * masterAxis;
-////			if ( isOrientated ) {
+////			if ( this.isOrientated ) {
 ////				this.current[i].axis = this.current[i].localAxis * masterAxis;
 ////			} else {
 ////				this.current[i].axis = this.current[i].localAxis;
@@ -652,7 +652,7 @@ idPhysics_StaticMulti::SetOrigin
 ////
 ////	if ( id >= 0 && id < this.clipModels.Num() ) {
 ////		this.current[id].localAxis = newAxis;
-////		if ( this.hasMaster && isOrientated ) {
+////		if ( this.hasMaster && this.isOrientated ) {
 ////			this.self.GetMasterPosition( masterOrigin, masterAxis );
 ////			this.current[id].axis = newAxis * masterAxis;
 ////		} else {
@@ -1060,33 +1060,32 @@ idPhysics_StaticMulti::SetMaster
 ================
 */
 	SetMaster ( master: idEntity, orientated: boolean = true ) {
-		todoThrow ( );
-////	var/*int*/i:number;
-////	idVec3 masterOrigin;
-////	idMat3 masterAxis;
-////
-////	if ( master ) {
-////		if ( !this.hasMaster ) {
-////			// transform from world space to master space
-////			this.self.GetMasterPosition( masterOrigin, masterAxis );
-////			for ( i = 0; i < this.clipModels.Num(); i++ ) {
-////                this.current[i].localOrigin = ( this.current[i].origin - masterOrigin ) * masterAxis.Transpose();
-////				if ( orientated ) {
-////					this.current[i].localAxis = this.current[i].axis * masterAxis.Transpose();
-////				} else {
-////					this.current[i].localAxis = this.current[i].axis;
-////				}
-////			}
-////			this.hasMaster = true;
-////			isOrientated = orientated;
-////		}
-////	} else {
-////		if ( this.hasMaster ) {
-////			this.hasMaster = false;
-////		}
-////	}
+		var /*int*/i: number;
+		var masterOrigin = new idVec3;
+		var masterAxis = new idMat3;
+
+		if ( master ) {
+			if ( !this.hasMaster ) {
+				// transform from world space to master space
+				this.self.GetMasterPosition( masterOrigin, masterAxis );
+				for ( i = 0; i < this.clipModels.Num ( ); i++ ) {
+					this.current[i].localOrigin.opEquals( idMat3.opMultiplication_VecMat( this.current[i].origin.opSubtraction( masterOrigin ), masterAxis.Transpose ( ) ) );
+					if ( orientated ) {
+						this.current[i].localAxis.opEquals( this.current[i].axis.opMultiplication( masterAxis.Transpose ( ) ) );
+					} else {
+						this.current[i].localAxis.opEquals( this.current[i].axis );
+					}
+				}
+				this.hasMaster = true;
+				this.isOrientated = orientated;
+			}
+		} else {
+			if ( this.hasMaster ) {
+				this.hasMaster = false;
+			}
+		}
 	}
-////
+
 /////*
 ////================
 ////idPhysics_StaticMulti::GetBlockingInfo

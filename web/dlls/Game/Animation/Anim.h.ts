@@ -1084,64 +1084,64 @@ idMD5Anim::GetSingleFrame
 	GetSingleFrame ( framenum /*int*/: number, joints: idJointQuat[], /*const int **/index: number[], /*int */numIndexes: number ): void {
 		var i: number;
 		var /*const float				**/frame: number;
-		var/*const float				**/jointframe :number;
-		var animBits :number /*int*/;
+		var /*const float				**/jointframe: number;
+		var animBits: number /*int*/;
 		var jointPtr: idJointQuat;
 		var infoPtr: jointAnimInfo_t;
-
+		
 		// copy the baseframe
-		SIMDProcessor.Memcpy( joints, this.baseFrame.Ptr(), this.baseFrame.Num() * sizeof( this.baseFrame[ 0 ] ) );
+		memcpyStructs(joints, this.baseFrame/*.Ptr()*/, this.baseFrame.Num()); //SIMDProcessor.Memcpy(joints, this.baseFrame.Ptr(), this.baseFrame.Num() * sizeof(this.baseFrame[0]));
 
 		if ( ( framenum == 0 ) || !this.numAnimatedComponents ) {
 			// just use the base frame
 			return;
 		}
+todoThrow ( );
+		//frame = this.componentFrames[ framenum * this.numAnimatedComponents ];
 
-		frame = this.componentFrames[ framenum * this.numAnimatedComponents ];
+		//for ( i = 0; i < numIndexes; i++ ) {
+		//	var/*int */j = index[i];
+		//	jointPtr = joints[j];
+		//	infoPtr = this.jointInfo[j];
 
-		for ( i = 0; i < numIndexes; i++ ) {
-			var/*int */j = index[i];
-			jointPtr = &joints[j];
-			infoPtr = &this.jointInfo[j];
+		//	animBits = infoPtr.animBits;
+		//	if ( animBits ) {
 
-			animBits = infoPtr.animBits;
-			if ( animBits ) {
+		//		jointframe = frame + infoPtr.firstComponent;
 
-				jointframe = frame + infoPtr.firstComponent;
+		//		if ( animBits & (ANIM_TX|ANIM_TY|ANIM_TZ) ) {
 
-				if ( animBits & (ANIM_TX|ANIM_TY|ANIM_TZ) ) {
+		//			if ( animBits & ANIM_TX ) {
+		//				jointPtr.t.x = *jointframe++;
+		//			}
 
-					if ( animBits & ANIM_TX ) {
-						jointPtr.t.x = *jointframe++;
-					}
+		//			if ( animBits & ANIM_TY ) {
+		//				jointPtr.t.y = *jointframe++;
+		//			}
 
-					if ( animBits & ANIM_TY ) {
-						jointPtr.t.y = *jointframe++;
-					}
+		//			if ( animBits & ANIM_TZ ) {
+		//				jointPtr.t.z = *jointframe++;
+		//			}
+		//		}
 
-					if ( animBits & ANIM_TZ ) {
-						jointPtr.t.z = *jointframe++;
-					}
-				}
+		//		if ( animBits & (ANIM_QX|ANIM_QY|ANIM_QZ) ) {
 
-				if ( animBits & (ANIM_QX|ANIM_QY|ANIM_QZ) ) {
+		//			if ( animBits & ANIM_QX ) {
+		//				jointPtr.q.x = *jointframe++;
+		//			}
 
-					if ( animBits & ANIM_QX ) {
-						jointPtr.q.x = *jointframe++;
-					}
+		//			if ( animBits & ANIM_QY ) {
+		//				jointPtr.q.y = *jointframe++;
+		//			}
 
-					if ( animBits & ANIM_QY ) {
-						jointPtr.q.y = *jointframe++;
-					}
+		//			if ( animBits & ANIM_QZ ) {
+		//				jointPtr.q.z = *jointframe;
+		//			}
 
-					if ( animBits & ANIM_QZ ) {
-						jointPtr.q.z = *jointframe;
-					}
-
-					jointPtr.q.w = jointPtr.q.CalcW();
-				}
-			}
-		}
+		//			jointPtr.q.w = jointPtr.q.CalcW();
+		//		}
+		//	}
+		//}
 	}
 
 /*

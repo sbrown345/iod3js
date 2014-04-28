@@ -977,25 +977,25 @@ class idVec3 {
 		return va( "x: %4.2f, y: %4.2f, z:%4.2f", this.x, this.y, this.z );
 	}
 
-/////*
-////=============
-////idVec3::ToYaw
-////=============
-////*/
-////float idVec3::ToYaw( ) const {
-////	float yaw;
+/*
+=============
+idVec3::ToYaw
+=============
+*/
+	ToYaw ( ): number {
+		var /*float */yaw: number;
 
-////	if ( ( y == 0.0 ) && ( this.x == 0.0 ) ) {
-////		yaw = 0.0;
-////	} else {
-////		yaw = RAD2DEG( atan2( y, this.x ) );
-////		if ( yaw < 0.0 ) {
-////			yaw += 360.0;
-////		}
-////	}
+		if ( ( this.y == 0.0 ) && ( this.x == 0.0 ) ) {
+			yaw = 0.0;
+		} else {
+			yaw = RAD2DEG( atan2( this.y, this.x ) );
+			if ( yaw < 0.0 ) {
+				yaw += 360.0;
+			}
+		}
 
-////	return yaw;
-////}
+		return yaw;
+	}
 
 /////*
 ////=============
@@ -1006,14 +1006,14 @@ class idVec3 {
 ////	float	forward;
 ////	float	pitch;
 
-////	if ( ( this.x == 0.0 ) && ( y == 0.0 ) ) {
+////	if ( ( this.x == 0.0 ) && ( this.y == 0.0 ) ) {
 ////		if ( z > 0.0 ) {
 ////			pitch = 90.0;
 ////		} else {
 ////			pitch = 270.0;
 ////		}
 ////	} else {
-////		forward = ( float )idMath.Sqrt( this.x * this.x + y * y );
+////		forward = ( float )idMath.Sqrt( this.x * this.x + this.y * this.y );
 ////		pitch = RAD2DEG( atan2( z, forward ) );
 ////		if ( pitch < 0.0 ) {
 ////			pitch += 360.0;
@@ -1033,7 +1033,7 @@ class idVec3 {
 ////	float yaw;
 ////	float pitch;
 
-////	if ( ( this.x == 0.0 ) && ( y == 0.0 ) ) {
+////	if ( ( this.x == 0.0 ) && ( this.y == 0.0 ) ) {
 ////		yaw = 0.0;
 ////		if ( z > 0.0 ) {
 ////			pitch = 90.0;
@@ -1041,12 +1041,12 @@ class idVec3 {
 ////			pitch = 270.0;
 ////		}
 ////	} else {
-////		yaw = RAD2DEG( atan2( y, this.x ) );
+////		yaw = RAD2DEG( atan2( this.y, this.x ) );
 ////		if ( yaw < 0.0 ) {
 ////			yaw += 360.0;
 ////		}
 
-////		forward = ( float )idMath.Sqrt( this.x * this.x + y * y );
+////		forward = ( float )idMath.Sqrt( this.x * this.x + this.y * this.y );
 ////		pitch = RAD2DEG( atan2( z, forward ) );
 ////		if ( pitch < 0.0 ) {
 ////			pitch += 360.0;
@@ -1066,7 +1066,7 @@ class idVec3 {
 ////	float yaw;
 ////	float pitch;
 
-////	if ( ( this.x == 0.0 ) && ( y == 0.0 ) ) {
+////	if ( ( this.x == 0.0 ) && ( this.y == 0.0 ) ) {
 ////		yaw = 0.0;
 ////		if ( z > 0.0 ) {
 ////			pitch = 90.0;
@@ -1074,18 +1074,18 @@ class idVec3 {
 ////			pitch = 270.0;
 ////		}
 ////	} else {
-////		yaw = RAD2DEG( atan2( y, this.x ) );
+////		yaw = RAD2DEG( atan2( this.y, this.x ) );
 ////		if ( yaw < 0.0 ) {
 ////			yaw += 360.0;
 ////		}
 
-////		forward = ( float )idMath.Sqrt( this.x * this.x + y * y );
+////		forward = ( float )idMath.Sqrt( this.x * this.x + this.y * this.y );
 ////		pitch = RAD2DEG( atan2( z, forward ) );
 ////		if ( pitch < 0.0 ) {
 ////			pitch += 360.0;
 ////		}
 ////	}
-////	return idPolar3( idMath.Sqrt( this.x * this.x + y * y + z * z ), yaw, -pitch );
+////	return idPolar3( idMath.Sqrt( this.x * this.x + this.y * this.y + z * z ), yaw, -pitch );
 ////}
 
 /*
