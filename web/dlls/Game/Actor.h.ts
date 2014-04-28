@@ -57,10 +57,10 @@
 ////
 class idAnimState {
 ////public:
-////	bool					idleAnim;
-////	idStr					state;
-////	int						animBlendFrames;
-////	int						lastAnimBlendFrames;		// allows override anims to blend based on the last transition time
+	idleAnim:boolean;
+	state = new idStr;
+	animBlendFrames :number/*int*/;
+	lastAnimBlendFrames :number/*int*/;		// allows override anims to blend based on the last transition time
 ////
 ////public:
 ////							idAnimState();
@@ -85,11 +85,289 @@ class idAnimState {
 ////	animFlags_t				GetAnimFlags( void ) const;
 ////
 ////private:
-////	idActor *				self;
-////	idAnimator *			animator;
-////	idThread *				thread;
-////	int						channel;
-////	bool					disabled;
+	self:idActor;
+	animator:idAnimator;
+	thread:idThread;
+	channel :number/*int*/;
+	disabled:boolean;
+
+
+/*
+=====================
+idAnimState::idAnimState
+=====================
+*/
+	constructor ( ) {
+		this.self = null;
+		this.animator = null;
+		this.thread = null;
+		this.idleAnim = true;
+		this.disabled = true;
+		this.channel = ANIMCHANNEL_ALL;
+		this.animBlendFrames = 0;
+		this.lastAnimBlendFrames = 0;
+	}
+////
+/////*
+////=====================
+////idAnimState::~idAnimState
+////=====================
+////*/
+////idAnimState::~idAnimState() {
+////	delete this.thread;
+////}
+////
+/////*
+////=====================
+////idAnimState::Save
+////=====================
+////*/
+////void idAnimState::Save( idSaveGame *savefile ) const {
+////
+////	savefile.WriteObject( this.self );
+////
+////	// Save the entity owner of the animator
+////	savefile.WriteObject( animator.GetEntity() );
+////
+////	savefile.WriteObject( this.thread );
+////
+////	savefile.WriteString( state );
+////
+////	savefile.WriteInt( animBlendFrames );
+////	savefile.WriteInt( lastAnimBlendFrames );
+////	savefile.WriteInt( this.channel );
+////	savefile.WriteBool( idleAnim );
+////	savefile.WriteBool( disabled );
+////}
+////
+/////*
+////=====================
+////idAnimState::Restore
+////=====================
+////*/
+////void idAnimState::Restore( idRestoreGame *savefile ) {
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( this.self ) );
+////
+////	idEntity *animowner;
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( animowner ) );
+////	if ( animowner ) {
+////		animator = animowner.GetAnimator();
+////	}
+////
+////	savefile.ReadObject( reinterpret_cast<idClass *&>( this.thread ) );
+////
+////	savefile.ReadString( state );
+////
+////	savefile.ReadInt( animBlendFrames );
+////	savefile.ReadInt( lastAnimBlendFrames );
+////	savefile.ReadInt( this.channel );
+////	savefile.ReadBool( idleAnim );
+////	savefile.ReadBool( disabled );
+////}
+////
+/*
+=====================
+idAnimState::Init
+=====================
+*/
+	Init ( owner: idActor, _animator: idAnimator, /*int */animchannel: number ): void {
+		assert( owner );
+		assert( _animator );
+		this.self = owner;
+		this.animator = _animator;
+		this.channel = animchannel;
+
+		if ( !this.thread ) {
+			this.thread = new idThread ( );
+			this.thread.ManualDelete ( );
+		}
+		this.thread.EndThread ( );
+		this.thread.ManualControl ( );
+	}
+////
+/////*
+////=====================
+////idAnimState::Shutdown
+////=====================
+////*/
+////void idAnimState::Shutdown( ) {
+////	delete this.thread;
+////	this.thread = NULL;
+////}
+////
+/////*
+////=====================
+////idAnimState::SetState
+////=====================
+////*/
+////void idAnimState::SetState( const char *statename, int blendFrames ) {
+////	const function_t *func;
+////
+////	func = this.self.scriptObject.GetFunction( statename );
+////	if ( !func ) {
+////		assert( 0 );
+////		gameLocal.Error( "Can't find function '%s' in object '%s'", statename, this.self.scriptObject.GetTypeName() );
+////	}
+////
+////	state = statename;
+////	disabled = false;
+////	animBlendFrames = blendFrames;
+////	lastAnimBlendFrames = blendFrames;
+////	this.thread.CallFunction( this.self, func, true );
+////
+////	animBlendFrames = blendFrames;
+////	lastAnimBlendFrames = blendFrames;
+////	disabled = false;
+////	idleAnim = false;
+////
+////	if ( ai_debugScript.GetInteger() == this.self.entityNumber ) {
+////		gameLocal.Printf( "%d: %s: Animstate: %s\n", gameLocal.time, this.self.name.c_str(), state.c_str() );
+////	}
+////}
+////
+/////*
+////=====================
+////idAnimState::StopAnim
+////=====================
+////*/
+////void idAnimState::StopAnim( int frames ) {
+////	animBlendFrames = 0;
+////	this.animator.Clear( this.channel, gameLocal.time, FRAME2MS( frames ) );
+////}
+////
+/////*
+////=====================
+////idAnimState::PlayAnim
+////=====================
+////*/
+////void idAnimState::PlayAnim( int anim ) {
+////	if ( anim ) {
+////		this.animator.PlayAnim( this.channel, anim, gameLocal.time, FRAME2MS( animBlendFrames ) );
+////	}
+////	animBlendFrames = 0;
+////}
+////
+/////*
+////=====================
+////idAnimState::CycleAnim
+////=====================
+////*/
+////void idAnimState::CycleAnim( int anim ) {
+////	if ( anim ) {
+////		this.animator.CycleAnim( this.channel, anim, gameLocal.time, FRAME2MS( animBlendFrames ) );
+////	}
+////	animBlendFrames = 0;
+////}
+////
+/////*
+////=====================
+////idAnimState::BecomeIdle
+////=====================
+////*/
+////void idAnimState::BecomeIdle( ) {
+////	idleAnim = true;
+////}
+////
+/////*
+////=====================
+////idAnimState::Disabled
+////=====================
+////*/
+////bool idAnimState::Disabled( ) const {
+////	return disabled;
+////}
+////
+/////*
+////=====================
+////idAnimState::AnimDone
+////=====================
+////*/
+////bool idAnimState::AnimDone( int blendFrames ) const {
+////	int animDoneTime;
+////	
+////	animDoneTime = this.animator.CurrentAnim( this.channel ).GetEndTime();
+////	if ( animDoneTime < 0 ) {
+////		// playing a cycle
+////		return false;
+////	} else if ( animDoneTime - FRAME2MS( blendFrames ) <= gameLocal.time ) {
+////		return true;
+////	} else {
+////		return false;
+////	}
+////}
+////
+/////*
+////=====================
+////idAnimState::IsIdle
+////=====================
+////*/
+////bool idAnimState::IsIdle( ) const {
+////	return disabled || idleAnim;
+////}
+////
+/////*
+////=====================
+////idAnimState::GetAnimFlags
+////=====================
+////*/
+////animFlags_t idAnimState::GetAnimFlags( ) const {
+////	animFlags_t flags;
+////
+////	memset( &flags, 0, sizeof( flags ) );
+////	if ( !disabled && !AnimDone( 0 ) ) {
+////		flags = this.animator.GetAnimFlags( this.animator.CurrentAnim( this.channel ).AnimNum() );
+////	}
+////
+////	return flags;
+////}
+////
+/////*
+////=====================
+////idAnimState::Enable
+////=====================
+////*/
+////void idAnimState::Enable( int blendFrames ) {
+////	if ( disabled ) {
+////		disabled = false;
+////		animBlendFrames = blendFrames;
+////		lastAnimBlendFrames = blendFrames;
+////		if ( state.Length() ) {
+////			SetState( state.c_str(), blendFrames );
+////		}
+////	}
+////}
+////
+/////*
+////=====================
+////idAnimState::Disable
+////=====================
+////*/
+////void idAnimState::Disable( ) {
+////	disabled = true;
+////	idleAnim = false;
+////}
+////
+/////*
+////=====================
+////idAnimState::UpdateState
+////=====================
+////*/
+////bool idAnimState::UpdateState( ) {
+////	if ( disabled ) {
+////		return false;
+////	}
+////
+////	if ( ai_debugScript.GetInteger() == this.self.entityNumber ) {
+////		this.thread.EnableDebugInfo();
+////	} else {
+////		this.thread.DisableDebugInfo();
+////	}
+////
+////	this.thread.Execute();
+////
+////	return true;
+////}
+
 };
 
 class idAttachInfo {
@@ -1027,12 +1305,12 @@ idActor::SetupBody
 			this.rightEyeJoint = headEnt.GetAnimator ( ).GetJointHandle( jointname );
 
 			// set up the eye height.  check if it's specified in the def.
-			var $z = new R<number>();
-			var gotEyeHeight = this.spawnArgs.GetFloat_R("eye_height", "0", $z);
+			var $z = new R<number> ( );
+			var gotEyeHeight = this.spawnArgs.GetFloat_R( "eye_height", "0", $z );
 			this.eyeOffset.z = $z.$;
-			if (!gotEyeHeight ) {
+			if ( !gotEyeHeight ) {
 				// if not in the def, then try to base it off the idle animation
-				var /*int */anim = headEnt.GetAnimator ( ).GetAnim( "idle" );
+				var /*int */anim = headEnt.GetAnimator ( ).GetAnim_name( "idle" );
 				if ( anim && ( this.leftEyeJoint != jointHandle_t.INVALID_JOINT ) ) {
 					var pos = new idVec3;
 					var axis = new idMat3;
@@ -1056,9 +1334,12 @@ idActor::SetupBody
 			this.rightEyeJoint = this.animator.GetJointHandle( jointname );
 
 			// set up the eye height.  check if it's specified in the def.
-			if ( !this.spawnArgs.GetFloat( "eye_height", "0", this.eyeOffset.z ) ) {
+			var $eyeOffsetZ = new R( this.eyeOffset.z );
+			var found = this.spawnArgs.GetFloat_R( "eye_height", "0", $eyeOffsetZ );
+			this.eyeOffset.z = $eyeOffsetZ.$;
+			if ( !found ) {
 				// if not in the def, then try to base it off the idle animation
-				var /*int */anim = this.animator.GetAnim( "idle" );
+				var /*int */anim = this.animator.GetAnim_name( "idle" );
 				if ( anim && ( this.leftEyeJoint != jointHandle_t.INVALID_JOINT ) ) {
 					var pos = new idVec3;
 					var axis = new idMat3;

@@ -5227,7 +5227,7 @@ class idAnimatedEntity extends idEntity {
 ////idAnimatedEntity::GetJointWorldTransform
 ////=====================
 ////*/
-////bool idAnimatedEntity::GetJointWorldTransform( jointHandle_t jointHandle, int currentTime, idVec3 &offset, idMat3 &axis ) {
+////bool idAnimatedEntity::GetJointWorldTransform(jointHandle: jointHandle_t, /*int*/ currentTime:number,offset: idVec3, axis: idMat3 ) {
 ////	if ( !this.animator.GetJointTransform( jointHandle, currentTime, offset, axis ) ) {
 ////		return false;
 ////	}
@@ -5235,37 +5235,38 @@ class idAnimatedEntity extends idEntity {
 ////	ConvertLocalToWorldTransform( offset, axis );
 ////	return true;
 ////}
-////
-/////*
-////==============
-////idAnimatedEntity::GetJointTransformForAnim
-////==============
-////*/
-////bool idAnimatedEntity::GetJointTransformForAnim( jointHandle_t jointHandle, int animNum, int frameTime, idVec3 &offset, idMat3 &axis ) const {
-////	const idAnim	*anim;
-////	var numJoints:number /*int*/;
-////	idJointMat		*frame;
-////
-////	anim = this.animator.GetAnim( animNum );
-////	if ( !anim ) {
-////		assert( 0 );
-////		return false;
-////	}
-////
-////	numJoints = this.animator.NumJoints();
-////	if ( ( jointHandle < 0 ) || ( jointHandle >= numJoints ) ) {
-////		assert( 0 );
-////		return false;
-////	}
-////
-////	frame = ( idJointMat * )_alloca16( numJoints * sizeof( idJointMat ) );
-////	gameEdit.ANIM_CreateAnimFrame( this.animator.ModelHandle(), anim.MD5Anim( 0 ), this.renderEntity.numJoints, frame, frameTime, this.animator.ModelDef().GetVisualOffset(), this.animator.RemoveOrigin() );
-////
-////	offset = frame[ jointHandle ].ToVec3();
-////	axis = frame[ jointHandle ].ToMat3();
-////	
-////	return true;
-////}
+
+/*
+==============
+idAnimatedEntity::GetJointTransformForAnim
+==============
+*/
+	GetJointTransformForAnim(jointHandle: jointHandle_t, /*int*/ animNum: number, /*int */frameTime: number, offset: idVec3, axis: idMat3 ): boolean{
+	todoThrow();
+	//const idAnim	*anim;
+	//var numJoints:number /*int*/;
+	//idJointMat		*frame;
+
+	//anim = this.animator.GetAnim( animNum );
+	//if ( !anim ) {
+	//	assert( 0 );
+	//	return false;
+	//}
+
+	//numJoints = this.animator.NumJoints();
+	//if ( ( jointHandle < 0 ) || ( jointHandle >= numJoints ) ) {
+	//	assert( 0 );
+	//	return false;
+	//}
+
+	//frame = ( idJointMat * )_alloca16( numJoints * sizeof( idJointMat ) );
+	//gameEdit.ANIM_CreateAnimFrame( this.animator.ModelHandle(), anim.MD5Anim( 0 ), this.renderEntity.numJoints, frame, frameTime, this.animator.ModelDef().GetVisualOffset(), this.animator.RemoveOrigin() );
+
+	//offset = frame[ jointHandle ].ToVec3();
+	//axis = frame[ jointHandle ].ToMat3();
+	
+	return true;
+}
 ////
 /////*
 ////==============

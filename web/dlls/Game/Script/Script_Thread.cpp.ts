@@ -278,11 +278,11 @@ class idThread extends idClass {
 	//	static void					KillThread( name:string );
 	//	static void					KillThread( /*int*/num:number );
 	//	bool						Execute( );
-	//	void						ManualControl( ) { manualControl = true; CancelEvents( &EV_Thread_Execute ); };
-	//	void						DoneProcessing( ) { this.interpreter.doneProcessing = true; };
-	//	void						ContinueProcessing( ) { this.interpreter.doneProcessing = false; };
-	//	bool						ThreadDying( ) { return this.interpreter.threadDying; };
-	//	void						EndThread( ) { this.interpreter.threadDying = true; };
+	ManualControl( ) :void{ this.manualControl = true; this.CancelEvents( EV_Thread_Execute ); }
+	DoneProcessing(): void { this.interpreter.doneProcessing = true; }
+	ContinueProcessing( ) { this.interpreter.doneProcessing = false; }
+	ThreadDying( ) :boolean{ return this.interpreter.threadDying; }
+	EndThread(): void { this.interpreter.threadDying = true; }
 	//	bool						IsWaiting( );
 	//	void						ClearWaitFor( );
 	//	bool						IsWaitingFor( idEntity *obj );

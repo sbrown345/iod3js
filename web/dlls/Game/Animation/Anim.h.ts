@@ -2131,42 +2131,42 @@ Returns NULL if no error.
 //		}
 //	}
 //}
-//
-///*
-//=====================
-//idAnim::FindFrameForFrameCommand
-//=====================
-//*/
-//int	idAnim::FindFrameForFrameCommand( frameCommandType_t framecommand, const frameCommand_t **command ) const {
-//	int frame;
-//	int index;
-//	int numframes;
-//	int end;
-//
-//	if ( !this.frameCommands.Num() ) {
-//		return -1;
-//	}
-//
-//	numframes = this.anims[ 0 ].NumFrames();
-//	for( frame = 0; frame < numframes; frame++ ) {
-//		end = this.frameLookup[ frame ].firstCommand + this.frameLookup[ frame ].num;
-//		for( index = this.frameLookup[ frame ].firstCommand; index < end; index++ ) {
-//			if ( this.frameCommands[ index ].type == framecommand ) {
-//				if ( command ) {
-//					*command = &this.frameCommands[ index ];
-//				}
-//				return frame;
-//			}
-//		}
-//	}
-//
-//	if ( command ) {
-//		*command = NULL;
-//	}
-//
-//	return -1;
-//}
-//
+
+/*
+=====================
+idAnim::FindFrameForFrameCommand
+=====================
+*/
+	FindFrameForFrameCommand ( framecommand: frameCommandType_t, command: R<frameCommand_t> ): number {
+		var /*int*/ frame: number;
+		var /*int*/ index: number;
+		var /*int*/ numframes: number;
+		var /*int*/ end: number;
+
+		if ( !this.frameCommands.Num ( ) ) {
+			return -1;
+		}
+
+		numframes = this.anims[0].NumFrames ( );
+		for ( frame = 0; frame < numframes; frame++ ) {
+			end = this.frameLookup[frame].firstCommand + this.frameLookup[frame].num;
+			for ( index = this.frameLookup[frame].firstCommand; index < end; index++ ) {
+				if ( this.frameCommands[index].type == framecommand ) {
+					if ( command ) {
+						command.$ = this.frameCommands[index];
+					}
+					return frame;
+				}
+			}
+		}
+
+		if ( command ) {
+			command.$ = null;
+		}
+
+		return -1;
+	}
+
 ///*
 //=====================
 //idAnim::HasFrameCommands
@@ -2596,41 +2596,41 @@ idAnimBlend::CycleAnim
 		this.blendDuration = blendTime;
 		this.blendStartValue = 0.0;
 	}
-//
-///*
-//=====================
-//idAnimBlend::PlayAnim
-//=====================
-//*/
-//void idAnimBlend::PlayAnim( modelDef:idDeclModelDef,  /*int*/ _animNum:number, currentTime/*int*/:number, blendTime/*int*/:number ) {
-//	this.Reset( modelDef );
-//	if ( !modelDef ) {
-//		return;
-//	}
-//	
-//	const idAnim *_anim = modelDef.GetAnim( _animNum );
-//	if ( !_anim ) {
-//		return;
-//	}
-//
-//	const idMD5Anim *md5anim = _anim.MD5Anim( 0 );
-//	if ( modelDef.Joints().Num() != md5anim.NumJoints() ) {
-//		gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", modelDef.GetModelName(), md5anim.Name() );
-//		return;
-//	}
-//
-//	this.animNum				= _animNum;
-//	this.starttime			= currentTime;
-//	this.endtime				= this.starttime + _anim.Length();
-//	this.cycle				= 1;
-//	this.animWeights[ 0 ]	= 1.0;
-//
-//	// set up blend
-//	this.blendEndValue		= 1.0;
-//	this.blendStartTime		= currentTime - 1;
-//	this.blendDuration		= blendTime;
-//	this.blendStartValue		= 0.0;
-//}
+
+/*
+=====================
+idAnimBlend::PlayAnim
+=====================
+*/
+	PlayAnim ( modelDef: idDeclModelDef, /*int*/ _animNum: number, currentTime /*int*/: number, blendTime /*int*/: number ): void {
+		this.Reset( modelDef );
+		if ( !modelDef ) {
+			return;
+		}
+
+		var _anim = modelDef.GetAnim_index( _animNum );
+		if ( !_anim ) {
+			return;
+		}
+
+		var md5anim = _anim.MD5Anim( 0 );
+		if ( modelDef.Joints ( ).Num ( ) != md5anim.NumJoints ( ) ) {
+			gameLocal.Warning( "Model '%s' has different # of joints than anim '%s'", modelDef.GetModelName ( ), md5anim.Name ( ) );
+			return;
+		}
+
+		this.animNum = _animNum;
+		this.starttime = currentTime;
+		this.endtime = this.starttime + _anim.Length ( );
+		this.cycle = 1;
+		this.animWeights[0] = 1.0;
+
+		// set up blend
+		this.blendEndValue = 1.0;
+		this.blendStartTime = currentTime - 1;
+		this.blendDuration = blendTime;
+		this.blendStartValue = 0.0;
+	}
 
 /*
 =====================
@@ -3557,7 +3557,7 @@ class idAnimator {
 	//archives object for save game file
 	//=====================
 	//*/
-	//void idAnimator::Save( idSaveGame *savefile ) const {
+	//void idAnimator::Save( idSaveGame *savefile ) :void {
 	//	var/*int*/i:number;
 	//	int j;
 	//
@@ -3628,7 +3628,7 @@ class idAnimator {
 	//unarchives object from save game file
 	//=====================
 	//*/
-	//void idAnimator::Restore( idRestoreGame *savefile ) {
+	//void idAnimator::Restore( idRestoreGame *savefile ):void {
 	//	var/*int*/i:number;
 	//	int j;
 	//	/*int*/num:number;
@@ -4012,34 +4012,34 @@ class idAnimator {
 			this.entity.BecomeActive( TH_ANIMATE );
 		}
 	}
-	//
-	///*
-	//=====================
-	//idAnimator::PlayAnim
-	//=====================
-	//*/
-	//void idAnimator::PlayAnim( channelNum /*int*/:number, animNum/*int*/:number, currentTime/*int*/:number, blendTime/*int*/:number ) {
-	//	if ( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) ) {
-	//		gameLocal.Error( "idAnimator::PlayAnim : channel out of range" );
-	//	}
-	//
-	//	if ( !this.modelDef || !this.modelDef.GetAnim( animNum ) ) {
-	//		return;
-	//	}
-	//	
-	//	this.PushAnims( channelNum, currentTime, blendTime );
-	//	this.channels[ channelNum ][ 0 ].PlayAnim( this.modelDef, animNum, currentTime, blendTime );
-	//	if ( this.entity ) {
-	//		this.entity.BecomeActive( TH_ANIMATE );
-	//	}
-	//}
-	//
+	
+	/*
+	=====================
+	idAnimator::PlayAnim
+	=====================
+	*/
+	PlayAnim ( channelNum /*int*/: number, animNum /*int*/: number, currentTime /*int*/: number, blendTime /*int*/: number ): void {
+		if ( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) ) {
+			gameLocal.Error( "idAnimator::PlayAnim : channel out of range" );
+		}
+
+		if ( !this.modelDef || !this.modelDef.GetAnim_index( animNum ) ) {
+			return;
+		}
+
+		this.PushAnims( channelNum, currentTime, blendTime );
+		this.channels[channelNum][0].PlayAnim( this.modelDef, animNum, currentTime, blendTime );
+		if ( this.entity ) {
+			this.entity.BecomeActive( TH_ANIMATE );
+		}
+	}
+
 	///*
 	//=====================
 	//idAnimator::SyncAnimChannels
 	//=====================
 	//*/
-	//void idAnimator::SyncAnimChannels( channelNum /*int*/:number, int fromChannelNum, currentTime/*int*/:number, blendTime/*int*/:number ) {
+	//void idAnimator::SyncAnimChannels( channelNum /*int*/:number, int fromChannelNum, currentTime/*int*/:number, blendTime/*int*/:number ):void {
 	//	if ( ( channelNum < 0 ) || ( channelNum >= ANIM_NumAnimChannels ) || ( fromChannelNum < 0 ) || ( fromChannelNum >= ANIM_NumAnimChannels ) ) {
 	//		gameLocal.Error( "idAnimator::SyncToChannel : channel out of range" );
 	//	}
@@ -4069,7 +4069,7 @@ class idAnimator {
 	//idAnimator::SetJointPos
 	//=====================
 	//*/
-	//void idAnimator::SetJointPos( jointnum:jointHandle_t, transform_type:jointModTransform_t, pos:idVec3 ) {
+	//void idAnimator::SetJointPos( jointnum:jointHandle_t, transform_type:jointModTransform_t, pos:idVec3 ) :void{
 	//	var/*int*/i:number;
 	//	jointMod_t *jointMod;
 	//
@@ -4109,7 +4109,7 @@ class idAnimator {
 	//idAnimator::SetJointAxis
 	//=====================
 	//*/
-	//void idAnimator::SetJointAxis( jointnum:jointHandle_t, transform_type:jointModTransform_t, const idMat3 &mat ) {
+	//void idAnimator::SetJointAxis( jointnum:jointHandle_t, transform_type:jointModTransform_t, const idMat3 &mat ):void {
 	//	var/*int*/i:number;
 	//	jointMod_t *jointMod;
 	//
@@ -4149,7 +4149,7 @@ class idAnimator {
 	//idAnimator::ClearJoint
 	//=====================
 	//*/
-	//void idAnimator::ClearJoint( jointnum:jointHandle_t ) {
+	//void idAnimator::ClearJoint( jointnum:jointHandle_t ):void {
 	//	var/*int*/i:number;
 	//
 	//	if ( !this.modelDef || !this.modelDef.ModelHandle() || ( jointnum < 0 ) || ( jointnum >= this.numJoints ) ) {
@@ -4167,19 +4167,19 @@ class idAnimator {
 	//		}
 	//	}
 	//}
-	//
-	///*
-	//=====================
-	//idAnimator::ClearAllJoints
-	//=====================
-	//*/
-	//void idAnimator::ClearAllJoints( ) {
-	//	if ( this.jointMods.Num() ) {
-	//		this.ForceUpdate();
-	//	}
-	//	this.jointMods.DeleteContents( true );
-	//}
-	//
+	
+	/*
+	=====================
+	idAnimator::ClearAllJoints
+	=====================
+	*/
+	ClearAllJoints ( ): void {
+		if ( this.jointMods.Num ( ) ) {
+			this.ForceUpdate ( );
+		}
+		this.jointMods.DeleteContents( true );
+	}
+
 	/*
 	=====================
 	idAnimator::ClearAllAnims
@@ -4201,7 +4201,7 @@ class idAnimator {
 	//idAnimator::GetDelta
 	//====================
 	//*/
-	//void idAnimator::GetDelta( int fromtime, int totime, idVec3 &delta ) const {
+	//void idAnimator::GetDelta( int fromtime, int totime, idVec3 &delta ) :void {
 	//	var i:number;
 	//	const idAnimBlend	*blend;
 	//	float				blendWeight;
@@ -4363,7 +4363,7 @@ class idAnimator {
 	//idAnimator::InitAFPose
 	//=====================
 	//*/
-	//void idAnimator::InitAFPose( ) {
+	//void idAnimator::InitAFPose( ):void {
 	//
 	//	if ( !this.modelDef ) {
 	//		return;
@@ -4380,7 +4380,7 @@ class idAnimator {
 	//idAnimator::SetAFPoseJointMod
 	//=====================
 	//*/
-	//void idAnimator::SetAFPoseJointMod( const jointHandle_t jointNum, const AFJointModType_t mod, const idMat3 &axis, const idVec3 &origin ) {
+	//void idAnimator::SetAFPoseJointMod( const jointHandle_t jointNum, const AFJointModType_t mod, const idMat3 &axis, const idVec3 &origin ):void {
 	//	AFPoseJointMods[jointNum].mod = mod;
 	//	AFPoseJointMods[jointNum].axis = axis;
 	//	AFPoseJointMods[jointNum].origin = origin;
@@ -4396,7 +4396,7 @@ class idAnimator {
 	//idAnimator::FinishAFPose
 	//=====================
 	//*/
-	//void idAnimator::FinishAFPose( animNum/*int*/:number, const idBounds &bounds, /*int*/time:number ) {
+	//void idAnimator::FinishAFPose( animNum/*int*/:number, const idBounds &bounds, /*int*/time:number ):void {
 	//	var/*int*/i: number, j: number;
 	//	var numJoints:number /*int*/;
 	//	var parentNum:number /*int*/;
@@ -4575,7 +4575,7 @@ class idAnimator {
 	//idAnimator::ServiceAnims
 	//=====================
 	//*/
-	//void idAnimator::ServiceAnims( int fromtime, int totime ) {
+	//void idAnimator::ServiceAnims( int fromtime, int totime ) :void{
 	//	int			i, j;
 	//	idAnimBlend	*blend;
 	//
