@@ -163,13 +163,13 @@ var AI_GetReachableEntityPosition = new idEventDef(  "getReachableEntityPosition
 
 ////CLASS_DECLARATION( idActor, idAI )
 idAI.CreateInstance = function ( ): idClass {
-	try {
+	//try {
 		var ptr = new idAI;
 		ptr.FindUninitializedMemory ( );
 		return ptr;
-	} catch ( e ) {
-		return null;
-	}
+	//} catch ( e ) {
+	//	return null;
+	//}
 };
 
 idAI.prototype.GetType = function ( ): idTypeInfo {

@@ -37,18 +37,18 @@ If you have questions concerning this license or the applicable additional terms
 //
 //#ifndef __PHYSICS_MONSTER_H__
 //#define __PHYSICS_MONSTER_H__
-//
-///*
-//===================================================================================
-//
-//Monster physics
-//
-//Simulates the motion of a monster through the environment. The monster motion
-//is typically driven by animations.
-//
-//===================================================================================
-//*/
-//
+
+/*
+===================================================================================
+
+Monster physics
+
+Simulates the motion of a monster through the environment. The monster motion
+is typically driven by animations.
+
+===================================================================================
+*/
+
 enum monsterMoveResult_t{
 	MM_OK,
 	MM_SLIDING,
@@ -58,12 +58,30 @@ enum monsterMoveResult_t{
 };
 
 class monsterPState_t {
-	atRest :number/*int*/;
-	onGround:boolean;
+	atRest: number /*int*/;
+	onGround: boolean;
 	origin = new idVec3;
 	velocity = new idVec3;
 	localOrigin = new idVec3;
 	pushVelocity = new idVec3;
+
+	memset0 ( ): void {
+		this.atRest = 0;
+		this.onGround = false;
+		this.origin.memset0 ( );
+		this.velocity.memset0 ( );
+		this.localOrigin.memset0 ( );
+		this.pushVelocity.memset0 ( );
+	}
+
+	opEquals ( other: monsterPState_t ) {
+		this.atRest = other.atRest;
+		this.onGround = other.onGround;
+		this.origin.opEquals( other.origin );
+		this.velocity.opEquals( other.velocity );
+		this.localOrigin.opEquals( other.localOrigin );
+		this.pushVelocity.opEquals( other.pushVelocity );
+	}
 }
 
 class idPhysics_Monster extends idPhysics_Actor {
@@ -153,7 +171,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//
 	// results of last evaluate
 	moveResult: monsterMoveResult_t;
-	blockingEntity:idEntity;
+	blockingEntity: idEntity;
 	//
 	//private:
 	//	void					CheckGround(monsterPState_t &state);
@@ -183,7 +201,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	down = state.origin + gravityNormal * CONTACT_EPSILON;
 	//	gameLocal.clip.Translation( groundTrace, state.origin, down, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 	//
-	//	if ( groundTrace.fraction == 1.0f ) {
+	//	if ( groundTrace.fraction == 1.0 ) {
 	//		state.onGround = false;
 	//		groundEntityPtr = NULL;
 	//		return;
@@ -205,8 +223,8 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	if ( groundTrace.c.entityNum != ENTITYNUM_WORLD && groundEntityPtr.GetEntity() ) {
 	//		impactInfo_t info;
 	//		groundEntityPtr.GetEntity().GetImpactInfo( this.self, groundTrace.c.id, groundTrace.c.point, &info );
-	//		if ( info.invMass != 0.0f ) {
-	//			groundEntityPtr.GetEntity().ApplyImpulse( this.self, 0, groundTrace.c.point, state.velocity  / ( info.invMass * 10.0f ) );
+	//		if ( info.invMass != 0.0 ) {
+	//			groundEntityPtr.GetEntity().ApplyImpulse( this.self, 0, groundTrace.c.point, state.velocity  / ( info.invMass * 10.0 ) );
 	//		}
 	//	}
 	//}
@@ -228,7 +246,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//
 	//		start = tr.endpos;
 	//
-	//		if ( tr.fraction == 1.0f ) {
+	//		if ( tr.fraction == 1.0 ) {
 	//			if ( i > 0 ) {
 	//				return MM_SLIDING;
 	//			}
@@ -280,7 +298,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//		// try to step down so that we walk down slopes and stairs at a normal rate
 	//		down = noStepPos + gravityNormal * this.maxStepHeight;
 	//		gameLocal.clip.Translation( tr, noStepPos, down, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
-	//		if ( tr.fraction < 1.0f ) {
+	//		if ( tr.fraction < 1.0 ) {
 	//			start = tr.endpos;
 	//			return MM_STEPPED;
 	//		} else {
@@ -305,7 +323,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	// try to step up
 	//	up = start - gravityNormal * this.maxStepHeight;
 	//	gameLocal.clip.Translation( tr, start, up, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
-	//	if ( tr.fraction == 0.0f ) {
+	//	if ( tr.fraction == 0.0 ) {
 	//		start = noStepPos;
 	//		velocity = noStepVel;
 	//		return result1;
@@ -370,29 +388,29 @@ class idPhysics_Monster extends idPhysics_Actor {
 	PutToRest( ) :void{
 		this.Rest();
 	}
-	//
-	///*
-	//================
-	//idPhysics_Monster::idPhysics_Monster
-	//================
-	//*/
-	//idPhysics_Monster::idPhysics_Monster( ) {
-	//
-	//	memset( &this.current, 0, sizeof( this.current ) );
-	//	this.current.atRest = -1;
-	//	saved = this.current;
-	//	
-	//	delta.Zero();
-	//	this.maxStepHeight = 18.0f;
-	//	minFloorCosine = 0.7f;
-	//	moveResult = MM_OK;
-	//	forceDeltaMove = false;
-	//	fly = false;
-	//	useVelocityMove = false;
-	//	noImpact = false;
-	//	blockingEntity = NULL;
-	//}
-	//
+	
+	/*
+	================
+	idPhysics_Monster::idPhysics_Monster
+	================
+	*/
+	constructor( ) {
+		super ( );
+		this.current.memset0 ( );	//memset( &this.current, 0, sizeof( this.current ) );
+		this.current.atRest = -1;
+		this.saved .opEquals( this.current );
+		
+		this.delta.Zero();
+		this.maxStepHeight = 18.0;
+		this.minFloorCosine = 0.7;
+		this.moveResult = monsterMoveResult_t.MM_OK;
+		this.forceDeltaMove = false;
+		this.fly = false;
+		this.useVelocityMove = false;
+		this.noImpact = false;
+		this.blockingEntity = null;
+	}
+	
 	///*
 	//================
 	//idPhysics_Monster_SavePState
@@ -619,8 +637,8 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	} else {
 	//		upspeed = this.current.velocity.z;
 	//	}
-	//	if ( fly || ( !forceDeltaMove && ( !this.current.onGround || upspeed > 1.0f ) ) ) {
-	//		if ( upspeed < 0.0f ) {
+	//	if ( fly || ( !forceDeltaMove && ( !this.current.onGround || upspeed > 1.0 ) ) ) {
+	//		if ( upspeed < 0.0 ) {
 	//			moveResult = MM_FALLING;
 	//		}
 	//		else {
@@ -905,9 +923,9 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	msg.WriteDeltaFloat( this.current.origin[0], this.current.localOrigin[0] );
 	//	msg.WriteDeltaFloat( this.current.origin[1], this.current.localOrigin[1] );
 	//	msg.WriteDeltaFloat( this.current.origin[2], this.current.localOrigin[2] );
-	//	msg.WriteDeltaFloat( 0.0f, this.current.pushVelocity[0], MONSTER_VELOCITY_EXPONENT_BITS, MONSTER_VELOCITY_MANTISSA_BITS );
-	//	msg.WriteDeltaFloat( 0.0f, this.current.pushVelocity[1], MONSTER_VELOCITY_EXPONENT_BITS, MONSTER_VELOCITY_MANTISSA_BITS );
-	//	msg.WriteDeltaFloat( 0.0f, this.current.pushVelocity[2], MONSTER_VELOCITY_EXPONENT_BITS, MONSTER_VELOCITY_MANTISSA_BITS );
+	//	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[0], MONSTER_VELOCITY_EXPONENT_BITS, MONSTER_VELOCITY_MANTISSA_BITS );
+	//	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[1], MONSTER_VELOCITY_EXPONENT_BITS, MONSTER_VELOCITY_MANTISSA_BITS );
+	//	msg.WriteDeltaFloat( 0.0, this.current.pushVelocity[2], MONSTER_VELOCITY_EXPONENT_BITS, MONSTER_VELOCITY_MANTISSA_BITS );
 	//	msg.WriteLong( this.current.atRest );
 	//	msg.WriteBits( this.current.onGround, 1 );
 	//}
@@ -927,9 +945,9 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	this.current.localOrigin[0] = msg.ReadDeltaFloat( this.current.origin[0] );
 	//	this.current.localOrigin[1] = msg.ReadDeltaFloat( this.current.origin[1] );
 	//	this.current.localOrigin[2] = msg.ReadDeltaFloat( this.current.origin[2] );
-	//	this.current.pushVelocity[0] = msg.ReadDeltaFloat( 0.0f, MONSTER_VELOCITY_EXPONENT_BITS, MONSTER_VELOCITY_MANTISSA_BITS );
-	//	this.current.pushVelocity[1] = msg.ReadDeltaFloat( 0.0f, MONSTER_VELOCITY_EXPONENT_BITS, MONSTER_VELOCITY_MANTISSA_BITS );
-	//	this.current.pushVelocity[2] = msg.ReadDeltaFloat( 0.0f, MONSTER_VELOCITY_EXPONENT_BITS, MONSTER_VELOCITY_MANTISSA_BITS );
+	//	this.current.pushVelocity[0] = msg.ReadDeltaFloat( 0.0, MONSTER_VELOCITY_EXPONENT_BITS, MONSTER_VELOCITY_MANTISSA_BITS );
+	//	this.current.pushVelocity[1] = msg.ReadDeltaFloat( 0.0, MONSTER_VELOCITY_EXPONENT_BITS, MONSTER_VELOCITY_MANTISSA_BITS );
+	//	this.current.pushVelocity[2] = msg.ReadDeltaFloat( 0.0, MONSTER_VELOCITY_EXPONENT_BITS, MONSTER_VELOCITY_MANTISSA_BITS );
 	//	this.current.atRest = msg.ReadLong();
 	//	this.current.onGround = msg.ReadBits( 1 ) != 0;
 	//}

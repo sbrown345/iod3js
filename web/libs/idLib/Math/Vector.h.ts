@@ -896,22 +896,22 @@ class idVec3 {
 ////	return &x;
 ////}
 
-////ID_INLINE void idVec3::NormalVectors( idVec3 &left, idVec3 &down ) const {
-////	float d;
+	NormalVectors ( left: idVec3, down: idVec3 ): void {
+		var /*float */d: number;
 
-////	d = this.x * this.x + this.y * this.y;
-////	if ( !d ) {
-////		left[0] = 1;
-////		left[1] = 0;
-////		left[2] = 0;
-////	} else {
-////		d = idMath.InvSqrt( d );
-////		left[0] = -y * d;
-////		left[1] = this.x * d;
-////		left[2] = 0;
-////	}
-////	down = left.Cross( *this );
-////}
+		d = this.x * this.x + this.y * this.y;
+		if ( !d ) {
+			left[0] = 1;
+			left[1] = 0;
+			left[2] = 0;
+		} else {
+			d = idMath.InvSqrt( d );
+			left[0] = -this.y * d;
+			left[1] = this.x * d;
+			left[2] = 0;
+		}
+		down.opEquals( left.Cross( this ) );
+	}
 
 	OrthogonalBasis ( left: idVec3, up: idVec3 ): void {
 		var /*float */l: number, s: number;

@@ -191,6 +191,12 @@ class idAngles {
 ////	return idAngles(-pitch, -this.yaw, -this.roll);
 ////}
 
+	copy ( dest: idAngles = null ): idAngles {
+		dest = dest || new idAngles;
+		dest.opEquals( this );
+		return dest;
+	}
+
 	opEquals ( a: idAngles ): idAngles {
 		this.pitch = a.pitch;
 		this.yaw = a.yaw;

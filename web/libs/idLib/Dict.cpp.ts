@@ -274,11 +274,10 @@ class idDict {
 	GetBool ( key: string, defaultString: string = "0" ): boolean {
 		return ( atoi( this.GetString( key, defaultString ) ) != 0 );
 	}
- 
+
 	GetVector ( key: string, defaultString: string = null ): idVec3 {
 		var out = new idVec3;
-		todoThrow ( );
-		//GetVector( key, defaultString, out );
+		this.GetVector_R( key, defaultString, out );
 		return out;
 	}
 

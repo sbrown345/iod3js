@@ -454,7 +454,7 @@ idScriptObject::GetFunction
 idScriptObject::GetVariable
 ============
 */
-	GetVariable ( name: string, etype: etype_t ): /*Uint8Array*/number {
+	GetVariable ( name: string, etype: etype_t ): Uint8Array {
 		var i: number /*int*/;
 		var /*int*/pos: number;
 		var t: idTypeDef;
@@ -477,7 +477,8 @@ idScriptObject::GetVariable
 					if ( etype != parm.FieldType ( ).Type ( ) ) {
 						return null;
 					}
-					return this.data[pos];
+					todo( "a pointer to something or what?" );
+					return this.data.subarray(pos);
 				}
 
 				if ( parm.FieldType ( ).Inherits( type_object ) ) {

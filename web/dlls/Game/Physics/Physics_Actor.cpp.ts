@@ -105,7 +105,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	//
 	//protected:
 	clipModel: idClipModel; // clip model used for collision detection
-	clipModelAxis = new idMat3; // axis of clip model aligned with gravity direction
+	clipModelAxis: idMat3; /*= new idMat3;  */ // axis of clip model aligned with gravity direction
 
 	// derived properties
 	mass: number /*float*/;
@@ -139,6 +139,8 @@ class idPhysics_Actor extends idPhysics_Base {
 		this.masterYaw = 0.0;
 		this.masterDeltaYaw = 0.0;
 		this.groundEntityPtr = null;
+
+		assert(this.clipModelAxis); // it should have been created in SetClipModelAxis
 	}
 
 	/*
@@ -199,20 +201,22 @@ class idPhysics_Actor extends idPhysics_Base {
 	================
 	*/
 	SetClipModelAxis ( ): void {
-		todoThrow ( );
-		//// align clip model to gravity direction
-		//if ( ( gravityNormal[2] == -1.0 ) || ( gravityNormal == vec3_zero ) ) {
-		//	this.clipModelAxis.Identity();
-		//}
-		//else {
-		//	this.clipModelAxis[2] = -gravityNormal;
-		//	this.clipModelAxis[2].NormalVectors( this.clipModelAxis[0], this.clipModelAxis[1] );
-		//	this.clipModelAxis[1] = -this.clipModelAxis[1];
-		//}
+		if ( !this.clipModelAxis ) {
+			this.clipModelAxis = new idMat3; // it hasn't been created yet in the relevant ctor
+		}
 
-		//if ( this.clipModel ) {
-		//	this.clipModel.Link( gameLocal.clip, this.self, 0, this.clipModel.GetOrigin(), this.clipModelAxis );
-		//}
+		// align clip model to gravity direction
+		if ( ( this.gravityNormal[2] == -1.0 ) || ( this.gravityNormal.opEqualTo( vec3_zero ) ) ) {
+			this.clipModelAxis.Identity ( );
+		} else {
+			this.clipModelAxis[2].opEquals( this.gravityNormal.opUnaryMinus ( ) );
+			this.clipModelAxis[2].NormalVectors( this.clipModelAxis[0], this.clipModelAxis[1] );
+			this.clipModelAxis[1].opEquals( this.clipModelAxis[1].opUnaryMinus ( ) );
+		}
+
+		if ( this.clipModel ) {
+			this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.clipModel.GetOrigin ( ), this.clipModelAxis );
+		}
 	}
 
 	/*

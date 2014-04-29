@@ -336,7 +336,7 @@ class idAI extends idActor {
 	missileLaunchOffset = new idList<idVec3>(idVec3);
 
 	projectileDef: idDict;
-	projectileClipModel = new idClipModel;
+	projectileClipModel: idClipModel;
 	projectileRadius :number/*float*/;
 	projectileSpeed :number/*float*/;
 	projectileVelocity = new idVec3;
@@ -1098,196 +1098,192 @@ class idAI extends idActor {
 	idAI::Spawn
 	=====================
 	*/
-	Spawn(): void {
-			var jointname:string;
-			var kv:idKeyValue;
-			var jointName = new idStr;
-			var jointScale = new idAngles;
-			var joint: jointHandle_t;
-			var local_dir = new idVec3;
-			var talks:boolean;
-		
-			if ( !g_monsters.GetBool() ) {
-				this.PostEventMS( EV_Remove, 0 );
-				return;
-			}
-		
-		this.team = this.spawnArgs.GetInt(	"team",					"1");
-		this.rank=	this.spawnArgs.GetInt(	"rank",					"0"		 );
-		this.fly_offset=this.spawnArgs.GetInt(	"fly_offset",			"0" );
-		this.fly_speed = this.spawnArgs.GetFloat("fly_speed", "100");
-		this.fly_bob_strength = this.spawnArgs.GetFloat("fly_bob_strength", "50");
-		this.fly_bob_horz = this.spawnArgs.GetFloat("fly_bob_vert", "2");
-		this.fly_bob_vert = this.spawnArgs.GetFloat("fly_bob_horz", "2.7");
-		this.fly_seek_scale = this.spawnArgs.GetFloat("fly_seek_scale", "4");
-		this.fly_roll_scale = this.spawnArgs.GetFloat("fly_roll_scale", "90");
-		this.fly_roll_max = this.spawnArgs.GetFloat("fly_roll_max", "60");
-		this.fly_pitch_scale = this.spawnArgs.GetFloat("fly_pitch_scale", "45");
-		this.fly_pitch_max =		this.spawnArgs.GetFloat( "fly_pitch_max",		"30"			);
-		
-		this.melee_range=this.spawnArgs.GetFloat( "melee_range",			"64"		 );
-		this.projectile_height_to_distance_ratio=this.spawnArgs.GetFloat( "projectile_height_to_distance_ratio",	"1"  );
-			
-		this.turnRate=this.spawnArgs.GetFloat( "turn_rate",			"360");
-		
-		talks = this.spawnArgs.GetBool( "talks",					"0"		 );
-if (this.spawnArgs.GetString("npc_name", null ) != null ) {
-				if ( talks ) {
-					this.talk_state = talkState_t.TALK_OK;
-				} else {
-					this.talk_state = talkState_t.TALK_BUSY;
-				}
+	Spawn ( ): void {
+		var jointname: string;
+		var kv: idKeyValue;
+		var jointName = new idStr;
+		var jointScale = new idAngles;
+		var joint: jointHandle_t;
+		var local_dir = new idVec3;
+		var talks: boolean;
+
+		if ( !g_monsters.GetBool ( ) ) {
+			this.PostEventMS( EV_Remove, 0 );
+			return;
+		}
+
+		this.team = this.spawnArgs.GetInt( "team", "1" );
+		this.rank = this.spawnArgs.GetInt( "rank", "0" );
+		this.fly_offset = this.spawnArgs.GetInt( "fly_offset", "0" );
+		this.fly_speed = this.spawnArgs.GetFloat( "fly_speed", "100" );
+		this.fly_bob_strength = this.spawnArgs.GetFloat( "fly_bob_strength", "50" );
+		this.fly_bob_horz = this.spawnArgs.GetFloat( "fly_bob_vert", "2" );
+		this.fly_bob_vert = this.spawnArgs.GetFloat( "fly_bob_horz", "2.7" );
+		this.fly_seek_scale = this.spawnArgs.GetFloat( "fly_seek_scale", "4" );
+		this.fly_roll_scale = this.spawnArgs.GetFloat( "fly_roll_scale", "90" );
+		this.fly_roll_max = this.spawnArgs.GetFloat( "fly_roll_max", "60" );
+		this.fly_pitch_scale = this.spawnArgs.GetFloat( "fly_pitch_scale", "45" );
+		this.fly_pitch_max = this.spawnArgs.GetFloat( "fly_pitch_max", "30" );
+
+		this.melee_range = this.spawnArgs.GetFloat( "melee_range", "64" );
+		this.projectile_height_to_distance_ratio = this.spawnArgs.GetFloat( "projectile_height_to_distance_ratio", "1" );
+
+		this.turnRate = this.spawnArgs.GetFloat( "turn_rate", "360" );
+
+		talks = this.spawnArgs.GetBool( "talks", "0" );
+		if ( this.spawnArgs.GetString( "npc_name", null ) != null ) {
+			if ( talks ) {
+				this.talk_state = talkState_t.TALK_OK;
 			} else {
-				this.talk_state = talkState_t.TALK_NEVER;
+				this.talk_state = talkState_t.TALK_BUSY;
 			}
-		
-		this.disableGravity		=	this.spawnArgs.GetBool("animate_z", "0");
-		this.af_push_moveables =	this.spawnArgs.GetBool("af_push_moveables", "0");
-		this.kickForce =	this.spawnArgs.GetFloat("kick_force", "4096");
-		this.ignore_obstacles =	this.spawnArgs.GetBool("ignore_obstacles", "0");
-		this.blockedRadius =	this.spawnArgs.GetFloat("blockedRadius", "-1");
-		this.blockedMoveTime =	this.spawnArgs.GetInt("blockedMoveTime", "750");
-		this.blockedAttackTime =	this.spawnArgs.GetInt("blockedAttackTime", "750");
-		
-		this.num_cinematics =this.spawnArgs.GetInt("num_cinematics", "0");
+		} else {
+			this.talk_state = talkState_t.TALK_NEVER;
+		}
+
+		this.disableGravity = this.spawnArgs.GetBool( "animate_z", "0" );
+		this.af_push_moveables = this.spawnArgs.GetBool( "af_push_moveables", "0" );
+		this.kickForce = this.spawnArgs.GetFloat( "kick_force", "4096" );
+		this.ignore_obstacles = this.spawnArgs.GetBool( "ignore_obstacles", "0" );
+		this.blockedRadius = this.spawnArgs.GetFloat( "blockedRadius", "-1" );
+		this.blockedMoveTime = this.spawnArgs.GetInt( "blockedMoveTime", "750" );
+		this.blockedAttackTime = this.spawnArgs.GetInt( "blockedAttackTime", "750" );
+
+		this.num_cinematics = this.spawnArgs.GetInt( "num_cinematics", "0" );
 
 
+		this.current_cinematic = 0;
 
+		this.LinkScriptVariables ( );
 
-
-
-			this.current_cinematic = 0;
-		
-			this.LinkScriptVariables();
-		
-		this.	fl.takedamage		= !this.spawnArgs.GetBool( "noDamage" );
+		this.fl.takedamage = !this.spawnArgs.GetBool( "noDamage" );
 		this.enemy.opEquals( null );
-			this.allowMove			= true;
-			this.allowHiddenMovement = false;
-		
-			this.animator.RemoveOriginOffset( true );
-		
-			// create combat collision hull for exact collision detection
-			this.SetCombatModel();
+		this.allowMove = true;
+		this.allowHiddenMovement = false;
+
+		this.animator.RemoveOriginOffset( true );
+
+		// create combat collision hull for exact collision detection
+		this.SetCombatModel ( );
 
 		this.lookMin.opEquals( this.spawnArgs.GetAngles( "look_min", "-80 -75 0" ) );
-		this.lookMax.opEquals( this. spawnArgs.GetAngles( "look_max", "80 75 0" ));
-		
-			this.lookJoints.SetGranularity( 1 );
-			this.lookJointAngles.SetGranularity( 1 );
+		this.lookMax.opEquals( this.spawnArgs.GetAngles( "look_max", "80 75 0" ) );
+
+		this.lookJoints.SetGranularity( 1 );
+		this.lookJointAngles.SetGranularity( 1 );
 		kv = this.spawnArgs.MatchPrefix( "look_joint", null );
-			while( kv ) {
-				jointName .opEquals( kv.GetKey());
-				jointName.StripLeadingOnce( "look_joint " );
-				joint = this.animator.GetJointHandle( jointName .data);
-				if ( joint == jointHandle_t.INVALID_JOINT ) {
-					gameLocal.Warning( "Unknown look_joint '%s' on entity %s", jointName.c_str(), this.name.c_str() );
-				} else {
-					jointScale = this.spawnArgs.GetAngles( kv.GetKey().data, "0 0 0" );
-					jointScale.roll = 0.0;
-		
-					// if no scale on any component, then don't bother adding it.  this may be done to
-					// zero out rotation from an inherited entitydef.
-					if ( jointScale != ang_zero ) {
-						this.lookJoints.Append( joint );
-						this.lookJointAngles.Append( jointScale );
-					}
+		while ( kv ) {
+			jointName.opEquals( kv.GetKey ( ) );
+			jointName.StripLeadingOnce( "look_joint " );
+			joint = this.animator.GetJointHandle( jointName.data );
+			if ( joint == jointHandle_t.INVALID_JOINT ) {
+				gameLocal.Warning( "Unknown look_joint '%s' on entity %s", jointName.c_str ( ), this.name.c_str ( ) );
+			} else {
+				jointScale = this.spawnArgs.GetAngles( kv.GetKey ( ).data, "0 0 0" );
+				jointScale.roll = 0.0;
+
+				// if no scale on any component, then don't bother adding it.  this may be done to
+				// zero out rotation from an inherited entitydef.
+				if ( jointScale != ang_zero ) {
+					this.lookJoints.Append( joint );
+					this.lookJointAngles.Append( jointScale );
 				}
-				kv = this.spawnArgs.MatchPrefix( "look_joint", kv );
 			}
-		
-			// calculate joint positions on attack frames so we can do proper "can hit" tests
-			this.CalculateAttackOffsets();
-		
-		this.eyeMin = this.spawnArgs.GetAngles("eye_turn_min", "-10 -30 0");
-		this.eyeMax = this.spawnArgs.GetAngles("eye_turn_max", "10 30 0");
-		this.eyeVerticalOffset = this.spawnArgs.GetFloat("eye_verticle_offset", "5");
-		this.eyeHorizontalOffset = this.spawnArgs.GetFloat("eye_horizontal_offset", "-8");
-		this.eyeFocusRate = this.spawnArgs.GetFloat("eye_focus_rate", "0.5");
+			kv = this.spawnArgs.MatchPrefix( "look_joint", kv );
+		}
+
+		// calculate joint positions on attack frames so we can do proper "can hit" tests
+		this.CalculateAttackOffsets ( );
+
+		this.eyeMin.opEquals( this.spawnArgs.GetAngles( "eye_turn_min", "-10 -30 0" ) );
+		this.eyeMax.opEquals(this.spawnArgs.GetAngles( "eye_turn_max", "10 30 0" ) );
+		this.eyeVerticalOffset = this.spawnArgs.GetFloat( "eye_verticle_offset", "5" );
+		this.eyeHorizontalOffset = this.spawnArgs.GetFloat( "eye_horizontal_offset", "-8" );
+		this.eyeFocusRate = this.spawnArgs.GetFloat( "eye_focus_rate", "0.5" );
 		this.headFocusRate = this.spawnArgs.GetFloat( "head_focus_rate", "0.1" );
-		this.focusAlignTime = SEC2MS(this.spawnArgs.GetFloat( "focus_align_time", "1" ) );
-		
-			this.flashJointWorld = this.animator.GetJointHandle( "flash" );
-		
-			if ( this.head.GetEntity() ) {
-				var headAnimator: idAnimator= this.head.GetEntity().GetAnimator();
-		
-				jointname = this.spawnArgs.GetString( "bone_focus" );
-				if ( jointname ) {
-					this.focusJoint = headAnimator.GetJointHandle( jointname );
-					if ( this.focusJoint == jointHandle_t.INVALID_JOINT ) {
-						gameLocal.Warning( "Joint '%s' not found on head on '%s'", jointname, this.name.c_str() );
-					}
-				}
-			} else {
-				jointname = this. spawnArgs.GetString( "bone_focus" );
-				if ( jointname ) {
-					this.focusJoint = this.animator.GetJointHandle( jointname );
-					if ( this.focusJoint == jointHandle_t.INVALID_JOINT ) {
-						gameLocal.Warning( "Joint '%s' not found on '%s'", jointname, this.name.c_str() );
-					}
-				}
-			}
-		
-		jointname = this. spawnArgs.GetString( "bone_orientation" );
+		this.focusAlignTime = SEC2MS( this.spawnArgs.GetFloat( "focus_align_time", "1" ) );
+
+		this.flashJointWorld = this.animator.GetJointHandle( "flash" );
+
+		if ( this.head.GetEntity ( ) ) {
+			var headAnimator: idAnimator = this.head.GetEntity ( ).GetAnimator ( );
+
+			jointname = this.spawnArgs.GetString( "bone_focus" );
 			if ( jointname ) {
-				this.orientationJoint = this.animator.GetJointHandle( jointname );
-				if ( this.orientationJoint == jointHandle_t.INVALID_JOINT ) {
-					gameLocal.Warning( "Joint '%s' not found on '%s'", jointname, this.name.c_str() );
+				this.focusJoint = headAnimator.GetJointHandle( jointname );
+				if ( this.focusJoint == jointHandle_t.INVALID_JOINT ) {
+					gameLocal.Warning( "Joint '%s' not found on head on '%s'", jointname, this.name.c_str ( ) );
 				}
 			}
-		
-			jointname = this.spawnArgs.GetString( "bone_flytilt" );
+		} else {
+			jointname = this.spawnArgs.GetString( "bone_focus" );
 			if ( jointname ) {
-				this.flyTiltJoint = this.animator.GetJointHandle( jointname );
-				if ( this.flyTiltJoint == jointHandle_t.INVALID_JOINT ) {
-					gameLocal.Warning( "Joint '%s' not found on '%s'", jointname, this.name.c_str() );
+				this.focusJoint = this.animator.GetJointHandle( jointname );
+				if ( this.focusJoint == jointHandle_t.INVALID_JOINT ) {
+					gameLocal.Warning( "Joint '%s' not found on '%s'", jointname, this.name.c_str ( ) );
 				}
 			}
-		
-			this.InitMuzzleFlash();
-		
-			this.physicsObj.SetSelf( this );
-			this.physicsObj.SetClipModel( new idClipModel( this.GetPhysics().GetClipModel() ), 1.0 );
-			this.physicsObj.SetMass( this.spawnArgs.GetFloat( "mass", "100" ) );
-		
-			if ( this.spawnArgs.GetBool( "big_monster" ) ) {
-				this.physicsObj.SetContents( 0 );
-				this.physicsObj.SetClipMask( MASK_MONSTERSOLID & ~contentsFlags_t.CONTENTS_BODY );
-			} else {
-				if ( this.use_combat_bbox ) {
-					this.physicsObj.SetContents( contentsFlags_t.CONTENTS_BODY|contentsFlags_t.CONTENTS_SOLID );
-				} else {
-					this.physicsObj.SetContents( contentsFlags_t.CONTENTS_BODY );
-				}
-				this.physicsObj.SetClipMask( MASK_MONSTERSOLID );
+		}
+
+		jointname = this.spawnArgs.GetString( "bone_orientation" );
+		if ( jointname ) {
+			this.orientationJoint = this.animator.GetJointHandle( jointname );
+			if ( this.orientationJoint == jointHandle_t.INVALID_JOINT ) {
+				gameLocal.Warning( "Joint '%s' not found on '%s'", jointname, this.name.c_str ( ) );
 			}
-		
-			// move up to make sure the monster is at least an epsilon above the floor
-			this.physicsObj.SetOrigin( this.GetPhysics().GetOrigin() .opAddition( new idVec3( 0, 0, CM_CLIP_EPSILON ) ));
-			
-			if ( this.num_cinematics ) {
-				this.physicsObj.SetGravity( vec3_origin );
-			} else {
-				var gravity = this.spawnArgs.GetVector( "gravityDir", "0 0 -1" );
-				gravity.opMultiplicationAssignment( g_gravity.GetFloat ( ) );
-				this.physicsObj.SetGravity( gravity );
+		}
+
+		jointname = this.spawnArgs.GetString( "bone_flytilt" );
+		if ( jointname ) {
+			this.flyTiltJoint = this.animator.GetJointHandle( jointname );
+			if ( this.flyTiltJoint == jointHandle_t.INVALID_JOINT ) {
+				gameLocal.Warning( "Joint '%s' not found on '%s'", jointname, this.name.c_str ( ) );
 			}
-		
-			this.SetPhysics( this.physicsObj );
-		
-			this.physicsObj.GetGravityAxis().ProjectVector( this.viewAxis[ 0 ], local_dir );
-			this.current_yaw		= local_dir.ToYaw();
-			this.ideal_yaw		= idMath.AngleNormalize180( this.current_yaw );
-		
-			this.move.blockTime = 0;
-		
-			this.SetAAS();
-		
-			this.projectile		= null;
+		}
+
+		this.InitMuzzleFlash ( );
+
+		this.physicsObj.SetSelf( this );
+		this.physicsObj.SetClipModel( new idClipModel( this.GetPhysics ( ).GetClipModel ( ) ), 1.0 );
+		this.physicsObj.SetMass( this.spawnArgs.GetFloat( "mass", "100" ) );
+
+		if ( this.spawnArgs.GetBool( "big_monster" ) ) {
+			this.physicsObj.SetContents( 0 );
+			this.physicsObj.SetClipMask( MASK_MONSTERSOLID & ~contentsFlags_t.CONTENTS_BODY );
+		} else {
+			if ( this.use_combat_bbox ) {
+				this.physicsObj.SetContents( contentsFlags_t.CONTENTS_BODY | contentsFlags_t.CONTENTS_SOLID );
+			} else {
+				this.physicsObj.SetContents( contentsFlags_t.CONTENTS_BODY );
+			}
+			this.physicsObj.SetClipMask( MASK_MONSTERSOLID );
+		}
+
+		// move up to make sure the monster is at least an epsilon above the floor
+		this.physicsObj.SetOrigin( this.GetPhysics ( ).GetOrigin ( ).opAddition( new idVec3( 0, 0, CM_CLIP_EPSILON ) ) );
+
+		if ( this.num_cinematics ) {
+			this.physicsObj.SetGravity( vec3_origin );
+		} else {
+			var gravity = this.spawnArgs.GetVector( "gravityDir", "0 0 -1" );
+			gravity.opMultiplicationAssignment( g_gravity.GetFloat ( ) );
+			this.physicsObj.SetGravity( gravity );
+		}
+
+		this.SetPhysics( this.physicsObj );
+
+		this.physicsObj.GetGravityAxis ( ).ProjectVector( this.viewAxis[0], local_dir );
+		this.current_yaw = local_dir.ToYaw ( );
+		this.ideal_yaw = idMath.AngleNormalize180( this.current_yaw );
+
+		this.move.blockTime = 0;
+
+		this.SetAAS ( );
+
+		this.projectile.opEquals( null);
 		this.projectileDef = null;
 		this.projectileClipModel = null;
-		var projectileName = new idStr ;
+		var projectileName = new idStr;
 		if ( this.spawnArgs.GetString_RidStr( "def_projectile", "", projectileName ) && projectileName.Length ( ) ) {
 			this.projectileDef = gameLocal.FindEntityDefDict( projectileName.data );
 			this.CreateProjectile( vec3_origin, this.viewAxis[0] );
@@ -1295,41 +1291,41 @@ if (this.spawnArgs.GetString("npc_name", null ) != null ) {
 			this.projectileVelocity.opEquals( idProjectile.GetVelocity( this.projectileDef ) );
 			this.projectileGravity.opEquals( idProjectile.GetGravity( this.projectileDef ) );
 			this.projectileSpeed = this.projectileVelocity.Length ( );
-			delete this.projectile.GetEntity ( );
-			this.projectile = null;
+			$delete( this.projectile.GetEntity ( ) );
+			this.projectile.opEquals( null);
 		}
 
-		this.particles.Clear();
-			this.restartParticles = true;
-			this.useBoneAxis = this.spawnArgs.GetBool( "useBoneAxis" );
-			this.SpawnParticles( "smokeParticleSystem" );
-		
-			if ( this.num_cinematics || this.spawnArgs.GetBool( "hide" ) || this.spawnArgs.GetBool( "teleport" ) || this.spawnArgs.GetBool( "trigger_anim" ) ) {
-				this.fl.takedamage = false;
-				this.physicsObj.SetContents( 0 );
-				this.physicsObj.GetClipModel().Unlink();
-				this.Hide();
-			} else {
-				// play a looping ambient sound if we have one
-				this.StartSound("snd_ambient", gameSoundChannel_t.SND_CHANNEL_AMBIENT, 0, false, null );
-			}
-		
-			if ( this.health <= 0 ) {
-				gameLocal.Warning( "entity '%s' doesn't have health set", this.name.c_str() );
-				this.health = 1;
-			}
-		
-			// set up monster chatter
-			this.SetChatSound();
-		
-			this.BecomeActive( TH_THINK );
-		
-			if ( this.af_push_moveables ) {
-				this.af.SetupPose( this, gameLocal.time );
-				this.af.GetPhysics().EnableClip();
-			}
-		
-			// init the move variables
+		this.particles.Clear ( );
+		this.restartParticles = true;
+		this.useBoneAxis = this.spawnArgs.GetBool( "useBoneAxis" );
+		this.SpawnParticles( "smokeParticleSystem" );
+
+		if ( this.num_cinematics || this.spawnArgs.GetBool( "hide" ) || this.spawnArgs.GetBool( "teleport" ) || this.spawnArgs.GetBool( "trigger_anim" ) ) {
+			this.fl.takedamage = false;
+			this.physicsObj.SetContents( 0 );
+			this.physicsObj.GetClipModel ( ).Unlink ( );
+			this.Hide ( );
+		} else {
+			// play a looping ambient sound if we have one
+			this.StartSound( "snd_ambient", gameSoundChannel_t.SND_CHANNEL_AMBIENT, 0, false, null );
+		}
+
+		if ( this.health <= 0 ) {
+			gameLocal.Warning( "entity '%s' doesn't have health set", this.name.c_str ( ) );
+			this.health = 1;
+		}
+
+		// set up monster chatter
+		this.SetChatSound ( );
+
+		this.BecomeActive( TH_THINK );
+
+		if ( this.af_push_moveables ) {
+			this.af.SetupPose( this, gameLocal.time );
+			this.af.GetPhysics ( ).EnableClip ( );
+		}
+
+		// init the move variables
 		this.StopMove( moveStatus_t.MOVE_STATUS_DONE );
 	}
 
@@ -3967,7 +3963,7 @@ idAI::SpawnParticlesOnJoint
 ////		return;
 ////	}
 ////
-////	talkTarget = actor;
+////	talkTarget .opEquals(actor;
 ////	if ( actor ) {
 ////		this.AI_TALK = true;
 ////	} else {
@@ -4074,9 +4070,9 @@ idAI::SpawnParticlesOnJoint
 ////		return;
 ////	}
 ////
-////	lastVisibleReachableEnemyPos = lastReachableEnemyPos;
-////	lastVisibleEnemyEyeOffset = enemyEnt.EyeOffset();
-////	lastVisibleEnemyPos = enemyEnt.GetPhysics().GetOrigin();
+////	lastVisibleReachableEnemyPos .opEquals( lastReachableEnemyPos;
+////	lastVisibleEnemyEyeOffset .opEquals( enemyEnt.EyeOffset();
+////	lastVisibleEnemyPos .opEquals( enemyEnt.GetPhysics().GetOrigin();
 ////	if ( this.move.moveType == MOVETYPE_FLY ) {
 ////		pos = lastVisibleEnemyPos;
 ////		onGround = true;
@@ -4097,7 +4093,7 @@ idAI::SpawnParticlesOnJoint
 ////	// when we don't have an AAS, we can't tell if an enemy is reachable or not,
 ////	// so just assume that he is.
 ////	if ( !this.aas ) {
-////		lastVisibleReachableEnemyPos = lastVisibleEnemyPos;
+////		lastVisibleReachableEnemyPos .opEquals( lastVisibleEnemyPos;
 ////		if ( this.move.moveCommand == moveCommand_t.MOVE_TO_ENEMY ) {
 ////			this.AI_DEST_UNREACHABLE = false;
 ////		}
@@ -4119,7 +4115,7 @@ idAI::SpawnParticlesOnJoint
 ////			const idVec3 &org = this.physicsObj.GetOrigin();
 ////			areaNum = PointReachableAreaNum( org );
 ////			if ( PathToGoal( path, areaNum, org, enemyAreaNum, pos ) ) {
-////				lastVisibleReachableEnemyPos = pos;
+////				lastVisibleReachableEnemyPos .opEquals(pos;
 ////				lastVisibleReachableEnemyAreaNum = enemyAreaNum;
 ////				if ( this.move.moveCommand == moveCommand_t.MOVE_TO_ENEMY ) {
 ////					this.AI_DEST_UNREACHABLE = false;
@@ -4185,13 +4181,13 @@ idAI::SpawnParticlesOnJoint
 ////		// so just assume that he is.
 ////		if ( !this.aas ) {
 ////			enemyAreaNum = 0;
-////			lastReachableEnemyPos = enemyPos;
+////			lastReachableEnemyPos .opEquals( enemyPos;
 ////		} else {
 ////			enemyAreaNum = PointReachableAreaNum( enemyPos, 1.0 );
 ////			if ( enemyAreaNum ) {
 ////				areaNum = PointReachableAreaNum( org );
 ////				if ( PathToGoal( path, areaNum, org, enemyAreaNum, enemyPos ) ) {
-////					lastReachableEnemyPos = enemyPos;
+////					lastReachableEnemyPos .opEquals( enemyPos;
 ////				}
 ////			}
 ////		}
@@ -4251,12 +4247,12 @@ idAI::SpawnParticlesOnJoint
 ////		SetEnemyPosition();
 ////		this.SetChatSound();
 ////
-////		lastReachableEnemyPos = lastVisibleEnemyPos;
-////		lastVisibleReachableEnemyPos = lastReachableEnemyPos;
+////		lastReachableEnemyPos .opEquals( lastVisibleEnemyPos;
+////		lastVisibleReachableEnemyPos .opEquals( lastReachableEnemyPos;
 ////		enemyAreaNum = PointReachableAreaNum( lastReachableEnemyPos, 1.0 );
 ////		if ( this.aas && enemyAreaNum ) {
 ////			this.aas.PushPointIntoAreaNum( enemyAreaNum, lastReachableEnemyPos );
-////			lastVisibleReachableEnemyPos = lastReachableEnemyPos;
+////			lastVisibleReachableEnemyPos .opEquals( lastReachableEnemyPos;
 ////		}
 ////	}
 ////}
@@ -4426,7 +4422,7 @@ calculate joint positions on attack frames so we can do proper "can hit" tests
 ////=====================
 ////*/
 ////void idAI::BeginAttack( name:string ) {
-////	attack = name;
+////	attack .opEquals(name;
 ////	lastAttackTime = gameLocal.time;
 ////}
 ////
@@ -4436,7 +4432,7 @@ calculate joint positions on attack frames so we can do proper "can hit" tests
 ////=====================
 ////*/
 ////void idAI::EndAttack( ) {
-////	attack = "";
+////	attack .opEquals( "";
 ////}
 
 /*
@@ -4475,7 +4471,7 @@ idAI::CreateProjectile
 ////void idAI::RemoveProjectile( ) {
 ////	if ( this.projectile.GetEntity() ) {
 ////		this.projectile.GetEntity().PostEventMS( &EV_Remove, 0 );
-////		this.projectile = NULL;
+////		this.projectile .opEquals( NULL;
 ////	}
 ////}
 ////
@@ -4594,7 +4590,7 @@ idAI::CreateProjectile
 ////		}
 ////		lastProjectile = this.projectile.GetEntity();
 ////		lastProjectile.Launch( muzzle, dir, vec3_origin );
-////		this.projectile = NULL;
+////		this.projectile .opEquals( NULL;
 ////	}
 ////
 ////	TriggerWeaponEffects( muzzle );
@@ -5188,7 +5184,7 @@ SetChatSound( ):void {
 ////		focusPos = focusEnt.GetPhysics().GetOrigin();
 ////	}
 ////
-////	currentFocusPos = currentFocusPos + ( focusPos - currentFocusPos ) * this.eyeFocusRate;
+////	currentFocusPos.opEquals( currentFocusPos + ( focusPos - currentFocusPos ) * this.eyeFocusRate;
 ////
 ////	// determine yaw from origin instead of from focus joint since joint may be offset, which can cause us to bounce between two angles
 ////	dir = focusPos - orientationJointPos;
@@ -5212,7 +5208,7 @@ SetChatSound( ):void {
 ////	diff = newLookAng - lookAng;
 ////	
 ////	if ( eyeAng != diff ) {
-////		eyeAng = diff;
+////		eyeAng .opEquals( diff;
 ////		eyeAng.Clamp( this.eyeMin, this.eyeMax );
 ////		idAngles angDelta = diff - eyeAng;
 ////		if ( !angDelta.Compare( ang_zero, 0.1f ) ) {
@@ -5228,7 +5224,7 @@ SetChatSound( ):void {
 ////
 ////	if ( ( gameLocal.time >= alignHeadTime ) || ( gameLocal.time < forceAlignHeadTime ) ) {
 ////		alignHeadTime = gameLocal.time + ( 0.5f + 0.5f * gameLocal.random.RandomFloat() ) * this.focusAlignTime;
-////		destLookAng = newLookAng;
+////		destLookAng .opEquals(newLookAng);
 ////		destLookAng.Clamp( this.lookMin, this.lookMax );
 ////	}
 ////
@@ -5245,7 +5241,7 @@ SetChatSound( ):void {
 ////			diff.yaw += 360.0;
 ////		}
 ////	}
-////	lookAng = lookAng + diff * this.headFocusRate;
+////	lookAng .opEquals( lookAng + diff * this.headFocusRate;
 ////	lookAng.Normalize180();
 ////
 ////	jointAng.roll = 0.0;
