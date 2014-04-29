@@ -83,7 +83,7 @@ class idAAS {
 ////								// Test from the given origin.
 ////	virtual void				Test( const idVec3 &origin ) = 0;
 ////								// Get the AAS settings.
-////	virtual const idAASSettings *GetSettings( ) const = 0;
+	GetSettings ( ): idAASSettings { throw "placeholder"; }
 ////								// Returns the number of the area the origin is in.
 ////	virtual int					PointAreaNum( const idVec3 &origin ) const = 0;
 ////								// Returns the number of the nearest reachable area for the given point.

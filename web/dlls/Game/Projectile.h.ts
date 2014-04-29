@@ -264,13 +264,14 @@ class idProjectile extends idEntity {
 ////idEntity *idProjectile::GetOwner( void ) const {
 ////	return owner.GetEntity();
 ////}
-////
-/////*
-////================
-////idProjectile::Create
-////================
-////*/
-////void idProjectile::Create( idEntity *owner, start:idVec3, const idVec3 &dir ) {
+
+/*
+================
+idProjectile::Create
+================
+*/
+	Create ( owner: idEntity, start: idVec3, dir: idVec3 ): void {
+		todoThrow ( );
 ////	idDict		args;
 ////	idStr		shaderName;
 ////	idVec3		light_color;
@@ -323,7 +324,7 @@ class idProjectile extends idEntity {
 ////	if ( spawnArgs.GetBool( "net_fullphysics" ) ) {
 ////		netSyncPhysics = true;
 ////	}
-////}
+	}
 ////
 /////*
 ////=================
@@ -1020,31 +1021,31 @@ class idProjectile extends idEntity {
 ////	CancelEvents( &EV_Explode );
 ////	PostEventMS( &EV_Remove, removeTime );
 ////}
-////
-/////*
-////================
-////idProjectile::GetVelocity
-////================
-////*/
-////idVec3 idProjectile::GetVelocity( const idDict *projectile ) {
-////	idVec3 velocity;
-////
-////	projectile.GetVector( "velocity", "0 0 0", velocity );
-////	return velocity;
-////}
-////
-/////*
-////================
-////idProjectile::GetGravity
-////================
-////*/
-////idVec3 idProjectile::GetGravity( const idDict *projectile ) {
-////	float gravity;
-////
-////	gravity = projectile.GetFloat( "gravity" );
-////	return idVec3( 0, 0, -gravity );
-////}
-////
+
+/*
+================
+idProjectile::GetVelocity
+================
+*/
+	static GetVelocity ( projectile: idDict ): idVec3 {
+		var velocity = new idVec3;
+
+		projectile.GetVector_R( "velocity", "0 0 0", velocity );
+		return velocity;
+	}
+
+/*
+================
+idProjectile::GetGravity
+================
+*/
+	static GetGravity ( projectile: idDict ): idVec3 {
+		var /*float */gravity: number;
+
+		gravity = projectile.GetFloat( "gravity" );
+		return new idVec3( 0, 0, -gravity );
+	}
+
 /////*
 ////================
 ////idProjectile::Event_Explode
@@ -2257,13 +2258,14 @@ class idDebris extends idEntity {
 		////	smokeFly = NULL;
 		////	smokeFlyTime = 0;
 	}
-////
-/////*
-////================
-////idDebris::Create
-////================
-////*/
-////void idDebris::Create( idEntity *owner, start:idVec3, const idMat3 &axis ) {
+
+/*
+================
+idDebris::Create
+================
+*/
+	Create ( owner: idEntity, start: idVec3, axis: idMat3 ): void {
+		todoThrow ( );
 ////	Unbind();
 ////	GetPhysics().SetOrigin( start );
 ////	GetPhysics().SetAxis( axis );
@@ -2273,7 +2275,7 @@ class idDebris extends idEntity {
 ////	smokeFlyTime = 0;
 ////	sndBounce = NULL;
 ////	UpdateVisuals();
-////}
+	}
 ////
 /////*
 ////=================

@@ -128,80 +128,91 @@ class eval_t {
 
 
 
-//
-///***********************************************************************
-//
-//idScriptVariable
-//
-//Helper template that handles looking up script variables stored in objects.
-//If the specified variable doesn't exist, or is the wrong data type, idScriptVariable
-//will cause an error.
-//
-//***********************************************************************/
-//
+
+/***********************************************************************
+
+idScriptVariable
+
+Helper template that handles looking up script variables stored in objects.
+If the specified variable doesn't exist, or is the wrong data type, idScriptVariable
+will cause an error.
+
+***********************************************************************/
+
 //template<class type, etype_t etype, class returnType>
-//class idScriptVariable {
+class idScriptVariable<type, returnType> {
 //private:
-//	type				*data;
+	data: type /*type*/;
 //
 //public:
 //						idScriptVariable();
-//	bool				IsLinked( void ) const;
+//	bool				IsLinked( )const;
 //	void				Unlink( void );
 //	void				LinkTo( idScriptObject &obj, name:string );
 //	idScriptVariable	&operator=( const returnType &value );
 //						operator returnType() const;
-//};
-//
+
+	type: any;
+	etype: etype_t;
+	returnType: any
+
+	constructor ( type: any, etype: etype_t, returnType: any ) {
+		this.data = null;
+		this.type = type;
+		this.etype = etype;
+		this.returnType = returnType;
+	}
+
 //template<class type, etype_t etype, class returnType>
 //ID_INLINE idScriptVariable<type, etype, returnType>::idScriptVariable() {
-//	data = NULL;
+//	this.data = NULL;
 //}
 //
 //template<class type, etype_t etype, class returnType>
-//ID_INLINE bool idScriptVariable<type, etype, returnType>::IsLinked( void ) const {
-//	return ( data != NULL );
+//ID_INLINE bool idScriptVariable<type, etype, returnType>::IsLinked( )const {
+//	return ( this.data != NULL );
 //}
 //
 //template<class type, etype_t etype, class returnType>
-//ID_INLINE void idScriptVariable<type, etype, returnType>::Unlink( void ) {
-//	data = NULL;
-//}
-//
-//template<class type, etype_t etype, class returnType>
-//ID_INLINE void idScriptVariable<type, etype, returnType>::LinkTo( idScriptObject &obj, name:string ) {
-//	data = ( type * )obj.GetVariable( name, etype );
-//	if ( !data ) {
-//		gameError( "Missing '%s' field in script object '%s'", name, obj.GetTypeName() );
-//	}
-//}
-//
+	Unlink ( ): void {
+		this.data = null;
+	}
+
+	LinkTo ( obj: idScriptObject, name: string ): void {
+		this.data = <type><any>obj.GetVariable( name, this.etype );
+		if ( !this.data ) {
+			gameError( "Missing '%s' field in script object '%s'", name, obj.GetTypeName ( ) );
+		}
+	}
+
 //template<class type, etype_t etype, class returnType>
 //ID_INLINE idScriptVariable<type, etype, returnType> &idScriptVariable<type, etype, returnType>::operator=( const returnType &value ) {
-//	// check if we attempt to access the object before it's been linked
-//	assert( data );
-//
-//	// make sure we don't crash if we don't have a pointer
-//	if ( data ) {
-//		*data = ( type )value;
-//	}
-//	return *this;
-//}
-//
+	opEquals ( value: returnType ): idScriptVariable<type, returnType> {
+		// check if we attempt to access the object before it's been linked
+		assert( this.data );
+
+		// make sure we don't crash if we don't have a pointer
+		if ( this.data ) {
+			this.data = <type><any>value;
+		}
+		return this;
+	}
+
 //template<class type, etype_t etype, class returnType>
 //ID_INLINE idScriptVariable<type, etype, returnType>::operator returnType() const {
 //	// check if we attempt to access the object before it's been linked
-//	assert( data );
+//	assert( this.data );
 //
 //	// make sure we don't crash if we don't have a pointer
-//	if ( data ) {
-//		return ( const returnType )*data;
+//	if ( this.data ) {
+//		return ( const returnType )*this.data;
 //	} else {
 //		// reasonably safe value
 //		return ( const returnType )0;
 //	}
 //}
-//
+}
+
 ///***********************************************************************
 //
 //Script object variable access template instantiations
@@ -214,7 +225,17 @@ class eval_t {
 //***********************************************************************/
 //
 //typedef idScriptVariable<int, ev_boolean, int>				idScriptBool;
+class idScriptBool extends idScriptVariable<boolean /*int*/, boolean /*int*/> {
+	constructor ( ) {
+		super( Number /*int*/, etype_t.ev_boolean, Number /*int*/ );
+	}
+}
 //typedef idScriptVariable<float, etype_t.ev_float, float>			idScriptFloat;
+class idScriptFloat extends idScriptVariable<number /*int*/, number /*int*/> {
+	constructor() {
+		super(Number /*float*/, etype_t.ev_float, Number /*float*/ );
+	}
+}
 //typedef idScriptVariable<float, etype_t.ev_float, int>				idScriptInt;
 //typedef idScriptVariable<idVec3, ev_vector, idVec3>			idScriptVector;
 //typedef idScriptVariable<idStr, ev_string, const char *>	idScriptString;
@@ -434,7 +455,7 @@ class idTypeDef {
 	//						idTypeDef( const idTypeDef &other );
 	//						idTypeDef( etype_t etype, idVarDef *edef, const char *ename, int esize, idTypeDef *aux );
 	//	void				operator=( const idTypeDef& other );
-	//	size_t				Allocated( void ) const;
+	//	size_t				Allocated( )const;
 	//
 	//	bool				Inherits( const idTypeDef *basetype ) const;
 	//	bool				MatchesType( const idTypeDef &matchtype ) const;
@@ -443,27 +464,27 @@ class idTypeDef {
 	//	void				AddField( idTypeDef *fieldtype, name:string );
 	//
 	//	void				SetName( const char *newname );
-	//	const char			*Name( void ) const;
+	//	const char			*Name( )const;
 	//
-	//	etype_t				Type( void ) const;
-	//	size_t				Size( void ) const;
+	//	etype_t				Type( )const;
+	//	size_t				Size( )const;
 	//
-	//	idTypeDef			*SuperClass( void ) const;
+	//	idTypeDef			*SuperClass( )const;
 	//	
-	//	idTypeDef			*ReturnType( void ) const;
+	//	idTypeDef			*ReturnType( )const;
 	//	void				SetReturnType( idTypeDef *type );
 	//
-	//	idTypeDef			*FieldType( void ) const;
+	//	idTypeDef			*FieldType( )const;
 	//	void				SetFieldType( idTypeDef *type );
 	//
-	//	idTypeDef			*PointerType( void ) const;
+	//	idTypeDef			*PointerType( )const;
 	//	void				SetPointerType( idTypeDef *type );
 	//
-	//	int					NumParameters( void ) const;
+	//	int					NumParameters( )const;
 	//	idTypeDef			*GetParmType( int parmNumber ) const;
 	//	const char			*GetParmName( int parmNumber ) const;
 	//
-	//	int					NumFunctions( void ) const;
+	//	int					NumFunctions( )const;
 	//	int					GetFunctionNumber( const function_t *func ) const;
 	//	const function_t	*GetFunction( int funcNumber ) const;
 	//	void				AddFunction( const function_t *func );
@@ -915,8 +936,8 @@ class idVarDef {
 	//							idVarDef( idTypeDef *typeptr = NULL );
 	//							~idVarDef();
 	//
-	//	const char *			Name( void ) const;
-	//	const char *			GlobalName( void ) const;
+	//	const char *			Name( )const;
+	//	const char *			GlobalName( )const;
 	//
 	SetTypeDef ( _type: idTypeDef ): void { this.typeDef = _type; }
 	TypeDef ( ): idTypeDef { return this.typeDef; }

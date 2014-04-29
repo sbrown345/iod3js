@@ -213,15 +213,16 @@ idSmokeParticles::Shutdown
 ////	}
 ////}
 ////
-/////*
-////================
-////idSmokeParticles::EmitSmoke
-////
-////Called by game code to drop another particle into the list
-////================
-////*/
-////bool idSmokeParticles::EmitSmoke( const idDeclParticle *smoke, const int systemStartTime, const float diversity, origin: idVec3, const idMat3 &axis ) {
-////	bool	continues = false;
+/*
+================
+idSmokeParticles::EmitSmoke
+
+Called by game code to drop another particle into the list
+================
+*/
+	EmitSmoke ( smoke: idDeclParticle, /*int */systemStartTime: number, /*float */diversity: number, origin: idVec3, axis: idMat3 ): boolean {
+		var continues = false;
+		todoThrow ( );
 ////
 ////	if ( !smoke ) {
 ////		return false;
@@ -334,9 +335,9 @@ idSmokeParticles::Shutdown
 ////			steppingRandom.RandomInt();	// advance the random
 ////		}
 ////	}
-////
-////	return continues;
-////}
+
+		return continues;
+	}
 
 /*
 ================

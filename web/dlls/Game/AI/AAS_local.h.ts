@@ -266,19 +266,19 @@ idAASLocal::Shutdown
 ////	this.file.PrintInfo();
 ////	RoutingStats();
 ////}
-////
-/////*
-////============
-////idAASLocal::GetSettings
-////============
-////*/
-////const idAASSettings *idAASLocal::GetSettings( ) const {
-////	if ( !this.file ) {
-////		return NULL;
-////	}
-////	return &this.file.GetSettings();
-////}
-////
+
+/*
+============
+idAASLocal::GetSettings
+============
+*/
+	GetSettings ( ): idAASSettings {
+		if ( !this.file ) {
+			return null;
+		}
+		return this.file.GetSettings ( );
+	}
+
 /////*
 ////============
 ////idAASLocal::PointAreaNum

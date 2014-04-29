@@ -1828,16 +1828,16 @@ idPhysics_Player::idPhysics_Player
 ////	walkSpeed = newWalkSpeed;
 ////	crouchSpeed = newCrouchSpeed;
 ////}
-////
-/////*
-////================
-////idPhysics_Player::SetMaxStepHeight
-////================
-////*/
-////void idPhysics_Player::SetMaxStepHeight( const float newMaxStepHeight ) {
-////	maxStepHeight = newMaxStepHeight;
-////}
-////
+
+/*
+================
+idPhysics_Player::SetMaxStepHeight
+================
+*/
+	SetMaxStepHeight ( /*float */newMaxStepHeight: number ): void {
+		this.maxStepHeight = newMaxStepHeight;
+	}
+
 /////*
 ////================
 ////idPhysics_Player::GetMaxStepHeight

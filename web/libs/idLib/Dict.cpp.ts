@@ -296,11 +296,11 @@ class idDict {
 		return out;
 	}
 
-////ID_INLINE idAngles idDict::GetAngles( key:string, defaultString:string ) const {
-////	idAngles out;
-////	GetAngles( key, defaultString, out );
-////	return out;
-////}
+	GetAngles ( key: string, defaultString: string ): idAngles {
+		var out = new idAngles;
+		this.GetAngles_R( key, defaultString, out );
+		return out;
+	}
 ////
 ////ID_INLINE idMat3 idDict::GetMatrix( key:string, defaultString:string ) const {
 ////	idMat3 out;
@@ -627,25 +627,29 @@ idDict::GetBool
 		return found;
 	}
 
-/////*
-////================
-////idDict::GetAngles
-////================
-////*/
-////bool idDict::GetAngles( key:string, defaultString:string, idAngles &out ) const {
-////	bool		found;
-////	const char	*s;
-////	
-////	if ( !defaultString ) {
-////		defaultString = "0 0 0";
-////	}
-////
-////	found = GetString( key, defaultString, &s );
-////	out.Zero();	
-////	sscanf( s, "%f %f %f", &out.pitch, &out.yaw, &out.roll );
-////	return found;
-////}
-////
+/*
+================
+idDict::GetAngles
+================
+*/
+	GetAngles_R ( key: string, defaultString: string, out: idAngles ): boolean {
+		var found: boolean;
+		var s = new R<string> ( );
+
+		if ( !defaultString ) {
+			defaultString = "0 0 0";
+		}
+
+		found = this.GetString_Rstring( key, defaultString, s );
+		out.Zero ( );
+		//sscanf( s, "%f %f %f", &out.pitch, &out.yaw, &out.roll );
+		var split = s.$.split( " " ).map( parseFloat );
+		out.pitch = split[0];
+		out.yaw = split[1];
+		out.roll = split[2];
+		return found;
+	}
+
 /*
 ================
 idDict::GetVector

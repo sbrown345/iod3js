@@ -1661,39 +1661,39 @@ Used for playing chatter sounds on monsters.
 		return true;
 	}
 
-/////*
-////================
-////idEntity::StartSound
-////================
-////*/
-////bool idEntity::StartSound( const char *soundName, const s_channelType channel, int soundShaderFlags, bool broadcast, int *length ) {
-////	const idSoundShader *shader;
-////	const char *sound;
-////
-////	if ( length ) {
-////		*length = 0;
-////	}
-////
-////	// we should ALWAYS be playing sounds from the def.
-////	// hardcoded sounds MUST be avoided at all times because they won't get precached.
-////	assert( idStr::Icmpn( soundName, "snd_", 4 ) == 0 );
-////
-////	if ( !spawnArgs.GetString( soundName, "", &sound ) ) {
-////		return false;
-////	}
-////
-////	if ( sound[0] == '\0' ) {
-////		return false;
-////	}
-////
-////	if ( !gameLocal.isNewFrame ) {
-////		// don't play the sound, but don't report an error
-////		return true;
-////	}
-////
-////	shader = declManager.FindSound( sound );
-////	return this.StartSoundShader( shader, channel, soundShaderFlags, broadcast, length );
-////}
+/*
+================
+idEntity::StartSound
+================
+*/
+	StartSound ( soundName: string, channel: number /*s_channelType*/, /*int */soundShaderFlags: number, broadcast: boolean, /*int **/length: R<number> ): boolean {
+		var shader: idSoundShader;
+		var sound = new R<string> ( );
+
+		if ( length ) {
+			length.$ = 0;
+		}
+
+		// we should ALWAYS be playing sounds from the def.
+		// hardcoded sounds MUST be avoided at all times because they won't get precached.
+		assert( idStr.Icmpn( soundName, "snd_", 4 ) == 0 );
+
+		if ( !this.spawnArgs.GetString_Rstring( soundName, "", sound ) ) {
+			return false;
+		}
+
+		if ( !sound.$ /*[0] == '\0'*/ ) {
+			return false;
+		}
+
+		if ( !gameLocal.isNewFrame ) {
+			// don't play the sound, but don't report an error
+			return true;
+		}
+
+		shader = declManager.FindSound( sound.$ );
+		return this.StartSoundShader( shader, channel, soundShaderFlags, broadcast, length );
+	}
 
 /*
 ================
@@ -5359,7 +5359,7 @@ idAnimatedEntity::GetJointTransformForAnim
 ////
 ////	// start impact sound based on material type
 ////	key = va( "snd_%s", materialType );
-////	sound = spawnArgs.GetString( key );
+////	sound = this.spawnArgs.GetString( key );
 ////	if ( *sound == '\0' ) {
 ////		sound = def.dict.GetString( key );
 ////	}
@@ -5369,7 +5369,7 @@ idAnimatedEntity::GetJointTransformForAnim
 ////
 ////	// blood splats are thrown onto nearby surfaces
 ////	key = va( "mtr_splat_%s", materialType );
-////	splat = spawnArgs.RandomPrefix( key, gameLocal.random );
+////	splat = this.spawnArgs.RandomPrefix( key, gameLocal.random );
 ////	if ( *splat == '\0' ) {
 ////		splat = def.dict.RandomPrefix( key, gameLocal.random );
 ////	}
@@ -5381,7 +5381,7 @@ idAnimatedEntity::GetJointTransformForAnim
 ////	if ( !( this.IsType( idPlayer::Type ) && !gameLocal.isMultiplayer ) ) {
 ////		// place a wound overlay on the model
 ////		key = va( "mtr_wound_%s", materialType );
-////		decal = spawnArgs.RandomPrefix( key, gameLocal.random );
+////		decal = this.spawnArgs.RandomPrefix( key, gameLocal.random );
 ////		if ( *decal == '\0' ) {
 ////			decal = def.dict.RandomPrefix( key, gameLocal.random );
 ////		}
@@ -5392,7 +5392,7 @@ idAnimatedEntity::GetJointTransformForAnim
 ////
 ////	// a blood spurting wound is added
 ////	key = va( "smoke_wound_%s", materialType );
-////	bleed = spawnArgs.GetString( key );
+////	bleed = this.spawnArgs.GetString( key );
 ////	if ( *bleed == '\0' ) {
 ////		bleed = def.dict.GetString( key );
 ////	}

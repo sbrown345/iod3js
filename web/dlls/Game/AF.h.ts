@@ -71,7 +71,7 @@ class idAF {
 ////	void					StartFromCurrentPose( int inheritVelocityTime );
 ////	void					Stop( );
 ////	void					Rest( );
-////	bool					IsActive( ) const { return isActive; }
+////	bool					IsActive( ) const { return this.isActive; }
 ////	void					SetConstraintPosition( this.name:string, pos:idVec3 );
 ////
 	GetPhysics ( ): idPhysics_AF { return this.physicsObj; }
@@ -154,10 +154,10 @@ class idAF {
 	////	savefile.WriteBool( this.hasBindConstraints );
 	////	savefile.WriteVec3( this.baseOrigin );
 	////	savefile.WriteMat3( this.baseAxis );
-	////	savefile.WriteInt( poseTime );
+	////	savefile.WriteInt( this.poseTime );
 	////	savefile.WriteInt( restStartTime );
 	////	savefile.WriteBool( this.isLoaded );
-	////	savefile.WriteBool( isActive );
+	////	savefile.WriteBool( this.isActive );
 	////	savefile.WriteStaticObject( this.physicsObj );
 	////}
 	////
@@ -172,10 +172,10 @@ class idAF {
 	////	savefile.ReadBool( this.hasBindConstraints );
 	////	savefile.ReadVec3( this.baseOrigin );
 	////	savefile.ReadMat3( this.baseAxis );
-	////	savefile.ReadInt( poseTime );
+	////	savefile.ReadInt( this.poseTime );
 	////	savefile.ReadInt( restStartTime );
 	////	savefile.ReadBool( this.isLoaded );
-	////	savefile.ReadBool( isActive );
+	////	savefile.ReadBool( this.isActive );
 	////
 	////	this.animator = NULL;
 	////	this.modifiedAnim = 0;
@@ -191,7 +191,7 @@ class idAF {
 	////	savefile.ReadStaticObject( this.physicsObj );
 	////
 	////	if ( this.self ) {
-	////		if ( isActive ) {
+	////		if ( this.isActive ) {
 	////			// clear all animations
 	////			this.animator.ClearAllAnims( gameLocal.time, 0 );
 	////			this.animator.ClearAllJoints();
@@ -296,58 +296,59 @@ class idAF {
 	////	return bounds;
 	////}
 	////
-	/////*
-	////================
-	////idAF::SetupPose
-	////
-	////  Transforms the articulated figure to match the current animation pose of the given entity.
-	////================
-	////*/
-	////void idAF::SetupPose( ent:idEntity, /*int*/time:number ) {
-	////	var/*int*/i:number;
-	////	idAFBody *body;
-	////	idVec3 origin;
-	////	idMat3 axis;
-	////	idAnimator *animatorPtr;
-	////	renderEntity_t *renderEntity;
-	////
-	////	if ( !this.IsLoaded() || !ent ) {
-	////		return;
-	////	}
-	////
-	////	animatorPtr = ent.GetAnimator();
-	////	if ( !animatorPtr ) {
-	////		return;
-	////	}
-	////
-	////	renderEntity = ent.GetRenderEntity();
-	////	if ( !renderEntity ) {
-	////		return;
-	////	}
-	////
-	////	// if the animation is driven by the physics
-	////	if ( this.self.GetPhysics() == &this.physicsObj ) {
-	////		return;
-	////	}
-	////
-	////	// if the pose was already updated this frame
-	////	if ( poseTime == time ) {
-	////		return;
-	////	}
-	////	poseTime = time;
-	////
-	////	for ( i = 0; i < this.jointMods.Num(); i++ ) {
-	////		body = this.physicsObj.GetBody( this.jointMods[i].bodyId );
-	////		animatorPtr.GetJointTransform( this.jointMods[i].jointHandle, time, origin, axis );
-	////		body.SetWorldOrigin( renderEntity.origin + ( origin + this.jointMods[i].jointBodyOrigin * axis ) * renderEntity.axis );
-	////		body.SetWorldAxis( this.jointMods[i].jointBodyAxis * axis * renderEntity.axis );
-	////	}
-	////
-	////	if ( isActive ) {
-	////		this.physicsObj.UpdateClipModels();
-	////	}
-	////}
-	////
+	/*
+	================
+	idAF::SetupPose
+	
+	  Transforms the articulated figure to match the current animation pose of the given entity.
+	================
+	*/
+	SetupPose( ent:idEntity, /*int*/time:number ):void {
+		var/*int*/i:number;
+		var body: idAFBody ;
+		var origin = new idVec3 ;
+		var axis = new idMat3 ;
+		var animatorPtr: idAnimator ;
+		var renderEntity: renderEntity_t ;
+	
+		if ( !this.IsLoaded() || !ent ) {
+			return;
+		}
+	
+		animatorPtr = ent.GetAnimator();
+		if ( !animatorPtr ) {
+			return;
+		}
+	
+		renderEntity = ent.GetRenderEntity();
+		if ( !renderEntity ) {
+			return;
+		}
+	
+		// if the animation is driven by the physics
+		if ( this.self.GetPhysics() == this.physicsObj ) {
+			return;
+		}
+	
+		// if the pose was already updated this frame
+		if ( this.poseTime == time ) {
+			return;
+		}
+		this.poseTime = time;
+	
+		for (i = 0; i < this.jointMods.Num(); i++) {
+			todoThrow ( );
+			//body = this.physicsObj.GetBody_id( this.jointMods[i].bodyId );
+			//animatorPtr.GetJointTransform( this.jointMods[i].jointHandle, time, origin, axis );
+			//body.SetWorldOrigin( renderEntity.origin + ( origin + this.jointMods[i].jointBodyOrigin * axis ) * renderEntity.axis );
+			//body.SetWorldAxis( this.jointMods[i].jointBodyAxis * axis * renderEntity.axis );
+		}
+	
+		if ( this.isActive ) {
+			this.physicsObj.UpdateClipModels();
+		}
+	}
+	
 	/////*
 	////================
 	////idAF::ChangePose
@@ -385,11 +386,11 @@ class idAF {
 	////	}
 	////
 	////	// if the pose was already updated this frame
-	////	if ( poseTime == time ) {
+	////	if ( this.poseTime == time ) {
 	////		return;
 	////	}
-	////	invDelta = 1.0f / MS2SEC( time - poseTime );
-	////	poseTime = time;
+	////	invDelta = 1.0f / MS2SEC( time - this.poseTime );
+	////	this.poseTime = time;
 	////
 	////	for ( i = 0; i < this.jointMods.Num(); i++ ) {
 	////		body = this.physicsObj.GetBody( this.jointMods[i].bodyId );
@@ -1029,7 +1030,7 @@ class idAF {
 ////	// start the articulated figure physics simulation
 ////	this.physicsObj.EnableClip();
 ////	this.physicsObj.Activate();
-////	isActive = true;
+////	this.isActive = true;
 ////}
 ////
 /////*
@@ -1121,7 +1122,7 @@ class idAF {
 ////void idAF::Stop( ) {
 ////	// disable the articulated figure for collision detection
 ////	this.physicsObj.UnlinkClip();
-////	isActive = false;
+////	this.isActive = false;
 ////}
 ////
 /////*

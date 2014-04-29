@@ -1209,22 +1209,6 @@ Error (fmt: string, ...args: any[]): void {
 	}
 
 /////*
-////===============
-////gameError
-////===============
-////*/
-////void gameError( const char *fmt, ... ) {
-////	va_list		argptr;
-////	char		text[MAX_STRING_CHARS];
-
-////	va_start( argptr, fmt );
-////	idStr::vsnPrintf( text, sizeof( text ), fmt, argptr );
-////	va_end( argptr );
-
-////	gameLocal.Error( "%s", text );
-////}
-
-/////*
 ////===========
 ////idGameLocal::SetLocalClient
 ////============
@@ -3286,48 +3270,48 @@ idGameLocal::GetMapName
 ////	collisionModelManager.DebugOutput( player.GetEyePosition() );
 ////}
 
-/////*
-////==================
-////idGameLocal::NumAAS
-////==================
-////*/
-////int	idGameLocal::NumAAS( ) const {
-////	return this.aasList.Num();
-////}
+/*
+==================
+idGameLocal::NumAAS
+==================
+*/
+	NumAAS ( ): number /*int*/ {
+		return this.aasList.Num ( );
+	}
 
-/////*
-////==================
-////idGameLocal::GetAAS
-////==================
-////*/
-////idAAS *idGameLocal::GetAAS( int num ) const {
-////	if ( ( num >= 0 ) && ( num < this.aasList.Num() ) ) {
-////		if ( this.aasList[ num ] && this.aasList[ num ].GetSettings() ) {
-////			return this.aasList[ num ];
-////		}
-////	}
-////	return NULL;
-////}
+/*
+==================
+idGameLocal::GetAAS
+==================
+*/
+	GetAAS ( /*int */num: number ): idAAS {
+		if ( ( num >= 0 ) && ( num < this.aasList.Num ( ) ) ) {
+			if ( this.aasList[num] && this.aasList[num].GetSettings ( ) ) {
+				return this.aasList[num];
+			}
+		}
+		return null;
+	}
 
-/////*
-////==================
-////idGameLocal::GetAAS
-////==================
-////*/
-////idAAS *idGameLocal::GetAAS( name:string ) const {
-////	var/*int */i:number;
+/*
+==================
+idGameLocal::GetAAS
+==================
+*/
+	GetAAS_name ( name: string ): idAAS {
+		var /*int */i: number;
 
-////	for ( i = 0; i < this.aasNames.Num(); i++ ) {
-////		if ( this.aasNames[ i ] == name ) {
-////			if ( !this.aasList[ i ].GetSettings() ) {
-////				return NULL;
-////			} else {
-////				return this.aasList[ i ];
-////			}
-////		}
-////	}
-////	return NULL;
-////}
+		for ( i = 0; i < this.aasNames.Num ( ); i++ ) {
+			if ( this.aasNames[i].equalTo( name ) ) {
+				if ( !this.aasList[i].GetSettings ( ) ) {
+					return null;
+				} else {
+					return this.aasList[i];
+				}
+			}
+		}
+		return null;
+	}
 
 /////*
 ////==================
@@ -5115,3 +5099,21 @@ var 	MASK_SHOT_BOUNDINGBOX		=(contentsFlags_t.CONTENTS_SOLID|contentsFlags_t.CON
 ////#include "script/Script_Thread.h"
 
 ////#endif	/* !__GAME_LOCAL_H__ */
+
+
+/*
+===============
+gameError
+===============
+*/
+function gameError ( fmt: string, ...args: any[] ): void {
+	todoThrow ( );
+	//va_list		argptr;
+	//char		text[MAX_STRING_CHARS];
+
+	//va_start(argptr, fmt);
+	//idStr::vsnPrintf(text, sizeof(text), fmt, argptr);
+	//va_end(argptr);
+
+	//gameLocal.Error("%s", text);
+}

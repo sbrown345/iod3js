@@ -441,28 +441,28 @@ Zero( ):void {
 
 
 
-///*
-//============
-//idBounds::GetRadius
-//============
-//*/
-//float idBounds::GetRadius(void) const {
-//	var i:number /*int*/;
-//	float	total, b0, b1;
+/*
+============
+idBounds::GetRadius
+============
+*/
+GetRadius( ) :number/*float*/ {
+	var i:number /*int*/;
+	var/*float	*/total: number, b0: number, b1: number;
 
-//	total = 0.0;
-//	for (i = 0; i < 3; i++) {
-//		b0 = (float)idMath.Fabs(this.b[0][i]);
-//		b1 = (float)idMath.Fabs(this.b[1][i]);
-//		if (b0 > b1) {
-//			total += b0 * b0;
-//		}
-//		else {
-//			total += b1 * b1;
-//		}
-//	}
-//	return idMath::Sqrt(total);
-//}
+	total = 0.0;
+	for (i = 0; i < 3; i++) {
+		b0 = /*(float)*/idMath.Fabs(this.b[0][i]);
+		b1 = /*(float)*/idMath.Fabs(this.b[1][i]);
+		if (b0 > b1) {
+			total += b0 * b0;
+		}
+		else {
+			total += b1 * b1;
+		}
+	}
+	return idMath.Sqrt(total);
+}
 
 ///*
 //============
@@ -484,7 +484,7 @@ Zero( ):void {
 //			total += b1 * b1;
 //		}
 //	}
-//	return idMath::Sqrt(total);
+//	return idMath.Sqrt(total);
 //}
 
 ///*
@@ -745,10 +745,10 @@ idBounds::FromTransformedBounds
 //		if ((v1[i] > 0.0 && v2[i] < 0.0) || (v1[i] < 0.0 && v2[i] > 0.0)) {
 //			if ((0.5f * (start[i] + end[i]) - origin[i]) > 0.0) {
 //				bounds[0][i] = Min(start[i], end[i]);
-//				bounds[1][i] = origin[i] + idMath::Sqrt(radiusSqr * (1.0f - axis[i] * axis[i]));
+//				bounds[1][i] = origin[i] + idMath.Sqrt(radiusSqr * (1.0f - axis[i] * axis[i]));
 //			}
 //			else {
-//				bounds[0][i] = origin[i] - idMath::Sqrt(radiusSqr * (1.0f - axis[i] * axis[i]));
+//				bounds[0][i] = origin[i] - idMath.Sqrt(radiusSqr * (1.0f - axis[i] * axis[i]));
 //				bounds[1][i] = Max(start[i], end[i]);
 //			}
 //		}

@@ -222,10 +222,10 @@ In-game representation of objects in scripts.  Use the idScriptVariable template
 
 class idScriptObject {
 	//private:
-	type:idTypeDef;
-		
+	type: idTypeDef;
+
 	//public:
-	data:Uint8Array;
+	data: Uint8Array;
 	//
 	//								idScriptObject();
 	//								~idScriptObject();
@@ -382,33 +382,33 @@ Resets the memory for the script object without changing its type.
 		}
 	}
 
-///*
-//============
-//idScriptObject::HasObject
-//============
-//*/
-//bool idScriptObject::HasObject( ) const {
-//	return ( this.type != &type_object );
-//}
-//
-///*
-//============
-//idScriptObject::GetTypeDef
-//============
-//*/
-//idTypeDef *idScriptObject::GetTypeDef( ) const {
-//	return this.type;
-//}
-//
-///*
-//============
-//idScriptObject::GetTypeName
-//============
-//*/
-//const char *idScriptObject::GetTypeName( ) const {
-//	return this.type.Name();
-//}
-//
+/*
+============
+idScriptObject::HasObject
+============
+*/
+	HasObject ( ): boolean {
+		return ( this.type != type_object );
+	}
+
+/*
+============
+idScriptObject::GetTypeDef
+============
+*/
+	GetTypeDef ( ): idTypeDef {
+		return this.type;
+	}
+
+/*
+============
+idScriptObject::GetTypeName
+============
+*/
+	GetTypeName ( ): string {
+		return this.type.Name ( );
+	}
+
 /*
 ============
 idScriptObject::GetConstructor
@@ -449,48 +449,48 @@ idScriptObject::GetFunction
 		return func;
 	}
 
-///*
-//============
-//idScriptObject::GetVariable
-//============
-//*/
-//byte *idScriptObject::GetVariable( name:string, etype_t etype ) const {
-//	var i:number /*int*/;
-//	int				pos;
-//	const idTypeDef	*t;
-//	const idTypeDef	*parm;
-//
-//	if ( this.type == &type_object ) {
-//		return null;
-//	}
-//
-//	t = this.type;
-//	do {
-//		if ( t.SuperClass() != &type_object ) {
-//			pos = t.SuperClass().Size();
-//		} else {
-//			pos = 0;
-//		}
-//		for( i = 0; i < t.NumParameters(); i++ ) {
-//			parm = t.GetParmType( i );
-//			if ( !strcmp( t.GetParmName( i ), name ) ) {
-//				if ( etype != parm.FieldType().Type() ) {
-//					return null;
-//				}
-//				return &this.data[ pos ];
-//			}
-//
-//			if ( parm.FieldType().Inherits( &type_object ) ) {
-//				pos += type_object.Size();
-//			} else {
-//				pos += parm.FieldType().Size();
-//			}
-//		}
-//		t = t.SuperClass();
-//	} while( t && ( t != &type_object ) );
-//
-//	return null;
-//}
+/*
+============
+idScriptObject::GetVariable
+============
+*/
+	GetVariable ( name: string, etype: etype_t ): /*Uint8Array*/number {
+		var i: number /*int*/;
+		var /*int*/pos: number;
+		var t: idTypeDef;
+		var parm: idTypeDef;
+
+		if ( this.type == type_object ) {
+			return null;
+		}
+
+		t = this.type;
+		do {
+			if ( t.SuperClass ( ) != type_object ) {
+				pos = t.SuperClass ( ).Size ( );
+			} else {
+				pos = 0;
+			}
+			for ( i = 0; i < t.NumParameters ( ); i++ ) {
+				parm = t.GetParmType( i );
+				if ( !strcmp( t.GetParmName( i ), name ) ) {
+					if ( etype != parm.FieldType ( ).Type ( ) ) {
+						return null;
+					}
+					return this.data[pos];
+				}
+
+				if ( parm.FieldType ( ).Inherits( type_object ) ) {
+					pos += type_object.Size ( );
+				} else {
+					pos += parm.FieldType ( ).Size ( );
+				}
+			}
+			t = t.SuperClass ( );
+		} while ( t && ( t != type_object ) );
+
+		return null;
+	}
 }
 
 ///***********************************************************************

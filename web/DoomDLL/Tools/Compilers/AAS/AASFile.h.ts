@@ -350,7 +350,7 @@ class idAASFile {
 	GetNumClusters ( ): number { return this.clusters.Num ( ); }
 	GetCluster ( index: number /*int*/ ): aasCluster_t { return this.clusters[index]; }
 ////
-////	const idAASSettings &		GetSettings( ) const { return settings; }
+	GetSettings ( ): idAASSettings { return this.settings; }
 ////
 	SetPortalMaxTravelTime ( index: number /*int*/, /*int */time: number ) { this.portals[index].maxAreaTravelTime = time; }
 ////	void						SetAreaTravelFlag( (index:number/*int*/, int flag ) { this.areas[index].travelFlags |= flag; }

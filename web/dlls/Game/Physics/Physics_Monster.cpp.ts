@@ -278,7 +278,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//		}
 	//
 	//		// try to step down so that we walk down slopes and stairs at a normal rate
-	//		down = noStepPos + gravityNormal * maxStepHeight;
+	//		down = noStepPos + gravityNormal * this.maxStepHeight;
 	//		gameLocal.clip.Translation( tr, noStepPos, down, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 	//		if ( tr.fraction < 1.0f ) {
 	//			start = tr.endpos;
@@ -291,7 +291,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//
 	//	if ( blockingEntity && blockingEntity.IsType( idActor::Type ) ) {
 	//		// try to step down in case walking into an actor while going down steps
-	//		down = noStepPos + gravityNormal * maxStepHeight;
+	//		down = noStepPos + gravityNormal * this.maxStepHeight;
 	//		gameLocal.clip.Translation( tr, noStepPos, down, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 	//		start = tr.endpos;
 	//		velocity = noStepVel;
@@ -303,7 +303,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	}
 	//
 	//	// try to step up
-	//	up = start - gravityNormal * maxStepHeight;
+	//	up = start - gravityNormal * this.maxStepHeight;
 	//	gameLocal.clip.Translation( tr, start, up, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 	//	if ( tr.fraction == 0.0f ) {
 	//		start = noStepPos;
@@ -322,7 +322,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	}
 	//
 	//	// step down again
-	//	down = stepPos + gravityNormal * maxStepHeight;
+	//	down = stepPos + gravityNormal * this.maxStepHeight;
 	//	gameLocal.clip.Translation( tr, stepPos, down, this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
 	//	stepPos = tr.endpos;
 	//
@@ -383,7 +383,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	saved = this.current;
 	//	
 	//	delta.Zero();
-	//	maxStepHeight = 18.0f;
+	//	this.maxStepHeight = 18.0f;
 	//	minFloorCosine = 0.7f;
 	//	moveResult = MM_OK;
 	//	forceDeltaMove = false;
@@ -431,7 +431,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	idPhysics_Monster_SavePState( savefile, this.current );
 	//	idPhysics_Monster_SavePState( savefile, saved );
 	//
-	//	savefile.WriteFloat( maxStepHeight );
+	//	savefile.WriteFloat( this.maxStepHeight );
 	//	savefile.WriteFloat( minFloorCosine );
 	//	savefile.WriteVec3( delta );
 	//
@@ -454,7 +454,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	idPhysics_Monster_RestorePState( savefile, this.current );
 	//	idPhysics_Monster_RestorePState( savefile, saved );
 	//
-	//	savefile.ReadFloat( maxStepHeight );
+	//	savefile.ReadFloat( this.maxStepHeight );
 	//	savefile.ReadFloat( minFloorCosine );
 	//	savefile.ReadVec3( delta );
 	//
@@ -478,15 +478,15 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//		this.Activate();
 	//	}
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Monster::SetMaxStepHeight
-	//================
-	//*/
-	//void idPhysics_Monster::SetMaxStepHeight( const float newMaxStepHeight ) {
-	//	maxStepHeight = newMaxStepHeight;
-	//}
+	
+	/*
+	================
+	idPhysics_Monster::SetMaxStepHeight
+	================
+	*/
+	SetMaxStepHeight ( /*float */newMaxStepHeight: number ): void {
+		this.maxStepHeight = newMaxStepHeight;
+	}
 	//
 	///*
 	//================
@@ -494,7 +494,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//================
 	//*/
 	//float idPhysics_Monster::GetMaxStepHeight( ) const {
-	//	return maxStepHeight;
+	//	return this.maxStepHeight;
 	//}
 	//
 	///*

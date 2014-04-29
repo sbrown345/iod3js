@@ -676,11 +676,11 @@ class idMat3 {
 		return !this.Compare( mat3_identity );
 	}
 
-//ID_INLINE void idMat3::ProjectVector( const idVec3 &src, idVec3 &dst ) const {
-//	dst.x = src * this.mat[ 0 ];
-//	dst.y = src * this.mat[ 1 ];
-//	dst.z = src * this.mat[ 2 ];
-//}
+	ProjectVector ( src: idVec3, dst: idVec3 ): void {
+		dst.x = src.timesVec( this.mat[0] );
+		dst.y = src.timesVec( this.mat[1] );
+		dst.z = src.timesVec( this.mat[2] );
+	}
 //
 //ID_INLINE void idMat3::UnprojectVector( const idVec3 &src, idVec3 &dst ) const {
 //	dst = this.mat[ 0 ] * src.x + this.mat[ 1 ] * src.y + this.mat[ 2 ] * src.z;
