@@ -2554,8 +2554,8 @@ idEntity::InitDefaultPhysics
 
 		// check if a clipmodel key/value pair is set
 		if ( this.spawnArgs.GetString_Rstring( "clipmodel", "", temp ) ) {
-			if ( idClipModel.CheckModel( temp .$) ) {
-				clipModel = new idClipModel( temp .$);
+			if ( idClipModel.CheckModel( temp.$ ) ) {
+				clipModel = new idClipModel( temp.$ );
 			}
 		}
 
@@ -2567,15 +2567,15 @@ idEntity::InitDefaultPhysics
 				var bounds = new idBounds;
 				var setClipModel = false;
 
-				if (this.spawnArgs.GetVector_R( "mins", null, bounds[0] ) &&
-					this.spawnArgs.GetVector_R("maxs", null, bounds[1] ) ) {
+				if ( this.spawnArgs.GetVector_R( "mins", null, bounds[0] ) &&
+					this.spawnArgs.GetVector_R( "maxs", null, bounds[1] ) ) {
 					setClipModel = true;
 					if ( bounds[0][0] > bounds[1][0] || bounds[0][1] > bounds[1][1] || bounds[0][2] > bounds[1][2] ) {
-						gameLocal.Error( "Invalid bounds '%s'-'%s' on entity '%s'", bounds[0].ToString(), bounds[1].ToString(), this.name.c_str() );
+						gameLocal.Error( "Invalid bounds '%s'-'%s' on entity '%s'", bounds[0].ToString ( ), bounds[1].ToString ( ), this.name.c_str ( ) );
 					}
-				} else if (this.spawnArgs.GetVector_R("size", null, size ) ) {
+				} else if ( this.spawnArgs.GetVector_R( "size", null, size ) ) {
 					if ( ( size.x < 0.0 ) || ( size.y < 0.0 ) || ( size.z < 0.0 ) ) {
-						gameLocal.Error( "Invalid size '%s' on entity '%s'", size.ToString(), this.name.c_str() );
+						gameLocal.Error( "Invalid size '%s' on entity '%s'", size.ToString ( ), this.name.c_str ( ) );
 					}
 					bounds[0].Set( size.x * -0.5, size.y * -0.5, 0.0 );
 					bounds[1].Set( size.x * 0.5, size.y * 0.5, size.z );
@@ -2584,11 +2584,11 @@ idEntity::InitDefaultPhysics
 
 				if ( setClipModel ) {
 					var /*int */numSides = new R<number> ( );
-					var trm = new idTraceModel ;
-					if (this.spawnArgs.GetInt_R("cylinder", "0", numSides) && numSides.$ > 0 ) {
-						trm.SetupCylinder(bounds, numSides.$ < 3 ? 3 : numSides.$ );
-					} else if (this.spawnArgs.GetInt_R("cone", "0", numSides) && numSides.$> 0 ) {
-						trm.SetupCone(bounds, numSides.$ < 3 ? 3 : numSides.$ );
+					var trm = new idTraceModel;
+					if ( this.spawnArgs.GetInt_R( "cylinder", "0", numSides ) && numSides.$ > 0 ) {
+						trm.SetupCylinder( bounds, numSides.$ < 3 ? 3 : numSides.$ );
+					} else if ( this.spawnArgs.GetInt_R( "cone", "0", numSides ) && numSides.$ > 0 ) {
+						trm.SetupCone( bounds, numSides.$ < 3 ? 3 : numSides.$ );
 					} else {
 						trm.SetupBox( bounds );
 					}
@@ -2599,9 +2599,9 @@ idEntity::InitDefaultPhysics
 			// check if the visual model can be used as collision model
 			if ( !clipModel ) {
 				temp.$ = this.spawnArgs.GetString( "model" );
-				if ( temp && temp.$) {
-					if (idClipModel.CheckModel(temp.$ ) ) {
-						clipModel = new idClipModel( temp .$);
+				if ( temp && temp.$ ) {
+					if ( idClipModel.CheckModel( temp.$ ) ) {
+						clipModel = new idClipModel( temp.$ );
 					}
 				}
 			}

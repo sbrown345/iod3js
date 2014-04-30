@@ -189,7 +189,7 @@ class idScriptVariable<type, returnType> {
 //ID_INLINE idScriptVariable<type, etype, returnType> &idScriptVariable<type, etype, returnType>::operator=( const returnType &value ) {
 	opEquals ( value: returnType ): idScriptVariable<type, returnType> {
 		// check if we attempt to access the object before it's been linked
-		assert( this.data );
+		assert( this.data !== undefined);
 
 		// make sure we don't crash if we don't have a pointer
 		if ( this.data ) {

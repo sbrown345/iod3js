@@ -424,7 +424,7 @@ class P {
 	}
 }
 
-class arrPtr<T> {
+class ArrayPointer<T> {
 	arr: T[];
 	idx: number;
 
@@ -435,6 +435,10 @@ class arrPtr<T> {
 			throw 'Undefined value';
 		}
 		this.arr[this.idx] = value;
+	}
+
+	$$ ( offset:number ): T {
+		return this.arr[this.idx + offset];
 	}
 
 	indexOf ( v: T ): number {

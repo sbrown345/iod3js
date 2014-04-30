@@ -798,9 +798,9 @@ idTraceModel::SetupCylinder
 		// trm bounds
 		this.bounds.opEquals( cylBounds );
 		// bottom and top polygon bounds
-		this.polys[n].bounds = this.bounds;
+		this.polys[n].bounds.opEquals( this.bounds );
 		this.polys[n].bounds[1][2] = this.bounds[0][2];
-		this.polys[n + 1].bounds = this.bounds;
+		this.polys[n + 1].bounds.opEquals( this.bounds);
 		this.polys[n + 1].bounds[0][2] = this.bounds[1][2];
 		// convex model
 		this.isConvex = true;
@@ -901,7 +901,7 @@ idTraceModel::SetupCone
 		// trm bounds
 		this.bounds.opEquals( coneBounds );
 		// bottom polygon bounds
-		this.polys[n].bounds = this.bounds;
+		this.polys[n].bounds.opEquals( this.bounds);
 		this.polys[n].bounds[1][2] = this.bounds[0][2];
 		// convex model
 		this.isConvex = true;
@@ -1039,52 +1039,51 @@ idTraceModel::SetupPolygon
 ============
 */
 	SetupPolygon ( v: idVec3[], /*int */count: number ): void {
-		todoThrow ( );
-////	var /*int */i:number, j:number;
-////	idVec3 mid;
-////
-////	this.type = traceModel_t.TRM_POLYGON;
-////	this.numVerts = count;
-////	// times three because we need to be able to turn the polygon into a volume
-////	if ( this.numVerts * 3 > MAX_TRACEMODEL_EDGES ) {
-////		idLib.common.Printf( "WARNING: idTraceModel::SetupPolygon: too many vertices\n" );
-////		this.numVerts = MAX_TRACEMODEL_EDGES / 3;
-////	}
-////
-////	this.numEdges = this.numVerts;
-////	this.numPolys = 2;
-////	// set polygon planes
-////	this.polys[0].numEdges = numEdges;
-////	this.polys[0].normal = ( v[1] - v[0] ).Cross( v[2] - v[0] );
-////	this.polys[0].normal.Normalize();
-////	this.polys[0].dist = this.polys[0].normal * v[0];
-////	this.polys[1].numEdges = numEdges;
-////	this.polys[1].normal = -this.polys[0].normal;
-////	this.polys[1].dist = -this.polys[0].dist;
-////	// setup verts, edges and polygons
-////	this.polys[0].bounds.Clear();
-////	mid = vec3_origin;
-////	for ( i = 0, j = 1; i < this.numVerts; i++, j++ ) {
-////		if ( j >= this.numVerts ) {
-////			j = 0;
-////		}
-////		this.verts[i] = v[i];
-////		this.edges[i+1].v[0] = i;
-////		this.edges[i+1].v[1] = j;
-////		this.edges[i+1].normal = this.polys[0].normal.Cross( v[i] - v[j] );
-////		this.edges[i+1].normal.Normalize();
-////		this.polys[0].edges[i] = i + 1;
-////		this.polys[1].edges[i] = -(this.numVerts - i);
-////		this.polys[0].bounds.AddPoint( this.verts[i] );
-////		mid += v[i];
-////	}
-////	this.polys[1].bounds = this.polys[0].bounds;
-////	// offset to center
-////	this.offset.opEquals( mid * (1.0 / this.numVerts) );
-////	// total bounds
-////	this.bounds.opEquals( this.polys[0].bounds );
-////	// considered non convex because the model has no volume
-////	this.isConvex = false;
+		var /*int */i: number, j: number;
+		var mid = new idVec3;
+
+		this.type = traceModel_t.TRM_POLYGON;
+		this.numVerts = count;
+		// times three because we need to be able to turn the polygon into a volume
+		if ( this.numVerts * 3 > MAX_TRACEMODEL_EDGES ) {
+			idLib.common.Printf( "WARNING: idTraceModel::SetupPolygon: too many vertices\n" );
+			this.numVerts = MAX_TRACEMODEL_EDGES / 3;
+		}
+
+		this.numEdges = this.numVerts;
+		this.numPolys = 2;
+		// set polygon planes
+		this.polys[0].numEdges = this.numEdges;
+		this.polys[0].normal.opEquals( ( v[1].opSubtraction( v[0] ) ).Cross( v[2].opSubtraction( v[0] ) ) );
+		this.polys[0].normal.Normalize ( );
+		this.polys[0].dist = this.polys[0].normal.timesVec( v[0] );
+		this.polys[1].numEdges = this.numEdges;
+		this.polys[1].normal.opEquals( this.polys[0].normal.opUnaryMinus ( ) );
+		this.polys[1].dist = -this.polys[0].dist;
+		// setup verts, edges and polygons
+		this.polys[0].bounds.Clear ( );
+		mid.opEquals( vec3_origin );
+		for ( i = 0, j = 1; i < this.numVerts; i++, j++ ) {
+			if ( j >= this.numVerts ) {
+				j = 0;
+			}
+			this.verts[i] = v[i];
+			this.edges[i + 1].v[0] = i;
+			this.edges[i + 1].v[1] = j;
+			this.edges[i + 1].normal.opEquals( this.polys[0].normal.Cross( v[i].opSubtraction( v[j] ) ) );
+			this.edges[i + 1].normal.Normalize ( );
+			this.polys[0].edges[i] = i + 1;
+			this.polys[1].edges[i] = -( this.numVerts - i );
+			this.polys[0].bounds.AddPoint( this.verts[i] );
+			mid.opAdditionAssignment( v[i] );
+		}
+		this.polys[1].bounds.opEquals( this.polys[0].bounds );
+		// offset to center
+		this.offset.opEquals( mid.timesFloat( 1.0 / this.numVerts ) );
+		// total bounds
+		this.bounds.opEquals( this.polys[0].bounds );
+		// considered non convex because the model has no volume
+		this.isConvex = false;
 	}
 ////
 /////*

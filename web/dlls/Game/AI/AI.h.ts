@@ -1561,26 +1561,26 @@ idAI::InitMuzzleFlash
 idAI::LinkScriptVariables
 =====================
 */
-	LinkScriptVariables(): void {
-	this.AI_TALK.LinkTo(				this.scriptObject, "AI_TALK" );
-	this.AI_DAMAGE.LinkTo(			this.scriptObject, "AI_DAMAGE" );
-	this.AI_PAIN.LinkTo(				this.scriptObject, "AI_PAIN" );
-	this.AI_SPECIAL_DAMAGE.LinkTo(	this.scriptObject, "AI_SPECIAL_DAMAGE" );
-	this.AI_DEAD.LinkTo(				this.scriptObject, "AI_DEAD" );
-	this.AI_ENEMY_VISIBLE.LinkTo(	this.scriptObject, "AI_ENEMY_VISIBLE" );
-	this.AI_ENEMY_IN_FOV.LinkTo(		this.scriptObject, "AI_ENEMY_IN_FOV" );
-	this.AI_ENEMY_DEAD.LinkTo(		this.scriptObject, "AI_ENEMY_DEAD" );
-	this.AI_MOVE_DONE.LinkTo(		this.scriptObject, "AI_MOVE_DONE" );
-	this.AI_ONGROUND.LinkTo(			this.scriptObject, "AI_ONGROUND" );
-	this.AI_ACTIVATED.LinkTo(		this.scriptObject, "AI_ACTIVATED" );
-	this.AI_FORWARD.LinkTo(			this.scriptObject, "AI_FORWARD" );
-	this.AI_JUMP.LinkTo(				this.scriptObject, "AI_JUMP" );
-	this.AI_BLOCKED.LinkTo(			this.scriptObject, "AI_BLOCKED" );
-	this.AI_DEST_UNREACHABLE.LinkTo( this.scriptObject, "AI_DEST_UNREACHABLE" );
-	this.AI_HIT_ENEMY.LinkTo(		this.scriptObject, "AI_HIT_ENEMY" );
-	this.AI_OBSTACLE_IN_PATH.LinkTo(	this.scriptObject, "AI_OBSTACLE_IN_PATH" );
-	this.AI_PUSHED.LinkTo(			this.scriptObject, "AI_PUSHED" );
-}
+	LinkScriptVariables ( ): void {
+		this.AI_TALK.LinkTo( this.scriptObject, "AI_TALK" );
+		this.AI_DAMAGE.LinkTo( this.scriptObject, "AI_DAMAGE" );
+		this.AI_PAIN.LinkTo( this.scriptObject, "AI_PAIN" );
+		this.AI_SPECIAL_DAMAGE.LinkTo( this.scriptObject, "AI_SPECIAL_DAMAGE" );
+		this.AI_DEAD.LinkTo( this.scriptObject, "AI_DEAD" );
+		this.AI_ENEMY_VISIBLE.LinkTo( this.scriptObject, "AI_ENEMY_VISIBLE" );
+		this.AI_ENEMY_IN_FOV.LinkTo( this.scriptObject, "AI_ENEMY_IN_FOV" );
+		this.AI_ENEMY_DEAD.LinkTo( this.scriptObject, "AI_ENEMY_DEAD" );
+		this.AI_MOVE_DONE.LinkTo( this.scriptObject, "AI_MOVE_DONE" );
+		this.AI_ONGROUND.LinkTo( this.scriptObject, "AI_ONGROUND" );
+		this.AI_ACTIVATED.LinkTo( this.scriptObject, "AI_ACTIVATED" );
+		this.AI_FORWARD.LinkTo( this.scriptObject, "AI_FORWARD" );
+		this.AI_JUMP.LinkTo( this.scriptObject, "AI_JUMP" );
+		this.AI_BLOCKED.LinkTo( this.scriptObject, "AI_BLOCKED" );
+		this.AI_DEST_UNREACHABLE.LinkTo( this.scriptObject, "AI_DEST_UNREACHABLE" );
+		this.AI_HIT_ENEMY.LinkTo( this.scriptObject, "AI_HIT_ENEMY" );
+		this.AI_OBSTACLE_IN_PATH.LinkTo( this.scriptObject, "AI_OBSTACLE_IN_PATH" );
+		this.AI_PUSHED.LinkTo( this.scriptObject, "AI_PUSHED" );
+	}
 
 /////*
 ////=====================

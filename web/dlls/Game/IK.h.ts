@@ -241,7 +241,6 @@ class idIK {
 		var/*float */length:number;
 		axis[0].opEquals( endPos.opSubtraction( startPos ) );
 		length = axis[0].Normalize();
-		debugger;//check line below:
 		axis[1].opEquals(dir.opSubtraction(axis[0].timesFloat(dir.timesVec(axis[0])))); //axis[1] = dir - axis[0] * dir * axis[0];
 		axis[1].Normalize();
 		axis[2].Cross_2(axis[1], axis[0]);

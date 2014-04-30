@@ -201,13 +201,13 @@ idDeclModelDef::FindJoint
 */
 	FindJoint ( name: string ): jointInfo_t {
 		var i: number /*int*/;
-		var joint: arrPtr<idMD5Joint>;
+		var joint: ArrayPointer<idMD5Joint>;
 
 		if ( !this.modelHandle ) {
 			return null;
 		}
 
-		joint = new arrPtr<idMD5Joint>( this.modelHandle.GetJoints ( ) );
+		joint = new ArrayPointer<idMD5Joint>( this.modelHandle.GetJoints ( ) );
 		for ( i = 0; i < this.joints.Num ( ); i++, joint.idx++ ) {
 			if ( !joint.$.name.Icmp( name ) ) {
 				return this.joints[i];
@@ -235,7 +235,7 @@ idDeclModelDef::GetJointList
 		var pos: number;
 		var jointname = new idStr;
 		var joint: jointInfo_t;
-		var child: arrPtr<jointInfo_t>;
+		var child: ArrayPointer<jointInfo_t>;
 		var i: number /*int*/;
 		var num: number /*int*/;
 		var getChildren: boolean;
@@ -298,7 +298,7 @@ idDeclModelDef::GetJointList
 
 			if ( getChildren ) {
 				// include all joint's children
-				child = new arrPtr<jointInfo_t>( this.joints.Ptr ( ) ); //(this.joints[ this.joints.indexOf(joint) + 1];
+				child = new ArrayPointer<jointInfo_t>( this.joints.Ptr ( ) ); //(this.joints[ this.joints.indexOf(joint) + 1];
 				child.idx = child.arr.indexOf( joint ) + 1;
 				for ( i = joint.num + 1; i < num; i++, child.idx++ ) {
 					// all children of the joint should follow it in the list.

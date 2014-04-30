@@ -2948,8 +2948,8 @@ class idRenderModelMD5 extends idRenderModelStatic {
 		var /*int*/parentNum: number;
 		var token = new idToken;
 		var parser = new idLexer( lexerFlags_t.LEXFL_ALLOWPATHNAMES | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS );
-		var pose: arrPtr<idJointQuat>;
-		var joint: arrPtr<idMD5Joint>;
+		var pose: ArrayPointer<idJointQuat>;
+		var joint: ArrayPointer<idMD5Joint>;
 		var poseMat3: idJointMat [];
 
 		if ( !this.purged ) {
@@ -2998,8 +2998,8 @@ class idRenderModelMD5 extends idRenderModelStatic {
 		//
 		parser.ExpectTokenString( "joints" );
 		parser.ExpectTokenString( "{" );
-		pose = new arrPtr<idJointQuat>( this.defaultPose.Ptr ( ) );
-		joint = new arrPtr<idMD5Joint>( this.joints.Ptr ( ) );
+		pose = new ArrayPointer<idJointQuat>( this.defaultPose.Ptr ( ) );
+		joint = new ArrayPointer<idMD5Joint>( this.joints.Ptr ( ) );
 		for ( i = 0; i < this.joints.Num ( ); i++, joint.idx++, pose.idx++ ) {
 			this.ParseJoint( parser, joint.$, pose.$ );
 			poseMat3[i].SetRotation( pose.$.q.ToMat3 ( ) );
@@ -3088,10 +3088,10 @@ class idRenderModelMD5 extends idRenderModelStatic {
 	*/
 	CalculateBounds ( entJoints: idJointMat[] ): void {
 		var /*int*/i: number;
-		var mesh: arrPtr<idMD5Mesh>;
+		var mesh: ArrayPointer<idMD5Mesh>;
 
 		this.bounds.Clear ( );
-		for ( mesh = new arrPtr<idMD5Mesh>( <any>this.meshes.Ptr ( ) ), i = 0; i < this.meshes.Num ( ); i++, mesh.idx++ ) {
+		for ( mesh = new ArrayPointer<idMD5Mesh>( <any>this.meshes.Ptr ( ) ), i = 0; i < this.meshes.Num ( ); i++, mesh.idx++ ) {
 			this.bounds.AddBounds( mesh.$.CalcBounds( entJoints ) );
 		}
 	}
@@ -3307,10 +3307,10 @@ idRenderModelMD5::GetJointHandle
 ====================
 */
 	GetJointHandle ( name: string ): jointHandle_t {
-		var joint: arrPtr<idMD5Joint>;
+		var joint: ArrayPointer<idMD5Joint>;
 		var /*int	*/i: number;
 
-		joint = new arrPtr( this.joints.Ptr ( ) );
+		joint = new ArrayPointer( this.joints.Ptr ( ) );
 		for ( i = 0; i < this.joints.Num ( ); i++, joint.idx++ ) {
 			if ( idStr.Icmp( joint.$.name.c_str ( ), name ) == 0 ) {
 				return <jointHandle_t> i;
@@ -3364,10 +3364,10 @@ are kept loaded
 ====================
 */
 	TouchData ( ): void {
-		var mesh: arrPtr<idMD5Mesh>;
+		var mesh: ArrayPointer<idMD5Mesh>;
 		var /*int*/i: number;
 
-		for ( mesh = new arrPtr<idMD5Mesh>( this.meshes.Ptr ( ) ), i = 0; i < this.meshes.Num ( ); i++, mesh.idx++ ) {
+		for ( mesh = new ArrayPointer<idMD5Mesh>( this.meshes.Ptr ( ) ), i = 0; i < this.meshes.Num ( ); i++, mesh.idx++ ) {
 			declManager.FindMaterial( mesh.$.shader.GetName ( ) );
 		}
 	}

@@ -891,189 +891,190 @@ idMD5Anim::GetInterpolatedFrame
 ====================
 */
 	GetInterpolatedFrame ( frame: frameBlend_t, joints: idJointQuat [], index: number[], /*int */numIndexes: number ): void {
-		todoThrow ( );
-//	int						i, numLerpJoints;
-//	const float				*frame1;
-//	const float				*frame2;
-//	const float				*jointframe1;
-//	const float				*jointframe2;
-//	const jointAnimInfo_t	*infoPtr;
-//	int						animBits;
-//	idJointQuat				*blendJoints;
-//	idJointQuat				*jointPtr;
-//	idJointQuat				*blendPtr;
-//	int						*lerpIndex;
-//
-//	// copy the baseframe
-//	SIMDProcessor.Memcpy( joints, this.baseFrame.Ptr(), this.baseFrame.Num() * sizeof( this.baseFrame[ 0 ] ) );
-//
-//	if ( !this.numAnimatedComponents ) {
-//		// just use the base frame
-//		return;
-//	}
-//
-//	blendJoints = (idJointQuat *)_alloca16( this.baseFrame.Num() * sizeof( blendPtr[ 0 ] ) );
-//	lerpIndex = (int *)_alloca16( this.baseFrame.Num() * sizeof( lerpIndex[ 0 ] ) );
-//	numLerpJoints = 0;
-//
-//	frame1 = &this.componentFrames[ frame.frame1 * this.numAnimatedComponents ];
-//	frame2 = &this.componentFrames[ frame.frame2 * this.numAnimatedComponents ];
-//
-//	for ( i = 0; i < numIndexes; i++ ) {
-//		int j = index[i];
-//		jointPtr = &joints[j];
-//		blendPtr = &blendJoints[j];
-//		infoPtr = &this.jointInfo[j];
-//
-//		animBits = infoPtr.animBits;
-//		if ( animBits ) {
-//
-//			lerpIndex[numLerpJoints++] = j;
-//
-//			jointframe1 = frame1 + infoPtr.firstComponent;
-//			jointframe2 = frame2 + infoPtr.firstComponent;
-//
-//			switch( animBits & (ANIM_TX|ANIM_TY|ANIM_TZ) ) {
-//				case 0:
-//					blendPtr.t = jointPtr.t;
-//					break;
-//				case ANIM_TX:
-//					jointPtr.t.x = jointframe1[0];
-//					blendPtr.t.x = jointframe2[0];
-//					blendPtr.t.y = jointPtr.t.y;
-//					blendPtr.t.z = jointPtr.t.z;
-//					jointframe1++;
-//					jointframe2++;
-//					break;
-//				case ANIM_TY:
-//					jointPtr.t.y = jointframe1[0];
-//					blendPtr.t.y = jointframe2[0];
-//					blendPtr.t.x = jointPtr.t.x;
-//					blendPtr.t.z = jointPtr.t.z;
-//					jointframe1++;
-//					jointframe2++;
-//					break;
-//				case ANIM_TZ:
-//					jointPtr.t.z = jointframe1[0];
-//					blendPtr.t.z = jointframe2[0];
-//					blendPtr.t.x = jointPtr.t.x;
-//					blendPtr.t.y = jointPtr.t.y;
-//					jointframe1++;
-//					jointframe2++;
-//					break;
-//				case ANIM_TX|ANIM_TY:
-//					jointPtr.t.x = jointframe1[0];
-//					jointPtr.t.y = jointframe1[1];
-//					blendPtr.t.x = jointframe2[0];
-//					blendPtr.t.y = jointframe2[1];
-//					blendPtr.t.z = jointPtr.t.z;
-//					jointframe1 += 2;
-//					jointframe2 += 2;
-//					break;
-//				case ANIM_TX|ANIM_TZ:
-//					jointPtr.t.x = jointframe1[0];
-//					jointPtr.t.z = jointframe1[1];
-//					blendPtr.t.x = jointframe2[0];
-//					blendPtr.t.z = jointframe2[1];
-//					blendPtr.t.y = jointPtr.t.y;
-//					jointframe1 += 2;
-//					jointframe2 += 2;
-//					break;
-//				case ANIM_TY|ANIM_TZ:
-//					jointPtr.t.y = jointframe1[0];
-//					jointPtr.t.z = jointframe1[1];
-//					blendPtr.t.y = jointframe2[0];
-//					blendPtr.t.z = jointframe2[1];
-//					blendPtr.t.x = jointPtr.t.x;
-//					jointframe1 += 2;
-//					jointframe2 += 2;
-//					break;
-//				case ANIM_TX|ANIM_TY|ANIM_TZ:
-//					jointPtr.t.x = jointframe1[0];
-//					jointPtr.t.y = jointframe1[1];
-//					jointPtr.t.z = jointframe1[2];
-//					blendPtr.t.x = jointframe2[0];
-//					blendPtr.t.y = jointframe2[1];
-//					blendPtr.t.z = jointframe2[2];
-//					jointframe1 += 3;
-//					jointframe2 += 3;
-//					break;
-//			}
-//
-//			switch( animBits & (ANIM_QX|ANIM_QY|ANIM_QZ) ) {
-//				case 0:
-//					blendPtr.q = jointPtr.q;
-//					break;
-//				case ANIM_QX:
-//					jointPtr.q.x = jointframe1[0];
-//					blendPtr.q.x = jointframe2[0];
-//					blendPtr.q.y = jointPtr.q.y;
-//					blendPtr.q.z = jointPtr.q.z;
-//					jointPtr.q.w = jointPtr.q.CalcW();
-//					blendPtr.q.w = blendPtr.q.CalcW();
-//					break;
-//				case ANIM_QY:
-//					jointPtr.q.y = jointframe1[0];
-//					blendPtr.q.y = jointframe2[0];
-//					blendPtr.q.x = jointPtr.q.x;
-//					blendPtr.q.z = jointPtr.q.z;
-//					jointPtr.q.w = jointPtr.q.CalcW();
-//					blendPtr.q.w = blendPtr.q.CalcW();
-//					break;
-//				case ANIM_QZ:
-//					jointPtr.q.z = jointframe1[0];
-//					blendPtr.q.z = jointframe2[0];
-//					blendPtr.q.x = jointPtr.q.x;
-//					blendPtr.q.y = jointPtr.q.y;
-//					jointPtr.q.w = jointPtr.q.CalcW();
-//					blendPtr.q.w = blendPtr.q.CalcW();
-//					break;
-//				case ANIM_QX|ANIM_QY:
-//					jointPtr.q.x = jointframe1[0];
-//					jointPtr.q.y = jointframe1[1];
-//					blendPtr.q.x = jointframe2[0];
-//					blendPtr.q.y = jointframe2[1];
-//					blendPtr.q.z = jointPtr.q.z;
-//					jointPtr.q.w = jointPtr.q.CalcW();
-//					blendPtr.q.w = blendPtr.q.CalcW();
-//					break;
-//				case ANIM_QX|ANIM_QZ:
-//					jointPtr.q.x = jointframe1[0];
-//					jointPtr.q.z = jointframe1[1];
-//					blendPtr.q.x = jointframe2[0];
-//					blendPtr.q.z = jointframe2[1];
-//					blendPtr.q.y = jointPtr.q.y;
-//					jointPtr.q.w = jointPtr.q.CalcW();
-//					blendPtr.q.w = blendPtr.q.CalcW();
-//					break;
-//				case ANIM_QY|ANIM_QZ:
-//					jointPtr.q.y = jointframe1[0];
-//					jointPtr.q.z = jointframe1[1];
-//					blendPtr.q.y = jointframe2[0];
-//					blendPtr.q.z = jointframe2[1];
-//					blendPtr.q.x = jointPtr.q.x;
-//					jointPtr.q.w = jointPtr.q.CalcW();
-//					blendPtr.q.w = blendPtr.q.CalcW();
-//					break;
-//				case ANIM_QX|ANIM_QY|ANIM_QZ:
-//					jointPtr.q.x = jointframe1[0];
-//					jointPtr.q.y = jointframe1[1];
-//					jointPtr.q.z = jointframe1[2];
-//					blendPtr.q.x = jointframe2[0];
-//					blendPtr.q.y = jointframe2[1];
-//					blendPtr.q.z = jointframe2[2];
-//					jointPtr.q.w = jointPtr.q.CalcW();
-//					blendPtr.q.w = blendPtr.q.CalcW();
-//					break;
-//			}
-//		}
-//	}
-//
-//	SIMDProcessor.BlendJoints( joints, blendJoints, frame.backlerp, lerpIndex, numLerpJoints );
-//
-//	if ( frame.cycleCount ) {
-//		joints[ 0 ].t += this.totaldelta * ( float )frame.cycleCount;
-//	}
+		var /*int					*/ i: number, numLerpJoints: number;
+		var /*const float			*/ frame1: number; // ptr
+		var /*const float			*/ frame2: number; // ptr
+		var /*const float			*/ jointframe1 = new ArrayPointer<number>(null);
+		var /*const float			*/ jointframe2 = new  ArrayPointer<number>(null);
+		var /*const jointAnimInfo_t	*/ infoPtr: jointAnimInfo_t;
+		var /*int					*/ animBits: number;
+		var /*idJointQuat			*/ blendJoints: idJointQuat[];
+		var /*idJointQuat			*/ jointPtr: idJointQuat;
+		var /*idJointQuat			*/ blendPtr: idJointQuat;
+		var /*int					*/ lerpIndex: Int32Array;
+
+		// copy the baseframe
+		memcpyStructs( joints, this.baseFrame /*.Ptr()*/, this.baseFrame.Num ( ) ); //SIMDProcessor.Memcpy(joints, this.baseFrame.Ptr(), this.baseFrame.Num() * sizeof(this.baseFrame[0]));
+
+		if ( !this.numAnimatedComponents ) {
+			// just use the base frame
+			return;
+		}
+
+		blendJoints = newStructArray<idJointQuat>( idJointQuat, this.baseFrame.Num ( ) ); //(idJointQuat *)_alloca16( this.baseFrame.Num() * sizeof( blendPtr[ 0 ] ) );
+		lerpIndex = new Int32Array( this.baseFrame.Num ( ) ); //(int *)_alloca16( this.baseFrame.Num() * sizeof( lerpIndex[ 0 ] ) );
+		numLerpJoints = 0;
+
+		frame1 = /*this.componentFrames[*/ frame.frame1 * this.numAnimatedComponents /*]*/;
+		frame2 = /*this.componentFrames[*/ frame.frame2 * this.numAnimatedComponents /*]*/;
+
+		jointframe1.arr = jointframe2.arr = <any>this.componentFrames;
+
+		for ( i = 0; i < numIndexes; i++ ) {
+			var /*int */j = index[i];
+			jointPtr = joints[j];
+			blendPtr = blendJoints[j];
+			infoPtr = this.jointInfo[j];
+
+			animBits = infoPtr.animBits;
+			if ( animBits ) {
+
+				lerpIndex[numLerpJoints++] = j;
+
+				jointframe1.idx = frame1 + infoPtr.firstComponent;
+				jointframe2.idx = frame2 + infoPtr.firstComponent;
+
+				switch ( animBits & ( ANIM_TX | ANIM_TY | ANIM_TZ ) ) {
+				case 0:
+					blendPtr.t = jointPtr.t;
+					break;
+				case ANIM_TX:
+					jointPtr.t.x = jointframe1.$$( 0 );
+					blendPtr.t.x = jointframe2.$$( 0 );
+					blendPtr.t.y = jointPtr.t.y;
+					blendPtr.t.z = jointPtr.t.z;
+					jointframe1.idx++;
+					jointframe2.idx++;
+					break;
+				case ANIM_TY:
+					jointPtr.t.y = jointframe1.$$( 0 );
+					blendPtr.t.y = jointframe2.$$( 0 );
+					blendPtr.t.x = jointPtr.t.x;
+					blendPtr.t.z = jointPtr.t.z;
+					jointframe1.idx++;
+					jointframe2.idx++;
+					break;
+				case ANIM_TZ:
+					jointPtr.t.z = jointframe1.$$( 0 );
+					blendPtr.t.z = jointframe2.$$( 0 );
+					blendPtr.t.x = jointPtr.t.x;
+					blendPtr.t.y = jointPtr.t.y;
+					jointframe1.idx++;
+					jointframe2.idx++;
+					break;
+				case ANIM_TX | ANIM_TY:
+					jointPtr.t.x = jointframe1.$$( 0 );
+					jointPtr.t.y = jointframe1.$$( 1 );
+					blendPtr.t.x = jointframe2.$$( 0 );
+					blendPtr.t.y = jointframe2.$$( 1 );
+					blendPtr.t.z = jointPtr.t.z;
+					jointframe1.idx += 2;
+					jointframe2.idx += 2;
+					break;
+				case ANIM_TX | ANIM_TZ:
+					jointPtr.t.x = jointframe1.$$( 0 );
+					jointPtr.t.z = jointframe1.$$( 1 );
+					blendPtr.t.x = jointframe2.$$( 0 );
+					blendPtr.t.z = jointframe2.$$( 1 );
+					blendPtr.t.y = jointPtr.t.y;
+					jointframe1.idx += 2;
+					jointframe2.idx += 2;
+					break;
+				case ANIM_TY | ANIM_TZ:
+					jointPtr.t.y = jointframe1.$$( 0 );
+					jointPtr.t.z = jointframe1.$$( 1 );
+					blendPtr.t.y = jointframe2.$$( 0 );
+					blendPtr.t.z = jointframe2.$$( 1 );
+					blendPtr.t.x = jointPtr.t.x;
+					jointframe1.idx += 2;
+					jointframe2.idx += 2;
+					break;
+				case ANIM_TX | ANIM_TY | ANIM_TZ:
+					jointPtr.t.x = jointframe1.$$( 0 );
+					jointPtr.t.y = jointframe1.$$( 1 );
+					jointPtr.t.z = jointframe1[2];
+					blendPtr.t.x = jointframe2.$$( 0 );
+					blendPtr.t.y = jointframe2.$$( 1 );
+					blendPtr.t.z = jointframe2[2];
+					jointframe1.idx += 3;
+					jointframe2.idx += 3;
+					break;
+				}
+
+				switch ( animBits & ( ANIM_QX | ANIM_QY | ANIM_QZ ) ) {
+				case 0:
+					blendPtr.q = jointPtr.q;
+					break;
+				case ANIM_QX:
+					jointPtr.q.x = jointframe1.$$( 0 );
+					blendPtr.q.x = jointframe2.$$( 0 );
+					blendPtr.q.y = jointPtr.q.y;
+					blendPtr.q.z = jointPtr.q.z;
+					jointPtr.q.w = jointPtr.q.CalcW ( );
+					blendPtr.q.w = blendPtr.q.CalcW ( );
+					break;
+				case ANIM_QY:
+					jointPtr.q.y = jointframe1.$$( 0 );
+					blendPtr.q.y = jointframe2.$$( 0 );
+					blendPtr.q.x = jointPtr.q.x;
+					blendPtr.q.z = jointPtr.q.z;
+					jointPtr.q.w = jointPtr.q.CalcW ( );
+					blendPtr.q.w = blendPtr.q.CalcW ( );
+					break;
+				case ANIM_QZ:
+					jointPtr.q.z = jointframe1.$$( 0 );
+					blendPtr.q.z = jointframe2.$$( 0 );
+					blendPtr.q.x = jointPtr.q.x;
+					blendPtr.q.y = jointPtr.q.y;
+					jointPtr.q.w = jointPtr.q.CalcW ( );
+					blendPtr.q.w = blendPtr.q.CalcW ( );
+					break;
+				case ANIM_QX | ANIM_QY:
+					jointPtr.q.x = jointframe1.$$( 0 );
+					jointPtr.q.y = jointframe1.$$( 1 );
+					blendPtr.q.x = jointframe2.$$( 0 );
+					blendPtr.q.y = jointframe2.$$( 1 );
+					blendPtr.q.z = jointPtr.q.z;
+					jointPtr.q.w = jointPtr.q.CalcW ( );
+					blendPtr.q.w = blendPtr.q.CalcW ( );
+					break;
+				case ANIM_QX | ANIM_QZ:
+					jointPtr.q.x = jointframe1.$$( 0 );
+					jointPtr.q.z = jointframe1.$$( 1 );
+					blendPtr.q.x = jointframe2.$$( 0 );
+					blendPtr.q.z = jointframe2.$$( 1 );
+					blendPtr.q.y = jointPtr.q.y;
+					jointPtr.q.w = jointPtr.q.CalcW ( );
+					blendPtr.q.w = blendPtr.q.CalcW ( );
+					break;
+				case ANIM_QY | ANIM_QZ:
+					jointPtr.q.y = jointframe1.$$( 0 );
+					jointPtr.q.z = jointframe1.$$( 1 );
+					blendPtr.q.y = jointframe2.$$( 0 );
+					blendPtr.q.z = jointframe2.$$( 1 );
+					blendPtr.q.x = jointPtr.q.x;
+					jointPtr.q.w = jointPtr.q.CalcW ( );
+					blendPtr.q.w = blendPtr.q.CalcW ( );
+					break;
+				case ANIM_QX | ANIM_QY | ANIM_QZ:
+					jointPtr.q.x = jointframe1.$$( 0 );
+					jointPtr.q.y = jointframe1.$$( 1 );
+					jointPtr.q.z = jointframe1[2];
+					blendPtr.q.x = jointframe2.$$( 0 );
+					blendPtr.q.y = jointframe2.$$( 1 );
+					blendPtr.q.z = jointframe2[2];
+					jointPtr.q.w = jointPtr.q.CalcW ( );
+					blendPtr.q.w = blendPtr.q.CalcW ( );
+					break;
+				}
+			}
+		}
+
+		SIMDProcessor.BlendJoints( joints, blendJoints, frame.backlerp, <any>lerpIndex, numLerpJoints );
+
+		if ( frame.cycleCount ) {
+			joints[0].t.opAdditionAssignment( this.totaldelta.timesFloat( /*( float )*/frame.cycleCount ) );
+		}
 	}
 
 /*
@@ -4679,7 +4680,7 @@ class idAnimator {
 		var debugInfo: boolean;
 		var baseBlend = new R<number> ( ); /*float*/;
 		var blendWeight = new R<number> ( ); /*float*/
-		var blend = new arrPtr<idAnimBlend>( null );
+		var blend = new ArrayPointer<idAnimBlend>( null );
 		var jointParent: number[];
 		var jointMod: jointMod_t;
 		var defaultPose: idJointQuat[];

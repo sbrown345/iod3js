@@ -659,24 +659,24 @@ Destructor for object.  Cancels any events that depend on this object.
 ////
 ////	gameLocal.Printf( "...%d classes", idClass.types.Num() );
 ////}
-//
-///*
-//================
-//idClass::CreateInstance
-//================
-//*/
-//idClass *idClass::CreateInstance( name:string ) {
-//	const idTypeInfo	*type;
-//	idClass				*obj;
-//
-//	type = idClass::GetClass( name );
-//	if ( !type ) {
-//		return NULL;
-//	}
-//
-//	obj = type.CreateInstance();
-//	return obj;
-//}
+
+/*
+================
+idClass::CreateInstance
+================
+*/
+	CreateInstance ( name: string ): idClass {
+		var type: idTypeInfo;
+		var obj: idClass;
+
+		type = idClass.GetClass( name );
+		if ( !type ) {
+			return null;
+		}
+
+		obj = type.CreateInstance ( );
+		return obj;
+	}
 
 /*
 ================
