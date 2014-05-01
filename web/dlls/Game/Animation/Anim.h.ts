@@ -894,8 +894,8 @@ idMD5Anim::GetInterpolatedFrame
 		var /*int					*/ i: number, numLerpJoints: number;
 		var /*const float			*/ frame1: number; // ptr
 		var /*const float			*/ frame2: number; // ptr
-		var /*const float			*/ jointframe1 = new ArrayPointer<number>(null);
-		var /*const float			*/ jointframe2 = new  ArrayPointer<number>(null);
+		var /*const float			*/ jointframe1 = new ArrayPointer<number>( null );
+		var /*const float			*/ jointframe2 = new ArrayPointer<number>( null );
 		var /*const jointAnimInfo_t	*/ infoPtr: jointAnimInfo_t;
 		var /*int					*/ animBits: number;
 		var /*idJointQuat			*/ blendJoints: idJointQuat[];
@@ -992,10 +992,10 @@ idMD5Anim::GetInterpolatedFrame
 				case ANIM_TX | ANIM_TY | ANIM_TZ:
 					jointPtr.t.x = jointframe1.$$( 0 );
 					jointPtr.t.y = jointframe1.$$( 1 );
-					jointPtr.t.z = jointframe1[2];
+					jointPtr.t.z = jointframe1.$$( 2 );
 					blendPtr.t.x = jointframe2.$$( 0 );
 					blendPtr.t.y = jointframe2.$$( 1 );
-					blendPtr.t.z = jointframe2[2];
+					blendPtr.t.z = jointframe2.$$( 2 );
 					jointframe1.idx += 3;
 					jointframe2.idx += 3;
 					break;
@@ -1059,10 +1059,10 @@ idMD5Anim::GetInterpolatedFrame
 				case ANIM_QX | ANIM_QY | ANIM_QZ:
 					jointPtr.q.x = jointframe1.$$( 0 );
 					jointPtr.q.y = jointframe1.$$( 1 );
-					jointPtr.q.z = jointframe1[2];
+					jointPtr.q.z = jointframe1.$$( 2 );
 					blendPtr.q.x = jointframe2.$$( 0 );
 					blendPtr.q.y = jointframe2.$$( 1 );
-					blendPtr.q.z = jointframe2[2];
+					blendPtr.q.z = jointframe2.$$( 2 );
 					jointPtr.q.w = jointPtr.q.CalcW ( );
 					blendPtr.q.w = blendPtr.q.CalcW ( );
 					break;
