@@ -534,7 +534,7 @@ FIXME: Create an iterator template for this kind of thing.
 */
 //template< class type >
 	Ptr ( ): type[] {
-		return [].slice.call( this.list );
+		return Array.prototype.slice.call( this.list );
 	}
 
 ///*
@@ -575,17 +575,17 @@ Returns a reference to a new data element at the end of the list.
 
 
 	// make a copy of the object if needed
-	private Val(v: type, dest: type): type {
-		if (this.type == Number || this.listOfReferences) {
+	private Val ( v: type, dest: type ): type {
+		if ( this.type == Number || this.listOfReferences ) {
 			return v;
 		} else {
-			if ((<any>this.type).typeInfo) {
+			if ( ( <any>this.type ).typeInfo ) {
 				var newVal = new this.type;
-				TypeInfoCopier(newVal, v, (<any>this.type).typeInfo);
+				TypeInfoCopier( newVal, v, ( <any>this.type ).typeInfo );
 				return newVal;
 			}
 
-			return v["copy"](dest);
+			return ( <any>v ).copy( dest );
 		}
 	}
 
@@ -742,7 +742,7 @@ Searches for the specified data in the list and returns it's index.  Returns -1 
 					return i;
 				}
 			} else {
-				if ( this.list[i]["equalTo"]( obj ) ) {
+				if ( ( <any>this.list[i] ).equalTo( obj ) ) {
 					return i;
 				}
 			}
@@ -877,20 +877,20 @@ list, so any pointers to data within the list may no longer be valid.
 Sort( compare:(a:string,b:string)=>number ):void
 Sort( compare:(a:any,b:any)=>number ):void {*/
 
-Sort( compare:(a:idStr,b:idStr)=>number = null):void {
-	if ( !this[0] /*.list*/ ) {
-		return;
+	Sort ( compare: ( a: idStr, b: idStr ) => number = null ): void {
+		if ( !this[0] /*.list*/ ) {
+			return;
+		}
+		//typedef int cmp_c(const void *, const void *);
+
+		//cmp_c *vCompare = (cmp_c *)compare;
+		//qsort( ( void * )this.list, ( size_t )this.num, sizeof( type ), vCompare );
+
+		( <any>this ).length = this.num;
+		( <any>this ).splice = Array.prototype.splice;
+		( <any>this ).sort = Array.prototype.sort;
+		( <any>this ).sort( compare || idStr.Cmp ); // todo, is idStr.Cmp ok, whats default?
 	}
-	//typedef int cmp_c(const void *, const void *);
-
-	//cmp_c *vCompare = (cmp_c *)compare;
-	//qsort( ( void * )this.list, ( size_t )this.num, sizeof( type ), vCompare );
-
-    this["length"] = this.num;
-    this["splice"] = [].splice;
-    this["sort"] = [].sort;
-	this["sort"](compare || idStr.Cmp); // todo, is idStr.Cmp ok, whats default?
-}
 
 ///*
 //================

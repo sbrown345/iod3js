@@ -215,6 +215,8 @@ Set number of elements in list.
 		this.num = newnum;
 	}
 
+	[n: number]: type;
+
 /////*
 ////================
 ////idStaticList<type,size>::operator[] const

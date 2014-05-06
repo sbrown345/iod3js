@@ -579,7 +579,7 @@ class idGameLocal extends idGame {
 
 	shakeSounds = new idStrList;
 
-	lagometer = $3dArray( Uint8Array, LAGO_IMG_HEIGHT, LAGO_IMG_WIDTH, 4 );
+	lagometer = $3dArray<Uint8Array>( Uint8Array, LAGO_IMG_HEIGHT, LAGO_IMG_WIDTH, 4 );
 	
 
 	////void					Clear( void );

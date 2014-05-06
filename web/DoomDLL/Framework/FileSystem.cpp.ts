@@ -3462,7 +3462,7 @@ idFileSystemLocal::OpenFileRead
 idFileSystemLocal::OpenFileWrite
 ===========
 */
-	static tempFilesForWriting = {};
+	static tempFilesForWriting: { [s: string]: string } = {};
 
 	OpenFileWrite ( relativePath: string, basePath: string = "fs_savepath" ): idFile {
 		//const char *path;

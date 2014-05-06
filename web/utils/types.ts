@@ -186,7 +186,7 @@ function multiDimTypedArray<T>(arrayClass: any, num: number, arrLength: number):
 		multiDimArray[i] = baseArray.subarray( i * arrLength, ( i * arrLength ) + arrLength );
 	}
 
-	multiDimArray["baseArray"] = baseArray;
+	(<any>multiDimArray).baseArray = baseArray;
 	return multiDimArray;
 }
 
@@ -207,44 +207,45 @@ function $3dArray <T>(arrayClass: any, d1: number, d2: number, d3: number):Array
         }
     }
 
-    array["totalSize"] = d1 * d2 * d3;
+    (<any>array).totalSize = d1 * d2 * d3;
     return array;
 }
 
-function flatten3DArray <T>( arrayClass: any, array:Array<Array<T>> ): T {
-    var flatArray = new arrayClass( array["totalSize"] );
-    var count = 0;
-    var d1 = array;
-    for (var i = 0; i < d1.length; i++) {
-        var d2 = d1[i];
-        for (var j = 0; j < d2.length; j++) {
-            var d3 = d2[j];
-            for ( var k = 0; k < d3["length"]; k++ ) {
-                flatArray[count++] = d3[k];
-            }
-        }
-    }
-
-    return flatArray;
-}
-
-function memset2DArray<T> ( array: Array<T>, val: number ): void {
-	var d1 = array;
-	for ( var i = 0; i < d1.length; i++ ) {
-		var d2 = d1[i];
-		for ( var j = 0; j < d2["length"]; j++ ) {
-			d2[j] = val;
-		}
-	}
-}
-
-function memset3DArray<T> ( array: Array<Array<T>>, val: number ): void {
+function flatten3DArray<T extends ArrayBufferView> ( arrayClass: any, array: Array<Array<T>> ): T {
+	assert( ( <any>array ).totalSize );
+	var flatArray = new arrayClass( ( <any>array ).totalSize );
+	var count = 0;
 	var d1 = array;
 	for ( var i = 0; i < d1.length; i++ ) {
 		var d2 = d1[i];
 		for ( var j = 0; j < d2.length; j++ ) {
 			var d3 = d2[j];
-			for ( var k = 0; k < d3["length"]; k++ ) {
+			for ( var k = 0; k < d3.length; k++ ) {
+				flatArray[count++] = d3[k];
+			}
+		}
+	}
+
+	return flatArray;
+}
+
+function memset2DArray<T extends ArrayBufferView> ( array: Array<T>, val: number ): void {
+	var d1 = array;
+	for ( var i = 0; i < d1.length; i++ ) {
+		var d2 = d1[i];
+		for ( var j = 0; j < d2.length; j++ ) {
+			d2[j] = val;
+		}
+	}
+}
+
+function memset3DArray<T extends ArrayBufferView> ( array: Array<Array<T>>, val: number ): void {
+	var d1 = array;
+	for ( var i = 0; i < d1.length; i++ ) {
+		var d2 = d1[i];
+		for ( var j = 0; j < d2.length; j++ ) {
+			var d3 = d2[j];
+			for ( var k = 0; k < d3.length; k++ ) {
 				d3[k] = val;
 			}
 		}

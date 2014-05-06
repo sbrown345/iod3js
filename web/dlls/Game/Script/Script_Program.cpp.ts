@@ -92,14 +92,14 @@ class function_t {
 	filenum: number; 			// source file defined in			//	int					
 	parmSize = new	idList<number>(Number);
 
-///*
-//================
-//function_t::function_t
-//================
-//*/
-//function_t::function_t() {
-//	Clear();
-//}
+/*
+================
+function_t::function_t
+================
+*/
+	constructor ( ) {
+		this.Clear ( );
+	}
 //
 /*
 ================
@@ -128,23 +128,23 @@ function_t::Name
 		return this.name.data;
 	}
 
-///*
-//================
-//function_t::Clear
-//================
-//*/
-//void function_t::Clear( ) {
-//	eventdef		= null;
-//	def				= null;
-//	type			= null;
-//	firstStatement	= 0;
-//	numStatements	= 0;
-//	parmTotal		= 0;
-//	locals			= 0;
-//	filenum			= 0;
-//	name.Clear();
-//	parmSize.Clear();
-//}
+/*
+================
+function_t::Clear
+================
+*/
+	Clear ( ): void {
+		this.eventdef = null;
+		this.def = null;
+		this.type = null;
+		this.firstStatement = 0;
+		this.numStatements = 0;
+		this.parmTotal = 0;
+		this.locals = 0;
+		this.filenum = 0;
+		this.name.Clear ( );
+		this.parmSize.Clear ( );
+	}
 }
 
 
@@ -582,7 +582,7 @@ class idProgram {
 //
 //	statement_t									*AllocStatement( );
 //	statement_t									&GetStatement( int index );
-	NumStatements ( ) { return this.statements.Num ( ); }
+	NumStatements ( ):number { return this.statements.Num ( ); }
 //
 //	int 										GetReturnedInteger( );
 //

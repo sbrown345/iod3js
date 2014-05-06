@@ -716,7 +716,7 @@ class idCollisionModelManagerLocal extends idCollisionModelManager {
 	trmMaterial: idMaterial;
 	// for data pruning
 	numProcNodes: number /*int*/;
-	procNodes: cm_procNode_t;
+	procNodes: cm_procNode_t[];
 	// for retrieving contact points
 	getContacts: boolean;
 	contacts: contactInfo_t; //contactInfo_t *	

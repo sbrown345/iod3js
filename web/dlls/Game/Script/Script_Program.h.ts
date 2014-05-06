@@ -85,7 +85,7 @@ class eval_t {
 
 	get $function ( ): function_t {
 		todoThrow ( );
-		return this[1];
+		return /*??*/ null /*??*/;
 	}
 	set $function ( value: function_t ) {
 		if ( value === undefined ) {
@@ -104,7 +104,7 @@ class eval_t {
 
 	get entity ( ): number {
 		todoThrow ( );
-		return this[1];
+		return /*??*/ null /*??*/;
 	}
 	set entity ( value: number ) {
 		if ( value === undefined ) {

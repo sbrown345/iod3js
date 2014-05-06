@@ -428,7 +428,7 @@ RESULTS
    Reverses the byte order in each of elcount elements.
 ===================================================================== */
 function RevBytesSwap ( /*void **/bp: ArrayBuffer, /*int */elsize: number, /*int */elcount: number ): void {
-	if (bp["buffer"]) bp = bp["buffer"]; //todo: fix this work around properly (typescript confuses ArrayBuffer and typed arrays)
+	if ( ( <ArrayBufferView>bp ).buffer ) bp = ( <ArrayBufferView>bp ).buffer; //todo: fix this work around properly (typescript confuses ArrayBuffer and typed arrays)
 	var /*register unsigned char **/p: number, q: number;
 
 	var arr = new Uint8Array(bp);

@@ -144,7 +144,7 @@ var MAX_WORLD_SIZE			=( MAX_WORLD_COORD - MIN_WORLD_COORD )
 ////#ifdef _DEBUG
 ////void AssertFailed( const char *file, int line, const char *expression );
 ////#undef assert
-function assert( X:any ):void { if ( X ) { } else AssertFailed( "__FILE__", (new Error)["lineNumber"], "#X" ); }
+function assert( X:any ):void { if ( X ) { } else AssertFailed( "__FILE__", (<any>(new Error)).lineNumber, "#X" ); }
 ////#endif
 
 class idException {

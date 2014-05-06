@@ -151,7 +151,9 @@ class idQuat {
 			this.w = w;
 		}
 	}
-////
+
+	[index: number]: number;
+
 ////	ID_INLINE float idQuat::operator[](int index) const {
 ////		assert((index >= 0) && (index < 4));
 ////		return (&x)[index];

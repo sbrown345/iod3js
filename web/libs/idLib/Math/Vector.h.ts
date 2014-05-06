@@ -29,6 +29,11 @@
 ////#ifndef __MATH_VECTOR_H__
 ////#define __MATH_VECTOR_H__
 
+
+interface IVector {
+	[index: number]: number;
+}
+
 /////*
 ////===============================================================================
 
@@ -408,7 +413,7 @@ Object.defineProperty(idVec2.prototype, "1", {
 //
 //===============================================================
 
-class idVec3 {
+class idVec3 implements IVector {
 	static size = 12;
 
 //public:	

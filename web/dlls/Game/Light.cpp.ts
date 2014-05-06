@@ -349,7 +349,7 @@ idLight::idLight
 		// but there may still be a chance to get it wrong if the game moves
 		// a light before the first present, and doesn't clear the prelight
 		this.renderLight.prelightModel = null;
-		if ( this.name[0] ) {
+		if ( this.name.data ) {
 			// this will return 0 if not found
 			this.renderLight.prelightModel = renderModelManager.CheckModel( va( "_prelight_%s", this.name.c_str ( ) ) );
 		}
@@ -361,8 +361,8 @@ idLight::idLight
 
 		this.health = this.spawnArgs.GetInt( "health", "0" );
 		this.spawnArgs.GetString_RidStr( "broken", "", this.brokenModel );
-		this.breakOnTrigger = this.spawnArgs.GetBool( "break", "0" ); 
-		this.count = this.spawnArgs.GetInt( "count", "1" ); 
+		this.breakOnTrigger = this.spawnArgs.GetBool( "break", "0" );
+		this.count = this.spawnArgs.GetInt( "count", "1" );
 
 		this.triggercount = 0;
 
@@ -396,7 +396,7 @@ idLight::idLight
 				}
 				this.brokenModel.Append( "_broken" );
 				if ( pos > 0 ) {
-					this.brokenModel.Append( model[pos] );
+					this.brokenModel.Append( model.data[pos] );
 				}
 			}
 

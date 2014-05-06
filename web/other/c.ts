@@ -128,16 +128,29 @@ function memcpy2d ( destination: Int32Array[], source: Int32Array[] ): void {
 	}
 }
 
-function memcpy ( destination: Uint8Array, source: Uint8Array, num: number ): void
-function memcpy ( destination: Int8Array, source: Int8Array, num: number ): void
-function memcpy ( destination: Uint16Array, source: Uint16Array, num: number ): void
-function memcpy ( destination: Int16Array, source: Int16Array, num: number ): void
-function memcpy ( destination: Uint32Array, source: Uint32Array, num: number ): void
-function memcpy ( destination: Int32Array, source: Int32Array, num: number ): void
-function memcpy ( destination: Uint8Array /* any*/, source: Uint8Array /*any*/, num: number ): void {
+interface ArrayBufferView {
+	BYTES_PER_ELEMENT: number;
+
+	length: number;
+	[index: number]: number;
+
+	get ( index: number ): number;
+
+	set ( index: number, value: number ): void;
+
+	set ( array: ArrayBufferView, offset?: number ): void;
+
+	set ( array: number[], offset?: number ): void;
+
+	subarray ( begin: number, end?: number ): ArrayBufferView;
+}
+
+function memcpy(destination: ArrayBufferView, source: ArrayBufferView, num: number ): void {
 	if ( !destination ) {
 		return;
 	}
+
+	assert( destination.BYTES_PER_ELEMENT === source.BYTES_PER_ELEMENT );
 
 	if ( !( destination instanceof Uint8Array ) ) {
 		destination = new Uint8Array( destination.buffer, destination.byteOffset );
@@ -158,13 +171,7 @@ function zeroArray ( array: any ): void {
 	}
 }
 
-function memset ( arr: Uint8Array, value: number, num: number ): void
-function memset ( arr: Int8Array, value: number, num: number ): void
-function memset ( arr: Uint16Array, value: number, num: number ): void
-function memset ( arr: Int16Array, value: number, num: number ): void
-function memset ( arr: Uint32Array, value: number, num: number ): void
-function memset ( arr: Int32Array, value: number, num: number ): void
-function memset ( arr: Uint8Array /*any*/, value: number, num: number ): void {
+function memset(arr: ArrayBufferView, value: number, num: number ): void {
 	var startIndex = 0;
 	var val: number;
 
@@ -322,7 +329,7 @@ function timeGetTime ( ): number {
 
 var printf = console.log.bind(console);
 
-var _sscanf = window["sscanf"];
+var _sscanf = ( <any>window ).sscanf;
 var sscanf = function ( s: string, format: string ): any[] {
 	var array = _sscanf( s, format );
 	var arrayWithoutNulls: any[] = [];
@@ -414,8 +421,8 @@ class P {
 	}
 
 	constructor(buffer: ArrayBuffer, indexOffset: number = 0) {
-		if (buffer["buffer"])
-			this.buf = buffer["buffer"]; // typescript wasn't warning about typed arrays, so force it to deal with either
+		if ((<ArrayBufferView>buffer).buffer)
+			this.buf = (<ArrayBufferView>buffer).buffer; // typescript wasn't warning about typed arrays, so force it to deal with either
 		else
 			this.buf = buffer;
 

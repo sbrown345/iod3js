@@ -177,6 +177,8 @@ class idAngles {
 		return this;
 	}
 
+	[index: number]: number;
+
 ////ID_INLINE float idAngles::operator[](int index) const {
 ////	assert((index >= 0) && (index < 3));
 ////	return (this.pitch)[index];
@@ -542,4 +544,58 @@ idAngles::ToMat3
 	}
 }
 
+Object.defineProperty(idAngles.prototype, "0", {
+	get: function (): number {
+		return this.values[0];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.x = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idAngles.prototype, "1", {
+	get: function (): number {
+		return this.values[1];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.y = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
+Object.defineProperty(idAngles.prototype, "2", {
+	get: function (): number {
+		return this.values[2];
+	},
+	set: function (value: number): void {
+		if (value === undefined) {
+			throw 'Undefined value';
+		}
+		if (typeof value !== "number") {
+			throw 'must be number type';
+		}
+		this.z = value;
+	},
+	enumerable: false,
+	configurable: false
+});
+
 var ang_zero = new idAngles( 0.0, 0.0, 0.0 );
+
+
+

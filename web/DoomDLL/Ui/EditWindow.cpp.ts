@@ -600,7 +600,7 @@ InitScroller(  horizontal :boolean):void
 					if ( idStr.IsColor( this.text.c_str()[i] ) ) {
 						i += 2;
 					} else {
-						cursorX += this.dc.CharWidth( this.text[i], this.textScale.data );
+						cursorX += this.dc.CharWidth( this.text.data.data[i], this.textScale.data );
 						i++;
 					}
 				}

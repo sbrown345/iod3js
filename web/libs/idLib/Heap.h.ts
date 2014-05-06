@@ -310,7 +310,7 @@ function idDynamicAlloc_template<T>(type: any, baseBlockSize: number, minBlockSi
 
 
 //template<class type, int baseBlockSize, int minBlockSize>
-class idDynamicAlloc<T> {
+class idDynamicAlloc<T extends any> {
 //public:
 //									idDynamicAlloc( );
 //									~idDynamicAlloc( );
@@ -376,7 +376,7 @@ class idDynamicAlloc<T> {
 		}
 		this.numUsedBlocks++;
 		this.usedBlockMemory += num; //* sizeof( type );
-		if (this["type"] === window["Int32Array"] ) {
+		if ( <any>this.type === Int32Array ) {
 			throw "use AllocInt32Array() instead";
 		}
 
@@ -390,7 +390,7 @@ class idDynamicAlloc<T> {
 		}
 		this.numUsedBlocks++;
 		this.usedBlockMemory += num; //* sizeof( type );
-		if ( this["type"] !== window["Uint8Array"] ) {
+		if ( <any>this.type !== Uint8Array ) {
 			throw "use Alloc() instead";
 		}
 
@@ -404,7 +404,7 @@ class idDynamicAlloc<T> {
 		}
 		this.numUsedBlocks++;
 		this.usedBlockMemory += num * 2; //* sizeof( type );
-		if ( this["type"] !== window["Int16Array"] ) {
+		if ( <any>this.type !== Int16Array ) {
 			throw "use Alloc() instead";
 		}
 
@@ -418,11 +418,11 @@ class idDynamicAlloc<T> {
 		}
 		this.numUsedBlocks++;
 		this.usedBlockMemory += num * 4; //* sizeof( type );
-		if (this["type"] !== window["Int32Array"] ) {
+		if ( <any>this.type !== Int32Array ) {
 			throw "use Alloc() instead";
 		}
 
-		return <any>(new Int32Array(num));
+		return <any>( new Int32Array( num ) );
 	}
 
 //template<class type, int baseBlockSize, int minBlockSize>

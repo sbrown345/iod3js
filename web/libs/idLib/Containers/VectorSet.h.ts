@@ -164,7 +164,7 @@
 */
 
 
-class idVectorSubset<type> {
+class idVectorSubset<type extends IVector> {
 ////public:
 ////							idVectorSubset( void );
 ////							idVectorSubset( const type &mins, const type &maxs, const int boxHashSize, const int initialSize );

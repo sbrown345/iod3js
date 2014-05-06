@@ -449,7 +449,7 @@ class viewLight_t {
 	fogPlane = new idPlane; // fog plane for backend fog volume rendering		//idPlane					
 	frustumTris: srfTriangles_t; // light frustum for backend fog volume rendering	//const srfTriangles_t *	
 	lightShader: idMaterial; // light shader used by backend						//const idMaterial *		
-	shaderRegisters: number; // shader registers used by backend					//const float	*			
+	shaderRegisters: Float32Array; // shader registers used by backend					//const float	*			
 	falloffImage: idImageManager; // falloff image used by backend					//idImage *				
 
 	globalShadows: drawSurf_t; // shadow everything
@@ -474,7 +474,7 @@ class viewLight_t {
 		this.fogPlane.memset0 ( );
 		this.frustumTris = null;
 		this.lightShader = null;
-		this.shaderRegisters = 0;
+		memset( this.shaderRegisters, 0, sizeof( this.shaderRegisters ) );
 		this.falloffImage = null;
 		this.globalShadows = null;
 		this.localInteractions = null;
@@ -848,6 +848,8 @@ class glstate_t {
 	forceGlState: boolean; // the next GL_State will ignore glStateBits and set everything
 
 	currentProgram: shaderProgram_t;
+
+	[propertyName: string]: any;
 
 	memset0 ( ): void {
 		clearStructArray( this.tmu );
@@ -1681,6 +1683,8 @@ class shaderProgram_t {
 
 	u_fragmentMap = new Array<WebGLUniformLocation>( MAX_FRAGMENT_IMAGES ); //GLint		
 	u_vertexParm = new Array<Number>( MAX_VERTEX_PARMS ); //GLint
+
+	[propertyName: string]: any;
 
 	constructor ( ) {
 		this.memset0 ( );
