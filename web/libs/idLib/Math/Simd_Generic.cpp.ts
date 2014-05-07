@@ -2781,7 +2781,7 @@ idSIMD_Generic::NormalizeTangents
 			for ( var /*int */j = 0; j < 2; j++ ) {
 				var t: idVec3 = verts[i].tangents[j];
 
-				t.opSubtractionAssignment( idVec3.opMultiplication_float_vec3( t.timesVec( v ), v ) ); //t -= ( t * v ) * v;  // todo: check precedence 
+				t.opSubtractionAssignment( idVec3.opMultiplication_float( t.timesVec( v ), v ) ); //t -= ( t * v ) * v;  // todo: check precedence 
 				f = idMath.RSqrt( t.x * t.x + t.y * t.y + t.z * t.z );
 				t.x *= f;
 				t.y *= f;

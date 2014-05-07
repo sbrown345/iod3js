@@ -1168,7 +1168,7 @@ idCollisionModelManagerLocal::CalculateEdgeNormals
 							model.numSharpEdges++;
 						} else {
 							s = 0.5 / ( 0.5 + 0.5 * dot );
-							edge.normal.opEquals( idVec3.opMultiplication_float_vec3( s, edge.normal.opAddition( p.plane.Normal ( ) ) ) );
+							edge.normal.opEquals( idVec3.opMultiplication_float( s, edge.normal.opAddition( p.plane.Normal ( ) ) ) );
 						}
 					}
 				}

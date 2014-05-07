@@ -917,31 +917,29 @@ idPhysics_Parametric::SetOrigin
 idPhysics_Parametric::SetAxis
 ================
 */
-	SetAxis(newAxis: idMat3, /*int*/ id: number = -1): void {
-		todoThrow();
-	//idVec3 masterOrigin;
-	//idMat3 masterAxis;
+	SetAxis ( newAxis: idMat3, /*int*/ id: number = -1 ): void {
+		var masterOrigin = new idVec3;
+		var masterAxis = new idMat3;
 
-	//this.current.localAngles = newAxis.ToAngles();
+		this.current.localAngles.opEquals( newAxis.ToAngles ( ) );
 
-	//this.current.angularExtrapolation.SetStartValue( this.current.localAngles );
-	//this.current.angularInterpolation.SetStartValue( this.current.localAngles );
+		this.current.angularExtrapolation.SetStartValue( this.current.localAngles );
+		this.current.angularInterpolation.SetStartValue( this.current.localAngles );
 
-	//this.current.localAngles = this.current.angularExtrapolation.GetCurrentValue( this.current.time );
-	//if ( this.hasMaster && this.isOrientated ) {
-	//	this.self.GetMasterPosition( masterOrigin, masterAxis );
-	//	this.current.axis = this.current.localAngles.ToMat3() * masterAxis;
-	//	this.current.angles = this.current.axis.ToAngles();
-	//}
-	//else {
-	//	this.current.axis = this.current.localAngles.ToMat3();
-	//	this.current.angles = this.current.localAngles;
-	//}
-	//if ( this.clipModel ) {
-	//	this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
-	//}
-	//this.Activate();
-}
+		this.current.localAngles = this.current.angularExtrapolation.GetCurrentValue( this.current.time );
+		if ( this.hasMaster && this.isOrientated ) {
+			this.self.GetMasterPosition( masterOrigin, masterAxis );
+			this.current.axis.opEquals( this.current.localAngles.ToMat3 ( ).opMultiplication( masterAxis ) );
+			this.current.angles.opEquals( this.current.axis.ToAngles ( ) );
+		} else {
+			this.current.axis = this.current.localAngles.ToMat3 ( );
+			this.current.angles = this.current.localAngles;
+		}
+		if ( this.clipModel ) {
+			this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
+		}
+		this.Activate ( );
+	}
 
 /*
 ================
@@ -956,10 +954,10 @@ idPhysics_Parametric::Move
 idPhysics_Parametric::Rotate
 ================
 */
-	Rotate(rotation: idRotation, /*int*/ id: number = -1): void {
+	Rotate ( rotation: idRotation, /*int*/ id: number = -1 ): void {
 
-}
-//
+	}
+
 /*
 ================
 idPhysics_Parametric::GetOrigin

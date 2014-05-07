@@ -206,10 +206,11 @@ class idAngles {
 		return this;
 	}
 
-////ID_INLINE idAngles idAngles::operator+(const idAngles &a) const {
-////	return idAngles(this.pitch + a.pitch, this.yaw + a.yaw, this.roll + a.roll);
-////}
-////
+//ID_INLINE idAngles idAngles::operator+(const idAngles &a) const {
+	opAddition ( a: idAngles ): idAngles {
+		return new idAngles( this.pitch + a.pitch, this.yaw + a.yaw, this.roll + a.roll );
+	}
+
 ////ID_INLINE idAngles& idAngles::operator+=(const idAngles &a) {
 ////	this.pitch += a.pitch;
 ////	this.yaw += a.yaw;
@@ -254,10 +255,11 @@ class idAngles {
 ////	return this;
 ////}
 ////
+	static opMultiplication_float ( a: number /*float*/, b: idAngles ): idAngles {
 ////ID_INLINE idAngles operator*(const float a, const idAngles &b) {
-////	return idAngles(a * b.pitch, a * b.yaw, a * b.roll);
-////}
-////
+		return new idAngles( a * b.pitch, a * b.yaw, a * b.roll );
+	}
+
 ////ID_INLINE bool idAngles::Compare(const idAngles &a) const {
 ////	return ((a.pitch == this.pitch) && (a.yaw == this.yaw) && (a.roll == this.roll));
 ////}

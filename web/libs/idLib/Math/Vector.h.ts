@@ -609,7 +609,7 @@ class idVec3 implements IVector {
 	}
 
 	/*operator**/
-	static opMultiplication_float_vec3 ( /*const float */a: number, b: idVec3 ): idVec3 {
+	static opMultiplication_float ( /*const float */a: number, b: idVec3 ): idVec3 {
 		return new idVec3( b.x * a, b.y * a, b.z * a );
 	}
 
@@ -1132,7 +1132,7 @@ Linearly inperpolates one vector to another.
 		} else if ( l >= 1.0 ) {
 			( this ).opEquals( v2 );
 		} else {
-			( this ).opEquals( v1.opAddition( idVec3.opMultiplication_float_vec3( l, ( v2.opSubtraction( v1 ) ) ) ) );
+			( this ).opEquals( v1.opAddition( idVec3.opMultiplication_float( l, ( v2.opSubtraction( v1 ) ) ) ) );
 		}
 	}
 

@@ -1445,7 +1445,7 @@ function R_DeriveTangentsWithoutNormals ( tri: srfTriangles_t ): void {
 			var /*float	*/d: number;
 
 			d = vert.tangents[j].timesVec( vert.normal );
-			vert.tangents[j].opEquals( vert.tangents[j].opSubtraction( idVec3.opMultiplication_float_vec3( d, vert.normal ) ) );
+			vert.tangents[j].opEquals( vert.tangents[j].opSubtraction( idVec3.opMultiplication_float( d, vert.normal ) ) );
 			vert.tangents[j].Normalize ( );
 		}
 	}
