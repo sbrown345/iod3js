@@ -665,7 +665,8 @@ class idEntityFx extends idEntity {
 ////  Clears any visual fx started when {item,mob,player} was spawned
 ////================
 ////*/
-////void idEntityFx::Think( void ) {
+	Think(): void {
+		todoThrow();
 ////	if ( g_skipFX.GetBool() ) {
 ////		return;
 ////	}
@@ -676,7 +677,7 @@ class idEntityFx extends idEntity {
 ////
 ////	RunPhysics();
 ////	Present();
-////}
+}
 ////
 /////*
 ////================

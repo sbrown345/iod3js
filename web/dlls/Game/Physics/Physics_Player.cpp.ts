@@ -1966,15 +1966,15 @@ idPhysics_Player::UpdateTime
 ////		this.current.velocity += impulse * invMass;
 ////	}
 ////}
-////
-/////*
-////================
-////idPhysics_Player::IsAtRest
-////================
-////*/
-////bool idPhysics_Player::IsAtRest( ) const {
-////	return false;
-////}
+
+/*
+================
+idPhysics_Player::IsAtRest
+================
+*/
+	IsAtRest ( ): boolean {
+		return false;
+	}
 ////
 /////*
 ////================
@@ -2038,15 +2038,16 @@ idPhysics_Player::GetOrigin
 		return this.current.origin;
 	}
 
-/////*
-////================
-////idPhysics_Player::SetAxis
-////================
-////*/
-////void idPhysics_Player::SetAxis( const idMat3 &newAxis, /*int*/ id:number ) {
-////	this.clipModel.Link( gameLocal.clip, this.self, 0, this.clipModel.GetOrigin(), newAxis );
-////}
-////
+/*
+================
+idPhysics_Player::SetAxis
+================
+*/
+	SetAxis(newAxis: idMat3, /*int*/ id: number = -1): void {
+		todoThrow();
+	//this.clipModel.Link( gameLocal.clip, this.self, 0, this.clipModel.GetOrigin(), newAxis );
+}
+
 /*
 ================
 idPhysics_Player::Translate
@@ -2060,27 +2061,28 @@ idPhysics_Player::Translate
 		this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis ( ) );
 	}
 
-/////*
-////================
-////idPhysics_Player::Rotate
-////================
-////*/
-////void idPhysics_Player::Rotate( const idRotation &rotation, /*int*/ id:number ) {
-////	idVec3 masterOrigin;
-////	idMat3 masterAxis;
-////
-////	this.current.origin *= rotation;
-////	if ( this.masterEntity ) {
-////		this.self.GetMasterPosition( masterOrigin, masterAxis );
-////		this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
-////	}
-////	else {
-////		this.current.localOrigin = this.current.origin;
-////	}
-////
-////	this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() * rotation.ToMat3() );
-////}
-////
+/*
+================
+idPhysics_Player::Rotate
+================
+*/
+	Rotate(rotation: idRotation, /*int*/ id: number = -1): void {
+		todoThrow();
+	//idVec3 masterOrigin;
+	//idMat3 masterAxis;
+
+	//this.current.origin *= rotation;
+	//if ( this.masterEntity ) {
+	//	this.self.GetMasterPosition( masterOrigin, masterAxis );
+	//	this.current.localOrigin = ( this.current.origin - masterOrigin ) * masterAxis.Transpose();
+	//}
+	//else {
+	//	this.current.localOrigin = this.current.origin;
+	//}
+
+	//this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() * rotation.ToMat3() );
+}
+
 /////*
 ////================
 ////idPhysics_Player::SetLinearVelocity

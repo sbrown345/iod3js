@@ -1018,7 +1018,7 @@ idActor::SetupHead
 ////
 ////	savefile.WriteJoint( this.leftEyeJoint );
 ////	savefile.WriteJoint( this.rightEyeJoint );
-////	savefile.WriteJoint( soundJoint );
+////	savefile.WriteJoint( this.soundJoint );
 ////
 ////	this.walkIK.Save( savefile );
 ////
@@ -1142,7 +1142,7 @@ idActor::SetupHead
 ////
 ////	savefile.ReadJoint( this.leftEyeJoint );
 ////	savefile.ReadJoint( this.rightEyeJoint );
-////	savefile.ReadJoint( soundJoint );
+////	savefile.ReadJoint( this.soundJoint );
 ////
 ////	this.walkIK.Restore( savefile );
 ////
@@ -1188,32 +1188,32 @@ idActor::SetupHead
 ////		this.idealState = GetScriptFunction( statename );
 ////	}
 ////}
-////
-/////*
-////================
-////idActor::Hide
-////================
-////*/
-////void idActor::Hide( ) {
-////	ent:idEntity;
-////	idEntity *next;
-////
-////	idAFEntity_Base::Hide();
-////	if ( this.head.GetEntity() ) {
-////		this.head.GetEntity().Hide();
-////	}
-////
-////	for( ent = GetNextTeamEntity(); ent != NULL; ent = next ) {
-////		next = ent.GetNextTeamEntity();
-////		if ( ent.GetBindMaster() == this ) {
-////			ent.Hide();
-////			if ( ent.IsType( idLight::Type ) ) {
-////				static_cast<idLight *>( ent ).Off();
-////			}
-////		}
-////	}
-////	UnlinkCombat();
-////}
+
+/*
+================
+idActor::Hide
+================
+*/
+	Hide ( ): void {
+		var ent: idEntity;
+		var next: idEntity;
+
+		super.Hide ( );
+		if ( this.head.GetEntity ( ) ) {
+			this.head.GetEntity ( ).Hide ( );
+		}
+
+		for ( ent = this.GetNextTeamEntity ( ); ent != null; ent = next ) {
+			next = ent.GetNextTeamEntity ( );
+			if ( ent.GetBindMaster ( ) == this ) {
+				ent.Hide ( );
+				if ( ent.IsType( idLight.Type ) ) {
+					static_cast<idLight>( ent ).Off ( );
+				}
+			}
+		}
+		this.UnlinkCombat ( );
+	}
 ////
 /////*
 ////================
@@ -1389,33 +1389,34 @@ idActor::SetupBody
 ////idActor::GetPhysicsToVisualTransform
 ////================
 ////*/
-////bool idActor::GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis ) {
-////	if ( this.af.IsActive() ) {
-////		this.af.GetPhysicsToVisualTransform( origin, axis );
-////		return true;
-////	}
-////	origin = this.modelOffset;
-////	axis = this.viewAxis;
-////	return true;
-////}
-////
+	GetPhysicsToVisualTransform ( origin: idVec3, axis: idMat3 ): boolean {
+		if ( this.af.IsActive ( ) ) {
+			this.af.GetPhysicsToVisualTransform( origin, axis );
+			return true;
+		}
+		origin.opEquals( this.modelOffset );
+		axis.opEquals( this.viewAxis );
+		return true;
+	}
+
 /////*
 ////================
 ////idActor::GetPhysicsToSoundTransform
 ////================
 ////*/
-////bool idActor::GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis ) {
-////	if ( soundJoint != jointHandle_t.INVALID_JOINT ) {
-////		this.animator.GetJointTransform( soundJoint, gameLocal.time, origin, axis );
-////		origin += this.modelOffset;
-////		axis = this.viewAxis;
-////	} else {
-////		origin = this.GetPhysics().GetGravityNormal() * -this.eyeOffset.z;
-////		axis.Identity();
-////	}
-////	return true;
-////}
-////
+	GetPhysicsToSoundTransform ( origin: idVec3, axis: idMat3 ): boolean {
+		if ( this.soundJoint != jointHandle_t.INVALID_JOINT ) {
+			this.animator.GetJointTransform( this.soundJoint, gameLocal.time, origin, axis );
+			origin.opAdditionAssignment( this.modelOffset );
+			axis.opEquals( this.viewAxis );
+		} else {
+			todoThrow ( );
+			//origin.opEquals( this.GetPhysics().GetGravityNormal() * -this.eyeOffset.z);
+			//axis.Identity();
+		}
+		return true;
+	}
+
 /////***********************************************************************
 ////
 ////	script state management
@@ -1460,7 +1461,8 @@ idActor::SetupBody
 ////Can be overridden by subclasses when a thread doesn't need to be allocated.
 ////================
 ////*/
-////idThread *idActor::ConstructScriptObject( ) {
+	ConstructScriptObject(): idThread {
+		todoThrow ( );
 ////	const function_t *constructor;
 ////
 ////	// make sure we have a scriptObject
@@ -1490,8 +1492,8 @@ idActor::SetupBody
 ////	// just set the current function on the script.  we'll execute in the subclasses.
 ////	this.scriptThread.CallFunction( this, constructor, true );
 ////
-////	return this.scriptThread;
-////}
+	return this.scriptThread;
+}
 ////
 /////*
 ////=====================
@@ -1618,16 +1620,18 @@ idActor::setFov
 ////idVec3 idActor::EyeOffset( ) const {
 ////	return this.GetPhysics().GetGravityNormal() * -this.eyeOffset.z;
 ////}
-////
-/////*
-////=====================
-////idActor::GetEyePosition
-////=====================
-////*/
-////idVec3 idActor::GetEyePosition( ) const {
-////	return this.GetPhysics().GetOrigin() + ( this.GetPhysics().GetGravityNormal() * -this.eyeOffset.z );
-////}
-////
+//
+/*
+=====================
+idActor::GetEyePosition
+=====================
+*/
+	GetEyePosition ( ): idVec3 {
+		todoThrow ( );
+		return null;
+		//return this.GetPhysics().GetOrigin() .opAddition ( this.GetPhysics().GetGravityNormal() .timesFloat( -this.eyeOffset.z ));
+	}
+
 /////*
 ////=====================
 ////idActor::GetViewPos
@@ -1733,12 +1737,12 @@ idActor::setFov
 ////idActor::GetRenderView
 ////=====================
 ////*/
-////renderView_t *idActor::GetRenderView() {
-////	renderView_t *rv = idEntity::GetRenderView();
-////	rv.viewaxis = this.viewAxis;
-////	rv.vieworg = GetEyePosition();
-////	return rv;
-////}
+	GetRenderView ( ): renderView_t {
+		var rv = super.GetRenderView ( );
+		rv.viewaxis.opEquals( this.viewAxis );
+		rv.vieworg.opEquals( this.GetEyePosition ( ) );
+		return rv;
+	}
 ////
 /////***********************************************************************
 ////

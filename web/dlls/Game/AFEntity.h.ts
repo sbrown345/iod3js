@@ -106,7 +106,8 @@ class idMultiModelAF extends idEntity {
 ////idMultiModelAF::Present
 ////================
 ////*/
-////void idMultiModelAF::Present( ) {
+	Present(): void {
+		todoThrow();
 ////	var/*int*/i:number;
 ////
 ////	// don't present to the renderer if the entity hasn't changed
@@ -133,18 +134,19 @@ class idMultiModelAF extends idEntity {
 ////			gameRenderWorld.UpdateEntityDef( modelDefHandles[i], &this.renderEntity );
 ////		}
 ////	}
-////}
-////
-/////*
-////================
-////idMultiModelAF::Think
-////================
-////*/
-////void idMultiModelAF::Think( ) {
-////	RunPhysics();
-////	Present();
-////}
-////
+}
+
+/*
+================
+idMultiModelAF::Think
+================
+*/
+	Think ( ): void {
+		todoThrow ( );
+		this.RunPhysics ( );
+		this.Present ( );
+	}
+
 };
 ////
 ////
@@ -529,19 +531,20 @@ Hide( ) :void{
 ////		this.animator.CycleAnim( ANIMCHANNEL_ALL, this.idleAnim, gameLocal.time, blendTime );
 ////	}
 ////}
-////
-/////*
-////================
-////idAfAttachment::Think
-////================
-////*/
-////void idAFAttachment::Think( ) {
-////	idAnimatedEntity::Think();
-////	if ( thinkFlags & TH_UPDATEPARTICLES ) {
-////		UpdateDamageEffects();
-////	}
-////}
-////
+
+/*
+================
+idAfAttachment::Think
+================
+*/
+	Think ( ): void {
+		todoThrow ( );
+		//idAnimatedEntity::Think();
+		//if ( thinkFlags & TH_UPDATEPARTICLES ) {
+		//	UpdateDamageEffects();
+		//}
+	}
+
 /*
 ================
 idAFAttachment::SetCombatModel
@@ -761,20 +764,21 @@ LoadAF( ):boolean {
 	return true;
 }
 
-/////*
-////================
-////idAFEntity_Base::Think
-////================
-////*/
-////void idAFEntity_Base::Think( ) {
-////	RunPhysics();
-////	UpdateAnimation();
-////	if ( thinkFlags & TH_UPDATEVISUALS ) {
-////		Present();
-////		LinkCombat();
-////	}
-////}
-////
+/*
+================
+idAFEntity_Base::Think
+================
+*/
+	Think ( ): void {
+		todoThrow ( );
+		//RunPhysics();
+		//UpdateAnimation();
+		//if ( thinkFlags & TH_UPDATEVISUALS ) {
+		//	Present();
+		//	LinkCombat();
+		//}
+	}
+
 /////*
 ////================
 ////idAFEntity_Base::BodyForClipModelId
@@ -914,13 +918,13 @@ idAFEntity_Base::RemoveBindConstraints
 ////idAFEntity_Base::GetPhysicsToVisualTransform
 ////================
 ////*/
-////bool idAFEntity_Base::GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis ) {
-////	if ( this.af.IsActive() ) {
-////		this.af.GetPhysicsToVisualTransform( origin, axis );
-////		return true;
-////	}
-////	return idEntity::GetPhysicsToVisualTransform( origin, axis );
-////}
+	GetPhysicsToVisualTransform ( origin: idVec3, axis: idMat3 ): boolean {
+		if ( this.af.IsActive ( ) ) {
+			this.af.GetPhysicsToVisualTransform( origin, axis );
+			return true;
+		}
+		return super.GetPhysicsToVisualTransform( origin, axis );
+	}
 ////
 /////*
 ////================
@@ -991,26 +995,26 @@ idAFEntity_Base::SetCombatModel
 ////	}
 ////}
 ////
-/////*
-////================
-////idAFEntity_Base::UnlinkCombat
-////================
-////*/
-////void idAFEntity_Base::UnlinkCombat( ) {
-////	if ( this.combatModel ) {
-////		this.combatModel.Unlink();
-////	}
-////}
-////
-/////*
-////================
-////idAFEntity_Base::FreeModelDef
-////================
-////*/
-////void idAFEntity_Base::FreeModelDef( ) {
-////	UnlinkCombat();
-////	idEntity::FreeModelDef();
-////}
+/*
+================
+idAFEntity_Base::UnlinkCombat
+================
+*/
+	UnlinkCombat ( ): void {
+		if ( this.combatModel ) {
+			this.combatModel.Unlink ( );
+		}
+	}
+
+/*
+================
+idAFEntity_Base::FreeModelDef
+================
+*/
+	FreeModelDef ( ): void {
+		this.UnlinkCombat ( );
+		super.FreeModelDef ( );
+	}
 ////
 /////*
 ////===============
@@ -1220,7 +1224,8 @@ idAFEntity_Gibbable::InitSkeletonModel
 ////idAFEntity_Gibbable::Present
 ////================
 ////*/
-////void idAFEntity_Gibbable::Present( ) {
+	Present(): void {
+		todoThrow();
 ////	renderEntity_t skeleton;
 ////
 ////	if ( !gameLocal.isNewFrame ) {
@@ -1245,7 +1250,7 @@ idAFEntity_Gibbable::InitSkeletonModel
 ////	}
 ////
 ////	idEntity::Present();
-////}
+}
 ////
 /////*
 ////================
@@ -1434,18 +1439,19 @@ idAFEntity_Generic::idAFEntity_Generic
 ////	savefile.ReadBool( this.keepRunningPhysics );
 ////}
 ////
-/////*
-////================
-////idAFEntity_Generic::Think
-////================
-////*/
-////void idAFEntity_Generic::Think( ) {
-////	idAFEntity_Base::Think();
-////
-////	if ( this.keepRunningPhysics ) {
-////		BecomeActive( TH_PHYSICS );
-////	}
-////}
+/*
+================
+idAFEntity_Generic::Think
+================
+*/
+	Think(): void {
+		todoThrow();
+	//idAFEntity_Base::Think();
+
+	//if ( this.keepRunningPhysics ) {
+	//	BecomeActive( TH_PHYSICS );
+	//}
+}
 
 /*
 ================
@@ -1655,15 +1661,16 @@ idAFEntity_WithAttachedHead::Spawn
 ////		headEnt.BindToJoint( this, joint, true );
 ////	}
 ////}
-////
-/////*
-////================
-////idAFEntity_WithAttachedHead::Think
-////================
-////*/
-////void idAFEntity_WithAttachedHead::Think( ) {
-////	idAFEntity_Base::Think();
-////}
+
+/*
+================
+idAFEntity_WithAttachedHead::Think
+================
+*/
+	Think(): void {
+		todoThrow();
+	//idAFEntity_Base::Think();
+}
 ////
 /////*
 ////================
@@ -1702,20 +1709,21 @@ idAFEntity_WithAttachedHead::Spawn
 ////		headEnt.UnlinkCombat();
 ////	}
 ////}
-////
-/////*
-////================
-////idAFEntity_WithAttachedHead::Hide
-////================
-////*/
-////void idAFEntity_WithAttachedHead::Hide( ) {
-////	idAFEntity_Base::Hide();
-////	if ( this.head.GetEntity() ) {
-////		this.head.GetEntity().Hide();
-////	}
-////	UnlinkCombat();
-////}
-////
+
+/*
+================
+idAFEntity_WithAttachedHead::Hide
+================
+*/
+	Hide ( ): void {
+		todoThrow ( );
+		super.Hide ( );
+		if ( this.head.GetEntity ( ) ) {
+			this.head.GetEntity ( ).Hide ( );
+		}
+		this.UnlinkCombat ( );
+	}
+
 /////*
 ////================
 ////idAFEntity_WithAttachedHead::Show
@@ -2048,13 +2056,14 @@ idAFEntity_VehicleSimple::idAFEntity_VehicleSimple
 ////	memset( wheelAngles, 0, sizeof( wheelAngles ) );
 ////	BecomeActive( TH_THINK );
 }
-////
-/////*
-////================
-////idAFEntity_VehicleSimple::Think
-////================
-////*/
-////void idAFEntity_VehicleSimple::Think( ) {
+
+/*
+================
+idAFEntity_VehicleSimple::Think
+================
+*/
+	Think(): void {
+		todoThrow();
 ////	var/*int*/i:number;
 ////	float force = 0.0f, velocity = 0.0f, steerAngle = 0.0f;
 ////	idVec3 origin;
@@ -2155,9 +2164,9 @@ idAFEntity_VehicleSimple::idAFEntity_VehicleSimple
 ////		Present();
 ////		LinkCombat();
 ////	}
-////}
-////
-////
+}
+
+
 };
 
 
@@ -2268,13 +2277,14 @@ idAFEntity_VehicleFourWheels::idAFEntity_VehicleFourWheels
 ////	memset( wheelAngles, 0, sizeof( wheelAngles ) );
 ////	BecomeActive( TH_THINK );
 }
-////
-/////*
-////================
-////idAFEntity_VehicleFourWheels::Think
-////================
-////*/
-////void idAFEntity_VehicleFourWheels::Think( ) {
+
+/*
+================
+idAFEntity_VehicleFourWheels::Think
+================
+*/
+	Think(): void {
+		todoThrow();
 ////	var/*int*/i:number;
 ////	float force = 0.0f, velocity = 0.0f, steerAngle = 0.0f;
 ////	idVec3 origin;
@@ -2354,8 +2364,8 @@ idAFEntity_VehicleFourWheels::idAFEntity_VehicleFourWheels
 ////		Present();
 ////		LinkCombat();
 ////	}
-////}
-////
+}
+
 };
 
 
@@ -2473,13 +2483,14 @@ idAFEntity_VehicleSixWheels::idAFEntity_VehicleSixWheels
 ////	memset( wheelAngles, 0, sizeof( wheelAngles ) );
 ////	BecomeActive( TH_THINK );
 }
-////
-/////*
-////================
-////idAFEntity_VehicleSixWheels::Think
-////================
-////*/
-////void idAFEntity_VehicleSixWheels::Think( ) {
+
+/*
+================
+idAFEntity_VehicleSixWheels::Think
+================
+*/
+	Think(): void {
+		todoThrow();
 ////	var/*int*/i:number;
 ////	float force = 0.0f, velocity = 0.0f, steerAngle = 0.0f;
 ////	idVec3 origin;
@@ -2565,8 +2576,8 @@ idAFEntity_VehicleSixWheels::idAFEntity_VehicleSixWheels
 ////		Present();
 ////		LinkCombat();
 ////	}
-////}
-////
+	}
+	
 };
 
 
@@ -2723,7 +2734,8 @@ idAFEntity_SteamPipe::idAFEntity_SteamPipe
 ////idAFEntity_SteamPipe::Think
 ////================
 ////*/
-////void idAFEntity_SteamPipe::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	idVec3 steamDir;
 ////
 ////	if ( thinkFlags & TH_THINK ) {
@@ -2742,7 +2754,7 @@ idAFEntity_SteamPipe::idAFEntity_SteamPipe
 ////	}
 ////
 ////	idAFEntity_Base::Think();
-////}
+}
 
 
 };

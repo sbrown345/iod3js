@@ -1240,15 +1240,15 @@ idPhysics_RigidBody::UpdateTime
 ////	this.current.externalTorque += ( point - ( this.current.i.position + this.centerOfMass * this.current.i.orientation ) ).Cross( force );
 ////	this.Activate();
 ////}
-////
-/////*
-////================
-////idPhysics_RigidBody::IsAtRest
-////================
-////*/
-////bool idPhysics_RigidBody::IsAtRest( ) const {
-////	return this.current.atRest >= 0;
-////}
+
+/*
+================
+idPhysics_RigidBody::IsAtRest
+================
+*/
+	IsAtRest(): boolean {
+	return this.current.atRest >= 0;
+}
 ////
 /////*
 ////================
@@ -1318,7 +1318,8 @@ idPhysics::SetOrigin
 ////idPhysics::SetAxis
 ////================
 ////*/
-////void idPhysics_RigidBody::SetAxis( const idMat3 &newAxis, /*int*/ id:number ) {
+	SetAxis(newAxis: idMat3, /*int*/ id: number = -1): void {
+		todoThrow();
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////
@@ -1334,7 +1335,7 @@ idPhysics::SetOrigin
 ////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.clipModel.GetOrigin(), this.current.i.orientation );
 ////
 ////	this.Activate();
-////}
+}
 
 /*
 ================
@@ -1351,12 +1352,13 @@ idPhysics::Move
 		this.Activate ( );
 	}
 
-/////*
-////================
-////idPhysics::Rotate
-////================
-////*/
-////void idPhysics_RigidBody::Rotate( const idRotation &rotation, /*int*/ id:number ) {
+/*
+================
+idPhysics::Rotate
+================
+*/
+	Rotate(rotation: idRotation, /*int*/ id: number = -1): void {
+		todoThrow();
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////
@@ -1376,7 +1378,7 @@ idPhysics::Move
 ////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.current.i.position, this.current.i.orientation );
 ////
 ////	this.Activate();
-////}
+}
 
 /*
 ================

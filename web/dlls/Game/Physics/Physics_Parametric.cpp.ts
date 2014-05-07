@@ -835,16 +835,16 @@ idPhysics_Parametric::UpdateTime
 //int idPhysics_Parametric::GetTime( ) const {
 //	return this.current.time;
 //}
-//
-///*
-//================
-//idPhysics_Parametric::IsAtRest
-//================
-//*/
-//bool idPhysics_Parametric::IsAtRest( ) const {
-//	return this.current.atRest >= 0;
-//}
-//
+
+/*
+================
+idPhysics_Parametric::IsAtRest
+================
+*/
+	IsAtRest ( ): boolean {
+		return this.current.atRest >= 0;
+	}
+
 ///*
 //================
 //idPhysics_Parametric::GetRestStartTime
@@ -912,35 +912,36 @@ idPhysics_Parametric::SetOrigin
 		this.Activate ( );
 	}
 
-///*
-//================
-//idPhysics_Parametric::SetAxis
-//================
-//*/
-//void idPhysics_Parametric::SetAxis( const idMat3 &newAxis, /*int*/ id:number ) {
-//	idVec3 masterOrigin;
-//	idMat3 masterAxis;
-//
-//	this.current.localAngles = newAxis.ToAngles();
-//
-//	this.current.angularExtrapolation.SetStartValue( this.current.localAngles );
-//	this.current.angularInterpolation.SetStartValue( this.current.localAngles );
-//
-//	this.current.localAngles = this.current.angularExtrapolation.GetCurrentValue( this.current.time );
-//	if ( this.hasMaster && this.isOrientated ) {
-//		this.self.GetMasterPosition( masterOrigin, masterAxis );
-//		this.current.axis = this.current.localAngles.ToMat3() * masterAxis;
-//		this.current.angles = this.current.axis.ToAngles();
-//	}
-//	else {
-//		this.current.axis = this.current.localAngles.ToMat3();
-//		this.current.angles = this.current.localAngles;
-//	}
-//	if ( this.clipModel ) {
-//		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
-//	}
-//	this.Activate();
-//}
+/*
+================
+idPhysics_Parametric::SetAxis
+================
+*/
+	SetAxis(newAxis: idMat3, /*int*/ id: number = -1): void {
+		todoThrow();
+	//idVec3 masterOrigin;
+	//idMat3 masterAxis;
+
+	//this.current.localAngles = newAxis.ToAngles();
+
+	//this.current.angularExtrapolation.SetStartValue( this.current.localAngles );
+	//this.current.angularInterpolation.SetStartValue( this.current.localAngles );
+
+	//this.current.localAngles = this.current.angularExtrapolation.GetCurrentValue( this.current.time );
+	//if ( this.hasMaster && this.isOrientated ) {
+	//	this.self.GetMasterPosition( masterOrigin, masterAxis );
+	//	this.current.axis = this.current.localAngles.ToMat3() * masterAxis;
+	//	this.current.angles = this.current.axis.ToAngles();
+	//}
+	//else {
+	//	this.current.axis = this.current.localAngles.ToMat3();
+	//	this.current.angles = this.current.localAngles;
+	//}
+	//if ( this.clipModel ) {
+	//	this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
+	//}
+	//this.Activate();
+}
 
 /*
 ================
@@ -950,13 +951,14 @@ idPhysics_Parametric::Move
 	Translate(translation: idVec3, /*int*/ id: number = -1): void {
 }
 
-///*
-//================
-//idPhysics_Parametric::Rotate
-//================
-//*/
-//void idPhysics_Parametric::Rotate( const idRotation &rotation, /*int*/ id:number ) {
-//}
+/*
+================
+idPhysics_Parametric::Rotate
+================
+*/
+	Rotate(rotation: idRotation, /*int*/ id: number = -1): void {
+
+}
 //
 /*
 ================

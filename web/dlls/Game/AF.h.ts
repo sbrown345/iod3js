@@ -71,7 +71,7 @@ class idAF {
 ////	void					StartFromCurrentPose( int inheritVelocityTime );
 ////	void					Stop( );
 ////	void					Rest( );
-////	bool					IsActive( ) const { return this.isActive; }
+	IsActive( ):boolean { return this.isActive; }
 ////	void					SetConstraintPosition( this.name:string, pos:idVec3 );
 ////
 	GetPhysics ( ): idPhysics_AF { return this.physicsObj; }
@@ -477,10 +477,10 @@ class idAF {
 	////idAF::GetPhysicsToVisualTransform
 	////================
 	////*/
-	////void idAF::GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis ) const {
-	////	origin = - this.baseOrigin;
-	////	axis = this.baseAxis.Transpose();
-	////}
+	GetPhysicsToVisualTransform(origin: idVec3, axis: idMat3): void {
+		origin.opEquals(this.baseOrigin.opUnaryMinus());
+		axis.opEquals( this.baseAxis.Transpose ( ) );
+	}
 	////
 	/////*
 	////================

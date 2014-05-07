@@ -148,7 +148,7 @@ class idForce_Constant extends idForce {
 	//idForce_Constant::SetPhysics
 	//================
 	//*/
-	//void idForce_Constant::SetPhysics( idPhysics *physics ) {
+	//SetPhysics(phys: idPhysics): void {
 	//	this.physics = physics;
 	//}
 	//

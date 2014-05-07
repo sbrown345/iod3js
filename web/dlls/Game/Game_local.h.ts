@@ -3514,8 +3514,8 @@ returning false if not found
 		if ( ent ) {
 			ent.$ = null;
 		}
-
-		this.spawnArgs = args;
+		
+		this.spawnArgs.opEquals(args);
 
 		if ( this.spawnArgs.GetString_Rstring( "name", "", name ) ) {
 			error.opEquals( sprintf( " on '%s'", name.$ ) );

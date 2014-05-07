@@ -91,8 +91,6 @@ class idTestModel extends idAnimatedEntity {
 //
 //	idList<copyJoints_t>	copyJoints;
 //
-	Think( ):void { throw "placeholder"; }
-
 	Event_Footstep( ):void { throw "placeholder"; }
 
 	
@@ -283,7 +281,8 @@ Spawn(): void {
 //idTestModel::Think
 //================
 //*/
-//void idTestModel::Think( void ) {
+	Think(): void {
+		todoThrow();
 //	idVec3 pos;
 //	idMat3 axis;
 //	idAngles ang;
@@ -429,7 +428,7 @@ Spawn(): void {
 //			gameLocal.Printf( "\n\n" );
 //		}
 //	}
-//}
+}
 //
 ///*
 //================

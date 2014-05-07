@@ -280,17 +280,17 @@ class idMoveable extends idEntity {
 ////	savefile.ReadStaticObject( this.physicsObj );
 ////	RestorePhysics( &this.physicsObj );
 ////}
-////
-/////*
-////================
-////idMoveable::Hide
-////================
-////*/
-////void idMoveable::Hide( ) {
-////	idEntity::Hide();
-////	this.physicsObj.SetContents( 0 );
-////}
-////
+
+/*
+================
+idMoveable::Hide
+================
+*/
+	Hide ( ): void {
+		super.Hide ( );
+		this.physicsObj.SetContents( 0 );
+	}
+
 /////*
 ////================
 ////idMoveable::Show
@@ -457,14 +457,15 @@ idMoveable::BecomeNonSolid
 ////idMoveable::Think
 ////================
 ////*/
-////void idMoveable::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	if ( thinkFlags & TH_THINK ) {
 ////		if ( !FollowInitialSplinePath() ) {
 ////			BecomeInactive( TH_THINK );
 ////		}
 ////	}
 ////	idEntity::Think();
-////}
+}
 //
 /*
 ================
@@ -617,7 +618,7 @@ class idBarrel extends idMoveable {
 ////	idVec3					lastOrigin;				// origin of the barrel the last think frame
 ////	idMat3					lastAxis;				// axis of the barrel the last think frame
 ////	float					additionalRotation;		// additional rotation of the barrel about it's axis
-////	idMat3					additionalAxis;			// additional rotation axis
+	additionalAxis = new idMat3;			// additional rotation axis
 
 	
 /////*
@@ -740,7 +741,8 @@ class idBarrel extends idMoveable {
 ////idBarrel::Think
 ////================
 ////*/
-////void idBarrel::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	if ( thinkFlags & TH_THINK ) {
 ////		if ( !FollowInitialSplinePath() ) {
 ////			BecomeInactive( TH_THINK );
@@ -748,18 +750,18 @@ class idBarrel extends idMoveable {
 ////	}
 ////
 ////	BarrelThink();
-////}
+}
 ////
 /////*
 ////================
 ////idBarrel::GetPhysicsToVisualTransform
 ////================
 ////*/
-////bool idBarrel::GetPhysicsToVisualTransform(origin: idVec3, idMat3 &axis ) {
-////	origin = vec3_origin;
-////	axis = additionalAxis;
-////	return true;
-////}
+	GetPhysicsToVisualTransform ( origin: idVec3, axis: idMat3 ): boolean {
+		origin.opEquals( vec3_origin );
+		axis.opEquals( this.additionalAxis );
+		return true;
+	}
 ////
 /////*
 ////================
@@ -965,7 +967,8 @@ class idExplodingBarrel extends idBarrel {
 ////idExplodingBarrel::Think
 ////================
 ////*/
-////void idExplodingBarrel::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	idBarrel::BarrelThink();
 ////
 ////	if ( lightDefHandle >= 0 ){
@@ -1001,7 +1004,7 @@ class idExplodingBarrel extends idBarrel {
 ////		particleRenderEntity.axis = mat3_identity;
 ////		gameRenderWorld.UpdateEntityDef( particleModelDefHandle, &particleRenderEntity );
 ////	}
-////}
+}
 ////
 /////*
 ////================

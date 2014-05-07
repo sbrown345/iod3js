@@ -7990,14 +7990,14 @@ class idPhysics_AF extends idPhysics_Base {
 	////	this.Activate();
 	////}
 	////
-	/////*
-	////================
-	////idPhysics_AF::IsAtRest
-	////================
-	////*/
-	////bool idPhysics_AF::IsAtRest( ) const {
-	////	return this.current.atRest >= 0;
-	////}
+	/*
+	================
+	idPhysics_AF::IsAtRest
+	================
+	*/
+	IsAtRest(): boolean {
+		return this.current.atRest >= 0;
+	}
 	////
 	/////*
 	////================
@@ -8063,26 +8063,27 @@ class idPhysics_AF extends idPhysics_Base {
 		}
 	}
 	
-	/////*
-	////================
-	////idPhysics_AF::SetAxis
-	////================
-	////*/
-	////void idPhysics_AF::SetAxis( const idMat3 &newAxis, /*int*/ id:number  = -1) {
-	////	idMat3 axis;
-	////	idRotation rotation;
-	////
-	////	if ( this.masterBody ) {
-	////		axis = this.bodies[0].current.worldAxis.Transpose() * ( newAxis * this.masterBody.current.worldAxis );
-	////	} else {
-	////		axis = this.bodies[0].current.worldAxis.Transpose() * newAxis;
-	////	}
-	////	rotation = axis.ToRotation();
-	////	rotation.SetOrigin( this.bodies[0].current.worldOrigin );
-	////
-	////	Rotate( rotation );
-	////}
-	////
+	/*
+	================
+	idPhysics_AF::SetAxis
+	================
+	*/
+	SetAxis(newAxis: idMat3, /*int*/ id: number = -1): void {
+		todoThrow ( );
+		//idMat3 axis;
+		//idRotation rotation;
+	
+		//if ( this.masterBody ) {
+		//	axis = this.bodies[0].current.worldAxis.Transpose() * ( newAxis * this.masterBody.current.worldAxis );
+		//} else {
+		//	axis = this.bodies[0].current.worldAxis.Transpose() * newAxis;
+		//}
+		//rotation = axis.ToRotation();
+		//rotation.SetOrigin( this.bodies[0].current.worldOrigin );
+	
+		//Rotate( rotation );
+	}
+	
 	/*
 	================
 	idPhysics_AF::Translate

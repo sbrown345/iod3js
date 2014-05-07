@@ -730,7 +730,8 @@ idLight::PresentModelDefChange
 ////idLight::Present
 ////================
 ////*/
-////void idLight::Present( ) {
+	Present(): void {
+		todoThrow();
 ////	// don't present to the renderer if the entity hasn't changed
 ////	if ( !( thinkFlags & TH_UPDATEVISUALS ) ) {
 ////		return;
@@ -756,14 +757,15 @@ idLight::PresentModelDefChange
 ////	// update the this.renderLight and this.renderEntity to render the light and flare
 ////	this.PresentLightDefChange();
 ////	this.PresentModelDefChange();
-////}
+}
 ////
 /////*
 ////================
 ////idLight::Think
 ////================
 ////*/
-////void idLight::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	var color = new idVec4;
 ////
 ////	if ( thinkFlags & TH_THINK ) {
@@ -781,30 +783,31 @@ idLight::PresentModelDefChange
 ////
 ////	RunPhysics();
 ////	Present();
-////}
-////
-/////*
-////================
-////idLight::GetPhysicsToSoundTransform
-////================
-////*/
-////bool idLight::GetPhysicsToSoundTransform(origin: idVec3, idMat3 &axis ) {
-////	origin = this.localLightOrigin + this.renderLight.lightCenter;
-////	axis = this.localLightAxis * this.GetPhysics().GetAxis();
-////	return true;
-////}
-////
-/////*
-////================
-////idLight::FreeLightDef
-////================
-////*/
-////void idLight::FreeLightDef( ) {
-////	if ( this.lightDefHandle != -1 ) {
-////		gameRenderWorld.FreeLightDef( this.lightDefHandle );
-////		this.lightDefHandle = -1;
-////	}
-////}
+}
+
+/*
+================
+idLight::GetPhysicsToSoundTransform
+================
+*/
+	GetPhysicsToSoundTransform(origin: idVec3, axis: idMat3): boolean {
+		origin.opEquals( this.localLightOrigin.opAddition( this.renderLight.lightCenter ) );
+		axis.opEquals( this.localLightAxis.opMultiplication( this.GetPhysics ( ).GetAxis ( ) ) );
+		return true;
+	}
+
+/*
+================
+idLight::FreeLightDef
+================
+*/
+	FreeLightDef ( ): void {
+		todoThrow ( );
+		//if ( this.lightDefHandle != -1 ) {
+		//	gameRenderWorld.FreeLightDef( this.lightDefHandle );
+		//	this.lightDefHandle = -1;
+		//}
+	}
 ////
 /////*
 ////================

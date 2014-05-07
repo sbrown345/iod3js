@@ -731,14 +731,14 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	this.Activate();
 	//}
 	//
-	///*
-	//================
-	//idPhysics_Monster::IsAtRest
-	//================
-	//*/
-	//bool idPhysics_Monster::IsAtRest( ) const {
-	//	return this.current.atRest >= 0;
-	//}
+	/*
+	================
+	idPhysics_Monster::IsAtRest
+	================
+	*/
+	IsAtRest(): boolean {
+		return this.current.atRest >= 0;
+	}
 	//
 	///*
 	//================
@@ -792,16 +792,17 @@ class idPhysics_Monster extends idPhysics_Actor {
 		this.clipModel.Link_ent( gameLocal.clip, this.self, 0, newOrigin, this.clipModel.GetAxis() );
 		this.Activate();
 	}
-	//
-	///*
-	//================
-	//idPhysics_Player::SetAxis
-	//================
-	//*/
-	//void idPhysics_Monster::SetAxis( const idMat3 &newAxis, /*int*/ id:number ) {
-	//	this.clipModel.Link( gameLocal.clip, this.self, 0, this.clipModel.GetOrigin(), newAxis );
-	//	this.Activate();
-	//}
+	
+	/*
+	================
+	idPhysics_Player::SetAxis
+	================
+	*/
+	SetAxis(newAxis: idMat3, /*int*/ id: number = -1): void {
+		todoThrow();
+		//this.clipModel.Link( gameLocal.clip, this.self, 0, this.clipModel.GetOrigin(), newAxis );
+		//this.Activate();
+	}
 	
 	/*
 	================
@@ -821,7 +822,8 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//idPhysics_Monster::Rotate
 	//================
 	//*/
-	//void idPhysics_Monster::Rotate( const idRotation &rotation, /*int*/ id:number ) {
+	Rotate(rotation: idRotation, /*int*/ id: number = -1): void {
+		todoThrow ( );
 	//	idVec3 masterOrigin;
 	//	idMat3 masterAxis;
 	//
@@ -835,7 +837,7 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//	}
 	//	this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.clipModel.GetAxis() * rotation.ToMat3() );
 	//	this.Activate();
-	//}
+	}
 	//
 	///*
 	//================
@@ -874,14 +876,14 @@ class idPhysics_Monster extends idPhysics_Actor {
 	//const idVec3 &idPhysics_Monster::GetPushedLinearVelocity( /*int*/ id:number ) const {
 	//	return this.current.pushVelocity;
 	//}
-	//
-	///*
-	//================
-	//idPhysics_Monster::SetMaster
-	//
-	//  the binding is never orientated
-	//================
-	//*/
+	
+	/*
+	================
+	idPhysics_Monster::SetMaster
+	
+	  the binding is never orientated
+	================
+	*/
 	SetMaster ( master: idEntity, orientated: boolean = true ) {
 		var masterOrigin = new idVec3;
 		var masterAxis = new idMat3;

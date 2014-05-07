@@ -355,7 +355,8 @@ idActivator::Spawn
 ////idActivator::Think
 ////================
 ////*/
-////void idActivator::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	RunPhysics();
 ////	if ( thinkFlags & TH_THINK ) {
 ////		if ( TouchTriggers() ) {
@@ -365,7 +366,7 @@ idActivator::Spawn
 ////		}
 ////	}
 ////	Present();
-////}
+}
 ////
 /////*
 ////===============
@@ -763,7 +764,8 @@ class idSpring extends idEntity {
 ////idSpring::Think
 ////================
 ////*/
-////void idSpring::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	idVec3 start, end, origin;
 ////	idMat3 axis;
 ////
@@ -792,7 +794,7 @@ class idSpring extends idEntity {
 ////	}
 ////
 ////	Present();
-////}
+}
 ////
 /////*
 ////================
@@ -884,7 +886,7 @@ class idForceField extends idEntity {
 //
 	Event_Activate( activator:idEntity ): void { throw "placeholder"; }
 	Event_Toggle( ): void { throw "placeholder"; }
-	Event_FindTargets(): void { throw "placeholder"; }
+	//Event_FindTargets(): void { throw "placeholder"; }
 
 	
 /////*
@@ -905,13 +907,14 @@ class idForceField extends idEntity {
 ////idForceField::Think
 ////================
 ////*/
-////void idForceField::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	if ( thinkFlags & TH_THINK ) {
 ////		// evaluate force
 ////		forceField.Evaluate( gameLocal.time );
 ////	}
 ////	Present();
-////}
+}
 ////
 /////*
 ////================
@@ -997,21 +1000,22 @@ class idForceField extends idEntity {
 ////		this.PostEventSec( &EV_Toggle, wait );
 ////	}
 ////}
-////
-/////*
-////================
-////idForceField::Event_FindTargets
-////================
-////*/
-////void idForceField::Event_FindTargets( ) {
-////	FindTargets();
-////	RemoveNullTargets();
-////	if ( targets.Num() ) {
-////		forceField.Uniform( targets[0].GetEntity().GetPhysics().GetOrigin() - this.GetPhysics().GetOrigin() );
-////	}
-////}
-////
-	};
+
+/*
+================
+idForceField::Event_FindTargets
+================
+*/
+	Event_FindTargets ( ): void {
+		todoThrow ( );
+		//FindTargets();
+		//RemoveNullTargets();
+		//if ( targets.Num() ) {
+		//	forceField.Uniform( targets[0].GetEntity().GetPhysics().GetOrigin() - this.GetPhysics().GetOrigin() );
+		//}
+	}
+
+};
 
 
 /*
@@ -1210,17 +1214,17 @@ idAnimated::LoadAF
 		return this.af.Load( this, fileName.data );
 	}
 
-/////*
-////===============
-////idAnimated::GetPhysicsToSoundTransform
-////===============
-////*/
-////bool idAnimated::GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis ) {
-////	this.animator.GetJointTransform( this.soundJoint, gameLocal.time, origin, axis );
-////	axis = renderEntity.axis;
-////	return true;
-////}
-////
+/*
+===============
+idAnimated::GetPhysicsToSoundTransform
+===============
+*/
+	GetPhysicsToSoundTransform ( origin: idVec3, axis: idMat3 ): boolean {
+		this.animator.GetJointTransform( this.soundJoint, gameLocal.time, origin, axis );
+		axis.opEquals( this.renderEntity.axis );
+		return true;
+	}
+
 /////*
 ////================
 ////idAnimated::StartRagdoll
@@ -1645,7 +1649,8 @@ Spawn( ):void {
 ////idStaticEntity::Think
 ////================
 ////*/
-////void idStaticEntity::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	idEntity::Think();
 ////	if ( thinkFlags & TH_THINK ) {
 ////		if ( this.runGui && this.renderEntity.gui[0] ) {
@@ -1674,7 +1679,7 @@ Spawn( ):void {
 ////			SetColor( color );
 ////		}
 ////	}
-////}
+}
 ////
 /////*
 ////================
@@ -2011,7 +2016,8 @@ class idFuncSmoke extends idEntity {
 ////idFuncSmoke::Think
 ////================
 ////*/
-////void idFuncSmoke::Think( ) {
+	Think(): void {
+		todoThrow();
 ////
 ////	// if we are completely closed off from the player, don't do anything at all
 ////	if ( CheckDormant() || smoke == NULL || smokeTime == -1 ) {
@@ -2029,7 +2035,7 @@ class idFuncSmoke extends idEntity {
 ////		}
 ////	}
 ////
-////}
+}
 ////
 };
 
@@ -2176,7 +2182,8 @@ idTextEntity::Spawn
 ////idTextEntity::Think
 ////================
 ////*/
-////void idTextEntity::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	if ( thinkFlags & TH_THINK ) {
 ////		gameRenderWorld.DrawText( text, this.GetPhysics().GetOrigin(), 0.25, colorWhite, playerOriented ? gameLocal.GetLocalPlayer().viewAngles.ToMat3() : this.GetPhysics().GetAxis().Transpose(), 1 );
 ////		for ( int i = 0; i < targets.Num(); i++ ) {
@@ -2187,7 +2194,7 @@ idTextEntity::Spawn
 ////	} else {
 ////		BecomeInactive( TH_ALL );
 ////	}
-////}
+}
 ////
 };
 
@@ -2488,7 +2495,8 @@ class idBeam extends idEntity {
 ////idBeam::Think
 ////================
 ////*/
-////void idBeam::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	idBeam *masterEnt;
 ////
 ////	if ( !IsHidden() && !target.GetEntity() ) {
@@ -2504,7 +2512,7 @@ class idBeam extends idEntity {
 ////		masterEnt.SetBeamTarget( origin );
 ////	}
 ////	Present();
-////}
+}
 ////
 /////*
 ////================
@@ -2996,7 +3004,8 @@ class idEarthQuake extends idEntity {
 ////idEarthQuake::Think
 ////================
 ////*/
-////void idEarthQuake::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	if ( thinkFlags & TH_THINK ) {
 ////		if ( gameLocal.time > shakeStopTime ) {
 ////			BecomeInactive( TH_THINK );
@@ -3009,7 +3018,7 @@ class idEarthQuake extends idEntity {
 ////		gameLocal.RadiusPush( this.GetPhysics().GetOrigin(), 256, 1500 * shakeVolume, this, this, 1.0f, true );
 ////	}
 ////	BecomeInactive( TH_UPDATEVISUALS );
-////}
+}
 };
 
 
@@ -3579,7 +3588,8 @@ class idPhantomObjects extends idEntity {
 ////idPhantomObjects::Think
 ////================
 ////*/
-////void idPhantomObjects::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	var/*int*/i:number;
 ////	int			num;
 ////	float		time;
@@ -3664,7 +3674,7 @@ class idPhantomObjects extends idEntity {
 ////	if ( !num ) {
 ////		BecomeInactive( TH_THINK );
 ////	}
-////}
+}
 
 };
 //

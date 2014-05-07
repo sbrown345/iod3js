@@ -5965,7 +5965,8 @@ idPlayer::UserInfoChanged
 ////Called every tic for each player
 ////==============
 ////*/
-////void idPlayer::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	renderEntity_t *headRenderEnt;
 ////
 ////	UpdatePlayerIcons();
@@ -6179,7 +6180,7 @@ idPlayer::UserInfoChanged
 ////		}
 ////		gameLocal.Printf( "%d: enemies\n", num );
 ////	}
-////}
+}
 ////
 /////*
 ////=================
@@ -7074,10 +7075,10 @@ idPlayer::UserInfoChanged
 ////Returns the renderView that was calculated for this tic
 ////==================
 ////*/
-////renderView_t *idPlayer::GetRenderView( ) {
-////	return renderView;
-////}
-////
+	GetRenderView ( ): renderView_t {
+		return this.renderView;
+	}
+
 /////*
 ////==================
 ////idPlayer::CalculateRenderView
@@ -7711,13 +7712,14 @@ idPlayer::UserInfoChanged
 ////		playerView.CalculateShake();
 ////	}
 ////}
-////
-/////*
-////================
-////idPlayer::GetPhysicsToVisualTransform
-////================
-////*/
-////bool idPlayer::GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis ) {
+
+/*
+================
+idPlayer::GetPhysicsToVisualTransform
+================
+*/
+		GetPhysicsToVisualTransform ( origin: idVec3, axis: idMat3 ): boolean {
+			todoThrow ( );
 ////	if ( af.IsActive() ) {
 ////		af.GetPhysicsToVisualTransform( origin, axis );
 ////		return true;
@@ -7756,35 +7758,35 @@ idPlayer::UserInfoChanged
 ////		axis = viewAxis;
 ////		origin = modelOffset;
 ////	}
-////	return true;
-////}
-////
-/////*
-////================
-////idPlayer::GetPhysicsToSoundTransform
-////================
-////*/
-////bool idPlayer::GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis ) {
-////	idCamera *camera;
-////
-////	if ( privateCameraView ) {
-////		camera = privateCameraView;
-////	} else {
-////		camera = gameLocal.GetCamera();
-////	}
-////
-////	if ( camera ) {
-////		renderView_t view;
-////
-////		memset( &view, 0, sizeof( view ) );
-////		camera.GetViewParms( &view );
-////		origin = view.vieworg;
-////		axis = view.viewaxis;
-////		return true;
-////	} else {
-////		return idActor::GetPhysicsToSoundTransform( origin, axis );
-////	}
-////}
+	return true;
+}
+	
+/*
+================
+idPlayer::GetPhysicsToSoundTransform
+================
+*/
+	GetPhysicsToSoundTransform(origin: idVec3, axis: idMat3): boolean {
+		var camera :idCamera ;
+		todoThrow ( );
+		//if ( privateCameraView ) {
+		//	camera = privateCameraView;
+		//} else {
+		//	camera = gameLocal.GetCamera();
+		//}
+	
+		//if (camera) {
+		//	renderView_t view;
+	
+		//	memset( &view, 0, sizeof( view ) );
+		//	camera.GetViewParms( &view );
+		//	origin = view.vieworg;
+		//	axis = view.viewaxis;
+			return true;
+		//} else {
+		//	return surfTypes_t.GetPhysicsToSoundTransform( origin, axis );
+		//}
+	}
 ////
 /////*
 ////================
@@ -8052,21 +8054,21 @@ idPlayer::UserInfoChanged
 ////	}
 ////	return false;
 ////}
-////
-/////*
-////================
-////idPlayer::Hide
-////================
-////*/
-////void idPlayer::Hide( ) {
-////	idWeapon *weap;
-////
-////	idActor::Hide();
-////	weap = this.weapon.GetEntity();
-////	if ( weap ) {
-////		weap.HideWorldModel();
-////	}
-////}
+
+/*
+================
+idPlayer::Hide
+================
+*/
+	Hide ( ): void {
+		var weap: idWeapon;
+
+		super.Hide ( );
+		weap = this.weapon.GetEntity ( );
+		if ( weap ) {
+			weap.HideWorldModel ( );
+		}
+	}
 ////
 /////*
 ////================

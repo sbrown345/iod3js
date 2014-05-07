@@ -568,14 +568,14 @@ idPhysics_StaticMulti::PutToRest
 	PutToRest(): void {
 	}
 
-/////*
-////================
-////idPhysics_StaticMulti::IsAtRest
-////================
-////*/
-////bool idPhysics_StaticMulti::IsAtRest( ) const {
-////	return true;
-////}
+/*
+================
+idPhysics_StaticMulti::IsAtRest
+================
+*/
+	IsAtRest ( ): boolean {
+		return true;
+	}
 ////
 /////*
 ////================
@@ -646,7 +646,8 @@ idPhysics_StaticMulti::SetOrigin
 ////idPhysics_StaticMulti::SetAxis
 ////================
 ////*/
-////void idPhysics_StaticMulti::SetAxis( const idMat3 &newAxis, /*int*/ id:number ) {
+	SetAxis(newAxis: idMat3, /*int*/ id: number = -1): void {
+		todoThrow();
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////
@@ -676,7 +677,7 @@ idPhysics_StaticMulti::SetOrigin
 ////
 ////		Rotate( rotation );
 ////	}
-////}
+}
 
 /*
 ================
@@ -705,12 +706,13 @@ idPhysics_StaticMulti::Translate
 		}
 	}
 
-/////*
-////================
-////idPhysics_StaticMulti::Rotate
-////================
-////*/
-////void idPhysics_StaticMulti::Rotate( const idRotation &rotation, /*int*/ id:number ) {
+/*
+================
+idPhysics_StaticMulti::Rotate
+================
+*/
+	Rotate(rotation: idRotation, /*int*/ id: number = -1): void {
+		todoThrow();
 ////	var/*int*/i:number;
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
@@ -750,7 +752,7 @@ idPhysics_StaticMulti::Translate
 ////			}
 ////		}
 ////	}
-////}
+}
 
 /*
 ================

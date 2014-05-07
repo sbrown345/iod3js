@@ -172,13 +172,13 @@ class idItem extends idEntity {
 	////	itemShellHandle = -1;
 	////}
 	////
-	/////*
-	////================
-	////idItem::UpdateRenderEntity
-	////================
-	////*/
-	////bool idItem::UpdateRenderEntity( renderEntity_s *renderEntity, const renderView_t *renderView ) const {
-	////
+	/*
+	================
+	idItem::UpdateRenderEntity
+	================
+	*/
+	UpdateRenderEntity(renderEntity: renderEntity_t, renderView: renderView_t): boolean {
+		todoThrow();
 	////	if ( lastRenderViewTime == renderView.time ) {
 	////		return false;
 	////	}
@@ -228,8 +228,8 @@ class idItem extends idEntity {
 	////	}
 	////
 	////	// update every single time this is in view
-	////	return true;
-	////}
+			return true;
+	}
 	////
 	/////*
 	////================
@@ -257,7 +257,8 @@ class idItem extends idEntity {
 	////idItem::Think
 	////================
 	////*/
-	////void idItem::Think( void ) {
+	Think(): void {
+		todoThrow();
 	////	if ( thinkFlags & TH_THINK ) {
 	////		if ( spin ) {
 	////			idAngles	ang;
@@ -276,14 +277,15 @@ class idItem extends idEntity {
 	////	}
 	////
 	////	Present();
-	////}
+	}
 	////
 	/////*
 	////================
 	////idItem::Present
 	////================
 	////*/
-	////void idItem::Present( void ) {
+	Present(): void {
+		todoThrow();
 	////	idEntity::Present();
 	////
 	////	if ( !fl.hidden && pulse ) {
@@ -304,7 +306,7 @@ class idItem extends idEntity {
 	////		}
 	////
 	////	}
-	////}
+	}
 	////
 	/////*
 	////================
@@ -1073,7 +1075,8 @@ class idMoveableItem extends idItem {
 ////idMoveableItem::Think
 ////================
 ////*/
-////void idMoveableItem::Think( void ) {
+	Think(): void {
+		todoThrow();
 ////
 ////	RunPhysics();
 ////
@@ -1090,7 +1093,7 @@ class idMoveableItem extends idItem {
 ////	}
 ////
 ////	Present();
-////}
+}
 ////
 /////*
 ////================

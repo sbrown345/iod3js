@@ -88,7 +88,8 @@ class idCursor3D extends idEntity {
 ////idCursor3D::Present
 ////===============
 ////*/
-////void idCursor3D::Present( void ) {
+	Present(): void {
+		todoThrow();
 ////	// don't present to the renderer if the entity hasn't changed
 ////	if ( !( thinkFlags & TH_UPDATEVISUALS ) ) {
 ////		return;
@@ -99,19 +100,20 @@ class idCursor3D extends idEntity {
 ////	const idMat3 &axis = GetPhysics().GetAxis();
 ////	gameRenderWorld.DebugArrow( colorYellow, origin + axis[1] * -5.0f + axis[2] * 5.0f, origin, 2 );
 ////	gameRenderWorld.DebugArrow( colorRed, origin, draggedPosition, 2 );
-////}
+}
 ////
 /////*
 ////===============
 ////idCursor3D::Think
 ////===============
 ////*/
-////void idCursor3D::Think( void ) {
+	Think(): void {
+		todoThrow();
 ////	if ( thinkFlags & TH_THINK ) {
 ////		drag.Evaluate( gameLocal.time );
 ////	}
 ////	Present();
-////}
+}
 ////
 };
 

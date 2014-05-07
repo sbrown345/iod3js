@@ -1370,12 +1370,13 @@ idTrigger_Touch::Spawn
 ////idTrigger_Touch::Think
 ////================
 ////*/
-////void idTrigger_Touch::Think( ) {
+	Think ( ): void {
+		todoThrow ( );
 ////	if ( thinkFlags & TH_THINK ) {
 ////		TouchEntities();
 ////	}
 ////	idEntity::Think();
-////}
+	}
 ////
 /////*
 ////================

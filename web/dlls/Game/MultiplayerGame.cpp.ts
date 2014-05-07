@@ -3610,7 +3610,7 @@ idMultiplayerGame::EnterGame
 ////	}
 
 ////	voc = args.Argv( 1 );
-////	spawnArgs = gameLocal.FindEntityDefDict( "player_doommarine", false );
+////	spawnArgs = opEquals(? gameLocal.FindEntityDefDict( "player_doommarine", false );
 ////	keyval = spawnArgs.MatchPrefix( "snd_voc_", NULL );
 ////	index = 0;
 ////	while ( keyval ) {
@@ -3656,7 +3656,7 @@ idMultiplayerGame::EnterGame
 ////	}
 
 ////	// lookup the sound def
-////	spawnArgs = gameLocal.FindEntityDefDict( "player_doommarine", false );
+////	spawnArgs = opEquals(? gameLocal.FindEntityDefDict( "player_doommarine", false );
 ////	keyval = spawnArgs.MatchPrefix( "snd_voc_", NULL );
 ////	while ( index > 0 && keyval ) {
 ////		keyval = spawnArgs.MatchPrefix( "snd_voc_", keyval );

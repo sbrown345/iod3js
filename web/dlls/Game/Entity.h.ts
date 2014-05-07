@@ -2179,7 +2179,7 @@ idEntity::IsBoundTo
 ================
 */
 	IsBoundTo ( master: idEntity ): boolean {
-		var ent: idEntity
+		var ent: idEntity;
 
 		if ( !this.bindMaster ) {
 			return false;
@@ -5135,12 +5135,13 @@ class idAnimatedEntity extends idEntity {
 	////idAnimatedEntity::Think
 	////================
 	////*/
-	////void idAnimatedEntity::Think( ):void {
+	Think(): void {
+		todoThrow();
 	////	RunPhysics();
 	////	UpdateAnimation();
 	////	Present();
 	////	UpdateDamageEffects();
-	////}
+	}
 	////
 	/////*
 	////================

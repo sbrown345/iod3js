@@ -428,15 +428,15 @@ class idPhysics_Base extends idPhysics {
 	*/
 	PutToRest ( ): void {
 	}
-	//
-	///*
-	//================
-	//idPhysics_Base::IsAtRest
-	//================
-	//*/
-	//bool idPhysics_Base::IsAtRest( ) const {
-	//	return true;
-	//}
+	
+	/*
+	================
+	idPhysics_Base::IsAtRest
+	================
+	*/
+	IsAtRest(): boolean {
+		return true;
+	}
 	//
 	///*
 	//================

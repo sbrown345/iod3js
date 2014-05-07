@@ -47,7 +47,7 @@ class idCamera extends idEntity {
 	static eventCallbacks: idEventFunc<idCamera>[];
 ////
 ////	void					Spawn( );
-////	virtual void			GetViewParms( renderView_t *view ) = 0;
+	GetViewParms(view :renderView_t ):void { throw "placeholder"; } 
 ////	virtual renderView_t *	GetRenderView();
 	Stop ( ): void {}
 
@@ -60,16 +60,16 @@ idCamera::Spawn
 	Spawn ( ): void {
 	}
 
-/////*
-////=====================
-////idCamera::GetRenderView
-////=====================
-////*/
-////renderView_t *idCamera::GetRenderView() {
-////	renderView_t *rv = idEntity::GetRenderView();
-////	GetViewParms( rv );
-////	return rv;
-////}
+/*
+=====================
+idCamera::GetRenderView
+=====================
+*/
+	GetRenderView ( ): renderView_t {
+		var rv = super.GetRenderView ( );
+		this.GetViewParms( rv );
+		return rv;
+	}
 };
 
 /*
@@ -216,39 +216,40 @@ class idCameraView extends idCamera {
 		////
 		////	UpdateChangeableSpawnArgs(NULL);
 	}
-////
-/////*
-////=====================
-////idCameraView::GetViewParms
-////=====================
-////*/
-////void idCameraView::GetViewParms( renderView_t *view ) {
-////	assert( view );
-////	
-////	if (view == NULL) {
-////		return;
-////	}
-////
-////	idVec3 dir;
-////	var ent:idEntity
-////
-////	if ( attachedTo ) {
-////		ent = attachedTo;
-////	} else {
-////		ent = this;
-////	}
-////
-////	view.vieworg = ent.GetPhysics().GetOrigin();
-////	if ( attachedView ) {
-////		dir = attachedView.GetPhysics().GetOrigin() - view.vieworg;
-////		dir.Normalize();
-////		view.viewaxis = dir.ToMat3();
-////	} else {
-////		view.viewaxis = ent.GetPhysics().GetAxis();
-////	}
-////	
-////	gameLocal.CalcFov( fov, view.fov_x, view.fov_y );
-////}
+
+/*
+=====================
+idCameraView::GetViewParms
+=====================
+*/
+	GetViewParms ( view: renderView_t ): void {
+		todoThrow ( );
+		//assert( view );
+
+		//if (view == NULL) {
+		//	return;
+		//}
+
+		//idVec3 dir;
+		//var ent:idEntity
+
+		//if ( attachedTo ) {
+		//	ent = attachedTo;
+		//} else {
+		//	ent = this;
+		//}
+
+		//view.vieworg = ent.GetPhysics().GetOrigin();
+		//if ( attachedView ) {
+		//	dir = attachedView.GetPhysics().GetOrigin() - view.vieworg;
+		//	dir.Normalize();
+		//	view.viewaxis = dir.ToMat3();
+		//} else {
+		//	view.viewaxis = ent.GetPhysics().GetAxis();
+		//}
+
+		//gameLocal.CalcFov( fov, view.fov_x, view.fov_y );
+	}
 
 };
 
@@ -567,7 +568,8 @@ idCameraAnim::Load
 ////idCameraAnim::Think
 ////=====================
 ////*/
-////void idCameraAnim::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	int frame;
 ////	int frameTime;
 ////
@@ -603,7 +605,7 @@ idCameraAnim::Load
 ////			}
 ////		}
 ////	}
-////}
+}
 ////
 /////*
 ////=====================

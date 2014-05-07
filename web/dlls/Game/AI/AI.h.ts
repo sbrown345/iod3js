@@ -1392,29 +1392,30 @@ idAI::InitMuzzleFlash
 ////
 ////	gameLocal.Printf( "...%d monsters\n", count );
 ////}
-////
-/////*
-////================
-////idAI::DormantBegin
-////
-////called when entity becomes dormant
-////================
-////*/
-////void idAI::DormantBegin( ) {
-////	// since dormant happens on a timer, we wont get to update particles to
-////	// hidden through the think loop, but we need to hide them though.
-////	if ( this.particles.Num() ) {
-////		for ( int i = 0; i < this.particles.Num(); i++ ) {
-////			this.particles[i].time = 0;
-////		}
-////	}
-////
-////	if ( enemyNode.InList() ) {
-////		// remove ourselves from the enemy's enemylist
-////		enemyNode.Remove();
-////	}
-////	idActor::DormantBegin();
-////}
+
+/*
+================
+idAI::DormantBegin
+
+called when entity becomes dormant
+================
+*/
+	DormantBegin(): void {
+	todoThrow()
+	//// since dormant happens on a timer, we wont get to update particles to
+	//// hidden through the think loop, but we need to hide them though.
+	//if ( this.particles.Num() ) {
+	//	for ( int i = 0; i < this.particles.Num(); i++ ) {
+	//		this.particles[i].time = 0;
+	//	}
+	//}
+
+	//if ( enemyNode.InList() ) {
+	//	// remove ourselves from the enemy's enemylist
+	//	enemyNode.Remove();
+	//}
+	//idActor::DormantBegin();
+}
 ////
 /////*
 ////================
@@ -1423,7 +1424,9 @@ idAI::InitMuzzleFlash
 ////called when entity wakes from being dormant
 ////================
 ////*/
-////void idAI::DormantEnd( ) {
+
+	DormantEnd(): void {
+		todoThrow ( );
 ////	if ( this.enemy.GetEntity() && !enemyNode.InList() ) {
 ////		// let our enemy know we're back on the trail
 ////		enemyNode.AddToEnd( this.enemy.GetEntity().enemyList );
@@ -1436,14 +1439,15 @@ idAI::InitMuzzleFlash
 ////	}
 ////
 ////	idActor::DormantEnd();
-////}
+	}
 ////
 /////*
 ////=====================
 ////idAI::Think
 ////=====================
 ////*/
-////void idAI::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	// if we are completely closed off from the player, don't do anything at all
 ////	if ( CheckDormant() ) {
 ////		return;
@@ -1548,7 +1552,7 @@ idAI::InitMuzzleFlash
 ////	Present();
 ////	UpdateDamageEffects();
 ////	LinkCombat();
-////}
+}
 ////
 /////***********************************************************************
 ////
@@ -5004,7 +5008,8 @@ SetChatSound( ):void {
 ////Used for playing chatter sounds on monsters.
 ////================
 ////*/
-////bool idAI::CanPlayChatterSounds( ) const {
+	CanPlayChatterSounds(): boolean {
+		todoThrow ( );
 ////	if ( this.AI_DEAD ) {
 ////		return false;
 ////	}
@@ -5021,8 +5026,8 @@ SetChatSound( ):void {
 ////		return false;
 ////	}
 ////
-////	return true;
-////}
+	return true;
+}
 ////
 /////*
 ////=====================

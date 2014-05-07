@@ -275,9 +275,7 @@ class idTarget_WaitForButton extends idTarget {
 	static CreateInstance ( ): idClass { throw "placeholder"; }
 	GetType ( ): idTypeInfo { throw "placeholder"; }
 	static eventCallbacks: idEventFunc<idTarget_WaitForButton>[];
-
-	Think( ):void { throw "placeholder"; }
-
+	
 //private:
 	Event_Activate(activator: idEntity): void { throw "placeholder"; }
 
@@ -303,7 +301,8 @@ class idTarget_WaitForButton extends idTarget {
 ////idTarget_WaitForButton::Think
 ////================
 ////*/
-////void idTarget_WaitForButton::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	idPlayer *player;
 ////
 ////	if ( thinkFlags & TH_THINK ) {
@@ -316,7 +315,7 @@ class idTarget_WaitForButton extends idTarget {
 ////	} else {
 ////		BecomeInactive( TH_ALL );
 ////	}
-////}
+}
 ////
 };
 
@@ -481,9 +480,7 @@ class idTarget_FadeEntity extends idTarget {
 
 	//Save(savefile:idSaveGame):void{throw "placeholder";}
 	//Restore(savefile:idRestoreGame):void{throw "placeholder";}
-
-	Think():void{throw "placeholder";}
-
+	
 //private:
 	fadeFrom = new idVec4();
 	fadeStart: number;	   //int					
@@ -560,7 +557,8 @@ class idTarget_FadeEntity extends idTarget {
 ////idTarget_FadeEntity::Think
 ////================
 ////*/
-////void idTarget_FadeEntity::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	var/*int*/i:number;
 ////	idEntity	*ent;
 ////	idVec4		color;
@@ -587,7 +585,7 @@ class idTarget_FadeEntity extends idTarget {
 ////	} else {
 ////		BecomeInactive( TH_ALL );
 ////	}
-////}
+}
 };
 
 /*
@@ -894,7 +892,6 @@ class idTarget_SetInfluence extends idTarget {
 	Event_GatherEntities():void { throw "placeholder"; }
 	Event_Flash( /*float*/ flash:number, /*int*/ outflash:number) :void { throw "placeholder"; }
 	Event_ClearFlash( /*float*/ flash:number):void { throw "placeholder"; }
-	Think():void{throw "placeholder";}
 
 	//idList<int>			lightList;
 	//idList<int>			guiList;
@@ -1304,7 +1301,8 @@ idTarget_SetInfluence::Spawn
 ////idTarget_SetInfluence::Think
 ////================
 ////*/
-////void idTarget_SetInfluence::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	if ( thinkFlags & TH_THINK ) {
 ////		idPlayer *player = gameLocal.GetLocalPlayer();
 ////		player.SetInfluenceFov( fovSetting.GetCurrentValue( gameLocal.time ) );
@@ -1317,7 +1315,7 @@ idTarget_SetInfluence::Spawn
 ////	} else {
 ////		BecomeInactive( TH_ALL );
 ////	}
-////}
+}
 ////
 ////
 /////*
@@ -1491,9 +1489,7 @@ class idTarget_SetFov extends idTarget {
 
 	Save(savefile: idSaveGame): void { throw "placeholder"; }
 	Restore(savefile: idRestoreGame): void { throw "placeholder"; }
-
-	Think(  ): void { throw "placeholder"; }
-
+	
 //private:
 	//idInterpolate<int>	fovSetting;
 
@@ -1553,7 +1549,8 @@ class idTarget_SetFov extends idTarget {
 ////idTarget_SetFov::Think
 ////================
 ////*/
-////void idTarget_SetFov::Think( ) {
+	Think ( ): void {
+		todoThrow ( );
 ////	if ( thinkFlags & TH_THINK ) {
 ////		idPlayer *player = gameLocal.GetLocalPlayer();
 ////		player.SetInfluenceFov( fovSetting.GetCurrentValue( gameLocal.time ) );
@@ -1564,8 +1561,8 @@ class idTarget_SetFov extends idTarget {
 ////	} else {
 ////		BecomeInactive( TH_ALL );
 ////	}
-////}
-////
+	}
+
 };
 
 

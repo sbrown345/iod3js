@@ -167,7 +167,7 @@ class idWeapon extends idAnimatedEntity {
 ////	idScriptBool			WEAPON_RAISEWEAPON;
 ////	idScriptBool			WEAPON_LOWERWEAPON;
 ////	weaponStatus_t			status;
-////	idThread *				thread;
+	thread:idThread;
 ////	idStr					state;
 ////	idStr					idealState;
 ////	int						animBlendFrames;
@@ -1246,7 +1246,7 @@ idWeapon::Spawn
 	////	WEAPON_RAISEWEAPON.LinkTo(	scriptObject, "WEAPON_RAISEWEAPON" );
 	////	WEAPON_LOWERWEAPON.LinkTo(	scriptObject, "WEAPON_LOWERWEAPON" );
 	////
-	////	spawnArgs = weaponDef.dict;
+	////	spawnArgs = opEquals(? weaponDef.dict;
 	////
 	////	shader = spawnArgs.GetString( "snd_hum" );
 	////	if ( shader && *shader ) {
@@ -1495,9 +1495,10 @@ idWeapon::Spawn
 ////idWeapon::Think
 ////================
 ////*/
-////void idWeapon::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	// do nothing because the present is called from the player through PresentWeapon
-////}
+}
 ////
 /////*
 ////================
@@ -1599,18 +1600,19 @@ idWeapon::Spawn
 ////		MuzzleFlashLight();
 ////	}
 ////}
-////
-/////*
-////================
-////idWeapon::HideWorldModel
-////================
-////*/
-////void idWeapon::HideWorldModel( ) {
-////	if ( worldModel.GetEntity() ) {
-////		worldModel.GetEntity().Hide();
-////	}
-////}
-////
+
+/*
+================
+idWeapon::HideWorldModel
+================
+*/
+	HideWorldModel(): void {
+		todoThrow ( );
+		//if ( worldModel.GetEntity ( ) ) {
+		//	worldModel.GetEntity ( ).Hide ( );
+		//}
+	}
+
 /////*
 ////================
 ////idWeapon::ShowWorldModel
@@ -1980,7 +1982,8 @@ idWeapon::Spawn
 ////Can be overridden by subclasses when a thread doesn't need to be allocated.
 ////================
 ////*/
-////idThread *idWeapon::ConstructScriptObject( ) {
+	ConstructScriptObject ( ): idThread {
+		todoThrow ( );
 ////	const function_t *constructor;
 ////
 ////	thread.EndThread();
@@ -1996,8 +1999,8 @@ idWeapon::Spawn
 ////	thread.CallFunction( this, constructor, true );
 ////	thread.Execute();
 ////
-////	return thread;
-////}
+		return this.thread;
+	}
 ////
 /////*
 ////================

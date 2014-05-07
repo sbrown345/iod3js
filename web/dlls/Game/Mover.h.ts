@@ -468,17 +468,17 @@ class idMover extends idEntity {
 		}
 		
 	}
-////
-/////*
-////================
-////idMover::Hide
-////================
-////*/
-////void idMover::Hide( ) {
-////	idEntity::Hide();
-////	this.physicsObj.SetContents( 0 );
-////}
-////
+
+/*
+================
+idMover::Hide
+================
+*/
+	Hide ( ): void {
+		super.Hide ( );
+		this.physicsObj.SetContents( 0 );
+	}
+
 /////*
 ////================
 ////idMover::Show
@@ -1861,7 +1861,8 @@ class idElevator extends idMover {
 ////idElevator::Think
 ////================
 ////*/
-////void idElevator::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////	idDoor *doorent = GetDoor( this.spawnArgs.GetString( "innerdoor" ) );
@@ -1900,7 +1901,7 @@ class idElevator extends idMover {
 ////	} 
 ////	RunPhysics();
 ////	Present();
-////}
+}
 ////
 /////*
 ////================
@@ -3590,7 +3591,8 @@ class idDoor extends idMover_Binary {
 ////idDoor::Think
 ////================
 ////*/
-////void idDoor::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////
@@ -3607,7 +3609,7 @@ class idDoor extends idMover_Binary {
 ////			}
 ////		}
 ////	}
-////}
+}
 ////
 /*
 ================
@@ -3639,44 +3641,45 @@ idDoor::PostBind
 ////	gameLocal.SetAASAreaState( physicsObj.GetAbsBounds(), AREACONTENTS_CLUSTERPORTAL|AREACONTENTS_OBSTACLE, closed );
 ////}
 ////
-/////*
-////================
-////idDoor::Hide
-////================
-////*/
-////void idDoor::Hide( ) {
-////	idMover_Binary *slave;
-////	idMover_Binary *master;
-////	idDoor *slaveDoor;
-////	idDoor *companion;
-////
-////	master = GetMoveMaster();
-////	if ( this != master ) {
-////		master.Hide();
-////	} else {
-////		for ( slave = this; slave != NULL; slave = slave.GetActivateChain() ) {
-////			if ( slave.IsType( idDoor::Type ) ) {
-////				slaveDoor = static_cast<idDoor *>( slave );
-////				companion = slaveDoor.companionDoor;
-////				if ( companion && ( companion != master ) && ( companion.GetMoveMaster() != master ) ) {
-////					companion.Hide();
-////				}
-////				if ( slaveDoor.trigger ) {
-////					slaveDoor.trigger.Disable();
-////				}
-////				if ( slaveDoor.sndTrigger ) {
-////					slaveDoor.sndTrigger.Disable();
-////				}
-////				if ( slaveDoor.areaPortal ) {
-////					slaveDoor.SetPortalState( true );
-////				}
-////				slaveDoor.SetAASAreaState( false );
-////			}
-////			slave.GetPhysics().GetClipModel().Disable();
-////			slave.idMover_Binary::Hide();
-////		}
-////	}
-////}
+/*
+================
+idDoor::Hide
+================
+*/
+	Hide(): void {
+		todoThrow ( );
+	//idMover_Binary *slave;
+	//idMover_Binary *master;
+	//idDoor *slaveDoor;
+	//idDoor *companion;
+
+	//master = GetMoveMaster();
+	//if ( this != master ) {
+	//	master.Hide();
+	//} else {
+	//	for ( slave = this; slave != NULL; slave = slave.GetActivateChain() ) {
+	//		if ( slave.IsType( idDoor::Type ) ) {
+	//			slaveDoor = static_cast<idDoor *>( slave );
+	//			companion = slaveDoor.companionDoor;
+	//			if ( companion && ( companion != master ) && ( companion.GetMoveMaster() != master ) ) {
+	//				companion.Hide();
+	//			}
+	//			if ( slaveDoor.trigger ) {
+	//				slaveDoor.trigger.Disable();
+	//			}
+	//			if ( slaveDoor.sndTrigger ) {
+	//				slaveDoor.sndTrigger.Disable();
+	//			}
+	//			if ( slaveDoor.areaPortal ) {
+	//				slaveDoor.SetPortalState( true );
+	//			}
+	//			slaveDoor.SetAASAreaState( false );
+	//		}
+	//		slave.GetPhysics().GetClipModel().Disable();
+	//		slave.idMover_Binary::Hide();
+	//	}
+	//}
+}
 ////
 /////*
 ////================
@@ -4380,7 +4383,8 @@ class idPlat extends idMover_Binary {
 ////idPlat::Think
 ////================
 ////*/
-////void idPlat::Think( ) {
+	Think ( ): void {
+		todoThrow ( );
 ////	idVec3 masterOrigin;
 ////	idMat3 masterAxis;
 ////
@@ -4394,7 +4398,7 @@ class idPlat extends idMover_Binary {
 ////			}
 ////		}
 ////	}
-////}
+	}
 ////
 /*
 ================
@@ -4532,9 +4536,7 @@ class idMover_Periodic extends idEntity {
 	
 ////	void					Save( idSaveGame *savefile ) const;
 ////	void					Restore( idRestoreGame *savefile );
-
-	Think( ): void {throw "placeholder";}
-
+	
 ////	virtual void			WriteToSnapshot( idBitMsgDelta &msg ) const;
 ////	virtual void			ReadFromSnapshot( const idBitMsgDelta &msg );
 
@@ -4595,7 +4597,8 @@ class idMover_Periodic extends idEntity {
 ////idMover_Periodic::Think
 ////================
 ////*/
-////void idMover_Periodic::Think( ) {
+	Think(): void {
+		todoThrow();
 ////	// if we are completely closed off from the player, don't do anything at all
 ////	if ( CheckDormant() ) {
 ////		return;
@@ -4603,7 +4606,7 @@ class idMover_Periodic extends idEntity {
 ////
 ////	RunPhysics();
 ////	Present();
-////}
+}
 ////
 /////*
 ////===============

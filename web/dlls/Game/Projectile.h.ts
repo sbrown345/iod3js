@@ -336,18 +336,19 @@ idProjectile::Create
 ////	FreeLightDef();
 ////}
 ////
-/////*
-////=================
-////idProjectile::FreeLightDef
-////=================
-////*/
-////void idProjectile::FreeLightDef( void ) {
-////	if ( lightDefHandle != -1 ) {
-////		gameRenderWorld.FreeLightDef( lightDefHandle );
-////		lightDefHandle = -1;
-////	}
-////}
-////
+/*
+=================
+idProjectile::FreeLightDef
+=================
+*/
+	FreeLightDef(): void {
+		todoThrow ( );
+		//if ( lightDefHandle != -1 ) {
+		//	gameRenderWorld.FreeLightDef( lightDefHandle );
+		//	lightDefHandle = -1;
+		//}
+	}
+
 /////*
 ////=================
 ////idProjectile::Launch
@@ -512,7 +513,8 @@ idProjectile::Create
 ////idProjectile::Think
 ////================
 ////*/
-////void idProjectile::Think( void ) {
+	Think(): void {
+		todoThrow();
 ////
 ////	if ( thinkFlags & TH_THINK ) {
 ////		if ( thrust && ( gameLocal.time < thrust_end ) ) {
@@ -556,7 +558,7 @@ idProjectile::Create
 ////			lightDefHandle = gameRenderWorld.AddLightDef( &renderLight );
 ////		}
 ////	}
-////}
+}
 ////
 /////*
 ////=================
@@ -1434,7 +1436,8 @@ class idGuidedProjectile extends idProjectile {
 ////idGuidedProjectile::Think
 ////================
 ////*/
-////void idGuidedProjectile::Think( void ) {
+	Think(): void {
+		todoThrow();
 ////	idVec3		dir;
 ////	idVec3		seekPos;
 ////	idVec3		velocity;
@@ -1504,7 +1507,7 @@ class idGuidedProjectile extends idProjectile {
 ////	}
 ////
 ////	idProjectile::Think();
-////}
+}
 ////
 /////*
 ////=================
@@ -1686,7 +1689,8 @@ class idSoulCubeMissile extends idGuidedProjectile {
 ////idSoulCubeMissile::Think
 ////================
 ////*/
-////void idSoulCubeMissile::Think( void ) {
+	Think(): void {
+		todoThrow();
 ////	float		pct;
 ////	idVec3		seekPos;
 ////	idEntity	*ownerEnt;
@@ -1725,7 +1729,7 @@ class idSoulCubeMissile extends idGuidedProjectile {
 ////			}
 ////		}
 ////	}
-////}
+}
 ////
 /////*
 ////================
@@ -1951,7 +1955,8 @@ class idBFGProjectile extends idProjectile {
 ////idBFGProjectile::Think
 ////================
 ////*/
-////void idBFGProjectile::Think( void ) {
+	Think(): void {
+		todoThrow();
 ////	if ( state == LAUNCHED ) {
 ////
 ////		// update beam targets
@@ -2011,7 +2016,7 @@ class idBFGProjectile extends idProjectile {
 ////	}
 ////
 ////	idProjectile::Think();
-////}
+}
 ////
 /////*
 ////=================
@@ -2458,7 +2463,8 @@ idDebris::Create
 ////idDebris::Think
 ////================
 ////*/
-////void idDebris::Think( void ) {
+	Think(): void {
+		todoThrow();
 ////
 ////	// run physics
 ////	RunPhysics();
@@ -2469,7 +2475,7 @@ idDebris::Create
 ////			smokeFlyTime = 0;
 ////		}
 ////	}
-////}
+}
 ////
 /////*
 ////================

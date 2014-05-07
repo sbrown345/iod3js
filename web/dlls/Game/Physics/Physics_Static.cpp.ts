@@ -559,13 +559,14 @@ idPhysics_Static::idPhysics_Static
 			this.clipModel.Link_ent( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
 		}
 	}
-	////
-	/////*
-	////================
-	////idPhysics_Static::Rotate
-	////================
-	////*/
-	////void idPhysics_Static::Rotate( const idRotation &rotation, /*int*/ id:number= -1 ) {
+	
+	/*
+	================
+	idPhysics_Static::Rotate
+	================
+	*/
+	Rotate(rotation: idRotation, /*int*/ id: number = -1): void {
+		todoThrow();
 	////	idVec3 masterOrigin;
 	////	idMat3 masterAxis;
 	////
@@ -584,7 +585,7 @@ idPhysics_Static::idPhysics_Static
 	////	if ( this.clipModel ) {
 	////		this.clipModel.Link( gameLocal.clip, this.self, 0, this.current.origin, this.current.axis );
 	////	}
-	////}
+	}
 	
 	/*
 	================
