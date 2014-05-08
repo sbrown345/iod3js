@@ -3025,7 +3025,8 @@ bool idGameLocal::SpawnEntityDef( const idDict &args, idEntity **ent, bool setDe
 		sprintf( error, " on '%s'", name);
 	}
 
-	spawnArgs.GetString( "classname", NULL, &classname );
+	dlog(DEBUG_SPAWN, "SpawnEntityDef %s\n", name);
+	spawnArgs.GetString("classname", NULL, &classname);
 
 	const idDeclEntityDef *def = FindEntityDef( classname, false );
 
@@ -3216,6 +3217,7 @@ void idGameLocal::SpawnMapEntities( void ) {
 
 	for ( i = 1 ; i < numEntities ; i++ ) {
 		mapEnt = mapFile->GetEntity( i );
+		dlog(DEBUG_SPAWN, "SpawnMapEntities %i\n", i);
 		args = mapEnt->epairs;
 
 		if ( !InhibitEntitySpawn( args ) ) {

@@ -567,6 +567,7 @@ idClass::CallSpawn
 		var type: idTypeInfo;
 
 		type = this.GetType ( );
+		dlog(DEBUG_SPAWN, "idClass::CallSpawn %s\n", type.classname);
 		this.CallSpawnFunc( type );
 	}
 
@@ -579,10 +580,12 @@ idClass::CallSpawnFunc
 		var func: ( ) => void; /*classSpawnFunc_t*/
 
 		if ( cls.$super ) {
+			dlog(DEBUG_SPAWN, "idClass::CallSpawnFunc has super\n");
 			func = this.CallSpawnFunc( cls.$super );
 			if ( func == cls.Spawn ) {
 				// don't call the same function twice in a row.
 				// this can happen when subclasses don't have their own spawn function.
+				dlog(DEBUG_SPAWN, "idClass::CallSpawnFunc don't call the same function twice in a row.\n");
 				return func;
 			}
 		}

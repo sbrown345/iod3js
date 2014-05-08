@@ -3521,6 +3521,7 @@ returning false if not found
 			error.opEquals( sprintf( " on '%s'", name.$ ) );
 		}
 
+		dlog(DEBUG_SPAWN, "SpawnEntityDef %s\n", name.$);
 		this.spawnArgs.GetString_Rstring( "classname", null, classname );
 
 		var def = this.FindEntityDef( classname.$, false );
@@ -3712,7 +3713,8 @@ Parses textual entity definitions out of an entstring and spawns gentities.
 		inhibit = 0;
 
 		for ( i = 1; i < numEntities; i++ ) {
-			mapEnt = this.mapFile.GetEntity( i );
+			mapEnt = this.mapFile.GetEntity(i);
+			dlog(DEBUG_SPAWN, "SpawnMapEntities %i\n", i);
 			args.opEquals( mapEnt.epairs );
 
 			if ( !this.InhibitEntitySpawn( args ) ) {

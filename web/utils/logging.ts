@@ -6,7 +6,7 @@ JavaScript Debug Helpers
 ===============================================================================
 */
 var LOG_TO_CONSOLE = false;
-var SKIP_ALL_LOGGING = true;
+var SKIP_ALL_LOGGING = false;
 var LOGGING_WITH_VISUAL_STUDIO = !!((<any>window).Debug && (<any>window).Debug.debuggerEnabled);
 
 var DEBUG_LOG_MODE = true && !LOGGING_WITH_VISUAL_STUDIO;
@@ -23,9 +23,10 @@ var DEBUG_GUI = isd(false );
 var DEBUG_HASHINDEX = isd( false );
 var DEBUG_STRPOOL = isd( false );
 var DEBUG_RENDERWORLD_LOAD = isd( false ); // todo: check output
-var DEBUG_CM = isd(true ); // todo: check output
+var DEBUG_CM = isd(false); // todo: check output
 var DEBUG_MAP_FILE = isd(false ); // todo: check output
-var DEBUG_SCRIPT = isd(true ); 
+var DEBUG_SCRIPT = isd(false ); 
+var DEBUG_SPAWN = isd(true ); 
 
 function dlog(log: boolean, format: string, ...args: any[]) {
 	if (!log || SKIP_ALL_LOGGING) return;

@@ -416,6 +416,7 @@ void idThread::Init( void ) {
 		}
 	} while( GetThread( threadIndex ) );
 
+	dlog(DEBUG_SPAWN, "idThread::Init %i\n", idThread::threadIndex);
 	threadNum = threadIndex;
 	threadList.Append( this );
 	
