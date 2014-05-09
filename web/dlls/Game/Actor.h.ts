@@ -1440,61 +1440,60 @@ idActor::SetupBody
 ////		this.scriptThread = NULL;
 ////	}
 ////}
-////
-/////*
-////================
-////idActor::ShouldConstructScriptObjectAtSpawn
-////
-////Called during idEntity::Spawn to see if it should construct the script object or not.
-////Overridden by subclasses that need to spawn the script object themselves.
-////================
-////*/
-////bool idActor::ShouldConstructScriptObjectAtSpawn( ) const {
-////	return false;
-////}
-////
-/////*
-////================
-////idActor::ConstructScriptObject
-////
-////Called during idEntity::Spawn.  Calls the constructor on the script object.
-////Can be overridden by subclasses when a thread doesn't need to be allocated.
-////================
-////*/
-	ConstructScriptObject(): idThread {
-		todoThrow ( );
-////	const function_t *constructor;
-////
-////	// make sure we have a scriptObject
-////	if ( !this.scriptObject.HasObject() ) {
-////		gameLocal.Error( "No scriptobject set on '%s'.  Check the '%s' entityDef.", this.name.c_str(), GetEntityDefName() );
-////	}
-////
-////	if ( !this.scriptThread ) {
-////		// create script thread
-////		this.scriptThread = new idThread();
-////		this.scriptThread.ManualDelete();
-////		this.scriptThread.ManualControl();
-////		this.scriptThread.SetThreadName( this.name.c_str() );
-////	} else {
-////		this.scriptThread.EndThread();
-////	}
-////	
-////	// call script object's constructor
-////	constructor = this.scriptObject.GetConstructor();
-////	if ( !constructor ) {
-////		gameLocal.Error( "Missing constructor on '%s' for entity '%s'", this.scriptObject.GetTypeName(), this.name.c_str() );
-////	}
-////
-////	// init the script object's data
-////	this.scriptObject.ClearObject();
-////
-////	// just set the current function on the script.  we'll execute in the subclasses.
-////	this.scriptThread.CallFunction( this, constructor, true );
-////
-	return this.scriptThread;
-}
-////
+
+/*
+================
+idActor::ShouldConstructScriptObjectAtSpawn
+
+Called during idEntity::Spawn to see if it should construct the script object or not.
+Overridden by subclasses that need to spawn the script object themselves.
+================
+*/
+	ShouldConstructScriptObjectAtSpawn ( ): boolean {
+		return false;
+	}
+
+/*
+================
+idActor::ConstructScriptObject
+
+Called during idEntity::Spawn.  Calls the constructor on the script object.
+Can be overridden by subclasses when a thread doesn't need to be allocated.
+================
+*/
+	ConstructScriptObject ( ): idThread {
+		var $constructor: function_t;
+
+		// make sure we have a scriptObject
+		if ( !this.scriptObject.HasObject ( ) ) {
+			gameLocal.Error( "No scriptobject set on '%s'.  Check the '%s' entityDef.", this.name.c_str ( ), this.GetEntityDefName ( ) );
+		}
+
+		if ( !this.scriptThread ) {
+			// create script thread
+			this.scriptThread = new idThread ( );
+			this.scriptThread.ManualDelete ( );
+			this.scriptThread.ManualControl ( );
+			this.scriptThread.SetThreadName( this.name.c_str ( ) );
+		} else {
+			this.scriptThread.EndThread ( );
+		}
+
+		// call script object's constructor
+		$constructor = this.scriptObject.GetConstructor ( );
+		if ( !$constructor ) {
+			gameLocal.Error( "Missing constructor on '%s' for entity '%s'", this.scriptObject.GetTypeName ( ), this.name.c_str ( ) );
+		}
+
+		// init the script object's data
+		this.scriptObject.ClearObject ( );
+
+		// just set the current function on the script.  we'll execute in the subclasses.
+		this.scriptThread.CallFunction( this, $constructor, true );
+
+		return this.scriptThread;
+	}
+
 /////*
 ////=====================
 ////idActor::GetScriptFunction
@@ -2801,7 +2800,7 @@ FIXME: only store group names once and store an index for each joint
 ////		if ( ( channel == ANIMCHANNEL_HEAD ) && this.head.GetEntity() ) {
 ////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), this.spawnArgs.GetString( "def_head", "" ) );
 ////		} else {
-////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), GetEntityDefName() );
+////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), this.GetEntityDefName() );
 ////		}
 ////		idThread::ReturnInt( 0 );
 ////		return;
@@ -2880,7 +2879,7 @@ FIXME: only store group names once and store an index for each joint
 ////		if ( ( channel == ANIMCHANNEL_HEAD ) && this.head.GetEntity() ) {
 ////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), this.spawnArgs.GetString( "def_head", "" ) );
 ////		} else {
-////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), GetEntityDefName() );
+////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), this.GetEntityDefName() );
 ////		}
 ////		idThread::ReturnInt( false );
 ////		return;
@@ -2953,7 +2952,7 @@ FIXME: only store group names once and store an index for each joint
 ////		if ( ( channel == ANIMCHANNEL_HEAD ) && this.head.GetEntity() ) {
 ////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), this.spawnArgs.GetString( "def_head", "" ) );
 ////		} else {
-////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), GetEntityDefName() );
+////			gameLocal.DPrintf( "missing '%s' animation on '%s' (%s)\n", animname, this.name.c_str(), this.GetEntityDefName() );
 ////		}
 ////
 ////		switch( channel ) {

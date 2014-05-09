@@ -587,6 +587,7 @@ class idMat3 {
 //}
 
 //ID_INLINE idVec3 operator*( const idVec3 &vec, const idMat3 &mat ) {
+	// confusing, should be in idVec3
 	static opMultiplication_VecMat ( vec: idVec3, mat: idMat3 ): idVec3 {
 		return mat.opMultiplication_Vec( vec );
 	}

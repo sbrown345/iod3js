@@ -1299,13 +1299,12 @@ idPhysics::SetOrigin
 		var masterOrigin = new idVec3;
 		var masterAxis = new idMat3;
 
-		this.current.localOrigin = newOrigin;
+		this.current.localOrigin.opEquals( newOrigin );
 		if ( this.hasMaster ) {
-			todoThrow ( );
-			//this.self.GetMasterPosition( masterOrigin, masterAxis );
-			//this.current.i.position.opEquals( masterOrigin + newOrigin * masterAxis );
+			this.self.GetMasterPosition( masterOrigin, masterAxis );
+			this.current.i.position.opEquals( masterOrigin.opAddition( idMat3.opMultiplication_VecMat( newOrigin, masterAxis ) ) );
 		} else {
-			this.current.i.position = newOrigin;
+			this.current.i.position.opEquals( newOrigin );
 		}
 
 		this.clipModel.Link_ent( gameLocal.clip, this.self, this.clipModel.GetId ( ), this.current.i.position, this.clipModel.GetAxis ( ) );
@@ -1318,24 +1317,22 @@ idPhysics::SetOrigin
 ////idPhysics::SetAxis
 ////================
 ////*/
-	SetAxis(newAxis: idMat3, /*int*/ id: number = -1): void {
-		todoThrow();
-////	idVec3 masterOrigin;
-////	idMat3 masterAxis;
-////
-////	this.current.localAxis = newAxis;
-////	if ( this.hasMaster && this.isOrientated ) {
-////		this.self.GetMasterPosition( masterOrigin, masterAxis );
-////		this.current.i.orientation = newAxis * masterAxis;
-////	}
-////	else {
-////		this.current.i.orientation = newAxis;
-////	}
-////
-////	this.clipModel.Link( gameLocal.clip, this.self, this.clipModel.GetId(), this.clipModel.GetOrigin(), this.current.i.orientation );
-////
-////	this.Activate();
-}
+	SetAxis ( newAxis: idMat3, /*int*/ id: number = -1 ): void {
+		var masterOrigin = new idVec3;
+		var masterAxis = new idMat3;
+
+		this.current.localAxis = newAxis;
+		if ( this.hasMaster && this.isOrientated ) {
+			this.self.GetMasterPosition( masterOrigin, masterAxis );
+			this.current.i.orientation.opEquals( newAxis.opMultiplication( masterAxis ) );
+		} else {
+			this.current.i.orientation.opEquals( newAxis );
+		}
+
+		this.clipModel.Link_ent( gameLocal.clip, this.self, this.clipModel.GetId ( ), this.clipModel.GetOrigin ( ), this.current.i.orientation );
+
+		this.Activate ( );
+	}
 
 /*
 ================

@@ -40,48 +40,48 @@
 var USERCMD_HZ			= 60;			// 60 frames per second
 var USERCMD_MSEC		= int(1000 / USERCMD_HZ);
 //
-//// usercmd_t->button bits
-//const int BUTTON_ATTACK			= BIT(0);
-//const int BUTTON_RUN			= BIT(1);
-//const int BUTTON_ZOOM			= BIT(2);
-//const int BUTTON_SCORES			= BIT(3);
-//const int BUTTON_MLOOK			= BIT(4);
-//const int BUTTON_5				= BIT(5);
-//const int BUTTON_6				= BIT(6);
-//const int BUTTON_7				= BIT(7);
+// usercmd_t->button bits
+var BUTTON_ATTACK			= BIT(0);
+var BUTTON_RUN			= BIT(1);
+var BUTTON_ZOOM			= BIT(2);
+var BUTTON_SCORES			= BIT(3);
+var BUTTON_MLOOK			= BIT(4);
+var BUTTON_5				= BIT(5);
+var BUTTON_6				= BIT(6);
+var BUTTON_7				= BIT(7);
 //
-//// usercmd_t->impulse commands
-//const int IMPULSE_0				= 0;			// weap 0
-//const int IMPULSE_1				= 1;			// weap 1
-//const int IMPULSE_2				= 2;			// weap 2
-//const int IMPULSE_3				= 3;			// weap 3
-//const int IMPULSE_4				= 4;			// weap 4
-//const int IMPULSE_5				= 5;			// weap 5
-//const int IMPULSE_6				= 6;			// weap 6
-//const int IMPULSE_7				= 7;			// weap 7
-//const int IMPULSE_8				= 8;			// weap 8
-//const int IMPULSE_9				= 9;			// weap 9
-//const int IMPULSE_10			= 10;			// weap 10
-//const int IMPULSE_11			= 11;			// weap 11
-//const int IMPULSE_12			= 12;			// weap 12
-//const int IMPULSE_13			= 13;			// weap reload
-//const int IMPULSE_14			= 14;			// weap next
-//const int IMPULSE_15			= 15;			// weap prev
-//const int IMPULSE_16			= 16;			// <unused>
-//const int IMPULSE_17			= 17;			// ready to play ( toggles ui_ready )
-//const int IMPULSE_18			= 18;			// center view
-//const int IMPULSE_19			= 19;			// show PDA/INV/MAP
-//const int IMPULSE_20			= 20;			// toggle team ( toggles ui_team )
-//const int IMPULSE_21			= 21;			// <unused>
-//const int IMPULSE_22			= 22;			// spectate
-//const int IMPULSE_23			= 23;			// <unused>
-//const int IMPULSE_24			= 24;			// <unused>
-//const int IMPULSE_25			= 25;			// <unused>
-//const int IMPULSE_26			= 26;			// <unused>
-//const int IMPULSE_27			= 27;			// <unused>
-//const int IMPULSE_28			= 28;			// vote yes
-//const int IMPULSE_29			= 29;			// vote no
-//const int IMPULSE_40			= 40;			// use vehicle
+// usercmd_t->impulse commands
+var IMPULSE_0				= 0;			// weap 0
+var IMPULSE_1				= 1;			// weap 1
+var IMPULSE_2				= 2;			// weap 2
+var IMPULSE_3				= 3;			// weap 3
+var IMPULSE_4				= 4;			// weap 4
+var IMPULSE_5				= 5;			// weap 5
+var IMPULSE_6				= 6;			// weap 6
+var IMPULSE_7				= 7;			// weap 7
+var IMPULSE_8				= 8;			// weap 8
+var IMPULSE_9				= 9;			// weap 9
+var IMPULSE_10			= 10;			// weap 10
+var IMPULSE_11			= 11;			// weap 11
+var IMPULSE_12			= 12;			// weap 12
+var IMPULSE_13			= 13;			// weap reload
+var IMPULSE_14			= 14;			// weap next
+var IMPULSE_15			= 15;			// weap prev
+var IMPULSE_16			= 16;			// <unused>
+var IMPULSE_17			= 17;			// ready to play ( toggles ui_ready )
+var IMPULSE_18			= 18;			// center view
+var IMPULSE_19			= 19;			// show PDA/INV/MAP
+var IMPULSE_20			= 20;			// toggle team ( toggles ui_team )
+var IMPULSE_21			= 21;			// <unused>
+var IMPULSE_22			= 22;			// spectate
+var IMPULSE_23			= 23;			// <unused>
+var IMPULSE_24			= 24;			// <unused>
+var IMPULSE_25			= 25;			// <unused>
+var IMPULSE_26			= 26;			// <unused>
+var IMPULSE_27			= 27;			// <unused>
+var IMPULSE_28			= 28;			// vote yes
+var IMPULSE_29			= 29;			// vote no
+var IMPULSE_40			= 40;			// use vehicle
 //
 //// usercmd_t->flags
 //const int UCF_IMPULSE_SEQUENCE	= 0x0001;		// toggled every time an impulse command is sent
@@ -128,14 +128,14 @@ class usercmd_t {
 	}
 }
 
-//
-//typedef enum {
-//	INHIBIT_SESSION = 0,
-//	INHIBIT_ASYNC
-//} inhibit_t;
-//
-//const int MAX_BUFFERED_USERCMD = 64;
-//
+
+enum inhibit_t{
+	INHIBIT_SESSION = 0,
+	INHIBIT_ASYNC
+}
+
+var MAX_BUFFERED_USERCMD = 64;
+
 class idUsercmdGen {
 //public:
 //	virtual				~idUsercmdGen( void ) {}

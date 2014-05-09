@@ -379,7 +379,7 @@ class idWeapon extends idAnimatedEntity {
 		//this.owner = NULL;
 		//worldModel = NULL;
 		//weaponDef = NULL;
-		//thread = NULL;
+		//this.thread = NULL;
 
 		//memset( &guiLight, 0, sizeof(guiLight) );
 		//memset( &muzzleFlash, 0, sizeof(muzzleFlash) );
@@ -428,9 +428,9 @@ idWeapon::Spawn
 		//	worldModel.GetEntity().fl.networkSync = true;
 		//}
 
-		//thread = new idThread();
-		//thread.ManualDelete();
-		//thread.ManualControl();
+		//this.thread = new idThread();
+		//this.thread.ManualDelete();
+		//this.thread.ManualControl();
 	}
 	////
 	/////*
@@ -458,9 +458,9 @@ idWeapon::Spawn
 	////Overridden by subclasses that need to spawn the script object themselves.
 	////================
 	////*/
-	////bool idWeapon::ShouldConstructScriptObjectAtSpawn( ) const {
-	////	return false;
-	////}
+	ShouldConstructScriptObjectAtSpawn(): boolean {
+		return false;
+	}
 	////
 	/////*
 	////================
@@ -507,7 +507,7 @@ idWeapon::Spawn
 	////void idWeapon::Save( idSaveGame *savefile ) const {
 	////
 	////	savefile.WriteInt( status );
-	////	savefile.WriteObject( thread );
+	////	savefile.WriteObject( this.thread );
 	////	savefile.WriteString( state );
 	////	savefile.WriteString( idealState );
 	////	savefile.WriteInt( animBlendFrames );
@@ -633,7 +633,7 @@ idWeapon::Spawn
 	////void idWeapon::Restore( idRestoreGame *savefile ) {
 	////
 	////	savefile.ReadInt( (int &)status );
-	////	savefile.ReadObject( reinterpret_cast<idClass *&>( thread ) );
+	////	savefile.ReadObject( reinterpret_cast<idClass *&>( this.thread ) );
 	////	savefile.ReadString( state );
 	////	savefile.ReadString( idealState );
 	////	savefile.ReadInt( animBlendFrames );
@@ -641,13 +641,13 @@ idWeapon::Spawn
 	////	savefile.ReadBool( isLinked );
 	////
 	////	// Re-link script fields
-	////	WEAPON_ATTACK.LinkTo(		scriptObject, "WEAPON_ATTACK" );
-	////	WEAPON_RELOAD.LinkTo(		scriptObject, "WEAPON_RELOAD" );
-	////	WEAPON_NETRELOAD.LinkTo(	scriptObject, "WEAPON_NETRELOAD" );
-	////	WEAPON_NETENDRELOAD.LinkTo(	scriptObject, "WEAPON_NETENDRELOAD" );
-	////	WEAPON_NETFIRING.LinkTo(	scriptObject, "WEAPON_NETFIRING" );
-	////	WEAPON_RAISEWEAPON.LinkTo(	scriptObject, "WEAPON_RAISEWEAPON" );
-	////	WEAPON_LOWERWEAPON.LinkTo(	scriptObject, "WEAPON_LOWERWEAPON" );
+	////	WEAPON_ATTACK.LinkTo(		this.scriptObject, "WEAPON_ATTACK" );
+	////	WEAPON_RELOAD.LinkTo(		this.scriptObject, "WEAPON_RELOAD" );
+	////	WEAPON_NETRELOAD.LinkTo(	this.scriptObject, "WEAPON_NETRELOAD" );
+	////	WEAPON_NETENDRELOAD.LinkTo(	this.scriptObject, "WEAPON_NETENDRELOAD" );
+	////	WEAPON_NETFIRING.LinkTo(	this.scriptObject, "WEAPON_NETFIRING" );
+	////	WEAPON_RAISEWEAPON.LinkTo(	this.scriptObject, "WEAPON_RAISEWEAPON" );
+	////	WEAPON_LOWERWEAPON.LinkTo(	this.scriptObject, "WEAPON_LOWERWEAPON" );
 	////
 	////	savefile.ReadObject( reinterpret_cast<idClass *&>( this.owner ) );
 	////	worldModel.Restore( savefile );
@@ -793,7 +793,7 @@ idWeapon::Spawn
 	////	CancelEvents( &EV_Weapon_Clear );
 	////
 	////	DeconstructScriptObject();
-	////	scriptObject.Free();
+	////	this.scriptObject.Free();
 	////
 	////	WEAPON_ATTACK.Unlink();
 	////	WEAPON_RELOAD.Unlink();
@@ -1234,17 +1234,17 @@ idWeapon::Spawn
 	////	}
 	////	
 	////	// setup script object
-	////	if ( !scriptObject.SetType( objectType ) ) {
+	////	if ( !this.scriptObject.SetType( objectType ) ) {
 	////		gameLocal.Error( "Script object '%s' not found on weapon '%s'.", objectType, objectname );
 	////	}
 	////
-	////	WEAPON_ATTACK.LinkTo(		scriptObject, "WEAPON_ATTACK" );
-	////	WEAPON_RELOAD.LinkTo(		scriptObject, "WEAPON_RELOAD" );
-	////	WEAPON_NETRELOAD.LinkTo(	scriptObject, "WEAPON_NETRELOAD" );
-	////	WEAPON_NETENDRELOAD.LinkTo(	scriptObject, "WEAPON_NETENDRELOAD" );
-	////	WEAPON_NETFIRING.LinkTo(	scriptObject, "WEAPON_NETFIRING" );
-	////	WEAPON_RAISEWEAPON.LinkTo(	scriptObject, "WEAPON_RAISEWEAPON" );
-	////	WEAPON_LOWERWEAPON.LinkTo(	scriptObject, "WEAPON_LOWERWEAPON" );
+	////	WEAPON_ATTACK.LinkTo(		this.scriptObject, "WEAPON_ATTACK" );
+	////	WEAPON_RELOAD.LinkTo(		this.scriptObject, "WEAPON_RELOAD" );
+	////	WEAPON_NETRELOAD.LinkTo(	this.scriptObject, "WEAPON_NETRELOAD" );
+	////	WEAPON_NETENDRELOAD.LinkTo(	this.scriptObject, "WEAPON_NETENDRELOAD" );
+	////	WEAPON_NETFIRING.LinkTo(	this.scriptObject, "WEAPON_NETFIRING" );
+	////	WEAPON_RAISEWEAPON.LinkTo(	this.scriptObject, "WEAPON_RAISEWEAPON" );
+	////	WEAPON_LOWERWEAPON.LinkTo(	this.scriptObject, "WEAPON_LOWERWEAPON" );
 	////
 	////	spawnArgs = opEquals(? weaponDef.dict;
 	////
@@ -1402,9 +1402,9 @@ idWeapon::Spawn
 	////		return false;
 	////	}
 	////
-	////	func = scriptObject.GetFunction( "UpdateSkin" );
+	////	func = this.scriptObject.GetFunction( "UpdateSkin" );
 	////	if ( !func ) {
-	////		common.Warning( "Can't find function 'UpdateSkin' in object '%s'", scriptObject.GetTypeName() );
+	////		common.Warning( "Can't find function 'UpdateSkin' in object '%s'", this.scriptObject.GetTypeName() );
 	////		return false;
 	////	}
 	////	
@@ -1632,7 +1632,7 @@ idWeapon::HideWorldModel
 ////void idWeapon::OwnerDied( ) {
 ////	if ( isLinked ) {
 ////		SetState( "OwnerDied", 0 );
-////		thread.Execute();
+////		this.thread.Execute();
 ////	}
 ////
 ////	this.Hide();
@@ -1746,7 +1746,7 @@ idWeapon::HideWorldModel
 ////	if ( projectileEnt ) {
 ////		if ( isLinked ) {
 ////			SetState( "WeaponStolen", 0 );
-////			thread.Execute();
+////			this.thread.Execute();
 ////		}
 ////		projectileEnt = NULL;
 ////	}
@@ -1797,13 +1797,13 @@ idWeapon::HideWorldModel
 ////		return;
 ////	}
 ////
-////	func = scriptObject.GetFunction( statename );
+////	func = this.scriptObject.GetFunction( statename );
 ////	if ( !func ) {
 ////		assert( 0 );
-////		gameLocal.Error( "Can't find function '%s' in object '%s'", statename, scriptObject.GetTypeName() );
+////		gameLocal.Error( "Can't find function '%s' in object '%s'", statename, this.scriptObject.GetTypeName() );
 ////	}
 ////
-////	thread.CallFunction( this, func, true );
+////	this.thread.CallFunction( this, func, true );
 ////	state = statename;
 ////
 ////	animBlendFrames = blendFrames;
@@ -1974,47 +1974,46 @@ idWeapon::HideWorldModel
 ////	axis = ang.ToMat3() * axis;
 ////}
 ////
-/////*
-////================
-////idWeapon::ConstructScriptObject
-////
-////Called during idEntity::Spawn.  Calls the constructor on the script object.
-////Can be overridden by subclasses when a thread doesn't need to be allocated.
-////================
-////*/
+/*
+================
+idWeapon::ConstructScriptObject
+
+Called during idEntity::Spawn.  Calls the constructor on the script object.
+Can be overridden by subclasses when a thread doesn't need to be allocated.
+================
+*/
 	ConstructScriptObject ( ): idThread {
-		todoThrow ( );
-////	const function_t *constructor;
-////
-////	thread.EndThread();
-////
-////	// call script object's constructor
-////	constructor = scriptObject.GetConstructor();
-////	if ( !constructor ) {
-////		gameLocal.Error( "Missing constructor on '%s' for weapon", scriptObject.GetTypeName() );
-////	}
-////
-////	// init the script object's data
-////	scriptObject.ClearObject();
-////	thread.CallFunction( this, constructor, true );
-////	thread.Execute();
-////
+		var $constructor: function_t;
+
+		this.thread.EndThread ( );
+
+		// call script object's constructor
+		$constructor = this.scriptObject.GetConstructor ( );
+		if (!$constructor ) {
+			gameLocal.Error( "Missing constructor on '%s' for weapon", this.scriptObject.GetTypeName ( ) );
+		}
+
+		// init the script object's data
+		this.scriptObject.ClearObject ( );
+		this.thread.CallFunction(this, $constructor, true );
+		this.thread.Execute ( );
+
 		return this.thread;
 	}
-////
-/////*
-////================
-////idWeapon::DeconstructScriptObject
-////
-////Called during idEntity::~idEntity.  Calls the destructor on the script object.
-////Can be overridden by subclasses when a thread doesn't need to be allocated.
-////Not called during idGameLocal::MapShutdown.
-////================
-////*/
+
+/*
+================
+idWeapon::DeconstructScriptObject
+
+Called during idEntity::~idEntity.  Calls the destructor on the script object.
+Can be overridden by subclasses when a thread doesn't need to be allocated.
+Not called during idGameLocal::MapShutdown.
+================
+*/
 ////void idWeapon::DeconstructScriptObject( ) {
 ////	const function_t *destructor;
 ////
-////	if ( !thread ) {
+////	if ( !this.thread ) {
 ////		return;
 ////	}
 ////	
@@ -2023,19 +2022,19 @@ idWeapon::HideWorldModel
 ////		return;
 ////	}
 ////
-////	thread.EndThread();
+////	this.thread.EndThread();
 ////
 ////	// call script object's destructor
-////	destructor = scriptObject.GetDestructor();
+////	destructor = this.scriptObject.GetDestructor();
 ////	if ( destructor ) {
 ////		// start a thread that will run immediately and end
-////		thread.CallFunction( this, destructor, true );
-////		thread.Execute();
-////		thread.EndThread();
+////		this.thread.CallFunction( this, destructor, true );
+////		this.thread.Execute();
+////		this.thread.EndThread();
 ////	}
 ////
 ////	// clear out the object's memory
-////	scriptObject.ClearObject();
+////	this.scriptObject.ClearObject();
 ////}
 ////
 /////*
@@ -2061,7 +2060,7 @@ idWeapon::HideWorldModel
 ////
 ////	// update script state, which may call Event_LaunchProjectiles, among other things
 ////	count = 10;
-////	while( ( thread.Execute() || idealState.Length() ) && count-- ) {
+////	while( ( this.thread.Execute() || idealState.Length() ) && count-- ) {
 ////		// happens for weapons with no clip (like grenades)
 ////		if ( idealState.Length() ) {
 ////			SetState( idealState, animBlendFrames );
@@ -2267,7 +2266,7 @@ idWeapon::HideWorldModel
 ////
 ////	if ( isLinked ) {
 ////		SetState( "EnterCinematic", 0 );
-////		thread.Execute();
+////		this.thread.Execute();
 ////
 ////		WEAPON_ATTACK		= false;
 ////		WEAPON_RELOAD		= false;
@@ -2293,7 +2292,7 @@ idWeapon::HideWorldModel
 ////
 ////	if ( isLinked ) {
 ////		SetState( "ExitCinematic", 0 );
-////		thread.Execute();
+////		this.thread.Execute();
 ////	}
 ////
 ////	RaiseWeapon();
@@ -2307,7 +2306,7 @@ idWeapon::HideWorldModel
 ////void idWeapon::NetCatchup( ) {
 ////	if ( isLinked ) {
 ////		SetState( "NetCatchup", 0 );
-////		thread.Execute();
+////		this.thread.Execute();
 ////	}
 ////}
 ////
@@ -2622,10 +2621,10 @@ idWeapon::HideWorldModel
 ////void idWeapon::Event_WeaponState( const char *statename, int blendFrames ) {
 ////	const function_t *func;
 ////
-////	func = scriptObject.GetFunction( statename );
+////	func = this.scriptObject.GetFunction( statename );
 ////	if ( !func ) {
 ////		assert( 0 );
-////		gameLocal.Error( "Can't find function '%s' in object '%s'", statename, scriptObject.GetTypeName() );
+////		gameLocal.Error( "Can't find function '%s' in object '%s'", statename, this.scriptObject.GetTypeName() );
 ////	}
 ////
 ////	idealState = statename;
@@ -2637,7 +2636,7 @@ idWeapon::HideWorldModel
 ////	}
 ////
 ////	animBlendFrames = blendFrames;
-////	thread.DoneProcessing();
+////	this.thread.DoneProcessing();
 ////}
 ////
 /////*

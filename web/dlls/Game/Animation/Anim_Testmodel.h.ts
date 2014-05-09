@@ -272,9 +272,9 @@ Spawn(): void {
 //Overridden by subclasses that need to spawn the script object themselves.
 //================
 //*/
-//bool idTestModel::ShouldConstructScriptObjectAtSpawn( void ) const {
-//	return false;
-//}
+	ShouldConstructScriptObjectAtSpawn ( ): boolean {
+		return false;
+	}
 //
 ///*
 //================

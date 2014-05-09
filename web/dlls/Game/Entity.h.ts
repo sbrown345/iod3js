@@ -902,19 +902,19 @@ idEntity::~idEntity
 ////		this.modelDefHandle = gameRenderWorld.AddEntityDef( &this.renderEntity );
 ////	}
 ////}
-////
-/////*
-////================
-////idEntity::GetEntityDefName
-////================
-////*/
-////const char * idEntity::GetEntityDefName( ):void const {
-////	if ( this.entityDefNumber < 0 ) {
-////		return "*unknown*";
-////	}
-////	return declManager.DeclByIndex( DECL_ENTITYDEF, this.entityDefNumber, false ).GetName();
-////}
-////
+
+/*
+================
+idEntity::GetEntityDefName
+================
+*/
+	GetEntityDefName ( ): string {
+		if ( this.entityDefNumber < 0 ) {
+			return "*unknown*";
+		}
+		return declManager.DeclByIndex( declType_t.DECL_ENTITYDEF, this.entityDefNumber, false ).GetName ( );
+	}
+
 /*
 ================
 idEntity::SetName
@@ -1322,9 +1322,8 @@ UpdateModelTransform( ):void {
 	var axis = new idMat3;
 
 	if (this.GetPhysicsToVisualTransform(origin, axis)) {
-		todoThrow ( );
-		//this.renderEntity.axis = axis * this.GetPhysics().GetAxis();
-		//this.renderEntity.origin = this.GetPhysics().GetOrigin() + origin * this.renderEntity.axis;
+		this.renderEntity.axis.opEquals( axis.opMultiplication( this.GetPhysics ( ).GetAxis ( ) ) );
+		this.renderEntity.origin.opEquals( this.GetPhysics ( ).GetOrigin ( ).opAddition( idMat3.opMultiplication_VecMat( origin, this.renderEntity.axis ) ) );
 	} else {
 		this.renderEntity.axis.opEquals( this.GetPhysics ( ).GetAxis ( ) );
 		this.renderEntity.origin.opEquals( this.GetPhysics ( ).GetOrigin ( ) );
@@ -3222,9 +3221,9 @@ Called during idEntity::Spawn to see if it should construct the script object or
 Overridden by subclasses that need to spawn the script object themselves.
 ================
 */
-ShouldConstructScriptObjectAtSpawn( ):boolean {
-	return true;
-}
+	ShouldConstructScriptObjectAtSpawn ( ): boolean {
+		return true;
+	}
 
 /*
 ================
