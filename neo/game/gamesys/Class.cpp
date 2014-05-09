@@ -268,8 +268,8 @@ classSpawnFunc_t idClass::CallSpawnFunc( idTypeInfo *cls ) {
 	classSpawnFunc_t func;
 
 	if ( cls->super ) {
-		func = CallSpawnFunc( cls->super );
-		dlog(DEBUG_SPAWN, "idClass::CallSpawnFunc has super\n");
+		dlog(DEBUG_SPAWN, "idClass::CallSpawnFunc has super %s %s\n", cls->super->classname, cls->superclass);
+		func = CallSpawnFunc(cls->super);
 		if (func == cls->Spawn) {
 			// don't call the same function twice in a row.
 			// this can happen when subclasses don't have their own spawn function.

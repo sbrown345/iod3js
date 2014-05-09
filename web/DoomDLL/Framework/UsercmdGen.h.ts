@@ -38,7 +38,7 @@
 //*/
 //
 var USERCMD_HZ			= 60;			// 60 frames per second
-var USERCMD_MSEC			= 1000 / USERCMD_HZ;
+var USERCMD_MSEC		= int(1000 / USERCMD_HZ);
 //
 //// usercmd_t->button bits
 //const int BUTTON_ATTACK			= BIT(0);

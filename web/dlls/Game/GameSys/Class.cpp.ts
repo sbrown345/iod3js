@@ -580,7 +580,7 @@ idClass::CallSpawnFunc
 		var func: ( ) => void; /*classSpawnFunc_t*/
 
 		if ( cls.$super ) {
-			dlog(DEBUG_SPAWN, "idClass::CallSpawnFunc has super\n");
+			dlog(DEBUG_SPAWN, "idClass::CallSpawnFunc has super %s %s\n", cls.$super.classname, cls.superclass);
 			func = this.CallSpawnFunc( cls.$super );
 			if ( func == cls.Spawn ) {
 				// don't call the same function twice in a row.
