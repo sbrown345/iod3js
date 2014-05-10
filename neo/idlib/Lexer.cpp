@@ -913,12 +913,12 @@ int idLexer::ReadToken( idToken *token ) {
 	// succesfully read a token
 	//dlog(DEBUG_Lexer, RT: %i, %s\n", line, token->data);
 	//if (RTCount == /*6572*/191769 && line == 106) {
-	//if (!idStr::Cmp(token->data, "minDistance") && line == 502) {
+	//if (!idStr::Cmp(token->data, "models/md5/chars/af_pose.md5anim") && line == 714) {
 	//	if (IsDebuggerPresent())
 	//		__debugbreak();
 	//}
 	//dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", RTCount, line, token->data);
-	dlog(DEBUG_COMPILER || DEBUG_RENDERWORLD_LOAD || DEBUG_CM, "RT l:%i %s\n", line, token->data);
+	dlog(DEBUG_COMPILER || DEBUG_RENDERWORLD_LOAD || DEBUG_CM || DEBUG_SPAWN, "RT l:%i %s\n", line, token->data);
 	RTCount++;
 	return 1;
 }

@@ -193,27 +193,30 @@ idHashTable<Type>::Set
 ================
 */
 //template< class Type >
-	Set( key:string, value: Type) {
-		var node: hashnode_s<Type>, nextPtr: R<hashnode_s<Type> >;
-		var/*int */hash: number, s: number;
+	Set ( key: string, value: Type ) {
+		var node: hashnode_s<Type>, nextPtr: any;// R<hashnode_s<Type>>;
+		var /*int */hash: number, s: number;
+		var $this = this;
 
-	hash = this.GetHash( key );
-	for( nextPtr = new R(this.heads[hash]), node = nextPtr.$; node != null; nextPtr = new R(node.next), node = nextPtr.$ ) {
-		s = node.key.Cmp( key );
-		if ( s == 0 ) {
-			node.value = value;
-			return;
+		hash = this.GetHash( key );
+		for ( nextPtr = createPointer( ( ) => $this.heads[hash], ( v: any ) => { $this.heads[hash] = v; } ), node = nextPtr.value;
+			node != null;
+			nextPtr = { value: node.next }, node = nextPtr.value ) {
+			s = node.key.Cmp( key );
+			if ( s == 0 ) {
+				node.value = value;
+				return;
+			}
+			if ( s > 0 ) {
+				break;
+			}
 		}
-		if ( s > 0 ) {
-			break;
-		}
+
+		this.numentries++;
+
+		nextPtr.value = new hashnode_s( key, value, this.heads[hash] );
+		( nextPtr.value ).next = node;
 	}
-
-	this.numentries++;
-
-	nextPtr .$ = new hashnode_s( key, value, this.heads[ hash ] );
-	(nextPtr.$).next = node;
-}
 
 /*
 ================

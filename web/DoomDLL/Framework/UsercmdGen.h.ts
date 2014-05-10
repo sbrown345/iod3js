@@ -82,10 +82,10 @@ var IMPULSE_27			= 27;			// <unused>
 var IMPULSE_28			= 28;			// vote yes
 var IMPULSE_29			= 29;			// vote no
 var IMPULSE_40			= 40;			// use vehicle
-//
-//// usercmd_t->flags
-//const int UCF_IMPULSE_SEQUENCE	= 0x0001;		// toggled every time an impulse command is sent
-//
+
+// usercmd_t->flags
+var UCF_IMPULSE_SEQUENCE	= 0x0001;		// toggled every time an impulse command is sent
+
 class usercmd_t {
 //public:
 	gameFrame: number; // frame number								   //	int			

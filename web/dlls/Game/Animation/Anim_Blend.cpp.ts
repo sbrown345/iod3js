@@ -125,10 +125,10 @@ idDeclModelDef::idDeclModelDef
 idDeclModelDef::~idDeclModelDef
 =====================
 */
-desstructor():void {
-	this.FreeData();
-}
-//
+	destructor ( ): void {
+		this.FreeData ( );
+	}
+
 ///*
 //=================
 //idDeclModelDef::Size

@@ -188,7 +188,9 @@ ID_INLINE void idHashTable<Type>::Set( const char *key, Type &value ) {
 	int hash, s;
 
 	hash = GetHash( key );
-	for( nextPtr = &(heads[hash]), node = *nextPtr; node != NULL; nextPtr = &(node->next), node = *nextPtr ) {
+	for( nextPtr = &(heads[hash]), node = *nextPtr; 
+		node != NULL; 
+		nextPtr = &(node->next), node = *nextPtr ) {
 		s = node->key.Cmp( key );
 		if ( s == 0 ) {
 			node->value = value;

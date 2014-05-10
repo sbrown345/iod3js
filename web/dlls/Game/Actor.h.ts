@@ -2237,39 +2237,40 @@ idActor::Attach
 ////	this.torsoAnim.UpdateState();
 ////	this.legsAnim.UpdateState();
 ////}
-////
-/////*
-////=====================
-////idActor::GetAnim
-////=====================
-////*/
-////int idActor::GetAnim( int channel, const char *animname ) {
-////	int			anim;
-////	const char *temp;
-////	idAnimator *animatorPtr;
-////
-////	if ( channel == ANIMCHANNEL_HEAD ) {
-////		if ( !this.head.GetEntity() ) {
-////			return 0;
-////		}
-////		animatorPtr = this.head.GetEntity().GetAnimator();
-////	} else {
-////		animatorPtr = &this.animator;
-////	}
-////
-////	if ( this.animPrefix.Length() ) {
-////		temp = va( "%s_%s", this.animPrefix.c_str(), animname );
-////		anim = animatorPtr.GetAnim( temp );
-////		if ( anim ) {
-////			return anim;
-////		}
-////	}
-////
-////	anim = animatorPtr.GetAnim( animname );
-////
-////	return anim;
-////}
-////
+
+/*
+=====================
+idActor::GetAnim
+=====================
+*/
+	GetAnim ( /*int */channel: number, animname: string ): number {
+		todoThrow ( );
+		var /*int*/anim: number;
+		//const char *temp;
+		//idAnimator *animatorPtr;
+
+		//if ( channel == ANIMCHANNEL_HEAD ) {
+		//	if ( !this.head.GetEntity() ) {
+		//		return 0;
+		//	}
+		//	animatorPtr = this.head.GetEntity().GetAnimator();
+		//} else {
+		//	animatorPtr = &this.animator;
+		//}
+
+		//if ( this.animPrefix.Length() ) {
+		//	temp = va( "%s_%s", this.animPrefix.c_str(), animname );
+		//	anim = animatorPtr.GetAnim( temp );
+		//	if ( anim ) {
+		//		return anim;
+		//	}
+		//}
+
+		//anim = animatorPtr.GetAnim( animname );
+
+		return anim;
+	}
+
 /////*
 ////===============
 ////idActor::SyncAnimChannels
