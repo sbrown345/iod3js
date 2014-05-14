@@ -65,6 +65,8 @@ idSecurityCamera::Save
 ================
 */
 void idSecurityCamera::Save( idSaveGame *savefile ) const {
+	EV_SecurityCam_AddLight;
+
 	savefile->WriteFloat( angle );
 	savefile->WriteFloat( sweepAngle );
 	savefile->WriteInt( modelAxis );

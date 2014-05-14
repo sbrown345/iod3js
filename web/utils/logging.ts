@@ -26,7 +26,8 @@ var DEBUG_RENDERWORLD_LOAD = isd( false ); // todo: check output
 var DEBUG_CM = isd(false); // todo: check output
 var DEBUG_MAP_FILE = isd(false ); // todo: check output
 var DEBUG_SCRIPT = isd(false ); 
-var DEBUG_SPAWN = isd(true ); 
+var DEBUG_SPAWN = isd(true); 
+
 
 function dlog(log: boolean, format: string, ...args: any[]) {
 	if (!log || SKIP_ALL_LOGGING) return;

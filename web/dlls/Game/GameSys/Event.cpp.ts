@@ -299,6 +299,7 @@ idEventDef::idEventDef
 			sprintf( eventErrorMsg, "numEventDefs >= MAX_EVENTS" );
 			return;
 		}
+		
 		idEventDef.eventDefList[idEventDef.numEventDefs] = ev;
 		idEventDef.numEventDefs++;
 	}

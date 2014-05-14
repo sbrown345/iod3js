@@ -185,6 +185,8 @@ const int MAX_EXPRESSION_REGISTERS = 4096;
 
 #else
 
+#include "../game/Game_local.h"
+
 #include "../framework/DemoChecksum.h"
 
 // framework

@@ -707,7 +707,6 @@ const int	CINEMATIC_SKIP_DELAY	= SEC2MS( 2.0f );
 #include "physics/Physics_AF.h"
 
 #include "SmokeParticles.h"
-
 #include "Entity.h"
 #include "GameEdit.h"
 #include "AF.h"

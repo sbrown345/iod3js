@@ -2647,29 +2647,29 @@ void idCompiler::CompileFile( const char *text, const char *filename, bool toCon
 	token.line = 1;
 
 	error = false;
-	try {
+	//try {
 		// read first token
 		NextToken();
 		while( !eof && !error ) {
 			// parse from global namespace
 			ParseNamespace( &def_namespace );
 		}
-	}
-		
-	catch( idCompileError &err ) {
-		idStr error;
+	//}
+	//	
+	//catch( idCompileError &err ) {
+	//	idStr error;
 
-		if ( console ) {
-			// don't print line number of an error if were calling script from the console using the "script" command
-			sprintf( error, "Error: %s\n", err.error );
-		} else {
-			sprintf( error, "Error: file %s, line %d: %s\n", gameLocal.program.GetFilename( currentFileNumber ), currentLineNumber, err.error );
-		}
+	//	if ( console ) {
+	//		// don't print line number of an error if were calling script from the console using the "script" command
+	//		sprintf( error, "Error: %s\n", err.error );
+	//	} else {
+	//		sprintf( error, "Error: file %s, line %d: %s\n", gameLocal.program.GetFilename( currentFileNumber ), currentLineNumber, err.error );
+	//	}
 
-		parser.FreeSource();
+	//	parser.FreeSource();
 
-		throw idCompileError( error );
-	}
+	//	throw idCompileError( error );
+	//}
 
 	parser.FreeSource();
 

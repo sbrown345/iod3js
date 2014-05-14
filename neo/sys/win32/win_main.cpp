@@ -27,6 +27,11 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 #include "../../idlib/precompiled.h"
+
+#ifndef GAME_DLL
+#include "../../game/ai/AI_Vagary.cpp"
+#endif
+
 #pragma hdrstop
 
 #include <errno.h>
@@ -1367,9 +1372,16 @@ WinMain
 ==================
 */
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow ) {
-
 	const HCURSOR hcurSave = ::SetCursor( LoadCursor( 0, IDC_WAIT ) );
-
+#ifndef GAME_DLL
+	if (false) {
+		// force these to be included in build...hmmm
+		idBrittleFracture test1;
+		idSecurityCamera test2;
+		idTarget test3;
+		idAI_Vagary test4;
+	}
+#endif
 	Sys_SetPhysicalWorkMemory( 192 << 20, 1024 << 20 );
 
 	Sys_GetCurrentMemoryStatus( exeLaunchMemoryStats );

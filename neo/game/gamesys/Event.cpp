@@ -162,6 +162,7 @@ idEventDef::idEventDef( const char *command, const char *formatspec, char return
 		sprintf( eventErrorMsg, "numEventDefs >= MAX_EVENTS" );
 		return;
 	}
+	
 	eventDefList[numEventDefs] = ev;
 	numEventDefs++;
 }
@@ -195,7 +196,7 @@ const idEventDef *idEventDef::FindEvent( const char *name ) {
 	int			i;
 
 	assert( name );
-
+	
 	num = numEventDefs;
 	for( i = 0; i < num; i++ ) {
 		ev = eventDefList[ i ];
@@ -203,7 +204,7 @@ const idEventDef *idEventDef::FindEvent( const char *name ) {
 			return ev;
 		}
 	}
-
+	
 	return NULL;
 }
 

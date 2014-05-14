@@ -1792,7 +1792,7 @@ bool idProgram::CompileText( const char *source, const char *text, bool console 
 	ospath = fileSystem->RelativePathToOSPath( source );
 	filenum = GetFilenum( ospath );
 
-	try {
+	//try {
 		compiler.CompileFile( text, filename, console );
 
 		// check to make sure all functions prototyped have code
@@ -1804,16 +1804,16 @@ bool idProgram::CompileText( const char *source, const char *text, bool console 
 				}
 			}
 		}
-	}
-	
-	catch( idCompileError &err ) {
-		if ( console ) {
-			gameLocal.Printf( "%s\n", err.error );
-			return false;
-		} else {
-			gameLocal.Error( "%s\n", err.error );
-		}
-	};
+	//}
+	//
+	//catch( idCompileError &err ) {
+	//	if ( console ) {
+	//		gameLocal.Printf( "%s\n", err.error );
+	//		return false;
+	//	} else {
+	//		gameLocal.Error( "%s\n", err.error );
+	//	}
+	//};
 
 	if ( !console ) {
 		CompileStats();

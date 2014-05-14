@@ -160,13 +160,13 @@
     <ClCompile Include="game\PlayerView.cpp" />
     <ClCompile Include="game\Projectile.cpp" />
     <ClCompile Include="game\Pvs.cpp" />
-    <ClCompile Include="game\SecurityCamera.cpp" />
     <ClCompile Include="game\SmokeParticles.cpp" />
     <ClCompile Include="game\Sound.cpp" />
     <ClCompile Include="game\Target.cpp" />
     <ClCompile Include="game\Trigger.cpp" />
     <ClCompile Include="game\Weapon.cpp" />
     <ClCompile Include="game\WorldSpawn.cpp" />
+    <ClCompile Include="game\SecurityCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\ai\AAS.h">
@@ -290,13 +290,13 @@
     <ClInclude Include="game\PlayerView.h" />
     <ClInclude Include="game\Projectile.h" />
     <ClInclude Include="game\Pvs.h" />
-    <ClInclude Include="game\SecurityCamera.h" />
     <ClInclude Include="game\SmokeParticles.h" />
     <ClInclude Include="game\Sound.h" />
     <ClInclude Include="game\Target.h" />
     <ClInclude Include="game\Trigger.h" />
     <ClInclude Include="game\Weapon.h" />
     <ClInclude Include="game\WorldSpawn.h" />
+    <ClInclude Include="game\SecurityCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="game\Game.def" />
