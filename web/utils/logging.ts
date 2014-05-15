@@ -27,20 +27,20 @@ var DEBUG_CM = isd(false); // todo: check output
 var DEBUG_MAP_FILE = isd(false ); // todo: check output
 var DEBUG_SCRIPT = isd(false ); 
 var DEBUG_SPAWN = isd(true); 
-
+todo:"push logs to server so can log larger amounts without using up chrome memory"
 
 function dlog(log: boolean, format: string, ...args: any[]) {
-	if (!log || SKIP_ALL_LOGGING) return;
+	if (!log || SKIP_ALL_LOGGING || LOGGING_WITH_VISUAL_STUDIO) return;
 	if (LOG_TO_CONSOLE) {
 		console.log.apply(console, args.unshift(format.trim()));
 	} else {
 		var text = vsprintf(format, args);
 
-		if (dlogOutput[dlogOutput.length - 1].length > 50000) {
-			dlogOutput.push([]);
+		if (dlogOutput.length > 50000) {
+			dlogFlush ( );
 		}
 
-		dlogOutput[dlogOutput.length - 1].push(text);
+		dlogOutput.push(text);
 	}
 };
 
@@ -51,21 +51,14 @@ var dlogConcat = function (arr: any[]): string {
 	return s;
 };
 
-var dlogOutput:string[][] = [[]];
+var dlogOutput:string[] = [];
+var appendToLog = false;
 
-function dlogFlush(append = false): void {
-	if (LOGGING_WITH_VISUAL_STUDIO) return;
-
-	for (var i = 0; i < dlogOutput.length; i++) {
-
-		var logText = dlogConcat(dlogOutput[i]);
-		sendTextNew(logText, i !== 0 || append);
-	}
-
-	dlogOutput = [[]];
-
-	console.info( "Flushed log" );
-};
+function dlogFlush() {
+	sendTextNew(dlogConcat(dlogOutput), appendToLog);
+	appendToLog = true;
+	dlogOutput = [];
+}
 
 function sendTextNew(text: string, append: boolean): void {
 	var xhr = new XMLHttpRequest();
