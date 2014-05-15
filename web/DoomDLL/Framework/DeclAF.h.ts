@@ -104,15 +104,15 @@ idAFVector::Parse
 */
 	Parse(src: idLexer): boolean{
 		todoThrow()
-////	idToken token;
+////	var token = new idToken;
 ////
-////	if ( !src.ReadToken( &token ) ) {
+////	if ( !src.ReadToken( token ) ) {
 ////		return false;
 ////	}
 ////
 ////	if ( token == "-" ) {
 ////		negate = true;
-////		if ( !src.ReadToken( &token ) ) {
+////		if ( !src.ReadToken( token ) ) {
 ////			return false;
 ////		}
 ////	}
@@ -132,27 +132,27 @@ idAFVector::Parse
 ////	else if ( token == "joint" ) {
 ////		type = idAFVector_type.VEC_JOINT;
 ////		src.ExpectTokenString( "(" );
-////		src.ReadToken( &token );
+////		src.ReadToken( token );
 ////		joint1 = token;
 ////		src.ExpectTokenString( ")" );
 ////	}
 ////	else if ( token == "bonecenter" ) {
 ////		type = idAFVector_type.VEC_BONECENTER;
 ////		src.ExpectTokenString( "(" );
-////		src.ReadToken( &token );
+////		src.ReadToken( token );
 ////		joint1 = token;
 ////		src.ExpectTokenString( "," );
-////		src.ReadToken( &token );
+////		src.ReadToken( token );
 ////		joint2 = token;
 ////		src.ExpectTokenString( ")" );
 ////	}
 ////	else if ( token == "bonedir" ) {
 ////		type = idAFVector_type.VEC_BONEDIR;
 ////		src.ExpectTokenString( "(" );
-////		src.ReadToken( &token );
+////		src.ReadToken( token );
 ////		joint1 = token;
 ////		src.ExpectTokenString( "," );
-////		src.ReadToken( &token );
+////		src.ReadToken( token );
 ////		joint2 = token;
 ////		src.ExpectTokenString( ")" );
 ////	}
@@ -327,7 +327,7 @@ class idDeclAF_Body {
 ////*/
 ////void idDeclAF_Body::SetDefault( const idDeclAF *file ) {
 ////	name = "noname";
-////	modelType = TRM_BOX;
+////	modelType = traceModel_t.TRM_BOX;
 ////	v1.type = idAFVector_type.VEC_COORDS;
 ////	v1.ToVec3().x = v1.ToVec3().y = v1.ToVec3().z = -10.0;
 ////	v2.type = idAFVector_type.VEC_COORDS;
@@ -346,7 +346,7 @@ class idDeclAF_Body {
 ////	frictionDirection.ToVec3().Zero();
 ////	contactMotorDirection.ToVec3().Zero();
 ////	jointName = "origin";
-////	jointMod = DECLAF_JOINTMOD_AXIS;
+////	jointMod = declAFJointMod_t.DECLAF_JOINTMOD_AXIS;
 ////	containedJoints = "*origin";
 ////}
 ////
@@ -387,7 +387,7 @@ class idDeclAF_Constraint {
 ////*/
 ////void idDeclAF_Constraint::SetDefault( const idDeclAF *file ) {
 ////	name = "noname";
-////	type = DECLAF_CONSTRAINT_UNIVERSALJOINT;
+////	type = declAFConstraintType_t.DECLAF_CONSTRAINT_UNIVERSALJOINT;
 ////	if ( file.bodies.Num() ) {
 ////		body1 = file.bodies[0].name;
 ////	}
@@ -491,13 +491,13 @@ class idDeclAF extends idDecl {
 	////================
 	////*/
 	////bool idDeclAF::WriteBody( idFile *f, const idDeclAF_Body &body ) const {
-	////	idStr str;
+	////	var str = new idStr;
 	////
 	////	f.WriteFloatString( "\nbody \"%s\" {\n", body.name.c_str() );
 	////	f.WriteFloatString( "\tjoint \"%s\"\n", body.jointName.c_str() );
 	////	f.WriteFloatString( "\tmod %s\n", JointModToString( body.jointMod ) );
 	////	switch( body.modelType ) {
-	////		case TRM_BOX: {
+	////		case traceModel_t.TRM_BOX: {
 	////	        f.WriteFloatString( "\tmodel box( " );
 	////			body.v1.Write( f );
 	////			f.WriteFloatString( ", " );
@@ -505,7 +505,7 @@ class idDeclAF extends idDecl {
 	////			f.WriteFloatString( " )\n" );
 	////			break;
 	////		}
-	////		case TRM_OCTAHEDRON: {
+	////		case traceModel_t.TRM_OCTAHEDRON: {
 	////	        f.WriteFloatString( "\tmodel octahedron( " );
 	////			body.v1.Write( f );
 	////			f.WriteFloatString( ", " );
@@ -513,7 +513,7 @@ class idDeclAF extends idDecl {
 	////			f.WriteFloatString( " )\n" );
 	////			break;
 	////		}
-	////		case TRM_DODECAHEDRON: {
+	////		case traceModel_t.TRM_DODECAHEDRON: {
 	////	        f.WriteFloatString( "\tmodel dodecahedron( " );
 	////			body.v1.Write( f );
 	////			f.WriteFloatString( ", " );
@@ -521,7 +521,7 @@ class idDeclAF extends idDecl {
 	////			f.WriteFloatString( " )\n" );
 	////			break;
 	////		}
-	////		case TRM_CYLINDER: {
+	////		case traceModel_t.TRM_CYLINDER: {
 	////	        f.WriteFloatString( "\tmodel cylinder( " );
 	////			body.v1.Write( f );
 	////			f.WriteFloatString( ", " );
@@ -529,7 +529,7 @@ class idDeclAF extends idDecl {
 	////			f.WriteFloatString( ", %d )\n", body.numSides );
 	////			break;
 	////		}	
-	////		case TRM_CONE: {
+	////		case traceModel_t.TRM_CONE: {
 	////	        f.WriteFloatString( "\tmodel cone( " );
 	////			body.v1.Write( f );
 	////			f.WriteFloatString( ", " );
@@ -537,7 +537,7 @@ class idDeclAF extends idDecl {
 	////			f.WriteFloatString( ", %d )\n", body.numSides );
 	////			break;
 	////		}
-	////		case TRM_BONE: {
+	////		case traceModel_t.TRM_BONE: {
 	////	        f.WriteFloatString( "\tmodel bone( " );
 	////			body.v1.Write( f );
 	////			f.WriteFloatString( ", " );
@@ -735,17 +735,17 @@ class idDeclAF extends idDecl {
 	////*/
 	////bool idDeclAF::WriteConstraint( idFile *f, const idDeclAF_Constraint &c ) const {
 	////	switch( c.type ) {
-	////		case DECLAF_CONSTRAINT_FIXED:
+	////		case declAFConstraintType_t.DECLAF_CONSTRAINT_FIXED:
 	////			return WriteFixed( f, c );
-	////		case DECLAF_CONSTRAINT_BALLANDSOCKETJOINT:
+	////		case declAFConstraintType_t.DECLAF_CONSTRAINT_BALLANDSOCKETJOINT:
 	////			return WriteBallAndSocketJoint( f, c );
-	////		case DECLAF_CONSTRAINT_UNIVERSALJOINT:
+	////		case declAFConstraintType_t.DECLAF_CONSTRAINT_UNIVERSALJOINT:
 	////			return WriteUniversalJoint( f, c );
-	////		case DECLAF_CONSTRAINT_HINGE:
+	////		case declAFConstraintType_t.DECLAF_CONSTRAINT_HINGE:
 	////			return WriteHinge( f, c );
-	////		case DECLAF_CONSTRAINT_SLIDER:
+	////		case declAFConstraintType_t.DECLAF_CONSTRAINT_SLIDER:
 	////			return WriteSlider( f, c );
-	////		case DECLAF_CONSTRAINT_SPRING:
+	////		case declAFConstraintType_t.DECLAF_CONSTRAINT_SPRING:
 	////			return WriteSpring( f, c );
 	////		default:
 	////			break;
@@ -759,7 +759,7 @@ class idDeclAF extends idDecl {
 	////================
 	////*/
 	////bool idDeclAF::WriteSettings( idFile *f ) const {
-	////	idStr str;
+	////	var str = new idStr;
 	////
 	////	f.WriteFloatString( "\nsettings {\n" );
 	////	f.WriteFloatString( "\tmodel \"%s\"\n", model.c_str() );
@@ -830,47 +830,40 @@ class idDeclAF extends idDecl {
 	////	modified = false;
 	////	return true;
 	////}
-	////
-	/////*
-	////================
-	////idDeclAF::ContentsFromString
-	////================
-	////*/
-	////int idDeclAF::ContentsFromString( const char *str ) {
-	////	int c;
-	////	idToken token;
-	////	idLexer src( str, idStr::Length( str ), "idDeclAF::ContentsFromString" );
-	////
-	////	c = 0;
-	////	while( src.ReadToken( &token ) ) {
-	////		if ( token.Icmp( "none" ) == 0 ) {
-	////			c = 0;
-	////		}
-	////		else if ( token.Icmp( "solid" ) == 0 ) {
-	////			c |= contentsFlags_t.CONTENTS_SOLID;
-	////		}
-	////		else if ( token.Icmp( "body" ) == 0 ) {
-	////			c |= contentsFlags_t.CONTENTS_BODY;
-	////		}
-	////		else if ( token.Icmp( "corpse" ) == 0 ) {
-	////			c |= contentsFlags_t.CONTENTS_CORPSE;
-	////		}
-	////		else if ( token.Icmp( "playerclip" ) == 0 ) {
-	////			c |= contentsFlags_t.CONTENTS_PLAYERCLIP;
-	////		}
-	////		else if ( token.Icmp( "monsterclip" ) == 0 ) {
-	////			c |= contentsFlags_t.CONTENTS_MONSTERCLIP;
-	////		}
-	////		else if ( token == "," ) {
-	////			continue;
-	////		}
-	////		else {
-	////			return c;
-	////		}
-	////	}
-	////	return c;
-	////}
-	////
+	
+	/*
+	================
+	idDeclAF::ContentsFromString
+	================
+	*/
+	ContentsFromString ( str: string ): number {
+		var /*int */c: number;
+		var token = new idToken;
+		var src = new idLexer( str, idStr.Length( str ), "idDeclAF::ContentsFromString" );
+
+		c = 0;
+		while ( src.ReadToken( token ) ) {
+			if ( token.Icmp( "none" ) == 0 ) {
+				c = 0;
+			} else if ( token.Icmp( "solid" ) == 0 ) {
+				c |= contentsFlags_t.CONTENTS_SOLID;
+			} else if ( token.Icmp( "body" ) == 0 ) {
+				c |= contentsFlags_t.CONTENTS_BODY;
+			} else if ( token.Icmp( "corpse" ) == 0 ) {
+				c |= contentsFlags_t.CONTENTS_CORPSE;
+			} else if ( token.Icmp( "playerclip" ) == 0 ) {
+				c |= contentsFlags_t.CONTENTS_PLAYERCLIP;
+			} else if ( token.Icmp( "monsterclip" ) == 0 ) {
+				c |= contentsFlags_t.CONTENTS_MONSTERCLIP;
+			} else if ( token.data == "," ) {
+				continue;
+			} else {
+				return c;
+			}
+		}
+		return c;
+	}
+
 	/////*
 	////================
 	////idDeclAF::ContentsToString
@@ -904,24 +897,24 @@ class idDeclAF extends idDecl {
 	////	return str.c_str();
 	////}
 	////
-	/////*
-	////================
-	////idDeclAF::JointModFromString
-	////================
-	////*/
-	////declAFJointMod_t idDeclAF::JointModFromString( const char *str ) {
-	////	if ( idStr::Icmp( str, "orientation" ) == 0 ) {
-	////		return DECLAF_JOINTMOD_AXIS;
-	////	}
-	////	if ( idStr::Icmp( str, "position" ) == 0 ) {
-	////		return DECLAF_JOINTMOD_ORIGIN;
-	////	}
-	////	if ( idStr::Icmp( str, "both" ) == 0 ) {
-	////		return DECLAF_JOINTMOD_BOTH;
-	////	}
-	////	return DECLAF_JOINTMOD_AXIS;
-	////}
-	////
+	/*
+	================
+	idDeclAF::JointModFromString
+	================
+	*/
+	JointModFromString ( str: string ): declAFJointMod_t {
+		if ( idStr.Icmp( str, "orientation" ) == 0 ) {
+			return declAFJointMod_t.DECLAF_JOINTMOD_AXIS;
+		}
+		if ( idStr.Icmp( str, "position" ) == 0 ) {
+			return declAFJointMod_t.DECLAF_JOINTMOD_ORIGIN;
+		}
+		if ( idStr.Icmp( str, "both" ) == 0 ) {
+			return declAFJointMod_t.DECLAF_JOINTMOD_BOTH;
+		}
+		return declAFJointMod_t.DECLAF_JOINTMOD_AXIS;
+	}
+
 	/////*
 	////================
 	////idDeclAF::JointModToString
@@ -929,13 +922,13 @@ class idDeclAF extends idDecl {
 	////*/
 	////const char * idDeclAF::JointModToString( declAFJointMod_t jointMod ) {
 	////	switch( jointMod ) {
-	////		case DECLAF_JOINTMOD_AXIS: {
+	////		case declAFJointMod_t.DECLAF_JOINTMOD_AXIS: {
 	////			return "orientation";
 	////		}
-	////		case DECLAF_JOINTMOD_ORIGIN: {
+	////		case declAFJointMod_t.DECLAF_JOINTMOD_ORIGIN: {
 	////			return "position";
 	////		}
-	////		case DECLAF_JOINTMOD_BOTH: {
+	////		case declAFJointMod_t.DECLAF_JOINTMOD_BOTH: {
 	////			return "both";
 	////		}
 	////	}
@@ -951,273 +944,277 @@ class idDeclAF extends idDecl {
 	////	return sizeof( idDeclAF );
 	////}
 	////
-	/////*
-	////================
-	////idDeclAF::ParseContents
-	////================
-	////*/
-	////bool idDeclAF::ParseContents( idLexer &src, int &c ) const {
-	////	idToken token;
-	////	idStr str;
-	////
-	////	while( src.ReadToken( &token ) ) {
-	////		str += token;
-	////		if ( !src.CheckTokenString( "," ) ) {
-	////			break;
-	////		}
-	////		str += ",";
-	////	}
-	////	c = ContentsFromString( str );
-	////	return true;
-	////}
-	////
-	/////*
-	////================
-	////idDeclAF::ParseBody
-	////================
-	////*/
-	////bool idDeclAF::ParseBody( idLexer &src ) {
-	////	bool hasJoint = false;
-	////	idToken token;
-	////	idAFVector angles;
-	////	idDeclAF_Body *body = new idDeclAF_Body;
-	////
-	////	this.bodies.Alloc() = body;
-	////
-	////	body.SetDefault( this );
-	////
-	////	if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ||
-	////			!src.ExpectTokenString( "{" ) ) {
-	////		return false;
-	////	}
-	////
-	////	body.name = token;
-	////	if ( !body.name.Icmp( "origin" ) || !body.name.Icmp( "world" ) ) {
-	////		src.Error( "a body may not be named \"origin\" or \"world\"" );
-	////		return false;
-	////	}
-	////
-	////	while( src.ReadToken( &token ) ) {
-	////
-	////		if ( !token.Icmp( "model" ) ) {
-	////			if ( !src.ExpectTokenType( TT_NAME, 0, &token ) ) {
-	////				return false;
-	////			}
-	////			if ( !token.Icmp( "box" ) ) {
-	////				body.modelType = TRM_BOX;
-	////				if ( !src.ExpectTokenString( "(" ) ||
-	////					!body.v1.Parse( src ) ||
-	////					!src.ExpectTokenString( "," ) ||
-	////					!body.v2.Parse( src ) ||
-	////					!src.ExpectTokenString( ")" ) ) {
-	////					return false;
-	////				}
-	////			} else if ( !token.Icmp( "octahedron" ) ) {
-	////				body.modelType = TRM_OCTAHEDRON;
-	////				if ( !src.ExpectTokenString( "(" ) ||
-	////					!body.v1.Parse( src ) ||
-	////					!src.ExpectTokenString( "," ) ||
-	////					!body.v2.Parse( src ) ||
-	////					!src.ExpectTokenString( ")" ) ) {
-	////					return false;
-	////				}
-	////			} else if ( !token.Icmp( "dodecahedron" ) ) {
-	////				body.modelType = TRM_DODECAHEDRON;
-	////				if ( !src.ExpectTokenString( "(" ) ||
-	////					!body.v1.Parse( src ) ||
-	////					!src.ExpectTokenString( "," ) ||
-	////					!body.v2.Parse( src ) ||
-	////					!src.ExpectTokenString( ")" ) ) {
-	////					return false;
-	////				}
-	////			} else if ( !token.Icmp( "cylinder" ) ) {
-	////				body.modelType = TRM_CYLINDER;
-	////				if ( !src.ExpectTokenString( "(" ) ||
-	////					!body.v1.Parse( src ) ||
-	////					!src.ExpectTokenString( "," ) ||
-	////					!body.v2.Parse( src ) ||
-	////					!src.ExpectTokenString( "," ) ) {
-	////					return false;
-	////				}
-	////				body.numSides = src.ParseInt();
-	////				if ( !src.ExpectTokenString( ")" ) ) {
-	////					return false;
-	////				}
-	////			} else if ( !token.Icmp( "cone" ) ) {
-	////				body.modelType = TRM_CONE;
-	////				if ( !src.ExpectTokenString( "(" ) ||
-	////					!body.v1.Parse( src ) ||
-	////					!src.ExpectTokenString( "," ) ||
-	////					!body.v2.Parse( src ) ||
-	////					!src.ExpectTokenString( "," ) ) {
-	////					return false;
-	////				}
-	////				body.numSides = src.ParseInt();
-	////				if ( !src.ExpectTokenString( ")" ) ) {
-	////					return false;
-	////				}
-	////			} else if ( !token.Icmp( "bone" ) ) {
-	////				body.modelType = TRM_BONE;
-	////				if ( !src.ExpectTokenString( "(" ) ||
-	////					!body.v1.Parse( src ) ||
-	////					!src.ExpectTokenString( "," ) ||
-	////					!body.v2.Parse( src ) ||
-	////					!src.ExpectTokenString( "," ) ) {
-	////					return false;
-	////				}
-	////				body.width = src.ParseFloat();
-	////				if ( !src.ExpectTokenString( ")" ) ) {
-	////					return false;
-	////				}
-	////			} else if ( !token.Icmp( "custom" ) ) {
-	////				src.Error( "custom models not yet implemented" );
-	////				return false;
-	////			} else {
-	////				src.Error( "unkown model type %s", token.c_str() );
-	////				return false;
-	////			}
-	////		} else if ( !token.Icmp( "origin" ) ) {
-	////			if ( !body.origin.Parse( src ) ) {
-	////				return false;
-	////			}
-	////		} else if ( !token.Icmp( "angles" ) ) {
-	////			if ( !angles.Parse( src ) ) {
-	////				return false;
-	////			}
-	////			body.angles = idAngles( angles.ToVec3().x, angles.ToVec3().y, angles.ToVec3().z );
-	////		} else if ( !token.Icmp( "joint" ) ) {
-	////			if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ) {
-	////				return false;
-	////			}
-	////			body.jointName = token;
-	////			hasJoint = true;
-	////		} else if ( !token.Icmp( "mod" ) ) {
-	////			if ( !src.ExpectAnyToken( &token ) ) {
-	////				return false;
-	////			}
-	////			body.jointMod = JointModFromString( token.c_str() );
-	////		} else if ( !token.Icmp( "density" ) ) {
-	////			body.density = src.ParseFloat();
-	////		} else if ( !token.Icmp( "inertiaScale" ) ) {
-	////			src.Parse1DMatrix( 9, body.inertiaScale[0].ToFloatPtr() );
-	////		} else if ( !token.Icmp( "friction" ) ) {
-	////			body.linearFriction = src.ParseFloat();
-	////			src.ExpectTokenString( "," );
-	////			body.angularFriction = src.ParseFloat();
-	////			src.ExpectTokenString( "," );
-	////			body.contactFriction = src.ParseFloat();
-	////		} else if ( !token.Icmp( "contents" ) ) {
-	////			ParseContents( src, body.contents );
-	////		} else if ( !token.Icmp( "clipMask" ) ) {
-	////			ParseContents( src, body.clipMask );
-	////		} else if ( !token.Icmp( "selfCollision" ) ) {
-	////			body.selfCollision = src.ParseBool();
-	////		} else if ( !token.Icmp( "containedjoints" ) ) {
-	////			if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ) {
-	////				return false;
-	////			}
-	////			body.containedJoints = token;
-	////		} else if ( !token.Icmp( "frictionDirection" ) ) {
-	////			if ( !body.frictionDirection.Parse( src ) ) {
-	////				return false;
-	////			}
-	////		} else if ( !token.Icmp( "contactMotorDirection" ) ) {
-	////			if ( !body.contactMotorDirection.Parse( src ) ) {
-	////				return false;
-	////			}
-	////		} else if ( token == "}" ) {
-	////			break;
-	////		} else {
-	////			src.Error( "unknown token %s in body", token.c_str() );
-	////			return false;
-	////		}
-	////	}
-	////
-	////	if ( body.modelType == TRM_INVALID ) {
-	////		src.Error( "no model set for body" );
-	////		return false;
-	////	}
-	////
-	////	if ( !hasJoint ) {
-	////		src.Error( "no joint set for body" );
-	////		return false;
-	////	}
-	////
-	////	body.clipMask |= contentsFlags_t.CONTENTS_MOVEABLECLIP;
-	////
-	////	return true;
-	////}
-	////
-	/////*
-	////================
-	////idDeclAF::ParseFixed
-	////================
-	////*/
-	////bool idDeclAF::ParseFixed( idLexer &src ) {
-	////	idToken token;
-	////	idDeclAF_Constraint *constraint = new idDeclAF_Constraint;
-	////
-	////	constraint.SetDefault( this );
-	////	this.constraints.Alloc() = constraint;
-	////
-	////	if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ||
-	////			!src.ExpectTokenString( "{" ) ) {
-	////		return false;
-	////	}
-	////
-	////	constraint.type = DECLAF_CONSTRAINT_FIXED;
-	////	constraint.name = token;
-	////
-	////	while( src.ReadToken( &token ) ) {
-	////
-	////		if ( !token.Icmp( "body1" ) ) {
-	////			src.ExpectTokenType( TT_STRING, 0, &token );
-	////			constraint.body1 = token;
-	////		} else if ( !token.Icmp( "body2" ) ) {
-	////			src.ExpectTokenType( TT_STRING, 0, &token );
-	////			constraint.body2 = token;
-	////		} else if ( token == "}" ) {
-	////			break;
-	////		} else {
-	////			src.Error( "unknown token %s in ball and socket joint", token.c_str() );
-	////			return false;
-	////		}
-	////	}
-	////
-	////	return true;
-	////}
-	////
+	/*
+	================
+	idDeclAF::ParseContents
+	================
+	*/
+	ParseContents ( src: idLexer, /*int */c: R<number>): boolean {
+		var token = new idToken;
+		var str = new idStr;
+
+		while ( src.ReadToken( token ) ) {
+			str.Append( token.data );
+			if ( !src.CheckTokenString( "," ) ) {
+				break;
+			}
+			str.Append( "," );
+		}
+		c.$ = this.ContentsFromString( str.data );
+		return true;
+	}
+
+	/*
+	================
+	idDeclAF::ParseBody
+	================
+	*/
+	ParseBody ( src: idLexer ): boolean {
+		var hasJoint = false;
+		var token = new idToken;
+		var angles = new idAFVector;
+		var body = new idDeclAF_Body;
+
+		this.bodies.Alloc ( ) = body;
+
+		body.SetDefault( this );
+
+		if ( !src.ExpectTokenType( TT_STRING, 0, token ) ||
+			!src.ExpectTokenString( "{" ) ) {
+			return false;
+		}
+
+		body.name = token;
+		if ( !body.name.Icmp( "origin" ) || !body.name.Icmp( "world" ) ) {
+			src.Error( "a body may not be named \"origin\" or \"world\"" );
+			return false;
+		}
+
+		while ( src.ReadToken( token ) ) {
+
+			if ( !token.Icmp( "model" ) ) {
+				if ( !src.ExpectTokenType( TT_NAME, 0, token ) ) {
+					return false;
+				}
+				if ( !token.Icmp( "box" ) ) {
+					body.modelType = traceModel_t.TRM_BOX;
+					if ( !src.ExpectTokenString( "(" ) ||
+						!body.v1.Parse( src ) ||
+						!src.ExpectTokenString( "," ) ||
+						!body.v2.Parse( src ) ||
+						!src.ExpectTokenString( ")" ) ) {
+						return false;
+					}
+				} else if ( !token.Icmp( "octahedron" ) ) {
+					body.modelType = traceModel_t.TRM_OCTAHEDRON;
+					if ( !src.ExpectTokenString( "(" ) ||
+						!body.v1.Parse( src ) ||
+						!src.ExpectTokenString( "," ) ||
+						!body.v2.Parse( src ) ||
+						!src.ExpectTokenString( ")" ) ) {
+						return false;
+					}
+				} else if ( !token.Icmp( "dodecahedron" ) ) {
+					body.modelType = traceModel_t.TRM_DODECAHEDRON;
+					if ( !src.ExpectTokenString( "(" ) ||
+						!body.v1.Parse( src ) ||
+						!src.ExpectTokenString( "," ) ||
+						!body.v2.Parse( src ) ||
+						!src.ExpectTokenString( ")" ) ) {
+						return false;
+					}
+				} else if ( !token.Icmp( "cylinder" ) ) {
+					body.modelType = traceModel_t.TRM_CYLINDER;
+					if ( !src.ExpectTokenString( "(" ) ||
+						!body.v1.Parse( src ) ||
+						!src.ExpectTokenString( "," ) ||
+						!body.v2.Parse( src ) ||
+						!src.ExpectTokenString( "," ) ) {
+						return false;
+					}
+					body.numSides = src.ParseInt ( );
+					if ( !src.ExpectTokenString( ")" ) ) {
+						return false;
+					}
+				} else if ( !token.Icmp( "cone" ) ) {
+					body.modelType = traceModel_t.TRM_CONE;
+					if ( !src.ExpectTokenString( "(" ) ||
+						!body.v1.Parse( src ) ||
+						!src.ExpectTokenString( "," ) ||
+						!body.v2.Parse( src ) ||
+						!src.ExpectTokenString( "," ) ) {
+						return false;
+					}
+					body.numSides = src.ParseInt ( );
+					if ( !src.ExpectTokenString( ")" ) ) {
+						return false;
+					}
+				} else if ( !token.Icmp( "bone" ) ) {
+					body.modelType = traceModel_t.TRM_BONE;
+					if ( !src.ExpectTokenString( "(" ) ||
+						!body.v1.Parse( src ) ||
+						!src.ExpectTokenString( "," ) ||
+						!body.v2.Parse( src ) ||
+						!src.ExpectTokenString( "," ) ) {
+						return false;
+					}
+					body.width = src.ParseFloat ( );
+					if ( !src.ExpectTokenString( ")" ) ) {
+						return false;
+					}
+				} else if ( !token.Icmp( "custom" ) ) {
+					src.Error( "custom models not yet implemented" );
+					return false;
+				} else {
+					src.Error( "unkown model type %s", token.c_str ( ) );
+					return false;
+				}
+			} else if ( !token.Icmp( "origin" ) ) {
+				if ( !body.origin.Parse( src ) ) {
+					return false;
+				}
+			} else if ( !token.Icmp( "angles" ) ) {
+				if ( !angles.Parse( src ) ) {
+					return false;
+				}
+				body.angles.opEquals( new idAngles( angles.ToVec3 ( ).x, angles.ToVec3 ( ).y, angles.ToVec3 ( ).z ) );
+			} else if ( !token.Icmp( "joint" ) ) {
+				if ( !src.ExpectTokenType( TT_STRING, 0, token ) ) {
+					return false;
+				}
+				body.jointName = token;
+				hasJoint = true;
+			} else if ( !token.Icmp( "mod" ) ) {
+				if ( !src.ExpectAnyToken( token ) ) {
+					return false;
+				}
+				body.jointMod = this.JointModFromString( token.c_str ( ) );
+			} else if ( !token.Icmp( "density" ) ) {
+				body.density = src.ParseFloat ( );
+			} else if ( !token.Icmp( "inertiaScale" ) ) {
+				src.Parse1DMatrix( 9, body.inertiaScale[0].ToFloatPtr ( ) );
+			} else if ( !token.Icmp( "friction" ) ) {
+				body.linearFriction = src.ParseFloat ( );
+				src.ExpectTokenString( "," );
+				body.angularFriction = src.ParseFloat ( );
+				src.ExpectTokenString( "," );
+				body.contactFriction = src.ParseFloat ( );
+			} else if ( !token.Icmp( "contents" ) ) {
+				var $contents = new R( body.contents );
+				this.ParseContents( src, $contents );
+				body.contents = $contents.$;
+			} else if ( !token.Icmp( "clipMask" ) ) {
+				var $clipMask = new R( body.clipMask );
+				this.ParseContents( src, $clipMask );
+				body.clipMask = $clipMask.$;
+			} else if ( !token.Icmp( "selfCollision" ) ) {
+				body.selfCollision = src.ParseBool ( );
+			} else if ( !token.Icmp( "containedjoints" ) ) {
+				if ( !src.ExpectTokenType( TT_STRING, 0, token ) ) {
+					return false;
+				}
+				body.containedJoints = token;
+			} else if ( !token.Icmp( "frictionDirection" ) ) {
+				if ( !body.frictionDirection.Parse( src ) ) {
+					return false;
+				}
+			} else if ( !token.Icmp( "contactMotorDirection" ) ) {
+				if ( !body.contactMotorDirection.Parse( src ) ) {
+					return false;
+				}
+			} else if ( token.data == "}" ) {
+				break;
+			} else {
+				src.Error( "unknown token %s in body", token.c_str ( ) );
+				return false;
+			}
+		}
+
+		if ( body.modelType == traceModel_t.TRM_INVALID ) {
+			src.Error( "no model set for body" );
+			return false;
+		}
+
+		if ( !hasJoint ) {
+			src.Error( "no joint set for body" );
+			return false;
+		}
+
+		body.clipMask |= contentsFlags_t.CONTENTS_MOVEABLECLIP;
+
+		return true;
+	}
+
+/*
+	================
+	idDeclAF::ParseFixed
+	================
+	*/
+	ParseFixed ( src: idLexer ): boolean {
+		var token = new idToken;
+		var constraint: idDeclAF_Constraint = new idDeclAF_Constraint;
+
+		constraint.SetDefault( this );
+		this.constraints.Alloc ( ) = constraint;
+
+		if ( !src.ExpectTokenType( TT_STRING, 0, token ) ||
+			!src.ExpectTokenString( "{" ) ) {
+			return false;
+		}
+
+		constraint.type = declAFConstraintType_t.DECLAF_CONSTRAINT_FIXED;
+		constraint.name = token;
+
+		while ( src.ReadToken( token ) ) {
+
+			if ( !token.Icmp( "body1" ) ) {
+				src.ExpectTokenType( TT_STRING, 0, token );
+				constraint.body1 = token;
+			} else if ( !token.Icmp( "body2" ) ) {
+				src.ExpectTokenType( TT_STRING, 0, token );
+				constraint.body2 = token;
+			} else if ( token.data == "}" ) {
+				break;
+			} else {
+				src.Error( "unknown token %s in ball and socket joint", token.c_str ( ) );
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	/////*
 	////================
 	////idDeclAF::ParseBallAndSocketJoint
 	////================
 	////*/
 	////bool idDeclAF::ParseBallAndSocketJoint( idLexer &src ) {
-	////	idToken token;
+	////	var token = new idToken;
 	////	idDeclAF_Constraint *constraint = new idDeclAF_Constraint;
 	////
 	////	constraint.SetDefault( this );
 	////	this.constraints.Alloc() = constraint;
 	////
-	////	if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ||
+	////	if ( !src.ExpectTokenType( TT_STRING, 0, token ) ||
 	////			!src.ExpectTokenString( "{" ) ) {
 	////		return false;
 	////	}
 	////
-	////	constraint.type = DECLAF_CONSTRAINT_BALLANDSOCKETJOINT;
+	////	constraint.type = declAFConstraintType_t.DECLAF_CONSTRAINT_BALLANDSOCKETJOINT;
 	////	constraint.limit = idDeclAF_Constraint::LIMIT_NONE;
 	////	constraint.name = token;
 	////	constraint.friction = 0.5;
 	////	constraint.anchor.ToVec3().Zero();
 	////	constraint.shaft[0].ToVec3().Zero();
 	////
-	////	while( src.ReadToken( &token ) ) {
+	////	while( src.ReadToken( token ) ) {
 	////
 	////		if ( !token.Icmp( "body1" ) ) {
-	////			src.ExpectTokenType( TT_STRING, 0, &token );
+	////			src.ExpectTokenType( TT_STRING, 0, token );
 	////			constraint.body1 = token;
 	////		} else if ( !token.Icmp( "body2" ) ) {
-	////			src.ExpectTokenType( TT_STRING, 0, &token );
+	////			src.ExpectTokenType( TT_STRING, 0, token );
 	////			constraint.body2 = token;
 	////		} else if ( !token.Icmp( "anchor" ) ) {
 	////			if ( !constraint.anchor.Parse( src ) ) {
@@ -1272,18 +1269,18 @@ class idDeclAF extends idDecl {
 	////================
 	////*/
 	////bool idDeclAF::ParseUniversalJoint( idLexer &src ) {
-	////	idToken token;
+	////	var token = new idToken;
 	////	idDeclAF_Constraint *constraint = new idDeclAF_Constraint;
 	////
 	////	constraint.SetDefault( this );
 	////	this.constraints.Alloc() = constraint;
 	////
-	////	if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ||
+	////	if ( !src.ExpectTokenType( TT_STRING, 0, token ) ||
 	////			!src.ExpectTokenString( "{" ) ) {
 	////		return false;
 	////	}
 	////
-	////	constraint.type = DECLAF_CONSTRAINT_UNIVERSALJOINT;
+	////	constraint.type = declAFConstraintType_t.DECLAF_CONSTRAINT_UNIVERSALJOINT;
 	////	constraint.limit = idDeclAF_Constraint::LIMIT_NONE;
 	////	constraint.name = token;
 	////	constraint.friction = 0.5;
@@ -1291,13 +1288,13 @@ class idDeclAF extends idDecl {
 	////	constraint.shaft[0].ToVec3().Zero();
 	////	constraint.shaft[1].ToVec3().Zero();
 	////
-	////	while( src.ReadToken( &token ) ) {
+	////	while( src.ReadToken( token ) ) {
 	////
 	////		if ( !token.Icmp( "body1" ) ) {
-	////			src.ExpectTokenType( TT_STRING, 0, &token );
+	////			src.ExpectTokenType( TT_STRING, 0, token );
 	////			constraint.body1 = token;
 	////		} else if ( !token.Icmp( "body2" ) ) {
-	////			src.ExpectTokenType( TT_STRING, 0, &token );
+	////			src.ExpectTokenType( TT_STRING, 0, token );
 	////			constraint.body2 = token;
 	////		} else if ( !token.Icmp( "anchor" ) ) {
 	////			if ( !constraint.anchor.Parse( src ) ) {
@@ -1350,31 +1347,31 @@ class idDeclAF extends idDecl {
 	////================
 	////*/
 	////bool idDeclAF::ParseHinge( idLexer &src ) {
-	////	idToken token;
+	////	var token = new idToken;
 	////	idDeclAF_Constraint *constraint = new idDeclAF_Constraint;
 	////
 	////	constraint.SetDefault( this );
 	////	this.constraints.Alloc() = constraint;
 	////
-	////	if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ||
+	////	if ( !src.ExpectTokenType( TT_STRING, 0, token ) ||
 	////			!src.ExpectTokenString( "{" ) ) {
 	////		return false;
 	////	}
 	////
-	////	constraint.type = DECLAF_CONSTRAINT_HINGE;
+	////	constraint.type = declAFConstraintType_t.DECLAF_CONSTRAINT_HINGE;
 	////	constraint.limit = idDeclAF_Constraint::LIMIT_NONE;
 	////	constraint.name = token;
 	////	constraint.friction = 0.5;
 	////	constraint.anchor.ToVec3().Zero();
 	////	constraint.axis.ToVec3().Zero();
 	////
-	////	while( src.ReadToken( &token ) ) {
+	////	while( src.ReadToken( token ) ) {
 	////
 	////		if ( !token.Icmp( "body1" ) ) {
-	////			src.ExpectTokenType( TT_STRING, 0, &token );
+	////			src.ExpectTokenType( TT_STRING, 0, token );
 	////			constraint.body1 = token;
 	////		} else if ( !token.Icmp( "body2" ) ) {
-	////			src.ExpectTokenType( TT_STRING, 0, &token );
+	////			src.ExpectTokenType( TT_STRING, 0, token );
 	////			constraint.body2 = token;
 	////		} else if ( !token.Icmp( "anchor" ) ) {
 	////			if ( !constraint.anchor.Parse( src ) ) {
@@ -1414,29 +1411,29 @@ class idDeclAF extends idDecl {
 	////================
 	////*/
 	////bool idDeclAF::ParseSlider( idLexer &src ) {
-	////	idToken token;
+	////	var token = new idToken;
 	////	idDeclAF_Constraint *constraint = new idDeclAF_Constraint;
 	////
 	////	constraint.SetDefault( this );
 	////	this.constraints.Alloc() = constraint;
 	////
-	////	if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ||
+	////	if ( !src.ExpectTokenType( TT_STRING, 0, token ) ||
 	////			!src.ExpectTokenString( "{" ) ) {
 	////		return false;
 	////	}
 	////
-	////	constraint.type = DECLAF_CONSTRAINT_SLIDER;
+	////	constraint.type = declAFConstraintType_t.DECLAF_CONSTRAINT_SLIDER;
 	////	constraint.limit = idDeclAF_Constraint::LIMIT_NONE;
 	////	constraint.name = token;
 	////	constraint.friction = 0.5;
 	////
-	////	while( src.ReadToken( &token ) ) {
+	////	while( src.ReadToken( token ) ) {
 	////
 	////		if ( !token.Icmp( "body1" ) ) {
-	////			src.ExpectTokenType( TT_STRING, 0, &token );
+	////			src.ExpectTokenType( TT_STRING, 0, token );
 	////			constraint.body1 = token;
 	////		} else if ( !token.Icmp( "body2" ) ) {
-	////			src.ExpectTokenType( TT_STRING, 0, &token );
+	////			src.ExpectTokenType( TT_STRING, 0, token );
 	////			constraint.body2 = token;
 	////		} else if ( !token.Icmp( "axis" ) ) {
 	////			if ( !constraint.axis.Parse( src ) ) {
@@ -1461,29 +1458,29 @@ class idDeclAF extends idDecl {
 	////================
 	////*/
 	////bool idDeclAF::ParseSpring( idLexer &src ) {
-	////	idToken token;
+	////	var token = new idToken;
 	////	idDeclAF_Constraint *constraint = new idDeclAF_Constraint;
 	////
 	////	constraint.SetDefault( this );
 	////	this.constraints.Alloc() = constraint;
 	////
-	////	if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ||
+	////	if ( !src.ExpectTokenType( TT_STRING, 0, token ) ||
 	////			!src.ExpectTokenString( "{" ) ) {
 	////		return false;
 	////	}
 	////
-	////	constraint.type = DECLAF_CONSTRAINT_SPRING;
+	////	constraint.type = declAFConstraintType_t.DECLAF_CONSTRAINT_SPRING;
 	////	constraint.limit = idDeclAF_Constraint::LIMIT_NONE;
 	////	constraint.name = token;
 	////	constraint.friction = 0.5;
 	////
-	////	while( src.ReadToken( &token ) ) {
+	////	while( src.ReadToken( token ) ) {
 	////
 	////		if ( !token.Icmp( "body1" ) ) {
-	////			src.ExpectTokenType( TT_STRING, 0, &token );
+	////			src.ExpectTokenType( TT_STRING, 0, token );
 	////			constraint.body1 = token;
 	////		} else if ( !token.Icmp( "body2" ) ) {
-	////			src.ExpectTokenType( TT_STRING, 0, &token );
+	////			src.ExpectTokenType( TT_STRING, 0, token );
 	////			constraint.body2 = token;
 	////		} else if ( !token.Icmp( "anchor1" ) ) {
 	////			if ( !constraint.anchor.Parse( src ) ) {
@@ -1517,192 +1514,196 @@ class idDeclAF extends idDecl {
 	////
 	////	return true;
 	////}
-	////
-	/////*
-	////================
-	////idDeclAF::ParseSettings
-	////================
-	////*/
-	////bool idDeclAF::ParseSettings( idLexer &src ) {
-	////	idToken token;
-	////
-	////	if ( !src.ExpectTokenString( "{" ) ) {
-	////		return false;
-	////	}
-	////
-	////	while( src.ReadToken( &token ) ) {
-	////
-	////		if ( !token.Icmp( "mesh" ) ) {
-	////			if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ) {
-	////				return false;
-	////			}
-	////		} else if ( !token.Icmp( "anim" ) ) {
-	////			if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ) {
-	////				return false;
-	////			}
-	////		} else if ( !token.Icmp( "model" ) ) {
-	////			if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ) {
-	////				return false;
-	////			}
-	////			model = token;
-	////		} else if ( !token.Icmp( "skin" ) ) {
-	////			if ( !src.ExpectTokenType( TT_STRING, 0, &token ) ) {
-	////				return false;
-	////			}
-	////			skin = token;
-	////		} else if ( !token.Icmp( "friction" ) ) {
-	////
-	////			defaultLinearFriction = src.ParseFloat();
-	////			if ( !src.ExpectTokenString( "," ) ) {
-	////				return false;
-	////			}
-	////			defaultAngularFriction = src.ParseFloat();
-	////			if ( !src.ExpectTokenString( "," ) ) {
-	////				return false;
-	////			}
-	////			defaultContactFriction = src.ParseFloat();
-	////			if ( src.CheckTokenString( "," ) ) {
-	////				defaultConstraintFriction = src.ParseFloat();
-	////			}
-	////		} else if ( !token.Icmp( "totalMass" ) ) {
-	////			totalMass = src.ParseFloat();
-	////		} else if ( !token.Icmp( "suspendSpeed" ) ) {
-	////
-	////			suspendVelocity[0] = src.ParseFloat();
-	////			if ( !src.ExpectTokenString( "," ) ) {
-	////				return false;
-	////			}
-	////			suspendVelocity[1] = src.ParseFloat();
-	////			if ( !src.ExpectTokenString( "," ) ) {
-	////				return false;
-	////			}
-	////			suspendAcceleration[0] = src.ParseFloat();
-	////			if ( !src.ExpectTokenString( "," ) ) {
-	////				return false;
-	////			}
-	////			suspendAcceleration[1] = src.ParseFloat();
-	////		} else if ( !token.Icmp( "noMoveTime" ) ) {
-	////			noMoveTime = src.ParseFloat();
-	////		} else if ( !token.Icmp( "noMoveTranslation" ) ) {
-	////			noMoveTranslation = src.ParseFloat();
-	////		} else if ( !token.Icmp( "noMoveRotation" ) ) {
-	////			noMoveRotation = src.ParseFloat();
-	////		} else if ( !token.Icmp( "minMoveTime" ) ) {
-	////			minMoveTime = src.ParseFloat();
-	////		} else if ( !token.Icmp( "maxMoveTime" ) ) {
-	////			maxMoveTime = src.ParseFloat();
-	////		} else if ( !token.Icmp( "contents" ) ) {
-	////			ParseContents( src, contents );
-	////		} else if ( !token.Icmp( "clipMask" ) ) {
-	////			ParseContents( src, clipMask );
-	////		} else if ( !token.Icmp( "selfCollision" ) ) {
-	////			selfCollision = src.ParseBool();
-	////		} else if ( token == "}" ) {
-	////			break;
-	////		} else {
-	////			src.Error( "unknown token %s in settings", token.c_str() );
-	////			return false;
-	////		}
-	////	}
-	////
-	////	return true;
-	////}
-	////
-	/////*
-	////================
-	////idDeclAF::Parse
-	////================
-	////*/
-	////bool idDeclAF::Parse( text:string, const int textLength ) {
-	////	var /*int */i:number, j:number;
-	////	idLexer src;
-	////	idToken token;
-	////
-	////	src.LoadMemory( text, textLength, GetFileName(), GetLineNum() );
-	////	src.SetFlags( DECL_LEXER_FLAGS );
-	////	src.SkipUntilString( "{" );
-	////
-	////	while( src.ReadToken( &token ) ) {
-	////
-	////		if ( !token.Icmp( "settings" ) ) {
-	////			if ( !ParseSettings( src ) ) {
-	////				return false;
-	////			}
-	////		} else if ( !token.Icmp( "body" ) ) {
-	////			if ( !ParseBody( src ) ) {
-	////				return false;
-	////			}
-	////		} else if ( !token.Icmp( "fixed" ) ) {
-	////			if ( !ParseFixed( src ) ) {
-	////				return false;
-	////			}
-	////		} else if ( !token.Icmp( "ballAndSocketJoint" ) ) {
-	////			if ( !ParseBallAndSocketJoint( src ) ) {
-	////				return false;
-	////			}
-	////		} else if ( !token.Icmp( "universalJoint" ) ) {
-	////			if ( !ParseUniversalJoint( src ) ) {
-	////				return false;
-	////			}
-	////		} else if ( !token.Icmp( "hinge" ) ) {
-	////			if ( !ParseHinge( src ) ) {
-	////				return false;
-	////			}
-	////		} else if ( !token.Icmp( "slider" ) ) {
-	////			if ( !ParseSlider( src ) ) {
-	////				return false;
-	////			}
-	////		} else if ( !token.Icmp( "spring" ) ) {
-	////			if ( !ParseSpring( src ) ) {
-	////				return false;
-	////			}
-	////		} else if ( token == "}" ) {
-	////			break;
-	////		} else {
-	////			src.Error( "unknown keyword %s", token.c_str() );
-	////			return false;
-	////		}
-	////	}
-	////
-	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
-	////		// check for multiple bodies with the same name
-	////		for ( j = i+1; j < this.bodies.Num(); j++ ) {
-	////			if ( this.bodies[i].name == this.bodies[j].name ) {
-	////				src.Error( "two bodies with the same name \"%s\"", this.bodies[i].name.c_str() );
-	////			}
-	////		}
-	////	}
-	////
-	////	for ( i = 0; i < this.constraints.Num(); i++ ) {
-	////		// check for multiple constraints with the same name
-	////		for ( j = i+1; j < this.constraints.Num(); j++ ) {
-	////			if ( this.constraints[i].name == this.constraints[j].name ) {
-	////				src.Error( "two constraints with the same name \"%s\"", this.constraints[i].name.c_str() );
-	////			}
-	////		}
-	////		// check if there are two valid bodies set
-	////		if ( this.constraints[i].body1 == "" ) {
-	////			src.Error( "no valid body1 specified for constraint '%s'", this.constraints[i].name.c_str() );
-	////		}
-	////		if ( this.constraints[i].body2 == "" ) {
-	////			src.Error( "no valid body2 specified for constraint '%s'", this.constraints[i].name.c_str() );
-	////		}
-	////	}
-	////
-	////	// make sure the body which modifies the origin comes first
-	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
-	////		if ( this.bodies[i].jointName == "origin" ) {
-	////			if ( i != 0 ) {
-	////				idDeclAF_Body *b = this.bodies[0];
-	////				this.bodies[0] = this.bodies[i];
-	////				this.bodies[i] = b;
-	////			}
-	////			break;
-	////		}
-	////	}
-	////
-	////	return true;
-	////}
+	
+	/*
+	================
+	idDeclAF::ParseSettings
+	================
+	*/
+	ParseSettings ( src: idLexer ): boolean {
+		var token = new idToken;
+
+		if ( !src.ExpectTokenString( "{" ) ) {
+			return false;
+		}
+
+		while ( src.ReadToken( token ) ) {
+
+			if ( !token.Icmp( "mesh" ) ) {
+				if ( !src.ExpectTokenType( TT_STRING, 0, token ) ) {
+					return false;
+				}
+			} else if ( !token.Icmp( "anim" ) ) {
+				if ( !src.ExpectTokenType( TT_STRING, 0, token ) ) {
+					return false;
+				}
+			} else if ( !token.Icmp( "model" ) ) {
+				if ( !src.ExpectTokenType( TT_STRING, 0, token ) ) {
+					return false;
+				}
+				this.model.opEquals( token );
+			} else if ( !token.Icmp( "skin" ) ) {
+				if ( !src.ExpectTokenType( TT_STRING, 0, token ) ) {
+					return false;
+				}
+				this.skin.opEquals( token );
+			} else if ( !token.Icmp( "friction" ) ) {
+
+				this.defaultLinearFriction = src.ParseFloat ( );
+				if ( !src.ExpectTokenString( "," ) ) {
+					return false;
+				}
+				this.defaultAngularFriction = src.ParseFloat ( );
+				if ( !src.ExpectTokenString( "," ) ) {
+					return false;
+				}
+				this.defaultContactFriction = src.ParseFloat ( );
+				if ( src.CheckTokenString( "," ) ) {
+					this.defaultConstraintFriction = src.ParseFloat ( );
+				}
+			} else if ( !token.Icmp( "totalMass" ) ) {
+				this.totalMass = src.ParseFloat ( );
+			} else if ( !token.Icmp( "suspendSpeed" ) ) {
+
+				this.suspendVelocity[0] = src.ParseFloat ( );
+				if ( !src.ExpectTokenString( "," ) ) {
+					return false;
+				}
+				this.suspendVelocity[1] = src.ParseFloat ( );
+				if ( !src.ExpectTokenString( "," ) ) {
+					return false;
+				}
+				this.suspendAcceleration[0] = src.ParseFloat ( );
+				if ( !src.ExpectTokenString( "," ) ) {
+					return false;
+				}
+				this.suspendAcceleration[1] = src.ParseFloat ( );
+			} else if ( !token.Icmp( "noMoveTime" ) ) {
+				this.noMoveTime = src.ParseFloat ( );
+			} else if ( !token.Icmp( "noMoveTranslation" ) ) {
+				this.noMoveTranslation = src.ParseFloat ( );
+			} else if ( !token.Icmp( "noMoveRotation" ) ) {
+				this.noMoveRotation = src.ParseFloat ( );
+			} else if ( !token.Icmp( "minMoveTime" ) ) {
+				this.minMoveTime = src.ParseFloat ( );
+			} else if ( !token.Icmp( "maxMoveTime" ) ) {
+				this.maxMoveTime = src.ParseFloat ( );
+			} else if (!token.Icmp("contents")) {
+				var $contents = new R( this.contents );
+				this.ParseContents(src, $contents);
+				this.contents = $contents.$;
+			} else if (!token.Icmp("clipMask")) {
+				var $clipMask = new R( this.clipMask );
+				this.ParseContents(src, $clipMask);
+				this.clipMask = $clipMask.$;
+			} else if ( !token.Icmp( "selfCollision" ) ) {
+				this.selfCollision = src.ParseBool ( );
+			} else if ( token.data == "}" ) {
+				break;
+			} else {
+				src.Error( "unknown token %s in settings", token.c_str ( ) );
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/*
+	================
+	idDeclAF::Parse
+	================
+	*/
+	Parse ( text: string, /*int */textLength: number ): boolean {
+		var /*int */i: number, j: number;
+		var src = new idLexer;
+		var token = new idToken;
+
+		src.LoadMemory( text, textLength, this.GetFileName ( ), this.GetLineNum ( ) );
+		src.SetFlags( DECL_LEXER_FLAGS );
+		src.SkipUntilString( "{" );
+
+		while ( src.ReadToken( token ) ) {
+
+			if ( !token.Icmp( "settings" ) ) {
+				if ( !this.ParseSettings( src ) ) {
+					return false;
+				}
+			} else if ( !token.Icmp( "body" ) ) {
+				if ( !this.ParseBody( src ) ) {
+					return false;
+				}
+			} else if ( !token.Icmp( "fixed" ) ) {
+				if ( !this.ParseFixed( src ) ) {
+					return false;
+				}
+			} else if ( !token.Icmp( "ballAndSocketJoint" ) ) {
+				if ( !this.ParseBallAndSocketJoint( src ) ) {
+					return false;
+				}
+			} else if ( !token.Icmp( "universalJoint" ) ) {
+				if ( !this.ParseUniversalJoint( src ) ) {
+					return false;
+				}
+			} else if ( !token.Icmp( "hinge" ) ) {
+				if ( !this.ParseHinge( src ) ) {
+					return false;
+				}
+			} else if ( !token.Icmp( "slider" ) ) {
+				if ( !this.ParseSlider( src ) ) {
+					return false;
+				}
+			} else if ( !token.Icmp( "spring" ) ) {
+				if ( !this.ParseSpring( src ) ) {
+					return false;
+				}
+			} else if ( token.data == "}" ) {
+				break;
+			} else {
+				src.Error( "unknown keyword %s", token.c_str ( ) );
+				return false;
+			}
+		}
+
+		for ( i = 0; i < this.bodies.Num ( ); i++ ) {
+			// check for multiple bodies with the same name
+			for ( j = i + 1; j < this.bodies.Num ( ); j++ ) {
+				if ( this.bodies[i].name == this.bodies[j].name ) {
+					src.Error( "two bodies with the same name \"%s\"", this.bodies[i].name.c_str ( ) );
+				}
+			}
+		}
+
+		for ( i = 0; i < this.constraints.Num ( ); i++ ) {
+			// check for multiple constraints with the same name
+			for ( j = i + 1; j < this.constraints.Num ( ); j++ ) {
+				if ( this.constraints[i].name == this.constraints[j].name ) {
+					src.Error( "two constraints with the same name \"%s\"", this.constraints[i].name.c_str ( ) );
+				}
+			}
+			// check if there are two valid bodies set
+			if ( this.constraints[i].body1.data == "" ) {
+				src.Error( "no valid body1 specified for constraint '%s'", this.constraints[i].name.c_str ( ) );
+			}
+			if ( this.constraints[i].body2.data == "" ) {
+				src.Error( "no valid body2 specified for constraint '%s'", this.constraints[i].name.c_str ( ) );
+			}
+		}
+
+		// make sure the body which modifies the origin comes first
+		for ( i = 0; i < this.bodies.Num ( ); i++ ) {
+			if ( this.bodies[i].jointName.data == "origin" ) {
+				if ( i != 0 ) {
+					var b: idDeclAF_Body = this.bodies[0];
+					this.bodies[0] = this.bodies[i];
+					this.bodies[i] = b;
+				}
+				break;
+			}
+		}
+
+		return true;
+	}
 
 	/*
 	================

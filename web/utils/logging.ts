@@ -27,7 +27,6 @@ var DEBUG_CM = isd(false); // todo: check output
 var DEBUG_MAP_FILE = isd(false ); // todo: check output
 var DEBUG_SCRIPT = isd(false ); 
 var DEBUG_SPAWN = isd(true); 
-todo:"push logs to server so can log larger amounts without using up chrome memory"
 
 function dlog(log: boolean, format: string, ...args: any[]) {
 	if (!log || SKIP_ALL_LOGGING || LOGGING_WITH_VISUAL_STUDIO) return;
