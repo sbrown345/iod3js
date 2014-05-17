@@ -112,9 +112,9 @@ class idRotation {
 		this.axisValid = false;
 	}
 
-////ID_INLINE void idRotation::SetOrigin( const idVec3 &rotationOrigin ) {
-////	this.origin = rotationOrigin;
-////}
+    SetOrigin ( rotationOrigin: idVec3 ): void {
+        this.origin.opEquals( rotationOrigin );
+    }
 ////
 ////ID_INLINE void idRotation::SetVec( const idVec3 &rotationVec ) {
 ////	this.vec = rotationVec;

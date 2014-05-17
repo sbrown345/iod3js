@@ -554,7 +554,7 @@ class idAF {
         this.physicsObj.ForceBodyId( body, 0 );
         this.baseOrigin.opEquals( body.GetWorldOrigin ( ) );
         this.baseAxis.opEquals( body.GetWorldAxis ( ) );
-        this.AddBody(body, joints, this.animator.GetJointName(this.animator.GetFirstChild("origin")), AFJointModType_t.AF_JOINTMOD_AXIS );
+        this.AddBody(body, joints, this.animator.GetJointName(this.animator.GetFirstChild_name("origin")), AFJointModType_t.AF_JOINTMOD_AXIS );
     }
 
     /*
@@ -685,7 +685,7 @@ class idAF {
         for ( i = 0; i < jointList.Num ( ); i++ ) {
             if ( this.jointBody[jointList[i]] != -1 ) {
                 gameLocal.Warning( "%s: joint '%s' is already contained by body '%s'",
-                    name.c_str ( ), this.animator.GetJointName( <jointHandle_t>jointList[i] ),
+                    this.name.c_str ( ), this.animator.GetJointName( <jointHandle_t>jointList[i] ),
                     this.physicsObj.GetBody( this.jointBody[jointList[i]] ).GetName ( ).c_str ( ) );
             }
             this.jointBody[jointList[i]] = id;
@@ -809,12 +809,12 @@ class idAF {
             switch ( fc.limit ) {
             case idDeclAF_Constraint.LIMIT_CONE:
             {
-                var left = new idVec3, up = new idVec3, axis = new idVec3, shaft = new idVec3;
+                var left = new idVec3, up = new idVec3, axis_ = new idVec3, shaft = new idVec3;
                 fc.axis.ToVec3 ( ).OrthogonalBasis( left, up );
                 todoThrow ( );
-                //axis .opEquals( left * new idRotation( vec3_origin, fc.axis.ToVec3(), fc.limitAngles[0] ));
+                //axis_ .opEquals( left * new idRotation( vec3_origin, fc.axis.ToVec3(), fc.limitAngles[0] ));
                 //shaft.opEquals(left * new idRotation(vec3_origin, fc.axis.ToVec3(), fc.limitAngles[0]) left * idRotation( vec3_origin, fc.axis.ToVec3(), fc.limitAngles[2] ));
-                //c3.SetLimit( axis, fc.limitAngles[1], shaft );
+                //c3.SetLimit( axis_, fc.limitAngles[1], shaft );
                 break;
             }
             default:

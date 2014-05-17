@@ -373,12 +373,13 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
-    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
     <TypeScriptModuleKind>none</TypeScriptModuleKind>
     <TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
     <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
     <TypeScriptOutFile>doom3.js</TypeScriptOutFile>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptTarget>ES3</TypeScriptTarget>

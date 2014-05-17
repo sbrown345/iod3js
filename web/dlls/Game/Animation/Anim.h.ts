@@ -5026,41 +5026,42 @@ idAnimator::GetChannelForJoint
 		return this.modelDef.GetJoint( joint ).channel;
 	}
 
-///*
-//=====================
-//idAnimator::GetFirstChild
-//=====================
-//*/
-//jointHandle_t idAnimator::GetFirstChild( name:string ) const {
-//	return GetFirstChild( GetJointHandle( name ) );
-//}
-//
-///*
-//=====================
-//idAnimator::GetFirstChild
-//=====================
-//*/
-//jointHandle_t idAnimator::GetFirstChild( jointnum:jointHandle_t ) const {
-//	var i:number;
-//	int					num;
-//	const jointInfo_t	*joint;
-//
-//	if ( !this.modelDef ) {
-//		return jointHandle_t.INVALID_JOINT;
-//	}
-//
-//	num = this.modelDef.NumJoints();
-//	if ( !num ) {
-//		return jointnum;
-//	}
-//	joint = this.modelDef.GetJoint( 0 );
-//	for( i = 0; i < num; i++, joint++ ) {
-//		if ( joint.parentNum == jointnum ) {
-//			return ( jointHandle_t )joint.num;
-//		}
-//	}
-//	return jointnum;
-//}
+/*
+=====================
+idAnimator::GetFirstChild
+=====================
+*/
+    GetFirstChild_name ( name: string ): jointHandle_t {
+        return this.GetFirstChild( this.GetJointHandle( name ) );
+    }
+
+/*
+=====================
+idAnimator::GetFirstChild
+=====================
+*/
+    GetFirstChild ( jointnum: jointHandle_t ): jointHandle_t {
+        var i: number;
+        var /*int*/num: number;
+        var joint: jointInfo_t;
+
+        if ( !this.modelDef ) {
+            return jointHandle_t.INVALID_JOINT;
+        }
+
+        num = this.modelDef.NumJoints ( );
+        if ( !num ) {
+            return jointnum;
+        }
+        joint = this.modelDef.GetJoint( 0 );
+        todoThrow ( );
+        //for ( i = 0; i < num; i++, joint++ ) {
+        //    if ( joint.parentNum == jointnum ) {
+        //        return <jointHandle_t >joint.num;
+        //    }
+        //}
+        return jointnum;
+    }
 //
 /*
 =====================

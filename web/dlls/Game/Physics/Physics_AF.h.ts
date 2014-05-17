@@ -693,54 +693,52 @@ idAFConstraint_BallAndSocketJoint::SetNoLimit
 		}
 	}
 
-/////*
-////================
-////idAFConstraint_BallAndSocketJoint::SetConeLimit
-////================
-////*/
-////void idAFConstraint_BallAndSocketJoint::SetConeLimit( const idVec3 &coneAxis, const float coneAngle, const idVec3 &body1Axis ) {
-////	if ( this.pyramidLimit ) {
-////		delete this.pyramidLimit;
-////		this.pyramidLimit = NULL;
-////	}
-////	if ( !this.coneLimit ) {
-////		this.coneLimit = new idAFConstraint_ConeLimit;
-////		this.coneLimit.SetPhysics( this.physics );
-////	}
-////	if ( this.body2 ) {
-////		this.coneLimit.Setup( this.body1, this.body2, this.anchor2, coneAxis * this.body2.GetWorldAxis().Transpose(), coneAngle, body1Axis * this.body1.GetWorldAxis().Transpose() );
-////	}
-////	else {
-////		this.coneLimit.Setup( this.body1, this.body2, this.anchor2, coneAxis, coneAngle, body1Axis * this.body1.GetWorldAxis().Transpose() );
-////	}
-////}
-////
-/////*
-////================
-////idAFConstraint_BallAndSocketJoint::SetPyramidLimit
-////================
-////*/
-////void idAFConstraint_BallAndSocketJoint::SetPyramidLimit( const idVec3 &pyramidAxis, const idVec3 &baseAxis,
-////														const float angle1, const float angle2, const idVec3 &body1Axis ) {
-////	if ( this.coneLimit ) {
-////		delete this.coneLimit;
-////		this.coneLimit = NULL;
-////	}
-////	if ( !this.pyramidLimit ) {
-////		this.pyramidLimit = new idAFConstraint_PyramidLimit;
-////		this.pyramidLimit.SetPhysics( this.physics );
-////	}
-////	if ( this.body2 ) {
-////		this.pyramidLimit.Setup( this.body1, this.body2, this.anchor2, pyramidAxis * this.body2.GetWorldAxis().Transpose(),
-////									baseAxis * this.body2.GetWorldAxis().Transpose(), angle1, angle2,
-////											body1Axis * this.body1.GetWorldAxis().Transpose() );
-////	}
-////	else {
-////		this.pyramidLimit.Setup( this.body1, this.body2, this.anchor2, pyramidAxis, baseAxis, angle1, angle2,
-////											body1Axis * this.body1.GetWorldAxis().Transpose() );
-////	}
-////}
-////
+/*
+================
+idAFConstraint_BallAndSocketJoint::SetConeLimit
+================
+*/
+    SetConeLimit ( coneAxis: idVec3, /*float */coneAngle: number, body1Axis: idVec3 ): void {
+        if ( this.pyramidLimit ) {
+            $delete( this.pyramidLimit );
+            this.pyramidLimit = null;
+        }
+        if ( !this.coneLimit ) {
+            this.coneLimit = new idAFConstraint_ConeLimit;
+            this.coneLimit.SetPhysics( this.physics );
+        }
+        if ( this.body2 ) {
+            this.coneLimit.Setup( this.body1, this.body2, this.anchor2, idMat3.opMultiplication_VecMat( coneAxis, this.body2.GetWorldAxis ( ).Transpose ( ) ), coneAngle, idMat3.opMultiplication_VecMat( body1Axis, this.body1.GetWorldAxis ( ).Transpose ( ) ) );
+        } else {
+            this.coneLimit.Setup( this.body1, this.body2, this.anchor2, coneAxis, coneAngle, idMat3.opMultiplication_VecMat( body1Axis, this.body1.GetWorldAxis ( ).Transpose ( ) ) );
+        }
+    }
+
+/*
+================
+idAFConstraint_BallAndSocketJoint::SetPyramidLimit
+================
+*/
+    SetPyramidLimit ( pyramidAxis: idVec3, baseAxis: idVec3,
+        /*float */angle1: number, /*float */angle2: number, body1Axis: idVec3 ): void {
+        if ( this.coneLimit ) {
+            delete this.coneLimit;
+            this.coneLimit = null;
+        }
+        if ( !this.pyramidLimit ) {
+            this.pyramidLimit = new idAFConstraint_PyramidLimit;
+            this.pyramidLimit.SetPhysics( this.physics );
+        }
+        if ( this.body2 ) {
+            this.pyramidLimit.Setup( this.body1, this.body2, this.anchor2, idMat3.opMultiplication_VecMat( pyramidAxis, this.body2.GetWorldAxis ( ).Transpose ( ) ),
+                idMat3.opMultiplication_VecMat( baseAxis, this.body2.GetWorldAxis ( ).Transpose ( ) ), angle1, angle2,
+                idMat3.opMultiplication_VecMat( body1Axis, this.body1.GetWorldAxis ( ).Transpose ( ) ) );
+        } else {
+            this.pyramidLimit.Setup( this.body1, this.body2, this.anchor2, pyramidAxis, baseAxis, angle1, angle2,
+                idMat3.opMultiplication_VecMat( body1Axis, this.body1.GetWorldAxis ( ).Transpose ( ) ) );
+        }
+    }
+
 /////*
 ////================
 ////idAFConstraint_BallAndSocketJoint::SetLimitEpsilon
@@ -1247,53 +1245,51 @@ idAFConstraint_UniversalJoint::SetNoLimit
 			this.pyramidLimit = null;
 		}
 	}
-////
-/////*
-////================
-////idAFConstraint_UniversalJoint::SetConeLimit
-////================
-////*/
-////void idAFConstraint_UniversalJoint::SetConeLimit( const idVec3 &coneAxis, const float coneAngle ) {
-////	if ( this.pyramidLimit ) {
-////		delete this.pyramidLimit;
-////		this.pyramidLimit = NULL;
-////	}
-////	if ( !this.coneLimit ) {
-////		this.coneLimit = new idAFConstraint_ConeLimit;
-////		this.coneLimit.SetPhysics( this.physics );
-////	}
-////	if ( this.body2 ) {
-////		this.coneLimit.Setup( this.body1, this.body2, this.anchor2, coneAxis * this.body2.GetWorldAxis().Transpose(), coneAngle, this.shaft1 );
-////	}
-////	else {
-////		this.coneLimit.Setup( this.body1, this.body2, this.anchor2, coneAxis, coneAngle, this.shaft1 );
-////	}
-////}
-////
-/////*
-////================
-////idAFConstraint_UniversalJoint::SetPyramidLimit
-////================
-////*/
-////void idAFConstraint_UniversalJoint::SetPyramidLimit( const idVec3 &pyramidAxis, const idVec3 &baseAxis,
-////														const float angle1, const float angle2 ) {
-////	if ( this.coneLimit ) {
-////		delete this.coneLimit;
-////		this.coneLimit = NULL;
-////	}
-////	if ( !this.pyramidLimit ) {
-////		this.pyramidLimit = new idAFConstraint_PyramidLimit;
-////		this.pyramidLimit.SetPhysics( this.physics );
-////	}
-////	if ( this.body2 ) {
-////		this.pyramidLimit.Setup( this.body1, this.body2, this.anchor2, pyramidAxis * this.body2.GetWorldAxis().Transpose(),
-////									baseAxis * this.body2.GetWorldAxis().Transpose(), angle1, angle2, this.shaft1 );
-////	}
-////	else {
-////		this.pyramidLimit.Setup( this.body1, this.body2, this.anchor2, pyramidAxis, baseAxis, angle1, angle2, this.shaft1 );
-////	}
-////}
-////
+
+/*
+================
+idAFConstraint_UniversalJoint::SetConeLimit
+================
+*/
+    SetConeLimit ( coneAxis: idVec3, /*float */coneAngle: number ): void {
+        if ( this.pyramidLimit ) {
+            $delete( this.pyramidLimit );
+            this.pyramidLimit = null;
+        }
+        if ( !this.coneLimit ) {
+            this.coneLimit = new idAFConstraint_ConeLimit;
+            this.coneLimit.SetPhysics( this.physics );
+        }
+        if ( this.body2 ) {
+            this.coneLimit.Setup( this.body1, this.body2, this.anchor2, idMat3.opMultiplication_VecMat( coneAxis, this.body2.GetWorldAxis ( ).Transpose ( ) ), coneAngle, this.shaft1 );
+        } else {
+            this.coneLimit.Setup( this.body1, this.body2, this.anchor2, coneAxis, coneAngle, this.shaft1 );
+        }
+    }
+
+/*
+================
+idAFConstraint_UniversalJoint::SetPyramidLimit
+================
+*/
+    SetPyramidLimit ( pyramidAxis: idVec3, baseAxis: idVec3,
+        /*float */angle1: number, /*float */angle2: number ): void {
+        if ( this.coneLimit ) {
+            $delete( this.coneLimit );
+            this.coneLimit = null;
+        }
+        if ( !this.pyramidLimit ) {
+            this.pyramidLimit = new idAFConstraint_PyramidLimit;
+            this.pyramidLimit.SetPhysics( this.physics );
+        }
+        if ( this.body2 ) {
+            this.pyramidLimit.Setup( this.body1, this.body2, this.anchor2, idMat3.opMultiplication_VecMat( pyramidAxis, this.body2.GetWorldAxis ( ).Transpose ( ) ),
+                idMat3.opMultiplication_VecMat( baseAxis, this.body2.GetWorldAxis ( ).Transpose ( ) ), angle1, angle2, this.shaft1 );
+        } else {
+            this.pyramidLimit.Setup( this.body1, this.body2, this.anchor2, pyramidAxis, baseAxis, angle1, angle2, this.shaft1 );
+        }
+    }
+
 /////*
 ////================
 ////idAFConstraint_UniversalJoint::SetLimitEpsilon
@@ -1885,7 +1881,7 @@ idAFConstraint_Hinge::SetAnchor
         this.anchor1.opEquals( ( idMat3.opMultiplication_VecMat( worldPosition.opSubtraction( this.body1.GetWorldOrigin ( ) ), this.body1.GetWorldAxis ( ).Transpose ( ) ) ) );
         if ( this.body2 ) {
             // get anchor relative to center of mass of body2
-            this.anchor2.opEquals( idMat3.opMultiplication_VecMat( ( worldPosition.opSubtraction( this.body2.GetWorldOrigin ( ) ), this.body2.GetWorldAxis ( ).Transpose ( ) ) ) );
+            this.anchor2.opEquals( idMat3.opMultiplication_VecMat( ( worldPosition.opSubtraction( this.body2.GetWorldOrigin ( ) ) ), this.body2.GetWorldAxis ( ).Transpose ( ) ) );
         } else {
             this.anchor2.opEquals( worldPosition );
         }
@@ -3083,39 +3079,39 @@ idAFConstraint_Spring::SetAnchor
 */
     SetAnchor ( worldAnchor1: idVec3, worldAnchor2: idVec3 ): void {
         // get anchor relative to center of mass of body1
-        this.anchor1.opEquals( ( worldAnchor1.opSubtraction( this.body1.GetWorldOrigin ( ) ) ).timesVec( this.body1.GetWorldAxis ( ).Transpose ( ) ) );
+        this.anchor1.opEquals( idMat3.opMultiplication_VecMat( worldAnchor1.opSubtraction( this.body1.GetWorldOrigin ( ) ), this.body1.GetWorldAxis ( ).Transpose ( ) ) );
         if ( this.body2 ) {
             // get anchor relative to center of mass of body2
-            this.anchor2.opEquals( ( worldAnchor2 .opSubtraction(this.body2.GetWorldOrigin ( )) ) .timesVec( this.body2.GetWorldAxis ( ).Transpose ( ) ));
+            this.anchor2.opEquals( idMat3.opMultiplication_VecMat( ( worldAnchor2.opSubtraction( this.body2.GetWorldOrigin ( ) ) ), this.body2.GetWorldAxis ( ).Transpose ( ) ) );
         } else {
             this.anchor2.opEquals( worldAnchor2 );
         }
     }
 
-/////*
-////================
-////idAFConstraint_Spring::SetSpring
-////================
-////*/
-////void idAFConstraint_Spring::SetSpring( const float stretch, const float compress, const float damping, const float restLength ) {
-////	assert( stretch >= 0.0 && compress >= 0.0 && restLength >= 0.0 );
-////	this.kstretch = stretch;
-////	this.kcompress = compress;
-////	this.damping = damping;
-////	this.restLength = restLength;
-////}
-////
-/////*
-////================
-////idAFConstraint_Spring::SetLimit
-////================
-////*/
-////void idAFConstraint_Spring::SetLimit( const float minLength, const float maxLength ) {
-////	assert( minLength >= 0.0 && maxLength >= 0.0 && maxLength >= minLength );
-////	this.minLength = minLength;
-////	this.maxLength = maxLength;
-////}
-////
+/*
+================
+idAFConstraint_Spring::SetSpring
+================
+*/
+    SetSpring ( /* float */stretch: number, /*float */compress: number, /*float */damping: number, /*float */restLength: number ): void {
+        assert( stretch >= 0.0 && compress >= 0.0 && restLength >= 0.0 );
+        this.kstretch = stretch;
+        this.kcompress = compress;
+        this.damping = damping;
+        this.restLength = restLength;
+    }
+
+/*
+================
+idAFConstraint_Spring::SetLimit
+================
+*/
+    SetLimit ( /*float */minLength: number, /*float */maxLength: number ): void {
+        assert( minLength >= 0.0 && maxLength >= 0.0 && maxLength >= minLength );
+        this.minLength = minLength;
+        this.maxLength = maxLength;
+    }
+
 /////*
 ////================
 ////idAFConstraint_Spring::Evaluate
@@ -3256,7 +3252,7 @@ idAFConstraint_Spring::SetAnchor
 ////	else {
 ////		a2 = this.anchor2;
 ////	}
-////	center = ( a1 + a2 ) * 0.5f;
+////	center = ( a1 + a2 ) * 0.5;
 ////}
 ////
 /////*
@@ -3278,14 +3274,14 @@ idAFConstraint_Spring::SetAnchor
 ////		a2 = this.anchor2;
 ////	}
 ////	dir = a2 - a1;
-////	mid = a1 + 0.5f * dir;
+////	mid = a1 + 0.5 * dir;
 ////	length = dir.Normalize();
 ////
 ////	// draw spring
 ////	gameRenderWorld.DebugLine( colorGreen, a1, a2 );
 ////
 ////	// draw rest length
-////	p = restLength * 0.5f * dir;
+////	p = restLength * 0.5 * dir;
 ////	gameRenderWorld.DebugCircle( colorWhite, mid + p, dir, 1.0, 10 );
 ////	gameRenderWorld.DebugCircle( colorWhite, mid - p, dir, 1.0, 10 );
 ////	if ( restLength > length ) {
@@ -3295,14 +3291,14 @@ idAFConstraint_Spring::SetAnchor
 ////
 ////	if ( minLength > 0.0 ) {
 ////		// draw min length
-////		gameRenderWorld.DebugCircle( colorBlue, mid + minLength * 0.5f * dir, dir, 2.0, 10 );
-////		gameRenderWorld.DebugCircle( colorBlue, mid - minLength * 0.5f * dir, dir, 2.0, 10 );
+////		gameRenderWorld.DebugCircle( colorBlue, mid + minLength * 0.5 * dir, dir, 2.0, 10 );
+////		gameRenderWorld.DebugCircle( colorBlue, mid - minLength * 0.5 * dir, dir, 2.0, 10 );
 ////	}
 ////
 ////	if ( maxLength > 0.0 ) {
 ////		// draw max length
-////		gameRenderWorld.DebugCircle( colorRed, mid + maxLength * 0.5f * dir, dir, 2.0, 10 );
-////		gameRenderWorld.DebugCircle( colorRed, mid - maxLength * 0.5f * dir, dir, 2.0, 10 );
+////		gameRenderWorld.DebugCircle( colorRed, mid + maxLength * 0.5 * dir, dir, 2.0, 10 );
+////		gameRenderWorld.DebugCircle( colorRed, mid - maxLength * 0.5 * dir, dir, 2.0, 10 );
 ////	}
 ////}
 ////
@@ -3794,29 +3790,29 @@ idAFConstraint_ConeLimit::idAFConstraint_ConeLimit
 		this.fl.frameConstraint = true;
 	}
 
-/////*
-////================
-////idAFConstraint_ConeLimit::Setup
-////
-////  the coneAnchor is the top of the cone in body2 space
-////  the coneAxis is the axis of the cone in body2 space
-////  the coneAngle is the angle the cone hull makes at the top
-////  the body1Axis is the axis in body1 space that should stay within the cone
-////================
-////*/
-////void idAFConstraint_ConeLimit::Setup( idAFBody *b1, idAFBody *b2, const idVec3 &coneAnchor, const idVec3 &coneAxis, const float coneAngle, const idVec3 &body1Axis ) {
-////	this.body1 = b1;
-////	this.body2 = b2;
-////	this.coneAxis = coneAxis;
-////	this.coneAxis.Normalize();
-////	this.coneAnchor = coneAnchor;
-////	this.body1Axis = body1Axis;
-////	this.body1Axis.Normalize();
-////	this.cosAngle = (float) cos( DEG2RAD( coneAngle * 0.5f ) );
-////	this.sinHalfAngle = (float) sin( DEG2RAD( coneAngle * 0.25f ) );
-////	this.cosHalfAngle = (float) cos( DEG2RAD( coneAngle * 0.25f ) );
-////}
-////
+/*
+================
+idAFConstraint_ConeLimit::Setup
+
+  the coneAnchor is the top of the cone in body2 space
+  the coneAxis is the axis of the cone in body2 space
+  the coneAngle is the angle the cone hull makes at the top
+  the body1Axis is the axis in body1 space that should stay within the cone
+================
+*/
+    Setup ( b1: idAFBody, b2: idAFBody, coneAnchor: idVec3, coneAxis: idVec3, /*float */coneAngle: number, body1Axis: idVec3 ): void {
+        this.body1 = b1;
+        this.body2 = b2;
+        this.coneAxis.opEquals( coneAxis );
+        this.coneAxis.Normalize ( );
+        this.coneAnchor.opEquals( coneAnchor );
+        this.body1Axis.opEquals( body1Axis );
+        this.body1Axis.Normalize ( );
+        this.cosAngle = /*(float)*/ cos( DEG2RAD( coneAngle * 0.5 ) );
+        this.sinHalfAngle = /*(float)*/ sin( DEG2RAD( coneAngle * 0.25 ) );
+        this.cosHalfAngle = /*(float)*/ cos( DEG2RAD( coneAngle * 0.25 ) );
+    }
+
 /*
 ================
 idAFConstraint_ConeLimit::SetAnchor
@@ -4050,7 +4046,7 @@ class idAFConstraint_PyramidLimit extends idAFConstraint {
 	body1Axis = new idVec3;					// axis in body1 space that should stay within the cone
 	cosAngle = new Float32Array(2);				// cos( pyramidAngle / 2 )
 	sinHalfAngle = new Float32Array(2);			// sin( pyramidAngle / 4 )
-////	float					cosHalfAngle = new Float32Array(2);			// cos( pyramidAngle / 4 )
+    cosHalfAngle = new Float32Array(2);			// cos( pyramidAngle / 4 )
 	epsilon: number /*float*/;					// lcp epsilon
 ////
 ////protected:
@@ -4072,36 +4068,37 @@ idAFConstraint_PyramidLimit::idAFConstraint_PyramidLimit
 		this.fl.frameConstraint = true;
 	}
 
-/////*
-////================
-////idAFConstraint_PyramidLimit::Setup
-////================
-////*/
-////void idAFConstraint_PyramidLimit::Setup( idAFBody *b1, idAFBody *b2, const idVec3 &pyramidAnchor,
-////								const idVec3 &pyramidAxis, const idVec3 &baseAxis,
-////								const float pyramidAngle1, const float pyramidAngle2, const idVec3 &body1Axis ) {
-////	body1 = b1;
-////	this.body2 = b2;
-////	// setup the base and make sure the basis is orthonormal
-////	pyramidBasis[2] = pyramidAxis;
-////	pyramidBasis[2].Normalize();
-////	pyramidBasis[0] = baseAxis;
-////	pyramidBasis[0] -= pyramidBasis[2] * baseAxis * pyramidBasis[2];
-////	pyramidBasis[0].Normalize();
-////	pyramidBasis[1] = pyramidBasis[0].Cross( pyramidBasis[2] );
-////	// pyramid top
-////	this.pyramidAnchor = pyramidAnchor;
-////	// angles
-////	cosAngle[0] = (float) cos( DEG2RAD( pyramidAngle1 * 0.5f ) );
-////	cosAngle[1] = (float) cos( DEG2RAD( pyramidAngle2 * 0.5f ) );
-////	sinHalfAngle[0] = (float) sin( DEG2RAD( pyramidAngle1 * 0.25f ) );
-////	sinHalfAngle[1] = (float) sin( DEG2RAD( pyramidAngle2 * 0.25f ) );
-////	cosHalfAngle[0] = (float) cos( DEG2RAD( pyramidAngle1 * 0.25f ) );
-////	cosHalfAngle[1] = (float) cos( DEG2RAD( pyramidAngle2 * 0.25f ) );
-////
-////	this.body1Axis = body1Axis;
-////}
-////
+/*
+================
+idAFConstraint_PyramidLimit::Setup
+================
+*/
+    Setup ( b1: idAFBody, b2: idAFBody, pyramidAnchor: idVec3,
+        pyramidAxis: idVec3, baseAxis: idVec3,
+/*float */pyramidAngle1: number, /*float */pyramidAngle2: number, body1Axis: idVec3 ): void {
+        this.body1 = b1;
+        this.body2 = b2;
+        // setup the base and make sure the basis is orthonormal
+        this.pyramidBasis[2] = pyramidAxis;
+        this.pyramidBasis[2].Normalize ( );
+        this.pyramidBasis[0].opEquals(baseAxis);
+        todoThrow ( );
+        //this.pyramidBasis[0].opSubtractionAssignment( pyramidBasis[2] * baseAxis * pyramidBasis[2] );
+        //this.pyramidBasis[0].Normalize ( );
+        //this.pyramidBasis[1].opEquals( pyramidBasis[0].Cross( pyramidBasis[2] ) );
+        //// pyramid top
+        //this.pyramidAnchor = pyramidAnchor;
+        //// angles
+        //this.cosAngle[0] = /*(float)*/ cos( DEG2RAD( pyramidAngle1 * 0.5 ) );
+        //this.cosAngle[1] = /*(float)*/ cos( DEG2RAD( pyramidAngle2 * 0.5 ) );
+        //this.sinHalfAngle[0] = /*(float)*/ sin( DEG2RAD( pyramidAngle1 * 0.25 ) );
+        //this.sinHalfAngle[1] = /*(float)*/ sin( DEG2RAD( pyramidAngle2 * 0.25 ) );
+        //this.cosHalfAngle[0] = /*(float)*/ cos( DEG2RAD( pyramidAngle1 * 0.25 ) );
+        //this.cosHalfAngle[1] = /*(float)*/ cos( DEG2RAD( pyramidAngle2 * 0.25 ) );
+
+        this.body1Axis.opEquals( body1Axis );
+    }
+
 /*
 ================
 idAFConstraint_PyramidLimit::SetAnchor
@@ -4514,7 +4511,7 @@ epsilon: number /*float*/;					// lcp epsilon
 ////		velocity += this.J2.SubVec6(0).SubVec3(0) * this.body2.GetLinearVelocity() + this.J2.SubVec6(0).SubVec3(1) * this.body2.GetAngularVelocity();
 ////	}
 ////
-////	c1[0] = -compression;		// + 0.5f * -velocity;
+////	c1[0] = -compression;		// + 0.5 * -velocity;
 ////
 ////	e[0] = 1e-4f;
 ////	lo[0] = 0.0;
@@ -4778,12 +4775,11 @@ class idAFBody {
 	*/
     constructor()
     constructor(name: idStr, clipModel: idClipModel, /*float */density: number)
-    constructor(name?: idStr, clipModel?: idClipModel, /*float */density?: number)
-	constructor() {
+    constructor(name?: idStr, clipModel?: idClipModel, /*float */density?: number) {
         if ( !arguments ) {
             this.constructor_default ( );
         } else {
-            this.constructor_args( name, idClipModel, density );
+            this.constructor_args(name, clipModel, density );
         }
     }
 
@@ -4937,7 +4933,9 @@ idAFBody::SetDensity
     SetDensity ( /*float */density: number, /*const idMat3 &*/inertiaScale: idMat3 = mat3_identity ): void {
 
         // get the body mass properties
-        clipModel.GetMassProperties( density, this.mass, this.centerOfMass, this.inertiaTensor );
+        var $mass = new R( this.mass );
+        this.clipModel.GetMassProperties(density, $mass, this.centerOfMass, this.inertiaTensor);
+        this.mass = $mass.$;
 
         // make sure we have a valid mass
         if ( this.mass <= 0.0 || FLOAT_IS_NAN( this.mass ) ) {
@@ -4948,7 +4946,7 @@ idAFBody::SetDensity
         }
 
         // make sure the center of mass is at the body origin
-        if ( !this.centerOfMass.Compare( vec3_origin, CENTER_OF_MASS_EPSILON ) ) {
+        if (!this.centerOfMass.Compare_epsilon( vec3_origin, CENTER_OF_MASS_EPSILON ) ) {
             gameLocal.Warning( "idAFBody::SetDentity: center of mass not at origin for body '%s'", this.name.c_str ( ) );
         }
         this.centerOfMass.Zero ( );
@@ -4977,7 +4975,7 @@ idAFBody::SetFrictionDirection
 ================
 */
     SetFrictionDirection ( dir: idVec3 ): void {
-        this.frictionDir.opEquals( idMat3.opMultiplication_VecMat( dir, this.current.worldAxis.Transpose ( ) );
+        this.frictionDir.opEquals( idMat3.opMultiplication_VecMat( dir, this.current.worldAxis.Transpose ( ) ) );
         this.fl.useFrictionDir = true;
     }
 
@@ -7574,7 +7572,7 @@ class idPhysics_AF extends idPhysics_Base {
             gameLocal.Error( "idPhysics_AF::AddBody: body '%s' added twice.", body.name.c_str ( ) );
         }
 
-        if ( GetBody( body.name ) ) {
+        if ( this.GetBody( body.name.data ) ) {
             gameLocal.Error( "idPhysics_AF::AddBody: a body with the name '%s' already exists.", body.name.c_str ( ) );
         }
 
@@ -7640,28 +7638,28 @@ class idPhysics_AF extends idPhysics_Base {
 	////	this.frameConstraints.Append( constraint );
 	////	constraint.physics = this;
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::ForceBodyId
-	////================
-	////*/
-	////void idPhysics_AF::ForceBodyId( body: idAFBody, int newId ) {
-	////	var /*int*/ id:number;
-	////
-	////	id = this.bodies.FindIndex( body );
-	////	if ( id == -1 ) {
-	////		gameLocal.Error( "ForceBodyId: body '%s' is not part of the articulated figure.\n", body.name.c_str() );
-	////	}
-	////	if ( id != newId ) {
-	////		idAFBody *b = this.bodies[newId];
-	////		this.bodies[newId] = this.bodies[id];
-	////		this.bodies[id] = b;
-	////		this.changedAF = true;
-	////	}
-	////}
 	
 	/*
+	================
+	idPhysics_AF::ForceBodyId
+	================
+	*/
+    ForceBodyId ( body: idAFBody, /*int */newId: number ): void {
+        var /*int*/ id: number;
+
+        id = this.bodies.FindIndex( body );
+        if ( id == -1 ) {
+            gameLocal.Error( "ForceBodyId: body '%s' is not part of the articulated figure.\n", body.name.c_str ( ) );
+        }
+        if ( id != newId ) {
+            var b = this.bodies[newId];
+            this.bodies[newId] = this.bodies[id];
+            this.bodies[id] = b;
+            this.changedAF = true;
+        }
+    }
+
+    /*
 	================
 	idPhysics_AF::GetBodyId
 	================
@@ -8141,9 +8139,9 @@ class idPhysics_AF extends idPhysics_Base {
 		// rotate all the bodies
 		for ( i = 0; i < this.bodies.Num(); i++ ) {
 			body = this.bodies[i];
-	
-			body.current.worldOrigin.opMultiplicationAssignment(rotation);
-            body.current.worldAxis.opMultiplicationAssignment(rotation.ToMat3());
+		    todoThrow ( );
+			//body.current.worldOrigin.opMultiplicationAssignment(rotation);
+            //body.current.worldAxis.opMultiplicationAssignment(rotation.ToMat3());
 		}
 	
 		this.Activate();
