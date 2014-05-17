@@ -573,8 +573,12 @@ Returns a reference to a new data element at the end of the list.
 		return this.list[this.num++];
 	}
 
+    AllocAndSet ( v: type ): type {
+        this.Alloc ( );
+        return this.list[this.num - 1] = v;
+    }
 
-	// make a copy of the object if needed
+    // make a copy of the object if needed
 	private Val ( v: type, dest: type ): type {
 		if ( this.type == Number || this.listOfReferences ) {
 			return v;

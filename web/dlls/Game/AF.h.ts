@@ -927,7 +927,7 @@ class idAF {
 
 		// create the animation frame used to setup the articulated figure
 		numJoints = this.animator.NumJoints();
-		joints = new Array<idJointMat>( numJoints );// ( idJointMat * )_alloca16( numJoints * sizeof( joints[0] ) );
+	    joints = newStructArray<idJointMat>( idJointMat, numJoints );// ( idJointMat * )_alloca16( numJoints * sizeof( joints[0] ) );
 		gameEdit.ANIM_CreateAnimFrame(model, this.animator.GetAnim_index( this.modifiedAnim ).MD5Anim( 0 ), numJoints, joints, 1, this.animator.ModelDef().GetVisualOffset(), this.animator.RemoveOrigin() );
 
 		// set all vector positions from model joints
