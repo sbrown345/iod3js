@@ -1948,24 +1948,23 @@ idAFConstraint_Hinge::SetNoLimit
         }
     }
 
-/////*
-////================
-////idAFConstraint_Hinge::SetLimit
-////================
-////*/
-////void idAFConstraint_Hinge::SetLimit( const idVec3 &axis, const float angle, const idVec3 &body1Axis ) {
-////	if ( !this.coneLimit ) {
-////		this.coneLimit = new idAFConstraint_ConeLimit;
-////		this.coneLimit.SetPhysics( this.physics );
-////	}
-////	if ( this.body2 ) {
-////		this.coneLimit.Setup( this.body1, this.body2, this.anchor2, axis * this.body2.GetWorldAxis().Transpose(), angle, body1Axis * this.body1.GetWorldAxis().Transpose() );
-////	}
-////	else {
-////		this.coneLimit.Setup( this.body1, this.body2, this.anchor2, axis, angle, body1Axis * this.body1.GetWorldAxis().Transpose() );
-////	}
-////}
-////
+/*
+================
+idAFConstraint_Hinge::SetLimit
+================
+*/
+    SetLimit ( axis: idVec3, /*float */angle: number, /*idVec3 */body1Axis: idVec3 ): void {
+        if ( !this.coneLimit ) {
+            this.coneLimit = new idAFConstraint_ConeLimit;
+            this.coneLimit.SetPhysics( this.physics );
+        }
+        if ( this.body2 ) {
+            this.coneLimit.Setup( this.body1, this.body2, this.anchor2, idMat3.opMultiplication_VecMat( axis, this.body2.GetWorldAxis ( ).Transpose ( ) ), angle, idMat3.opMultiplication_VecMat( body1Axis, this.body1.GetWorldAxis ( ).Transpose ( ) ) );
+        } else {
+            this.coneLimit.Setup( this.body1, this.body2, this.anchor2, axis, angle, idMat3.opMultiplication_VecMat( body1Axis, this.body1.GetWorldAxis ( ).Transpose ( ) ) );
+        }
+    }
+
 /////*
 ////================
 ////idAFConstraint_Hinge::SetLimitEpsilon

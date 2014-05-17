@@ -98,13 +98,17 @@ class idRotation {
 ////ID_INLINE idRotation::idRotation( ) {
 ////}
 ////
-////ID_INLINE idRotation::idRotation( const idVec3 &rotationOrigin, const idVec3 &rotationVec, const float rotationAngle ) {
-////	this.origin = rotationOrigin;
-////	vec = rotationVec;
-////	angle = rotationAngle;
-////	axisValid = false;
-////}
-////
+    constructor ( )
+    constructor ( rotationOrigin: idVec3, rotationVec: idVec3, /*float */rotationAngle: number )
+    constructor ( rotationOrigin?: idVec3, rotationVec?: idVec3, /*float */rotationAngle?: number ) {
+        if ( arguments.length ) {
+            this.origin.opEquals( rotationOrigin );
+            this.vec.opEquals( rotationVec );
+            this.angle = rotationAngle;
+            this.axisValid = false;
+        }
+    }
+
 	Set ( rotationOrigin: idVec3, rotationVec: idVec3, /*const float */rotationAngle: number ): void {
 		this.origin.opEquals( rotationOrigin );
 		this.vec.opEquals( rotationVec );
@@ -140,7 +144,7 @@ class idRotation {
 ////
 ////ID_INLINE void idRotation::ReCalculateMatrix( ) {
 ////	this.axisValid = false;
-////	ToMat3();
+////	this.ToMat3();
 ////}
 ////
 ////ID_INLINE const idVec3 &idRotation::GetOrigin( ) const {
@@ -191,20 +195,22 @@ class idRotation {
 ////}
 ////
 ////ID_INLINE idVec3 idRotation::operator*( const idVec3 &v ) const {
-////	if ( !this.axisValid ) {
-////		ToMat3();
-////	}
-////	return ((v - this.origin) * this.axis + this.origin);
-////}
-////
+    opMultiplication ( v: idVec3 ): idVec3 {
+        if ( !this.axisValid ) {
+            this.ToMat3 ( );
+        }
+        return idMat3.opMultiplication_VecMat( ( v.opSubtraction( this.origin ) ), this.axis ).opAddition( this.origin );
+    }
+
 ////ID_INLINE idRotation operator*( const float s, const idRotation &r ) {
 ////	return r * s;
 ////}
 ////
 ////ID_INLINE idVec3 operator*( const idVec3 &v, const idRotation &r ) {
-////	return r * v;
-////}
-////
+    static opMultiplication_vec_rot ( v: idVec3, r: idRotation ): idVec3 {
+        return r.opMultiplication( v );
+    }
+
 ////ID_INLINE idVec3 &operator*=( idVec3 &v, const idRotation &r ) {
 ////	v = r * v;
 ////	return v;
@@ -212,7 +218,7 @@ class idRotation {
 ////
 ////ID_INLINE void idRotation::RotatePoint( idVec3 &point ) const {
 ////	if ( !this.axisValid ) {
-////		ToMat3();
+////		this.ToMat3();
 ////	}
 ////	point = ((point - this.origin) * this.axis + this.origin);
 ////}
@@ -230,7 +236,7 @@ class idRotation {
 ////============
 ////*/
 ////idAngles idRotation::ToAngles( ) const {
-////	return ToMat3().ToAngles();
+////	return this.ToMat3().ToAngles();
 ////}
 ////
 /////*
@@ -308,7 +314,7 @@ idRotation::toMat3
 ////============
 ////*/
 ////idMat4 idRotation::ToMat4( ) const {
-////	return ToMat3().ToMat4();
+////	return this.ToMat3().ToMat4();
 ////}
 ////
 /////*
