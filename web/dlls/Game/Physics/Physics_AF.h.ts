@@ -388,7 +388,7 @@ idAFConstraint_Fixed::idAFConstraint_Fixed
 		super ( );
 		assert( body1 );
 		this.type = constraintType_t.CONSTRAINT_FIXED;
-		this.name = name;
+        this.name.opEquals(name);
 		this.body1 = body1;
 		this.body2 = body2;
 		this.InitSize( 6 );
@@ -582,7 +582,7 @@ class idAFConstraint_BallAndSocketJoint extends idAFConstraint {
 ////	void					SetPyramidLimit( const idVec3 &pyramidAxis, const idVec3 &baseAxis,
 ////											const float angle1, const float angle2, const idVec3 &body1Axis );
 ////	void					SetLimitEpsilon( const float e );
-////	void					SetFriction( const float f ) { this.friction = f; }
+    SetFriction( /*const float */f: number) { this.friction = f; }
 ////	float					GetFriction( ) const;
 ////	virtual void			DebugDraw( );
 ////	virtual void			GetForce( idAFBody *body, idVec6 &force );
@@ -614,7 +614,7 @@ idAFConstraint_BallAndSocketJoint::idAFConstraint_BallAndSocketJoint
 		super ( );
 		assert( body1 );
 		this.type = constraintType_t.CONSTRAINT_BALLANDSOCKETJOINT;
-		this.name = name;
+        this.name.opEquals( name);
 		this.body1 = body1;
 		this.body2 = body2;
 		this.InitSize( 3 );
@@ -986,7 +986,7 @@ class idAFConstraint_BallAndSocketJointFriction extends idAFConstraint {
 ////*/
 ////idAFConstraint_BallAndSocketJointFriction::idAFConstraint_BallAndSocketJointFriction( ) {
 ////	this.type = constraintType_t.CONSTRAINT_FRICTION;
-////	name = "ballAndSocketJointFriction";
+////	this.name .opEquals( "ballAndSocketJointFriction");
 ////	this.InitSize( 3 );
 ////	joint = NULL;
 ////	this.fl.allowPrimary = false;
@@ -1088,7 +1088,7 @@ class idAFConstraint_UniversalJoint extends idAFConstraint {
 ////	void					SetPyramidLimit( const idVec3 &pyramidAxis, const idVec3 &baseAxis,
 ////											const float angle1, const float angle2 );
 ////	void					SetLimitEpsilon( const float e );
-////	void					SetFriction( const float f ) { this.friction = f; }
+    SetFriction( /*const float */f: number) { this.friction = f; }
 ////	float					GetFriction( ) const;
 ////	virtual void			DebugDraw( );
 ////	virtual void			GetForce( idAFBody *body, idVec6 &force );
@@ -1124,7 +1124,7 @@ idAFConstraint_UniversalJoint::idAFConstraint_UniversalJoint
 		super ( );
 		assert( body1 );
 		this.type = constraintType_t.CONSTRAINT_UNIVERSALJOINT;
-		this.name = name;
+        this.name.opEquals( name);
 		this.body1 = body1;
 		this.body2 = body2;
 		this.InitSize( 4 );
@@ -1617,7 +1617,7 @@ class idAFConstraint_UniversalJointFriction extends idAFConstraint {
 ////*/
 ////idAFConstraint_UniversalJointFriction::idAFConstraint_UniversalJointFriction( ) {
 ////	this.type = constraintType_t.CONSTRAINT_FRICTION;
-////	name = "universalJointFriction";
+////	this.name .opEquals( "universalJointFriction");
 ////	this.InitSize( 2 );
 ////	joint = NULL;
 ////	this.fl.allowPrimary = false;
@@ -1807,7 +1807,7 @@ class idAFConstraint_Hinge extends idAFConstraint {
 ////	float					GetAngle( ) const;
 ////	void					SetSteerAngle( const float degrees );
 ////	void					SetSteerSpeed( const float speed );
-////	void					SetFriction( const float f ) { this.friction = f; }
+    SetFriction( /*const float */f: number) { this.friction = f; }
 ////	float					GetFriction( ) const;
 ////	virtual void			DebugDraw( );
 ////	virtual void			GetForce( idAFBody *body, idVec6 &force );
@@ -1833,29 +1833,30 @@ class idAFConstraint_Hinge extends idAFConstraint {
 ////	virtual void			ApplyFriction( float invTimeStep );
 
 	
-/////*
-////================
-////idAFConstraint_Hinge::idAFConstraint_Hinge
-////================
-////*/
-////idAFConstraint_Hinge::idAFConstraint_Hinge( name: idStr, body1: idAFBody, body2: idAFBody ) {
-////	assert( body1 );
-////	this.type = constraintType_t.CONSTRAINT_HINGE;
-////	this.name = name;
-////	this.body1 = body1;
-////	this.body2 = body2;
-////	this.InitSize( 5 );
-////	this.coneLimit = NULL;
-////	steering = NULL;
-////	this.friction = 0.0;
-////	this.fc = NULL;
-////	this.fl.allowPrimary = true;
-////	this.fl.noCollision = true;
-////	initialAxis = body1.GetWorldAxis();
-////	if ( this.body2 ) {
-////		initialAxis *= this.body2.GetWorldAxis().Transpose();
-////	}
-////}
+/*
+================
+idAFConstraint_Hinge::idAFConstraint_Hinge
+================
+*/
+    constructor(name: idStr, body1: idAFBody, body2: idAFBody) {
+        super ( );
+        assert( body1 );
+        this.type = constraintType_t.CONSTRAINT_HINGE;
+        this.name.opEquals( name );
+        this.body1 = body1;
+        this.body2 = body2;
+        this.InitSize( 5 );
+        this.coneLimit = null;
+        this.steering = null;
+        this.friction = 0.0;
+        this.fc = null;
+        this.fl.allowPrimary = true;
+        this.fl.noCollision = true;
+        this.initialAxis.opEquals( body1.GetWorldAxis ( ) );
+        if ( this.body2 ) {
+            this.initialAxis.opMultiplicationAssignment( this.body2.GetWorldAxis ( ).Transpose ( ) );
+        }
+    }
 ////
 /////*
 ////================
@@ -1873,28 +1874,27 @@ class idAFConstraint_Hinge extends idAFConstraint {
 ////		delete steering;
 ////	}
 ////}
-////
-/////*
-////================
-////idAFConstraint_Hinge::SetAnchor
-////================
-////*/
-////void idAFConstraint_Hinge::SetAnchor( const idVec3 &worldPosition ) {
-////	// get anchor relative to center of mass of body1
-////	anchor1 = ( worldPosition - this.body1.GetWorldOrigin() ) * this.body1.GetWorldAxis().Transpose();
-////	if ( this.body2 ) {
-////		// get anchor relative to center of mass of body2
-////		this.anchor2 = ( worldPosition - this.body2.GetWorldOrigin() ) * this.body2.GetWorldAxis().Transpose();
-////	}
-////	else {
-////		this.anchor2 = worldPosition;
-////	}
-////
-////	if ( this.coneLimit ) {
-////		this.coneLimit.SetAnchor( this.anchor2 );
-////	}
-////}
-////
+
+/*
+================
+idAFConstraint_Hinge::SetAnchor
+================
+*/
+    SetAnchor ( worldPosition: idVec3 ): void {
+        // get anchor relative to center of mass of body1
+        this.anchor1.opEquals( ( idMat3.opMultiplication_VecMat( worldPosition.opSubtraction( this.body1.GetWorldOrigin ( ) ), this.body1.GetWorldAxis ( ).Transpose ( ) ) ) );
+        if ( this.body2 ) {
+            // get anchor relative to center of mass of body2
+            this.anchor2.opEquals( idMat3.opMultiplication_VecMat( ( worldPosition.opSubtraction( this.body2.GetWorldOrigin ( ) ), this.body2.GetWorldAxis ( ).Transpose ( ) ) ) );
+        } else {
+            this.anchor2.opEquals( worldPosition );
+        }
+
+        if ( this.coneLimit ) {
+            this.coneLimit.SetAnchor( this.anchor2 );
+        }
+    }
+
 /////*
 ////================
 ////idAFConstraint_Hinge::GetAnchor
@@ -1907,52 +1907,51 @@ class idAFConstraint_Hinge extends idAFConstraint {
 ////	return this.anchor2;
 ////}
 ////
-/////*
-////================
-////idAFConstraint_Hinge::SetAxis
-////================
-////*/
-////void idAFConstraint_Hinge::SetAxis( const idVec3 &axis ) {
-////	idVec3 normAxis;
-////
-////	normAxis = axis;
-////	normAxis.Normalize();
-////
-////	// get axis relative to body1
-////	this.axis1 = normAxis * this.body1.GetWorldAxis().Transpose();
-////	if ( this.body2 ) {
-////		// get axis relative to body2
-////		this.axis2 = normAxis * this.body2.GetWorldAxis().Transpose();
-////	}
-////	else {
-////		this.axis2 = normAxis;
-////	}
-////}
-////
-/////*
-////================
-////idAFConstraint_Hinge::GetAxis
-////================
-////*/
-////idVec3 idAFConstraint_Hinge::GetAxis( ) const {
-////	if ( this.body2 ) {
-////		return this.axis2 * this.body2.GetWorldAxis();
-////	}
-////	return this.axis2;
-////}
+/*
+================
+idAFConstraint_Hinge::SetAxis
+================
+*/
+    SetAxis ( axis: idVec3 ): void {
+        var normAxis = new idVec3;
 
-/////*
-////================
-////idAFConstraint_Hinge::SetNoLimit
-////================
-////*/
-////void idAFConstraint_Hinge::SetNoLimit( ) {
-////	if ( this.coneLimit ) {
-////		delete this.coneLimit;
-////		this.coneLimit = NULL;
-////	}
-////}
-////
+        normAxis.opEquals( axis );
+        normAxis.Normalize ( );
+
+        // get axis relative to body1
+        this.axis1.opEquals( idMat3.opMultiplication_VecMat( normAxis, this.body1.GetWorldAxis ( ).Transpose ( ) ) );
+        if ( this.body2 ) {
+            // get axis relative to body2
+            this.axis2.opEquals( idMat3.opMultiplication_VecMat( normAxis, this.body2.GetWorldAxis ( ).Transpose ( ) ) );
+        } else {
+            this.axis2.opEquals( normAxis );
+        }
+    }
+
+/*
+================
+idAFConstraint_Hinge::GetAxis
+================
+*/
+    GetAxis ( ): idVec3 {
+        if ( this.body2 ) {
+            return this.axis2.timesFloat( this.body2.GetWorldAxis ( ) );
+        }
+        return this.axis2;
+    }
+
+/*
+================
+idAFConstraint_Hinge::SetNoLimit
+================
+*/
+    SetNoLimit ( ): void {
+        if ( this.coneLimit ) {
+            $delete( this.coneLimit );
+            this.coneLimit = null;
+        }
+    }
+
 /////*
 ////================
 ////idAFConstraint_Hinge::SetLimit
@@ -2004,7 +2003,7 @@ class idAFConstraint_Hinge extends idAFConstraint {
 ////	idRotation rotation;
 ////	float angle;
 ////
-////	axis = this.body1.GetWorldAxis() * this.body2.GetWorldAxis().Transpose() * initialAxis.Transpose();
+////	axis = this.body1.GetWorldAxis() * this.body2.GetWorldAxis().Transpose() * this.initialAxis.Transpose();
 ////	rotation = axis.ToRotation();
 ////	angle = rotation.GetAngle();
 ////	if ( rotation.GetVec() * this.axis1 < 0.0 ) {
@@ -2057,7 +2056,7 @@ class idAFConstraint_Hinge extends idAFConstraint {
 ////	x1 = this.axis1 * this.body1.GetWorldAxis();		// axis in body1 space
 ////	x1.OrthogonalBasis( vecX, vecY );				// basis for axis in body1 space
 ////
-////	a1 = anchor1 * this.body1.GetWorldAxis();	// anchor in body1 space
+////	a1 = this.anchor1 * this.body1.GetWorldAxis();	// anchor in body1 space
 ////
 ////	if ( master ) {
 ////		a2 = this.anchor2 * master.GetWorldAxis();	// anchor in master space
@@ -2188,7 +2187,7 @@ class idAFConstraint_Hinge extends idAFConstraint {
 ////================
 ////*/
 ////void idAFConstraint_Hinge::GetCenter( idVec3 &center ) {
-////	center = this.body1.GetWorldOrigin() + anchor1 * this.body1.GetWorldAxis();
+////	center = this.body1.GetWorldOrigin() + this.anchor1 * this.body1.GetWorldAxis();
 ////}
 ////
 /////*
@@ -2198,7 +2197,7 @@ class idAFConstraint_Hinge extends idAFConstraint {
 ////*/
 ////void idAFConstraint_Hinge::DebugDraw( ) {
 ////	idVec3 vecX, vecY;
-////	idVec3 a1 = this.body1.GetWorldOrigin() + anchor1 * this.body1.GetWorldAxis();
+////	idVec3 a1 = this.body1.GetWorldOrigin() + this.anchor1 * this.body1.GetWorldAxis();
 ////	idVec3 x1 = this.axis1 * this.body1.GetWorldAxis();
 ////	x1.OrthogonalBasis( vecX, vecY );
 ////
@@ -2220,11 +2219,11 @@ class idAFConstraint_Hinge extends idAFConstraint {
 ////*/
 ////void idAFConstraint_Hinge::Save( idSaveGame *saveFile ) const {
 ////	idAFConstraint::Save( saveFile );
-////	saveFile.WriteVec3( anchor1 );
+////	saveFile.WriteVec3( this.anchor1 );
 ////	saveFile.WriteVec3( this.anchor2 );
 ////	saveFile.WriteVec3( this.axis1 );
 ////	saveFile.WriteVec3( this.axis2 );
-////	saveFile.WriteMat3( initialAxis );
+////	saveFile.WriteMat3( this.initialAxis );
 ////	saveFile.WriteFloat( this.friction );
 ////	if ( this.coneLimit ) {
 ////		saveFile.WriteBool( true );
@@ -2254,11 +2253,11 @@ class idAFConstraint_Hinge extends idAFConstraint {
 ////void idAFConstraint_Hinge::Restore( idRestoreGame *saveFile ) {
 ////	bool b;
 ////	idAFConstraint::Restore( saveFile );
-////	saveFile.ReadVec3( anchor1 );
+////	saveFile.ReadVec3( this.anchor1 );
 ////	saveFile.ReadVec3( this.anchor2 );
 ////	saveFile.ReadVec3( this.axis1 );
 ////	saveFile.ReadVec3( this.axis2 );
-////	saveFile.ReadMat3( initialAxis );
+////	saveFile.ReadMat3( this.initialAxis );
 ////	saveFile.ReadFloat( this.friction );
 ////
 ////	saveFile.ReadBool( b );
@@ -2315,7 +2314,7 @@ class idAFConstraint_HingeFriction extends idAFConstraint {
 ////*/
 ////idAFConstraint_HingeFriction::idAFConstraint_HingeFriction( ) {
 ////	this.type = constraintType_t.CONSTRAINT_FRICTION;
-////	name = "hingeFriction";
+////	this.name .opEquals( "hingeFriction");
 ////	this.InitSize( 1 );
 ////	hinge = NULL;
 ////	this.fl.allowPrimary = false;
@@ -2444,7 +2443,7 @@ class idAFConstraint_HingeSteering extends idAFConstraint {
 ////*/
 ////idAFConstraint_HingeSteering::idAFConstraint_HingeSteering( ) {
 ////	this.type = constraintType_t.CONSTRAINT_HINGESTEERING;
-////	name = "hingeFriction";
+////	this.name .opEquals( "hingeFriction");
 ////	this.InitSize( 1 );
 ////	hinge = NULL;
 ////	this.fl.allowPrimary = false;
@@ -2583,59 +2582,58 @@ class idAFConstraint_Slider extends idAFConstraint {
 ////	virtual void			Restore( idRestoreGame *saveFile );
 ////
 ////protected:
-////	idVec3					axis;						// axis along which body1 slides in body2 space
-////	idVec3					offset;						// offset of body1 relative to body2
-////	idMat3					relAxis;					// rotation of body1 relative to body2
+    axis = new idVec3; // axis along which body1 slides in body2 space
+    offset = new idVec3; // offset of body1 relative to body2
+    relAxis = new idMat3; // rotation of body1 relative to body2
 ////
 ////protected:
 ////	virtual void			Evaluate( float invTimeStep );
 ////	virtual void			ApplyFriction( float invTimeStep );
 
-	
-/////*
-////================
-////idAFConstraint_Slider::idAFConstraint_Slider
-////================
-////*/
-////idAFConstraint_Slider::idAFConstraint_Slider( name: idStr, body1: idAFBody, body2: idAFBody ) {
-////	assert( body1 );
-////	this.type = constraintType_t.CONSTRAINT_SLIDER;
-////	this.name = name;
-////	this.body1 = body1;
-////	this.body2 = body2;
-////	this.InitSize( 5 );
-////	this.fl.allowPrimary = true;
-////	this.fl.noCollision = true;
-////
-////	if ( body2 ) {
-////		this.offset = ( body1.GetWorldOrigin() - body2.GetWorldOrigin() ) * body1.GetWorldAxis().Transpose();
-////		this.relAxis = body1.GetWorldAxis() * body2.GetWorldAxis().Transpose();
-////	}
-////	else {
-////		this.offset = body1.GetWorldOrigin();
-////		this.relAxis = body1.GetWorldAxis();
-////	}
-////}
-////
-/////*
-////================
-////idAFConstraint_Slider::SetAxis
-////================
-////*/
-////void idAFConstraint_Slider::SetAxis( const idVec3 &ax ) {
-////	idVec3 normAxis;
-////
-////	// get normalized axis relative to body1
-////	normAxis = ax;
-////	normAxis.Normalize();
-////	if ( this.body2 ) {
-////		axis = normAxis * this.body2.GetWorldAxis().Transpose();
-////	}
-////	else {
-////		axis = normAxis;
-////	}
-////}
-////
+
+/*
+================
+idAFConstraint_Slider::idAFConstraint_Slider
+================
+*/
+    constructor ( name: idStr, body1: idAFBody, body2: idAFBody ) {
+        super ( );
+        assert( body1 );
+        this.type = constraintType_t.CONSTRAINT_SLIDER;
+        this.name.opEquals( name );
+        this.body1 = body1;
+        this.body2 = body2;
+        this.InitSize( 5 );
+        this.fl.allowPrimary = true;
+        this.fl.noCollision = true;
+
+        if ( body2 ) {
+            this.offset.opEquals( idMat3.opMultiplication_VecMat( ( body1.GetWorldOrigin ( ).opSubtraction( body2.GetWorldOrigin ( ) ) ), body1.GetWorldAxis ( ).Transpose ( ) ) );
+            this.relAxis.opEquals( body1.GetWorldAxis ( ) .opMultiplication( body2.GetWorldAxis ( ).Transpose ( )));
+        } else {
+            this.offset.opEquals(body1.GetWorldOrigin ( ));
+            this.relAxis.opEquals( body1.GetWorldAxis ( ));
+        }
+    }
+
+/*
+================
+idAFConstraint_Slider::SetAxis
+================
+*/
+    SetAxis ( ax: idVec3 ): void {
+        var normAxis = new idVec3;
+
+        // get normalized axis relative to body1
+        normAxis.opEquals( ax );
+        normAxis.Normalize ( );
+        if ( this.body2 ) {
+            this.axis.opEquals( idMat3.opMultiplication_VecMat( normAxis, this.body2.GetWorldAxis ( ).Transpose ( ) ) );
+        } else {
+            this.axis.opEquals( normAxis );
+        }
+    }
+
 /////*
 ////================
 ////idAFConstraint_Slider::Evaluate
@@ -2649,12 +2647,12 @@ class idAFConstraint_Slider extends idAFConstraint {
 ////	master = this.body2 ? this.body2 : this.physics.GetMasterBody();
 ////
 ////	if ( master ) {
-////		(axis * master.GetWorldAxis()).OrthogonalBasis( vecX, vecY );
+////		(this.axis * master.GetWorldAxis()).OrthogonalBasis( vecX, vecY );
 ////		ofs = master.GetWorldOrigin() + master.GetWorldAxis() * this.offset - this.body1.GetWorldOrigin();
 ////		r = ( this.body1.GetWorldAxis().Transpose() * (this.relAxis * master.GetWorldAxis()) ).ToRotation();
 ////	}
 ////	else {
-////		axis.OrthogonalBasis( vecX, vecY );
+////		this.axis.OrthogonalBasis( vecX, vecY );
 ////		ofs = this.offset - this.body1.GetWorldOrigin();
 ////		r = ( this.body1.GetWorldAxis().Transpose() * this.relAxis ).ToRotation();
 ////	}
@@ -2745,7 +2743,7 @@ class idAFConstraint_Slider extends idAFConstraint {
 ////	else {
 ////		ofs = this.offset - this.body1.GetWorldOrigin();
 ////	}
-////	gameRenderWorld.DebugLine( colorGreen, ofs, ofs + axis * this.body1.GetWorldAxis() );
+////	gameRenderWorld.DebugLine( colorGreen, ofs, ofs + this.axis * this.body1.GetWorldAxis() );
 ////}
 ////
 /////*
@@ -2755,7 +2753,7 @@ class idAFConstraint_Slider extends idAFConstraint {
 ////*/
 ////void idAFConstraint_Slider::Save( idSaveGame *saveFile ) const {
 ////	idAFConstraint::Save( saveFile );
-////	saveFile.WriteVec3( axis );
+////	saveFile.WriteVec3( this.axis );
 ////	saveFile.WriteVec3( this.offset );
 ////	saveFile.WriteMat3( this.relAxis );
 ////}
@@ -2767,13 +2765,13 @@ class idAFConstraint_Slider extends idAFConstraint {
 ////*/
 ////void idAFConstraint_Slider::Restore( idRestoreGame *saveFile ) {
 ////	idAFConstraint::Restore( saveFile );
-////	saveFile.ReadVec3( axis );
+////	saveFile.ReadVec3( this.axis );
 ////	saveFile.ReadVec3( this.offset );
 ////	saveFile.ReadMat3( this.relAxis );
 ////}
 ////
 ////
-};
+}
 
 // line constraint which allows 4 degrees of freedom
 // constrains body1 to lie on a line relative to body2, does not constrain the orientation.
@@ -2862,9 +2860,9 @@ class idAFConstraint_Plane extends idAFConstraint {
 ////	virtual void			Restore( idRestoreGame *saveFile );
 ////
 ////protected:
-////	anchor1 = new idVec3;					// anchor in body1 space
-////	anchor2 = new idVec3;					// anchor in body2 space
-////	idVec3					planeNormal;				// plane normal in body2 space
+	anchor1 = new idVec3;					// anchor in body1 space
+	anchor2 = new idVec3;					// anchor in body2 space
+    planeNormal = new idVec3;				// plane normal in body2 space
 ////
 ////protected:
 ////	virtual void			Evaluate( float invTimeStep );
@@ -2878,7 +2876,7 @@ class idAFConstraint_Plane extends idAFConstraint {
 ////idAFConstraint_Plane::idAFConstraint_Plane( name: idStr, body1: idAFBody, body2: idAFBody ) {
 ////	assert( body1 );
 ////	this.type = constraintType_t.CONSTRAINT_PLANE;
-////	this.name = name;
+////	this.name .opEquals( name);
 ////	this.body1 = body1;
 ////	this.body2 = body2;
 ////	this.InitSize( 1 );
@@ -2893,14 +2891,14 @@ class idAFConstraint_Plane extends idAFConstraint {
 ////*/
 ////void idAFConstraint_Plane::SetPlane( const idVec3 &normal, const idVec3 &anchor ) {
 ////	// get anchor relative to center of mass of body1
-////	anchor1 = ( anchor - body1.GetWorldOrigin() ) * body1.GetWorldAxis().Transpose();
+////	this.anchor1 .opEquals( ( anchor - body1.GetWorldOrigin() ) * body1.GetWorldAxis().Transpose();
 ////	if ( this.body2 ) {
 ////		// get anchor relative to center of mass of body2
-////		this.anchor2 = ( anchor - this.body2.GetWorldOrigin() ) * this.body2.GetWorldAxis().Transpose();
+////		this.anchor2 .opEquals( ( anchor - this.body2.GetWorldOrigin() ) * this.body2.GetWorldAxis().Transpose();
 ////		planeNormal = normal * this.body2.GetWorldAxis().Transpose();
 ////	}
 ////	else {
-////		this.anchor2 = anchor;
+////		this.anchor2 .opEquals( anchor;
 ////		planeNormal = normal;
 ////	}
 ////}
@@ -2917,7 +2915,7 @@ class idAFConstraint_Plane extends idAFConstraint {
 ////
 ////	master = this.body2 ? this.body2 : this.physics.GetMasterBody();
 ////
-////	a1 = this.body1.GetWorldOrigin() + anchor1 * this.body1.GetWorldAxis();
+////	a1 = this.body1.GetWorldOrigin() + this.anchor1 * this.body1.GetWorldAxis();
 ////	if ( master ) {
 ////		a2 = master.GetWorldOrigin() + this.anchor2 * master.GetWorldAxis();
 ////		normal = planeNormal * master.GetWorldAxis();
@@ -2987,7 +2985,7 @@ class idAFConstraint_Plane extends idAFConstraint {
 ////
 ////	master = this.body2 ? this.body2 : this.physics.GetMasterBody();
 ////
-////	a1 = this.body1.GetWorldOrigin() + anchor1 * this.body1.GetWorldAxis();
+////	a1 = this.body1.GetWorldOrigin() + this.anchor1 * this.body1.GetWorldAxis();
 ////	if ( master ) {
 ////		normal = planeNormal * master.GetWorldAxis();
 ////	}
@@ -3011,7 +3009,7 @@ class idAFConstraint_Plane extends idAFConstraint {
 ////*/
 ////void idAFConstraint_Plane::Save( idSaveGame *saveFile ) const {
 ////	idAFConstraint::Save( saveFile );
-////	saveFile.WriteVec3( anchor1 );
+////	saveFile.WriteVec3( this.anchor1 );
 ////	saveFile.WriteVec3( this.anchor2 );
 ////	saveFile.WriteVec3( planeNormal );
 ////}
@@ -3023,7 +3021,7 @@ class idAFConstraint_Plane extends idAFConstraint {
 ////*/
 ////void idAFConstraint_Plane::Restore( idRestoreGame *saveFile ) {
 ////	idAFConstraint::Restore( saveFile );
-////	saveFile.ReadVec3( anchor1 );
+////	saveFile.ReadVec3( this.anchor1 );
 ////	saveFile.ReadVec3( this.anchor2 );
 ////	saveFile.ReadVec3( planeNormal );
 ////}
@@ -3047,53 +3045,53 @@ class idAFConstraint_Spring extends idAFConstraint {
 ////	virtual void			Restore( idRestoreGame *saveFile );
 ////
 ////protected:
-////	anchor1 = new idVec3;					// anchor in body1 space
-////	anchor2 = new idVec3;					// anchor in body2 space
-////	float					kstretch;					// spring constant when stretched
-////	float					kcompress;					// spring constant when compressed
-////	float					damping;					// spring damping
-////	float					restLength;					// rest length of spring
-////	float					minLength;					// minimum spring length
-////	float					maxLength;					// maximum spring length
+	anchor1 = new idVec3;					// anchor in body1 space
+	anchor2 = new idVec3;					// anchor in body2 space
+    kstretch:number/*float*/;					// spring constant when stretched
+    kcompress:number/*float*/;					// spring constant when compressed
+    damping:number/*float*/;					// spring damping
+    restLength:number/*float*/;					// rest length of spring
+    minLength:number/*float*/;					// minimum spring length
+    maxLength:number/*float*/;					// maximum spring length
 ////
 ////protected:
 ////	virtual void			Evaluate( float invTimeStep );
 ////	virtual void			ApplyFriction( float invTimeStep );
 	
-/////*
-////================
-////idAFConstraint_Spring::idAFConstraint_Spring
-////================
-////*/
-////idAFConstraint_Spring::idAFConstraint_Spring( name: idStr, body1: idAFBody, body2: idAFBody ) {
-////	assert( body1 );
-////	this.type = constraintType_t.CONSTRAINT_SPRING;
-////	this.name = name;
-////	this.body1 = body1;
-////	this.body2 = body2;
-////	this.InitSize( 1 );
-////	this.fl.allowPrimary = false;
-////	kstretch = kcompress = damping = 1.0;
-////	minLength = maxLength = restLength = 0.0;
-////}
-////
-/////*
-////================
-////idAFConstraint_Spring::SetAnchor
-////================
-////*/
-////void idAFConstraint_Spring::SetAnchor( const idVec3 &worldAnchor1, const idVec3 &worldAnchor2 ) {
-////	// get anchor relative to center of mass of body1
-////	anchor1 = ( worldAnchor1 - this.body1.GetWorldOrigin() ) * this.body1.GetWorldAxis().Transpose();
-////	if ( this.body2 ) {
-////		// get anchor relative to center of mass of body2
-////		this.anchor2 = ( worldAnchor2 - this.body2.GetWorldOrigin() ) * this.body2.GetWorldAxis().Transpose();
-////	}
-////	else {
-////		this.anchor2 = worldAnchor2;
-////	}
-////}
-////
+/*
+================
+idAFConstraint_Spring::idAFConstraint_Spring
+================
+*/
+    constructor ( name: idStr, body1: idAFBody, body2: idAFBody ) {
+        super();
+        assert( body1 );
+        this.type = constraintType_t.CONSTRAINT_SPRING;
+        this.name.opEquals( name );
+        this.body1 = body1;
+        this.body2 = body2;
+        this.InitSize( 1 );
+        this.fl.allowPrimary = false;
+        this.kstretch = this.kcompress = this.damping = 1.0;
+        this.minLength = this.maxLength = this.restLength = 0.0;
+    }
+
+/*
+================
+idAFConstraint_Spring::SetAnchor
+================
+*/
+    SetAnchor ( worldAnchor1: idVec3, worldAnchor2: idVec3 ): void {
+        // get anchor relative to center of mass of body1
+        this.anchor1.opEquals( ( worldAnchor1.opSubtraction( this.body1.GetWorldOrigin ( ) ) ).timesVec( this.body1.GetWorldAxis ( ).Transpose ( ) ) );
+        if ( this.body2 ) {
+            // get anchor relative to center of mass of body2
+            this.anchor2.opEquals( ( worldAnchor2 .opSubtraction(this.body2.GetWorldOrigin ( )) ) .timesVec( this.body2.GetWorldAxis ( ).Transpose ( ) ));
+        } else {
+            this.anchor2.opEquals( worldAnchor2 );
+        }
+    }
+
 /////*
 ////================
 ////idAFConstraint_Spring::SetSpring
@@ -3132,7 +3130,7 @@ class idAFConstraint_Spring extends idAFConstraint {
 ////
 ////	master = this.body2 ? this.body2 : this.physics.GetMasterBody();
 ////
-////	a1 = this.body1.GetWorldOrigin() + anchor1 * this.body1.GetWorldAxis();
+////	a1 = this.body1.GetWorldOrigin() + this.anchor1 * this.body1.GetWorldAxis();
 ////	velocity1 = this.body1.GetPointVelocity( a1 );
 ////
 ////	if ( master ) {
@@ -3251,7 +3249,7 @@ class idAFConstraint_Spring extends idAFConstraint {
 ////	idVec3 a1, a2;
 ////
 ////	master = this.body2 ? this.body2 : this.physics.GetMasterBody();
-////	a1 = this.body1.GetWorldOrigin() + anchor1 * this.body1.GetWorldAxis();
+////	a1 = this.body1.GetWorldOrigin() + this.anchor1 * this.body1.GetWorldAxis();
 ////	if ( master ) {
 ////		a2 = master.GetWorldOrigin() + this.anchor2 * master.GetWorldAxis();
 ////	}
@@ -3272,7 +3270,7 @@ class idAFConstraint_Spring extends idAFConstraint {
 ////	idVec3 a1, a2, dir, mid, p;
 ////
 ////	master = this.body2 ? this.body2 : this.physics.GetMasterBody();
-////	a1 = this.body1.GetWorldOrigin() + anchor1 * this.body1.GetWorldAxis();
+////	a1 = this.body1.GetWorldOrigin() + this.anchor1 * this.body1.GetWorldAxis();
 ////	if ( master ) {
 ////		a2 = master.GetWorldOrigin() + this.anchor2 * master.GetWorldAxis();
 ////	}
@@ -3315,7 +3313,7 @@ class idAFConstraint_Spring extends idAFConstraint {
 ////*/
 ////void idAFConstraint_Spring::Save( idSaveGame *saveFile ) const {
 ////	idAFConstraint::Save( saveFile );
-////	saveFile.WriteVec3( anchor1 );
+////	saveFile.WriteVec3( this.anchor1 );
 ////	saveFile.WriteVec3( this.anchor2 );
 ////	saveFile.WriteFloat( kstretch );
 ////	saveFile.WriteFloat( kcompress );
@@ -3332,7 +3330,7 @@ class idAFConstraint_Spring extends idAFConstraint {
 ////*/
 ////void idAFConstraint_Spring::Restore( idRestoreGame *saveFile ) {
 ////	idAFConstraint::Restore( saveFile );
-////	saveFile.ReadVec3( anchor1 );
+////	saveFile.ReadVec3( this.anchor1 );
 ////	saveFile.ReadVec3( this.anchor2 );
 ////	saveFile.ReadFloat( kstretch );
 ////	saveFile.ReadFloat( kcompress );
@@ -3373,7 +3371,7 @@ class idAFConstraint_Contact extends idAFConstraint {
 ////================
 ////*/
 ////idAFConstraint_Contact::idAFConstraint_Contact( ) {
-////	name = "contact";
+////	this.name .opEquals( "contact");
 ////	this.type = constraintType_t.CONSTRAINT_CONTACT;
 ////	this.InitSize( 1 );
 ////	this.fc = NULL;
@@ -3572,7 +3570,7 @@ class idAFConstraint_ContactFriction extends idAFConstraint {
 ////*/
 ////idAFConstraint_ContactFriction::idAFConstraint_ContactFriction( ) {
 ////	this.type = constraintType_t.CONSTRAINT_FRICTION;
-////	name = "contactFriction";
+////	this.name .opEquals( "contactFriction");
 ////	this.InitSize( 2 );
 ////	cc = NULL;
 ////	this.fl.allowPrimary = false;
@@ -4393,7 +4391,7 @@ epsilon: number /*float*/;					// lcp epsilon
 ////*/
 ////idAFConstraint_Suspension::idAFConstraint_Suspension( ) {
 ////	this.type = constraintType_t.CONSTRAINT_SUSPENSION;
-////	name = "suspension";
+////	this.name .opEquals( "suspension");
 ////	this.InitSize( 3 );
 ////	this..allowPrimary = false;
 ////	fl.frameConstraint = true;
@@ -4420,11 +4418,11 @@ epsilon: number /*float*/;					// lcp epsilon
 ////================
 ////*/
 ////void idAFConstraint_Suspension::Setup( const char *name, body: idAFBody, origin: idVec3, const idMat3 &axis, idClipModel *clipModel ) {
-////	this.name = name;
+////	this.name .opEquals( name);
 ////	body1 = body;
 ////	this.body2 = NULL;
 ////	localOrigin = ( origin - body.GetWorldOrigin() ) * body.GetWorldAxis().Transpose();
-////	localAxis = axis * body.GetWorldAxis().Transpose();
+////	localAxis = this.axis * body.GetWorldAxis().Transpose();
 ////	wheelModel = clipModel;
 ////}
 ////
@@ -4686,7 +4684,7 @@ class idAFBody {
 ////	void					SetBouncyness( float bounce );
 ////	float					GetBouncyness( ) const { return this.bouncyness; }
 ////	void					SetDensity( float density, const idMat3 &inertiaScale = mat3_identity );
-////	float					GetInverseMass( ) const { return invMass; }
+    GetInverseMass ( ): number { return this.invMass; }
 ////	idMat3					GetInverseWorldInertia( ) const { return this.current.worldAxis.Transpose() * inverseInertiaTensor * this.current.worldAxis; }
 ////
 ////	void					SetFrictionDirection( const idVec3 &dir );
@@ -4778,33 +4776,44 @@ class idAFBody {
 	idAFBody::idAFBody
 	================
 	*/
+    constructor()
+    constructor(name: idStr, clipModel: idClipModel, /*float */density: number)
+    constructor(name?: idStr, clipModel?: idClipModel, /*float */density?: number)
 	constructor() {
+        if ( !arguments ) {
+            this.constructor_default ( );
+        } else {
+            this.constructor_args( name, idClipModel, density );
+        }
+    }
+
+    private constructor_default():void {
 		this.Init();
 	}
-	////
-	/////*
-	////================
-	////idAFBody::idAFBody
-	////================
-	////*/
-	////idAFBody::idAFBody( const idStr &name, idClipModel *clipModel, float density ) {
-	////
-	////	assert( clipModel );
-	////	assert( clipModel.IsTraceModel() );
-	////
-	////	Init();
-	////
-	////	this.name = name;
-	////	this.clipModel = NULL;
-	////
-	////	SetClipModel( clipModel );
-	////	SetDensity( density );
-	////
-	////	current.worldOrigin = clipModel.GetOrigin();
-	////	current.worldAxis = clipModel.GetAxis();
-	////	*next = *current;
-	////
-	////}
+	
+	/*
+	================
+	idAFBody::idAFBody
+	================
+	*/
+    private constructor_args(name: idStr, clipModel: idClipModel , /*float */density :number):void {
+	
+		assert( clipModel );
+		assert( clipModel.IsTraceModel() );
+	
+		this.Init();
+
+        this.name.opEquals( name );
+		this.clipModel = null;
+	
+		this.SetClipModel( clipModel );
+		this.SetDensity( density );
+	
+		this.current.worldOrigin .opEquals( clipModel.GetOrigin());
+        this.current.worldAxis.opEquals( clipModel.GetAxis());
+        this.next.opEquals( this.current );
+
+    }
 	////
 	/////*
 	////================
@@ -4919,60 +4928,59 @@ class idAFBody {
 		}
 		this.bouncyness = bounce;
 	}
-////
-/////*
-////================
-////idAFBody::SetDensity
-////================
-////*/
-////void idAFBody::SetDensity( float density, const idMat3 &inertiaScale ) {
-////
-////	// get the body mass properties
-////	clipModel.GetMassProperties( density, mass, centerOfMass, inertiaTensor );
-////
-////	// make sure we have a valid mass
-////	if ( mass <= 0.0 || FLOAT_IS_NAN( mass ) ) {
-////		gameLocal.Warning( "idAFBody::SetDensity: invalid mass for body '%s'", name.c_str() );
-////		mass = 1.0;
-////		centerOfMass.Zero();
-////		inertiaTensor.Identity();
-////	}
-////
-////	// make sure the center of mass is at the body origin
-////	if ( !centerOfMass.Compare( vec3_origin, CENTER_OF_MASS_EPSILON ) ) {
-////		gameLocal.Warning( "idAFBody::SetDentity: center of mass not at origin for body '%s'", name.c_str() );
-////	}
-////	centerOfMass.Zero();
-////
-////	// calculate the inverse mass and inverse inertia tensor
-////	invMass = 1.0 / mass;
-////	if ( inertiaScale != mat3_identity ) {
-////		inertiaTensor *= inertiaScale;
-////	}
-////	if ( inertiaTensor.IsDiagonal( 1e-3f ) ) {
-////		inertiaTensor[0][1] = inertiaTensor[0][2] = 0.0;
-////		inertiaTensor[1][0] = inertiaTensor[1][2] = 0.0;
-////		inertiaTensor[2][0] = inertiaTensor[2][1] = 0.0;
-////		inverseInertiaTensor.Identity();
-////		inverseInertiaTensor[0][0] = 1.0 / inertiaTensor[0][0];
-////		inverseInertiaTensor[1][1] = 1.0 / inertiaTensor[1][1];
-////		inverseInertiaTensor[2][2] = 1.0 / inertiaTensor[2][2];
-////	}
-////	else {
-////		inverseInertiaTensor = inertiaTensor.Inverse();
-////	}
-////}
-////
-/////*
-////================
-////idAFBody::SetFrictionDirection
-////================
-////*/
-////void idAFBody::SetFrictionDirection( const idVec3 &dir ) {
-////	frictionDir = dir * current.worldAxis.Transpose();
-////	this.fl.useFrictionDir = true;
-////}
-////
+
+/*
+================
+idAFBody::SetDensity
+================
+*/
+    SetDensity ( /*float */density: number, /*const idMat3 &*/inertiaScale: idMat3 = mat3_identity ): void {
+
+        // get the body mass properties
+        clipModel.GetMassProperties( density, this.mass, this.centerOfMass, this.inertiaTensor );
+
+        // make sure we have a valid mass
+        if ( this.mass <= 0.0 || FLOAT_IS_NAN( this.mass ) ) {
+            gameLocal.Warning( "idAFBody::SetDensity: invalid mass for body '%s'", this.name.c_str ( ) );
+            this.mass = 1.0;
+            this.centerOfMass.Zero ( );
+            this.inertiaTensor.Identity ( );
+        }
+
+        // make sure the center of mass is at the body origin
+        if ( !this.centerOfMass.Compare( vec3_origin, CENTER_OF_MASS_EPSILON ) ) {
+            gameLocal.Warning( "idAFBody::SetDentity: center of mass not at origin for body '%s'", this.name.c_str ( ) );
+        }
+        this.centerOfMass.Zero ( );
+
+        // calculate the inverse mass and inverse inertia tensor
+        this.invMass = 1.0 / this.mass;
+        if ( inertiaScale.opNotEqualTo( mat3_identity ) ) {
+            this.inertiaTensor.opMultiplicationAssignment( inertiaScale );
+        }
+        if ( this.inertiaTensor.IsDiagonal( 1e-3 ) ) {
+            this.inertiaTensor[0][1] = this.inertiaTensor[0][2] = 0.0;
+            this.inertiaTensor[1][0] = this.inertiaTensor[1][2] = 0.0;
+            this.inertiaTensor[2][0] = this.inertiaTensor[2][1] = 0.0;
+            this.inverseInertiaTensor.Identity ( );
+            this.inverseInertiaTensor[0][0] = 1.0 / this.inertiaTensor[0][0];
+            this.inverseInertiaTensor[1][1] = 1.0 / this.inertiaTensor[1][1];
+            this.inverseInertiaTensor[2][2] = 1.0 / this.inertiaTensor[2][2];
+        } else {
+            this.inverseInertiaTensor.opEquals( this.inertiaTensor.Inverse ( ) );
+        }
+    }
+
+/*
+================
+idAFBody::SetFrictionDirection
+================
+*/
+    SetFrictionDirection ( dir: idVec3 ): void {
+        this.frictionDir.opEquals( idMat3.opMultiplication_VecMat( dir, this.current.worldAxis.Transpose ( ) );
+        this.fl.useFrictionDir = true;
+    }
+
 /////*
 ////================
 ////idAFBody::GetFrictionDirection
@@ -4980,22 +4988,22 @@ class idAFBody {
 ////*/
 ////bool idAFBody::GetFrictionDirection( idVec3 &dir ) const {
 ////	if ( this.fl.useFrictionDir ) {
-////		dir = frictionDir * current.worldAxis;
+////		dir = frictionDir * this.current.worldAxis;
 ////		return true;
 ////	}
 ////	return false;
 ////}
-////
-/////*
-////================
-////idAFBody::SetContactMotorDirection
-////================
-////*/
-////void idAFBody::SetContactMotorDirection( const idVec3 &dir ) {
-////	contactMotorDir = dir * current.worldAxis.Transpose();
-////	this.fl.useContactMotorDir = true;
-////}
-////
+
+/*
+================
+idAFBody::SetContactMotorDirection
+================
+*/
+    SetContactMotorDirection ( dir: idVec3 ): void {
+        this.contactMotorDir.opEquals( idMat3.opMultiplication_VecMat( dir, this.current.worldAxis.Transpose ( ) ) );
+        this.fl.useContactMotorDir = true;
+    }
+
 /////*
 ////================
 ////idAFBody::GetContactMotorDirection
@@ -5003,7 +5011,7 @@ class idAFBody {
 ////*/
 ////bool idAFBody::GetContactMotorDirection( idVec3 &dir ) const {
 ////	if ( this.fl.useContactMotorDir ) {
-////		dir = this.contactMotorDir * current.worldAxis;
+////		dir = this.contactMotorDir * this.current.worldAxis;
 ////		return true;
 ////	}
 ////	return false;
@@ -5015,8 +5023,8 @@ class idAFBody {
 ////================
 ////*/
 ////idVec3 idAFBody::GetPointVelocity( const idVec3 &point ) const {
-////	idVec3 r = point - current.worldOrigin;
-////	return current.spatialVelocity.SubVec3(0) + current.spatialVelocity.SubVec3(1).Cross( r );
+////	idVec3 r = point - this.current.worldOrigin;
+////	return this.current.spatialVelocity.SubVec3(0) + this.current.spatialVelocity.SubVec3(1).Cross( r );
 ////}
 ////
 /////*
@@ -5025,8 +5033,8 @@ class idAFBody {
 ////================
 ////*/
 ////void idAFBody::AddForce( const idVec3 &point, const idVec3 &force ) {
-////	current.externalForce.SubVec3(0) += force;
-////	current.externalForce.SubVec3(1) += (point - current.worldOrigin).Cross( force );
+////	this.current.externalForce.SubVec3(0) += force;
+////	this.current.externalForce.SubVec3(1) += (point - this.current.worldOrigin).Cross( force );
 ////}
 ////
 /////*
@@ -5049,7 +5057,7 @@ class idAFBody {
 ////		dstPtr[4] = mPtr[4*6+3] * vPtr[3] + mPtr[4*6+4] * vPtr[4] + mPtr[4*6+5] * vPtr[5];
 ////		dstPtr[5] = mPtr[5*6+3] * vPtr[3] + mPtr[5*6+4] * vPtr[4] + mPtr[5*6+5] * vPtr[5];
 ////	} else {
-////		gameLocal.Warning( "spatial inertia is not sparse for body %s", name.c_str() );
+////		gameLocal.Warning( "spatial inertia is not sparse for body %s", this.name.c_str() );
 ////	}
 ////}
 ////
@@ -5069,16 +5077,16 @@ class idAFBody {
 ////	saveFile.WriteFloat( this.contactMotorVelocity );
 ////	saveFile.WriteFloat( this.contactMotorForce );
 ////
-////	saveFile.WriteFloat( mass );
-////	saveFile.WriteFloat( invMass );
-////	saveFile.WriteVec3( centerOfMass );
-////	saveFile.WriteMat3( inertiaTensor );
-////	saveFile.WriteMat3( inverseInertiaTensor );
+////	saveFile.WriteFloat( this.mass );
+////	saveFile.WriteFloat( this.invMass );
+////	saveFile.WriteVec3( this.centerOfMass );
+////	saveFile.WriteMat3( this.inertiaTensor );
+////	saveFile.WriteMat3( this.inverseInertiaTensor );
 ////
-////	saveFile.WriteVec3( current.worldOrigin );
-////	saveFile.WriteMat3( current.worldAxis );
-////	saveFile.WriteVec6( current.spatialVelocity );
-////	saveFile.WriteVec6( current.externalForce );
+////	saveFile.WriteVec3( this.current.worldOrigin );
+////	saveFile.WriteMat3( this.current.worldAxis );
+////	saveFile.WriteVec6( this.current.spatialVelocity );
+////	saveFile.WriteVec6( this.current.externalForce );
 ////	saveFile.WriteVec3( atRestOrigin );
 ////	saveFile.WriteMat3( atRestAxis );
 ////}
@@ -5099,16 +5107,16 @@ class idAFBody {
 ////	saveFile.ReadFloat( this.contactMotorVelocity );
 ////	saveFile.ReadFloat( this.contactMotorForce );
 ////
-////	saveFile.ReadFloat( mass );
-////	saveFile.ReadFloat( invMass );
-////	saveFile.ReadVec3( centerOfMass );
-////	saveFile.ReadMat3( inertiaTensor );
-////	saveFile.ReadMat3( inverseInertiaTensor );
+////	saveFile.ReadFloat( this.mass );
+////	saveFile.ReadFloat( this.invMass );
+////	saveFile.ReadVec3( this.centerOfMass );
+////	saveFile.ReadMat3( this.inertiaTensor );
+////	saveFile.ReadMat3( this.inverseInertiaTensor );
 ////
-////	saveFile.ReadVec3( current.worldOrigin );
-////	saveFile.ReadMat3( current.worldAxis );
-////	saveFile.ReadVec6( current.spatialVelocity );
-////	saveFile.ReadVec6( current.externalForce );
+////	saveFile.ReadVec3( this.current.worldOrigin );
+////	saveFile.ReadMat3( this.current.worldAxis );
+////	saveFile.ReadVec6( this.current.spatialVelocity );
+////	saveFile.ReadVec6( this.current.externalForce );
 ////	saveFile.ReadVec3( atRestOrigin );
 ////	saveFile.ReadMat3( atRestAxis );
 ////}
@@ -7545,52 +7553,53 @@ class idPhysics_AF extends idPhysics_Base {
 	////		}
 	////	}
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::AddBody
-	////
-	////  bodies get an id in the order they are added starting at zero
-	////  as such the first body added will get id zero
-	////================
-	////*/
-	////int idPhysics_AF::AddBody( body: idAFBody ) {
-	////	/*int*/ id:number = 0;
-	////
-	////	if ( !body.clipModel ) {
-	////		gameLocal.Error( "idPhysics_AF::AddBody: body '%s' has no clip model.", body.name.c_str() );
-	////	}
-	////
-	////	if ( this.bodies.Find( body ) ) {
-	////		gameLocal.Error( "idPhysics_AF::AddBody: body '%s' added twice.", body.name.c_str() );
-	////	}
-	////
-	////	if ( GetBody( body.name ) ) {
-	////		gameLocal.Error( "idPhysics_AF::AddBody: a body with the name '%s' already exists.", body.name.c_str() );
-	////	}
-	////
-	////	id = this.bodies.Num();
-	////	body.clipModel.SetId( id );
-	////	if ( body.linearFriction < 0.0 ) {
-	////		body.linearFriction = this.linearFriction;
-	////		body.angularFriction = this.angularFriction;
-	////		body.contactFriction = this.contactFriction;
-	////	}
-	////	if ( body.bouncyness < 0.0 ) {
-	////		body.bouncyness = this.bouncyness;
-	////	}
-	////	if ( !body.fl.clipMaskSet ) {
-	////		body.clipMask = this.clipMask;
-	////	}
-	////
-	////	this.bodies.Append( body );
-	////
-	////	this.changedAF = true;
-	////
-	////	return id;
-	////}
 	
 	/*
+	================
+	idPhysics_AF::AddBody
+	
+	  bodies get an id in the order they are added starting at zero
+	  as such the first body added will get id zero
+	================
+	*/
+    AddBody ( body: idAFBody ): number {
+        /*int*/
+        var id:number = 0;
+
+        if ( !body.clipModel ) {
+            gameLocal.Error( "idPhysics_AF::AddBody: body '%s' has no clip model.", body.name.c_str ( ) );
+        }
+
+        if ( this.bodies.Find( body ) ) {
+            gameLocal.Error( "idPhysics_AF::AddBody: body '%s' added twice.", body.name.c_str ( ) );
+        }
+
+        if ( GetBody( body.name ) ) {
+            gameLocal.Error( "idPhysics_AF::AddBody: a body with the name '%s' already exists.", body.name.c_str ( ) );
+        }
+
+        id = this.bodies.Num ( );
+        body.clipModel.SetId( id );
+        if ( body.linearFriction < 0.0 ) {
+            body.linearFriction = this.linearFriction;
+            body.angularFriction = this.angularFriction;
+            body.contactFriction = this.contactFriction;
+        }
+        if ( body.bouncyness < 0.0 ) {
+            body.bouncyness = this.bouncyness;
+        }
+        if ( !body.fl.clipMaskSet ) {
+            body.clipMask = this.clipMask;
+        }
+
+        this.bodies.Append( body );
+
+        this.changedAF = true;
+
+        return id;
+    }
+
+    /*
 	================
 	idPhysics_AF::AddConstraint
 	================
@@ -7638,7 +7647,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////void idPhysics_AF::ForceBodyId( body: idAFBody, int newId ) {
-	////	/*int*/ id:number;
+	////	var /*int*/ id:number;
 	////
 	////	id = this.bodies.FindIndex( body );
 	////	if ( id == -1 ) {
@@ -7651,22 +7660,22 @@ class idPhysics_AF extends idPhysics_Base {
 	////		this.changedAF = true;
 	////	}
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_AF::GetBodyId
-	////================
-	////*/
-	////int idPhysics_AF::GetBodyId( body: idAFBody ) const {
-	////	/*int*/ id:number;
-	////
-	////	id = this.bodies.FindIndex( body );
-	////	if ( id == -1 && body ) {
-	////		gameLocal.Error( "GetBodyId: body '%s' is not part of the articulated figure.\n", body.name.c_str() );
-	////	}
-	////	return id;
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_AF::GetBodyId
+	================
+	*/
+    GetBodyId ( body: idAFBody ): number {
+        var /*int*/ id: number;
+
+        id = this.bodies.FindIndex( body );
+        if ( id == -1 && body ) {
+            gameLocal.Error( "GetBodyId: body '%s' is not part of the articulated figure.\n", body.name.c_str ( ) );
+        }
+        return id;
+    }
+    
 	/////*
 	////================
 	////idPhysics_AF::GetBodyId
@@ -7690,7 +7699,7 @@ class idPhysics_AF extends idPhysics_Base {
 	////================
 	////*/
 	////int idPhysics_AF::GetConstraintId( idAFConstraint *constraint ) const {
-	////	/*int*/ id:number;
+	////	var /*int*/ id:number;
 	////
 	////	id = this.constraints.FindIndex( constraint );
 	////	if ( id == -1 && constraint ) {
@@ -7889,6 +7898,7 @@ class idPhysics_AF extends idPhysics_Base {
 		}
 	
 		// remove the constraint
+		$delete (this.constraints[id]);
 		delete this.constraints[id];
 		this.constraints.RemoveIndex( id );
 	
@@ -8068,80 +8078,79 @@ class idPhysics_AF extends idPhysics_Base {
 	idPhysics_AF::SetAxis
 	================
 	*/
-	SetAxis(newAxis: idMat3, /*int*/ id: number = -1): void {
-		todoThrow ( );
-		//idMat3 axis;
-		//idRotation rotation;
-	
-		//if ( this.masterBody ) {
-		//	axis = this.bodies[0].current.worldAxis.Transpose() * ( newAxis * this.masterBody.current.worldAxis );
-		//} else {
-		//	axis = this.bodies[0].current.worldAxis.Transpose() * newAxis;
-		//}
-		//rotation = axis.ToRotation();
-		//rotation.SetOrigin( this.bodies[0].current.worldOrigin );
-	
-		//Rotate( rotation );
-	}
-	
-	/*
+    SetAxis ( newAxis: idMat3, /*int*/ id: number = -1 ): void {
+        var axis = new idMat3;
+        var rotation = new idRotation;
+
+        if ( this.masterBody ) {
+            axis.opEquals( this.bodies[0].current.worldAxis.Transpose ( ).opMultiplication( ( newAxis.opMultiplication( this.masterBody.current.worldAxis ) ) ) );
+        } else {
+            axis.opEquals( this.bodies[0].current.worldAxis.Transpose ( ) .opMultiplication( newAxis ));
+        }
+        rotation.opEquals( axis.ToRotation ( ) );
+        rotation.SetOrigin( this.bodies[0].current.worldOrigin );
+
+        this.Rotate( rotation );
+    }
+
+    /*
 	================
 	idPhysics_AF::Translate
 	================
 	*/
-	Translate(translation: idVec3, /*int*/ id: number  = -1): void {
-		todoThrow ( );
-		//var/*int*/i:number;
-		//var body:idAFBody;
+    Translate ( translation: idVec3, id: number = -1 ): void {
+        todoThrow ( );
+        //var/*int*/i:number;
+        //var body:idAFBody;
 
-		//if ( !this.worldConstraintsLocked ) {
-		//	// translate this.constraints attached to the world
-		//	for ( i = 0; i < this.constraints.Num(); i++ ) {
-		//		this.constraints[i].Translate( translation );
-		//	}
-		//}
+        //if ( !this.worldConstraintsLocked ) {
+        //	// translate this.constraints attached to the world
+        //	for ( i = 0; i < this.constraints.Num(); i++ ) {
+        //		this.constraints[i].Translate( translation );
+        //	}
+        //}
 
-		//// translate all the bodies
-		//for ( i = 0; i < this.bodies.Num(); i++ ) {
+        //// translate all the bodies
+        //for ( i = 0; i < this.bodies.Num(); i++ ) {
 
-		//	body = this.bodies[i];
-		//	body.current.worldOrigin += translation;
-		//}
+        //	body = this.bodies[i];
+        //	body.current.worldOrigin += translation;
+        //}
 
-		//this.Activate();
+        //this.Activate();
 
-		//UpdateClipModels();
+        //UpdateClipModels();
+    }
+
+    /*
+	================
+	idPhysics_AF::Rotate
+	================
+	*/
+    Rotate(rotation: idRotation , /*int*/ id:number  = -1) :void{
+		var/*int*/i:number;
+		var body:idAFBody;
+	
+		if ( !this.worldConstraintsLocked ) {
+			// rotate this.constraints attached to the world
+			for ( i = 0; i < this.constraints.Num(); i++ ) {
+				this.constraints[i].Rotate( rotation );
+			}
+		}
+	
+		// rotate all the bodies
+		for ( i = 0; i < this.bodies.Num(); i++ ) {
+			body = this.bodies[i];
+	
+			body.current.worldOrigin.opMultiplicationAssignment(rotation);
+            body.current.worldAxis.opMultiplicationAssignment(rotation.ToMat3());
+		}
+	
+		this.Activate();
+	
+		this.UpdateClipModels();
 	}
-
-	/////*
-	////================
-	////idPhysics_AF::Rotate
-	////================
-	////*/
-	////void idPhysics_AF::Rotate( const idRotation &rotation, /*int*/ id:number  = -1) {
-	////	var/*int*/i:number;
-	////	var body:idAFBody;
-	////
-	////	if ( !this.worldConstraintsLocked ) {
-	////		// rotate this.constraints attached to the world
-	////		for ( i = 0; i < this.constraints.Num(); i++ ) {
-	////			this.constraints[i].Rotate( rotation );
-	////		}
-	////	}
-	////
-	////	// rotate all the bodies
-	////	for ( i = 0; i < this.bodies.Num(); i++ ) {
-	////		body = this.bodies[i];
-	////
-	////		body.current.worldOrigin *= rotation;
-	////		body.current.worldAxis *= rotation.ToMat3();
-	////	}
-	////
-	////	this.Activate();
-	////
-	////	UpdateClipModels();
-	////}
-	////
+	
 	/*
 	================
 	idPhysics_AF::GetOrigin
@@ -8418,7 +8427,7 @@ idPhysics_AF::SetMaster
    the binding is orientated based on the constraints being used
 ================
 */
-SetMaster(master:idEntity , orientated :boolean = true):void {
+SetMaster(master:idEntity , orientated:boolean = true):void {
 	var/*int*/i:number;
 	var masterOrigin = new idVec3 ;
 	var masterAxis = new idMat3;
@@ -8451,6 +8460,7 @@ SetMaster(master:idEntity , orientated :boolean = true):void {
 					this.constraints[i].Translate( this.masterBody.current.worldOrigin );
 				}
 			}
+            $delete(this.masterBody);
 			delete this.masterBody;
 			this.masterBody = null;
 			this.Activate();

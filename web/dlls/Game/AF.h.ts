@@ -255,7 +255,7 @@ class idAF {
 	////		this.animator.SetAFPoseJointMod( this.jointMods[i].jointHandle, this.jointMods[i].jointMod, axis, origin );
 	////	}
 	////	this.animator.FinishAFPose( this.modifiedAnim, GetBounds().Expand( POSE_BOUNDS_EXPANSION ), gameLocal.time );
-	////	this.animator.SetAFPoseBlendWeight( 1.0f );
+	////	this.animator.SetAFPoseBlendWeight( 1.0 );
 	////
 	////	return true;
 	////}
@@ -389,7 +389,7 @@ class idAF {
 	////	if ( this.poseTime == time ) {
 	////		return;
 	////	}
-	////	invDelta = 1.0f / MS2SEC( time - this.poseTime );
+	////	invDelta = 1.0 / MS2SEC( time - this.poseTime );
 	////	this.poseTime = time;
 	////
 	////	for ( i = 0; i < this.jointMods.Num(); i++ ) {
@@ -511,343 +511,355 @@ class idAF {
 	////	SetupPose( this.self, gameLocal.time );
 	////	this.physicsObj.AddForce( BodyForClipModelId( id ), point, force );
 	////}
-	////
-	/////*
-	////================
-	////idAF::AddBody
-	////
-	////  Adds a body.
-	////================
-	////*/
-	////void idAF::AddBody( idAFBody *body, const idJointMat *joints, const char *jointName, const AFJointModType_t mod ) {
-	////	int index;
-	////	jointHandle_t handle;
-	////	idVec3 origin;
-	////	idMat3 axis;
-	////
-	////	handle = this.animator.GetJointHandle( jointName );
-	////	if ( handle == jointHandle_t.INVALID_JOINT ) {
-	////		gameLocal.Error( "idAF for entity '%s' at (%s) modifies unknown joint '%s'", this.self.name.c_str(), this.self.GetPhysics().GetOrigin().ToString(0), jointName );
-	////	}
-	////
-	////	assert( handle < this.animator.NumJoints() );
-	////	origin = joints[ handle ].ToVec3();
-	////	axis = joints[ handle ].ToMat3();
-	////
-	////	index = this.jointMods.Num();
-	////	this.jointMods.SetNum( index + 1, false );
-	////	this.jointMods[index].bodyId = this.physicsObj.GetBodyId( body );
-	////	this.jointMods[index].jointHandle = handle;
-	////	this.jointMods[index].jointMod = mod;
-	////	this.jointMods[index].jointBodyOrigin = ( body.GetWorldOrigin() - origin ) * axis.Transpose();
-	////	this.jointMods[index].jointBodyAxis = body.GetWorldAxis() * axis.Transpose();
-	////}
-	////
-	/////*
-	////================
-	////idAF::SetBase
-	////
-	////  Sets the base body.
-	////================
-	////*/
-	////void idAF::SetBase( idAFBody *body, const idJointMat *joints ) {
-	////	this.physicsObj.ForceBodyId( body, 0 );
-	////	this.baseOrigin = body.GetWorldOrigin();
-	////	this.baseAxis = body.GetWorldAxis();
-	////	AddBody( body, joints, this.animator.GetJointName( this.animator.GetFirstChild( "origin" ) ), AF_JOINTMOD_AXIS );
-	////}
 	
 	/*
+	================
+	idAF::AddBody
+	
+	  Adds a body.
+	================
+	*/
+    AddBody ( body: idAFBody, joints: idJointMat[], jointName: string, mod: AFJointModType_t ): void {
+        var /*int */index: number;
+        var handle: jointHandle_t;
+        var origin = new idVec3;
+        var axis = new idMat3;
+
+        handle = this.animator.GetJointHandle( jointName );
+        if ( handle == jointHandle_t.INVALID_JOINT ) {
+            gameLocal.Error( "idAF for entity '%s' at (%s) modifies unknown joint '%s'", this.self.name.c_str ( ), this.self.GetPhysics ( ).GetOrigin ( ).ToString( 0 ), jointName );
+        }
+
+        assert( handle < this.animator.NumJoints ( ) );
+        origin.opEquals( joints[handle].ToVec3 ( ) );
+        axis.opEquals( joints[handle].ToMat3 ( ) );
+
+        index = this.jointMods.Num ( );
+        this.jointMods.SetNum( index + 1, false );
+        this.jointMods[index].bodyId = this.physicsObj.GetBodyId( body );
+        this.jointMods[index].jointHandle = handle;
+        this.jointMods[index].jointMod = mod;
+        this.jointMods[index].jointBodyOrigin.opEquals( idMat3.opMultiplication_VecMat( ( body.GetWorldOrigin ( ).opSubtraction( origin ) ), axis.Transpose ( ) ) );
+        this.jointMods[index].jointBodyAxis.opEquals( body.GetWorldAxis ( ).opMultiplication( axis.Transpose ( ) ) );
+    }
+
+    /*
+	================
+	idAF::SetBase
+	
+	  Sets the base body.
+	================
+	*/
+    SetBase ( body: idAFBody, joints: idJointMat [] ): void {
+        this.physicsObj.ForceBodyId( body, 0 );
+        this.baseOrigin.opEquals( body.GetWorldOrigin ( ) );
+        this.baseAxis.opEquals( body.GetWorldAxis ( ) );
+        this.AddBody(body, joints, this.animator.GetJointName(this.animator.GetFirstChild("origin")), AFJointModType_t.AF_JOINTMOD_AXIS );
+    }
+
+    /*
 	================
 	idAF::LoadBody
 	================
 	*/
-	LoadBody ( fb: idDeclAF_Body, joints: idJointMat [] ): boolean {
-		todoThrow ( );
-		////	/*int*/ id:number, i;
-		////	float length, mass;
-		////	idTraceModel trm;
-		////	idClipModel *clip;
-		////	idAFBody *body;
-		////	idMat3 axis, inertiaTensor;
-		////	idVec3 centerOfMass, origin;
-		////	idBounds bounds;
-		////	idList<jointHandle_t> jointList;
-		////
-		////	origin = fb.origin.ToVec3();
-		////	axis = fb.angles.ToMat3();
-		////	bounds[0] = fb.v1.ToVec3();
-		////	bounds[1] = fb.v2.ToVec3();
-		////
-		////	switch( fb.modelType ) {
-		////		case TRM_BOX: {
-		////			trm.SetupBox( bounds );
-		////			break;
-		////		}
-		////		case TRM_OCTAHEDRON: {
-		////			trm.SetupOctahedron( bounds );
-		////			break;
-		////		}
-		////		case TRM_DODECAHEDRON: {
-		////			trm.SetupDodecahedron( bounds );
-		////			break;
-		////		}
-		////		case TRM_CYLINDER: {
-		////			trm.SetupCylinder( bounds, fb.numSides );
-		////			break;
-		////		}
-		////		case TRM_CONE: {
-		////			// place the apex at the origin
-		////			bounds[0].z -= bounds[1].z;
-		////			bounds[1].z = 0.0f;
-		////			trm.SetupCone( bounds, fb.numSides );
-		////			break;
-		////		}
-		////		case TRM_BONE: {
-		////			// direction of bone
-		////			axis[2] = fb.v2.ToVec3() - fb.v1.ToVec3();
-		////			length = axis[2].Normalize();
-		////			// axis of bone trace model
-		////			axis[2].NormalVectors( axis[0], axis[1] );
-		////			axis[1] = -axis[1];
-		////			// create bone trace model
-		////			trm.SetupBone( length, fb.width );
-		////			break;
-		////		}
-		////		default:
-		////			assert( 0 );
-		////			break;
-		////	}
-		////	trm.GetMassProperties( 1.0f, mass, centerOfMass, inertiaTensor );
-		////	trm.Translate( -centerOfMass );
-		////	origin += centerOfMass * axis;
-		////
-		////	body = this.physicsObj.GetBody( fb.name );
-		////	if ( body ) {
-		////		clip = body.GetClipModel();
-		////		if ( !clip.IsEqual( trm ) ) {
-		////			clip = new idClipModel( trm );
-		////			clip.SetContents( fb.contents );
-		////			clip.Link( gameLocal.clip, this.self, 0, origin, axis );
-		////			body.SetClipModel( clip );
-		////		}
-		////		clip.SetContents( fb.contents );
-		////		body.SetDensity( fb.density, fb.inertiaScale );
-		////		body.SetWorldOrigin( origin );
-		////		body.SetWorldAxis( axis );
-		////		id = this.physicsObj.GetBodyId( body );
-		////	}
-		////	else {
-		////		clip = new idClipModel( trm );
-		////		clip.SetContents( fb.contents );
-		////		clip.Link( gameLocal.clip, this.self, 0, origin, axis );
-		////		body = new idAFBody( fb.name, clip, fb.density );
-		////		if ( fb.inertiaScale != mat3_identity ) {
-		////			body.SetDensity( fb.density, fb.inertiaScale );
-		////		}
-		////		id = this.physicsObj.AddBody( body );
-		////	}
-		////	if ( fb.linearFriction != -1.0f ) {
-		////		body.SetFriction( fb.linearFriction, fb.angularFriction, fb.contactFriction );
-		////	}
-		////	body.SetClipMask( fb.clipMask );
-		////	body.SetSelfCollision( fb.selfCollision );
-		////
-		////	if ( fb.jointName == "origin" ) {
-		////		SetBase( body, joints );
-		////	} else {
-		////		AFJointModType_t mod;
-		////		if ( fb.jointMod == DECLAF_JOINTMOD_AXIS ) {
-		////			mod = AF_JOINTMOD_AXIS;
-		////		} else if ( fb.jointMod == DECLAF_JOINTMOD_ORIGIN ) {
-		////			mod = AF_JOINTMOD_ORIGIN;
-		////		} else if ( fb.jointMod == DECLAF_JOINTMOD_BOTH ) {
-		////			mod = AF_JOINTMOD_BOTH;
-		////		} else {
-		////			mod = AF_JOINTMOD_AXIS;
-		////		}
-		////		AddBody( body, joints, fb.jointName, mod );
-		////	}
-		////
-		////	if ( fb.frictionDirection.ToVec3() != vec3_origin ) {
-		////		body.SetFrictionDirection( fb.frictionDirection.ToVec3() );
-		////	}
-		////	if ( fb.contactMotorDirection.ToVec3() != vec3_origin ) {
-		////		body.SetContactMotorDirection( fb.contactMotorDirection.ToVec3() );
-		////	}
-		////
-		////	// update table to find the nearest articulated figure body for a joint of the skeletal model
-		////	this.animator.GetJointList( fb.containedJoints, jointList );
-		////	for( i = 0; i < jointList.Num(); i++ ) {
-		////		if ( this.jointBody[ jointList[ i ] ] != -1 ) {
-		////			gameLocal.Warning( "%s: joint '%s' is already contained by body '%s'",
-		////						name.c_str(), this.animator.GetJointName( (jointHandle_t)jointList[i] ),
-		////							this.physicsObj.GetBody( this.jointBody[ jointList[ i ] ] ).GetName().c_str() );
-		////		}
-		////		this.jointBody[ jointList[ i ] ] = id;
-		////	}
-		////
-		return true;
-	}
-	
-	/*
+    LoadBody ( fb: idDeclAF_Body, joints: idJointMat [] ): boolean {
+        var /*int*/ id: number, i: number;
+        var /* float */length: number, mass = new R<number> ( );
+        var trm = new idTraceModel;
+        var clip: idClipModel;
+        var body: idAFBody;
+        var axis = new idMat3, inertiaTensor = new idMat3;
+        var centerOfMass = new idVec3, origin = new idVec3;
+        var bounds = new idBounds;
+        var jointList = new idList<jointHandle_t>( Number );
+
+        origin.opEquals( fb.origin.ToVec3 ( ) );
+        axis.opEquals( fb.angles.ToMat3 ( ) );
+        bounds[0].opEquals( fb.v1.ToVec3 ( ) );
+        bounds[1].opEquals( fb.v2.ToVec3 ( ) );
+
+        switch ( fb.modelType ) {
+        case traceModel_t.TRM_BOX:
+        {
+            trm.SetupBox( bounds );
+            break;
+        }
+        case traceModel_t.TRM_OCTAHEDRON:
+        {
+            trm.SetupOctahedron( bounds );
+            break;
+        }
+        case traceModel_t.TRM_DODECAHEDRON:
+        {
+            trm.SetupDodecahedron( bounds );
+            break;
+        }
+        case traceModel_t.TRM_CYLINDER:
+        {
+            trm.SetupCylinder( bounds, fb.numSides );
+            break;
+        }
+        case traceModel_t.TRM_CONE:
+        {
+            // place the apex at the origin
+            bounds[0].z -= bounds[1].z;
+            bounds[1].z = 0.0;
+            trm.SetupCone( bounds, fb.numSides );
+            break;
+        }
+        case traceModel_t.TRM_BONE:
+        {
+            // direction of bone
+            axis[2].opEquals( fb.v2.ToVec3 ( ).opSubtraction( fb.v1.ToVec3 ( ) ) );
+            length = axis[2].Normalize ( );
+            // axis of bone trace model
+            axis[2].NormalVectors( axis[0], axis[1] );
+            axis[1].opEquals( axis[1].opUnaryMinus ( ) );
+            // create bone trace model
+            trm.SetupBone( length, fb.width );
+            break;
+        }
+        default:
+            assert( 0 );
+            break;
+        }
+        trm.GetMassProperties( 1.0, mass, centerOfMass, inertiaTensor );
+        trm.Translate( centerOfMass.opUnaryMinus ( ) );
+        origin.opAdditionAssignment( idMat3.opMultiplication_VecMat( centerOfMass, axis ) );
+
+        body = this.physicsObj.GetBody( fb.name.data );
+        if ( body ) {
+            clip = body.GetClipModel ( );
+            if ( !clip.IsEqual( trm ) ) {
+                clip = new idClipModel( trm );
+                clip.SetContents( fb.contents );
+                clip.Link_ent( gameLocal.clip, this.self, 0, origin, axis );
+                body.SetClipModel( clip );
+            }
+            clip.SetContents( fb.contents );
+            body.SetDensity( fb.density, fb.inertiaScale );
+            body.SetWorldOrigin( origin );
+            body.SetWorldAxis( axis );
+            id = this.physicsObj.GetBodyId( body );
+        } else {
+            clip = new idClipModel( trm );
+            clip.SetContents( fb.contents );
+            clip.Link_ent( gameLocal.clip, this.self, 0, origin, axis );
+            body = new idAFBody( fb.name, clip, fb.density );
+            if ( fb.inertiaScale != mat3_identity ) {
+                body.SetDensity( fb.density, fb.inertiaScale );
+            }
+            id = this.physicsObj.AddBody( body );
+        }
+        if ( fb.linearFriction != -1.0 ) {
+            body.SetFriction( fb.linearFriction, fb.angularFriction, fb.contactFriction );
+        }
+        body.SetClipMask( fb.clipMask );
+        body.SetSelfCollision( fb.selfCollision );
+
+        if ( fb.jointName.data == "origin" ) {
+            this.SetBase( body, joints );
+        } else {
+            var mod: AFJointModType_t;
+            if ( fb.jointMod == declAFJointMod_t.DECLAF_JOINTMOD_AXIS ) {
+                mod = AFJointModType_t.AF_JOINTMOD_AXIS;
+            } else if ( fb.jointMod == declAFJointMod_t.DECLAF_JOINTMOD_ORIGIN ) {
+                mod = AFJointModType_t.AF_JOINTMOD_ORIGIN;
+            } else if ( fb.jointMod == declAFJointMod_t.DECLAF_JOINTMOD_BOTH ) {
+                mod = AFJointModType_t.AF_JOINTMOD_BOTH;
+            } else {
+                mod = AFJointModType_t.AF_JOINTMOD_AXIS;
+            }
+            this.AddBody( body, joints, fb.jointName.data, mod );
+        }
+
+        if ( fb.frictionDirection.ToVec3 ( ) != vec3_origin ) {
+            body.SetFrictionDirection( fb.frictionDirection.ToVec3 ( ) );
+        }
+        if ( fb.contactMotorDirection.ToVec3 ( ) != vec3_origin ) {
+            body.SetContactMotorDirection( fb.contactMotorDirection.ToVec3 ( ) );
+        }
+
+        // update table to find the nearest articulated figure body for a joint of the skeletal model
+        this.animator.GetJointList( fb.containedJoints.data, jointList );
+        for ( i = 0; i < jointList.Num ( ); i++ ) {
+            if ( this.jointBody[jointList[i]] != -1 ) {
+                gameLocal.Warning( "%s: joint '%s' is already contained by body '%s'",
+                    name.c_str ( ), this.animator.GetJointName( <jointHandle_t>jointList[i] ),
+                    this.physicsObj.GetBody( this.jointBody[jointList[i]] ).GetName ( ).c_str ( ) );
+            }
+            this.jointBody[jointList[i]] = id;
+        }
+
+        return true;
+    }
+
+    /*
 	================
 	idAF::LoadConstraint
 	================
 	*/
-	LoadConstraint(fc: idDeclAF_Constraint) :boolean {
-		todoThrow ( );
-	////	idAFBody *body1, *body2;
-	////	var angles = new idAngles;
-	////	idMat3 axis;	
-	////
-	////	body1 = this.physicsObj.GetBody( fc.body1 );
-	////	body2 = this.physicsObj.GetBody( fc.body2 );
-	////
-	////	switch( fc.type ) {
-	////		case DECLAF_CONSTRAINT_FIXED: {
-	////			idAFConstraint_Fixed *c;
-	////			c = static_cast<idAFConstraint_Fixed *>(this.physicsObj.GetConstraint( fc.name ));
-	////			if ( c ) {
-	////				c.SetBody1( body1 );
-	////				c.SetBody2( body2 );
-	////			}
-	////			else {
-	////				c = new idAFConstraint_Fixed( fc.name, body1, body2 );
-	////				this.physicsObj.AddConstraint( c );
-	////			}
-	////			break;
-	////		}
-	////		case DECLAF_CONSTRAINT_BALLANDSOCKETJOINT: {
-	////			idAFConstraint_BallAndSocketJoint *c;
-	////			c = static_cast<idAFConstraint_BallAndSocketJoint *>(this.physicsObj.GetConstraint( fc.name ));
-	////			if ( c ) {
-	////				c.SetBody1( body1 );
-	////				c.SetBody2( body2 );
-	////			}
-	////			else {
-	////				c = new idAFConstraint_BallAndSocketJoint( fc.name, body1, body2 );
-	////				this.physicsObj.AddConstraint( c );
-	////			}
-	////			c.SetAnchor( fc.anchor.ToVec3() );
-	////			c.SetFriction( fc.friction );
-	////			switch( fc.limit ) {
-	////				case idDeclAF_Constraint::LIMIT_CONE: {
-	////					c.SetConeLimit( fc.limitAxis.ToVec3(), fc.limitAngles[0], fc.shaft[0].ToVec3() );
-	////					break;
-	////				}
-	////				case idDeclAF_Constraint::LIMIT_PYRAMID: {
-	////					angles = fc.limitAxis.ToVec3().ToAngles();
-	////					angles.roll = fc.limitAngles[2];
-	////					axis = angles.ToMat3();
-	////					c.SetPyramidLimit( axis[0], axis[1], fc.limitAngles[0], fc.limitAngles[1], fc.shaft[0].ToVec3() );
-	////					break;
-	////				}
-	////				default: {
-	////					c.SetNoLimit();
-	////					break;
-	////				}
-	////			}
-	////			break;
-	////		}
-	////		case DECLAF_CONSTRAINT_UNIVERSALJOINT: {
-	////			idAFConstraint_UniversalJoint *c;
-	////			c = static_cast<idAFConstraint_UniversalJoint *>(this.physicsObj.GetConstraint( fc.name ));
-	////			if ( c ) {
-	////				c.SetBody1( body1 );
-	////				c.SetBody2( body2 );
-	////			}
-	////			else {
-	////				c = new idAFConstraint_UniversalJoint( fc.name, body1, body2 );
-	////				this.physicsObj.AddConstraint( c );
-	////			}
-	////			c.SetAnchor( fc.anchor.ToVec3() );
-	////			c.SetShafts( fc.shaft[0].ToVec3(), fc.shaft[1].ToVec3() );
-	////			c.SetFriction( fc.friction );
-	////			switch( fc.limit ) {
-	////				case idDeclAF_Constraint::LIMIT_CONE: {
-	////					c.SetConeLimit( fc.limitAxis.ToVec3(), fc.limitAngles[0] );
-	////					break;
-	////				}
-	////				case idDeclAF_Constraint::LIMIT_PYRAMID: {
-	////					angles = fc.limitAxis.ToVec3().ToAngles();
-	////					angles.roll = fc.limitAngles[2];
-	////					axis = angles.ToMat3();
-	////					c.SetPyramidLimit( axis[0], axis[1], fc.limitAngles[0], fc.limitAngles[1] );
-	////					break;
-	////				}
-	////				default: {
-	////					c.SetNoLimit();
-	////					break;
-	////				}
-	////			}
-	////			break;
-	////		}
-	////		case DECLAF_CONSTRAINT_HINGE: {
-	////			idAFConstraint_Hinge *c;
-	////			c = static_cast<idAFConstraint_Hinge *>(this.physicsObj.GetConstraint( fc.name ));
-	////			if ( c ) {
-	////				c.SetBody1( body1 );
-	////				c.SetBody2( body2 );
-	////			}
-	////			else {
-	////				c = new idAFConstraint_Hinge( fc.name, body1, body2 );
-	////				this.physicsObj.AddConstraint( c );
-	////			}
-	////			c.SetAnchor( fc.anchor.ToVec3() );
-	////			c.SetAxis( fc.axis.ToVec3() );
-	////			c.SetFriction( fc.friction );
-	////			switch( fc.limit ) {
-	////				case idDeclAF_Constraint::LIMIT_CONE: {
-	////					idVec3 left, up, axis, shaft;
-	////					fc.axis.ToVec3().OrthogonalBasis( left, up );
-	////					axis = left * idRotation( vec3_origin, fc.axis.ToVec3(), fc.limitAngles[0] );
-	////					shaft = left * idRotation( vec3_origin, fc.axis.ToVec3(), fc.limitAngles[2] );
-	////					c.SetLimit( axis, fc.limitAngles[1], shaft );
-	////					break;
-	////				}
-	////				default: {
-	////					c.SetNoLimit();
-	////					break;
-	////				}
-	////			}
-	////			break;
-	////		}
-	////		case DECLAF_CONSTRAINT_SLIDER: {
-	////			idAFConstraint_Slider *c;
-	////			c = static_cast<idAFConstraint_Slider *>(this.physicsObj.GetConstraint( fc.name ));
-	////			if ( c ) {
-	////				c.SetBody1( body1 );
-	////				c.SetBody2( body2 );
-	////			}
-	////			else {
-	////				c = new idAFConstraint_Slider( fc.name, body1, body2 );
-	////				this.physicsObj.AddConstraint( c );
-	////			}
-	////			c.SetAxis( fc.axis.ToVec3() );
-	////			break;
-	////		}
-	////		case DECLAF_CONSTRAINT_SPRING: {
-	////			idAFConstraint_Spring *c;
-	////			c = static_cast<idAFConstraint_Spring *>(this.physicsObj.GetConstraint( fc.name ));
-	////			if ( c ) {
-	////				c.SetBody1( body1 );
-	////				c.SetBody2( body2 );
-	////			}
-	////			else {
-	////				c = new idAFConstraint_Spring( fc.name, body1, body2 );
-	////				this.physicsObj.AddConstraint( c );
-	////			}
-	////			c.SetAnchor( fc.anchor.ToVec3(), fc.anchor2.ToVec3() );
-	////			c.SetSpring( fc.stretch, fc.compress, fc.damping, fc.restLength );
-	////			c.SetLimit( fc.minLength, fc.maxLength );
-	////			break;
-	////		}
-	////	}
-		return true;
-	}
-	
-	/*
+    LoadConstraint ( fc: idDeclAF_Constraint ): boolean {
+        var body1: idAFBody, body2: idAFBody;
+        var angles = new idAngles;
+        var axis = new idMat3;
+
+        body1 = this.physicsObj.GetBody( fc.body1.data );
+        body2 = this.physicsObj.GetBody( fc.body2.data );
+
+        switch ( fc.type ) {
+        case declAFConstraintType_t.DECLAF_CONSTRAINT_FIXED:
+        {
+            var c: idAFConstraint_Fixed;
+            c = static_cast<idAFConstraint_Fixed>( this.physicsObj.GetConstraint( fc.name.data ) );
+            if ( c ) {
+                c.SetBody1( body1 );
+                c.SetBody2( body2 );
+            } else {
+                c = new idAFConstraint_Fixed( fc.name, body1, body2 );
+                this.physicsObj.AddConstraint( c );
+            }
+            break;
+        }
+        case declAFConstraintType_t.DECLAF_CONSTRAINT_BALLANDSOCKETJOINT:
+        {
+            var c1: idAFConstraint_BallAndSocketJoint;
+            c1 = static_cast<idAFConstraint_BallAndSocketJoint>( this.physicsObj.GetConstraint( fc.name.data ) );
+            if ( c1 ) {
+                c1.SetBody1( body1 );
+                c1.SetBody2( body2 );
+            } else {
+                c1 = new idAFConstraint_BallAndSocketJoint( fc.name, body1, body2 );
+                this.physicsObj.AddConstraint( c1 );
+            }
+            c1.SetAnchor( fc.anchor.ToVec3 ( ) );
+            c1.SetFriction( fc.friction );
+            switch ( fc.limit ) {
+            case idDeclAF_Constraint.LIMIT_CONE:
+            {
+                c1.SetConeLimit( fc.limitAxis.ToVec3 ( ), fc.limitAngles[0], fc.shaft[0].ToVec3 ( ) );
+                break;
+            }
+            case idDeclAF_Constraint.LIMIT_PYRAMID:
+            {
+                angles.opEquals( fc.limitAxis.ToVec3 ( ).ToAngles ( ) );
+                angles.roll = fc.limitAngles[2];
+                axis.opEquals( angles.ToMat3 ( ) );
+                c1.SetPyramidLimit( axis[0], axis[1], fc.limitAngles[0], fc.limitAngles[1], fc.shaft[0].ToVec3 ( ) );
+                break;
+            }
+            default:
+            {
+                c1.SetNoLimit ( );
+                break;
+            }
+            }
+            break;
+        }
+        case declAFConstraintType_t.DECLAF_CONSTRAINT_UNIVERSALJOINT:
+        {
+            var c2: idAFConstraint_UniversalJoint;
+            c2 = static_cast<idAFConstraint_UniversalJoint>( this.physicsObj.GetConstraint( fc.name.data ) );
+            if ( c2 ) {
+                c2.SetBody1( body1 );
+                c2.SetBody2( body2 );
+            } else {
+                c2 = new idAFConstraint_UniversalJoint( fc.name, body1, body2 );
+                this.physicsObj.AddConstraint( c2 );
+            }
+            c2.SetAnchor( fc.anchor.ToVec3 ( ) );
+            c2.SetShafts( fc.shaft[0].ToVec3 ( ), fc.shaft[1].ToVec3 ( ) );
+            c2.SetFriction( fc.friction );
+            switch ( fc.limit ) {
+            case idDeclAF_Constraint.LIMIT_CONE:
+            {
+                c2.SetConeLimit( fc.limitAxis.ToVec3 ( ), fc.limitAngles[0] );
+                break;
+            }
+            case idDeclAF_Constraint.LIMIT_PYRAMID:
+            {
+                angles.opEquals( fc.limitAxis.ToVec3 ( ).ToAngles ( ) );
+                angles.roll = fc.limitAngles[2];
+                axis.opEquals( angles.ToMat3 ( ) );
+                c2.SetPyramidLimit( axis[0], axis[1], fc.limitAngles[0], fc.limitAngles[1] );
+                break;
+            }
+            default:
+            {
+                c2.SetNoLimit ( );
+                break;
+            }
+            }
+            break;
+        }
+        case declAFConstraintType_t.DECLAF_CONSTRAINT_HINGE:
+        {
+            var c3: idAFConstraint_Hinge;
+            c3 = static_cast<idAFConstraint_Hinge>( this.physicsObj.GetConstraint( fc.name.data ) );
+            if ( c3 ) {
+                c3.SetBody1( body1 );
+                c3.SetBody2( body2 );
+            } else {
+                c3 = new idAFConstraint_Hinge( fc.name, body1, body2 );
+                this.physicsObj.AddConstraint( c3 );
+            }
+            c3.SetAnchor( fc.anchor.ToVec3 ( ) );
+            c3.SetAxis( fc.axis.ToVec3 ( ) );
+            c3.SetFriction( fc.friction );
+            switch ( fc.limit ) {
+            case idDeclAF_Constraint.LIMIT_CONE:
+            {
+                var left = new idVec3, up = new idVec3, axis = new idVec3, shaft = new idVec3;
+                fc.axis.ToVec3 ( ).OrthogonalBasis( left, up );
+                todoThrow ( );
+                //axis .opEquals( left * new idRotation( vec3_origin, fc.axis.ToVec3(), fc.limitAngles[0] ));
+                //shaft.opEquals(left * new idRotation(vec3_origin, fc.axis.ToVec3(), fc.limitAngles[0]) left * idRotation( vec3_origin, fc.axis.ToVec3(), fc.limitAngles[2] ));
+                //c3.SetLimit( axis, fc.limitAngles[1], shaft );
+                break;
+            }
+            default:
+            {
+                c3.SetNoLimit ( );
+                break;
+            }
+            }
+            break;
+        }
+        case declAFConstraintType_t.DECLAF_CONSTRAINT_SLIDER:
+        {
+            var c4: idAFConstraint_Slider;
+            c4 = static_cast<idAFConstraint_Slider>(this.physicsObj.GetConstraint(fc.name.data ) );
+            if ( c4 ) {
+                c4.SetBody1( body1 );
+                c4.SetBody2( body2 );
+            } else {
+                c4 = new idAFConstraint_Slider( fc.name, body1, body2 );
+                this.physicsObj.AddConstraint( c4 );
+            }
+            c4.SetAxis( fc.axis.ToVec3 ( ) );
+            break;
+        }
+        case declAFConstraintType_t.DECLAF_CONSTRAINT_SPRING:
+        {
+            var c5: idAFConstraint_Spring;
+            c5 = static_cast<idAFConstraint_Spring>( this.physicsObj.GetConstraint( fc.name.data ) );
+            if ( c5 ) {
+                c5.SetBody1( body1 );
+                c5.SetBody2( body2 );
+            } else {
+                c5 = new idAFConstraint_Spring( fc.name, body1, body2 );
+                this.physicsObj.AddConstraint( c5 );
+            }
+            c5.SetAnchor( fc.anchor.ToVec3 ( ), fc.anchor2.ToVec3 ( ) );
+            c5.SetSpring( fc.stretch, fc.compress, fc.damping, fc.restLength );
+            c5.SetLimit( fc.minLength, fc.maxLength );
+            break;
+        }
+        }
+        return true;
+    }
+
+    /*
 	================
 	GetJointTransform
 	================
@@ -1060,7 +1072,7 @@ class idAF {
 ////		if ( gameLocal.clip.Translation( trace, body.GetWorldOrigin(), body.GetWorldOrigin(), body.GetClipModel(), body.GetWorldAxis(), body.GetClipMask(), this.self ) ) {
 ////			float depth = idMath::Fabs( trace.c.point * trace.c.normal - trace.c.dist );
 ////
-////			body.SetWorldOrigin( body.GetWorldOrigin() + trace.c.normal * ( depth + 8.0f ) );
+////			body.SetWorldOrigin( body.GetWorldOrigin() + trace.c.normal * ( depth + 8.0 ) );
 ////
 ////			gameLocal.DWarning( "%s: body '%s' stuck in %d (normal = %.2f %.2f %.2f, depth = %.2f)", this.self.name.c_str(),
 ////						body.GetName().c_str(), trace.c.contents, trace.c.normal.x, trace.c.normal.y, trace.c.normal.z, depth );

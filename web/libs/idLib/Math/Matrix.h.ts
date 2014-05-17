@@ -37,8 +37,8 @@
 ===============================================================================
 */
 
-var MATRIX_INVERSE_EPSILON	=	1e-14
-var MATRIX_EPSILON			=	1e-6
+var MATRIX_INVERSE_EPSILON = 1e-14;
+var MATRIX_EPSILON = 1e-6;
 
 //class idAngles;
 //class idQuat;
@@ -626,14 +626,16 @@ class idMat3 {
 	}
 
 //ID_INLINE bool idMat3::operator==( const idMat3 &a ) const {
-//	return this.Compare( a );
-//}
-//
-//ID_INLINE bool idMat3::operator!=( const idMat3 &a ) const {
-//	return !this.Compare( a );
-//}
+    opEqualTo ( a: idMat3 ): boolean {
+        return this.Compare( a );
+    }
 
-	Zero ( ): void {
+//ID_INLINE bool idMat3::operator!=( const idMat3 &a ) const {
+    opNotEqualTo ( a: idMat3 ): boolean {
+        return !this.Compare( a );
+    }
+
+    Zero ( ): void {
 		//memset( this.mat, 0, sizeof( this.mat ) );
 		this.mat[0].Zero ( );
 		this.mat[1].Zero ( );
@@ -661,19 +663,19 @@ class idMat3 {
 //	return true;
 //}
 //
-//ID_INLINE bool idMat3::IsDiagonal( const float epsilon ) const {
-//	if ( idMath.Fabs( this.mat[0][1] ) > epsilon ||
-//		idMath.Fabs( this.mat[0][2] ) > epsilon ||
-//		idMath.Fabs( this.mat[1][0] ) > epsilon ||
-//		idMath.Fabs( this.mat[1][2] ) > epsilon ||
-//		idMath.Fabs( this.mat[2][0] ) > epsilon ||
-//		idMath.Fabs( this.mat[2][1] ) > epsilon ) {
-//		return false;
-//	}
-//	return true;
-//}
+    IsDiagonal ( /*const float*/ epsilon: number = MATRIX_EPSILON ): boolean {
+        if ( idMath.Fabs( this.mat[0][1] ) > epsilon ||
+            idMath.Fabs( this.mat[0][2] ) > epsilon ||
+            idMath.Fabs( this.mat[1][0] ) > epsilon ||
+            idMath.Fabs( this.mat[1][2] ) > epsilon ||
+            idMath.Fabs( this.mat[2][0] ) > epsilon ||
+            idMath.Fabs( this.mat[2][1] ) > epsilon ) {
+            return false;
+        }
+        return true;
+    }
 
-	IsRotated ( ): boolean {
+    IsRotated ( ): boolean {
 		return !this.Compare( mat3_identity );
 	}
 

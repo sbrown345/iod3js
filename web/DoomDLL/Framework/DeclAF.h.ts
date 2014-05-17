@@ -163,59 +163,63 @@ idAFVector::Parse
 idAFVector::Finish
 ================
 */
-	Finish ( fileName: string, GetJointTransform: ( model: any, frame: idJointMat[], jointName: string, origin: idVec3, axis: idMat3 ) => boolean, frame: idJointMat[], model: any ): boolean {
-		todoThrow ( );
-////	var axis = new idMat3;
-////	var start = new idVec3, end = new idVec3;
-////
-////	switch( this.type ) {
-////		case idAFVector_type.VEC_COORDS: {
-////			break;
-////		}
-////		case idAFVector_type.VEC_JOINT: {
-////			if ( !GetJointTransform( model, frame, this.joint1, this.vec, axis ) ) {
-////				common.Warning( "invalid joint %s in joint() in '%s'", this.joint1.c_str(), fileName );
-////				this.vec.Zero();
-////			}
-////			break;
-////		}
-////		case idAFVector_type.VEC_BONECENTER: {
-////			if ( !GetJointTransform( model, frame, this.joint1, start, axis ) ) {
-////				common.Warning( "invalid joint %s in bonecenter() in '%s'", this.joint1.c_str(), fileName );
-////				start.Zero();
-////			}
-////			if ( !GetJointTransform( model, frame, this.joint2, end, axis ) ) {
-////				common.Warning( "invalid joint %s in bonecenter() in '%s'", this.joint2.c_str(), fileName );
-////				end.Zero();
-////			}
-////			this.vec.opEquals(( start + end ) * 0.5);
-////			break;
-////		}
-////		case idAFVector_type.VEC_BONEDIR: {
-////			if ( !GetJointTransform( model, frame, this.joint1, start, axis ) ) {
-////				common.Warning( "invalid joint %s in bonedir() in '%s'", this.joint1.c_str(), fileName );
-////				start.Zero();
-////			}
-////			if ( !GetJointTransform( model, frame, this.joint2, end, axis ) ) {
-////				common.Warning( "invalid joint %s in bonedir() in '%s'", this.joint2.c_str(), fileName );
-////				end.Zero();
-////			}
-////			this.vec .opEquals( ( end - start ));
-////			break;
-////		}
-////		default: {
-////			this.vec.Zero();
-////			break;
-////		}
-////	}
-////
-////	if ( this.negate ) {
-////		this.vec .opEquals( -this.vec);
-////	}
-////
-		return true;
-	}
-////
+    Finish ( fileName: string, GetJointTransform: ( model: any, frame: idJointMat[], jointName: string, origin: idVec3, axis: idMat3 ) => boolean, frame: idJointMat[], model: any ): boolean {
+        var axis = new idMat3;
+        var start = new idVec3, end = new idVec3;
+
+        switch ( this.type ) {
+        case idAFVector_type.VEC_COORDS:
+        {
+            break;
+        }
+        case idAFVector_type.VEC_JOINT:
+        {
+            if ( !GetJointTransform( model, frame, this.joint1.data, this.vec, axis ) ) {
+                common.Warning( "invalid joint %s in joint() in '%s'", this.joint1.c_str ( ), fileName );
+                this.vec.Zero ( );
+            }
+            break;
+        }
+        case idAFVector_type.VEC_BONECENTER:
+        {
+            if (!GetJointTransform(model, frame, this.joint1.data, start, axis ) ) {
+                common.Warning( "invalid joint %s in bonecenter() in '%s'", this.joint1.c_str ( ), fileName );
+                start.Zero ( );
+            }
+            if ( !GetJointTransform( model, frame, this.joint2.data, end, axis ) ) {
+                common.Warning( "invalid joint %s in bonecenter() in '%s'", this.joint2.c_str ( ), fileName );
+                end.Zero ( );
+            }
+            this.vec.opEquals( ( start.opAddition( end ) ).timesFloat( 0.5 ) );
+            break;
+        }
+        case idAFVector_type.VEC_BONEDIR:
+        {
+            if (!GetJointTransform(model, frame, this.joint1.data, start, axis ) ) {
+                common.Warning( "invalid joint %s in bonedir() in '%s'", this.joint1.c_str ( ), fileName );
+                start.Zero ( );
+            }
+            if (!GetJointTransform(model, frame, this.joint2.data, end, axis ) ) {
+                common.Warning( "invalid joint %s in bonedir() in '%s'", this.joint2.c_str ( ), fileName );
+                end.Zero ( );
+            }
+            this.vec.opEquals( ( end.opSubtraction( start ) ) );
+            break;
+        }
+        default:
+        {
+            this.vec.Zero ( );
+            break;
+        }
+        }
+
+        if ( this.negate ) {
+            this.vec.opEquals( this.vec.opUnaryMinus() );
+        }
+
+        return true;
+    }
+
 /////*
 ////================
 ////idAFVector::Write
@@ -260,10 +264,9 @@ idAFVector::ToString
         //switch( this.type ) {
         //    case idAFVector_type.VEC_COORDS:
         //    {
-        //        todoThrow ( );
-        //		//char format[128];
-        //		//sprintf( format, "( %%.%df, %%.%df, %%.%df )", precision, precision, precision );
-        //		//sprintf( str, format, this.vec.x, this.vec.y, this.vec.z );
+        //		char format[128];
+        //		sprintf( format, "( %%.%df, %%.%df, %%.%df )", precision, precision, precision );
+        //		sprintf( str, format, this.vec.x, this.vec.y, this.vec.z );
         //		break;
         //	}
         //	case idAFVector_type.VEC_JOINT: {

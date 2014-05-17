@@ -338,55 +338,55 @@ idTraceModel::InitBox
 		this.GenerateEdgeNormals ( );
 	}
 
-/////*
-////============
-////idTraceModel::SetupOctahedron
-////============
-////*/
-////void idTraceModel::SetupOctahedron( const idBounds &octBounds ) {
-////	int i, e0, e1, v0, v1, v2;
-////	idVec3 v;
-////
-////	if ( this.type != traceModel_t.TRM_OCTAHEDRON ) {
-////		InitOctahedron();
-////	}
-////
-////	this.offset.opEquals( ( octBounds[0] + octBounds[1] ) * 0.5;
-////	v[0] = octBounds[1][0] - this.offset[0];
-////	v[1] = octBounds[1][1] - this.offset[1];
-////	v[2] = octBounds[1][2] - this.offset[2];
-////
-////	// set vertices
-////	this.verts[0].Set( this.offset.x + v[0], this.offset.y, this.offset.z );
-////	this.verts[1].Set( this.offset.x - v[0], this.offset.y, this.offset.z );
-////	this.verts[2].Set( this.offset.x, this.offset.y + v[1], this.offset.z );
-////	this.verts[3].Set( this.offset.x, this.offset.y - v[1], this.offset.z );
-////	this.verts[4].Set( this.offset.x, this.offset.y, this.offset.z + v[2] );
-////	this.verts[5].Set( this.offset.x, this.offset.y, this.offset.z - v[2] );
-////
-////	// set polygons
-////	for ( i = 0; i < numPolys; i++ ) {
-////		e0 = this.polys[i].edges[0];
-////		e1 = this.polys[i].edges[1];
-////		v0 = this.edges[abs(e0)].v[INTSIGNBITSET(e0)];
-////		v1 = this.edges[abs(e0)].v[INTSIGNBITNOTSET(e0)];
-////		v2 = this.edges[abs(e1)].v[INTSIGNBITNOTSET(e1)];
-////		// polygon plane
-////		this.polys[i].normal = ( this.verts[v1] - this.verts[v0] ).Cross( this.verts[v2] - this.verts[v0] );
-////		this.polys[i].normal.Normalize();
-////		this.polys[i].dist = this.polys[i].normal * this.verts[v0];
-////		// polygon bounds
-////		this.polys[i].bounds[0] = this.polys[i].bounds[1] = this.verts[v0];
-////		this.polys[i].bounds.AddPoint( this.verts[v1] );
-////		this.polys[i].bounds.AddPoint( this.verts[v2] );
-////	}
-////
-////	// trm bounds
-////	this.bounds.opEquals( octBounds );
-////
-////	this.GenerateEdgeNormals();
-////}
-////
+/*
+============
+idTraceModel::SetupOctahedron
+============
+*/
+    SetupOctahedron ( octBounds: idBounds ): void {
+        var /*int */i: number, e0: number, e1: number, v0: number, v1: number, v2: number;
+        var v = new idVec3;
+
+        if ( this.type != traceModel_t.TRM_OCTAHEDRON ) {
+            this.InitOctahedron ( );
+        }
+
+        this.offset.opEquals( ( octBounds[0].opAddition( octBounds[1] ) ).timesFloat( 0.5 ) );
+        v[0] = octBounds[1][0] - this.offset[0];
+        v[1] = octBounds[1][1] - this.offset[1];
+        v[2] = octBounds[1][2] - this.offset[2];
+
+        // set vertices
+        this.verts[0].Set( this.offset.x + v[0], this.offset.y, this.offset.z );
+        this.verts[1].Set( this.offset.x - v[0], this.offset.y, this.offset.z );
+        this.verts[2].Set( this.offset.x, this.offset.y + v[1], this.offset.z );
+        this.verts[3].Set( this.offset.x, this.offset.y - v[1], this.offset.z );
+        this.verts[4].Set( this.offset.x, this.offset.y, this.offset.z + v[2] );
+        this.verts[5].Set( this.offset.x, this.offset.y, this.offset.z - v[2] );
+
+        // set polygons
+        for ( i = 0; i < this.numPolys; i++ ) {
+            e0 = this.polys[i].edges[0];
+            e1 = this.polys[i].edges[1];
+            v0 = this.edges[abs( e0 )].v[INTSIGNBITSET( e0 )];
+            v1 = this.edges[abs( e0 )].v[INTSIGNBITNOTSET( e0 )];
+            v2 = this.edges[abs( e1 )].v[INTSIGNBITNOTSET( e1 )];
+            // polygon plane
+            this.polys[i].normal.opEquals( ( this.verts[v1].opSubtraction( this.verts[v0] ) ).Cross( this.verts[v2].opSubtraction( this.verts[v0] ) ) );
+            this.polys[i].normal.Normalize ( );
+            this.polys[i].dist = this.polys[i].normal.timesVec( this.verts[v0] );
+            // polygon bounds
+            this.polys[i].bounds[0] = this.polys[i].bounds[1] = this.verts[v0];
+            this.polys[i].bounds.AddPoint( this.verts[v1] );
+            this.polys[i].bounds.AddPoint( this.verts[v2] );
+        }
+
+        // trm bounds
+        this.bounds.opEquals( octBounds );
+
+        this.GenerateEdgeNormals ( );
+    }
+
 /////*
 ////============
 ////idTraceModel::SetupOctahedron
@@ -403,163 +403,175 @@ idTraceModel::InitBox
 ////	octBounds[1].Set( halfSize, halfSize, halfSize );
 ////	SetupOctahedron( octBounds );
 ////}
-////
-/////*
-////============
-////idTraceModel::InitOctahedron
-////
-////  Initialize size independent octahedron.
-////============
-////*/
-////void idTraceModel::InitOctahedron( ) {
-////
-////	this.type = traceModel_t.TRM_OCTAHEDRON;
-////	this.numVerts = 6;
-////	this.numEdges = 12;
-////	numPolys = 8;
-////
-////	// set edges
-////	this.edges[ 1].v[0] =  4; this.edges[ 1].v[1] =  0;
-////	this.edges[ 2].v[0] =  0; this.edges[ 2].v[1] =  2;
-////	this.edges[ 3].v[0] =  2; this.edges[ 3].v[1] =  4;
-////	this.edges[ 4].v[0] =  2; this.edges[ 4].v[1] =  1;
-////	this.edges[ 5].v[0] =  1; this.edges[ 5].v[1] =  4;
-////	this.edges[ 6].v[0] =  1; this.edges[ 6].v[1] =  3;
-////	this.edges[ 7].v[0] =  3; this.edges[ 7].v[1] =  4;
-////	this.edges[ 8].v[0] =  3; this.edges[ 8].v[1] =  0;
-////	this.edges[ 9].v[0] =  5; this.edges[ 9].v[1] =  2;
-////	this.edges[10].v[0] =  0; this.edges[10].v[1] =  5;
-////	this.edges[11].v[0] =  5; this.edges[11].v[1] =  1;
-////	this.edges[12].v[0] =  5; this.edges[12].v[1] =  3;
-////
-////	// all edges of a polygon go counter clockwise
-////	this.polys[0].numEdges = 3;
-////	this.polys[0].edges[0] = 1;
-////	this.polys[0].edges[1] = 2;
-////	this.polys[0].edges[2] = 3;
-////
-////	this.polys[1].numEdges = 3;
-////	this.polys[1].edges[0] = -3;
-////	this.polys[1].edges[1] = 4;
-////	this.polys[1].edges[2] = 5;
-////
-////	this.polys[2].numEdges = 3;
-////	this.polys[2].edges[0] = -5;
-////	this.polys[2].edges[1] = 6;
-////	this.polys[2].edges[2] = 7;
-////
-////	this.polys[3].numEdges = 3;
-////	this.polys[3].edges[0] = -7;
-////	this.polys[3].edges[1] = 8;
-////	this.polys[3].edges[2] = -1;
-////
-////	this.polys[4].numEdges = 3;
-////	this.polys[4].edges[0] = 9;
-////	this.polys[4].edges[1] = -2;
-////	this.polys[4].edges[2] = 10;
-////
-////	this.polys[5].numEdges = 3;
-////	this.polys[5].edges[0] = 11;
-////	this.polys[5].edges[1] = -4;
-////	this.polys[5].edges[2] = -9;
-////
-////	this.polys[6].numEdges = 3;
-////	this.polys[6].edges[0] = 12;
-////	this.polys[6].edges[1] = -6;
-////	this.polys[6].edges[2] = -11;
-////
-////	this.polys[7].numEdges = 3;
-////	this.polys[7].edges[0] = -10;
-////	this.polys[7].edges[1] = -8;
-////	this.polys[7].edges[2] = -12;
-////
-////	// convex model
-////	this.isConvex = true;
-////}
-////
-/////*
-////============
-////idTraceModel::SetupDodecahedron
-////============
-////*/
-////void idTraceModel::SetupDodecahedron( const idBounds &dodBounds ) {
-////	int i, e0, e1, e2, e3, v0, v1, v2, v3, v4;
-////	float s, d;
-////	idVec3 a, b, c;
-////
-////	if ( this.type != traceModel_t.TRM_DODECAHEDRON ) {
-////		InitDodecahedron();
-////	}
-////
-////	a[0] = a[1] = a[2] = 0.5773502691896257f; // 1.0 / ( 3.0 ) ^ 0.5;
-////	b[0] = b[1] = b[2] = 0.3568220897730899f; // ( ( 3.0 - ( 5.0 ) ^ 0.5 ) / 6.0 ) ^ 0.5;
-////	c[0] = c[1] = c[2] = 0.9341723589627156f; // ( ( 3.0 + ( 5.0 ) ^ 0.5 ) / 6.0 ) ^ 0.5;
-////	d = 0.5 / c[0];
-////	s = ( dodBounds[1][0] - dodBounds[0][0] ) * d;
-////	a[0] *= s;
-////	b[0] *= s;
-////	c[0] *= s;
-////	s = ( dodBounds[1][1] - dodBounds[0][1] ) * d;
-////	a[1] *= s;
-////	b[1] *= s;
-////	c[1] *= s;
-////	s = ( dodBounds[1][2] - dodBounds[0][2] ) * d;
-////	a[2] *= s;
-////	b[2] *= s;
-////	c[2] *= s;
-////
-////	this.offset.opEquals( ( dodBounds[0] + dodBounds[1] ) * 0.5;
-////
-////	// set vertices
-////	this.verts[ 0].Set( this.offset.x + a[0], this.offset.y + a[1], this.offset.z + a[2] );
-////	this.verts[ 1].Set( this.offset.x + a[0], this.offset.y + a[1], this.offset.z - a[2] );
-////	this.verts[ 2].Set( this.offset.x + a[0], this.offset.y - a[1], this.offset.z + a[2] );
-////	this.verts[ 3].Set( this.offset.x + a[0], this.offset.y - a[1], this.offset.z - a[2] );
-////	this.verts[ 4].Set( this.offset.x - a[0], this.offset.y + a[1], this.offset.z + a[2] );
-////	this.verts[ 5].Set( this.offset.x - a[0], this.offset.y + a[1], this.offset.z - a[2] );
-////	this.verts[ 6].Set( this.offset.x - a[0], this.offset.y - a[1], this.offset.z + a[2] );
-////	this.verts[ 7].Set( this.offset.x - a[0], this.offset.y - a[1], this.offset.z - a[2] );
-////	this.verts[ 8].Set( this.offset.x + b[0], this.offset.y + c[1], this.offset.z        );
-////	this.verts[ 9].Set( this.offset.x - b[0], this.offset.y + c[1], this.offset.z        );
-////	this.verts[10].Set( this.offset.x + b[0], this.offset.y - c[1], this.offset.z        );
-////	this.verts[11].Set( this.offset.x - b[0], this.offset.y - c[1], this.offset.z        );
-////	this.verts[12].Set( this.offset.x + c[0], this.offset.y       , this.offset.z + b[2] );
-////	this.verts[13].Set( this.offset.x + c[0], this.offset.y       , this.offset.z - b[2] );
-////	this.verts[14].Set( this.offset.x - c[0], this.offset.y       , this.offset.z + b[2] );
-////	this.verts[15].Set( this.offset.x - c[0], this.offset.y       , this.offset.z - b[2] );
-////	this.verts[16].Set( this.offset.x       , this.offset.y + b[1], this.offset.z + c[2] );
-////	this.verts[17].Set( this.offset.x       , this.offset.y - b[1], this.offset.z + c[2] );
-////	this.verts[18].Set( this.offset.x       , this.offset.y + b[1], this.offset.z - c[2] );
-////	this.verts[19].Set( this.offset.x       , this.offset.y - b[1], this.offset.z - c[2] );
-////
-////	// set polygons
-////	for ( i = 0; i < numPolys; i++ ) {
-////		e0 = this.polys[i].edges[0];
-////		e1 = this.polys[i].edges[1];
-////		e2 = this.polys[i].edges[2];
-////		e3 = this.polys[i].edges[3];
-////		v0 = this.edges[abs(e0)].v[INTSIGNBITSET(e0)];
-////		v1 = this.edges[abs(e0)].v[INTSIGNBITNOTSET(e0)];
-////		v2 = this.edges[abs(e1)].v[INTSIGNBITNOTSET(e1)];
-////		v3 = this.edges[abs(e2)].v[INTSIGNBITNOTSET(e2)];
-////		v4 = this.edges[abs(e3)].v[INTSIGNBITNOTSET(e3)];
-////		// polygon plane
-////		this.polys[i].normal = ( this.verts[v1] - this.verts[v0] ).Cross( this.verts[v2] - this.verts[v0] );
-////		this.polys[i].normal.Normalize();
-////		this.polys[i].dist = this.polys[i].normal * this.verts[v0];
-////		// polygon bounds
-////		this.polys[i].bounds[0] = this.polys[i].bounds[1] = this.verts[v0];
-////		this.polys[i].bounds.AddPoint( this.verts[v1] );
-////		this.polys[i].bounds.AddPoint( this.verts[v2] );
-////		this.polys[i].bounds.AddPoint( this.verts[v3] );
-////		this.polys[i].bounds.AddPoint( this.verts[v4] );
-////	}
-////
-////	// trm bounds
-////	this.bounds.opEquals( dodBounds );
-////
-////	this.GenerateEdgeNormals();
-////}
+
+/*
+============
+idTraceModel::InitOctahedron
+
+  Initialize size independent octahedron.
+============
+*/
+    InitOctahedron ( ): void {
+
+        this.type = traceModel_t.TRM_OCTAHEDRON;
+        this.numVerts = 6;
+        this.numEdges = 12;
+        this.numPolys = 8;
+
+        // set edges
+        this.edges[1].v[0] = 4;
+        this.edges[1].v[1] = 0;
+        this.edges[2].v[0] = 0;
+        this.edges[2].v[1] = 2;
+        this.edges[3].v[0] = 2;
+        this.edges[3].v[1] = 4;
+        this.edges[4].v[0] = 2;
+        this.edges[4].v[1] = 1;
+        this.edges[5].v[0] = 1;
+        this.edges[5].v[1] = 4;
+        this.edges[6].v[0] = 1;
+        this.edges[6].v[1] = 3;
+        this.edges[7].v[0] = 3;
+        this.edges[7].v[1] = 4;
+        this.edges[8].v[0] = 3;
+        this.edges[8].v[1] = 0;
+        this.edges[9].v[0] = 5;
+        this.edges[9].v[1] = 2;
+        this.edges[10].v[0] = 0;
+        this.edges[10].v[1] = 5;
+        this.edges[11].v[0] = 5;
+        this.edges[11].v[1] = 1;
+        this.edges[12].v[0] = 5;
+        this.edges[12].v[1] = 3;
+
+        // all edges of a polygon go counter clockwise
+        this.polys[0].numEdges = 3;
+        this.polys[0].edges[0] = 1;
+        this.polys[0].edges[1] = 2;
+        this.polys[0].edges[2] = 3;
+
+        this.polys[1].numEdges = 3;
+        this.polys[1].edges[0] = -3;
+        this.polys[1].edges[1] = 4;
+        this.polys[1].edges[2] = 5;
+
+        this.polys[2].numEdges = 3;
+        this.polys[2].edges[0] = -5;
+        this.polys[2].edges[1] = 6;
+        this.polys[2].edges[2] = 7;
+
+        this.polys[3].numEdges = 3;
+        this.polys[3].edges[0] = -7;
+        this.polys[3].edges[1] = 8;
+        this.polys[3].edges[2] = -1;
+
+        this.polys[4].numEdges = 3;
+        this.polys[4].edges[0] = 9;
+        this.polys[4].edges[1] = -2;
+        this.polys[4].edges[2] = 10;
+
+        this.polys[5].numEdges = 3;
+        this.polys[5].edges[0] = 11;
+        this.polys[5].edges[1] = -4;
+        this.polys[5].edges[2] = -9;
+
+        this.polys[6].numEdges = 3;
+        this.polys[6].edges[0] = 12;
+        this.polys[6].edges[1] = -6;
+        this.polys[6].edges[2] = -11;
+
+        this.polys[7].numEdges = 3;
+        this.polys[7].edges[0] = -10;
+        this.polys[7].edges[1] = -8;
+        this.polys[7].edges[2] = -12;
+
+        // convex model
+        this.isConvex = true;
+    }
+
+/*
+============
+idTraceModel::SetupDodecahedron
+============
+*/
+    SetupDodecahedron(dodBounds: idBounds ):void {
+        var/*int */i: number, e0: number, e1: number, e2: number, e3: number, v0: number, v1: number, v2: number, v3: number, v4: number;
+        var/*float */s: number, d: number;
+        var a = new idVec3, b = new idVec3, c = new idVec3 ;
+
+	if ( this.type != traceModel_t.TRM_DODECAHEDRON ) {
+		this.InitDodecahedron();
+	}
+
+	a[0] = a[1] = a[2] = 0.5773502691896257; // 1.0 / ( 3.0 ) ^ 0.5;
+	b[0] = b[1] = b[2] = 0.3568220897730899; // ( ( 3.0 - ( 5.0 ) ^ 0.5 ) / 6.0 ) ^ 0.5;
+	c[0] = c[1] = c[2] = 0.9341723589627156; // ( ( 3.0 + ( 5.0 ) ^ 0.5 ) / 6.0 ) ^ 0.5;
+	d = 0.5 / c[0];
+	s = ( dodBounds[1][0] - dodBounds[0][0] ) * d;
+	a[0] *= s;
+	b[0] *= s;
+	c[0] *= s;
+	s = ( dodBounds[1][1] - dodBounds[0][1] ) * d;
+	a[1] *= s;
+	b[1] *= s;
+	c[1] *= s;
+	s = ( dodBounds[1][2] - dodBounds[0][2] ) * d;
+	a[2] *= s;
+	b[2] *= s;
+	c[2] *= s;
+
+	this.offset.opEquals( ( dodBounds[0] .opAddition( dodBounds[1]) ) .timesFloat( 0.5));
+
+	// set vertices
+	this.verts[ 0].Set( this.offset.x + a[0], this.offset.y + a[1], this.offset.z + a[2] );
+	this.verts[ 1].Set( this.offset.x + a[0], this.offset.y + a[1], this.offset.z - a[2] );
+	this.verts[ 2].Set( this.offset.x + a[0], this.offset.y - a[1], this.offset.z + a[2] );
+	this.verts[ 3].Set( this.offset.x + a[0], this.offset.y - a[1], this.offset.z - a[2] );
+	this.verts[ 4].Set( this.offset.x - a[0], this.offset.y + a[1], this.offset.z + a[2] );
+	this.verts[ 5].Set( this.offset.x - a[0], this.offset.y + a[1], this.offset.z - a[2] );
+	this.verts[ 6].Set( this.offset.x - a[0], this.offset.y - a[1], this.offset.z + a[2] );
+	this.verts[ 7].Set( this.offset.x - a[0], this.offset.y - a[1], this.offset.z - a[2] );
+	this.verts[ 8].Set( this.offset.x + b[0], this.offset.y + c[1], this.offset.z        );
+	this.verts[ 9].Set( this.offset.x - b[0], this.offset.y + c[1], this.offset.z        );
+	this.verts[10].Set( this.offset.x + b[0], this.offset.y - c[1], this.offset.z        );
+	this.verts[11].Set( this.offset.x - b[0], this.offset.y - c[1], this.offset.z        );
+	this.verts[12].Set( this.offset.x + c[0], this.offset.y       , this.offset.z + b[2] );
+	this.verts[13].Set( this.offset.x + c[0], this.offset.y       , this.offset.z - b[2] );
+	this.verts[14].Set( this.offset.x - c[0], this.offset.y       , this.offset.z + b[2] );
+	this.verts[15].Set( this.offset.x - c[0], this.offset.y       , this.offset.z - b[2] );
+	this.verts[16].Set( this.offset.x       , this.offset.y + b[1], this.offset.z + c[2] );
+	this.verts[17].Set( this.offset.x       , this.offset.y - b[1], this.offset.z + c[2] );
+	this.verts[18].Set( this.offset.x       , this.offset.y + b[1], this.offset.z - c[2] );
+	this.verts[19].Set( this.offset.x       , this.offset.y - b[1], this.offset.z - c[2] );
+
+	// set polygons
+	for ( i = 0; i < this.numPolys; i++ ) {
+		e0 = this.polys[i].edges[0];
+		e1 = this.polys[i].edges[1];
+		e2 = this.polys[i].edges[2];
+		e3 = this.polys[i].edges[3];
+		v0 = this.edges[abs(e0)].v[INTSIGNBITSET(e0)];
+		v1 = this.edges[abs(e0)].v[INTSIGNBITNOTSET(e0)];
+		v2 = this.edges[abs(e1)].v[INTSIGNBITNOTSET(e1)];
+		v3 = this.edges[abs(e2)].v[INTSIGNBITNOTSET(e2)];
+		v4 = this.edges[abs(e3)].v[INTSIGNBITNOTSET(e3)];
+		// polygon plane
+		this.polys[i].normal = ( this.verts[v1] .opSubtraction( this.verts[v0] )).Cross( this.verts[v2] .opSubtraction( this.verts[v0] ));
+		this.polys[i].normal.Normalize();
+		this.polys[i].dist = this.polys[i].normal.timesVec( this.verts[v0]);
+		// polygon bounds
+		this.polys[i].bounds[0] = this.polys[i].bounds[1] = this.verts[v0];
+		this.polys[i].bounds.AddPoint( this.verts[v1] );
+		this.polys[i].bounds.AddPoint( this.verts[v2] );
+		this.polys[i].bounds.AddPoint( this.verts[v3] );
+		this.polys[i].bounds.AddPoint( this.verts[v4] );
+	}
+
+	// trm bounds
+	this.bounds.opEquals( dodBounds );
+
+	this.GenerateEdgeNormals();
+}
 ////
 /////*
 ////============
@@ -577,141 +589,141 @@ idTraceModel::InitBox
 ////	dodBounds[1].Set( halfSize, halfSize, halfSize );
 ////	SetupDodecahedron( dodBounds );
 ////}
-////
-/////*
-////============
-////idTraceModel::InitDodecahedron
-////
-////  Initialize size independent dodecahedron.
-////============
-////*/
-////void idTraceModel::InitDodecahedron( ) {
-////
-////	this.type = traceModel_t.TRM_DODECAHEDRON;
-////	this.numVerts = 20;
-////	this.numEdges = 30;
-////	numPolys = 12;
-////
-////	// set edges
-////	this.edges[ 1].v[0] =  0; this.edges[ 1].v[1] =  8;
-////	this.edges[ 2].v[0] =  8; this.edges[ 2].v[1] =  9;
-////	this.edges[ 3].v[0] =  9; this.edges[ 3].v[1] =  4;
-////	this.edges[ 4].v[0] =  4; this.edges[ 4].v[1] = 16;
-////	this.edges[ 5].v[0] = 16; this.edges[ 5].v[1] =  0;
-////	this.edges[ 6].v[0] = 16; this.edges[ 6].v[1] = 17;
-////	this.edges[ 7].v[0] = 17; this.edges[ 7].v[1] =  2;
-////	this.edges[ 8].v[0] =  2; this.edges[ 8].v[1] = 12;
-////	this.edges[ 9].v[0] = 12; this.edges[ 9].v[1] =  0;
-////	this.edges[10].v[0] =  2; this.edges[10].v[1] = 10;
-////	this.edges[11].v[0] = 10; this.edges[11].v[1] =  3;
-////	this.edges[12].v[0] =  3; this.edges[12].v[1] = 13;
-////	this.edges[13].v[0] = 13; this.edges[13].v[1] = 12;
-////	this.edges[14].v[0] =  9; this.edges[14].v[1] =  5;
-////	this.edges[15].v[0] =  5; this.edges[15].v[1] = 15;
-////	this.edges[16].v[0] = 15; this.edges[16].v[1] = 14;
-////	this.edges[17].v[0] = 14; this.edges[17].v[1] =  4;
-////	this.edges[18].v[0] =  3; this.edges[18].v[1] = 19;
-////	this.edges[19].v[0] = 19; this.edges[19].v[1] = 18;
-////	this.edges[20].v[0] = 18; this.edges[20].v[1] =  1;
-////	this.edges[21].v[0] =  1; this.edges[21].v[1] = 13;
-////	this.edges[22].v[0] =  7; this.edges[22].v[1] = 11;
-////	this.edges[23].v[0] = 11; this.edges[23].v[1] =  6;
-////	this.edges[24].v[0] =  6; this.edges[24].v[1] = 14;
-////	this.edges[25].v[0] = 15; this.edges[25].v[1] =  7;
-////	this.edges[26].v[0] =  1; this.edges[26].v[1] =  8;
-////	this.edges[27].v[0] = 18; this.edges[27].v[1] =  5;
-////	this.edges[28].v[0] =  6; this.edges[28].v[1] = 17;
-////	this.edges[29].v[0] = 11; this.edges[29].v[1] = 10;
-////	this.edges[30].v[0] = 19; this.edges[30].v[1] =  7;
-////
-////	// all edges of a polygon go counter clockwise
-////	this.polys[0].numEdges = 5;
-////	this.polys[0].edges[0] = 1;
-////	this.polys[0].edges[1] = 2;
-////	this.polys[0].edges[2] = 3;
-////	this.polys[0].edges[3] = 4;
-////	this.polys[0].edges[4] = 5;
-////
-////	this.polys[1].numEdges = 5;
-////	this.polys[1].edges[0] = -5;
-////	this.polys[1].edges[1] = 6;
-////	this.polys[1].edges[2] = 7;
-////	this.polys[1].edges[3] = 8;
-////	this.polys[1].edges[4] = 9;
-////
-////	this.polys[2].numEdges = 5;
-////	this.polys[2].edges[0] = -8;
-////	this.polys[2].edges[1] = 10;
-////	this.polys[2].edges[2] = 11;
-////	this.polys[2].edges[3] = 12;
-////	this.polys[2].edges[4] = 13;
-////
-////	this.polys[3].numEdges = 5;
-////	this.polys[3].edges[0] = 14;
-////	this.polys[3].edges[1] = 15;
-////	this.polys[3].edges[2] = 16;
-////	this.polys[3].edges[3] = 17;
-////	this.polys[3].edges[4] = -3;
-////
-////	this.polys[4].numEdges = 5;
-////	this.polys[4].edges[0] = 18;
-////	this.polys[4].edges[1] = 19;
-////	this.polys[4].edges[2] = 20;
-////	this.polys[4].edges[3] = 21;
-////	this.polys[4].edges[4] = -12;
-////
-////	this.polys[5].numEdges = 5;
-////	this.polys[5].edges[0] = 22;
-////	this.polys[5].edges[1] = 23;
-////	this.polys[5].edges[2] = 24;
-////	this.polys[5].edges[3] = -16;
-////	this.polys[5].edges[4] = 25;
-////
-////	this.polys[6].numEdges = 5;
-////	this.polys[6].edges[0] = -9;
-////	this.polys[6].edges[1] = -13;
-////	this.polys[6].edges[2] = -21;
-////	this.polys[6].edges[3] = 26;
-////	this.polys[6].edges[4] = -1;
-////
-////	this.polys[7].numEdges = 5;
-////	this.polys[7].edges[0] = -26;
-////	this.polys[7].edges[1] = -20;
-////	this.polys[7].edges[2] = 27;
-////	this.polys[7].edges[3] = -14;
-////	this.polys[7].edges[4] = -2;
-////
-////	this.polys[8].numEdges = 5;
-////	this.polys[8].edges[0] = -4;
-////	this.polys[8].edges[1] = -17;
-////	this.polys[8].edges[2] = -24;
-////	this.polys[8].edges[3] = 28;
-////	this.polys[8].edges[4] = -6;
-////
-////	this.polys[9].numEdges = 5;
-////	this.polys[9].edges[0] = -23;
-////	this.polys[9].edges[1] = 29;
-////	this.polys[9].edges[2] = -10;
-////	this.polys[9].edges[3] = -7;
-////	this.polys[9].edges[4] = -28;
-////
-////	this.polys[10].numEdges = 5;
-////	this.polys[10].edges[0] = -25;
-////	this.polys[10].edges[1] = -15;
-////	this.polys[10].edges[2] = -27;
-////	this.polys[10].edges[3] = -19;
-////	this.polys[10].edges[4] = 30;
-////
-////	this.polys[11].numEdges = 5;
-////	this.polys[11].edges[0] = -30;
-////	this.polys[11].edges[1] = -18;
-////	this.polys[11].edges[2] = -11;
-////	this.polys[11].edges[3] = -29;
-////	this.polys[11].edges[4] = -22;
-////
-////	// convex model
-////	this.isConvex = true;
-////}
+
+/*
+============
+idTraceModel::InitDodecahedron
+
+  Initialize size independent dodecahedron.
+============
+*/
+    InitDodecahedron ( ): void {
+
+        this.type = traceModel_t.TRM_DODECAHEDRON;
+        this.numVerts = 20;
+        this.numEdges = 30;
+        this.numPolys = 12;
+
+        // set edges
+        this.edges[1].v[0] = 0, this.edges[1].v[1] = 8;
+        this.edges[2].v[0] = 8, this.edges[2].v[1] = 9;
+        this.edges[3].v[0] = 9, this.edges[3].v[1] = 4;
+        this.edges[4].v[0] = 4, this.edges[4].v[1] = 16;
+        this.edges[5].v[0] = 16, this.edges[5].v[1] = 0;
+        this.edges[6].v[0] = 16, this.edges[6].v[1] = 17;
+        this.edges[7].v[0] = 17, this.edges[7].v[1] = 2;
+        this.edges[8].v[0] = 2, this.edges[8].v[1] = 12;
+        this.edges[9].v[0] = 12, this.edges[9].v[1] = 0;
+        this.edges[10].v[0] = 2, this.edges[10].v[1] = 10;
+        this.edges[11].v[0] = 10, this.edges[11].v[1] = 3;
+        this.edges[12].v[0] = 3, this.edges[12].v[1] = 13;
+        this.edges[13].v[0] = 13, this.edges[13].v[1] = 12;
+        this.edges[14].v[0] = 9, this.edges[14].v[1] = 5;
+        this.edges[15].v[0] = 5, this.edges[15].v[1] = 15;
+        this.edges[16].v[0] = 15, this.edges[16].v[1] = 14;
+        this.edges[17].v[0] = 14, this.edges[17].v[1] = 4;
+        this.edges[18].v[0] = 3, this.edges[18].v[1] = 19;
+        this.edges[19].v[0] = 19, this.edges[19].v[1] = 18;
+        this.edges[20].v[0] = 18, this.edges[20].v[1] = 1;
+        this.edges[21].v[0] = 1, this.edges[21].v[1] = 13;
+        this.edges[22].v[0] = 7, this.edges[22].v[1] = 11;
+        this.edges[23].v[0] = 11, this.edges[23].v[1] = 6;
+        this.edges[24].v[0] = 6, this.edges[24].v[1] = 14;
+        this.edges[25].v[0] = 15, this.edges[25].v[1] = 7;
+        this.edges[26].v[0] = 1, this.edges[26].v[1] = 8;
+        this.edges[27].v[0] = 18, this.edges[27].v[1] = 5;
+        this.edges[28].v[0] = 6, this.edges[28].v[1] = 17;
+        this.edges[29].v[0] = 11, this.edges[29].v[1] = 10;
+        this.edges[30].v[0] = 19, this.edges[30].v[1] = 7;
+
+        // all edges of a polygon go counter clockwise
+        this.polys[0].numEdges = 5;
+        this.polys[0].edges[0] = 1;
+        this.polys[0].edges[1] = 2;
+        this.polys[0].edges[2] = 3;
+        this.polys[0].edges[3] = 4;
+        this.polys[0].edges[4] = 5;
+
+        this.polys[1].numEdges = 5;
+        this.polys[1].edges[0] = -5;
+        this.polys[1].edges[1] = 6;
+        this.polys[1].edges[2] = 7;
+        this.polys[1].edges[3] = 8;
+        this.polys[1].edges[4] = 9;
+
+        this.polys[2].numEdges = 5;
+        this.polys[2].edges[0] = -8;
+        this.polys[2].edges[1] = 10;
+        this.polys[2].edges[2] = 11;
+        this.polys[2].edges[3] = 12;
+        this.polys[2].edges[4] = 13;
+
+        this.polys[3].numEdges = 5;
+        this.polys[3].edges[0] = 14;
+        this.polys[3].edges[1] = 15;
+        this.polys[3].edges[2] = 16;
+        this.polys[3].edges[3] = 17;
+        this.polys[3].edges[4] = -3;
+
+        this.polys[4].numEdges = 5;
+        this.polys[4].edges[0] = 18;
+        this.polys[4].edges[1] = 19;
+        this.polys[4].edges[2] = 20;
+        this.polys[4].edges[3] = 21;
+        this.polys[4].edges[4] = -12;
+
+        this.polys[5].numEdges = 5;
+        this.polys[5].edges[0] = 22;
+        this.polys[5].edges[1] = 23;
+        this.polys[5].edges[2] = 24;
+        this.polys[5].edges[3] = -16;
+        this.polys[5].edges[4] = 25;
+
+        this.polys[6].numEdges = 5;
+        this.polys[6].edges[0] = -9;
+        this.polys[6].edges[1] = -13;
+        this.polys[6].edges[2] = -21;
+        this.polys[6].edges[3] = 26;
+        this.polys[6].edges[4] = -1;
+
+        this.polys[7].numEdges = 5;
+        this.polys[7].edges[0] = -26;
+        this.polys[7].edges[1] = -20;
+        this.polys[7].edges[2] = 27;
+        this.polys[7].edges[3] = -14;
+        this.polys[7].edges[4] = -2;
+
+        this.polys[8].numEdges = 5;
+        this.polys[8].edges[0] = -4;
+        this.polys[8].edges[1] = -17;
+        this.polys[8].edges[2] = -24;
+        this.polys[8].edges[3] = 28;
+        this.polys[8].edges[4] = -6;
+
+        this.polys[9].numEdges = 5;
+        this.polys[9].edges[0] = -23;
+        this.polys[9].edges[1] = 29;
+        this.polys[9].edges[2] = -10;
+        this.polys[9].edges[3] = -7;
+        this.polys[9].edges[4] = -28;
+
+        this.polys[10].numEdges = 5;
+        this.polys[10].edges[0] = -25;
+        this.polys[10].edges[1] = -15;
+        this.polys[10].edges[2] = -27;
+        this.polys[10].edges[3] = -19;
+        this.polys[10].edges[4] = 30;
+
+        this.polys[11].numEdges = 5;
+        this.polys[11].edges[0] = -30;
+        this.polys[11].edges[1] = -18;
+        this.polys[11].edges[2] = -11;
+        this.polys[11].edges[3] = -29;
+        this.polys[11].edges[4] = -22;
+
+        // convex model
+        this.isConvex = true;
+    }
 
 /*
 ============
@@ -925,114 +937,114 @@ idTraceModel::SetupCone
 ////	coneBounds[1].Set( halfWidth, halfWidth, 0.0 );
 ////	SetupCone( coneBounds, numSides );
 ////}
-////
-/////*
-////============
-////idTraceModel::SetupBone
-////
-////  The origin is placed at the center of the bone.
-////============
-////*/
-////void idTraceModel::SetupBone( const float length, const float width ) {
-////	int i, j, edgeNum;
-////	float halfLength = length * 0.5;
-////
-////	if ( this.type != traceModel_t.TRM_BONE ) {
-////		InitBone();
-////	}
-////	// offset to center
-////	this.offset.Set( 0.0, 0.0, 0.0 );
-////	// set vertices
-////	this.verts[0].Set( 0.0, 0.0, -halfLength );
-////	this.verts[1].Set( 0.0, width * -0.5, 0.0 );
-////	this.verts[2].Set( width * 0.5, width * 0.25f, 0.0 );
-////	this.verts[3].Set( width * -0.5, width * 0.25f, 0.0 );
-////	this.verts[4].Set( 0.0, 0.0, halfLength );
-////	// set bounds
-////	this.bounds[0].Set( width * -0.5, width * -0.5, -halfLength );
-////	this.bounds[1].Set( width * 0.5, width * 0.25f, halfLength );
-////	// poly plane normals
-////	this.polys[0].normal = ( this.verts[2] - this.verts[0] ).Cross( this.verts[1] - this.verts[0] );
-////	this.polys[0].normal.Normalize();
-////	this.polys[2].normal.Set( -this.polys[0].normal[0], this.polys[0].normal[1], this.polys[0].normal[2] );
-////	this.polys[3].normal.Set( this.polys[0].normal[0], this.polys[0].normal[1], -this.polys[0].normal[2] );
-////	this.polys[5].normal.Set( -this.polys[0].normal[0], this.polys[0].normal[1], -this.polys[0].normal[2] );
-////	this.polys[1].normal = (this.verts[3] - this.verts[0]).Cross(this.verts[2] - this.verts[0]);
-////	this.polys[1].normal.Normalize();
-////	this.polys[4].normal.Set( this.polys[1].normal[0], this.polys[1].normal[1], -this.polys[1].normal[2] );
-////	// poly plane distances
-////	for ( i = 0; i < 6; i++ ) {
-////		this.polys[i].dist = this.polys[i].normal * this.verts[ this.edges[ abs(this.polys[i].edges[0]) ].v[0] ];
-////		this.polys[i].bounds.Clear();
-////		for ( j = 0; j < 3; j++ ) {
-////			edgeNum = this.polys[i].edges[ j ];
-////			this.polys[i].bounds.AddPoint( this.verts[ this.edges[abs(edgeNum)].v[edgeNum < 0] ] );
-////		}
-////	}
-////
-////	this.GenerateEdgeNormals();
-////}
-////
-/////*
-////============
-////idTraceModel::InitBone
-////
-////  Initialize size independent bone.
-////============
-////*/
-////void idTraceModel::InitBone( ) {
-////	var/*int */i:number;
-////
-////	this.type = traceModel_t.TRM_BONE;
-////	this.numVerts = 5;
-////	this.numEdges = 9;
-////	this.numPolys = 6;
-////
-////	// set bone edges
-////	for ( i = 0; i < 3; i++ ) {
-////		this.edges[ i + 1 ].v[0] = 0;
-////		this.edges[ i + 1 ].v[1] = i + 1;
-////		this.edges[ i + 4 ].v[0] = 1 + i;
-////		this.edges[ i + 4 ].v[1] = 1 + ((i + 1) % 3);
-////		this.edges[ i + 7 ].v[0] = i + 1;
-////		this.edges[ i + 7 ].v[1] = 4;
-////	}
-////
-////	// all edges of a polygon go counter clockwise
-////	this.polys[0].numEdges = 3;
-////	this.polys[0].edges[0] = 2;
-////	this.polys[0].edges[1] = -4;
-////	this.polys[0].edges[2] = -1;
-////
-////	this.polys[1].numEdges = 3;
-////	this.polys[1].edges[0] = 3;
-////	this.polys[1].edges[1] = -5;
-////	this.polys[1].edges[2] = -2;
-////
-////	this.polys[2].numEdges = 3;
-////	this.polys[2].edges[0] = 1;
-////	this.polys[2].edges[1] = -6;
-////	this.polys[2].edges[2] = -3;
-////
-////	this.polys[3].numEdges = 3;
-////	this.polys[3].edges[0] = 4;
-////	this.polys[3].edges[1] = 8;
-////	this.polys[3].edges[2] = -7;
-////
-////	this.polys[4].numEdges = 3;
-////	this.polys[4].edges[0] = 5;
-////	this.polys[4].edges[1] = 9;
-////	this.polys[4].edges[2] = -8;
-////
-////	this.polys[5].numEdges = 3;
-////	this.polys[5].edges[0] = 6;
-////	this.polys[5].edges[1] = 7;
-////	this.polys[5].edges[2] = -9;
-////
-////	// convex model
-////	this.isConvex = true;
-////}
-////
+
+/*
+============
+idTraceModel::SetupBone
+
+  The origin is placed at the center of the bone.
+============
+*/
+    SetupBone ( /*const float */length: number, /*const float */width: number ): void {
+        var /*int */i: number, j: number, edgeNum: number;
+        var /*float */halfLength = length * 0.5;
+
+        if ( this.type != traceModel_t.TRM_BONE ) {
+            this.InitBone ( );
+        }
+        // offset to center
+        this.offset.Set( 0.0, 0.0, 0.0 );
+        // set vertices
+        this.verts[0].Set( 0.0, 0.0, -halfLength );
+        this.verts[1].Set( 0.0, width * -0.5, 0.0 );
+        this.verts[2].Set( width * 0.5, width * 0.25, 0.0 );
+        this.verts[3].Set( width * -0.5, width * 0.25, 0.0 );
+        this.verts[4].Set( 0.0, 0.0, halfLength );
+        // set bounds
+        this.bounds[0].Set( width * -0.5, width * -0.5, -halfLength );
+        this.bounds[1].Set( width * 0.5, width * 0.25, halfLength );
+        // poly plane normals
+        this.polys[0].normal = ( this.verts[2].opSubtraction( this.verts[0] ) ).Cross( this.verts[1].opSubtraction( this.verts[0] ) );
+        this.polys[0].normal.Normalize ( );
+        this.polys[2].normal.Set( -this.polys[0].normal[0], this.polys[0].normal[1], this.polys[0].normal[2] );
+        this.polys[3].normal.Set( this.polys[0].normal[0], this.polys[0].normal[1], -this.polys[0].normal[2] );
+        this.polys[5].normal.Set( -this.polys[0].normal[0], this.polys[0].normal[1], -this.polys[0].normal[2] );
+        this.polys[1].normal = ( this.verts[3].opSubtraction( this.verts[0] ) ).Cross( this.verts[2].opSubtraction( this.verts[0] ) );
+        this.polys[1].normal.Normalize ( );
+        this.polys[4].normal.Set( this.polys[1].normal[0], this.polys[1].normal[1], -this.polys[1].normal[2] );
+        // poly plane distances
+        for ( i = 0; i < 6; i++ ) {
+            this.polys[i].dist = this.polys[i].normal.timesVec( this.verts[this.edges[abs( this.polys[i].edges[0] )].v[0]] );
+            this.polys[i].bounds.Clear ( );
+            for ( j = 0; j < 3; j++ ) {
+                edgeNum = this.polys[i].edges[j];
+                this.polys[i].bounds.AddPoint( this.verts[this.edges[abs( edgeNum )].v[edgeNum < 0 ? 1 : 0]] );
+            }
+        }
+
+        this.GenerateEdgeNormals ( );
+    }
+
+/*
+============
+idTraceModel::InitBone
+
+  Initialize size independent bone.
+============
+*/
+    InitBone ( ): void {
+        var /*int */i: number;
+
+        this.type = traceModel_t.TRM_BONE;
+        this.numVerts = 5;
+        this.numEdges = 9;
+        this.numPolys = 6;
+
+        // set bone edges
+        for ( i = 0; i < 3; i++ ) {
+            this.edges[i + 1].v[0] = 0;
+            this.edges[i + 1].v[1] = i + 1;
+            this.edges[i + 4].v[0] = 1 + i;
+            this.edges[i + 4].v[1] = 1 + ( ( i + 1 ) % 3 );
+            this.edges[i + 7].v[0] = i + 1;
+            this.edges[i + 7].v[1] = 4;
+        }
+
+        // all edges of a polygon go counter clockwise
+        this.polys[0].numEdges = 3;
+        this.polys[0].edges[0] = 2;
+        this.polys[0].edges[1] = -4;
+        this.polys[0].edges[2] = -1;
+
+        this.polys[1].numEdges = 3;
+        this.polys[1].edges[0] = 3;
+        this.polys[1].edges[1] = -5;
+        this.polys[1].edges[2] = -2;
+
+        this.polys[2].numEdges = 3;
+        this.polys[2].edges[0] = 1;
+        this.polys[2].edges[1] = -6;
+        this.polys[2].edges[2] = -3;
+
+        this.polys[3].numEdges = 3;
+        this.polys[3].edges[0] = 4;
+        this.polys[3].edges[1] = 8;
+        this.polys[3].edges[2] = -7;
+
+        this.polys[4].numEdges = 3;
+        this.polys[4].edges[0] = 5;
+        this.polys[4].edges[1] = 9;
+        this.polys[4].edges[2] = -8;
+
+        this.polys[5].numEdges = 3;
+        this.polys[5].edges[0] = 6;
+        this.polys[5].edges[1] = 7;
+        this.polys[5].edges[2] = -9;
+
+        // convex model
+        this.isConvex = true;
+    }
+
 /*
 ============
 idTraceModel::SetupPolygon
@@ -1180,27 +1192,27 @@ idTraceModel::GenerateEdgeNormals
 		return numSharpEdges;
 	}
 
-/////*
-////============
-////idTraceModel::Translate
-////============
-////*/
-////void idTraceModel::Translate( const idVec3 &translation ) {
-////	var/*int */i:number;
-////
-////	for ( i = 0; i < this.numVerts; i++ ) {
-////		this.verts[i] += translation;
-////	}
-////	for ( i = 0; i < numPolys; i++ ) {
-////		this.polys[i].dist += this.polys[i].normal * translation;
-////		this.polys[i].bounds[0] += translation;
-////		this.polys[i].bounds[1] += translation;
-////	}
-////	this.offset += translation;
-////	this.bounds[0] += translation;
-////	this.bounds[1] += translation;
-////}
-////
+/*
+============
+idTraceModel::Translate
+============
+*/
+    Translate ( translation: idVec3 ): void {
+        var /*int */i: number;
+
+        for ( i = 0; i < this.numVerts; i++ ) {
+            this.verts[i].opAdditionAssignment( translation );
+        }
+        for ( i = 0; i < this.numPolys; i++ ) {
+            this.polys[i].dist += this.polys[i].normal.timesVec( translation );
+            this.polys[i].bounds[0].opAdditionAssignment( translation );
+            this.polys[i].bounds[1].opAdditionAssignment( translation );
+        }
+        this.offset.opAdditionAssignment( translation );
+        this.bounds[0].opAdditionAssignment( translation );
+        this.bounds[1].opAdditionAssignment( translation );
+    }
+
 /////*
 ////============
 ////idTraceModel::Rotate
@@ -1214,7 +1226,7 @@ idTraceModel::GenerateEdgeNormals
 ////	}
 ////
 ////	this.bounds.Clear();
-////	for ( i = 0; i < numPolys; i++ ) {
+////	for ( i = 0; i < this.numPolys; i++ ) {
 ////		this.polys[i].normal *= rotation;
 ////		this.polys[i].bounds.Clear();
 ////		edgeNum = 0;
@@ -1255,7 +1267,7 @@ idTraceModel::Shrink
 		//	return;
 		//}
 
-		//for ( i = 0; i < numPolys; i++ ) {
+		//for ( i = 0; i < this.numPolys; i++ ) {
 		//	this.polys[i].dist -= m;
 
 		//	for ( j = 0; j < this.polys[i].numEdges; j++ ) {
@@ -1275,7 +1287,7 @@ idTraceModel::Shrink
 ////	var/*int */i:number;
 ////
 ////	if ( this.type != trm.type || this.numVerts != trm.this.numVerts || 
-////			this.numEdges != trm.numEdges || numPolys != trm.numPolys ) {
+////			this.numEdges != trm.numEdges || this.numPolys != trm.numPolys ) {
 ////		return false;
 ////	}
 ////	if ( this.bounds != trm.bounds || this.offset != trm.this.offset ) {
@@ -1315,7 +1327,7 @@ idTraceModel::Shrink
 ////	float total;
 ////	const traceModelPoly_t *poly;
 ////
-////	if ( polyNum < 0 || polyNum >= numPolys ) {
+////	if ( polyNum < 0 || polyNum >= this.numPolys ) {
 ////		return 0.0;
 ////	}
 ////	poly = &this.polys[polyNum];
@@ -1386,7 +1398,7 @@ idTraceModel::Shrink
 ////
 ////	memset( edgeIsSilEdge, 0, sizeof( edgeIsSilEdge ) );
 ////
-////	for ( i = 0; i < numPolys; i++ ) {
+////	for ( i = 0; i < this.numPolys; i++ ) {
 ////		poly = &this.polys[i];
 ////		edgeNum = poly.edges[0];
 ////		dir = this.verts[ this.edges[abs(edgeNum)].v[ INTSIGNBITSET(edgeNum) ] ] - projectionOrigin;
@@ -1413,7 +1425,7 @@ idTraceModel::Shrink
 ////
 ////	memset( edgeIsSilEdge, 0, sizeof( edgeIsSilEdge ) );
 ////
-////	for ( i = 0; i < numPolys; i++ ) {
+////	for ( i = 0; i < this.numPolys; i++ ) {
 ////		poly = &this.polys[i];
 ////		if ( projectionDir * poly.normal < 0.0 ) {
 ////			for ( j = 0; j < poly.numEdges; j++ ) {
