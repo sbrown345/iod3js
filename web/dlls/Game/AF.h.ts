@@ -673,20 +673,21 @@ class idAF {
             this.AddBody( body, joints, fb.jointName.data, mod );
         }
 
-        if ( fb.frictionDirection.ToVec3 ( ) != vec3_origin ) {
+        if ( fb.frictionDirection.ToVec3 ( ).opNotEqualTo( vec3_origin ) ) {
             body.SetFrictionDirection( fb.frictionDirection.ToVec3 ( ) );
         }
-        if ( fb.contactMotorDirection.ToVec3 ( ) != vec3_origin ) {
+        if ( fb.contactMotorDirection.ToVec3 ( ).opNotEqualTo( vec3_origin ) ) {
             body.SetContactMotorDirection( fb.contactMotorDirection.ToVec3 ( ) );
         }
 
         // update table to find the nearest articulated figure body for a joint of the skeletal model
         this.animator.GetJointList( fb.containedJoints.data, jointList );
         for ( i = 0; i < jointList.Num ( ); i++ ) {
-            if ( this.jointBody[jointList[i]] != -1 ) {
-                gameLocal.Warning( "%s: joint '%s' is already contained by body '%s'",
-                    this.name.c_str ( ), this.animator.GetJointName( <jointHandle_t>jointList[i] ),
-                    this.physicsObj.GetBody( this.jointBody[jointList[i]] ).GetName ( ).c_str ( ) );
+            if (this.jointBody[jointList[i]] != -1) {
+                todoThrow ( );
+                //gameLocal.Warning( "%s: joint '%s' is already contained by body '%s'",
+                //    this.name.c_str ( ), this.animator.GetJointName( <jointHandle_t>jointList[i] ),
+                //    this.physicsObj.GetBody( this.jointBody[jointList[i]] ).GetName ( ).c_str ( ) );
             }
             this.jointBody[jointList[i]] = id;
         }

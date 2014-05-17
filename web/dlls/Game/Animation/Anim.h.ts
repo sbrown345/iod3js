@@ -5043,7 +5043,7 @@ idAnimator::GetFirstChild
     GetFirstChild ( jointnum: jointHandle_t ): jointHandle_t {
         var i: number;
         var /*int*/num: number;
-        var joint: jointInfo_t;
+        var joint: ArrayPointer<jointInfo_t>;
 
         if ( !this.modelDef ) {
             return jointHandle_t.INVALID_JOINT;
@@ -5053,13 +5053,13 @@ idAnimator::GetFirstChild
         if ( !num ) {
             return jointnum;
         }
-        joint = this.modelDef.GetJoint( 0 );
-        todoThrow ( );
-        //for ( i = 0; i < num; i++, joint++ ) {
-        //    if ( joint.parentNum == jointnum ) {
-        //        return <jointHandle_t >joint.num;
-        //    }
-        //}
+        joint = new ArrayPointer<jointInfo_t>( this.modelDef.joints.Ptr ( ) ); //this.modelDef.GetJoint( 0 );
+
+        for ( i = 0; i < num; i++, joint.idx++ ) {
+            if ( joint.$.parentNum == jointnum ) {
+                return <jointHandle_t >joint.$.num;
+            }
+        }
         return jointnum;
     }
 //

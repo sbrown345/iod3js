@@ -1931,7 +1931,7 @@ idAFConstraint_Hinge::GetAxis
 */
     GetAxis ( ): idVec3 {
         if ( this.body2 ) {
-            return this.axis2.timesFloat( this.body2.GetWorldAxis ( ) );
+            return idMat3.opMultiplication_VecMat( this.axis2, this.body2.GetWorldAxis ( ) );
         }
         return this.axis2;
     }

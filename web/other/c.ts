@@ -433,7 +433,11 @@ class P {
 
 class ArrayPointer<T> {
 	arr: T[];
-	idx: number;
+    idx: number;
+
+	constructor ( arr: T[], indexOffset: number = 0 ) {
+		this.set( arr, indexOffset );
+	}
 
 	get $(): T { return this.arr[this.idx]; }
 
@@ -450,10 +454,6 @@ class ArrayPointer<T> {
 
 	indexOf ( v: T ): number {
 		return this.arr.indexOf( v );
-	}
-
-	constructor ( arr: T[], indexOffset: number = 0 ) {
-		this.set( arr, indexOffset );
 	}
 
 	set ( arr: T[], indexOffset: number = 0 ): void {
