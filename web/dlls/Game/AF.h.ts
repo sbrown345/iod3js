@@ -812,10 +812,9 @@ class idAF {
             {
                 var left = new idVec3, up = new idVec3, axis_ = new idVec3, shaft = new idVec3;
                 fc.axis.ToVec3 ( ).OrthogonalBasis( left, up );
-                todoThrow ( );
-                //axis_ .opEquals( left * new idRotation( vec3_origin, fc.axis.ToVec3(), fc.limitAngles[0] ));
-                //shaft.opEquals(left * new idRotation(vec3_origin, fc.axis.ToVec3(), fc.limitAngles[0]) left * idRotation( vec3_origin, fc.axis.ToVec3(), fc.limitAngles[2] ));
-                //c3.SetLimit( axis_, fc.limitAngles[1], shaft );
+                axis_ .opEquals( left * new idRotation( vec3_origin, fc.axis.ToVec3(), fc.limitAngles[0] ));
+                shaft.opEquals(left * new idRotation(vec3_origin, fc.axis.ToVec3(), fc.limitAngles[0]) left * idRotation( vec3_origin, fc.axis.ToVec3(), fc.limitAngles[2] ));
+                c3.SetLimit( axis_, fc.limitAngles[1], shaft );
                 break;
             }
             default:

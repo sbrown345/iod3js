@@ -4079,22 +4079,22 @@ idAFConstraint_PyramidLimit::Setup
         this.body1 = b1;
         this.body2 = b2;
         // setup the base and make sure the basis is orthonormal
-        this.pyramidBasis[2] = pyramidAxis;
+        this.pyramidBasis[2].opEquals( pyramidAxis );
         this.pyramidBasis[2].Normalize ( );
         this.pyramidBasis[0].opEquals(baseAxis);
-        todoThrow ( );
-        //this.pyramidBasis[0].opSubtractionAssignment( pyramidBasis[2] * baseAxis * pyramidBasis[2] );
-        //this.pyramidBasis[0].Normalize ( );
-        //this.pyramidBasis[1].opEquals( pyramidBasis[0].Cross( pyramidBasis[2] ) );
-        //// pyramid top
-        //this.pyramidAnchor = pyramidAnchor;
-        //// angles
-        //this.cosAngle[0] = /*(float)*/ cos( DEG2RAD( pyramidAngle1 * 0.5 ) );
-        //this.cosAngle[1] = /*(float)*/ cos( DEG2RAD( pyramidAngle2 * 0.5 ) );
-        //this.sinHalfAngle[0] = /*(float)*/ sin( DEG2RAD( pyramidAngle1 * 0.25 ) );
-        //this.sinHalfAngle[1] = /*(float)*/ sin( DEG2RAD( pyramidAngle2 * 0.25 ) );
-        //this.cosHalfAngle[0] = /*(float)*/ cos( DEG2RAD( pyramidAngle1 * 0.25 ) );
-        //this.cosHalfAngle[1] = /*(float)*/ cos( DEG2RAD( pyramidAngle2 * 0.25 ) );
+        
+        this.pyramidBasis[0].opSubtractionAssignment( idVec3.opMultiplication_float( this.pyramidBasis[2].timesVec( baseAxis ), this.pyramidBasis[2] ) );
+        this.pyramidBasis[0].Normalize ( );
+        this.pyramidBasis[1].opEquals( this.pyramidBasis[0].Cross( this.pyramidBasis[2] ) );
+        // pyramid top
+        this.pyramidAnchor.opEquals( pyramidAnchor );
+        // angles
+        this.cosAngle[0] = /*(float)*/ cos( DEG2RAD( pyramidAngle1 * 0.5 ) );
+        this.cosAngle[1] = /*(float)*/ cos( DEG2RAD( pyramidAngle2 * 0.5 ) );
+        this.sinHalfAngle[0] = /*(float)*/ sin( DEG2RAD( pyramidAngle1 * 0.25 ) );
+        this.sinHalfAngle[1] = /*(float)*/ sin( DEG2RAD( pyramidAngle2 * 0.25 ) );
+        this.cosHalfAngle[0] = /*(float)*/ cos( DEG2RAD( pyramidAngle1 * 0.25 ) );
+        this.cosHalfAngle[1] = /*(float)*/ cos( DEG2RAD( pyramidAngle2 * 0.25 ) );
 
         this.body1Axis.opEquals( body1Axis );
     }
@@ -4157,13 +4157,13 @@ ApplyFriction( /*float*/ invTimeStep:number ):void {
 ////	master = this.body2 ? this.body2 : this.physics.GetMasterBody();
 ////
 ////	if ( master ) {
-////		worldBase[0] = pyramidBasis[0] * master.GetWorldAxis();
-////		worldBase[1] = pyramidBasis[1] * master.GetWorldAxis();
-////		worldBase[2] = pyramidBasis[2] * master.GetWorldAxis();
+////		worldBase[0] = this.pyramidBasis[0] * master.GetWorldAxis();
+////		worldBase[1] = this.pyramidBasis[1] * master.GetWorldAxis();
+////		worldBase[2] = this.pyramidBasis[2] * master.GetWorldAxis();
 ////		anchor = master.GetWorldOrigin() + pyramidAnchor * master.GetWorldAxis();
 ////	}
 ////	else {
-////		worldBase = pyramidBasis;
+////		worldBase = this.pyramidBasis;
 ////		anchor = pyramidAnchor;
 ////	}
 ////
@@ -4243,9 +4243,9 @@ ApplyFriction( /*float*/ invTimeStep:number ):void {
 ////void idAFConstraint_PyramidLimit::Rotate( const idRotation &rotation ) {
 ////	if ( !this.body2 ) {
 ////		pyramidAnchor *= rotation;
-////		pyramidBasis[0] *= rotation.ToMat3();
-////		pyramidBasis[1] *= rotation.ToMat3();
-////		pyramidBasis[2] *= rotation.ToMat3();
+////		this.pyramidBasis[0] *= rotation.ToMat3();
+////		this.pyramidBasis[1] *= rotation.ToMat3();
+////		this.pyramidBasis[2] *= rotation.ToMat3();
 ////	}
 ////}
 ////
@@ -4265,13 +4265,13 @@ ApplyFriction( /*float*/ invTimeStep:number ):void {
 ////	master = this.body2 ? this.body2 : this.physics.GetMasterBody();
 ////
 ////	if ( master ) {
-////		worldBase[0] = pyramidBasis[0] * master.GetWorldAxis();
-////		worldBase[1] = pyramidBasis[1] * master.GetWorldAxis();
-////		worldBase[2] = pyramidBasis[2] * master.GetWorldAxis();
+////		worldBase[0] = this.pyramidBasis[0] * master.GetWorldAxis();
+////		worldBase[1] = this.pyramidBasis[1] * master.GetWorldAxis();
+////		worldBase[2] = this.pyramidBasis[2] * master.GetWorldAxis();
 ////		anchor = master.GetWorldOrigin() + pyramidAnchor * master.GetWorldAxis();
 ////	}
 ////	else {
-////		worldBase = pyramidBasis;
+////		worldBase = this.pyramidBasis;
 ////		anchor = pyramidAnchor;
 ////	}
 ////
@@ -4307,7 +4307,7 @@ ApplyFriction( /*float*/ invTimeStep:number ):void {
 ////void idAFConstraint_PyramidLimit::Save( idSaveGame *saveFile ) const {
 ////	idAFConstraint::Save( saveFile );
 ////	saveFile.WriteVec3( pyramidAnchor );
-////	saveFile.WriteMat3( pyramidBasis );
+////	saveFile.WriteMat3( this.pyramidBasis );
 ////	saveFile.WriteVec3( body1Axis );
 ////	saveFile.WriteFloat( cosAngle[0] );
 ////	saveFile.WriteFloat( cosAngle[1] );
@@ -4326,7 +4326,7 @@ ApplyFriction( /*float*/ invTimeStep:number ):void {
 ////void idAFConstraint_PyramidLimit::Restore( idRestoreGame *saveFile ) {
 ////	idAFConstraint::Restore( saveFile );
 ////	saveFile.ReadVec3( pyramidAnchor );
-////	saveFile.ReadMat3( pyramidBasis );
+////	saveFile.ReadMat3( this.pyramidBasis );
 ////	saveFile.ReadVec3( body1Axis );
 ////	saveFile.ReadFloat( cosAngle[0] );
 ////	saveFile.ReadFloat( cosAngle[1] );
