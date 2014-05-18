@@ -1168,7 +1168,7 @@ An open brace has been parsed
 
 			if ( !token.Icmp( "cubeMap" ) ) {
 				str = R_ParsePastImageProgram( src ).toString ( );
-				imageName = imageName; //idStr.Copynz( imageName, str, sizeof( imageName ) );
+				imageName = str; //idStr.Copynz( imageName, str, sizeof( imageName ) );
 				cubeMap = cubeFiles_t.CF_NATIVE;
 				continue;
 			}
