@@ -2159,19 +2159,19 @@ Unbind( ):void {
 ////		}
 ////	}
 ////}
-////
-/////*
-////================
-////idEntity::IsBound
-////================
-////*/
-////bool idEntity::IsBound( ):void const {
-////	if ( this.bindMaster ) {
-////		return true;
-////	}
-////	return false;
-////}
-////
+
+/*
+================
+idEntity::IsBound
+================
+*/
+    IsBound ( ): boolean {
+        if ( this.bindMaster ) {
+            return true;
+        }
+        return false;
+    }
+
 /*
 ================
 idEntity::IsBoundTo

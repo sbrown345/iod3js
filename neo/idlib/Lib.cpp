@@ -49,6 +49,24 @@ idCVarSystem *	idLib::cvarSystem	= NULL;
 idFileSystem *	idLib::fileSystem	= NULL;
 int				idLib::frameNumber	= 0;
 
+int DEBUG_LOG_MODE;
+
+int DEBUG_RENDER_METHODS;
+int DEBUG_RegisterDeclFolder;
+int DEBUG_Lexer;
+int DEBUG_DeriveTangents;
+int DEBUG_R_DeriveTangents;
+int DEBUG_COMPILER;
+int DEBUG_GUI;
+int DEBUG_HASHINDEX;
+int DEBUG_STRPOOL;
+int DEBUG_RENDERWORLD_LOAD;
+int DEBUG_CM;
+int DEBUG_MAP_FILE;
+int DEBUG_SPAWN;
+
+int RTCount;
+
 /*
 ================
 idLib::Init

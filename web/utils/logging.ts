@@ -18,12 +18,12 @@ var DEBUG_APPEND_TEXTURES_TO_BODY = isd( false );
 var DEBUG_RegisterDeclFolder = isd( false );
 var DEBUG_DeriveTangents = isd( false );
 var DEBUG_R_DeriveTangents = isd( false );
-var DEBUG_COMPILER = isd(false );
+var DEBUG_COMPILER = isd(true );
 var DEBUG_GUI = isd(false );
 var DEBUG_HASHINDEX = isd( false );
 var DEBUG_STRPOOL = isd( false );
 var DEBUG_RENDERWORLD_LOAD = isd( false ); // todo: check output
-var DEBUG_CM = isd(false); // todo: check output
+var DEBUG_CM = isd(true); // todo: check output
 var DEBUG_MAP_FILE = isd(false ); // todo: check output
 var DEBUG_SCRIPT = isd(false ); 
 var DEBUG_SPAWN = isd(true); 
@@ -50,8 +50,8 @@ var dlogConcat = function (arr: any[]): string {
 	return s;
 };
 
-var dlogOutput:string[] = [];
 var appendToLog = false;
+var dlogOutput: string[] = [];
 
 function dlogFlush() {
 	sendTextNew(dlogConcat(dlogOutput), appendToLog);

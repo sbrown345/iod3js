@@ -799,7 +799,7 @@ idGameLocal::Init
 
 		cmdSystem.AddCommand( "listModelDefs", idListDecls_f( declType_t.DECL_MODELDEF ), cmdFlags_t.CMD_FL_SYSTEM | cmdFlags_t.CMD_FL_GAME, "lists model defs" );
 		cmdSystem.AddCommand( "printModelDefs", idPrintDecls_f( declType_t.DECL_MODELDEF ), cmdFlags_t.CMD_FL_SYSTEM | cmdFlags_t.CMD_FL_GAME, "prints a model def", ArgCompletion_Decl_Template( declType_t.DECL_MODELDEF ) /*idCmdSystem::ArgCompletion_Decl<DECL_MODELDEF>*/ );
-		idLexer.RTCount = 0;
+		
 		this.Clear ( );
 
 		idEvent.Init ( );

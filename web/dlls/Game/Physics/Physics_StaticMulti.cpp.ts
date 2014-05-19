@@ -517,16 +517,16 @@ idPhysics_StaticMulti::UpdateTime
 */
 	UpdateTime( /*int*/ endTimeMSec: number): void {
 	}
-////
-/////*
-////================
-////idPhysics_StaticMulti::GetTime
-////================
-////*/
-////int idPhysics_StaticMulti::GetTime( ) const {
-////	return 0;
-////}
-////
+
+/*
+================
+idPhysics_StaticMulti::GetTime
+================
+*/
+    GetTime ( ): number {
+        return 0;
+    }
+
 /////*
 ////================
 ////idPhysics_StaticMulti::GetImpactInfo

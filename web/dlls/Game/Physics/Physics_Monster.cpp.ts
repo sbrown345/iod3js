@@ -697,15 +697,15 @@ class idPhysics_Monster extends idPhysics_Actor {
 	UpdateTime( /*int*/ endTimeMSec: number): void {
 	}
 	
-	///*
-	//================
-	//idPhysics_Monster::GetTime
-	//================
-	//*/
-	//int idPhysics_Monster::GetTime( ) const {
-	//	return gameLocal.time;
-	//}
-	//
+	/*
+	================
+	idPhysics_Monster::GetTime
+	================
+	*/
+	GetTime ( ): number {
+		return gameLocal.time;
+	}
+	
 	///*
 	//================
 	//idPhysics_Monster::GetImpactInfo

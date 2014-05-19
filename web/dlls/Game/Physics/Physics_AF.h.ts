@@ -6975,16 +6975,16 @@ class idPhysics_AF extends idPhysics_Base {
 	*/
 	UpdateTime ( /*int*/ endTimeMSec: number ): void {
 	}
-	////
-	/////*
-	////================
-	////idPhysics_AF::GetTime
-	////================
-	////*/
-	////int idPhysics_AF::GetTime( ) const {
-	////	return gameLocal.time;
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_AF::GetTime
+	================
+	*/
+    GetTime(): number {
+		return gameLocal.time;
+	}
+	//
 	/////*
 	////================
 	////DrawTraceModelSilhouette

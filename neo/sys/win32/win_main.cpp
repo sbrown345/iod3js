@@ -1372,6 +1372,25 @@ WinMain
 ==================
 */
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow ) {
+	//static int DEBUG_LOG_MODE;
+
+	DEBUG_RENDER_METHODS = 0;
+	DEBUG_RegisterDeclFolder = 0;
+	DEBUG_Lexer = 0;
+	DEBUG_DeriveTangents = 0;
+	DEBUG_R_DeriveTangents = 0;
+	DEBUG_COMPILER = 1;
+	DEBUG_GUI = 0;
+	DEBUG_HASHINDEX = 0;
+	DEBUG_STRPOOL = 0;
+	DEBUG_RENDERWORLD_LOAD = 0;
+	DEBUG_CM = 1;
+	DEBUG_MAP_FILE = 0;
+	//DEBUG_SCRIPT = 0;
+	DEBUG_SPAWN = 1;
+
+	RTCount = 0;
+
 	const HCURSOR hcurSave = ::SetCursor( LoadCursor( 0, IDC_WAIT ) );
 #ifndef GAME_DLL
 	if (false) {

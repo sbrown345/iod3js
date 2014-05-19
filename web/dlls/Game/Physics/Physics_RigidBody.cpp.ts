@@ -1184,16 +1184,16 @@ idPhysics_RigidBody::UpdateTime
 */
 	UpdateTime( /*int*/ endTimeMSec: number): void {
 	}
-////
-/////*
-////================
-////idPhysics_RigidBody::GetTime
-////================
-////*/
-////int idPhysics_RigidBody::GetTime( ) const {
-////	return gameLocal.time;
-////}
-////
+
+/*
+================
+idPhysics_RigidBody::GetTime
+================
+*/
+GetTime ( ): number {
+	return gameLocal.time;
+}
+
 /////*
 ////================
 ////idPhysics_RigidBody::GetImpactInfo

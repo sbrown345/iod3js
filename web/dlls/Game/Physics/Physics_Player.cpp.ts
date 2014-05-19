@@ -1934,15 +1934,15 @@ idPhysics_Player::UpdateTime
 */
 	UpdateTime( /*int*/ endTimeMSec: number): void {
 	}
-////
-/////*
-////================
-////idPhysics_Player::GetTime
-////================
-////*/
-////int idPhysics_Player::GetTime( ) const {
-////	return gameLocal.time;
-////}
+
+/*
+================
+idPhysics_Player::GetTime
+================
+*/
+GetTime ( ): number {
+	return gameLocal.time;
+}
 ////
 /////*
 ////================

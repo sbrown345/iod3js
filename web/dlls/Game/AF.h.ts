@@ -1136,16 +1136,16 @@ class idAF {
 ////	this.physicsObj.UnlinkClip();
 ////	this.isActive = false;
 ////}
-////
-/////*
-////================
-////idAF::Rest
-////================
-////*/
-////void idAF::Rest( ) {
-////	this.physicsObj.PutToRest();
-////}
-////
+
+/*
+================
+idAF::Rest
+================
+*/
+Rest( ):void {
+	this.physicsObj.PutToRest();
+}
+
 /////*
 ////================
 ////idAF::SetConstraintPosition

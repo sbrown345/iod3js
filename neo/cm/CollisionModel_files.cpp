@@ -602,6 +602,7 @@ bool idCollisionModelManagerLocal::LoadCollisionModelFile( const char *name, uns
 		return false;
 	}
 
+	dlog(DEBUG_CM, "idCollisionModelManagerLocal::LoadCollisionModelFile %s, %i\n", name, mapFileCRC);
 	// parse the file
 	while ( 1 ) {
 		if ( !src->ReadToken( &token ) ) {

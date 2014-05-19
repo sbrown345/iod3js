@@ -469,6 +469,10 @@ Uint8Array.prototype.toString = function () : string {
     return str;
 };
 
+function decodeUtf8(s: string): string {
+    return decodeURIComponent((<any>window).escape(s));
+}
+
 interface VBArray {
 	toArray():Array<number>
 }

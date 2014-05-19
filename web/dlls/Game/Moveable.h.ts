@@ -144,6 +144,7 @@ class idMoveable extends idEntity {
 			clipModelName.opEquals( this.spawnArgs.GetString( "model" ) ); // use the visual model
 		}
 
+	    dlog( DEBUG_SPAWN, "Spawn - TrmFromModel_name %s\n", clipModelName.data );
 		if ( !collisionModelManager.TrmFromModel_name( clipModelName.data, trm ) ) {
 			gameLocal.Error( "idMoveable '%s': cannot load collision model %s", this.name.c_str ( ), clipModelName.c_str ( ) );
 			return;

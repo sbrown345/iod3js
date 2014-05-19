@@ -379,15 +379,15 @@ class idPhysics_Base extends idPhysics {
 	UpdateTime ( /*int*/ endTimeMSec: number ): void {
 	}
 	//
-	///*
-	//================
-	//idPhysics_Base::GetTime
-	//================
-	//*/
-	//int idPhysics_Base::GetTime( ) const {
-	//	return 0;
-	//}
-	//
+	/*
+	================
+	idPhysics_Base::GetTime
+	================
+	*/
+    GetTime(): number {
+		return 0;
+	}
+	
 	///*
 	//================
 	//idPhysics_Base::GetImpactInfo

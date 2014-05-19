@@ -168,22 +168,24 @@ JavaScript Debug Helpers
 
 #define JS_CHANGES
 
-#define DEBUG_LOG_MODE 1
+extern "C" int DEBUG_LOG_MODE;
 //#define isd(v) DEBUG_LOG_MODE && v
 // todo: use cvars and config files
-#define DEBUG_RENDER_METHODS 0//isd(1)
-#define DEBUG_RegisterDeclFolder 0//isd(0)
-#define DEBUG_Lexer 0//isd(0)
-#define DEBUG_DeriveTangents 0//isd(0)
-#define DEBUG_R_DeriveTangents 0//isd(0)
-#define DEBUG_COMPILER 0//isd(0)
-#define DEBUG_GUI 0//isd(0)
-#define DEBUG_HASHINDEX 0//isd(0)
-#define DEBUG_STRPOOL 0//isd(0)
-#define DEBUG_RENDERWORLD_LOAD 0//isd(0)
-#define DEBUG_CM 0//isd(0)
-#define DEBUG_MAP_FILE 0//isd(0)
-#define DEBUG_SPAWN 1//isd(0)
+extern "C" int DEBUG_RENDER_METHODS;
+extern "C" int DEBUG_RegisterDeclFolder;
+extern "C" int DEBUG_Lexer;
+extern "C" int DEBUG_DeriveTangents;
+extern "C" int DEBUG_R_DeriveTangents;
+extern "C" int DEBUG_COMPILER;
+extern "C" int DEBUG_GUI;
+extern "C" int DEBUG_HASHINDEX;
+extern "C" int DEBUG_STRPOOL;
+extern "C" int DEBUG_RENDERWORLD_LOAD;
+extern "C" int DEBUG_CM;
+extern "C" int DEBUG_MAP_FILE;
+extern "C" int DEBUG_SPAWN;
+
+extern "C" int RTCount;
 
 void dlog(bool log, char *format, ...);
 
