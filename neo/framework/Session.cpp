@@ -504,6 +504,7 @@ idSessionLocal::ShowLoadingGui
 ================
 */
 void idSessionLocal::ShowLoadingGui() {
+#ifndef JS_CHANGES
 	if ( com_ticNumber == 0 ) {
 		return;
 	}
@@ -526,6 +527,7 @@ void idSessionLocal::ShowLoadingGui() {
 		session->Frame();
 		session->UpdateScreen( false );
 	}
+#endif
 #endif
 }
 

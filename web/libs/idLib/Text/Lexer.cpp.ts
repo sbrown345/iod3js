@@ -970,12 +970,18 @@ class idLexer {
 		}
 		// succesfully read a token
 		//dlog(DEBUG_Lexer, "RT: %i, %s\n", this.line , token.data);
-		//if ( idLexer.RTCount == 191769 && this.line == 106 ) debugger;
+		if ( idLexer.RTCount == 191769 /*&& this.line == 106 */) debugger;
 		//if (token.data == "aas_types") debugger;
 		//dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", idLexer.RTCount, this.line, token.data);
-		dlog(DEBUG_COMPILER || DEBUG_RENDERWORLD_LOAD || DEBUG_CM || DEBUG_SPAWN, "RT %i, l:%i %s\n", idLexer.RTCount, this.line, token.data);
-		//if (this.line == 714 && token.data == "models/md5/chars/af_pose.md5anim" )debugger;
-		idLexer.RTCount++;
+        if (idLexer.RTCount > 830000 ) {
+            dlog( DEBUG_COMPILER || DEBUG_RENDERWORLD_LOAD || DEBUG_CM || DEBUG_SPAWN, "RT %i, l:%i %s\n", idLexer.RTCount, this.line, token.data );
+        }
+        //if (this.line == 714 && token.data == "models/md5/chars/af_pose.md5anim" )debugger;
+        idLexer.RTCount++;
+
+        if (idLexer.RTCount > 1830000) {
+            todoThrow ( );
+        }
 		return 1;
 	}
 

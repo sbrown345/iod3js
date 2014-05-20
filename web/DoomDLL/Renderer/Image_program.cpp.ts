@@ -624,7 +624,7 @@ R_LoadImageProgram
 */
 function R_LoadImageProgram(name: string, /*byte ***/pic: R<Uint8Array>, /*int **/width: R<number>, /*int **/height: R<number>, /*ID_TIME_T **/timestamps: R<number>, depth: R<textureDepth_t> ):void {
 	var src = new idLexer;
-
+	dlog(true, "R_LoadImageProgram %s\n", name);
 	src.LoadMemory( name, strlen(name), name );
 	src.SetFlags( lexerFlags_t.LEXFL_NOFATALERRORS | lexerFlags_t.LEXFL_NOSTRINGCONCAT | lexerFlags_t.LEXFL_NOSTRINGESCAPECHARS | lexerFlags_t.LEXFL_ALLOWPATHNAMES );
 

@@ -720,7 +720,6 @@ idThread::Restart
 		n = idThread.threadList.Num ( );
 		for ( i = n - 1; i >= 0; i-- ) {
 			$delete( idThread.threadList[i] );
-			delete idThread.threadList[i];
 		}
 		idThread.threadList.Clear ( );
 
