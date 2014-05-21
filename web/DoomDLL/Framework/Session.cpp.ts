@@ -2274,7 +2274,8 @@ idSessionLocal.prototype.PacifierUpdate = function ( ) {
 
 	if ( time - this.lastPacifierTime < 100 ) {
 		return;
-	}
+    }
+    todo( "sometime, fix time, it is always 0" );
 	this.lastPacifierTime = time;
 
 	if ( this.guiLoading && this.bytesNeededForMapLoad ) {

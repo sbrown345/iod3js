@@ -2351,6 +2351,7 @@ void idSessionLocal::PacifierUpdate() {
 	if ( time - lastPacifierTime < 100 ) {
 		return;
 	}
+#ifndef JS_CHANGES
 	lastPacifierTime = time;
 
 	if ( guiLoading && bytesNeededForMapLoad ) {
@@ -2367,6 +2368,7 @@ void idSessionLocal::PacifierUpdate() {
 
 	idAsyncNetwork::client.PacifierUpdate();
 	idAsyncNetwork::server.PacifierUpdate();
+#endif
 }
 
 /*
