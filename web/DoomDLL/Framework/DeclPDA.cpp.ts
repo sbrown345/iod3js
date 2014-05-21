@@ -498,22 +498,21 @@ idDeclEmail::Parse
 		return true;
 	}
 
-/////*
-////===================
-////idDeclEmail::DefaultDefinition
-////===================
-////*/
-////const char *idDeclEmail::DefaultDefinition( ) const {
-////	return
-////		"{\n"
-////		"\t"	"{\n"
-////		"\t\t"		"to\t5Mail recipient\n"
-////		"\t\t"		"subject\t5Nothing\n"
-////		"\t\t"		"from\t5No one\n"
-////		"\t"	"}\n"
-////		"}"; 
-////}
-////
+/*
+===================
+idDeclEmail::DefaultDefinition
+===================
+*/
+    DefaultDefinition ( ): string {
+        return "{\n" +
+            "\t" + "{\n" +
+            "\t\t" + "to\t5Mail recipient\n" +
+            "\t\t" + "subject\t5Nothing\n" +
+            "\t\t" + "from\t5No one\n" +
+            "\t" + "}\n" +
+            "}";
+    }
+
 /*
 ===================
 idDeclEmail::FreeData

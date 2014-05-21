@@ -2648,20 +2648,19 @@ idMaterial::SetDefaultText
 		}
 	}
 
-/////*
-////===================
-////idMaterial::DefaultDefinition
-////===================
-////*/
-////const char *idMaterial::DefaultDefinition() const {
-////	return
-////		"{\n"
-////	"\t"	"{\n"
-////	"\t\t"		"blend\tblend\n"
-////	"\t\t"		"map\t\t_default\n"
-////	"\t"	"}\n"
-////		"}";
-////}
+/*
+===================
+idMaterial::DefaultDefinition
+===================
+*/
+    DefaultDefinition ( ): string {
+        return "{\n" +
+            "\t" + "{\n" +
+            "\t\t" + "blend\tblend\n" +
+            "\t\t" + "map\t\t_default\n" +
+            "\t" + "}\n" +
+            "}";
+    }
 
 
 /////*

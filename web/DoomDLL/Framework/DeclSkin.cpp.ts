@@ -48,11 +48,11 @@ class skinMapping_t {
 
 class idDeclSkin extends idDecl {
 ////public:
-////	virtual size_t			Size( void ) const;
-////	virtual bool			SetDefaultText( void );
-////	virtual const char *	DefaultDefinition( void ) const;
+////	virtual size_t			Size( ) const;
+////	virtual bool			SetDefaultText( );
+////	virtual const char *	DefaultDefinition( ) const;
 ////	virtual bool			Parse( text:string, const int textLength );
-////	virtual void			FreeData( void );
+////	virtual void			FreeData( );
 ////
 ////	const idMaterial *		RemapShaderBySkin( const idMaterial *shader ) const;
 ////
@@ -76,7 +76,7 @@ class idDeclSkin extends idDecl {
 ////idDeclSkin::Size
 ////=================
 ////*/
-////size_t idDeclSkin::Size( void ) const {
+////size_t idDeclSkin::Size( ) const {
 ////	return sizeof( idDeclSkin );
 ////}
 ////
@@ -163,24 +163,23 @@ idDeclSkin::SetDefaultText
 		}
 	}
 
-/////*
-////================
-////idDeclSkin::DefaultDefinition
-////================
-////*/
-////const char *idDeclSkin::DefaultDefinition( void ) const {
-////	return
-////		"{\n"
-////	"\t"	"\"*\"\t\"_default\"\n"
-////		"}";
-////}
-////
+/*
+================
+idDeclSkin::DefaultDefinition
+================
+*/
+    DefaultDefinition ( ): string {
+        return "{\n" +
+            "\t" + "\"*\"\t\"_default\"\n" +
+            "}";
+    }
+
 /////*
 ////================
 ////idDeclSkin::GetNumModelAssociations
 ////================
 ////*/
-////const int idDeclSkin::GetNumModelAssociations(void ) const {
+////const int idDeclSkin::GetNumModelAssociations const {
 ////	return this.associatedModels.Num(); 
 ////}
 ////

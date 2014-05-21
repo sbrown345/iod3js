@@ -910,19 +910,19 @@ int idLexer::ReadToken( idToken *token ) {
 
 	// succesfully read a token
 	//dlog(DEBUG_Lexer, RT: %i, %s\n", line, token->data);
-	if (RTCount == 853734 /*&& line == 106*/) {
-		if (!idStr::Cmp(token->data, "guis/assets/splash/loadborder") /*&& line == 714*/) {
-			if (IsDebuggerPresent())
-				__debugbreak();
-		}
-	}
+	//if (RTCount == 913766 /*&& line == 106*/) {
+	//	if (!idStr::Cmp(token->data, "guis/assets/splash/loadborder") /*&& line == 714*/) {
+	//		if (IsDebuggerPresent())
+	//			__debugbreak();
+	//	}
+	//}
 	//dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", RTCount, line, token->data);
 
-	if (RTCount > 830000) {
+	if (RTCount > 5000000) {
 		dlog(DEBUG_COMPILER || DEBUG_RENDERWORLD_LOAD || DEBUG_CM || DEBUG_SPAWN, "RT %i, l:%i %s\n", RTCount, line, token->data);
 	}
 	RTCount++;
-	if (RTCount > 1830000)
+	if (RTCount > 8000000)
 	{
 		exit(0);
 	}

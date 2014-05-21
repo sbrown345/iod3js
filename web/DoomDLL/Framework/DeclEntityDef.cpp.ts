@@ -151,8 +151,7 @@ idDeclEntityDef::DefaultDefinition
 ================
 */
 	DefaultDefinition ( ): string {
-		return +
-			"{\n" +
+		return "{\n" +
 			"\t" + "\"DEFAULTED\"\t\"1\"\n" +
 			"}";
 	}

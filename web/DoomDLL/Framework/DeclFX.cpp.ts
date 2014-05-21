@@ -566,8 +566,7 @@ idDeclFX::DefaultDefinition
 ===================
 */
 	DefaultDefinition ( ): string {
-		return +
-			"{\n" +
+		return "{\n" +
 			"\t" + "{\n" +
 			"\t\t" + "duration\t5\n" +
 			"\t\t" + "model\t\t_default\n" +
