@@ -3,6 +3,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LocalDebuggerCommandArguments>+set com_allowConsole 1 +set si_pure 0 +set r_renderer glsl +set r_fullscreen 0  +set com_forceGenericSIMD 1 +set s_noSound 1 +set decl_show 1 +map game/demo_mars_city1 &gt; doom3_c.log </LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerEnvironment>_NO_DEBUG_HEAP = 1
+$(LocalDebuggerEnvironment)</LocalDebuggerEnvironment>
   </PropertyGroup>
   <PropertyGroup>
     <ShowAllFiles>true</ShowAllFiles>
