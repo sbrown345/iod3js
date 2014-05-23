@@ -259,35 +259,38 @@ idAFVector::Finish
 idAFVector::ToString
 ================
 */
-    ToString ( str: idStr, /*const int */precision: number ): string {
-        todoThrow ( );
-        //switch( this.type ) {
-        //    case idAFVector_type.VEC_COORDS:
-        //    {
-        //		char format[128];
-        //		sprintf( format, "( %%.%df, %%.%df, %%.%df )", precision, precision, precision );
-        //		sprintf( str, format, this.vec.x, this.vec.y, this.vec.z );
-        //		break;
-        //	}
-        //	case idAFVector_type.VEC_JOINT: {
-        //		sprintf( , "joint( \"%s\" )", this.joint1.c_str() );
-        //		break;
-        //	}
-        //	case idAFVector_type.VEC_BONECENTER: {
-        //		sprintf( str, "bonecenter( \"%s\", \"%s\" )", this.joint1.c_str(), this.joint2.c_str() );
-        //		break;
-        //	}
-        //	case idAFVector_type.VEC_BONEDIR: {
-        //		sprintf( str, "bonedir( \"%s\", \"%s\" )", this.joint1.c_str(), this.joint2.c_str() );
-        //		break;
-        //	}
-        //	default: {
-        //		break;
-        //	}
-        //}
-        //if ( this.negate ) {
-        //	str = "-" + str;
-        //}
+    ToString ( str: idStr, /*const int */precision: number = 8 ): string {
+        switch ( this.type ) {
+        case idAFVector_type.VEC_COORDS:
+        {
+            //char format[128];
+            var format = sprintf( "( %%.%df, %%.%df, %%.%df )", precision, precision, precision );
+            str.opEquals( sprintf( format, this.vec.x, this.vec.y, this.vec.z ) );
+            break;
+        }
+        case idAFVector_type.VEC_JOINT:
+        {
+            str.opEquals( sprintf( "joint( \"%s\" )", this.joint1.c_str ( ) ) );
+            break;
+        }
+        case idAFVector_type.VEC_BONECENTER:
+        {
+            str.opEquals( sprintf( "bonecenter( \"%s\", \"%s\" )", this.joint1.c_str ( ), this.joint2.c_str ( ) ) );
+            break;
+        }
+        case idAFVector_type.VEC_BONEDIR:
+        {
+            str.opEquals( sprintf( "bonedir( \"%s\", \"%s\" )", this.joint1.c_str ( ), this.joint2.c_str ( ) ) );
+            break;
+        }
+        default:
+        {
+            break;
+        }
+        }
+        if ( this.negate ) {
+            str.opEquals( "-" + str.data );
+        }
         return str.c_str ( );
     }
 

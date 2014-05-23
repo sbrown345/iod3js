@@ -973,14 +973,14 @@ class idVec3 implements IVector {
 ////	(*this) -= cross;
 ////	return true;
 ////}
+    
+    ToString( precision = 2 ): string {
+        return idStr.FloatArrayToString( this.ToFloatPtr ( ), this.GetDimension ( ), precision );
+    }
 
-	ToString ( precision = 2 ): string {
-		if ( arguments.length == 2 ) {
-			return idStr.FloatArrayToString( this.ToFloatPtr ( ), this.GetDimension ( ), precision );
-		}
-
-		return va( "x: %4.2f, y: %4.2f, z:%4.2f", this.x, this.y, this.z );
-	}
+    ToString2 ( ): string {
+        return va( "x: %4.2f, y: %4.2f, z:%4.2f", this.x, this.y, this.z );
+    }
 
 /*
 =============

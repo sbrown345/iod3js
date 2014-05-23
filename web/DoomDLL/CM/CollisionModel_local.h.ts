@@ -4175,9 +4175,10 @@ idCollisionModelManagerLocal::LoadModel
 		var /*int */handle: number;
 
 		handle = this.FindModel( modelName );
+        dlog(DEBUG_CM, "idCollisionModelManagerLocal::LoadModel handle: %i modelName: %s\n", handle, modelName);
 		if ( handle >= 0 ) {
 			return handle;
-		}
+        }
 
 		if ( this.numModels >= MAX_SUBMODELS ) {
 			common.Error( "idCollisionModelManagerLocal::LoadModel: no free slots\n" );

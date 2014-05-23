@@ -816,7 +816,7 @@ idTraceModel::SetupCylinder
 		this.polys[n + 1].bounds[0][2] = this.bounds[1][2];
 		// convex model
 		this.isConvex = true;
-
+	    
 		this.GenerateEdgeNormals ( );
 	}
 ////
@@ -981,7 +981,7 @@ idTraceModel::SetupBone
                 this.polys[i].bounds.AddPoint( this.verts[this.edges[abs( edgeNum )].v[edgeNum < 0 ? 1 : 0]] );
             }
         }
-
+        dlog(DEBUG_CM, "idTraceModel::SetupBone bounds %s %s\n", this.bounds[0].ToString ( ), this.bounds[1].ToString ( ) );
         this.GenerateEdgeNormals ( );
     }
 
@@ -1211,6 +1211,7 @@ idTraceModel::Translate
         this.offset.opAdditionAssignment( translation );
         this.bounds[0].opAdditionAssignment( translation );
         this.bounds[1].opAdditionAssignment( translation );
+        dlog( DEBUG_CM, "idTraceModel::Translate bounds %s %s\n", this.bounds[0].ToString ( ), this.bounds[1].ToString ( ) );
     }
 
 /////*

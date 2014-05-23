@@ -973,13 +973,13 @@ class idLexer {
         //if (idLexer.RTCount == 913766 /*&& this.line == 106 */) debugger;
 		//if (token.data == "aas_types") debugger;
 		//dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", idLexer.RTCount, this.line, token.data);
-        if (idLexer.RTCount > 5000000 ) {
+        if (idLexer.RTCount > 7200000 ) {
             dlog( DEBUG_COMPILER || DEBUG_RENDERWORLD_LOAD || DEBUG_CM || DEBUG_SPAWN, "RT %i, l:%i %s\n", idLexer.RTCount, this.line, token.data );
         }
         //if (this.line == 714 && token.data == "models/md5/chars/af_pose.md5anim" )debugger;
         idLexer.RTCount++;
 
-        if (idLexer.RTCount > 8000000) {
+        if (idLexer.RTCount > 7600000) {
             todoThrow ( );
         }
 		return 1;

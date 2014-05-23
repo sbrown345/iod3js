@@ -563,6 +563,7 @@ class idAF {
 	================
 	*/
     LoadBody ( fb: idDeclAF_Body, joints: idJointMat [] ): boolean {
+        dlog( DEBUG_CM, "idAF::LoadBody fb: %s, origin:%s, angles:%s, v1: %s, v2:%s \n", fb.name.data, fb.origin.ToVec3 ( ).ToString ( ), fb.angles.ToString ( ), fb.v1.ToVec3 ( ).ToString ( ), fb.v2.ToVec3 ( ).ToString ( ), fb.modelType );
         var /*int*/ id: number, i: number;
         var /* float */length: number, mass = new R<number> ( );
         var trm = new idTraceModel;
@@ -623,6 +624,9 @@ class idAF {
             assert( 0 );
             break;
         }
+
+        dlog(DEBUG_CM, "idAF::LoadBody %s %s %s\n", fb.name.data, trm.bounds[0].ToString2(), trm.bounds[1].ToString2 ( ) );
+
         trm.GetMassProperties( 1.0, mass, centerOfMass, inertiaTensor );
         trm.Translate( centerOfMass.opUnaryMinus ( ) );
         origin.opAdditionAssignment( idMat3.opMultiplication_VecMat( centerOfMass, axis ) );
