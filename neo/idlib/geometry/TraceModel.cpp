@@ -629,7 +629,7 @@ void idTraceModel::SetupCylinder( const idBounds &cylBounds, const int numSides 
 	polys[n+1].bounds[0][2] = bounds[1][2];
 	// convex model
 	isConvex = true;
-
+	
 	GenerateEdgeNormals();
 }
 
@@ -795,6 +795,7 @@ void idTraceModel::SetupBone( const float length, const float width ) {
 		}
 	}
 
+	dlog(DEBUG_CM, "idTraceModel::SetupBone bounds %s %s\n", bounds[0].ToString(), bounds[1].ToString());
 	GenerateEdgeNormals();
 }
 
@@ -1026,6 +1027,7 @@ void idTraceModel::Translate( const idVec3 &translation ) {
 	offset += translation;
 	bounds[0] += translation;
 	bounds[1] += translation;
+	dlog(DEBUG_CM, "idTraceModel::Translate bounds %s %s\n", bounds[0].ToString(), bounds[1].ToString());
 }
 
 /*

@@ -487,6 +487,7 @@ idAF::LoadBody
 ================
 */
 bool idAF::LoadBody( const idDeclAF_Body *fb, const idJointMat *joints ) {
+	dlog(DEBUG_CM, "idAF::LoadBody fb: %s, origin:%s, angles:%s, v1: %s, v2:%s \n", fb->name.c_str(), fb->origin.ToVec3().ToString(), fb->angles.ToString(), fb->v1.ToVec3().ToString(), fb->v2.ToVec3().ToString(), fb->modelType);
 	int id, i;
 	float length, mass;
 	idTraceModel trm;
@@ -541,7 +542,10 @@ bool idAF::LoadBody( const idDeclAF_Body *fb, const idJointMat *joints ) {
 			assert( 0 );
 			break;
 	}
-	trm.GetMassProperties( 1.0f, mass, centerOfMass, inertiaTensor );
+
+	dlog(DEBUG_CM, "idAF::LoadBody %s %s %s\n", fb->name.c_str(), trm.bounds[0].ToString(), trm.bounds[1].ToString());
+
+	trm.GetMassProperties(1.0f, mass, centerOfMass, inertiaTensor);
 	trm.Translate( -centerOfMass );
 	origin += centerOfMass * axis;
 

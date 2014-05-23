@@ -148,6 +148,9 @@ idClipModel::GetTraceModelHashKey
 */
 int idClipModel::GetTraceModelHashKey( const idTraceModel &trm ) {
 	const idVec3 &v = trm.bounds[0];
+
+	dlog(DEBUG_CM, "GetTraceModelHashKey type %i, numVerts: %i, numEdges: %i, numPolys: %i, v: %s, float hash: %i\n",
+		trm.type, trm.numVerts, trm.numEdges, trm.numPolys, v.ToString(), idMath::FloatHash(v.ToFloatPtr(), v.GetDimension()));
 	return ( trm.type << 8 ) ^ ( trm.numVerts << 4 ) ^ ( trm.numEdges << 2 ) ^ ( trm.numPolys << 0 ) ^ idMath::FloatHash( v.ToFloatPtr(), v.GetDimension() );
 }
 

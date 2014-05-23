@@ -3533,11 +3533,12 @@ cmHandle_t idCollisionModelManagerLocal::LoadModel( const char *modelName, const
 	int handle;
 
 	handle = FindModel( modelName );
-	if ( handle >= 0 ) {
+	dlog(DEBUG_CM, "idCollisionModelManagerLocal::LoadModel handle: %i modelName: %s\n", handle, modelName);
+	if (handle >= 0) {
 		return handle;
 	}
 
-	if ( numModels >= MAX_SUBMODELS ) {
+	if (numModels >= MAX_SUBMODELS) {
 		common->Error( "idCollisionModelManagerLocal::LoadModel: no free slots\n" );
 		return 0;
 	}
