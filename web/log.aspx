@@ -6,7 +6,7 @@
     var fileName = Server.MapPath("~/doom3_js.log");
     if (this.Request.Form["append"] != null)
     {
-        File.AppendAllText( fileName, postedData);
+        File.AppendAllText(fileName, postedData);
     }
     else
     {

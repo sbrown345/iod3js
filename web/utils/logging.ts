@@ -5,7 +5,6 @@ JavaScript Debug Helpers
 
 ===============================================================================
 */
-var LOG_TO_CONSOLE = false;
 var SKIP_ALL_LOGGING = false;
 var LOGGING_WITH_VISUAL_STUDIO = !!((<any>window).Debug && (<any>window).Debug.debuggerEnabled);
 
@@ -26,29 +25,39 @@ var DEBUG_RENDERWORLD_LOAD = isd( false ); // todo: check output
 var DEBUG_CM = isd(true); // todo: check output
 var DEBUG_MAP_FILE = isd(false ); // todo: check output
 var DEBUG_SCRIPT = isd(false ); 
-var DEBUG_SPAWN = isd(true); 
+var DEBUG_SPAWN = isd(true);
 
-function dlog(log: boolean, format: string, ...args: any[]) {
-	if (!log || SKIP_ALL_LOGGING || LOGGING_WITH_VISUAL_STUDIO) return;
-	if (LOG_TO_CONSOLE) {
-		console.log.apply(console, args.unshift(format.trim()));
-	} else {
-		var text = vsprintf(format, args);
+function dlog ( log: boolean, format: string, ...args: any[] ):void {
+    if ( !skipLog( log ) ) {
+        var text = vsprintf( format, args );
+        pushLog( text );
+    }
+}
 
-		if (dlogOutput.length > 50000) {
-			dlogFlush ( );
-		}
+function dlogQuick ( log: boolean, text:string ):void {
+    if ( !skipLog( log ) ) {
+         pushLog( text );
+    }
+}
 
-		dlogOutput.push(text);
-	}
-};
+function pushLog ( text: string ): void {
+    if ( dlogOutput.length > 20000 ) {
+        dlogFlush ( );
+    }
 
-var dlogConcat = function (arr: any[]): string {
-	var s: string, len: number, i: number;
-	len = arr.length;
-	for (s = "", i = 0; i < len; s += arr[i], i++);
-	return s;
-};
+    dlogOutput.push( text );
+}
+
+function skipLog (log:boolean ): boolean {
+    return !log || SKIP_ALL_LOGGING || LOGGING_WITH_VISUAL_STUDIO;
+}
+
+function dlogConcat ( arr: any[] ): string {
+    var s: string, len: number, i: number;
+    len = arr.length;
+    for ( s = "", i = 0; i < len; s += arr[i], i++ );
+    return s;
+}
 
 var appendToLog = false;
 var dlogOutput: string[] = [];
