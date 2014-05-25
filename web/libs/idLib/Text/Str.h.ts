@@ -1959,24 +1959,24 @@ idStr::StripPath
 ////	Left( pos, dest );
 ////}
 
-/////*
-////====================
-////idStr::ExtractFileName
-////====================
-////*/
-////void idStr::ExtractFileName( idStr &dest ) const {
-////	int pos;
+/*
+====================
+idStr::ExtractFileName
+====================
+*/
+    ExtractFileName ( dest: idStr ): void {
+        var /*int */pos: number;
 
-////	//
-////	// back up until a \ or the start
-////	//
-////	pos = Length() - 1;
-////	while( ( pos > 0 ) && ( ( *this )[ pos - 1 ] != '/' ) && ( ( *this )[ pos - 1 ] != '\\' ) ) {
-////		pos--;
-////	}
+        //
+        // back up until a \ or the start
+        //
+        pos = this.Length ( ) - 1;
+        while ( ( pos > 0 ) && ( ( this.data )[pos - 1] != '/' ) && ( ( this.data )[pos - 1] != '\\' ) ) {
+            pos--;
+        }
 
-////	Right( Length() - pos, dest );
-////}
+        this.Right_Result( this.Length ( ) - pos, dest );
+    }
 
 /////*
 ////====================

@@ -11,19 +11,77 @@
 
             canvas { background: #ccc; }
         </style>
+        <link href="utils/diffview.css" rel="stylesheet" />
     </head>
     <body>
+        <!--debugging-->
         <script src="other/webgl-debug.js"></script>
         <script src="utils/sprintf.js"></script>
         <script src="utils/sscanf.js"></script>
+        <!--logging-->
+        <script src="Scripts/jquery-1.6.4.min.js"></script>
+        <script src="Scripts/jquery.signalR-2.0.3.js"></script>
+        <script src="signalr/hubs"></script>
+        <script src="utils/diffview.js"></script>
+        <script src="utils/difflib.js"></script>
+        <!--game-->
         <script src="doom3.js"></script>
         <script>
-            setTimeout(function () {
+            var logging = $.connection.logging;
+            if ( !logging ) {
+                alert("not connected to signalr");
+                throw "not connected to signalr";
+            }
+
+            logging.client.mismatch = function (equivBitFromC, logText, compareIndex) {
+                if ( diffDoesNotMatch ) {
+                    return; // already shown
+                }
+
+                diffDoesNotMatch = true;
+                console.log("diffDoesNotMatch compareIndex: %i ", compareIndex);
+                diffUsingJS(equivBitFromC, logText);
+            };
+
+            $.connection.hub.start ( ).done( function ( ) {
+                logging.server.init();
+                startGame();
+            } );
+
+            window.onunload = function ( ) {
+                $.connection.hub.stop ( );
+            };
+
+            function logToServer ( str ) {
+                logging.server.send( str );
+            }
+
+            function diffUsingJS(equivBitFromC, logText) {
+                var base = difflib.stringAsLines(equivBitFromC),
+                    newText = difflib.stringAsLines(logText),
+                    sm = new difflib.SequenceMatcher(base, newText),
+                    opCodes = sm.get_opcodes(),
+                    diffOutputDiv = $("#diffoutput");
+
+                diffOutputDiv.append(diffview.buildView({
+                    baseTextLines: base,
+                    newTextLines: newText,
+                    opcodes: opCodes,
+                    baseTextName: "Original Doom",
+                    newTextName: "TypeScript Doom",
+                    //contextSize: contextSize,
+                    viewType: 0
+                }));
+            }
+
+            function startGame ( ) {
                 var commandLine = "+set com_allowConsole 1 +set si_pure 0 +set r_renderer glsl +set r_fullscreen 0  +set com_forceGenericSIMD 1 +set s_noSound 1 +set decl_show 1 ";
                 commandLine += " +map game/demo_mars_city1 ";
-                //commandLine += " +map " + ( window.location.search ? window.location.search.substr( 1 ) : "game/demo_mars_city1" );
-                WinMain( null, null, commandLine, commandLine.split( " " ).length );
-            }, 50 );
+                //commandLine += " +map " + (window.location.search ? window.location.search.substr(1) : "game/demo_mars_city1");
+                WinMain(null, null, commandLine, commandLine.split(" ").length);
+            }
         </script>
+        
+        <div id="diffoutput"> </div>
     </body>
 </html>

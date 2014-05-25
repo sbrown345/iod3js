@@ -42,6 +42,7 @@ var todoBindBuffersNull = false;
 enum assertMapsList{
 	demo_mars_city1 = 1
 }
+
 function assertMapSpecific(map: assertMapsList, condition: boolean):void {
 	// todo: check map
 	

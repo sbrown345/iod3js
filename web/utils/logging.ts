@@ -27,7 +27,12 @@ var DEBUG_MAP_FILE = isd(false ); // todo: check output
 var DEBUG_SCRIPT = isd(false ); 
 var DEBUG_SPAWN = isd(true);
 
+var appendToLog = false;
+var dlogOutput = "";
+var diffDoesNotMatch = false;
+
 function dlog ( log: boolean, format: string, ...args: any[] ):void {
+    checkDiffStatus ( );
     if ( !skipLog( log ) ) {
         var text = vsprintf( format, args );
         pushLog( text );
@@ -35,48 +40,34 @@ function dlog ( log: boolean, format: string, ...args: any[] ):void {
 }
 
 function dlogQuick ( log: boolean, text:string ):void {
+    checkDiffStatus ( );
     if ( !skipLog( log ) ) {
          pushLog( text );
     }
 }
 
-function pushLog ( text: string ): void {
-    if ( dlogOutput.length > 20000 ) {
-        dlogFlush ( );
-    }
+function dlogFlush ( ): void {
+    ( <any>window ).logToServer( dlogOutput );
+    appendToLog = true;
+    dlogOutput = "";
+}
 
-    dlogOutput.push( text );
+function checkDiffStatus(): void {
+    if ( diffDoesNotMatch ) {
+        throw "diff does not match";
+    }
 }
 
 function skipLog (log:boolean ): boolean {
     return !log || SKIP_ALL_LOGGING || LOGGING_WITH_VISUAL_STUDIO;
 }
 
-function dlogConcat ( arr: any[] ): string {
-    var s: string, len: number, i: number;
-    len = arr.length;
-    for ( s = "", i = 0; i < len; s += arr[i], i++ );
-    return s;
-}
+function pushLog ( text: string ): void {
+    if ( dlogOutput.length > 50000 ) {
+        dlogFlush ( );
+    }
 
-var appendToLog = false;
-var dlogOutput: string[] = [];
-
-function dlogFlush() {
-	sendTextNew(dlogConcat(dlogOutput), appendToLog);
-	appendToLog = true;
-	dlogOutput = [];
-}
-
-function sendTextNew(text: string, append: boolean): void {
-	var xhr = new XMLHttpRequest();
-	var body = "string=" + encodeURIComponent(text);
-	if (append) {
-		body += "&append=true";
-	}
-	xhr.open("POST", "log.aspx", false);
-	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.send(body);
+    dlogOutput += text;
 }
 
 function logTexture(image: idImage, text:string, width: number, height: number, data: Uint8Array ): void {
@@ -86,6 +77,7 @@ function logTexture(image: idImage, text:string, width: number, height: number, 
 		can.width = width;
 		can.height = height;
 		var img = ctx.createImageData( width, height );
+        //todo: use set?
 		for ( var i = 0; i < img.data.length; i++ ) {
 			img.data[i] = data[i];
 		}

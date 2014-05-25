@@ -49,21 +49,21 @@ idCVarSystem *	idLib::cvarSystem	= NULL;
 idFileSystem *	idLib::fileSystem	= NULL;
 int				idLib::frameNumber	= 0;
 
-int DEBUG_LOG_MODE;
+bool DEBUG_LOG_MODE;
 
-int DEBUG_RENDER_METHODS;
-int DEBUG_RegisterDeclFolder;
-int DEBUG_Lexer;
-int DEBUG_DeriveTangents;
-int DEBUG_R_DeriveTangents;
-int DEBUG_COMPILER;
-int DEBUG_GUI;
-int DEBUG_HASHINDEX;
-int DEBUG_STRPOOL;
-int DEBUG_RENDERWORLD_LOAD;
-int DEBUG_CM;
-int DEBUG_MAP_FILE;
-int DEBUG_SPAWN;
+bool DEBUG_RENDER_METHODS;
+bool DEBUG_RegisterDeclFolder;
+bool DEBUG_Lexer;
+bool DEBUG_DeriveTangents;
+bool DEBUG_R_DeriveTangents;
+bool DEBUG_COMPILER;
+bool DEBUG_GUI;
+bool DEBUG_HASHINDEX;
+bool DEBUG_STRPOOL;
+bool DEBUG_RENDERWORLD_LOAD;
+bool DEBUG_CM;
+bool DEBUG_MAP_FILE;
+bool DEBUG_SPAWN;
 
 int RTCount;
 
