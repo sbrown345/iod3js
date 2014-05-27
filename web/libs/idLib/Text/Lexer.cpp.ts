@@ -973,9 +973,9 @@ class idLexer {
         //if (idLexer.RTCount == 913766 /*&& this.line == 106 */) debugger;
 		//if (token.data == "aas_types") debugger;
 		//dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", idLexer.RTCount, this.line, token.data);
-        if (idLexer.RTCount > 7200000 ) {
+        //if (idLexer.RTCount > 7200000 ) {
             dlogQuick( DEBUG_COMPILER || DEBUG_RENDERWORLD_LOAD || DEBUG_CM || DEBUG_SPAWN, "RT " + idLexer.RTCount + ", l:" + this.line + " " + token.data + "\n" );
-        }
+        //}
         //if (this.line == 714 && token.data == "models/md5/chars/af_pose.md5anim" )debugger;
         idLexer.RTCount++;
 

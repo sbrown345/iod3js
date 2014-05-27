@@ -2,7 +2,7 @@
 <%@ Import Namespace="System.IO" %>
 <%@ Import Namespace="System.Web.Script.Serialization" %>
 <%
-    // i guess this will be faster than the websockets
+    // i guess this will be faster than the websockets code
     // todo...
     
     var logText = Request.Form["string"].Replace("\n", "\r\n"); // where are these picked up from in doom3_c.log?;

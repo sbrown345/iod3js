@@ -918,9 +918,9 @@ int idLexer::ReadToken( idToken *token ) {
 	//}
 	//dlog(DEBUG_COMPILER, "RT: %i line:%i, %s\n", RTCount, line, token->data);
 
-	if (RTCount > 7200000) {
+	//if (RTCount > 7200000) {
 		dlog(DEBUG_COMPILER || DEBUG_RENDERWORLD_LOAD || DEBUG_CM || DEBUG_SPAWN, "RT %i, l:%i %s\n", RTCount, line, token->data);
-	}
+	//}
 	RTCount++;
 	if (RTCount > 7600000)
 	{
