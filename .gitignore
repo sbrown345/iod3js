@@ -34,3 +34,4 @@ build
 /web/demo/*
 /neo/doom3_c.log
 /web/doom3_js.log
+web/packages/*
