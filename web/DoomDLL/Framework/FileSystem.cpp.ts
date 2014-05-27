@@ -3171,7 +3171,7 @@ separate file or a ZIP file.
 	    var arr: ArrayBuffer;
 		var xhr = new XMLHttpRequest();
 		xhr["overrideMimeType"]('text/plain; charset=x-user-defined');
-		xhr.open('GET', "/demo/" + relativePath, false);
+        xhr.open( 'GET', (MINIMUM_ASSETS ? "/doom3_minimal_assets/demo/" : "/demo/") + relativePath, false );
 		xhr.send();
 		if ( xhr.status !== 200 ) {
 			return null;

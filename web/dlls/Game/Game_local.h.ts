@@ -4594,15 +4594,15 @@ randomize the order of the initial spawns
 prepare for a sequence of initial player spawns
 ============
 */
-	RandomizeInitialSpawns(): void {
-		todoThrow ( );
-////	spawnSpot_t	spot;
-////	var /*int */i:number, j:number;
-////	var ent:idEntity
+    RandomizeInitialSpawns ( ): void {
+        //var spot: spawnSpot_t;
+        var /*int */i: number, j: number;
+        var ent: idEntity;
 
-////	if ( !isMultiplayer || isClient ) {
-////		return;
-////	}
+        if ( !this.isMultiplayer || this.isClient ) {
+            return;
+        }
+        todoThrow ( );
 ////	spawnSpots.Clear();
 ////	initialSpots.Clear();
 ////	spot.dist = 0;
@@ -4634,7 +4634,7 @@ prepare for a sequence of initial player spawns
 ////	}
 ////	// reset the counter
 ////	currentInitialSpot = 0;
-}
+    }
 
 /////*
 ////===========

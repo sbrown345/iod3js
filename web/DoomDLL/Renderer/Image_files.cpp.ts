@@ -788,21 +788,22 @@ function LoadTGA( name:string, /*byte ***/pic:R<Uint8Array>, /*int *width*/width
 	fileSystem.FreeFile( buffer );
 }
 
-/////*
-////=========================================================
+/*
+=========================================================
 
-////JPG LOADING
+JPG LOADING
 
-////Interfaces with the huge libjpeg
-////=========================================================
-////*/
+Interfaces with the huge libjpeg
+=========================================================
+*/
 
-/////*
-////=============
-////LoadJPG
-////=============
-////*/
-////static void LoadJPG( const char *filename, unsigned char **pic, /*int *width*/width:R<number>, /*int *height*/height:R<number>, ID_TIME_T *timestamp ) {
+/*
+=============
+LoadJPG
+=============
+*/
+function LoadJPG( filename:string, pic:R<Uint8Array>, /*int *width*/width:R<number>, /*int *height*/height:R<number>, /*ID_TIME_T **/timestamp :R<Number>):void {
+    todo( "LoadJPG" );
 ////  /* This struct contains the JPEG decompression parameters and pointers to
 ////   * working space (which is allocated as needed by the JPEG library).
 ////   */
@@ -969,10 +970,10 @@ function LoadTGA( name:string, /*byte ***/pic:R<Uint8Array>, /*int *width*/width
 ////   * warnings occurred (test whether jerr.pub.num_warnings is nonzero).
 ////   */
 
-////  /* And we're done! */
-////}
+    /* And we're done! */
+}
 
-//////===================================================================
+//===================================================================
 
 /*
 =================

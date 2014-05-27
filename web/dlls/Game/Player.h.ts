@@ -1115,19 +1115,19 @@ idPlayer::idPlayer
 ////	value = spawnArgs.GetString( "bone_hips", "" );
 ////	hipJoint = animator.GetJointHandle( value );
 ////	if ( hipJoint == jointHandle_t.INVALID_JOINT ) {
-////		gameLocal.Error( "Joint '%s' not found for 'bone_hips' on '%s'", value, name.c_str() );
+////		gameLocal.Warning( "Joint '%s' not found for 'bone_hips' on '%s'", value, name.c_str() );
 ////	}
 ////
 ////	value = spawnArgs.GetString( "bone_chest", "" );
 ////	chestJoint = animator.GetJointHandle( value );
 ////	if ( chestJoint == jointHandle_t.INVALID_JOINT ) {
-////		gameLocal.Error( "Joint '%s' not found for 'bone_chest' on '%s'", value, name.c_str() );
+////		gameLocal.Warning( "Joint '%s' not found for 'bone_chest' on '%s'", value, name.c_str() );
 ////	}
 ////
 ////	value = spawnArgs.GetString( "bone_head", "" );
 ////	headJoint = animator.GetJointHandle( value );
 ////	if ( headJoint == jointHandle_t.INVALID_JOINT ) {
-////		gameLocal.Error( "Joint '%s' not found for 'bone_head' on '%s'", value, name.c_str() );
+////		gameLocal.Warning( "Joint '%s' not found for 'bone_head' on '%s'", value, name.c_str() );
 ////	}
 ////
 ////	// initialize the script variables
@@ -3816,7 +3816,7 @@ idPlayer::UserInfoChanged
 ////		if ( idealWeapon != -1 ) {
 ////			animPrefix = spawnArgs.GetString( va( "def_weapon%d", idealWeapon ) );
 ////			this.weapon.GetEntity().GetWeaponDef( animPrefix, this.inventory.clip[ idealWeapon ] );
-////			assert( this.weapon.GetEntity().IsLinked() );
+////			assert( this.weapon.GetEntity().IsLinked() ); // this is false in C version, however player can still get into the (minimum assets level)
 ////		} else {
 ////			return;
 ////		}

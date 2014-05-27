@@ -1,4 +1,6 @@
-﻿// keep track of things to do
+﻿var MINIMUM_ASSETS = true;
+
+// keep track of things to do
 function todo(reason?: string): void {
     //console.log("todo", reason);
 }
@@ -40,7 +42,8 @@ interface Error {
 var todoBindBuffersNull = false;
 
 enum assertMapsList{
-	demo_mars_city1 = 1
+	demo_mars_city1 = 1,
+	demo = 1
 }
 
 function assertMapSpecific(map: assertMapsList, condition: boolean):void {

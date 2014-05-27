@@ -2358,9 +2358,9 @@ Not called during idGameLocal::MapShutdown.
 ////
 ////	assert( ammoname );
 ////
-////	ammoDict = gameLocal.FindEntityDefDict( "ammo_types", false );
+////	ammoDict = gameLocal.FindEntityDefDict( "ammo_types", true );
 ////	if ( !ammoDict ) {
-////		gameLocal.Error( "Could not find entity definition for 'ammo_types'\n" );
+////		gameLocal.Warning( "Could not find entity definition for 'ammo_types'\n" );
 ////	}
 ////
 ////	if ( !ammoname[ 0 ] ) {
@@ -2390,9 +2390,9 @@ Not called during idGameLocal::MapShutdown.
 ////	const idKeyValue *kv;
 ////	char text[ 32 ];
 ////
-////	ammoDict = gameLocal.FindEntityDefDict( "ammo_types", false );
+////	ammoDict = gameLocal.FindEntityDefDict( "ammo_types", true );
 ////	if ( !ammoDict ) {
-////		gameLocal.Error( "Could not find entity definition for 'ammo_types'\n" );
+////		gameLocal.Warning( "Could not find entity definition for 'ammo_types'\n" );
 ////	}
 ////
 ////	sprintf( text, "%d", ammonum );

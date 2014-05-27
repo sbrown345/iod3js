@@ -324,7 +324,6 @@ class idUserInterfaceLocal extends idUserInterface {
 
 			this.state.Set( "name", qpath );
 		} else {
-			todoThrow ( );
 			//this.desktop.SetDC( &uiManagerLocal.dc );
 			//this.desktop.SetFlag(WIN_DESKTOP);
 			//this.desktop.name = "Desktop";
@@ -334,7 +333,7 @@ class idUserInterfaceLocal extends idUserInterface {
 			//this.desktop.foreColor = idVec4(1.0, 1.0, 1.0, 1.0);
 			//this.desktop.backColor = idVec4(0.0, 0.0, 0.0, 1.0);
 			//this.desktop.SetupFromState();
-			//common.Warning( "Couldn't load gui: '%s'", qpath );
+			common.Warning( "Couldn't load gui: '%s'", qpath );
 		}
 
 		this.interactive = this.desktop.Interactive ( );
