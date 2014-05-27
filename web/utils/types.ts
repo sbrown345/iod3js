@@ -457,6 +457,9 @@ interface Uint8Array {
 }
 
 // todo: http://jsperf.com/arraybuffer-to-string-apply-performance/2
+// http://jsperf.com/uint8array-vs-array-encode-to-utf8/2                               - strToBuffer2
+//https://stackoverflow.com/questions/8936984/uint8array-to-string-in-javascript        - Utf8ArrayToStr
+// https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder + shim....
 Uint8Array.prototype.toString = function () : string {
     var str = "";
     for (var i = 0; i < this.length; i++) {
@@ -468,6 +471,8 @@ Uint8Array.prototype.toString = function () : string {
 
     return str;
 };
+
+
 
 function decodeUtf8(s: string): string {
     return decodeURIComponent((<any>window).escape(s));
