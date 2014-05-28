@@ -2851,38 +2851,38 @@ idEntity::SetAxis
 
 		this.UpdateVisuals();
 	}
-////
-/////*
-////================
-////idEntity::SetAngles
-////================
-////*/
-////SetAngles( const ang:idAngles ) {
-////	this.SetAxis( ang.ToMat3() );
-////}
-////
-/////*
-////================
-////idEntity::GetFloorPos
-////================
-////*/
-////bool idEntity::GetFloorPos( float max_dist, idVec3 &floorpos ) const {
-////	trace_t result;
-////
-////	if ( !this.GetPhysics().HasGroundContacts() ) {
-////		this.GetPhysics().ClipTranslation( result, this.GetPhysics().GetGravityNormal() * max_dist, null );
-////		if ( result.fraction < 1.0 ) {
-////			floorpos = result.endpos;
-////			return true;
-////		} else {
-////			floorpos = this.GetPhysics().GetOrigin();
-////			return false;
-////		}
-////	} else {
-////		floorpos = this.GetPhysics().GetOrigin();
-////		return true;
-////	}
-////}
+
+/*
+================
+idEntity::SetAngles
+================
+*/
+SetAngles(  ang:idAngles ) {
+	this.SetAxis( ang.ToMat3() );
+}
+
+/*
+================
+idEntity::GetFloorPos
+================
+*/
+    GetFloorPos ( /*float*/ max_dist: number, floorpos: idVec3 ): boolean {
+        var result: trace_t;
+
+        if ( !this.GetPhysics ( ).HasGroundContacts ( ) ) {
+            this.GetPhysics ( ).ClipTranslation( result, this.GetPhysics ( ).GetGravityNormal ( ) * max_dist, null );
+            if ( result.fraction < 1.0 ) {
+                floorpos.opEquals( result.endpos );
+                return true;
+            } else {
+                floorpos.opEquals( this.GetPhysics ( ).GetOrigin ( ) );
+                return false;
+            }
+        } else {
+            floorpos.opEquals( this.GetPhysics ( ).GetOrigin ( ) );
+            return true;
+        }
+    }
 
 /*
 ================

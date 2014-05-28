@@ -172,7 +172,7 @@ class idWeapon extends idAnimatedEntity {
 ////	idStr					idealState;
 ////	int						animBlendFrames;
 ////	int						animDoneTime;
-////	bool					isLinked;
+////	bool					isLinked:boolean;
 ////
 ////	// precreated projectile
 ////	idEntity				*projectileEnt;
@@ -187,8 +187,8 @@ class idWeapon extends idAnimatedEntity {
 ////	float					hideStart;
 ////	float					hideEnd;
 ////	float					hideOffset;
-////	bool					hide;
-////	bool					disabled;
+////	bool					hide:boolean;
+////	bool					disabled:boolean;
 ////
 ////	// berserk
 ////	int						berserk;
@@ -233,12 +233,12 @@ class idWeapon extends idAnimatedEntity {
 ////	idVec3					flashColor;
 ////	int						muzzleFlashEnd;
 ////	int						flashTime;
-////	bool					lightOn;
-////	bool					silent_fire;
-////	bool					allowDrop;
+////	bool					lightOn:boolean;
+////	bool					silent_fire:boolean;
+////	bool					allowDrop:boolean;
 ////
 ////	// effects
-////	bool					hasBloodSplat;
+////	bool					hasBloodSplat:boolean;
 ////
 ////	// weapon kick
 ////	int						kick_endtime;
@@ -253,10 +253,10 @@ class idWeapon extends idAnimatedEntity {
 ////	int						clipSize;			// 0 means no reload
 ////	int						ammoClip;
 ////	int						lowAmmo;			// if ammo in clip hits this threshold, snd_
-////	bool					powerAmmo;			// true if the clip reduction is a factor of the power setting when
+////	bool					powerAmmo:boolean;			// true if the clip reduction is a factor of the power setting when
 ////												// a projectile is launched
 ////	// mp client
-////	bool					isFiring;
+////	bool					isFiring:boolean;
 ////
 ////	// zoom
 ////    int						zoomFov;			// variable zoom fov per weapon
@@ -278,7 +278,7 @@ class idWeapon extends idAnimatedEntity {
 ////	// new style muzzle smokes
 ////	const idDeclParticle *	weaponSmoke;			// null if it doesn't smoke
 ////	int						weaponSmokeStartTime;	// set to gameLocal.time every weapon fire
-////	bool					continuousSmoke;		// if smoke is continuous ( chainsaw )
+////	bool					continuousSmoke:boolean;		// if smoke is continuous ( chainsaw )
 ////	const idDeclParticle *  strikeSmoke;			// striking something in melee
 ////	int						strikeSmokeStartTime;	// timing	
 ////	idVec3					strikePos;				// position of last melee strike	
@@ -286,7 +286,7 @@ class idWeapon extends idAnimatedEntity {
 ////	int						nextStrikeFx;			// used for sound and decal ( may use for strike smoke too )
 ////
 ////	// nozzle effects
-////	bool					nozzleFx;			// does this use nozzle effects ( parm5 at rest, parm6 firing )
+////	bool					nozzleFx:boolean;			// does this use nozzle effects ( parm5 at rest, parm6 firing )
 ////										// this also assumes a nozzle light atm
 ////	int						nozzleFxFade;		// time it takes to fade between the effects
 ////	int						lastAttack;			// last time an attack occured
@@ -832,14 +832,14 @@ idWeapon::Spawn
 	////	this.renderEntity.customSkin		= NULL;
 	////
 	////	// set default shader parms
-	////	this.renderEntity.shaderParms[ SHADERPARM_RED ]	= 1.0f;
-	////	this.renderEntity.shaderParms[ SHADERPARM_GREEN ]= 1.0f;
-	////	this.renderEntity.shaderParms[ SHADERPARM_BLUE ]	= 1.0f;
-	////	this.renderEntity.shaderParms[3] = 1.0f;
-	////	this.renderEntity.shaderParms[ SHADERPARM_TIMEOFFSET ] = 0.0f;
-	////	this.renderEntity.shaderParms[5] = 0.0f;
-	////	this.renderEntity.shaderParms[6] = 0.0f;
-	////	this.renderEntity.shaderParms[7] = 0.0f;
+	////	this.renderEntity.shaderParms[ SHADERPARM_RED ]	= 1.0;
+	////	this.renderEntity.shaderParms[ SHADERPARM_GREEN ]= 1.0;
+	////	this.renderEntity.shaderParms[ SHADERPARM_BLUE ]	= 1.0;
+	////	this.renderEntity.shaderParms[3] = 1.0;
+	////	this.renderEntity.shaderParms[ SHADERPARM_TIMEOFFSET ] = 0.0;
+	////	this.renderEntity.shaderParms[5] = 0.0;
+	////	this.renderEntity.shaderParms[6] = 0.0;
+	////	this.renderEntity.shaderParms[7] = 0.0;
 	////
 	////	if ( refSound.referenceSound ) {
 	////		refSound.referenceSound.Free( true );
@@ -847,7 +847,7 @@ idWeapon::Spawn
 	////	memset( &refSound, 0, sizeof( refSound_t ) );
 	////	
 	////	// setting diversity to 0 results in no random sound.  -1 indicates random.
-	////	refSound.diversity = -1.0f;
+	////	refSound.diversity = -1.0;
 	////
 	////	if ( this.owner ) {
 	////		// don't spatialize the weapon sounds
@@ -862,11 +862,11 @@ idWeapon::Spawn
 	////	}
 	////
 	////	hideTime		= 300;
-	////	hideDistance	= -15.0f;
+	////	hideDistance	= -15.0;
 	////	hideStartTime	= gameLocal.time - hideTime;
-	////	hideStart		= 0.0f;
-	////	hideEnd			= 0.0f;
-	////	hideOffset		= 0.0f;
+	////	hideStart		= 0.0;
+	////	hideEnd			= 0.0;
+	////	hideOffset		= 0.0;
 	////	hide			= false;
 	////	disabled		= false;
 	////
@@ -898,7 +898,7 @@ idWeapon::Spawn
 	////	projectileDict.Clear();
 	////	meleeDef		= NULL;
 	////	meleeDefName	= "";
-	////	meleeDistance	= 0.0f;
+	////	meleeDistance	= 0.0;
 	////	brassDict.Clear();
 	////
 	////	flashTime		= 250;
@@ -940,10 +940,10 @@ idWeapon::Spawn
 	////	nozzleGlowColor.Zero();
 	////
 	////	weaponAngleOffsetAverages	= 0;
-	////	weaponAngleOffsetScale		= 0.0f;
-	////	weaponAngleOffsetMax		= 0.0f;
-	////	weaponOffsetTime			= 0.0f;
-	////	weaponOffsetScale			= 0.0f;
+	////	weaponAngleOffsetScale		= 0.0;
+	////	weaponAngleOffsetMax		= 0.0;
+	////	weaponOffsetTime			= 0.0;
+	////	weaponOffsetScale			= 0.0;
 	////
 	////	allowDrop			= true;
 	////
@@ -982,7 +982,7 @@ idWeapon::Spawn
 	////			ent.SetSkin( ent.GetAnimator().ModelDef().GetDefaultSkin() );
 	////		}
 	////		ent.GetPhysics().SetContents( 0 );
-	////		ent.GetPhysics().SetClipModel( NULL, 1.0f );
+	////		ent.GetPhysics().SetClipModel( NULL, 1.0 );
 	////		ent.BindToJoint( this.owner, attach, true );
 	////		ent.GetPhysics().SetOrigin( vec3_origin );
 	////		ent.GetPhysics().SetAxis( mat3_identity );
@@ -1147,7 +1147,7 @@ idWeapon::Spawn
 	////	muzzleFlash.shaderParms[ SHADERPARM_RED ]			= flashColor[0];
 	////	muzzleFlash.shaderParms[ SHADERPARM_GREEN ]			= flashColor[1];
 	////	muzzleFlash.shaderParms[ SHADERPARM_BLUE ]			= flashColor[2];
-	////	muzzleFlash.shaderParms[ SHADERPARM_TIMESCALE ]		= 1.0f;
+	////	muzzleFlash.shaderParms[ SHADERPARM_TIMESCALE ]		= 1.0;
 	////
 	////	muzzleFlash.lightRadius[0]							= flashRadius;
 	////	muzzleFlash.lightRadius[1]							= flashRadius;
@@ -1535,24 +1535,25 @@ idWeapon::Spawn
 ////	}
 ////}
 ////
-/////*
-////================
-////idWeapon::LowerWeapon
-////================
-////*/
-////void idWeapon::LowerWeapon( ) {
-////	if ( !hide ) {
-////		hideStart	= 0.0f;
-////		hideEnd		= hideDistance;
-////		if ( gameLocal.time - hideStartTime < hideTime ) {
-////			hideStartTime = gameLocal.time - ( hideTime - ( gameLocal.time - hideStartTime ) );
-////		} else {
-////			hideStartTime = gameLocal.time;
-////		}
-////		hide = true;
-////	}
-////}
-////
+/*
+================
+idWeapon::LowerWeapon
+================
+*/
+LowerWeapon( ):void {
+	if ( !this.hide ) {
+	    todoThrow ( );
+		//hideStart	= 0.0;
+		//hideEnd		= hideDistance;
+		//if ( gameLocal.time - hideStartTime < hideTime ) {
+		//	hideStartTime = gameLocal.time - ( hideTime - ( gameLocal.time - hideStartTime ) );
+		//} else {
+		//	hideStartTime = gameLocal.time;
+		//}
+		//this.hide = true;
+	}
+}
+
 /////*
 ////================
 ////idWeapon::RaiseWeapon
@@ -1561,15 +1562,15 @@ idWeapon::Spawn
 ////void idWeapon::RaiseWeapon( ) {
 ////	Show();
 ////
-////	if ( hide ) {
+////	if ( this.hide ) {
 ////		hideStart	= hideDistance;
-////		hideEnd		= 0.0f;
+////		hideEnd		= 0.0;
 ////		if ( gameLocal.time - hideStartTime < hideTime ) {
 ////			hideStartTime = gameLocal.time - ( hideTime - ( gameLocal.time - hideStartTime ) );
 ////		} else {
 ////			hideStartTime = gameLocal.time;
 ////		}
-////		hide = false;
+////		this.hide = false;
 ////	}
 ////}
 ////
@@ -1690,7 +1691,7 @@ idWeapon::HideWorldModel
 ////================
 ////*/
 ////bool idWeapon::IsReady( ) const {
-////	return !hide && !IsHidden() && ( ( status == WP_RELOAD ) || ( status == WP_READY ) || ( status == WP_OUTOFAMMO ) );
+////	return !this.hide && !IsHidden() && ( ( status == WP_RELOAD ) || ( status == WP_READY ) || ( status == WP_OUTOFAMMO ) );
 ////}
 ////
 /////*
@@ -1835,11 +1836,11 @@ idWeapon::HideWorldModel
 ////	// shader parms
 ////	//
 ////	int la = gameLocal.time - lastAttack + 1;
-////	float s = 1.0f;
-////	float l = 0.0f;
+////	float s = 1.0;
+////	float l = 0.0;
 ////	if ( la < nozzleFxFade ) {
 ////		s = ((float)la / nozzleFxFade);
-////		l = 1.0f - s;
+////		l = 1.0 - s;
 ////	}
 ////	this.renderEntity.shaderParms[5] = s;
 ////	this.renderEntity.shaderParms[6] = l;
@@ -1862,7 +1863,7 @@ idWeapon::HideWorldModel
 ////		nozzleGlow.lightRadius.y = nozzleGlowRadius;
 ////		nozzleGlow.lightRadius.z = nozzleGlowRadius;
 ////		nozzleGlow.shader = nozzleGlowShader;
-////		nozzleGlow.shaderParms[ SHADERPARM_TIMESCALE ]	= 1.0f;
+////		nozzleGlow.shaderParms[ SHADERPARM_TIMESCALE ]	= 1.0;
 ////		nozzleGlow.shaderParms[ SHADERPARM_TIMEOFFSET ]	= -MS2SEC( gameLocal.time );
 ////		GetGlobalJointTransform( true, ventLightJointView, nozzleGlow.origin, nozzleGlow.axis );
 ////		nozzleGlowHandle = gameRenderWorld.AddLightDef(&nozzleGlow);
@@ -1901,9 +1902,9 @@ idWeapon::HideWorldModel
 ////		return false;
 ////	}
 ////
-////	localOrigin[0] += gameLocal.random.RandomFloat() * -10.0f;
-////	localOrigin[1] += gameLocal.random.RandomFloat() * 1.0f;
-////	localOrigin[2] += gameLocal.random.RandomFloat() * -2.0f;
+////	localOrigin[0] += gameLocal.random.RandomFloat() * -10.0;
+////	localOrigin[1] += gameLocal.random.RandomFloat() * 1.0;
+////	localOrigin[2] += gameLocal.random.RandomFloat() * -2.0;
 ////
 ////	normal = idVec3( gameLocal.random.CRandomFloat(), -gameLocal.random.RandomFloat(), -1 );
 ////	normal.Normalize();
@@ -1915,8 +1916,8 @@ idWeapon::HideWorldModel
 ////	localAxis[0] = axistemp[ 0 ] * c + axistemp[ 1 ] * -s;
 ////	localAxis[1] = axistemp[ 0 ] * -s + axistemp[ 1 ] * -c;
 ////
-////	localAxis[0] *= 1.0f / size;
-////	localAxis[1] *= 1.0f / size;
+////	localAxis[0] *= 1.0 / size;
+////	localAxis[1] *= 1.0 / size;
 ////
 ////	idPlane		localPlane[2];
 ////
@@ -2086,7 +2087,7 @@ Not called during idGameLocal::MapShutdown.
 ////		gameRenderWorld.DebugArrow( colorGreen, muzzleFlash.origin, tr.endpos, 2, 0 );
 ////	}
 ////
-////	if ( tr.fraction < 1.0f ) {
+////	if ( tr.fraction < 1.0 ) {
 ////		ent = gameLocal.GetTraceEntity( tr );
 ////		if ( ent.IsType( idAI::Type ) ) {
 ////			static_cast<idAI *>( ent ).TouchedByFlashlight( this.owner );
@@ -2105,7 +2106,7 @@ Not called during idGameLocal::MapShutdown.
 ////		gameRenderWorld.DebugArrow( colorGreen, muzzleFlash.origin, tr.endpos, 2, 0 );
 ////	}
 ////
-////	if ( tr.fraction < 1.0f ) {
+////	if ( tr.fraction < 1.0 ) {
 ////		ent = gameLocal.GetTraceEntity( tr );
 ////		if ( ent.IsType( idAI::Type ) ) {
 ////			static_cast<idAI *>( ent ).TouchedByFlashlight( this.owner );
@@ -2133,15 +2134,15 @@ Not called during idGameLocal::MapShutdown.
 ////	if ( gameLocal.time - hideStartTime < hideTime ) {		
 ////		float frac = ( float )( gameLocal.time - hideStartTime ) / ( float )hideTime;
 ////		if ( hideStart < hideEnd ) {
-////			frac = 1.0f - frac;
-////			frac = 1.0f - frac * frac;
+////			frac = 1.0 - frac;
+////			frac = 1.0 - frac * frac;
 ////		} else {
 ////			frac = frac * frac;
 ////		}
 ////		hideOffset = hideStart + ( hideEnd - hideStart ) * frac;
 ////	} else {
 ////		hideOffset = hideEnd;
-////		if ( hide && disabled ) {
+////		if ( this.hide && disabled ) {
 ////			this.Hide();
 ////		}
 ////	}
@@ -2803,7 +2804,7 @@ Not called during idGameLocal::MapShutdown.
 ////void idWeapon::Event_AutoReload( ) {
 ////	assert( this.owner );
 ////	if ( gameLocal.isClient ) {
-////		idThread::ReturnFloat( 0.0f );
+////		idThread::ReturnFloat( 0.0 );
 ////		return;
 ////	}
 ////	idThread::ReturnFloat( gameLocal.userInfo[ this.owner.entityNumber ].GetBool( "ui_autoReload" ) );
@@ -3141,14 +3142,14 @@ Not called during idGameLocal::MapShutdown.
 ////		// predict instant hit projectiles
 ////		if ( projectileDict.GetBool( "net_instanthit" ) ) {
 ////			float spreadRad = DEG2RAD( spread );
-////			muzzle_pos = muzzleOrigin + playerViewAxis[ 0 ] * 2.0f;
+////			muzzle_pos = muzzleOrigin + playerViewAxis[ 0 ] * 2.0;
 ////			for( i = 0; i < num_projectiles; i++ ) {
 ////				ang = idMath::Sin( spreadRad * gameLocal.random.RandomFloat() );
-////				spin = (float)DEG2RAD( 360.0f ) * gameLocal.random.RandomFloat();
+////				spin = (float)DEG2RAD( 360.0 ) * gameLocal.random.RandomFloat();
 ////				dir = playerViewAxis[ 0 ] + playerViewAxis[ 2 ] * ( ang * idMath::Sin( spin ) ) - playerViewAxis[ 1 ] * ( ang * idMath::Cos( spin ) );
 ////				dir.Normalize();
-////				gameLocal.clip.Translation( tr, muzzle_pos, muzzle_pos + dir * 4096.0f, NULL, mat3_identity, MASK_SHOT_RENDERMODEL, this.owner );
-////				if ( tr.fraction < 1.0f ) {
+////				gameLocal.clip.Translation( tr, muzzle_pos, muzzle_pos + dir * 4096.0, NULL, mat3_identity, MASK_SHOT_RENDERMODEL, this.owner );
+////				if ( tr.fraction < 1.0 ) {
 ////					idProjectile::ClientPredictionCollide( this, projectileDict, tr, vec3_origin, true );
 ////				}
 ////			}
@@ -3163,7 +3164,7 @@ Not called during idGameLocal::MapShutdown.
 ////		float spreadRad = DEG2RAD( spread );
 ////		for( i = 0; i < num_projectiles; i++ ) {
 ////			ang = idMath::Sin( spreadRad * gameLocal.random.RandomFloat() );
-////			spin = (float)DEG2RAD( 360.0f ) * gameLocal.random.RandomFloat();
+////			spin = (float)DEG2RAD( 360.0 ) * gameLocal.random.RandomFloat();
 ////			dir = playerViewAxis[ 0 ] + playerViewAxis[ 2 ] * ( ang * idMath::Sin( spin ) ) - playerViewAxis[ 1 ] * ( ang * idMath::Cos( spin ) );
 ////			dir.Normalize();
 ////
@@ -3193,7 +3194,7 @@ Not called during idGameLocal::MapShutdown.
 ////
 ////			// make sure the projectile starts inside the bounding box of the this.owner
 ////			if ( i == 0 ) {
-////				muzzle_pos = muzzleOrigin + playerViewAxis[ 0 ] * 2.0f;
+////				muzzle_pos = muzzleOrigin + playerViewAxis[ 0 ] * 2.0;
 ////				if ( ( ownerBounds - projBounds).RayIntersection( muzzle_pos, playerViewAxis[0], distance ) ) {
 ////					start = muzzle_pos + distance * playerViewAxis[0];
 ////				} else {
@@ -3238,7 +3239,7 @@ Not called during idGameLocal::MapShutdown.
 ////		idVec3 start = playerViewOrigin;
 ////		idVec3 end = start + playerViewAxis[0] * ( meleeDistance * this.owner.PowerUpModifier( MELEE_DISTANCE ) );
 ////		gameLocal.clip.TracePoint( tr, start, end, MASK_SHOT_RENDERMODEL, this.owner );
-////		if ( tr.fraction < 1.0f ) {
+////		if ( tr.fraction < 1.0 ) {
 ////			ent = gameLocal.GetTraceEntity( tr );
 ////		} else {
 ////			ent = NULL;
@@ -3312,7 +3313,7 @@ Not called during idGameLocal::MapShutdown.
 ////						// project decal
 ////						decal = weaponDef.dict.GetString( "mtr_strike" );
 ////						if ( decal && *decal ) {
-////							gameLocal.ProjectDecal( tr.c.point, -tr.c.normal, 8.0f, true, 6.0, decal );
+////							gameLocal.ProjectDecal( tr.c.point, -tr.c.normal, 8.0, true, 6.0, decal );
 ////						}
 ////						nextStrikeFx = gameLocal.time + 200;
 ////					} else {

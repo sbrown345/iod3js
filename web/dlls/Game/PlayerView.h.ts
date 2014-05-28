@@ -47,9 +47,9 @@
 ////	float				driftAmount;
 ////} screenBlob_t;
 ////
-////#define	MAX_SCREEN_BLOBS	8
-////
-////class idPlayerView {
+var MAX_SCREEN_BLOBS = 8;
+
+class idPlayerView {
 ////public:
 ////						idPlayerView();
 ////
@@ -121,6 +121,6 @@
 ////
 ////	idPlayer *			player;
 ////	renderView_t		view;
-////};
+};
 ////
 ////#endif /* !__GAME_PLAYERVIEW_H__ */

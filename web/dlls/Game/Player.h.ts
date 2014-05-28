@@ -148,7 +148,7 @@ class idInventory {
 ////	bool					armorPulse;
 ////	int						lastGiveTime;
 ////
-////	idList<idLevelTriggerInfo> levelTriggers;
+     levelTriggers = new idList<idLevelTriggerInfo>(idLevelTriggerInfo);
 ////
 ////							idInventory() { Clear(); }
 ////							~idInventory() { Clear(); }
@@ -214,9 +214,9 @@ class idPlayer extends idActor {
 ////	};
 ////
 	usercmd = new usercmd_t;
-////
-////	class idPlayerView		playerView;			// handles damage kicks and effects
-////
+
+	playerView = new idPlayerView;			// handles damage kicks and effects
+
 	noclip: boolean;
 	godmode: boolean;
 	
@@ -232,27 +232,27 @@ class idPlayer extends idActor {
 	lastHitTime: number/*int*/;			// last time projectile fired by player hit target
 	lastSndHitTime: number/*int*/;			// MP hit sound - != lastHitTime because we throttle
 	lastSavingThrowTime: number/*int*/;	// for the "free miss" effect
-////
-////	idScriptBool			AI_FORWARD;
-////	idScriptBool			AI_BACKWARD;
-////	idScriptBool			AI_STRAFE_LEFT;
-////	idScriptBool			AI_STRAFE_RIGHT;
-////	idScriptBool			AI_ATTACK_HELD;
-////	idScriptBool			AI_WEAPON_FIRED;
-////	idScriptBool			AI_JUMP;
-////	idScriptBool			AI_CROUCH;
-////	idScriptBool			AI_ONGROUND;
-////	idScriptBool			AI_ONLADDER;
-////	idScriptBool			AI_DEAD;
-////	idScriptBool			AI_RUN;
-////	idScriptBool			AI_PAIN;
-////	idScriptBool			AI_HARDLANDING;
-////	idScriptBool			AI_SOFTLANDING;
-////	idScriptBool			AI_RELOAD;
-////	idScriptBool			AI_TELEPORT;
-////	idScriptBool			AI_TURN_LEFT;
-////	idScriptBool			AI_TURN_RIGHT;
-////
+    
+    AI_FORWARD = new idScriptBool;
+    AI_BACKWARD = new idScriptBool;
+    AI_STRAFE_LEFT = new idScriptBool;
+    AI_STRAFE_RIGHT = new idScriptBool;
+    AI_ATTACK_HELD = new idScriptBool;
+    AI_WEAPON_FIRED = new idScriptBool;
+    AI_JUMP = new idScriptBool;
+    AI_CROUCH = new idScriptBool;
+    AI_ONGROUND = new idScriptBool;
+    AI_ONLADDER = new idScriptBool;
+    AI_DEAD = new idScriptBool;
+    AI_RUN = new idScriptBool;
+    AI_PAIN = new idScriptBool;
+    AI_HARDLANDING = new idScriptBool;
+    AI_SOFTLANDING = new idScriptBool;
+    AI_RELOAD = new idScriptBool;
+    AI_TELEPORT = new idScriptBool;
+    AI_TURN_LEFT = new idScriptBool;
+    AI_TURN_RIGHT = new idScriptBool;
+
 	// inventory
 	inventory = new idInventory;
 	
@@ -706,7 +706,7 @@ class idPlayer extends idActor {
 ////}
 ////
 ////ID_INLINE idPhysics* idPlayer::GetPlayerPhysics( ) {
-////	return &physicsObj;
+////	return &this.physicsObj;
 ////}
 ////
 ////ID_INLINE bool idPlayer::IsInTeleport( ) {
@@ -921,35 +921,35 @@ idPlayer::idPlayer
 		this.selfSmooth = false;
 	}
 
-/////*
-////==============
-////idPlayer::LinkScriptVariables
-////
-////set up conditions for animation
-////==============
-////*/
-////void idPlayer::LinkScriptVariables( ) {
-////	AI_FORWARD.LinkTo(			scriptObject, "AI_FORWARD" );
-////	AI_BACKWARD.LinkTo(			scriptObject, "AI_BACKWARD" );
-////	AI_STRAFE_LEFT.LinkTo(		scriptObject, "AI_STRAFE_LEFT" );
-////	AI_STRAFE_RIGHT.LinkTo(		scriptObject, "AI_STRAFE_RIGHT" );
-////	AI_ATTACK_HELD.LinkTo(		scriptObject, "AI_ATTACK_HELD" );
-////	AI_WEAPON_FIRED.LinkTo(		scriptObject, "AI_WEAPON_FIRED" );
-////	AI_JUMP.LinkTo(				scriptObject, "AI_JUMP" );
-////	AI_DEAD.LinkTo(				scriptObject, "AI_DEAD" );
-////	AI_CROUCH.LinkTo(			scriptObject, "AI_CROUCH" );
-////	AI_ONGROUND.LinkTo(			scriptObject, "AI_ONGROUND" );
-////	AI_ONLADDER.LinkTo(			scriptObject, "AI_ONLADDER" );
-////	AI_HARDLANDING.LinkTo(		scriptObject, "AI_HARDLANDING" );
-////	AI_SOFTLANDING.LinkTo(		scriptObject, "AI_SOFTLANDING" );
-////	AI_RUN.LinkTo(				scriptObject, "AI_RUN" );
-////	AI_PAIN.LinkTo(				scriptObject, "AI_PAIN" );
-////	AI_RELOAD.LinkTo(			scriptObject, "AI_RELOAD" );
-////	AI_TELEPORT.LinkTo(			scriptObject, "AI_TELEPORT" );
-////	AI_TURN_LEFT.LinkTo(		scriptObject, "AI_TURN_LEFT" );
-////	AI_TURN_RIGHT.LinkTo(		scriptObject, "AI_TURN_RIGHT" );
-////}
-////
+/*
+==============
+idPlayer::LinkScriptVariables
+
+set up conditions for animation
+==============
+*/
+    LinkScriptVariables ( ): void {
+        this.AI_FORWARD.LinkTo( this.scriptObject, "AI_FORWARD" );
+        this.AI_BACKWARD.LinkTo( this.scriptObject, "AI_BACKWARD" );
+        this.AI_STRAFE_LEFT.LinkTo( this.scriptObject, "AI_STRAFE_LEFT" );
+        this.AI_STRAFE_RIGHT.LinkTo( this.scriptObject, "AI_STRAFE_RIGHT" );
+        this.AI_ATTACK_HELD.LinkTo( this.scriptObject, "AI_ATTACK_HELD" );
+        this.AI_WEAPON_FIRED.LinkTo( this.scriptObject, "AI_WEAPON_FIRED" );
+        this.AI_JUMP.LinkTo( this.scriptObject, "AI_JUMP" );
+        this.AI_DEAD.LinkTo( this.scriptObject, "AI_DEAD" );
+        this.AI_CROUCH.LinkTo( this.scriptObject, "AI_CROUCH" );
+        this.AI_ONGROUND.LinkTo( this.scriptObject, "AI_ONGROUND" );
+        this.AI_ONLADDER.LinkTo( this.scriptObject, "AI_ONLADDER" );
+        this.AI_HARDLANDING.LinkTo( this.scriptObject, "AI_HARDLANDING" );
+        this.AI_SOFTLANDING.LinkTo( this.scriptObject, "AI_SOFTLANDING" );
+        this.AI_RUN.LinkTo( this.scriptObject, "AI_RUN" );
+        this.AI_PAIN.LinkTo( this.scriptObject, "AI_PAIN" );
+        this.AI_RELOAD.LinkTo( this.scriptObject, "AI_RELOAD" );
+        this.AI_TELEPORT.LinkTo( this.scriptObject, "AI_TELEPORT" );
+        this.AI_TURN_LEFT.LinkTo( this.scriptObject, "AI_TURN_LEFT" );
+        this.AI_TURN_RIGHT.LinkTo( this.scriptObject, "AI_TURN_RIGHT" );
+    }
+
 /////*
 ////==============
 ////idPlayer::SetupWeaponEntity
@@ -970,7 +970,7 @@ idPlayer::idPlayer
 ////	}
 ////
 ////	for( w = 0; w < MAX_WEAPONS; w++ ) {
-////		weap = spawnArgs.GetString( va( "def_weapon%d", w ) );
+////		weap = this.spawnArgs.GetString( va( "def_weapon%d", w ) );
 ////		if ( weap && *weap ) {
 ////			idWeapon::CacheWeapon( weap );
 ////		}
@@ -1065,10 +1065,10 @@ idPlayer::idPlayer
 ////
 ////	// set the pm_ cvars
 ////	if ( !gameLocal.isMultiplayer || gameLocal.isServer ) {
-////		kv = spawnArgs.MatchPrefix( "pm_", NULL );
+////		kv = this.spawnArgs.MatchPrefix( "pm_", NULL );
 ////		while( kv ) {
 ////			cvarSystem.SetCVarString( kv.GetKey(), kv.GetValue() );
-////			kv = spawnArgs.MatchPrefix( "pm_", kv );
+////			kv = this.spawnArgs.MatchPrefix( "pm_", kv );
 ////		}
 ////	}
 ////
@@ -1089,7 +1089,7 @@ idPlayer::idPlayer
 ////	gibsDir.Zero();
 ////
 ////	// set the gravity
-////	physicsObj.SetGravity( gameLocal.GetGravity() );
+////	this.physicsObj.SetGravity( gameLocal.GetGravity() );
 ////
 ////	// start out standing
 ////	SetEyeHeight( pm_normalviewheight.GetFloat() );
@@ -1099,7 +1099,7 @@ idPlayer::idPlayer
 ////	viewBobAngles.Zero();
 ////	viewBob.Zero();
 ////
-////	value = spawnArgs.GetString( "model" );
+////	value = this.spawnArgs.GetString( "model" );
 ////	if ( value && ( *value != 0 ) ) {
 ////		SetModel( value );
 ////	}
@@ -1114,25 +1114,25 @@ idPlayer::idPlayer
 ////	if ( ( gameLocal.isMultiplayer || g_testDeath.GetBool() ) && skin ) {
 ////		SetSkin( skin );
 ////		renderEntity.shaderParms[6] = 0.0;
-////	} else if ( spawnArgs.GetString( "spawn_skin", NULL, &value ) ) {
+////	} else if ( this.spawnArgs.GetString( "spawn_skin", NULL, &value ) ) {
 ////		skin = declManager.FindSkin( value );
 ////		SetSkin( skin );
 ////		renderEntity.shaderParms[6] = 0.0;
 ////	}
 ////
-////	value = spawnArgs.GetString( "bone_hips", "" );
+////	value = this.spawnArgs.GetString( "bone_hips", "" );
 ////	hipJoint = animator.GetJointHandle( value );
 ////	if ( hipJoint == jointHandle_t.INVALID_JOINT ) {
 ////		gameLocal.Warning( "Joint '%s' not found for 'bone_hips' on '%s'", value, name.c_str() );
 ////	}
 ////
-////	value = spawnArgs.GetString( "bone_chest", "" );
+////	value = this.spawnArgs.GetString( "bone_chest", "" );
 ////	chestJoint = animator.GetJointHandle( value );
 ////	if ( chestJoint == jointHandle_t.INVALID_JOINT ) {
 ////		gameLocal.Warning( "Joint '%s' not found for 'bone_chest' on '%s'", value, name.c_str() );
 ////	}
 ////
-////	value = spawnArgs.GetString( "bone_head", "" );
+////	value = this.spawnArgs.GetString( "bone_head", "" );
 ////	headJoint = animator.GetJointHandle( value );
 ////	if ( headJoint == jointHandle_t.INVALID_JOINT ) {
 ////		gameLocal.Warning( "Joint '%s' not found for 'bone_head' on '%s'", value, name.c_str() );
@@ -1204,183 +1204,183 @@ idPlayer::idPlayer
 ////Prepare any resources used by the player.
 ////==============
 ////*/
-	Spawn(): void {
-		todoThrow();
-////	idStr		temp;
-////	idBounds	bounds;
-////
-////	if ( this.entityNumber >= MAX_CLIENTS ) {
-////		gameLocal.Error( "entityNum > MAX_CLIENTS for player.  Player may only be spawned with a client." );
-////	}
-////
-////	// allow thinking during cinematics
-////	cinematic = true;
-////
-////	if ( gameLocal.isMultiplayer ) {
-////		// always start in spectating state waiting to be spawned in
-////		// do this before SetClipModel to get the right bounding box
-////		spectating = true;
-////	}
-////
-////	// set our collision model
-////	physicsObj.SetSelf( this );
-////	SetClipModel();
-////	physicsObj.SetMass( spawnArgs.GetFloat( "mass", "100" ) );
-////	physicsObj.SetContents( CONTENTS_BODY );
-////	physicsObj.SetClipMask( MASK_PLAYERSOLID );
-////	SetPhysics( &physicsObj );
-////	InitAASLocation();
-////
-////	skin = renderEntity.customSkin;
-////
-////	// only the local player needs guis
-////	if ( !gameLocal.isMultiplayer || this.entityNumber == gameLocal.localClientNum ) {
-////
-////		// load HUD
-////		if ( gameLocal.isMultiplayer ) {
-////			this.hud = uiManager.FindGui( "guis/mphud.gui", true, false, true );
-////		} else if ( spawnArgs.GetString( "hud", "", temp ) ) {
-////			this.hud = uiManager.FindGui( temp, true, false, true );
-////		}
-////		if ( this.hud ) {
-////			this.hud.Activate( true, gameLocal.time );
-////		}
-////
-////		// load cursor
-////		if ( spawnArgs.GetString( "cursor", "", temp ) ) {
-////			cursor = uiManager.FindGui( temp, true, gameLocal.isMultiplayer, gameLocal.isMultiplayer );
-////		}
-////		if ( cursor ) {
-////			cursor.Activate( true, gameLocal.time );
-////		}
-////
-////		this.objectiveSystem = uiManager.FindGui( "guis/pda.gui", true, false, true );
-////		this.objectiveSystemOpen = false;
-////	}
-////
-////	SetLastHitTime( 0 );
-////
-////	// load the armor sound feedback
-////	declManager.FindSound( "player_sounds_hitArmor" );
-////
-////	// set up conditions for animation
-////	LinkScriptVariables();
-////
-////	animator.RemoveOriginOffset( true );
-////
-////	// initialize user info related settings
-////	// on server, we wait for the userinfo broadcast, as this controls when the player is initially spawned in game
-////	if ( gameLocal.isClient || this.entityNumber == gameLocal.localClientNum ) {
-////		this.UserInfoChanged( false );
-////	}
-////
-////	// create combat collision hull for exact collision detection
-////	SetCombatModel();
-////
-////	// init the damage effects
-////	playerView.SetPlayerEntity( this );
-////
-////	// supress model in non-player views, but allow it in mirrors and remote views
-////	renderEntity.suppressSurfaceInViewID = this.entityNumber+1;
-////
-////	// don't project shadow on self or weapon
-////	renderEntity.noSelfShadow = true;
-////
-////	idAFAttachment *headEnt = head.GetEntity();
-////	if ( headEnt ) {
-////		headEnt.GetRenderEntity().suppressSurfaceInViewID = this.entityNumber+1;
-////		headEnt.GetRenderEntity().noSelfShadow = true;
-////	}
-////
-////	if ( gameLocal.isMultiplayer ) {
-////		Init();
-////		Hide();	// properly hidden if starting as a spectator
-////		if ( !gameLocal.isClient ) {
-////			// set yourself ready to spawn. idMultiplayerGame will decide when/if appropriate and call SpawnFromSpawnSpot
-////			SetupWeaponEntity();
-////			SpawnFromSpawnSpot();
-////			forceRespawn = true;
-////			assert( spectating );
-////		}
-////	} else {
-////		SetupWeaponEntity();
-////		SpawnFromSpawnSpot();
-////	}
-////
-////	// trigger playtesting item gives, if we didn't get here from a previous level
-////	// the devmap key will be set on the first devmap, but cleared on any level
-////	// transitions
-////	if ( !gameLocal.isMultiplayer && gameLocal.serverInfo.FindKey( "devmap" ) ) {
-////		// fire a trigger with the name "devmap"
-////		var ent:idEntity = gameLocal.FindEntity( "devmap" );
-////		if ( ent ) {
-////			ent.ActivateTargets( this );
-////		}
-////	}
-////	if ( this.hud ) {
-////		// We can spawn with a full soul cube, so we need to make sure the hud knows this
-////		if ( this.weapon_soulcube > 0 && ( this.inventory.weapons & ( 1 << this.weapon_soulcube ) ) ) {
-////			int max_souls = this.inventory.MaxAmmoForAmmoClass( this, "ammo_souls" );
-////			if ( this.inventory.ammo[ idWeapon::GetAmmoNumForName( "ammo_souls" ) ] >= max_souls ) {
-////				this.hud.HandleNamedEvent( "soulCubeReady" );
-////			}
-////		}
-////		this.hud.HandleNamedEvent( "itemPickup" );
-////	}
-////
-////	if ( GetPDA() ) {
-////		// Add any emails from the this.inventory
-////		for ( int i = 0; i < this.inventory.emails.Num(); i++ ) {
-////			GetPDA().AddEmail( this.inventory.emails[i] );
-////		}
-////		GetPDA().SetSecurity( common.GetLanguageDict().GetString( "#str_00066" ) );
-////	}
-////
-////	if ( gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) ) {
-////		hiddenWeapon = true;
-////		if ( this.weapon.GetEntity() ) {
-////			this.weapon.GetEntity().LowerWeapon();
-////		}
-////		idealWeapon = 0;
-////	} else {
-////		hiddenWeapon = false;
-////	}
-////	
-////	if ( this.hud ) {
-////		UpdateHudWeapon();
-////		this.hud.StateChanged( gameLocal.time );
-////	}
-////
-////	tipUp = false;
-////	objectiveUp = false;
-////
-////	if ( this.inventory.levelTriggers.Num() ) {
-////		PostEventMS( &EV_Player_LevelTrigger, 0 );
-////	}
-////
-////	this.inventory.pdaOpened = false;
-////	this.inventory.selPDA = 0;
-////
-////	if ( !gameLocal.isMultiplayer ) {
-////		if ( g_skill.GetInteger() < 2 ) {
-////			if ( health < 25 ) {
-////				health = 25;
-////			}
-////			if ( g_useDynamicProtection.GetBool() ) {
-////				g_damageScale.SetFloat( 1.0f );
-////			}
-////		} else {
-////			g_damageScale.SetFloat( 1.0f );
-////			g_armorProtection.SetFloat( ( g_skill.GetInteger() < 2 ) ? 0.4f : 0.2f );
-////#ifndef ID_DEMO_BUILD
-////			if ( g_skill.GetInteger() == 3 ) {
-////				healthTake = true;
-////				nextHealthTake = gameLocal.time + g_healthTakeTime.GetInteger() * 1000;
-////			}
-////#endif
-////		}
-////	}
-}
+    Spawn ( ): void {
+        var temp = new idStr;
+        var bounds = new idBounds;
+
+        if ( this.entityNumber >= MAX_CLIENTS ) {
+            gameLocal.Error( "entityNum > MAX_CLIENTS for player.  Player may only be spawned with a client." );
+        }
+
+        // allow thinking during cinematics
+        this.cinematic = true;
+
+        if ( gameLocal.isMultiplayer ) {
+            // always start in spectating state waiting to be spawned in
+            // do this before SetClipModel to get the right bounding box
+            this.spectating = true;
+        }
+
+        // set our collision model
+        this.physicsObj.SetSelf( this );
+        this.SetClipModel ( );
+        this.physicsObj.SetMass( this.spawnArgs.GetFloat( "mass", "100" ) );
+        this.physicsObj.SetContents( contentsFlags_t.CONTENTS_BODY );
+        this.physicsObj.SetClipMask( MASK_PLAYERSOLID );
+        this.SetPhysics( this.physicsObj );
+        this.InitAASLocation ( );
+
+        this.skin = this.renderEntity.customSkin;
+
+        // only the local player needs guis
+        if ( !gameLocal.isMultiplayer || this.entityNumber == gameLocal.localClientNum ) {
+
+            // load HUD
+            if ( gameLocal.isMultiplayer ) {
+                this.hud = uiManager.FindGui( "guis/mphud.gui", true, false, true );
+            } else if ( this.spawnArgs.GetString( "hud", "", temp ) ) {
+                this.hud = uiManager.FindGui( temp.data, true, false, true );
+            }
+            if ( this.hud ) {
+                this.hud.Activate( true, gameLocal.time );
+            }
+
+            // load cursor
+            if ( this.spawnArgs.GetString( "cursor", "", temp ) ) {
+                this.cursor = uiManager.FindGui( temp.data, true, gameLocal.isMultiplayer, gameLocal.isMultiplayer );
+            }
+            if ( this.cursor ) {
+                this.cursor.Activate( true, gameLocal.time );
+            }
+
+            this.objectiveSystem = uiManager.FindGui( "guis/pda.gui", true, false, true );
+            this.objectiveSystemOpen = false;
+        }
+
+        this.SetLastHitTime( 0 );
+
+        // load the armor sound feedback
+        declManager.FindSound( "player_sounds_hitArmor" );
+
+        // set up conditions for animation
+        this.LinkScriptVariables ( );
+
+        this.animator.RemoveOriginOffset( true );
+
+        // initialize user info related settings
+        // on server, we wait for the userinfo broadcast, as this controls when the player is initially spawned in game
+        if ( gameLocal.isClient || this.entityNumber == gameLocal.localClientNum ) {
+            this.UserInfoChanged( false );
+        }
+
+        // create combat collision hull for exact collision detection
+        this.SetCombatModel ( );
+
+        // init the damage effects
+        this.playerView.SetPlayerEntity( this );
+
+        // supress model in non-player views, but allow it in mirrors and remote views
+        this.renderEntity.suppressSurfaceInViewID = this.entityNumber + 1;
+
+        // don't project shadow on self or weapon
+        this.renderEntity.noSelfShadow = true;
+
+        var headEnt = this.head.GetEntity ( );
+        if ( headEnt ) {
+            headEnt.GetRenderEntity ( ).suppressSurfaceInViewID = this.entityNumber + 1;
+            headEnt.GetRenderEntity ( ).noSelfShadow = true;
+        }
+
+        if ( gameLocal.isMultiplayer ) {
+            todoThrow ( );
+//		Init();
+//		Hide();	// properly hidden if starting as a spectator
+//		if ( !gameLocal.isClient ) {
+//			// set yourself ready to spawn. idMultiplayerGame will decide when/if appropriate and call SpawnFromSpawnSpot
+//			SetupWeaponEntity();
+//			SpawnFromSpawnSpot();
+//			forceRespawn = true;
+//			assert( this.spectating );
+//          }
+        } else {
+            this.SetupWeaponEntity ( );
+            this.SpawnFromSpawnSpot ( );
+        }
+
+        // trigger playtesting item gives, if we didn't get here from a previous level
+        // the devmap key will be set on the first devmap, but cleared on any level
+        // transitions
+        if ( !gameLocal.isMultiplayer && gameLocal.serverInfo.FindKey( "devmap" ) ) {
+            // fire a trigger with the name "devmap"
+            var ent: idEntity = gameLocal.FindEntity( "devmap" );
+            if ( ent ) {
+                ent.ActivateTargets( this );
+            }
+        }
+        if ( this.hud ) {
+            // We can spawn with a full soul cube, so we need to make sure the hud knows this
+            if ( this.weapon_soulcube > 0 && ( this.inventory.weapons & ( 1 << this.weapon_soulcube ) ) ) {
+                var /*int */max_souls = this.inventory.MaxAmmoForAmmoClass( this, "ammo_souls" );
+                if ( this.inventory.ammo[idWeapon.GetAmmoNumForName( "ammo_souls" )] >= max_souls ) {
+                    this.hud.HandleNamedEvent( "soulCubeReady" );
+                }
+            }
+            this.hud.HandleNamedEvent( "itemPickup" );
+        }
+
+        if ( this.GetPDA ( ) ) {
+            // Add any emails from the this.inventory
+            for ( var i = 0; i < this.inventory.emails.Num ( ); i++ ) {
+                this.GetPDA ( ).AddEmail( this.inventory.emails[i] );
+            }
+            this.GetPDA ( ).SetSecurity( common.GetLanguageDict ( ).GetString( "#str_00066" ) );
+        }
+
+        if ( gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) ) {
+            this.hiddenWeapon = true;
+            if ( this.weapon.GetEntity ( ) ) {
+                this.weapon.GetEntity ( ).LowerWeapon ( );
+            }
+            this.idealWeapon = 0;
+        } else {
+            this.hiddenWeapon = false;
+        }
+
+        if ( this.hud ) {
+            this.UpdateHudWeapon ( );
+            this.hud.StateChanged( gameLocal.time );
+        }
+
+        this.tipUp = false;
+        this.objectiveUp = false;
+
+        if ( this.inventory.levelTriggers.Num ( ) ) {
+            this.PostEventMS( EV_Player_LevelTrigger, 0 );
+        }
+
+        this.inventory.pdaOpened = false;
+        this.inventory.selPDA = 0;
+
+        if ( !gameLocal.isMultiplayer ) {
+            if ( g_skill.GetInteger ( ) < 2 ) {
+                if ( this.health < 25 ) {
+                    this.health = 25;
+                }
+                if ( g_useDynamicProtection.GetBool ( ) ) {
+                    g_damageScale.SetFloat( 1.0 );
+                }
+            } else {
+                g_damageScale.SetFloat( 1.0 );
+                g_armorProtection.SetFloat( ( g_skill.GetInteger ( ) < 2 ) ? 0.4 : 0.2 );
+//#ifndef ID_DEMO_BUILD
+//			if ( g_skill.GetInteger() == 3 ) {
+//				healthTake = true;
+//				nextHealthTake = gameLocal.time + g_healthTakeTime.GetInteger() * 1000;
+//			}
+//#endif
+            }
+        }
+    }
 ////
 /////*
 ////==============
@@ -1463,7 +1463,7 @@ idPlayer::idPlayer
 ////	savefile.WriteBool( scoreBoardOpen );
 ////	savefile.WriteBool( forceScoreBoard );
 ////	savefile.WriteBool( forceRespawn );
-////	savefile.WriteBool( spectating );
+////	savefile.WriteBool( this.spectating );
 ////	savefile.WriteInt( lastSpectateTeleport );
 ////	savefile.WriteBool( lastHitToggle );
 ////	savefile.WriteBool( forcedReady );
@@ -1489,12 +1489,12 @@ idPlayer::idPlayer
 ////	savefile.WriteJoint( chestJoint );
 ////	savefile.WriteJoint( headJoint );
 ////
-////	savefile.WriteStaticObject( physicsObj );
+////	savefile.WriteStaticObject( this.physicsObj );
 ////
-////	savefile.WriteInt( aasLocation.Num() );
-////	for( i = 0; i < aasLocation.Num(); i++ ) {
-////		savefile.WriteInt( aasLocation[ i ].areaNum );
-////		savefile.WriteVec3( aasLocation[ i ].pos );
+////	savefile.WriteInt( this.aasLocation.Num() );
+////	for( i = 0; i < this.aasLocation.Num(); i++ ) {
+////		savefile.WriteInt( this.aasLocation[ i ].areaNum );
+////		savefile.WriteVec3( this.aasLocation[ i ].pos );
 ////	}
 ////
 ////	savefile.WriteInt( bobFoot );
@@ -1691,7 +1691,7 @@ idPlayer::idPlayer
 ////	savefile.ReadBool( scoreBoardOpen );
 ////	savefile.ReadBool( forceScoreBoard );
 ////	savefile.ReadBool( forceRespawn );
-////	savefile.ReadBool( spectating );
+////	savefile.ReadBool( this.spectating );
 ////	savefile.ReadInt( lastSpectateTeleport );
 ////	savefile.ReadBool( lastHitToggle );
 ////	savefile.ReadBool( forcedReady );
@@ -1718,15 +1718,15 @@ idPlayer::idPlayer
 ////	savefile.ReadJoint( chestJoint );
 ////	savefile.ReadJoint( headJoint );
 ////
-////	savefile.ReadStaticObject( physicsObj );
-////	RestorePhysics( &physicsObj );
+////	savefile.ReadStaticObject( this.physicsObj );
+////	RestorePhysics( &this.physicsObj );
 ////
 ////	savefile.ReadInt( num );
-////	aasLocation.SetGranularity( 1 );
-////	aasLocation.SetNum( num );
+////	this.aasLocation.SetGranularity( 1 );
+////	this.aasLocation.SetNum( num );
 ////	for( i = 0; i < num; i++ ) {
-////		savefile.ReadInt( aasLocation[ i ].areaNum );
-////		savefile.ReadVec3( aasLocation[ i ].pos );
+////		savefile.ReadInt( this.aasLocation[ i ].areaNum );
+////		savefile.ReadVec3( this.aasLocation[ i ].pos );
 ////	}
 ////
 ////	savefile.ReadInt( bobFoot );
@@ -1840,10 +1840,10 @@ idPlayer::idPlayer
 ////
 ////	// set the pm_ cvars
 ////	const idKeyValue	*kv;
-////	kv = spawnArgs.MatchPrefix( "pm_", NULL );
+////	kv = this.spawnArgs.MatchPrefix( "pm_", NULL );
 ////	while( kv ) {
 ////		cvarSystem.SetCVarString( kv.GetKey(), kv.GetValue() );
-////		kv = spawnArgs.MatchPrefix( "pm_", kv );
+////		kv = this.spawnArgs.MatchPrefix( "pm_", kv );
 ////	}
 ////
 ////	savefile.ReadFloat( set );
@@ -1883,7 +1883,7 @@ idPlayer::idPlayer
 ////		Init();
 ////	} else {
 ////		// choose a random spot and prepare the point of view in case player is left spectating
-////		assert( spectating );
+////		assert( this.spectating );
 ////		SpawnFromSpawnSpot();
 ////	}
 ////
@@ -1899,7 +1899,7 @@ idPlayer::idPlayer
 ////void idPlayer::ServerSpectate( bool spectate ) {
 ////	assert( !gameLocal.isClient );
 ////
-////	if ( spectating != spectate ) {
+////	if ( this.spectating != spectate ) {
 ////		Spectate( spectate );
 ////		if ( spectate ) {
 ////			SetSpectateOrigin();
@@ -1932,14 +1932,14 @@ idPlayer::idPlayer
 ////
 ////	// set the player skin from the spawn location
 ////	if ( spot.spawnArgs.GetString( "skin", NULL, skin ) ) {
-////		spawnArgs.Set( "spawn_skin", skin );
+////		this.spawnArgs.Set( "spawn_skin", skin );
 ////	}
 ////
 ////	// activate the spawn locations targets
 ////	spot.PostEventMS( &EV_ActivateTargets, 0, this );
 ////
 ////	origin = spot.GetPhysics().GetOrigin();
-////	origin[2] += 4.0f + CM_BOX_EPSILON;		// move up to make sure the player is at least an epsilon above the floor
+////	origin[2] += 4.0 + CM_BOX_EPSILON;		// move up to make sure the player is at least an epsilon above the floor
 ////	angles = spot.GetPhysics().GetAxis().ToAngles();
 ////}
 ////
@@ -1984,16 +1984,16 @@ idPlayer::idPlayer
 ////	StopRagdoll();
 ////
 ////	// set back the player physics
-////	SetPhysics( &physicsObj );
+////	SetPhysics( &this.physicsObj );
 ////
-////	physicsObj.SetClipModelAxis();
-////	physicsObj.EnableClip();
+////	this.physicsObj.SetClipModelAxis();
+////	this.physicsObj.EnableClip();
 ////
 ////	if ( !spectating ) {
 ////		SetCombatContents( true );
 ////	}
 ////
-////	physicsObj.SetLinearVelocity( vec3_origin );
+////	this.physicsObj.SetLinearVelocity( vec3_origin );
 ////
 ////	// setup our initial view
 ////	if ( !spectating ) {
@@ -2018,7 +2018,7 @@ idPlayer::idPlayer
 ////	idealLegsYaw = 0.0;
 ////	oldViewYaw = this.viewAngles.yaw;
 ////
-////	if ( spectating ) {
+////	if ( this.spectating ) {
 ////		Hide();
 ////	} else {
 ////		Show();
@@ -2028,7 +2028,7 @@ idPlayer::idPlayer
 ////		if ( !spectating ) {
 ////			// we may be called twice in a row in some situations. avoid a double fx and 'fly to the roof'
 ////			if ( lastTeleFX < gameLocal.time - 1000 ) {
-////				idEntityFx::StartFx( spawnArgs.GetString( "fx_spawn" ), &spawn_origin, NULL, this, true );
+////				idEntityFx::StartFx( this.spawnArgs.GetString( "fx_spawn" ), &spawn_origin, NULL, this, true );
 ////				lastTeleFX = gameLocal.time;
 ////			}
 ////		}
@@ -2039,12 +2039,12 @@ idPlayer::idPlayer
 ////
 ////	// kill anything at the new position
 ////	if ( !spectating ) {
-////		physicsObj.SetClipMask( MASK_PLAYERSOLID ); // the clip mask is usually maintained in Move(), but KillBox requires it
+////		this.physicsObj.SetClipMask( MASK_PLAYERSOLID ); // the clip mask is usually maintained in Move(), but KillBox requires it
 ////		gameLocal.KillBox( this );
 ////	}
 ////
 ////	// don't allow full run speed for a bit
-////	physicsObj.SetKnockBack( 100 );
+////	this.physicsObj.SetKnockBack( 100 );
 ////
 ////	// set our respawn time and buttons so that if we're killed we don't respawn immediately
 ////	minRespawnTime = gameLocal.time;
@@ -2095,12 +2095,12 @@ idPlayer::idPlayer
 ////		gameLocal.persistentPlayerInfo[this.entityNumber].Clear();
 ////	}
 ////
-////	spawnArgs.Copy( gameLocal.persistentPlayerInfo[this.entityNumber] );
+////	this.spawnArgs.Copy( gameLocal.persistentPlayerInfo[this.entityNumber] );
 ////
-////	this.inventory.RestoreInventory( this, spawnArgs );
-////	health = spawnArgs.GetInt( "health", "100" );
+////	this.inventory.RestoreInventory( this, this.spawnArgs );
+////	health = this.spawnArgs.GetInt( "health", "100" );
 ////	if ( !gameLocal.isClient ) {
-////		idealWeapon = spawnArgs.GetInt( "current_weapon", "1" );
+////		idealWeapon = this.spawnArgs.GetInt( "current_weapon", "1" );
 ////	}
 ////}
 
@@ -2226,7 +2226,7 @@ idPlayer::UserInfoChanged
 		//	if ( canModify && spec ) {
 		//		userInfo.Set( "ui_spectate", "Play" );
 		//		modifiedInfo |= true;
-		//	} else if ( spectating ) {  
+		//	} else if ( this.spectating ) {  
 		//		// allow player to leaving spectator mode if they were in it when si_spectators got turned off
 		//		forceRespawn = true;
 		//	}
@@ -2303,9 +2303,9 @@ idPlayer::UserInfoChanged
 ////	max_stamina = pm_stamina.GetFloat();
 ////	if ( !max_stamina ) {
 ////		// stamina disabled, so show full stamina bar
-////		staminapercentage = 100.0f;
+////		staminapercentage = 100.0;
 ////	} else {
-////		staminapercentage = idMath::FtoiFast( 100.0f * stamina / max_stamina );
+////		staminapercentage = idMath::FtoiFast( 100.0 * stamina / max_stamina );
 ////	}
 ////
 ////	_hud.SetStateInt( "player_health", health );
@@ -2374,7 +2374,7 @@ idPlayer::UserInfoChanged
 ////		const char *hudWeap = va( "weapon%d", i );
 ////		int weapstate = 0;
 ////		if ( this.inventory.weapons & ( 1 << i ) ) {
-////			const char *weap = spawnArgs.GetString( weapnum );
+////			const char *weap = this.spawnArgs.GetString( weapnum );
 ////			if ( weap && *weap ) {
 ////				weapstate++;
 ////			}
@@ -2434,7 +2434,7 @@ idPlayer::UserInfoChanged
 ////		this.hud.HandleNamedEvent( "radioChatterDown" );
 ////	}
 ////	
-////	physicsObj.SetLinearVelocity( vec3_origin );
+////	this.physicsObj.SetLinearVelocity( vec3_origin );
 ////	
 ////	SetState( "EnterCinematic" );
 ////	UpdateScript();
@@ -2493,8 +2493,8 @@ idPlayer::UserInfoChanged
 ////	float	sidespeed;
 ////
 ////	// minus the push velocity to avoid playing the walking animation and sounds when riding a mover
-////	velocity = physicsObj.GetLinearVelocity() - physicsObj.GetPushedLinearVelocity();
-////	fallspeed = velocity * physicsObj.GetGravityNormal();
+////	velocity = this.physicsObj.GetLinearVelocity() - this.physicsObj.GetPushedLinearVelocity();
+////	fallspeed = velocity * this.physicsObj.GetGravityNormal();
 ////
 ////	if ( influenceActive ) {
 ////		AI_FORWARD		= false;
@@ -2619,7 +2619,7 @@ idPlayer::UserInfoChanged
 ////	
 ////	for( w = 0; w < MAX_WEAPONS; w++ ) {
 ////		if ( this.inventory.weapons & ( 1 << w ) ) {
-////			weap = spawnArgs.GetString( va( "def_weapon%d", w ) );
+////			weap = this.spawnArgs.GetString( va( "def_weapon%d", w ) );
 ////			if ( weap != "" ) {
 ////				idWeapon::CacheWeapon( weap );
 ////			} else {
@@ -2680,7 +2680,7 @@ idPlayer::UserInfoChanged
 ////			airTics = pm_airTics.GetInteger();
 ////		}
 ////	} else {
-////		return this.inventory.Give( this, spawnArgs, statname, value, &idealWeapon, true );
+////		return this.inventory.Give( this, this.spawnArgs, statname, value, &idealWeapon, true );
 ////	}
 ////	return true;
 ////}
@@ -2722,7 +2722,7 @@ idPlayer::UserInfoChanged
 ////	bool				gave;
 ////	int					numPickup;
 ////
-////	if ( gameLocal.isMultiplayer && spectating ) {
+////	if ( gameLocal.isMultiplayer && this.spectating ) {
 ////		return false;
 ////	}
 ////
@@ -2760,7 +2760,7 @@ idPlayer::UserInfoChanged
 ////===============
 ////*/
 ////float idPlayer::PowerUpModifier( int type ) {
-////	float mod = 1.0f;
+////	float mod = 1.0;
 ////
 ////	if ( PowerUpActive( BERSERK ) ) {
 ////		switch( type ) {
@@ -2769,15 +2769,15 @@ idPlayer::UserInfoChanged
 ////				break;
 ////			}
 ////			case PROJECTILE_DAMAGE: {
-////				mod *= 2.0f;
+////				mod *= 2.0;
 ////				break;
 ////			}
 ////			case MELEE_DAMAGE: {
-////				mod *= 30.0f;
+////				mod *= 30.0;
 ////				break;
 ////			}
 ////			case MELEE_DISTANCE: {
-////				mod *= 2.0f;
+////				mod *= 2.0;
 ////				break;
 ////			}
 ////		}
@@ -2834,7 +2834,7 @@ idPlayer::UserInfoChanged
 ////
 ////		switch( powerup ) {
 ////			case BERSERK: {
-////				if ( spawnArgs.GetString( "snd_berserk_third", "", &sound ) ) {
+////				if ( this.spawnArgs.GetString( "snd_berserk_third", "", &sound ) ) {
 ////					StartSoundShader( declManager.FindSound( sound ), SND_CHANNEL_DEMONIC, 0, false, NULL );
 ////				}
 ////				if ( this.baseSkinName.Length() ) {
@@ -2846,7 +2846,7 @@ idPlayer::UserInfoChanged
 ////				break;
 ////			}
 ////			case INVISIBILITY: {
-////				spawnArgs.GetString( "skin_invisibility", "", &skin );
+////				this.spawnArgs.GetString( "skin_invisibility", "", &skin );
 ////				this.powerUpSkin = declManager.FindSkin( skin );
 ////				// remove any decals from the model
 ////				if ( modelDefHandle != -1 ) {
@@ -2855,17 +2855,17 @@ idPlayer::UserInfoChanged
 ////				if ( this.weapon.GetEntity() ) {
 ////					this.weapon.GetEntity().UpdateSkin();
 ////				}
-////				if ( spawnArgs.GetString( "snd_invisibility", "", &sound ) ) {
+////				if ( this.spawnArgs.GetString( "snd_invisibility", "", &sound ) ) {
 ////					StartSoundShader( declManager.FindSound( sound ), SND_CHANNEL_ANY, 0, false, NULL );
 ////				}
 ////				break;
 ////			}
 ////			case ADRENALINE: {
-////				stamina = 100.0f;
+////				stamina = 100.0;
 ////				break;
 ////			 }
 ////			case MEGAHEALTH: {
-////				if ( spawnArgs.GetString( "snd_megahealth", "", &sound ) ) {
+////				if ( this.spawnArgs.GetString( "snd_megahealth", "", &sound ) ) {
 ////					StartSoundShader( declManager.FindSound( sound ), SND_CHANNEL_ANY, 0, false, NULL );
 ////				}
 ////				def = gameLocal.FindEntityDef( "powerup_megahealth", false );
@@ -2992,7 +2992,7 @@ idPlayer::UserInfoChanged
 ////===============
 ////*/
 ////bool idPlayer::GiveInventoryItem( idDict *item ) {
-////	if ( gameLocal.isMultiplayer && spectating ) {
+////	if ( gameLocal.isMultiplayer && this.spectating ) {
 ////		return false;
 ////	}
 ////	this.inventory.items.Append( new idDict( *item ) );
@@ -3133,7 +3133,7 @@ idPlayer::UserInfoChanged
 ////*/
 ////void idPlayer::GivePDA( const char *pdaName, idDict *item )
 ////{
-////	if ( gameLocal.isMultiplayer && spectating ) {
+////	if ( gameLocal.isMultiplayer && this.spectating ) {
 ////		return;
 ////	}
 ////
@@ -3176,7 +3176,7 @@ idPlayer::UserInfoChanged
 ////				TogglePDA();
 ////			}
 ////			this.objectiveSystem.HandleNamedEvent( "showPDATip" );
-////			//ShowTip( spawnArgs.GetString( "text_infoTitle" ), spawnArgs.GetString( "text_firstPDA" ), true );
+////			//ShowTip( this.spawnArgs.GetString( "text_infoTitle" ), this.spawnArgs.GetString( "text_firstPDA" ), true );
 ////		}
 ////
 ////		if ( this.inventory.pdas.Num() > 1 && pda.GetNumVideos() > 0 && this.hud ) {
@@ -3249,7 +3249,7 @@ idPlayer::UserInfoChanged
 ////	var/*int*/i:number;
 ////
 ////	for( i = 0; i < MAX_WEAPONS; i++ ) {
-////		const char *weap = spawnArgs.GetString( va( "def_weapon%d", i ) );
+////		const char *weap = this.spawnArgs.GetString( va( "def_weapon%d", i ) );
 ////		if ( !idStr::Cmp( weap, weaponName ) ) {
 ////			return i;
 ////		}
@@ -3269,7 +3269,7 @@ idPlayer::UserInfoChanged
 ////		return;
 ////	}
 ////
-////	if ( spectating || gameLocal.inCinematic || influenceActive ) {
+////	if ( this.spectating || gameLocal.inCinematic || influenceActive ) {
 ////		return;
 ////	}
 ////
@@ -3293,11 +3293,11 @@ idPlayer::UserInfoChanged
 ////
 ////	while ( w > 0 ) {
 ////		w--;
-////		weap = spawnArgs.GetString( va( "def_weapon%d", w ) );
+////		weap = this.spawnArgs.GetString( va( "def_weapon%d", w ) );
 ////		if ( !weap[ 0 ] || ( ( this.inventory.weapons & ( 1 << w ) ) == 0 ) || ( !this.inventory.HasAmmo( weap ) ) ) {
 ////			continue;
 ////		}
-////		if ( !spawnArgs.GetBool( va( "weapon%d_best", w ) ) ) {
+////		if ( !this.spawnArgs.GetBool( va( "weapon%d_best", w ) ) ) {
 ////			continue;
 ////		}
 ////		break;
@@ -3316,7 +3316,7 @@ idPlayer::UserInfoChanged
 ////	const char *weap;
 ////	int w;
 ////
-////	if ( !weaponEnabled || spectating || hiddenWeapon || gameLocal.inCinematic || gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) || health < 0 ) {
+////	if ( !weaponEnabled || this.spectating || hiddenWeapon || gameLocal.inCinematic || gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) || health < 0 ) {
 ////		return;
 ////	}
 ////
@@ -3335,8 +3335,8 @@ idPlayer::UserInfoChanged
 ////		if ( w >= MAX_WEAPONS ) {
 ////			w = 0;
 ////		} 
-////		weap = spawnArgs.GetString( va( "def_weapon%d", w ) );
-////		if ( !spawnArgs.GetBool( va( "weapon%d_cycle", w ) ) ) {
+////		weap = this.spawnArgs.GetString( va( "def_weapon%d", w ) );
+////		if ( !this.spawnArgs.GetBool( va( "weapon%d_cycle", w ) ) ) {
 ////			continue;
 ////		}
 ////		if ( !weap[ 0 ] ) {
@@ -3366,7 +3366,7 @@ idPlayer::UserInfoChanged
 ////	const char *weap;
 ////	int w;
 ////
-////	if ( !weaponEnabled || spectating || hiddenWeapon || gameLocal.inCinematic || gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) || health < 0 ) {
+////	if ( !weaponEnabled || this.spectating || hiddenWeapon || gameLocal.inCinematic || gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) || health < 0 ) {
 ////		return;
 ////	}
 ////
@@ -3385,8 +3385,8 @@ idPlayer::UserInfoChanged
 ////		if ( w < 0 ) {
 ////			w = MAX_WEAPONS - 1;
 ////		}
-////		weap = spawnArgs.GetString( va( "def_weapon%d", w ) );
-////		if ( !spawnArgs.GetBool( va( "this.weapon%d_cycle", w ) ) ) {
+////		weap = this.spawnArgs.GetString( va( "def_weapon%d", w ) );
+////		if ( !this.spawnArgs.GetBool( va( "this.weapon%d_cycle", w ) ) ) {
 ////			continue;
 ////		}
 ////		if ( !weap[ 0 ] ) {
@@ -3415,7 +3415,7 @@ idPlayer::UserInfoChanged
 ////void idPlayer::SelectWeapon( int num, bool force ) {
 ////	const char *weap;
 ////
-////	if ( !weaponEnabled || spectating || gameLocal.inCinematic || health < 0 ) {
+////	if ( !weaponEnabled || this.spectating || gameLocal.inCinematic || health < 0 ) {
 ////		return;
 ////	}
 ////
@@ -3437,24 +3437,24 @@ idPlayer::UserInfoChanged
 ////		}
 ////	}	
 ////
-////	weap = spawnArgs.GetString( va( "def_weapon%d", num ) );
+////	weap = this.spawnArgs.GetString( va( "def_weapon%d", num ) );
 ////	if ( !weap[ 0 ] ) {
 ////		gameLocal.Printf( "Invalid weapon\n" );
 ////		return;
 ////	}
 ////
 ////	if ( force || ( this.inventory.weapons & ( 1 << num ) ) ) {
-////		if ( !this.inventory.HasAmmo( weap ) && !spawnArgs.GetBool( va( "weapon%d_allowempty", num ) ) ) {
+////		if ( !this.inventory.HasAmmo( weap ) && !this.spawnArgs.GetBool( va( "weapon%d_allowempty", num ) ) ) {
 ////			return;
 ////		}
-////		if ( ( previousWeapon >= 0 ) && ( idealWeapon == num ) && ( spawnArgs.GetBool( va( "weapon%d_toggle", num ) ) ) ) {
-////			weap = spawnArgs.GetString( va( "def_weapon%d", previousWeapon ) );
-////			if ( !this.inventory.HasAmmo( weap ) && !spawnArgs.GetBool( va( "weapon%d_allowempty", previousWeapon ) ) ) {
+////		if ( ( previousWeapon >= 0 ) && ( idealWeapon == num ) && ( this.spawnArgs.GetBool( va( "weapon%d_toggle", num ) ) ) ) {
+////			weap = this.spawnArgs.GetString( va( "def_weapon%d", previousWeapon ) );
+////			if ( !this.inventory.HasAmmo( weap ) && !this.spawnArgs.GetBool( va( "weapon%d_allowempty", previousWeapon ) ) ) {
 ////				return;
 ////			}
 ////			idealWeapon = previousWeapon;
 ////		} else if ( ( this.weapon_pda >= 0 ) && ( num == this.weapon_pda ) && ( this.inventory.pdas.Num() == 0 ) ) {
-////			ShowTip( spawnArgs.GetString( "text_infoTitle" ), spawnArgs.GetString( "text_noPDA" ), true );
+////			ShowTip( this.spawnArgs.GetString( "text_infoTitle" ), this.spawnArgs.GetString( "text_noPDA" ), true );
 ////			return;
 ////		} else {
 ////			idealWeapon = num;
@@ -3474,7 +3474,7 @@ idPlayer::UserInfoChanged
 ////
 ////	assert( !gameLocal.isClient );
 ////	
-////	if ( spectating || weaponGone || this.weapon.GetEntity() == NULL ) {
+////	if ( this.spectating || weaponGone || this.weapon.GetEntity() == NULL ) {
 ////		return;
 ////	}
 ////	
@@ -3505,7 +3505,7 @@ idPlayer::UserInfoChanged
 ////		item = this.weapon.GetEntity().DropItem( vec3_origin, 0, WEAPON_DROP_TIME, died );
 ////	} else {
 ////		this.viewAngles.ToVectors( &forward, NULL, &up );
-////		item = this.weapon.GetEntity().DropItem( 250.0f * forward + 150.0f * up, 500, WEAPON_DROP_TIME, died );
+////		item = this.weapon.GetEntity().DropItem( 250.0 * forward + 150.0 * up, 500, WEAPON_DROP_TIME, died );
 ////	}
 ////	if ( !item ) {
 ////		return;
@@ -3520,7 +3520,7 @@ idPlayer::UserInfoChanged
 ////	}
 ////	if ( !died ) {
 ////		// remove from our local this.inventory completely
-////		this.inventory.Drop( spawnArgs, item.spawnArgs.GetString( "inv_weapon" ), -1 );
+////		this.inventory.Drop( this.spawnArgs, item.spawnArgs.GetString( "inv_weapon" ), -1 );
 ////		this.weapon.GetEntity().ResetAmmoClip();
 ////		NextWeapon();
 ////		this.weapon.GetEntity().WeaponStolen();
@@ -3551,7 +3551,7 @@ idPlayer::UserInfoChanged
 ////	if ( ! ( player.this.inventory.weapons & ( 1 << newweap ) ) ) {
 ////		return;
 ////	}
-////	const char *weapon_classname = spawnArgs.GetString( va( "def_weapon%d", newweap ) );
+////	const char *weapon_classname = this.spawnArgs.GetString( va( "def_weapon%d", newweap ) );
 ////	assert( weapon_classname );
 ////	int ammoavailable = player.weapon.GetEntity().AmmoAvailable();
 ////	int inclip = player.weapon.GetEntity().AmmoInClip();
@@ -3626,7 +3626,7 @@ idPlayer::UserInfoChanged
 ////
 ////			currentWeapon = idealWeapon;
 ////			weaponGone = false;
-////			animPrefix = spawnArgs.GetString( va( "def_weapon%d", currentWeapon ) );
+////			animPrefix = this.spawnArgs.GetString( va( "def_weapon%d", currentWeapon ) );
 ////			this.weapon.GetEntity().GetWeaponDef( animPrefix, this.inventory.clip[ currentWeapon ] );
 ////			animPrefix.Strip( "weapon_" );
 ////
@@ -3646,12 +3646,12 @@ idPlayer::UserInfoChanged
 ////				assert( idealWeapon >= 0 );
 ////				assert( idealWeapon < MAX_WEAPONS );
 ////
-////				if ( currentWeapon != this.weapon_pda && !spawnArgs.GetBool( va( "weapon%d_toggle", currentWeapon ) ) ) {
+////				if ( currentWeapon != this.weapon_pda && !this.spawnArgs.GetBool( va( "weapon%d_toggle", currentWeapon ) ) ) {
 ////					previousWeapon = currentWeapon;
 ////				}
 ////				currentWeapon = idealWeapon;
 ////				weaponGone = false;
-////				animPrefix = spawnArgs.GetString( va( "def_weapon%d", currentWeapon ) );
+////				animPrefix = this.spawnArgs.GetString( va( "def_weapon%d", currentWeapon ) );
 ////				this.weapon.GetEntity().GetWeaponDef( animPrefix, this.inventory.clip[ currentWeapon ] );
 ////				animPrefix.Strip( "weapon_" );
 ////
@@ -3712,16 +3712,16 @@ idPlayer::UserInfoChanged
 ////	}
 ////}
 ////
-/////*
-////===============
-////idPlayer::LowerWeapon
-////===============
-////*/
-////void idPlayer::LowerWeapon( ) {
-////	if ( this.weapon.GetEntity() && !this.weapon.GetEntity().IsHidden() ) {
-////		this.weapon.GetEntity().LowerWeapon();
-////	}
-////}
+/*
+===============
+idPlayer::LowerWeapon
+===============
+*/
+    LowerWeapon ( ): void {
+        if ( this.weapon.GetEntity ( ) && !this.weapon.GetEntity ( ).IsHidden ( ) ) {
+            this.weapon.GetEntity ( ).LowerWeapon ( );
+        }
+    }
 ////
 /////*
 ////===============
@@ -3822,7 +3822,7 @@ idPlayer::UserInfoChanged
 ////	// always make sure the weapon is correctly setup before accessing it
 ////	if ( !this.weapon.GetEntity().IsLinked() ) {
 ////		if ( idealWeapon != -1 ) {
-////			animPrefix = spawnArgs.GetString( va( "def_weapon%d", idealWeapon ) );
+////			animPrefix = this.spawnArgs.GetString( va( "def_weapon%d", idealWeapon ) );
 ////			this.weapon.GetEntity().GetWeaponDef( animPrefix, this.inventory.clip[ idealWeapon ] );
 ////			assert( this.weapon.GetEntity().IsLinked() ); // this is false in C version, however player can still get into the (minimum assets level)
 ////		} else {
@@ -3871,15 +3871,15 @@ idPlayer::UserInfoChanged
 ////		spectator = this.entityNumber;
 ////		if ( player && player != this && !player.spectating && !player.IsInTeleport() ) {
 ////			newOrig = player.GetPhysics().GetOrigin();
-////			if ( player.physicsObj.IsCrouching() ) {
+////			if ( player.this.physicsObj.IsCrouching() ) {
 ////				newOrig[ 2 ] += pm_crouchviewheight.GetFloat();
 ////			} else {
 ////				newOrig[ 2 ] += pm_normalviewheight.GetFloat();
 ////			}
 ////			newOrig[ 2 ] += SPECTATE_RAISE;
-////			idBounds b = idBounds( vec3_origin ).Expand( pm_spectatebbox.GetFloat() * 0.5f );
+////			idBounds b = idBounds( vec3_origin ).Expand( pm_spectatebbox.GetFloat() * 0.5 );
 ////			idVec3 start = player.GetPhysics().GetOrigin();
-////			start[2] += pm_spectatebbox.GetFloat() * 0.5f;
+////			start[2] += pm_spectatebbox.GetFloat() * 0.5;
 ////			trace_t t;
 ////			// assuming spectate bbox is inside stand or crouch box
 ////			gameLocal.clip.TraceBounds( t, start, newOrig, b, MASK_PLAYERSOLID, player );
@@ -3927,7 +3927,7 @@ idPlayer::UserInfoChanged
 ////===============
 ////*/
 ////void idPlayer::UpdateSpectating( ) {
-////	assert( spectating );
+////	assert( this.spectating );
 ////	assert( !gameLocal.isClient );
 ////	assert( IsHidden() );
 ////	idPlayer *player;
@@ -4162,19 +4162,19 @@ idPlayer::UserInfoChanged
 ////	}
 ////
 ////	// don't let spectators interact with GUIs
-////	if ( spectating ) {
+////	if ( this.spectating ) {
 ////		return;
 ////	}
 ////
 ////	start = GetEyePosition();
-////	end = start + this.viewAngles.ToForward() * 80.0f;
+////	end = start + this.viewAngles.ToForward() * 80.0;
 ////
 ////	// player identification . names to the hud
 ////	if ( gameLocal.isMultiplayer && this.entityNumber == gameLocal.localClientNum ) {
-////		idVec3 end = start + this.viewAngles.ToForward() * 768.0f;
+////		idVec3 end = start + this.viewAngles.ToForward() * 768.0;
 ////		gameLocal.clip.TracePoint( trace, start, end, MASK_SHOT_BOUNDINGBOX, this );
 ////		int iclient = -1;
-////		if ( ( trace.fraction < 1.0f ) && ( trace.c.entityNum < MAX_CLIENTS ) ) {
+////		if ( ( trace.fraction < 1.0 ) && ( trace.c.entityNum < MAX_CLIENTS ) ) {
 ////			iclient = trace.c.entityNum;
 ////		}
 ////		if ( MPAim != iclient ) {
@@ -4204,7 +4204,7 @@ idPlayer::UserInfoChanged
 ////				idEntity *body = static_cast<idAFAttachment *>( ent ).GetBody();
 ////				if ( body && body.IsType( idAI::Type ) && ( static_cast<idAI *>( body ).GetTalkState() >= TALK_OK ) ) {
 ////					gameLocal.clip.TracePoint( trace, start, end, MASK_SHOT_RENDERMODEL, this );
-////					if ( ( trace.fraction < 1.0f ) && ( trace.c.entityNum == ent.entityNumber ) ) {
+////					if ( ( trace.fraction < 1.0 ) && ( trace.c.entityNum == ent.entityNumber ) ) {
 ////						ClearFocus();
 ////						focusCharacter = static_cast<idAI *>( body );
 ////						talkCursor = 1;
@@ -4218,7 +4218,7 @@ idPlayer::UserInfoChanged
 ////			if ( ent.IsType( idAI::Type ) ) {
 ////				if ( static_cast<idAI *>( ent ).GetTalkState() >= TALK_OK ) {
 ////					gameLocal.clip.TracePoint( trace, start, end, MASK_SHOT_RENDERMODEL, this );
-////					if ( ( trace.fraction < 1.0f ) && ( trace.c.entityNum == ent.entityNumber ) ) {
+////					if ( ( trace.fraction < 1.0 ) && ( trace.c.entityNum == ent.entityNumber ) ) {
 ////						ClearFocus();
 ////						focusCharacter = static_cast<idAI *>( ent );
 ////						talkCursor = 1;
@@ -4231,7 +4231,7 @@ idPlayer::UserInfoChanged
 ////
 ////			if ( ent.IsType( idAFEntity_Vehicle::Type ) ) {
 ////				gameLocal.clip.TracePoint( trace, start, end, MASK_SHOT_RENDERMODEL, this );
-////				if ( ( trace.fraction < 1.0f ) && ( trace.c.entityNum == ent.entityNumber ) ) {
+////				if ( ( trace.fraction < 1.0 ) && ( trace.c.entityNum == ent.entityNumber ) ) {
 ////					ClearFocus();
 ////					focusVehicle = static_cast<idAFEntity_Vehicle *>( ent );
 ////					focusTime = gameLocal.time + FOCUS_TIME;
@@ -4303,7 +4303,7 @@ idPlayer::UserInfoChanged
 ////					}
 ////				}
 ////
-////				int staminapercentage = ( int )( 100.0f * stamina / pm_stamina.GetFloat() );
+////				int staminapercentage = ( int )( 100.0 * stamina / pm_stamina.GetFloat() );
 ////				focusUI.SetStateString( "player_health", va("%i", health ) );
 ////				focusUI.SetStateString( "player_stamina", va( "%i%%", staminapercentage ) );
 ////				focusUI.SetStateString( "player_armor", va( "%i%%", this.inventory.armor ) );
@@ -4383,18 +4383,18 @@ idPlayer::UserInfoChanged
 ////	AI_HARDLANDING = false;
 ////
 ////	// if the player is not on the ground
-////	if ( !physicsObj.HasGroundContacts() ) {
+////	if ( !this.physicsObj.HasGroundContacts() ) {
 ////		return;
 ////	}
 ////
-////	gravityNormal = physicsObj.GetGravityNormal();
+////	gravityNormal = this.physicsObj.GetGravityNormal();
 ////
 ////	// if the player wasn't going down
 ////	if ( ( oldVelocity * -gravityNormal ) >= 0.0 ) {
 ////		return;
 ////	}
 ////
-////	waterLevel = physicsObj.GetWaterLevel();
+////	waterLevel = this.physicsObj.GetWaterLevel();
 ////
 ////	// never take falling damage if completely underwater
 ////	if ( waterLevel == WATERLEVEL_HEAD ) {
@@ -4403,8 +4403,8 @@ idPlayer::UserInfoChanged
 ////
 ////	// no falling damage if touching a nodamage surface
 ////	noDamage = false;
-////	for ( int i = 0; i < physicsObj.GetNumContacts(); i++ ) {
-////		const contactInfo_t &contact = physicsObj.GetContact( i );
+////	for ( int i = 0; i < this.physicsObj.GetNumContacts(); i++ ) {
+////		const contactInfo_t &contact = this.physicsObj.GetContact( i );
 ////		if ( contact.material.GetSurfaceFlags() & SURF_NODAMAGE ) {
 ////			noDamage = true;
 ////			StartSound( "snd_land_hard", SND_CHANNEL_ANY, 0, false, NULL );
@@ -4413,22 +4413,22 @@ idPlayer::UserInfoChanged
 ////	}
 ////
 ////	origin = GetPhysics().GetOrigin();
-////	gravityVector = physicsObj.GetGravity();
+////	gravityVector = this.physicsObj.GetGravity();
 ////
 ////	// calculate the exact velocity on landing
 ////	dist = ( origin - oldOrigin ) * -gravityNormal;
 ////	vel = oldVelocity * -gravityNormal;
 ////	acc = -gravityVector.Length();
 ////
-////	a = acc / 2.0f;
+////	a = acc / 2.0;
 ////	b = vel;
 ////	c = -dist;
 ////
-////	den = b * b - 4.0f * a * c;
+////	den = b * b - 4.0 * a * c;
 ////	if ( den < 0 ) {
 ////		return;
 ////	}
-////	t = ( -b - idMath::Sqrt( den ) ) / ( 2.0f * a );
+////	t = ( -b - idMath::Sqrt( den ) ) / ( 2.0 * a );
 ////
 ////	delta = vel + t * acc;
 ////	delta = delta * delta * 0.0001;
@@ -4438,20 +4438,20 @@ idPlayer::UserInfoChanged
 ////		delta *= 0.25f;
 ////	}
 ////	if ( waterLevel == WATERLEVEL_FEET ) {
-////		delta *= 0.5f;
+////		delta *= 0.5;
 ////	}
 ////
-////	if ( delta < 1.0f ) {
+////	if ( delta < 1.0 ) {
 ////		return;
 ////	}
 ////
 ////	// allow falling a bit further for multiplayer
 ////	if ( gameLocal.isMultiplayer ) {
-////		fatalDelta	= 75.0f;
-////		hardDelta	= 50.0f;
+////		fatalDelta	= 75.0;
+////		hardDelta	= 50.0;
 ////	} else {
-////		fatalDelta	= 65.0f;
-////		hardDelta	= 45.0f;
+////		fatalDelta	= 65.0;
+////		hardDelta	= 45.0;
 ////	}
 ////
 ////	if ( delta > fatalDelta ) {
@@ -4460,7 +4460,7 @@ idPlayer::UserInfoChanged
 ////		landTime = gameLocal.time;
 ////		if ( !noDamage ) {
 ////			pain_debounce_time = gameLocal.time + pain_delay + 1;  // ignore pain since we'll play our landing anim
-////			Damage( NULL, NULL, idVec3( 0, 0, -1 ), "damage_fatalfall", 1.0f, 0 );
+////			Damage( NULL, NULL, idVec3( 0, 0, -1 ), "damage_fatalfall", 1.0, 0 );
 ////		}
 ////	} else if ( delta > hardDelta ) {
 ////		AI_HARDLANDING = true;
@@ -4468,7 +4468,7 @@ idPlayer::UserInfoChanged
 ////		landTime	= gameLocal.time;
 ////		if ( !noDamage ) {
 ////			pain_debounce_time = gameLocal.time + pain_delay + 1;  // ignore pain since we'll play our landing anim
-////			Damage( NULL, NULL, idVec3( 0, 0, -1 ), "damage_hardfall", 1.0f, 0 );
+////			Damage( NULL, NULL, idVec3( 0, 0, -1 ), "damage_hardfall", 1.0, 0 );
 ////		}
 ////	} else if ( delta > 30 ) {
 ////		AI_HARDLANDING = true;
@@ -4476,7 +4476,7 @@ idPlayer::UserInfoChanged
 ////		landTime	= gameLocal.time;
 ////		if ( !noDamage ) {
 ////			pain_debounce_time = gameLocal.time + pain_delay + 1;  // ignore pain since we'll play our landing anim
-////			Damage( NULL, NULL, idVec3( 0, 0, -1 ), "damage_softfall", 1.0f, 0 );
+////			Damage( NULL, NULL, idVec3( 0, 0, -1 ), "damage_softfall", 1.0, 0 );
 ////		}
 ////	} else if ( delta > 7 ) {
 ////		AI_SOFTLANDING = true;
@@ -4506,9 +4506,9 @@ idPlayer::UserInfoChanged
 ////	// calculate speed and cycle to be used for
 ////	// all cyclic walking effects
 ////	//
-////	velocity = physicsObj.GetLinearVelocity() - pushVelocity;
+////	velocity = this.physicsObj.GetLinearVelocity() - pushVelocity;
 ////
-////	gravityDir = physicsObj.GetGravityNormal();
+////	gravityDir = this.physicsObj.GetGravityNormal();
 ////	vel = velocity - ( velocity * gravityDir ) * gravityDir;
 ////	xyspeed = vel.LengthFast();
 ////
@@ -4520,7 +4520,7 @@ idPlayer::UserInfoChanged
 ////		return;
 ////	}
 ////
-////	if ( !physicsObj.HasGroundContacts() || influenceActive == INFLUENCE_LEVEL2 || ( gameLocal.isMultiplayer && spectating ) ) {
+////	if ( !this.physicsObj.HasGroundContacts() || influenceActive == INFLUENCE_LEVEL2 || ( gameLocal.isMultiplayer && this.spectating ) ) {
 ////		// airborne
 ////		bobCycle = 0;
 ////		bobFoot = 0;
@@ -4531,12 +4531,12 @@ idPlayer::UserInfoChanged
 ////		bobFoot = 0;
 ////		bobfracsin = 0;
 ////	} else {
-////		if ( physicsObj.IsCrouching() ) {
+////		if ( this.physicsObj.IsCrouching() ) {
 ////			bobmove = pm_crouchbob.GetFloat();
 ////			// ducked characters never play footsteps
 ////		} else {
 ////			// vary the bobbing based on the speed of the player
-////			bobmove = pm_walkbob.GetFloat() * ( 1.0f - bobFrac ) + pm_runbob.GetFloat() * bobFrac;
+////			bobmove = pm_walkbob.GetFloat() * ( 1.0 - bobFrac ) + pm_runbob.GetFloat() * bobFrac;
 ////		}
 ////
 ////		// check for footstep / splash sounds
@@ -4549,7 +4549,7 @@ idPlayer::UserInfoChanged
 ////	// calculate angles for view bobbing
 ////	viewBobAngles.Zero();
 ////
-////	viewaxis = this.viewAngles.ToMat3() * physicsObj.GetGravityAxis();
+////	viewaxis = this.viewAngles.ToMat3() * this.physicsObj.GetGravityAxis();
 ////
 ////	// add angles based on velocity
 ////	delta = velocity * viewaxis[0];
@@ -4563,12 +4563,12 @@ idPlayer::UserInfoChanged
 ////	speed = xyspeed > 200 ? xyspeed : 200;
 ////
 ////	delta = bobfracsin * pm_bobpitch.GetFloat() * speed;
-////	if ( physicsObj.IsCrouching() ) {
+////	if ( this.physicsObj.IsCrouching() ) {
 ////		delta *= 3;		// crouching
 ////	}
 ////	viewBobAngles.pitch += delta;
 ////	delta = bobfracsin * pm_bobroll.GetFloat() * speed;
-////	if ( physicsObj.IsCrouching() ) {
+////	if ( this.physicsObj.IsCrouching() ) {
 ////		delta *= 3;		// crouching accentuates roll
 ////	}
 ////	if ( bobFoot & 1 ) {
@@ -4579,22 +4579,22 @@ idPlayer::UserInfoChanged
 ////	// calculate position for view bobbing
 ////	viewBob.Zero();
 ////
-////	if ( physicsObj.HasSteppedUp() ) {
+////	if ( this.physicsObj.HasSteppedUp() ) {
 ////
 ////		// check for stepping up before a previous step is completed
 ////		deltaTime = gameLocal.time - stepUpTime;
 ////		if ( deltaTime < STEPUP_TIME ) {
-////			stepUpDelta = stepUpDelta * ( STEPUP_TIME - deltaTime ) / STEPUP_TIME + physicsObj.GetStepUp();
+////			stepUpDelta = stepUpDelta * ( STEPUP_TIME - deltaTime ) / STEPUP_TIME + this.physicsObj.GetStepUp();
 ////		} else {
-////			stepUpDelta = physicsObj.GetStepUp();
+////			stepUpDelta = this.physicsObj.GetStepUp();
 ////		}
-////		if ( stepUpDelta > 2.0f * pm_stepsize.GetFloat() ) {
-////			stepUpDelta = 2.0f * pm_stepsize.GetFloat();
+////		if ( stepUpDelta > 2.0 * pm_stepsize.GetFloat() ) {
+////			stepUpDelta = 2.0 * pm_stepsize.GetFloat();
 ////		}
 ////		stepUpTime = gameLocal.time;
 ////	}
 ////
-////	idVec3 gravity = physicsObj.GetGravityNormal();
+////	idVec3 gravity = this.physicsObj.GetGravityNormal();
 ////
 ////	// if the player stepped up recently
 ////	deltaTime = gameLocal.time - stepUpTime;
@@ -4665,10 +4665,10 @@ idPlayer::UserInfoChanged
 ////	if ( health <= 0 ) {
 ////		if ( pm_thirdPersonDeath.GetBool() ) {
 ////			this.viewAngles.roll = 0.0;
-////			this.viewAngles.pitch = 30.0f;
+////			this.viewAngles.pitch = 30.0;
 ////		} else {
-////			this.viewAngles.roll = 40.0f;
-////			this.viewAngles.pitch = -15.0f;
+////			this.viewAngles.roll = 40.0;
+////			this.viewAngles.pitch = -15.0;
 ////		}
 ////		return;
 ////	}
@@ -4677,7 +4677,7 @@ idPlayer::UserInfoChanged
 ////	for ( i = 0; i < 3; i++ ) {
 ////		this.cmdAngles[i] = SHORT2ANGLE( usercmd.angles[i] );
 ////		if ( influenceActive == INFLUENCE_LEVEL3 ) {
-////			this.viewAngles[i] += idMath::ClampFloat( -1.0f, 1.0f, idMath::AngleDelta( idMath::AngleNormalize180( SHORT2ANGLE( usercmd.angles[i]) + deltaViewAngles[i] ) , this.viewAngles[i] ) );
+////			this.viewAngles[i] += idMath::ClampFloat( -1.0, 1.0, idMath::AngleDelta( idMath::AngleNormalize180( SHORT2ANGLE( usercmd.angles[i]) + deltaViewAngles[i] ) , this.viewAngles[i] ) );
 ////		} else {
 ////			this.viewAngles[i] = idMath::AngleNormalize180( SHORT2ANGLE( usercmd.angles[i]) + deltaViewAngles[i] );
 ////		}
@@ -4688,12 +4688,12 @@ idPlayer::UserInfoChanged
 ////
 ////	// clamp the pitch
 ////	if ( this.noclip ) {
-////		if ( this.viewAngles.pitch > 89.0f ) {
+////		if ( this.viewAngles.pitch > 89.0 ) {
 ////			// don't let the player look down more than 89 degrees while noclipping
-////			this.viewAngles.pitch = 89.0f;
-////		} else if ( this.viewAngles.pitch < -89.0f ) {
+////			this.viewAngles.pitch = 89.0;
+////		} else if ( this.viewAngles.pitch < -89.0 ) {
 ////			// don't let the player look up more than 89 degrees while noclipping
-////			this.viewAngles.pitch = -89.0f;
+////			this.viewAngles.pitch = -89.0;
 ////		}
 ////	} else {
 ////		if ( this.viewAngles.pitch > pm_maxviewpitch.GetFloat() ) {
@@ -4764,8 +4764,8 @@ idPlayer::UserInfoChanged
 ////==============
 ////*/
 ////int idPlayer::GetBaseHeartRate( ) {
-////	int base = idMath::FtoiFast( ( BASE_HEARTRATE + LOWHEALTH_HEARTRATE_ADJ ) - ( (float)health / 100.0f ) * LOWHEALTH_HEARTRATE_ADJ );
-////	int rate = idMath::FtoiFast( base + ( ZEROSTAMINA_HEARTRATE - base ) * ( 1.0f - stamina / pm_stamina.GetFloat() ) );
+////	int base = idMath::FtoiFast( ( BASE_HEARTRATE + LOWHEALTH_HEARTRATE_ADJ ) - ( (float)health / 100.0 ) * LOWHEALTH_HEARTRATE_ADJ );
+////	int rate = idMath::FtoiFast( base + ( ZEROSTAMINA_HEARTRATE - base ) * ( 1.0 - stamina / pm_stamina.GetFloat() ) );
 ////	int diff = ( this.lastDmgTime ) ? gameLocal.time - this.lastDmgTime : 99999;
 ////	rate += ( diff < 5000 ) ? ( diff < 2500 ) ? ( diff < 1000 ) ? 15 : 10 : 5 : 0;
 ////	return rate;
@@ -4778,7 +4778,7 @@ idPlayer::UserInfoChanged
 ////*/
 ////void idPlayer::SetCurrentHeartRate( ) {
 ////
-////	int base = idMath::FtoiFast( ( BASE_HEARTRATE + LOWHEALTH_HEARTRATE_ADJ ) - ( (float) health / 100.0f ) * LOWHEALTH_HEARTRATE_ADJ );
+////	int base = idMath::FtoiFast( ( BASE_HEARTRATE + LOWHEALTH_HEARTRATE_ADJ ) - ( (float) health / 100.0 ) * LOWHEALTH_HEARTRATE_ADJ );
 ////
 ////	if ( PowerUpActive( ADRENALINE )) {
 ////		this.heartRate = 135;
@@ -4786,11 +4786,11 @@ idPlayer::UserInfoChanged
 ////		this.heartRate = idMath::FtoiFast( this.heartInfo.GetCurrentValue( gameLocal.time ) );
 ////		int currentRate = GetBaseHeartRate();
 ////		if ( health >= 0 && gameLocal.time > this.lastHeartAdjust + 2500 ) {
-////			AdjustHeartRate( currentRate, 2.5f, 0.0, false );
+////			AdjustHeartRate( currentRate, 2.5, 0.0, false );
 ////		}
 ////	}
 ////
-////	int bps = idMath::FtoiFast( 60.0f / this.heartRate * 1000.0f );
+////	int bps = idMath::FtoiFast( 60.0 / this.heartRate * 1000.0 );
 ////	if ( gameLocal.time - this.lastHeartBeat > bps ) {
 ////		int dmgVol = DMG_VOLUME;
 ////		int deathVol = DEATH_VOLUME;
@@ -4801,8 +4801,8 @@ idPlayer::UserInfoChanged
 ////			pct *= ((float)dmgVol - (float)zeroVol);
 ////		} else if ( health <= 0 ) {
 ////			pct = (float)(this.heartRate - DYING_HEARTRATE) / (BASE_HEARTRATE - DYING_HEARTRATE);
-////			if ( pct > 1.0f ) {
-////				pct = 1.0f;
+////			if ( pct > 1.0 ) {
+////				pct = 1.0;
 ////			} else if (pct < 0.0) {
 ////				pct = 0.0;
 ////			}
@@ -4867,9 +4867,9 @@ idPlayer::UserInfoChanged
 ////			airTics = 0;
 ////			// check for damage
 ////			const idDict *damageDef = gameLocal.FindEntityDefDict( "damage_noair", false );
-////			int dmgTiming = 1000 * ((damageDef) ? damageDef.GetFloat( "delay", "3.0" ) : 3.0f );
+////			int dmgTiming = 1000 * ((damageDef) ? damageDef.GetFloat( "delay", "3.0" ) : 3.0 );
 ////			if ( gameLocal.time > lastAirDamage + dmgTiming ) {
-////				Damage( NULL, NULL, vec3_origin, "damage_noair", 1.0f, 0 );
+////				Damage( NULL, NULL, vec3_origin, "damage_noair", 1.0, 0 );
 ////				lastAirDamage = gameLocal.time;
 ////			}
 ////		}
@@ -5149,7 +5149,7 @@ idPlayer::UserInfoChanged
 ////	}
 ////
 ////	if ( this.inventory.pdas.Num() == 0 ) {
-////		ShowTip( spawnArgs.GetString( "text_infoTitle" ), spawnArgs.GetString( "text_noPDA" ), true );
+////		ShowTip( this.spawnArgs.GetString( "text_infoTitle" ), this.spawnArgs.GetString( "text_noPDA" ), true );
 ////		return;
 ////	}
 ////
@@ -5184,7 +5184,7 @@ idPlayer::UserInfoChanged
 ////			const char *hudWeap = va( "weapon%d", j );
 ////			int weapstate = 0;
 ////			if ( this.inventory.weapons & ( 1 << j ) ) {
-////				const char *weap = spawnArgs.GetString( weapnum );
+////				const char *weap = this.spawnArgs.GetString( weapnum );
 ////				if ( weap && *weap ) {
 ////					weapstate++;
 ////				}
@@ -5232,28 +5232,28 @@ idPlayer::UserInfoChanged
 ////	// track invisible player bug
 ////	// all hiding and showing should be performed through Spectate calls
 ////	// except for the private camera view, which is used for teleports
-////	assert( ( teleportEntity.GetEntity() != NULL ) || ( IsHidden() == spectating ) );
+////	assert( ( teleportEntity.GetEntity() != NULL ) || ( IsHidden() == this.spectating ) );
 ////
-////	if ( spectating == spectate ) {
+////	if ( this.spectating == spectate ) {
 ////		return;
 ////	}
 ////
-////	spectating = spectate;
+////	this.spectating = spectate;
 ////
 ////	if ( gameLocal.isServer ) {
 ////		msg.Init( msgBuf, sizeof( msgBuf ) );
-////		msg.WriteBits( spectating, 1 );
+////		msg.WriteBits( this.spectating, 1 );
 ////		ServerSendEvent( EVENT_SPECTATE, &msg, false, -1 );
 ////	}
 ////
-////	if ( spectating ) {
+////	if ( this.spectating ) {
 ////		// join the spectators
 ////		ClearPowerUps();
 ////		spectator = this.entityNumber;
 ////		Init();
 ////		StopRagdoll();
-////		SetPhysics( &physicsObj );
-////		physicsObj.DisableClip();
+////		SetPhysics( &this.physicsObj );
+////		this.physicsObj.DisableClip();
 ////		Hide();
 ////		Event_DisableWeapon();
 ////		if ( this.hud ) {
@@ -5268,34 +5268,34 @@ idPlayer::UserInfoChanged
 ////	}
 ////	SetClipModel();
 ////}
-////
-/////*
-////==============
-////idPlayer::SetClipModel
-////==============
-////*/
-////void idPlayer::SetClipModel( ) {
-////	idBounds bounds;
-////
-////	if ( spectating ) {
-////		bounds = idBounds( vec3_origin ).Expand( pm_spectatebbox.GetFloat() * 0.5f );
-////	} else {
-////		bounds[0].Set( -pm_bboxwidth.GetFloat() * 0.5f, -pm_bboxwidth.GetFloat() * 0.5f, 0 );
-////		bounds[1].Set( pm_bboxwidth.GetFloat() * 0.5f, pm_bboxwidth.GetFloat() * 0.5f, pm_normalheight.GetFloat() );
-////	}
-////	// the origin of the clip model needs to be set before calling SetClipModel
-////	// otherwise our physics object's current origin value gets reset to 0
-////	idClipModel *newClip;
-////	if ( pm_usecylinder.GetBool() ) {
-////		newClip = new idClipModel( idTraceModel( bounds, 8 ) );
-////		newClip.Translate( physicsObj.PlayerGetOrigin() );
-////		physicsObj.SetClipModel( newClip, 1.0f );
-////	} else {
-////		newClip = new idClipModel( idTraceModel( bounds ) );
-////		newClip.Translate( physicsObj.PlayerGetOrigin() );
-////		physicsObj.SetClipModel( newClip, 1.0f );
-////	}
-////}
+
+/*
+==============
+idPlayer::SetClipModel
+==============
+*/
+SetClipModel( ):void {
+	var bounds = new idBounds;
+
+	if ( this.spectating ) {
+		bounds .opEquals( new idBounds( vec3_origin ).Expand( pm_spectatebbox.GetFloat() * 0.5 ));
+	} else {
+		bounds[0].Set( -pm_bboxwidth.GetFloat() * 0.5, -pm_bboxwidth.GetFloat() * 0.5, 0 );
+		bounds[1].Set( pm_bboxwidth.GetFloat() * 0.5, pm_bboxwidth.GetFloat() * 0.5, pm_normalheight.GetFloat() );
+	}
+	// the origin of the clip model needs to be set before calling SetClipModel
+	// otherwise our physics object's current origin value gets reset to 0
+	var newClip:idClipModel;
+	if ( pm_usecylinder.GetBool() ) {
+		newClip = new idClipModel( new idTraceModel( bounds, 8 ) );
+		newClip.Translate( this.physicsObj.PlayerGetOrigin() );
+		this.physicsObj.SetClipModel( newClip, 1.0 );
+	} else {
+		newClip = new idClipModel( new idTraceModel( bounds ) );
+		newClip.Translate( this.physicsObj.PlayerGetOrigin() );
+		this.physicsObj.SetClipModel( newClip, 1.0 );
+	}
+}
 ////
 /////*
 ////==============
@@ -5312,9 +5312,9 @@ idPlayer::UserInfoChanged
 ////		static_cast<idAFEntity_Vehicle*>(GetBindMaster()).Use( this );
 ////	} else {
 ////		start = GetEyePosition();
-////		end = start + this.viewAngles.ToForward() * 80.0f;
+////		end = start + this.viewAngles.ToForward() * 80.0;
 ////		gameLocal.clip.TracePoint( trace, start, end, MASK_SHOT_RENDERMODEL, this );
-////		if ( trace.fraction < 1.0f ) {
+////		if ( trace.fraction < 1.0 ) {
 ////			ent = gameLocal.entities[ trace.c.entityNum ];
 ////			if ( ent && ent.IsType( idAFEntity_Vehicle::Type ) ) {
 ////				Hide();
@@ -5475,32 +5475,32 @@ idPlayer::UserInfoChanged
 ////	var /*float*/ speed:number
 ////	float rate;
 ////
-////	if ( spectating ) {
+////	if ( this.spectating ) {
 ////		speed = pm_spectatespeed.GetFloat();
 ////		bobFrac = 0.0;
 ////	} else if ( this.noclip ) {
 ////		speed = pm_noclipspeed.GetFloat();
 ////		bobFrac = 0.0;
-////	} else if ( !physicsObj.OnLadder() && ( usercmd.buttons & BUTTON_RUN ) && ( usercmd.forwardmove || usercmd.rightmove ) && ( usercmd.upmove >= 0 ) ) {
-////		if ( !gameLocal.isMultiplayer && !physicsObj.IsCrouching() && !PowerUpActive( ADRENALINE ) ) {
+////	} else if ( !this.physicsObj.OnLadder() && ( usercmd.buttons & BUTTON_RUN ) && ( usercmd.forwardmove || usercmd.rightmove ) && ( usercmd.upmove >= 0 ) ) {
+////		if ( !gameLocal.isMultiplayer && !this.physicsObj.IsCrouching() && !PowerUpActive( ADRENALINE ) ) {
 ////			stamina -= MS2SEC( gameLocal.msec );
 ////		}
 ////		if ( stamina < 0 ) {
 ////			stamina = 0;
 ////		}
 ////		if ( ( !pm_stamina.GetFloat() ) || ( stamina > pm_staminathreshold.GetFloat() ) ) {
-////			bobFrac = 1.0f;
+////			bobFrac = 1.0;
 ////		} else if ( pm_staminathreshold.GetFloat() <= 0.0001f ) {
 ////			bobFrac = 0.0;
 ////		} else {
 ////			bobFrac = stamina / pm_staminathreshold.GetFloat();
 ////		}
-////		speed = pm_walkspeed.GetFloat() * ( 1.0f - bobFrac ) + pm_runspeed.GetFloat() * bobFrac;
+////		speed = pm_walkspeed.GetFloat() * ( 1.0 - bobFrac ) + pm_runspeed.GetFloat() * bobFrac;
 ////	} else {
 ////		rate = pm_staminarate.GetFloat();
 ////		
 ////		// increase 25% faster when not moving
-////		if ( ( usercmd.forwardmove == 0 ) && ( usercmd.rightmove == 0 ) && ( !physicsObj.OnLadder() || ( usercmd.upmove == 0 ) ) ) {
+////		if ( ( usercmd.forwardmove == 0 ) && ( usercmd.rightmove == 0 ) && ( !this.physicsObj.OnLadder() || ( usercmd.upmove == 0 ) ) ) {
 ////			 rate *= 1.25f;
 ////		}
 ////
@@ -5518,7 +5518,7 @@ idPlayer::UserInfoChanged
 ////		speed *= 0.33f;
 ////	}
 ////
-////	physicsObj.SetSpeed( speed, pm_crouchspeed.GetFloat() );
+////	this.physicsObj.SetSpeed( speed, pm_crouchspeed.GetFloat() );
 ////}
 ////
 /////*
@@ -5542,7 +5542,7 @@ idPlayer::UserInfoChanged
 ////
 ////	blend = true;
 ////
-////	if ( !physicsObj.HasGroundContacts() ) {
+////	if ( !this.physicsObj.HasGroundContacts() ) {
 ////		idealLegsYaw = 0.0;
 ////		legsForward = true;
 ////	} else if ( usercmd.forwardmove < 0 ) {
@@ -5551,7 +5551,7 @@ idPlayer::UserInfoChanged
 ////	} else if ( usercmd.forwardmove > 0 ) {
 ////		idealLegsYaw = idMath::AngleNormalize180( idVec3( usercmd.forwardmove, -usercmd.rightmove, 0.0 ).ToYaw() );
 ////		legsForward = true;
-////	} else if ( ( usercmd.rightmove != 0 ) && physicsObj.IsCrouching() ) {
+////	} else if ( ( usercmd.rightmove != 0 ) && this.physicsObj.IsCrouching() ) {
 ////		if ( !legsForward ) {
 ////			idealLegsYaw = idMath::AngleNormalize180( idVec3( idMath::Abs( usercmd.rightmove ), usercmd.rightmove, 0.0 ).ToYaw() );
 ////		} else {
@@ -5570,7 +5570,7 @@ idPlayer::UserInfoChanged
 ////		}
 ////	}
 ////
-////	if ( !physicsObj.IsCrouching() ) {
+////	if ( !this.physicsObj.IsCrouching() ) {
 ////		legsForward = true;
 ////	}
 ////
@@ -5578,31 +5578,31 @@ idPlayer::UserInfoChanged
 ////
 ////	AI_TURN_LEFT = false;
 ////	AI_TURN_RIGHT = false;
-////	if ( idealLegsYaw < -45.0f ) {
+////	if ( idealLegsYaw < -45.0 ) {
 ////		idealLegsYaw = 0;
 ////		AI_TURN_RIGHT = true;
 ////		blend = true;
-////	} else if ( idealLegsYaw > 45.0f ) {
+////	} else if ( idealLegsYaw > 45.0 ) {
 ////		idealLegsYaw = 0;
 ////		AI_TURN_LEFT = true;
 ////		blend = true;
 ////	}
 ////
 ////	if ( blend ) {
-////		legsYaw = legsYaw * 0.9f + idealLegsYaw * 0.1f;
+////		legsYaw = legsYaw * 0.9 + idealLegsYaw * 0.1;
 ////	}
 ////	legsAxis = idAngles( 0.0, legsYaw, 0.0 ).ToMat3();
 ////	animator.SetJointAxis( hipJoint, JOINTMOD_WORLD, legsAxis );
 ////
 ////	// calculate the blending between down, straight, and up
-////	frac = this.viewAngles.pitch / 90.0f;
+////	frac = this.viewAngles.pitch / 90.0;
 ////	if ( frac > 0.0 ) {
 ////		downBlend		= frac;
-////		forwardBlend	= 1.0f - frac;
+////		forwardBlend	= 1.0 - frac;
 ////		upBlend			= 0.0;
 ////	} else {
 ////		downBlend		= 0.0;
-////		forwardBlend	= 1.0f + frac;
+////		forwardBlend	= 1.0 + frac;
 ////		upBlend			= -frac;
 ////	}
 ////
@@ -5614,39 +5614,39 @@ idPlayer::UserInfoChanged
 ////	animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( 1, forwardBlend );
 ////	animator.CurrentAnim( ANIMCHANNEL_LEGS ).SetSyncedAnimWeight( 2, upBlend );
 ////}
-////
-/////*
-////==============
-////idPlayer::InitAASLocation
-////==============
-////*/
-////void idPlayer::InitAASLocation( ) {
-////	var i:number /*int*/;
-////	var /*int*/num:number;
-////	idVec3	size;
-////	idBounds bounds;
-////	idAAS	*aas;
-////	idVec3	origin;
-////
-////	GetFloorPos( 64.0f, origin );
-////
-////	num = gameLocal.NumAAS();
-////	aasLocation.SetGranularity( 1 );
-////	aasLocation.SetNum( num );	
-////	for( i = 0; i < aasLocation.Num(); i++ ) {
-////		aasLocation[ i ].areaNum = 0;
-////		aasLocation[ i ].pos = origin;
-////		aas = gameLocal.GetAAS( i );
-////		if ( aas && aas.GetSettings() ) {
-////			size = aas.GetSettings().boundingBoxes[0][1];
-////			bounds[0] = -size;
-////			size.z = 32.0f;
-////			bounds[1] = size;
-////
-////			aasLocation[ i ].areaNum = aas.PointReachableAreaNum( origin, bounds, AREA_REACHABLE_WALK );
-////		}
-////	}
-////}
+
+/*
+==============
+idPlayer::InitAASLocation
+==============
+*/
+    InitAASLocation ( ): void {
+        var i: number /*int*/;
+        var /*int*/num: number;
+        var size = new idVec3;
+        var bounds = new idBounds;
+        var aas: idAAS;
+        var origin = new idVec3;
+
+        this.GetFloorPos( 64.0, origin );
+
+        num = gameLocal.NumAAS ( );
+        this.aasLocation.SetGranularity( 1 );
+        this.aasLocation.SetNum( num );
+        for ( i = 0; i < this.aasLocation.Num ( ); i++ ) {
+            this.aasLocation[i].areaNum = 0;
+            this.aasLocation[i].pos = origin;
+            aas = gameLocal.GetAAS( i );
+            if ( aas && aas.GetSettings ( ) ) {
+                size.opEquals( aas.GetSettings ( ).boundingBoxes[0][1] );
+                bounds[0].opEquals( size.opUnaryMinus ( ) );
+                size.z = 32.0;
+                bounds[1].opEquals( size );
+
+                this.aasLocation[i].areaNum = aas.PointReachableAreaNum( origin, bounds, AREA_REACHABLE_WALK );
+            }
+        }
+    }
 ////
 /////*
 ////==============
@@ -5656,16 +5656,16 @@ idPlayer::UserInfoChanged
 ////void idPlayer::SetAASLocation( ) {
 ////	var i:number /*int*/;
 ////	int		areaNum;
-////	idVec3	size;
-////	idBounds bounds;
-////	idAAS	*aas;
-////	idVec3	origin;
+////	var size = new idVec3;
+////	var bounds = new idBounds;
+////	var aas: idAAS;
+////	var origin = new idVec3;
 ////
-////	if ( !GetFloorPos( 64.0f, origin ) ) {
+////	if ( !this.GetFloorPos( 64.0, origin ) ) {
 ////		return;
 ////	}
 ////	
-////	for( i = 0; i < aasLocation.Num(); i++ ) {
+////	for( i = 0; i < this.aasLocation.Num(); i++ ) {
 ////		aas = gameLocal.GetAAS( i );
 ////		if ( !aas ) {
 ////			continue;
@@ -5673,13 +5673,13 @@ idPlayer::UserInfoChanged
 ////
 ////		size = aas.GetSettings().boundingBoxes[0][1];
 ////		bounds[0] = -size;
-////		size.z = 32.0f;
+////		size.z = 32.0;
 ////		bounds[1] = size;
 ////
 ////		areaNum = aas.PointReachableAreaNum( origin, bounds, AREA_REACHABLE_WALK );
 ////		if ( areaNum ) {
-////			aasLocation[ i ].pos = origin;
-////			aasLocation[ i ].areaNum = areaNum;
+////			this.aasLocation[ i ].pos = origin;
+////			this.aasLocation[ i ].areaNum = areaNum;
 ////		}
 ////	}
 ////}
@@ -5693,17 +5693,17 @@ idPlayer::UserInfoChanged
 ////	var/*int*/i:number;
 ////
 ////	if ( aas != NULL ) {
-////		for( i = 0; i < aasLocation.Num(); i++ ) {
+////		for( i = 0; i < this.aasLocation.Num(); i++ ) {
 ////			if ( aas == gameLocal.GetAAS( i ) ) {
-////				areaNum = aasLocation[ i ].areaNum;
-////				pos = aasLocation[ i ].pos;
+////				areaNum = this.aasLocation[ i ].areaNum;
+////				pos = this.aasLocation[ i ].pos;
 ////				return;
 ////			}
 ////		}
 ////	}
 ////
 ////	areaNum = 0;
-////	pos = physicsObj.GetOrigin();
+////	pos = this.physicsObj.GetOrigin();
 ////}
 ////
 /////*
@@ -5718,41 +5718,41 @@ idPlayer::UserInfoChanged
 ////	idVec3 pushVelocity;
 ////
 ////	// save old origin and velocity for crashlanding
-////	oldOrigin = physicsObj.GetOrigin();
-////	oldVelocity = physicsObj.GetLinearVelocity();
-////	pushVelocity = physicsObj.GetPushedLinearVelocity();
+////	oldOrigin = this.physicsObj.GetOrigin();
+////	oldVelocity = this.physicsObj.GetLinearVelocity();
+////	pushVelocity = this.physicsObj.GetPushedLinearVelocity();
 ////
 ////	// set physics variables
-////	physicsObj.SetMaxStepHeight( pm_stepsize.GetFloat() );
-////	physicsObj.SetMaxJumpHeight( pm_jumpheight.GetFloat() );
+////	this.physicsObj.SetMaxStepHeight( pm_stepsize.GetFloat() );
+////	this.physicsObj.SetMaxJumpHeight( pm_jumpheight.GetFloat() );
 ////
 ////	if ( this.noclip ) {
-////		physicsObj.SetContents( 0 );
-////		physicsObj.SetMovementType( PM_NOCLIP );
-////	} else if ( spectating ) {
-////		physicsObj.SetContents( 0 );
-////		physicsObj.SetMovementType( PM_SPECTATOR );
+////		this.physicsObj.SetContents( 0 );
+////		this.physicsObj.SetMovementType( PM_NOCLIP );
+////	} else if ( this.spectating ) {
+////		this.physicsObj.SetContents( 0 );
+////		this.physicsObj.SetMovementType( PM_SPECTATOR );
 ////	} else if ( health <= 0 ) {
-////		physicsObj.SetContents( CONTENTS_CORPSE | CONTENTS_MONSTERCLIP );
-////		physicsObj.SetMovementType( PM_DEAD );
+////		this.physicsObj.SetContents( CONTENTS_CORPSE | CONTENTS_MONSTERCLIP );
+////		this.physicsObj.SetMovementType( PM_DEAD );
 ////	} else if ( gameLocal.inCinematic || gameLocal.GetCamera() || privateCameraView || ( influenceActive == INFLUENCE_LEVEL2 ) ) {
-////		physicsObj.SetContents( CONTENTS_BODY );
-////		physicsObj.SetMovementType( PM_FREEZE );
+////		this.physicsObj.SetContents( contentsFlags_t.CONTENTS_BODY );
+////		this.physicsObj.SetMovementType( PM_FREEZE );
 ////	} else {
-////		physicsObj.SetContents( CONTENTS_BODY );
-////		physicsObj.SetMovementType( PM_NORMAL );
+////		this.physicsObj.SetContents( contentsFlags_t.CONTENTS_BODY );
+////		this.physicsObj.SetMovementType( PM_NORMAL );
 ////	}
 ////
-////	if ( spectating ) {
-////		physicsObj.SetClipMask( MASK_DEADSOLID );
+////	if ( this.spectating ) {
+////		this.physicsObj.SetClipMask( MASK_DEADSOLID );
 ////	} else if ( health <= 0 ) {
-////		physicsObj.SetClipMask( MASK_DEADSOLID );
+////		this.physicsObj.SetClipMask( MASK_DEADSOLID );
 ////	} else {
-////		physicsObj.SetClipMask( MASK_PLAYERSOLID );
+////		this.physicsObj.SetClipMask( MASK_PLAYERSOLID );
 ////	}
 ////
-////	physicsObj.SetDebugLevel( g_debugMove.GetBool() );
-////	physicsObj.SetPlayerInput( usercmd, this.viewAngles );
+////	this.physicsObj.SetDebugLevel( g_debugMove.GetBool() );
+////	this.physicsObj.SetPlayerInput( usercmd, this.viewAngles );
 ////
 ////	// FIXME: physics gets disabled somehow
 ////	BecomeActive( TH_PHYSICS );
@@ -5761,11 +5761,11 @@ idPlayer::UserInfoChanged
 ////	// update our last valid AAS location for the AI
 ////	SetAASLocation();
 ////
-////	if ( spectating ) {
+////	if ( this.spectating ) {
 ////		newEyeOffset = 0.0;
 ////	} else if ( health <= 0 ) {
 ////		newEyeOffset = pm_deadviewheight.GetFloat();
-////	} else if ( physicsObj.IsCrouching() ) {
+////	} else if ( this.physicsObj.IsCrouching() ) {
 ////		newEyeOffset = pm_crouchviewheight.GetFloat();
 ////	} else if ( GetBindMaster() && GetBindMaster().IsType( idAFEntity_Vehicle::Type ) ) {
 ////		newEyeOffset = 0.0;
@@ -5774,11 +5774,11 @@ idPlayer::UserInfoChanged
 ////	}
 ////
 ////	if ( EyeHeight() != newEyeOffset ) {
-////		if ( spectating ) {
+////		if ( this.spectating ) {
 ////			SetEyeHeight( newEyeOffset );
 ////		} else {
 ////			// smooth out duck height changes
-////			SetEyeHeight( EyeHeight() * pm_crouchrate.GetFloat() + newEyeOffset * ( 1.0f - pm_crouchrate.GetFloat() ) );
+////			SetEyeHeight( EyeHeight() * pm_crouchrate.GetFloat() + newEyeOffset * ( 1.0 - pm_crouchrate.GetFloat() ) );
 ////		}
 ////	}
 ////
@@ -5788,24 +5788,24 @@ idPlayer::UserInfoChanged
 ////		AI_ONLADDER	= false;
 ////		AI_JUMP		= false;
 ////	} else {
-////		AI_CROUCH	= physicsObj.IsCrouching();
-////		AI_ONGROUND	= physicsObj.HasGroundContacts();
-////		AI_ONLADDER	= physicsObj.OnLadder();
-////		AI_JUMP		= physicsObj.HasJumped();
+////		AI_CROUCH	= this.physicsObj.IsCrouching();
+////		AI_ONGROUND	= this.physicsObj.HasGroundContacts();
+////		AI_ONLADDER	= this.physicsObj.OnLadder();
+////		AI_JUMP		= this.physicsObj.HasJumped();
 ////
 ////		// check if we're standing on top of a monster and give a push if we are
-////		idEntity *groundEnt = physicsObj.GetGroundEntity();
+////		idEntity *groundEnt = this.physicsObj.GetGroundEntity();
 ////		if ( groundEnt && groundEnt.IsType( idAI::Type ) ) {
-////			idVec3 vel = physicsObj.GetLinearVelocity();
+////			idVec3 vel = this.physicsObj.GetLinearVelocity();
 ////			if ( vel.ToVec2().LengthSqr() < 0.1f ) {
-////				vel.ToVec2() = physicsObj.GetOrigin().ToVec2() - groundEnt.GetPhysics().GetAbsBounds().GetCenter().ToVec2();
+////				vel.ToVec2() = this.physicsObj.GetOrigin().ToVec2() - groundEnt.GetPhysics().GetAbsBounds().GetCenter().ToVec2();
 ////				vel.ToVec2().NormalizeFast();
 ////				vel.ToVec2() *= pm_walkspeed.GetFloat();
 ////			} else {
 ////				// give em a push in the direction they're going
 ////				vel *= 1.1f;
 ////			}
-////			physicsObj.SetLinearVelocity( vel );
+////			this.physicsObj.SetLinearVelocity( vel );
 ////		}
 ////	}
 ////
@@ -5820,7 +5820,7 @@ idPlayer::UserInfoChanged
 ////
 ////	if ( AI_ONLADDER ) {
 ////		int old_rung = oldOrigin.z / LADDER_RUNG_DISTANCE;
-////		int new_rung = physicsObj.GetOrigin().z / LADDER_RUNG_DISTANCE;
+////		int new_rung = this.physicsObj.GetOrigin().z / LADDER_RUNG_DISTANCE;
 ////
 ////		if ( old_rung != new_rung ) {
 ////			StartSound( "snd_stepladder", SND_CHANNEL_ANY, 0, false, NULL );
@@ -5919,11 +5919,11 @@ idPlayer::UserInfoChanged
 ////	}
 ////	if ( health <= 0 ) {
 ////		if ( !doingDeathSkin ) {
-////			deathClearContentsTime = spawnArgs.GetInt( "deathSkinTime" );
+////			deathClearContentsTime = this.spawnArgs.GetInt( "deathSkinTime" );
 ////			doingDeathSkin = true;
 ////			renderEntity.noShadow = true;
 ////			if ( state_hitch ) {
-////				renderEntity.shaderParms[ SHADERPARM_TIME_OF_DEATH ] = gameLocal.time * 0.001f - 2.0f;
+////				renderEntity.shaderParms[ SHADERPARM_TIME_OF_DEATH ] = gameLocal.time * 0.001f - 2.0;
 ////			} else {
 ////				renderEntity.shaderParms[ SHADERPARM_TIME_OF_DEATH ] = gameLocal.time * 0.001f;
 ////			}
@@ -6037,9 +6037,9 @@ idPlayer::UserInfoChanged
 ////	// zooming
 ////	if ( ( usercmd.buttons ^ oldCmd.buttons ) & BUTTON_ZOOM ) {
 ////		if ( ( usercmd.buttons & BUTTON_ZOOM ) && this.weapon.GetEntity() ) {
-////			zoomFov.Init( gameLocal.time, 200.0f, CalcFov( false ), this.weapon.GetEntity().GetZoomFov() );
+////			zoomFov.Init( gameLocal.time, 200.0, CalcFov( false ), this.weapon.GetEntity().GetZoomFov() );
 ////		} else {
-////			zoomFov.Init( gameLocal.time, 200.0f, zoomFov.GetCurrentValue( gameLocal.time ), DefaultFov() );
+////			zoomFov.Init( gameLocal.time, 200.0, zoomFov.GetCurrentValue( gameLocal.time ), DefaultFov() );
 ////		}
 ////	}
 ////
@@ -6052,7 +6052,7 @@ idPlayer::UserInfoChanged
 ////
 ////	// set the push velocity on the weapon before running the physics
 ////	if ( this.weapon.GetEntity() ) {
-////		this.weapon.GetEntity().SetPushVelocity( physicsObj.GetPushedLinearVelocity() );
+////		this.weapon.GetEntity().SetPushVelocity( this.physicsObj.GetPushedLinearVelocity() );
 ////	}
 ////
 ////	EvaluateControls();
@@ -6074,12 +6074,12 @@ idPlayer::UserInfoChanged
 ////		if ( !gameLocal.isMultiplayer ) {
 ////			SetCurrentHeartRate();
 ////			float scale = g_damageScale.GetFloat();
-////			if ( g_useDynamicProtection.GetBool() && scale < 1.0f && gameLocal.time - this.lastDmgTime > 500 ) {
-////				if ( scale < 1.0f ) {
+////			if ( g_useDynamicProtection.GetBool() && scale < 1.0 && gameLocal.time - this.lastDmgTime > 500 ) {
+////				if ( scale < 1.0 ) {
 ////					scale += 0.05f;
 ////				}
-////				if ( scale > 1.0f ) {
-////					scale = 1.0f;
+////				if ( scale > 1.0 ) {
+////					scale = 1.0;
 ////				}
 ////				g_damageScale.SetFloat( scale );
 ////			}
@@ -6113,7 +6113,7 @@ idPlayer::UserInfoChanged
 ////
 ////	this.inventory.UpdateArmor();
 ////
-////	if ( spectating ) {
+////	if ( this.spectating ) {
 ////		UpdateSpectating();
 ////	} else if ( health > 0 ) {
 ////		UpdateWeapon();
@@ -6233,7 +6233,7 @@ idPlayer::UserInfoChanged
 ////==============
 ////*/
 ////void idPlayer::Kill( bool delayRespawn, bool nodamage ) {
-////	if ( spectating ) {
+////	if ( this.spectating ) {
 ////		SpectateFreeFly( false );
 ////	} else if ( health > 0 ) {
 ////		this.godmode = false;
@@ -6241,10 +6241,10 @@ idPlayer::UserInfoChanged
 ////			ServerSpectate( true );
 ////			forceRespawn = true;
 ////		} else {
-////			Damage( this, this, vec3_origin, "damage_suicide", 1.0f, jointHandle_t.INVALID_JOINT );
+////			Damage( this, this, vec3_origin, "damage_suicide", 1.0, jointHandle_t.INVALID_JOINT );
 ////			if ( delayRespawn ) {
 ////				forceRespawn = false;
-////				int delay = spawnArgs.GetFloat( "respawn_delay" );
+////				int delay = this.spawnArgs.GetFloat( "respawn_delay" );
 ////				minRespawnTime = gameLocal.time + SEC2MS( delay );
 ////				maxRespawnTime = minRespawnTime + MAX_RESPAWN_TIME;
 ////			}
@@ -6274,7 +6274,7 @@ idPlayer::UserInfoChanged
 ////	}
 ////
 ////	this.heartInfo.Init( 0, 0, 0, BASE_HEARTRATE );
-////	AdjustHeartRate( DEAD_HEARTRATE, 10.0f, 0.0, true );
+////	AdjustHeartRate( DEAD_HEARTRATE, 10.0, 0.0, true );
 ////
 ////	if ( !g_testDeath.GetBool() ) {
 ////		playerView.Fade( colorBlack, 12000 );
@@ -6294,12 +6294,12 @@ idPlayer::UserInfoChanged
 ////	} else {
 ////		// don't allow respawn until the death anim is done
 ////		// g_forcerespawn may force spawning at some later time
-////		delay = spawnArgs.GetFloat( "respawn_delay" );
+////		delay = this.spawnArgs.GetFloat( "respawn_delay" );
 ////		minRespawnTime = gameLocal.time + SEC2MS( delay );
 ////		maxRespawnTime = minRespawnTime + MAX_RESPAWN_TIME;
 ////	}
 ////
-////	physicsObj.SetMovementType( PM_DEAD );
+////	this.physicsObj.SetMovementType( PM_DEAD );
 ////	StartSound( "snd_death", SND_CHANNEL_VOICE, 0, false, NULL );
 ////	StopSound( SND_CHANNEL_BODY2, false );
 ////
@@ -6328,7 +6328,7 @@ idPlayer::UserInfoChanged
 ////		}
 ////		gameLocal.mpGame.PlayerDeath( this, killer, isTelefragged );
 ////	} else {
-////		physicsObj.SetContents( CONTENTS_CORPSE | CONTENTS_MONSTERCLIP );
+////		this.physicsObj.SetContents( CONTENTS_CORPSE | CONTENTS_MONSTERCLIP );
 ////	}
 ////
 ////	ClearPowerUps();
@@ -6350,7 +6350,7 @@ idPlayer::UserInfoChanged
 ////	idMat3 axis;
 ////	idVec3 origin;
 ////	
-////	origin = lastSightPos - physicsObj.GetOrigin();
+////	origin = lastSightPos - this.physicsObj.GetOrigin();
 ////
 ////	GetJointWorldTransform( chestJoint, gameLocal.time, offset, axis );
 ////	headPos = offset + origin;
@@ -6405,7 +6405,7 @@ idPlayer::UserInfoChanged
 ////					damage *= 1.70f;
 ////					break;
 ////				case 3:
-////					damage *= 3.5f;
+////					damage *= 3.5;
 ////					break;
 ////				default:
 ////					break;
@@ -6504,7 +6504,7 @@ idPlayer::UserInfoChanged
 ////		return;
 ////	}
 ////	
-////	if ( !this.fl.takedamage || this.noclip || spectating || gameLocal.inCinematic ) {
+////	if ( !this.fl.takedamage || this.noclip || this.spectating || gameLocal.inCinematic ) {
 ////		return;
 ////	}
 ////
@@ -6544,16 +6544,16 @@ idPlayer::UserInfoChanged
 ////		if ( attacker == this ) {
 ////			damageDef.dict.GetFloat( "attackerPushScale", "0", attackerPushScale );
 ////		} else {
-////			attackerPushScale = 1.0f;
+////			attackerPushScale = 1.0;
 ////		}
 ////
 ////		kick = dir;
 ////		kick.Normalize();
-////		kick *= g_knockback.GetFloat() * knockback * attackerPushScale / 200.0f;
-////		physicsObj.SetLinearVelocity( physicsObj.GetLinearVelocity() + kick );
+////		kick *= g_knockback.GetFloat() * knockback * attackerPushScale / 200.0;
+////		this.physicsObj.SetLinearVelocity( this.physicsObj.GetLinearVelocity() + kick );
 ////
 ////		// set the timer so that the player can't cancel out the movement immediately
-////		physicsObj.SetKnockBack( idMath::ClampInt( 50, 200, knockback * 2 ) );
+////		this.physicsObj.SetKnockBack( idMath::ClampInt( 50, 200, knockback * 2 ) );
 ////	}
 ////
 ////	// give feedback on the player view and audibly when armor is helping
@@ -6666,7 +6666,7 @@ idPlayer::UserInfoChanged
 ////	}
 ////
 ////	SetOrigin( origin + idVec3( 0, 0, CM_CLIP_EPSILON ) );
-////	if ( !gameLocal.isMultiplayer && GetFloorPos( 16.0f, org ) ) {
+////	if ( !gameLocal.isMultiplayer && this.GetFloorPos( 16.0, org ) ) {
 ////		SetOrigin( org );
 ////	}
 ////
@@ -6729,10 +6729,10 @@ idPlayer::UserInfoChanged
 ////
 ////	fov = g_fov.GetFloat();
 ////	if ( gameLocal.isMultiplayer ) {
-////		if ( fov < 90.0f ) {
-////			return 90.0f;
-////		} else if ( fov > 110.0f ) {
-////			return 110.0f;
+////		if ( fov < 90.0 ) {
+////			return 90.0;
+////		} else if ( fov > 110.0 ) {
+////			return 110.0;
 ////		}
 ////	}
 ////
@@ -6750,7 +6750,7 @@ idPlayer::UserInfoChanged
 ////	float fov;
 ////
 ////	if ( fxFov ) {
-////		return DefaultFov() + 10.0f + cos( ( gameLocal.time + 2000 ) * 0.01 ) * 10.0f;
+////		return DefaultFov() + 10.0 + cos( ( gameLocal.time + 2000 ) * 0.01 ) * 10.0;
 ////	}
 ////
 ////	if ( influenceFov ) {
@@ -6812,7 +6812,7 @@ idPlayer::UserInfoChanged
 ////			delta[1] += 360;
 ////		}
 ////
-////		av += delta * ( 1.0f / weaponAngleOffsetAverages );
+////		av += delta * ( 1.0 / weaponAngleOffsetAverages );
 ////	}
 ////
 ////	a = ( av - current ) * weaponAngleOffsetScale;
@@ -6859,7 +6859,7 @@ idPlayer::UserInfoChanged
 ////		}
 ////
 ////		f = t / weaponOffsetTime;
-////		f = ( cos( f * 2.0f * idMath::PI ) - 1.0f ) * 0.5f;
+////		f = ( cos( f * 2.0 * idMath::PI ) - 1.0 ) * 0.5;
 ////		ofs += f * weaponOffsetScale * acc.dir;
 ////	}
 ////
@@ -6911,7 +6911,7 @@ idPlayer::UserInfoChanged
 ////		angles += GunTurningOffset();
 ////	}
 ////
-////	idVec3 gravity = physicsObj.GetGravityNormal();
+////	idVec3 gravity = this.physicsObj.GetGravityNormal();
 ////
 ////	// drop the weapon when landing after a jump / fall
 ////	delta = gameLocal.time - landTime;
@@ -6922,7 +6922,7 @@ idPlayer::UserInfoChanged
 ////	}
 ////
 ////	// speed sensitive idle drift
-////	scale = xyspeed + 40.0f;
+////	scale = xyspeed + 40.0;
 ////	fracsin = scale * sin( MS2SEC( gameLocal.time ) ) * 0.01f;
 ////	angles.roll		+= fracsin;
 ////	angles.yaw		+= fracsin;
@@ -6955,8 +6955,8 @@ idPlayer::UserInfoChanged
 ////		angles.pitch = 0.0;
 ////	}
 ////
-////	if ( angles.pitch > 45.0f ) {
-////		angles.pitch = 45.0f;		// don't go too far overhead
+////	if ( angles.pitch > 45.0 ) {
+////		angles.pitch = 45.0;		// don't go too far overhead
 ////	}
 ////
 ////	focusPoint = origin + angles.ToForward() * THIRD_PERSON_FOCUS_DISTANCE;
@@ -6964,8 +6964,8 @@ idPlayer::UserInfoChanged
 ////	view = origin;
 ////	view.z += 8 + height;
 ////
-////	angles.pitch *= 0.5f;
-////	renderView.viewaxis = angles.ToMat3() * physicsObj.GetGravityAxis();
+////	angles.pitch *= 0.5;
+////	renderView.viewaxis = angles.ToMat3() * this.physicsObj.GetGravityAxis();
 ////
 ////	idMath::SinCos( DEG2RAD( angle ), sideScale, forwardScale );
 ////	view -= range * forwardScale * renderView.viewaxis[ 0 ];
@@ -6976,9 +6976,9 @@ idPlayer::UserInfoChanged
 ////		// in a solid block.  Use an 8 by 8 block to prevent the view from near clipping anything
 ////		bounds = idBounds( idVec3( -4, -4, -4 ), idVec3( 4, 4, 4 ) );
 ////		gameLocal.clip.TraceBounds( trace, origin, view, bounds, MASK_SOLID, this );
-////		if ( trace.fraction != 1.0f ) {
+////		if ( trace.fraction != 1.0 ) {
 ////			view = trace.endpos;
-////			view.z += ( 1.0f - trace.fraction ) * 32.0f;
+////			view.z += ( 1.0 - trace.fraction ) * 32.0;
 ////
 ////			// try another trace to this position, because a tunnel may have the ceiling
 ////			// close enough that this is poking out
@@ -6990,15 +6990,15 @@ idPlayer::UserInfoChanged
 ////	// select pitch to look at focus point from vieword
 ////	focusPoint -= view;
 ////	focusDist = idMath::Sqrt( focusPoint[0] * focusPoint[0] + focusPoint[1] * focusPoint[1] );
-////	if ( focusDist < 1.0f ) {
-////		focusDist = 1.0f;	// should never happen
+////	if ( focusDist < 1.0 ) {
+////		focusDist = 1.0;	// should never happen
 ////	}
 ////
 ////	angles.pitch = - RAD2DEG( atan2( focusPoint.z, focusDist ) );
 ////	angles.yaw -= angle;
 ////
 ////	renderView.vieworg = view;
-////	renderView.viewaxis = angles.ToMat3() * physicsObj.GetGravityAxis();
+////	renderView.viewaxis = angles.ToMat3() * this.physicsObj.GetGravityAxis();
 ////	renderView.viewID = 0;
 ////}
 ////
@@ -7038,10 +7038,10 @@ idPlayer::UserInfoChanged
 ////		origin = GetEyePosition() + viewBob;
 ////		angles = this.viewAngles + viewBobAngles + playerView.AngleOffset();
 ////
-////		axis = angles.ToMat3() * physicsObj.GetGravityAxis();
+////		axis = angles.ToMat3() * this.physicsObj.GetGravityAxis();
 ////
 ////		// adjust the origin based on the camera nodal distance (eye distance from neck)
-////		origin += physicsObj.GetGravityNormal() * g_viewNodalZ.GetFloat();
+////		origin += this.physicsObj.GetGravityNormal() * g_viewNodalZ.GetFloat();
 ////		origin += axis[0] * g_viewNodalX.GetFloat() + axis[2] * g_viewNodalZ.GetFloat();
 ////	}
 ////}
@@ -7064,8 +7064,8 @@ idPlayer::UserInfoChanged
 ////		
 ////		jointHandle_t joint = animator.GetJointHandle( "camera" );
 ////		animator.GetJointTransform( joint, gameLocal.time, origin, axis );
-////		firstPersonViewOrigin = ( origin + modelOffset ) * ( viewAxis * physicsObj.GetGravityAxis() ) + physicsObj.GetOrigin() + viewBob;
-////		firstPersonViewAxis = axis * ang.ToMat3() * physicsObj.GetGravityAxis();
+////		firstPersonViewOrigin = ( origin + modelOffset ) * ( viewAxis * this.physicsObj.GetGravityAxis() ) + this.physicsObj.GetOrigin() + viewBob;
+////		firstPersonViewAxis = axis * ang.ToMat3() * this.physicsObj.GetGravityAxis();
 ////	} else {
 ////		// offset for local bobbing and kicks
 ////		GetViewPos( firstPersonViewOrigin, firstPersonViewAxis );
@@ -7138,8 +7138,8 @@ idPlayer::UserInfoChanged
 ////		} else if ( pm_thirdPerson.GetBool() ) {
 ////			OffsetThirdPersonView( pm_thirdPersonAngle.GetFloat(), pm_thirdPersonRange.GetFloat(), pm_thirdPersonHeight.GetFloat(), pm_thirdPersonClip.GetBool() );
 ////		} else if ( pm_thirdPersonDeath.GetBool() ) {
-////			range = gameLocal.time < minRespawnTime ? ( gameLocal.time + RAGDOLL_DEATH_TIME - minRespawnTime ) * ( 120.0f / RAGDOLL_DEATH_TIME ) : 120.0f;
-////			OffsetThirdPersonView( 0.0, 20.0f + range, 0.0, false );
+////			range = gameLocal.time < minRespawnTime ? ( gameLocal.time + RAGDOLL_DEATH_TIME - minRespawnTime ) * ( 120.0 / RAGDOLL_DEATH_TIME ) : 120.0;
+////			OffsetThirdPersonView( 0.0, 20.0 + range, 0.0, false );
 ////		} else {
 ////			renderView.vieworg = firstPersonViewOrigin;
 ////			renderView.viewaxis = firstPersonViewAxis;
@@ -7214,61 +7214,62 @@ idPlayer::UserInfoChanged
 ////void idPlayer::AddProjectileHits( int count ) {
 ////	numProjectileHits += count;
 ////}
-////
-/////*
-////=============
-////idPlayer::SetLastHitTime
-////=============
-////*/
-////void idPlayer::SetLastHitTime( /*int*/time:number ) {
-////	idPlayer *aimed = NULL;
-////
-////	if ( time && this.lastHitTime != time ) {
-////		lastHitToggle ^= 1;
-////	}
-////	this.lastHitTime = time;
-////	if ( !time ) {
-////		// level start and inits
-////		return;
-////	}
-////	if ( gameLocal.isMultiplayer && ( time - this.lastSndHitTime ) > 10 ) {
-////		this.lastSndHitTime = time;
-////		StartSound( "snd_hit_feedback", SND_CHANNEL_ANY, SSF_PRIVATE_SOUND, false, NULL );
-////	}
-////	if ( cursor ) {
-////		cursor.HandleNamedEvent( "hitTime" );
-////	}
-////	if ( this.hud ) {
-////		if ( MPAim != -1 ) {
-////			if ( gameLocal.entities[ MPAim ] && gameLocal.entities[ MPAim ].IsType( idPlayer::Type ) ) {
-////				aimed = static_cast< idPlayer * >( gameLocal.entities[ MPAim ] );
-////			}
-////			assert( aimed );
-////			// full highlight, no fade till loosing aim
-////			this.hud.SetStateString( "aim_text", gameLocal.userInfo[ MPAim ].GetString( "ui_name" ) );
-////			if ( aimed ) {
-////				this.hud.SetStateFloat( "aim_color", aimed.colorBarIndex );
-////			}
-////			this.hud.HandleNamedEvent( "aim_flash" );
-////			MPAimHighlight = true;
-////			MPAimFadeTime = 0;
-////		} else if ( lastMPAim != -1 ) {
-////			if ( gameLocal.entities[ lastMPAim ] && gameLocal.entities[ lastMPAim ].IsType( idPlayer::Type ) ) {
-////				aimed = static_cast< idPlayer * >( gameLocal.entities[ lastMPAim ] );
-////			}
-////			assert( aimed );
-////			// start fading right away
-////			this.hud.SetStateString( "aim_text", gameLocal.userInfo[ lastMPAim ].GetString( "ui_name" ) );
-////			if ( aimed ) {
-////				this.hud.SetStateFloat( "aim_color", aimed.colorBarIndex );
-////			}
-////			this.hud.HandleNamedEvent( "aim_flash" );
-////			this.hud.HandleNamedEvent( "aim_fade" );
-////			MPAimHighlight = false;
-////			MPAimFadeTime = gameLocal.realClientTime;
-////		}
-////	}
-////}
+
+/*
+=============
+idPlayer::SetLastHitTime
+=============
+*/
+    SetLastHitTime ( /*int*/time: number ): void {
+        var aimed: idPlayer = null;
+
+        if ( time && this.lastHitTime != time ) {
+            this.lastHitToggle ^= 1;
+        }
+        this.lastHitTime = time;
+        if ( !time ) {
+            // level start and inits
+            return;
+        }
+        todoThrow ( );
+        //if ( gameLocal.isMultiplayer && ( time - this.lastSndHitTime ) > 10 ) {
+        //	this.lastSndHitTime = time;
+        //	StartSound( "snd_hit_feedback", SND_CHANNEL_ANY, SSF_PRIVATE_SOUND, false, NULL );
+        //}
+        //if ( cursor ) {
+        //	cursor.HandleNamedEvent( "hitTime" );
+        //}
+        //if ( this.hud ) {
+        //	if ( MPAim != -1 ) {
+        //		if ( gameLocal.entities[ MPAim ] && gameLocal.entities[ MPAim ].IsType( idPlayer::Type ) ) {
+        //			aimed = static_cast< idPlayer * >( gameLocal.entities[ MPAim ] );
+        //		}
+        //		assert( aimed );
+        //		// full highlight, no fade till loosing aim
+        //		this.hud.SetStateString( "aim_text", gameLocal.userInfo[ MPAim ].GetString( "ui_name" ) );
+        //		if ( aimed ) {
+        //			this.hud.SetStateFloat( "aim_color", aimed.colorBarIndex );
+        //		}
+        //		this.hud.HandleNamedEvent( "aim_flash" );
+        //		MPAimHighlight = true;
+        //		MPAimFadeTime = 0;
+        //	} else if ( lastMPAim != -1 ) {
+        //		if ( gameLocal.entities[ lastMPAim ] && gameLocal.entities[ lastMPAim ].IsType( idPlayer::Type ) ) {
+        //			aimed = static_cast< idPlayer  >( gameLocal.entities[ lastMPAim ] );
+        //		}
+        //		assert( aimed );
+        //		// start fading right away
+        //		this.hud.SetStateString( "aim_text", gameLocal.userInfo[ lastMPAim ].GetString( "ui_name" ) );
+        //		if ( aimed ) {
+        //			this.hud.SetStateFloat( "aim_color", aimed.colorBarIndex );
+        //		}
+        //		this.hud.HandleNamedEvent( "aim_flash" );
+        //		this.hud.HandleNamedEvent( "aim_fade" );
+        //		MPAimHighlight = false;
+        //		MPAimFadeTime = gameLocal.realClientTime;
+        //	}
+        //}
+    }
 ////
 /////*
 ////=============
@@ -7288,7 +7289,7 @@ idPlayer::UserInfoChanged
 ////				this.weapon.GetEntity().EnterCinematic();
 ////			}
 ////		} else {
-////			physicsObj.SetLinearVelocity( vec3_origin );
+////			this.physicsObj.SetLinearVelocity( vec3_origin );
 ////			if ( weaponEnabled && this.weapon.GetEntity() ) {
 ////				this.weapon.GetEntity().ExitCinematic();
 ////			}
@@ -7337,7 +7338,7 @@ idPlayer::UserInfoChanged
 ////================
 ////*/
 ////bool idPlayer::OnLadder( ) const {
-////	return physicsObj.OnLadder();
+////	return this.physicsObj.OnLadder();
 ////}
 ////
 /////*
@@ -7422,7 +7423,7 @@ idPlayer::UserInfoChanged
 ////	const char *weapon;
 ////
 ////	if ( currentWeapon >= 0 ) {
-////		weapon = spawnArgs.GetString( va( "def_weapon%d", currentWeapon ) );
+////		weapon = this.spawnArgs.GetString( va( "def_weapon%d", currentWeapon ) );
 ////		idThread::ReturnString( weapon );
 ////	} else {
 ////		idThread::ReturnString( "" );
@@ -7439,10 +7440,10 @@ idPlayer::UserInfoChanged
 ////
 ////	if ( previousWeapon >= 0 ) {
 ////		int pw = ( gameLocal.world.spawnArgs.GetBool( "no_Weapons" ) ) ? 0 : previousWeapon;
-////		weapon = spawnArgs.GetString( va( "def_weapon%d", pw) );
+////		weapon = this.spawnArgs.GetString( va( "def_weapon%d", pw) );
 ////		idThread::ReturnString( weapon );
 ////	} else {
-////		idThread::ReturnString( spawnArgs.GetString( "def_weapon0" ) );
+////		idThread::ReturnString( this.spawnArgs.GetString( "def_weapon0" ) );
 ////	}
 ////}
 ////
@@ -7469,7 +7470,7 @@ idPlayer::UserInfoChanged
 ////	weaponNum = -1;
 ////	for( i = 0; i < MAX_WEAPONS; i++ ) {
 ////		if ( this.inventory.weapons & ( 1 << i ) ) {
-////			const char *weap = spawnArgs.GetString( va( "def_weapon%d", i ) );
+////			const char *weap = this.spawnArgs.GetString( va( "def_weapon%d", i ) );
 ////			if ( !idStr::Cmp( weap, weaponName ) ) {
 ////				weaponNum = i;
 ////				break;
@@ -7552,8 +7553,8 @@ idPlayer::UserInfoChanged
 ////	// setup origin and push according to the exit target
 ////	SetOrigin( exitEnt.GetPhysics().GetOrigin() + idVec3( 0, 0, CM_CLIP_EPSILON ) );
 ////	SetViewAngles( exitEnt.GetPhysics().GetAxis().ToAngles() );
-////	physicsObj.SetLinearVelocity( exitEnt.GetPhysics().GetAxis()[ 0 ] * pushVel );
-////	physicsObj.ClearPushedVelocity();
+////	this.physicsObj.SetLinearVelocity( exitEnt.GetPhysics().GetAxis()[ 0 ] * pushVel );
+////	this.physicsObj.ClearPushedVelocity();
 ////	// teleport fx
 ////	playerView.Flash( colorWhite, 120 );
 ////
@@ -7566,7 +7567,7 @@ idPlayer::UserInfoChanged
 ////
 ////	if ( teleportKiller != -1 ) {
 ////		// we got killed while being teleported
-////		Damage( gameLocal.entities[ teleportKiller ], gameLocal.entities[ teleportKiller ], vec3_origin, "damage_telefrag", 1.0f, jointHandle_t.INVALID_JOINT );
+////		Damage( gameLocal.entities[ teleportKiller ], gameLocal.entities[ teleportKiller ], vec3_origin, "damage_telefrag", 1.0, jointHandle_t.INVALID_JOINT );
 ////		teleportKiller = -1;
 ////	} else {
 ////		// kill anything that would have waited at teleport exit
@@ -7621,7 +7622,7 @@ idPlayer::UserInfoChanged
 ////	if ( gameLocal.framenum >= this.smoothedFrame && this.entityNumber != gameLocal.localClientNum ) {
 ////		idAngles anglesDiff = this.viewAngles - smoothedAngles;
 ////		anglesDiff.Normalize180();
-////		if ( idMath::Fabs( anglesDiff.yaw ) < 90.0f && idMath::Fabs( anglesDiff.pitch ) < 90.0f ) {
+////		if ( idMath::Fabs( anglesDiff.yaw ) < 90.0 && idMath::Fabs( anglesDiff.pitch ) < 90.0 ) {
 ////			// smoothen by pushing back to the previous angles
 ////			this.viewAngles -= gameLocal.clientSmoothing * anglesDiff;
 ////			this.viewAngles.Normalize180();
@@ -7659,7 +7660,7 @@ idPlayer::UserInfoChanged
 ////	// this may use firstPersonView, or a thirdPerson / camera view
 ////	CalculateRenderView();
 ////
-////	if ( !gameLocal.inCinematic && this.weapon.GetEntity() && ( health > 0 ) && !( gameLocal.isMultiplayer && spectating ) ) {
+////	if ( !gameLocal.inCinematic && this.weapon.GetEntity() && ( health > 0 ) && !( gameLocal.isMultiplayer && this.spectating ) ) {
 ////		UpdateWeapon();
 ////	}
 ////
@@ -7743,7 +7744,7 @@ idPlayer::GetPhysicsToVisualTransform
 ////		// update the smoothed origin
 ////		if ( !smoothedOriginUpdated ) {
 ////			idVec2 originDiff = renderOrigin.ToVec2() - smoothedOrigin.ToVec2();
-////			if ( originDiff.LengthSqr() < Square( 100.0f ) ) {
+////			if ( originDiff.LengthSqr() < Square( 100.0 ) ) {
 ////				// smoothen by pushing back to the previous position
 ////				if ( this.selfSmooth ) {
 ////					assert( this.entityNumber == gameLocal.localClientNum );
@@ -7802,7 +7803,7 @@ idPlayer::GetPhysicsToSoundTransform
 ////================
 ////*/
 ////void idPlayer::WriteToSnapshot( idBitMsgDelta &msg ) const {
-////	physicsObj.WriteToSnapshot( msg );
+////	this.physicsObj.WriteToSnapshot( msg );
 ////	WriteBindToSnapshot( msg );
 ////	msg.WriteDeltaFloat( 0.0, deltaViewAngles[0] );
 ////	msg.WriteDeltaFloat( 0.0, deltaViewAngles[1] );
@@ -7839,7 +7840,7 @@ idPlayer::GetPhysicsToSoundTransform
 ////
 ////	oldHealth = health;
 ////
-////	physicsObj.ReadFromSnapshot( msg );
+////	this.physicsObj.ReadFromSnapshot( msg );
 ////	ReadBindFromSnapshot( msg );
 ////	deltaViewAngles[0] = msg.ReadDeltaFloat( 0.0 );
 ////	deltaViewAngles[1] = msg.ReadDeltaFloat( 0.0 );
@@ -7889,7 +7890,7 @@ idPlayer::GetPhysicsToSoundTransform
 ////			playerView.Fade( colorBlack, 12000 );
 ////		}
 ////		StartRagdoll();
-////		physicsObj.SetMovementType( PM_DEAD );
+////		this.physicsObj.SetMovementType( PM_DEAD );
 ////		if ( !stateHitch ) {
 ////			StartSound( "snd_death", SND_CHANNEL_VOICE, 0, false, NULL );
 ////		}
@@ -7900,8 +7901,8 @@ idPlayer::GetPhysicsToSoundTransform
 ////		// respawn
 ////		Init();
 ////		StopRagdoll();
-////		SetPhysics( &physicsObj );
-////		physicsObj.EnableClip();
+////		SetPhysics( &this.physicsObj );
+////		this.physicsObj.EnableClip();
 ////		SetCombatContents( true );
 ////	} else if ( health < oldHealth && health > 0 ) {
 ////		if ( stateHitch ) {
@@ -7925,8 +7926,8 @@ idPlayer::GetPhysicsToSoundTransform
 ////	// If the player is alive, restore proper physics object
 ////	if ( health > 0 && IsActiveAF() ) {
 ////		StopRagdoll();
-////		SetPhysics( &physicsObj );
-////		physicsObj.EnableClip();
+////		SetPhysics( &this.physicsObj );
+////		this.physicsObj.EnableClip();
 ////		SetCombatContents( true );
 ////	}
 ////
@@ -8049,7 +8050,7 @@ idPlayer::GetPhysicsToSoundTransform
 ////			return true;
 ////		}
 ////		case EVENT_ADD_DAMAGE_EFFECT: {
-////			if ( spectating ) {
+////			if ( this.spectating ) {
 ////				// if we're spectating, ignore
 ////				// happens if the event and the spectate change are written on the server during the same frame (fraglimit)
 ////				return true;
@@ -8128,7 +8129,7 @@ idPlayer::Hide
 ////	this.hud.SetStateString( "tiptitle", title );
 ////	this.hud.HandleNamedEvent( "tipWindowUp" ); 
 ////	if ( autoHide ) {
-////		PostEventSec( &EV_Player_HideTip, 5.0f );
+////		PostEventSec( &EV_Player_HideTip, 5.0 );
 ////	}
 ////	tipUp = true;
 ////}
@@ -8202,7 +8203,7 @@ idPlayer::Hide
 ////*/
 ////void idPlayer::RemoveWeapon( const char *weap ) {
 ////	if ( weap && *weap ) {
-////		this.inventory.Drop( spawnArgs, spawnArgs.GetString( weap ), -1 );
+////		this.inventory.Drop( this.spawnArgs, this.spawnArgs.GetString( weap ), -1 );
 ////	}
 ////}
 ////
@@ -8265,7 +8266,7 @@ idPlayer::Hide
 ////	const char *weapon;
 ////
 ////	if ( idealWeapon >= 0 ) {
-////		this.weapon = spawnArgs.GetString( va( "def_weapon%d", idealWeapon ) );
+////		this.weapon = this.spawnArgs.GetString( va( "def_weapon%d", idealWeapon ) );
 ////		idThread::ReturnString( this.weapon );
 ////	} else {
 ////		idThread::ReturnString( "" );
