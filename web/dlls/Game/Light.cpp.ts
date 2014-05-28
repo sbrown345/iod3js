@@ -157,7 +157,7 @@ class idLight extends idEntity {
 	Event_On ( ): void { throw "placeholder"; }
 	Event_Off ( ): void { throw "placeholder"; }
 	Event_ToggleOnOff ( activator: idEntity ): void { throw "placeholder"; }
-	Event_SetSoundHandles ( ): void { throw "placeholder"; }
+	//Event_SetSoundHandles ( ): void { throw "placeholder"; }
 	Event_FadeOut ( /*float*/time: number ): void { throw "placeholder"; }
 	Event_FadeIn( /*float*/time: number): void { throw "placeholder"; }
 
@@ -969,40 +969,40 @@ idLight::FreeLightDef
 ////		}
 ////	}
 ////}
-////
-/////*
-////================
-////idLight::Event_SetSoundHandles
-////
-////  set the same sound def handle on all targeted lights
-////================
-////*/
-////void idLight::Event_SetSoundHandles( ) {
-////	var/*int*/i:number;
-////	idEntity *targetEnt;
-////
-////	if ( !this.refSound.referenceSound ) {
-////		return;
-////	}
-////
-////	for ( i = 0; i < targets.Num(); i++ ) {
-////		targetEnt = targets[ i ].GetEntity();
-////		if ( targetEnt && targetEnt.IsType( idLight::Type ) ) {
-////			idLight	*light = static_cast<idLight*>(targetEnt);
-////			light.lightParent = this;
-////
-////			// explicitly delete any sounds on the entity
-////			light.FreeSoundEmitter( true );
-////
-////			// manually set the refSound to this light's refSound
-////			light.renderEntity.referenceSound = this.renderEntity.referenceSound;
-////
-////			// update the renderEntity to the renderer
-////			light.UpdateVisuals();
-////		}
-////	}
-////}
-////
+
+/*
+================
+idLight::Event_SetSoundHandles
+
+  set the same sound def handle on all targeted lights
+================
+*/
+    Event_SetSoundHandles ( ): void {
+        var /*int*/i: number;
+        var targetEnt: idEntity;
+
+        if ( !this.refSound.referenceSound ) {
+            return;
+        }
+
+        for ( i = 0; i < this.targets.Num ( ); i++ ) {
+            targetEnt = this.targets[i].GetEntity ( );
+            if ( targetEnt && targetEnt.IsType( idLight.Type ) ) {
+                var light = static_cast<idLight>( targetEnt );
+                light.lightParent = this;
+
+                // explicitly delete any sounds on the entity
+                light.FreeSoundEmitter( true );
+
+                // manually set the refSound to this light's refSound
+                light.renderEntity.referenceSound = this.renderEntity.referenceSound;
+
+                // update the renderEntity to the renderer
+                light.UpdateVisuals ( );
+            }
+        }
+    }
+
 /////*
 ////================
 ////idLight::Event_FadeOut

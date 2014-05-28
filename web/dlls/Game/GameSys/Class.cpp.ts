@@ -1262,28 +1262,28 @@ idClass::PostEventSec
 idClass::ProcessEventArgPtr
 ================
 */
-	ProcessEventArgPtr ( ev: idEventDef, data: Int32Array ): boolean {
-		var c: idTypeInfo;
-		var num: number /*int*/;
-		var callback: any /*eventCallback_t*/;
+    ProcessEventArgPtr ( ev: idEventDef, data: Int32Array ): boolean {
+        var c: idTypeInfo;
+        var num: number /*int*/;
+        var callback: any /*eventCallback_t*/;
 
-		assert( ev );
-		assert( idEvent.initialized );
+        assert( ev );
+        assert( idEvent.initialized );
 
-		if ( g_debugTriggers.GetBool ( ) && ( ev == EV_Activate ) && this.IsType( idEntity.Type ) ) {
-			todoThrow( "ITrackedObject???" );
-			//var ent:idEntity = *reinterpret_cast<idEntity **>( data );
-			//gameLocal.Printf( "%d: '%s' activated by '%s'\n", gameLocal.framenum, static_cast<idEntity *>( this ).GetName(), ent ? ent.GetName() : "NULL" );
-		}
+        if ( g_debugTriggers.GetBool ( ) && ( ev == EV_Activate ) && this.IsType( idEntity.Type ) ) {
+            todoThrow( "ITrackedObject???" );
+            //var ent:idEntity = *reinterpret_cast<idEntity **>( data );
+            //gameLocal.Printf( "%d: '%s' activated by '%s'\n", gameLocal.framenum, static_cast<idEntity *>( this ).GetName(), ent ? ent.GetName() : "NULL" );
+        }
 
-		c = this.GetType ( );
-		num = ev.GetEventNum ( );
-		if ( !c.eventMap[num] ) {
-			// we don't respond to this event, so ignore it
-			return false;
-		}
+        c = this.GetType ( );
+        num = ev.GetEventNum ( );
+        if ( !c.eventMap[num] ) {
+            // we don't respond to this event, so ignore it
+            return false;
+        }
 
-		callback = c.eventMap[num];
+        callback = c.eventMap[num];
 
 //#if !CPU_EASYARGS
 //
@@ -1309,54 +1309,54 @@ idClass::ProcessEventArgPtr
 //
 //#else
 
-		assert( D_EVENT_MAXARGS == 8 );
+        assert( D_EVENT_MAXARGS == 8 );
 
-		switch ( ev.GetNumArgs ( ) ) {
-		case 0:
-			( callback ) ( );
-			break;
+        switch ( ev.GetNumArgs ( ) ) {
+        case 0:
+            callback.call( this );
+            break;
 
-		case 1:
-			callback( data[0] );
-			break;
+        case 1:
+            callback.call( this, data[0] );
+            break;
 
-		case 2:
-			callback( data[0], data[1] );
-			break;
+        case 2:
+            callback.call( this, data[0], data[1] );
+            break;
 
-		case 3:
-			callback( data[0], data[1], data[2] );
-			break;
+        case 3:
+            callback.call( this, data[0], data[1], data[2] );
+            break;
 
-		case 4:
-			callback( data[0], data[1], data[2], data[3] );
-			break;
+        case 4:
+            callback.call( this, data[0], data[1], data[2], data[3] );
+            break;
 
-		case 5:
-			callback( data[0], data[1], data[2], data[3], data[4] );
-			break;
+        case 5:
+            callback.call( this, data[0], data[1], data[2], data[3], data[4] );
+            break;
 
-		case 6:
-			callback( data[0], data[1], data[2], data[3], data[4], data[5] );
-			break;
+        case 6:
+            callback.call( this, data[0], data[1], data[2], data[3], data[4], data[5] );
+            break;
 
-		case 7:
-			callback( data[0], data[1], data[2], data[3], data[4], data[5], data[6] );
-			break;
+        case 7:
+            callback.call( this, data[0], data[1], data[2], data[3], data[4], data[5], data[6] );
+            break;
 
-		case 8:
-			callback( data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7] );
-			break;
+        case 8:
+            callback.call( this, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7] );
+            break;
 
-		default:
-			gameLocal.Warning( "Invalid formatspec on event '%s'", ev.GetName ( ) );
-			break;
-		}
+        default:
+            gameLocal.Warning( "Invalid formatspec on event '%s'", ev.GetName ( ) );
+            break;
+        }
 
 //#endif
 
-		return true;
-	}
+        return true;
+    }
 
 /*
 ================

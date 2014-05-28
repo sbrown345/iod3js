@@ -37,7 +37,7 @@
 ////
 ////#include "../Game_local.h"
 ////
-////#define MAX_EVENTSPERFRAME			4096
+var MAX_EVENTSPERFRAME = 4096;
 //////#define CREATE_EVENT_CODE
 ////
 /////***********************************************************************
@@ -423,97 +423,97 @@ idEvent::~idEvent()
 idEvent::Alloc
 ================
 */
-	static Alloc ( evdef: idEventDef, /*int */numargs: number, /*va_list*/ args: any[] ): idEvent {
-		var ev: idEvent;
-		var size: number /*size_t		*/;
-		var format: string; //const char	*format;
-		var arg: idEventArg;
-		//byte		*dataPtr;
-		var /*int*/i: number;
-		var materialName: string;
+    static Alloc ( evdef: idEventDef, /*int */numargs: number, /*va_list*/ args: any[] ): idEvent {
+        var ev: idEvent;
+        var size: number /*size_t		*/;
+        var format: string; //const char	*format;
+        var arg: idEventArg;
+        //byte		*dataPtr;
+        var /*int*/i: number;
+        var materialName: string;
 
-		if ( FreeEvents.IsListEmpty ( ) ) {
-			gameLocal.Error( "idEvent::Alloc : No more free events" );
-		}
+        if ( FreeEvents.IsListEmpty ( ) ) {
+            gameLocal.Error( "idEvent::Alloc : No more free events" );
+        }
 
-		ev = FreeEvents.Next ( );
-		ev.eventNode.Remove ( );
+        ev = FreeEvents.Next ( );
+        ev.eventNode.Remove ( );
 
-		ev.eventdef = evdef;
+        ev.eventdef = evdef;
 
-		if ( numargs != evdef.GetNumArgs ( ) ) {
-			gameLocal.Error( "idEvent::Alloc : Wrong number of args for '%s' event.", evdef.GetName ( ) );
-		}
+        if ( numargs != evdef.GetNumArgs ( ) ) {
+            gameLocal.Error( "idEvent::Alloc : Wrong number of args for '%s' event.", evdef.GetName ( ) );
+        }
 
-		size = evdef.GetArgSize ( );
-		if ( size ) {
-			ev.data = eventDataAllocator.AllocUint8Array( size );
-			memset( ev.data, 0, size );
-		} else {
-			ev.data = null;
-		}
+        size = evdef.GetArgSize ( );
+        if ( size ) {
+            ev.data = eventDataAllocator.AllocUint8Array( size );
+            memset( ev.data, 0, size );
+        } else {
+            ev.data = null;
+        }
 
-		format = evdef.GetArgFormat ( );
-		for ( i = 0; i < numargs; i++ ) {
-			todoThrow ( );
-			//arg = va_arg( args, idEventArg * );
-			//if ( format[ i ] != arg.type ) {
-			//	// when NULL is passed in for an entity, it gets cast as an integer 0, so don't give an error when it happens
-			//	if ( !( ( ( format[ i ] == D_EVENT_TRACE ) || ( format[ i ] == D_EVENT_ENTITY ) ) && ( arg.type == 'd' ) && ( arg.value == 0 ) ) ) {
-			//		gameLocal.Error( "idEvent::Alloc : Wrong type passed in for arg # %d on '%s' event.", i, evdef.GetName() );
-			//	}
-			//}
+        format = evdef.GetArgFormat ( );
+        for ( i = 0; i < numargs; i++ ) {
+            todoThrow ( );
+            //arg = va_arg( args, idEventArg * );
+            //if ( format[ i ] != arg.type ) {
+            //	// when NULL is passed in for an entity, it gets cast as an integer 0, so don't give an error when it happens
+            //	if ( !( ( ( format[ i ] == D_EVENT_TRACE ) || ( format[ i ] == D_EVENT_ENTITY ) ) && ( arg.type == 'd' ) && ( arg.value == 0 ) ) ) {
+            //		gameLocal.Error( "idEvent::Alloc : Wrong type passed in for arg # %d on '%s' event.", i, evdef.GetName() );
+            //	}
+            //}
 
-			//dataPtr = &ev.data[ evdef.GetArgOffset( i ) ];
+            //dataPtr = &ev.data[ evdef.GetArgOffset( i ) ];
 
-			//switch( format[ i ] ) {
-			//case D_EVENT_FLOAT :
-			//case D_EVENT_INTEGER :
-			//	*reinterpret_cast<int *>( dataPtr ) = arg.value;
-			//	break;
+            //switch( format[ i ] ) {
+            //case D_EVENT_FLOAT :
+            //case D_EVENT_INTEGER :
+            //	*reinterpret_cast<int *>( dataPtr ) = arg.value;
+            //	break;
 
-			//case D_EVENT_VECTOR :
-			//	if ( arg.value ) {
-			//		*reinterpret_cast<idVec3 *>( dataPtr ) = *reinterpret_cast<const idVec3 *>( arg.value );
-			//	}
-			//	break;
+            //case D_EVENT_VECTOR :
+            //	if ( arg.value ) {
+            //		*reinterpret_cast<idVec3 *>( dataPtr ) = *reinterpret_cast<const idVec3 *>( arg.value );
+            //	}
+            //	break;
 
-			//case D_EVENT_STRING :
-			//	if ( arg.value ) {
-			//		idStr::Copynz( reinterpret_cast<char *>( dataPtr ), reinterpret_cast<const char *>( arg.value ), MAX_STRING_LEN );
-			//	}
-			//	break;
+            //case D_EVENT_STRING :
+            //	if ( arg.value ) {
+            //		idStr::Copynz( reinterpret_cast<char *>( dataPtr ), reinterpret_cast<const char *>( arg.value ), MAX_STRING_LEN );
+            //	}
+            //	break;
 
-			//case D_EVENT_ENTITY :
-			//case D_EVENT_ENTITY_NULL :
-			//	*reinterpret_cast< idEntityPtr<idEntity> * >( dataPtr ) = reinterpret_cast<idEntity *>( arg.value );
-			//	break;
+            //case D_EVENT_ENTITY :
+            //case D_EVENT_ENTITY_NULL :
+            //	*reinterpret_cast< idEntityPtr<idEntity> * >( dataPtr ) = reinterpret_cast<idEntity *>( arg.value );
+            //	break;
 
-			//case D_EVENT_TRACE :
-			//	if ( arg.value ) {
-			//		*reinterpret_cast<bool *>( dataPtr ) = true;
-			//		*reinterpret_cast<trace_t *>( dataPtr + sizeof( bool ) ) = *reinterpret_cast<const trace_t *>( arg.value );
+            //case D_EVENT_TRACE :
+            //	if ( arg.value ) {
+            //		*reinterpret_cast<bool *>( dataPtr ) = true;
+            //		*reinterpret_cast<trace_t *>( dataPtr + sizeof( bool ) ) = *reinterpret_cast<const trace_t *>( arg.value );
 
-			//		// save off the material as a string since the pointer won't be valid in save games.
-			//		// since we save off the entire trace_t structure, if the material is NULL here,
-			//		// it will be NULL when we process it, so we don't need to save off anything in that case.
-			//		if ( reinterpret_cast<const trace_t *>( arg.value ).c.material ) {
-			//			materialName = reinterpret_cast<const trace_t *>( arg.value ).c.material.GetName();
-			//			idStr::Copynz( reinterpret_cast<char *>( dataPtr + sizeof( bool ) + sizeof( trace_t ) ), materialName, MAX_STRING_LEN );
-			//		}
-			//	} else {
-			//		*reinterpret_cast<bool *>( dataPtr ) = false;
-			//	}
-			//	break;
+            //		// save off the material as a string since the pointer won't be valid in save games.
+            //		// since we save off the entire trace_t structure, if the material is NULL here,
+            //		// it will be NULL when we process it, so we don't need to save off anything in that case.
+            //		if ( reinterpret_cast<const trace_t *>( arg.value ).c.material ) {
+            //			materialName = reinterpret_cast<const trace_t *>( arg.value ).c.material.GetName();
+            //			idStr::Copynz( reinterpret_cast<char *>( dataPtr + sizeof( bool ) + sizeof( trace_t ) ), materialName, MAX_STRING_LEN );
+            //		}
+            //	} else {
+            //		*reinterpret_cast<bool *>( dataPtr ) = false;
+            //	}
+            //	break;
 
-			//default :
-			//	gameLocal.Error( "idEvent::Alloc : Invalid arg format '%s' string for '%s' event.", format, evdef.GetName() );
-			//	break;
-			//}
-		}
+            //default :
+            //	gameLocal.Error( "idEvent::Alloc : Invalid arg format '%s' string for '%s' event.", format, evdef.GetName() );
+            //	break;
+            //}
+        }
 
-		return ev;
-	}
+        return ev;
+    }
 
 /////*
 ////================
@@ -646,81 +646,85 @@ static ClearEventList( ):void {
 idEvent::ServiceEvents
 ================
 */
-	static ServiceEvents ( ): void {
-		todoThrow ( );
-////	idEvent		*event;
-////	int			num;
-////	int			args[ D_EVENT_MAXARGS ];
-////	int			offset;
-////	var/*int*/i:number;
-////	int			numargs;
-////	const char	*formatspec;
-////	trace_t		**tracePtr;
-////	const idEventDef *ev;
-////	byte		*data;
-////	const char  *materialName;
-////
-////	num = 0;
-////	while( !EventQueue.IsListEmpty() ) {
-////		event = EventQueue.Next();
-////		assert( event );
-////
-////		if ( event.time > gameLocal.time ) {
-////			break;
-////		}
-////
-////		// copy the data into the local args array and set up pointers
-////		ev = event.eventdef;
-////		formatspec = ev.GetArgFormat();
-////		numargs = ev.GetNumArgs();
-////		for( i = 0; i < numargs; i++ ) {
-////			offset = ev.GetArgOffset( i );
-////			data = event.data;
-////			switch( formatspec[ i ] ) {
-////			case D_EVENT_FLOAT :
-////			case D_EVENT_INTEGER :
-////				args[ i ] = *reinterpret_cast<int *>( &data[ offset ] );
-////				break;
-////
-////			case D_EVENT_VECTOR :
-////				*reinterpret_cast<idVec3 **>( &args[ i ] ) = reinterpret_cast<idVec3 *>( &data[ offset ] );
-////				break;
-////
-////			case D_EVENT_STRING :
-////				*reinterpret_cast<const char **>( &args[ i ] ) = reinterpret_cast<const char *>( &data[ offset ] );
-////				break;
-////
-////			case D_EVENT_ENTITY :
-////			case D_EVENT_ENTITY_NULL :
-////				*reinterpret_cast<idEntity **>( &args[ i ] ) = reinterpret_cast< idEntityPtr<idEntity> * >( &data[ offset ] ).GetEntity();
-////				break;
-////
-////			case D_EVENT_TRACE :
-////				tracePtr = reinterpret_cast<trace_t **>( &args[ i ] );
-////				if ( *reinterpret_cast<bool *>( &data[ offset ] ) ) {
-////					*tracePtr = reinterpret_cast<trace_t *>( &data[ offset + sizeof( bool ) ] );
-////
-////					if ( ( *tracePtr ).c.material != NULL ) {
-////						// look up the material name to get the material pointer
-////						materialName = reinterpret_cast<const char *>( &data[ offset + sizeof( bool ) + sizeof( trace_t ) ] );
-////						( *tracePtr ).c.material = declManager.FindMaterial( materialName, true );
-////					}
-////				} else {
-////					*tracePtr = NULL;
-////				}
-////				break;
-////
-////			default:
-////				gameLocal.Error( "idEvent::ServiceEvents : Invalid arg format '%s' string for '%s' event.", formatspec, ev.GetName() );
-////			}
-////		}
-////
-////		// the event is removed from its list so that if then object
-////		// is deleted, the event won't be freed twice
-////		event.eventNode.Remove();
-////		assert( event.object );
-////		event.object.ProcessEventArgPtr( ev, args );
-////
+    static ServiceEvents ( ): void {
+        var event: idEvent;
+        var num: number /*int*/;
+        var args = new Int32Array( D_EVENT_MAXARGS );
+        var offset: number /*int*/;
+        var /*int*/i: number;
+        var numargs: number /*int*/;
+        var formatspec: string;
+        //var tracePtr:R<trace_t>();
+        var ev: idEventDef;
+        var data: Uint8Array;
+        var materialName: string;
+
+        num = 0;
+        while ( !EventQueue.IsListEmpty ( ) ) {
+            event = EventQueue.Next ( );
+            assert( event );
+
+            if ( event.time > gameLocal.time ) {
+                break;
+            }
+
+            // copy the data into the local args array and set up pointers
+            ev = event.eventdef;
+            formatspec = ev.GetArgFormat ( );
+            numargs = ev.GetNumArgs ( );
+            for ( i = 0; i < numargs; i++ ) {
+                offset = ev.GetArgOffset( i );
+                data = event.data;
+                switch ( formatspec[i] ) {
+                case D_EVENT_FLOAT:
+                case D_EVENT_INTEGER:
+                    todoThrow ( );
+                    //args[ i ] = *reinterpret_cast<int *>( &data[ offset ] );
+                    break;
+
+                case D_EVENT_VECTOR:
+                    todoThrow ( );
+                    //*reinterpret_cast<idVec3 **>( &args[ i ] ) = reinterpret_cast<idVec3 *>( &data[ offset ] );
+                    break;
+
+                case D_EVENT_STRING:
+                    todoThrow ( );
+                    //*reinterpret_cast<const char **>( &args[ i ] ) = reinterpret_cast<const char *>( &data[ offset ] );
+                    break;
+
+                case D_EVENT_ENTITY:
+                case D_EVENT_ENTITY_NULL:
+                    todoThrow ( );
+                    //*reinterpret_cast<idEntity **>( &args[ i ] ) = reinterpret_cast< idEntityPtr<idEntity> * >( &data[ offset ] ).GetEntity();
+                    break;
+
+                case D_EVENT_TRACE:
+                    todoThrow ( );
+                    //tracePtr = reinterpret_cast<trace_t **>( &args[ i ] );
+                    //if ( *reinterpret_cast<bool *>( &data[ offset ] ) ) {
+                    //	*tracePtr = reinterpret_cast<trace_t *>( &data[ offset + sizeof( bool ) ] );
+
+                    //	if ( ( *tracePtr ).c.material != NULL ) {
+                    //		// look up the material name to get the material pointer
+                    //		materialName = reinterpret_cast<const char *>( &data[ offset + sizeof( bool ) + sizeof( trace_t ) ] );
+                    //		( *tracePtr ).c.material = declManager.FindMaterial( materialName, true );
+                    //	}
+                    //} else {
+                    //	*tracePtr = NULL;
+                    //}
+                    break;
+
+                default:
+                    gameLocal.Error( "idEvent::ServiceEvents : Invalid arg format '%s' string for '%s' event.", formatspec, ev.GetName ( ) );
+                }
+            }
+
+            // the event is removed from its list so that if then object
+            // is deleted, the event won't be freed twice
+            event.eventNode.Remove ( );
+            assert( event.object );
+            event.object.ProcessEventArgPtr( ev, args );
+
 ////#if 0
 ////		// event functions may never leave return values on the FPU stack
 ////		// enable this code to check if any event call left values on the FPU stack
@@ -728,18 +732,18 @@ idEvent::ServiceEvents
 ////			gameLocal.Error( "idEvent::ServiceEvents %d: %s left a value on the FPU stack\n", num, ev.GetName() );
 ////		}
 ////#endif
-////
-////		// return the event to the free list
-////		event.Free();
-////
-////		// Don't allow ourselves to stay in here too long.  An abnormally high number
-////		// of events being processed is evidence of an infinite loop of events.
-////		num++;
-////		if ( num > MAX_EVENTSPERFRAME ) {
-////			gameLocal.Error( "Event overflow.  Possible infinite loop in script." );
-////		}
-////	}
-	}
+
+            // return the event to the free list
+            event.Free ( );
+
+            // Don't allow ourselves to stay in here too long.  An abnormally high number
+            // of events being processed is evidence of an infinite loop of events.
+            num++;
+            if ( num > MAX_EVENTSPERFRAME ) {
+                gameLocal.Error( "Event overflow.  Possible infinite loop in script." );
+            }
+        }
+    }
 
 /*
 ================
