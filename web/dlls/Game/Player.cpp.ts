@@ -81,13 +81,13 @@ var EV_Player_GetIdealWeapon = new idEventDef( "getIdealWeapon", null, 's' );
 ////
 ////CLASS_DECLARATION( idActor, idPlayer )
 idPlayer.CreateInstance = function ( ): idClass {
-	try {
+	//try {
 		var ptr = new idPlayer;
 		ptr.FindUninitializedMemory ( );
 		return ptr;
-	} catch ( e ) {
-		return null;
-	}
+	//} catch ( e ) {
+	//	return null;
+	//}
 };
 
 idPlayer.prototype.GetType = function ( ): idTypeInfo {

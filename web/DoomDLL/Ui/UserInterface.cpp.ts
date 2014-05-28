@@ -221,11 +221,11 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 		return new idListGUILocal ( );
 	}
 
-//FreeListGUI( idListGUI *listgui ):void {
-//	delete listgui;
-//}
+    FreeListGUI ( listgui: idListGUI ): void {
+        $delete( listgui );
+    }
 
-	//private:
+    //private:
 	screenRect = new idRectangle;
 	dc: idDeviceContext = new idDeviceContext();
 
@@ -613,35 +613,35 @@ StateChanged( /*int*/ _time:number, /*bool */redraw :boolean = false):void {
 //	}
 //	return sz;
 //}
-//
-//void idUserInterfaceLocal::RecurseSetKeyBindingNames( idWindow *window ) {
-//	var/*int*/i:number;
-//	idWinVar *v = window.GetWinVarByName( "bind" );
-//	if ( v ) {
-//		SetStateString( v.GetName(), idKeyInput::KeysFromBinding( v.GetName() ) );
-//	}
-//	i = 0;
-//	while ( i < window.GetChildCount() ) {
-//		idWindow *next = window.GetChild( i );
-//		if ( next ) {
-//			RecurseSetKeyBindingNames( next );
-//		}
-//		i++;
-//	}
-//}
-//
-///*
-//==============
-//idUserInterfaceLocal::SetKeyBindingNames
-//==============
-//*/
-//void idUserInterfaceLocal::SetKeyBindingNames( void ) {
-//	if ( !this.desktop ) {
-//		return;
-//	}
-//	// walk the windows
-//	RecurseSetKeyBindingNames( this.desktop );
-//}
+
+    RecurseSetKeyBindingNames ( window: idWindow ): void {
+        var /*int*/i: number;
+        var v: idWinVar = window.GetWinVarByName( "bind" );
+        if ( v ) {
+            this.SetStateString( v.GetName ( ), idKeyInput.KeysFromBinding( v.GetName ( ) ) );
+        }
+        i = 0;
+        while ( i < window.GetChildCount ( ) ) {
+            var next: idWindow = window.GetChild( i );
+            if ( next ) {
+                this.RecurseSetKeyBindingNames( next );
+            }
+            i++;
+        }
+    }
+
+/*
+==============
+idUserInterfaceLocal::SetKeyBindingNames
+==============
+*/
+    SetKeyBindingNames ( ): void {
+        if ( !this.desktop ) {
+            return;
+        }
+        // walk the windows
+        this.RecurseSetKeyBindingNames( this.desktop );
+    }
 //
 ///*
 //==============

@@ -93,7 +93,7 @@ class idWindow {
 	////
 	////	void SetDC(idDeviceContext *d);
 	////
-	////	idDeviceContext*	GetDC ( void ) { return this.dc; }
+	////	idDeviceContext*	GetDC ( ) { return this.dc; }
 	////
 	////	idWindow *SetFocus(idWindow *w, bool scripts = true);
 	////
@@ -211,7 +211,7 @@ class idWindow {
 	////
 	////	idWindow*	FindChildByPoint	( float x, float y, idWindow* below = NULL );
 	////	int			GetChildIndex		( idWindow* window );
-	////	int			GetChildCount		( void );
+	////	int			GetChildCount		( );
 	////	idWindow*	GetChild			( int index );
 	////	void		RemoveChild			( idWindow *win );
 	////	bool		InsertChild			( idWindow *win, idWindow* before );
@@ -226,7 +226,7 @@ class idWindow {
 	////	friend		class rvGEWindowWrapper;
 	////
 	////	idWindow*	FindChildByPoint	( float x, float y, idWindow** below );
-	////	void		SetDefaults			( void );
+	////	void		SetDefaults			( );
 	////
 	////	friend class idSimpleWindow;
 	////	friend class idUserInterfaceLocal;
@@ -4337,30 +4337,28 @@ idWindow::Interactive
 ////{
 ////	return FindChildByPoint ( x, y, &below );
 ////}
-////
-/////*
-////================
-////idWindow::GetChildCount
-////
-////Returns the number of children
-////================
-////*/
-////int idWindow::GetChildCount ( void )
-////{
-////	return this.drawWindows.Num ( );
-////}
-////
-/////*
-////================
-////idWindow::GetChild
-////
-////Returns the child window at the given index
-////================
-////*/
-////idWindow* idWindow::GetChild ( int index )
-////{
-////	return this.drawWindows[index].win;
-////}
+
+/*
+================
+idWindow::GetChildCount
+
+Returns the number of children
+================
+*/
+    GetChildCount ( ): number /*int*/ {
+        return this.drawWindows.Num ( );
+    }
+
+/*
+================
+idWindow::GetChild
+
+Returns the child window at the given index
+================
+*/
+    GetChild ( /*int*/ index: number ): idWindow {
+        return this.drawWindows[index].win;
+    }
 
 /*
 ================
@@ -4480,7 +4478,7 @@ idWindow::ClientToScreen
 ////default colors, etc..
 ////================
 ////*/
-////SetDefaults ( void ):void {	
+////SetDefaults ( ):void {	
 ////	this.forceAspectWidth = 640.0;
 ////	this.forceAspectHeight = 480.0;
 ////	this.matScalex = 1;

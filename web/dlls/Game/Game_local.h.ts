@@ -1818,7 +1818,7 @@ idGameLocal::InitFromNewMap
 ////	savegame.ReadBool( this.inCinematic );
 ////	savegame.ReadBool( this.skipCinematic );
 
-////	savegame.ReadBool( isMultiplayer );
+////	savegame.ReadBool( this.isMultiplayer );
 ////	savegame.ReadInt( (int &)this.gameType );
 
 ////	savegame.ReadInt( this.framenum );
@@ -2309,36 +2309,37 @@ idGameLocal::InitScriptForMap
 		}
 	}
 
-/////*
-////===========
-////idGameLocal::SpawnPlayer
-////============
-////*/
-////SpawnPlayer( int clientNum ):void  {
-////	idEntity	*ent;
-////	idDict		args;
+/*
+===========
+idGameLocal::SpawnPlayer
+============
+*/
+    SpawnPlayer ( /*int*/ clientNum: number ): void {
+        var ent = new R<idEntity>();
+        var args = new idDict;
 
-////	// they can connect
-////	this.Printf( "SpawnPlayer: %i\n", clientNum );
+        // they can connect
+        this.Printf( "SpawnPlayer: %i\n", clientNum );
 
-////	args.SetInt( "spawn_entnum", clientNum );
-////	args.Set( "name", va( "player%d", clientNum + 1 ) );
-////	args.Set( "classname", isMultiplayer ? "player_doommarine_mp" : "player_doommarine" );
-////	if ( !this.SpawnEntityDef( args, &ent ) || !this.entities[ clientNum ] ) {
-////		this.Error( "Failed to spawn player as '%s'", args.GetString( "classname" ) );
-////	}
+        args.SetInt( "spawn_entnum", clientNum );
+        args.Set( "name", va( "player%d", clientNum + 1 ) );
+        args.Set( "classname", this.isMultiplayer ? "player_doommarine_mp" : "player_doommarine" );
+        if ( !this.SpawnEntityDef( args, ent ) ||
+            !this.entities[clientNum] ) {
+            this.Error( "Failed to spawn player as '%s'", args.GetString( "classname" ) );
+        }
 
-////	// make sure it's a compatible class
-////	if ( !ent.IsType( idPlayer::Type ) ) {
-////		this.Error( "'%s' spawned the player as a '%s'.  Player spawnclass must be a subclass of idPlayer.", args.GetString( "classname" ), ent.GetClassname() );
-////	}
+        // make sure it's a compatible class
+        if ( !ent.$.IsType( idPlayer.Type ) ) {
+            this.Error( "'%s' spawned the player as a '%s'.  Player spawnclass must be a subclass of idPlayer.", args.GetString( "classname" ), ent.$.GetClassname ( ) );
+        }
 
-////	if ( clientNum >= this.numClients ) {
-////		this.numClients = clientNum + 1;
-////	}
+        if ( clientNum >= this.numClients ) {
+            this.numClients = clientNum + 1;
+        }
 
-////	this.mpGame.SpawnPlayer( clientNum );
-////}
+        this.mpGame.SpawnPlayer( clientNum );
+    }
 
 /////*
 ////================
@@ -2658,14 +2659,14 @@ idGameLocal::GetGravity
 ////	const renderView_t *view;
 
 ////#ifdef _DEBUG
-////	if ( isMultiplayer ) {
+////	if ( this.isMultiplayer ) {
 ////		assert( !isClient );
 ////	}
 ////#endif
 
 ////	player = GetLocalPlayer();
 
-////	if ( !isMultiplayer && g_stopTime.GetBool() ) {
+////	if ( !this.isMultiplayer && g_stopTime.GetBool() ) {
 ////		// clear any debug lines from a previous frame
 ////		gameRenderWorld.DebugClearLines( this.time + 1 );
 
@@ -2794,7 +2795,7 @@ idGameLocal::GetGravity
 ////		FreePlayerPVS();
 
 ////		// do multiplayer related stuff
-////		if ( isMultiplayer ) {
+////		if ( this.isMultiplayer ) {
 ////			this.mpGame.Run();
 ////		}
 
@@ -2809,7 +2810,7 @@ idGameLocal::GetGravity
 ////		ret.consistencyHash = 0;
 ////		ret.sessionCommand[0] = 0;
 
-////		if ( !isMultiplayer && player ) {
+////		if ( !this.isMultiplayer && player ) {
 ////			ret.health = player.health;
 ////			ret.heartRate = player.heartRate;
 ////			ret.stamina = idMath::FtoiFast( player.stamina );
@@ -2936,7 +2937,7 @@ idGameLocal::GetGravity
 ////================
 ////*/
 ////bool idGameLocal::Draw( int clientNum ) {
-////	if ( isMultiplayer ) {
+////	if ( this.isMultiplayer ) {
 ////		return this.mpGame.Draw( clientNum );
 ////	}
 
@@ -2958,7 +2959,7 @@ idGameLocal::GetGravity
 ////================
 ////*/
 ////escReply_t idGameLocal::HandleESC( idUserInterface **gui ) {
-////	if ( isMultiplayer ) {
+////	if ( this.isMultiplayer ) {
 ////		*gui = StartMenu();
 ////		// we may set the gui back to NULL to hide it
 ////		return ESC_GUI;
@@ -2980,7 +2981,7 @@ idGameLocal::GetGravity
 ////================
 ////*/
 ////idUserInterface* idGameLocal::StartMenu( ) {
-////	if ( !isMultiplayer ) {
+////	if ( !this.isMultiplayer ) {
 ////		return NULL;
 ////	}
 ////	return this.mpGame.StartMenu();
@@ -2992,7 +2993,7 @@ idGameLocal::GetGravity
 ////================
 ////*/
 ////const char* idGameLocal::HandleGuiCommands( const char *menuCommand ) {
-////	if ( !isMultiplayer ) {
+////	if ( !this.isMultiplayer ) {
 ////		return NULL;
 ////	}
 ////	return this.mpGame.HandleGuiCommands( menuCommand );
@@ -3383,7 +3384,7 @@ idGameLocal::GetAAS
 ////bool idGameLocal::CheatsOk( bool requirePlayer ) {
 ////	idPlayer *player;
 
-////	if ( isMultiplayer && !cvarSystem.GetCVarBool( "net_allowCheats" ) ) {
+////	if ( this.isMultiplayer && !cvarSystem.GetCVarBool( "net_allowCheats" ) ) {
 ////		this.Printf( "Not allowed in multiplayer.\n" );
 ////		return false;
 ////	}

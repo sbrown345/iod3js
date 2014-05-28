@@ -574,80 +574,77 @@ to be configured even if they don't have defined names.
 		return -1;
 	}
 
-/////*
-////===================
-////idKeyInput::KeyNumToString
-////
-////Returns a string (either a single ascii char, a K_* name, or a 0x11 hex string) for the
-////given keynum.
-////===================
-////*/
-////static KeyNumToString( int keynum, bool localized ):string {
-////	keyname_t	*kn;	
-////	static	char	tinystr[5];
-////	int			i, j;
-////
-////	if ( keynum == -1 ) {
-////		return "<KEY NOT FOUND>";
-////	}
-////
-////	if ( keynum < 0 || keynum > 255 ) {
-////		return "<OUT OF RANGE>";
-////	}
-////
-////	// check for printable ascii (don't use quote)
-////	if ( keynum > 32 && keynum < 127 && keynum != '"' && keynum != ';' && keynum != '\'' ) {
-////		tinystr[0] = Sys_MapCharForKey( keynum );
-////		tinystr[1] = 0;
-////		return tinystr;
-////	}
-////
-////	// check for a key string
-////	for ( kn = keynames; kn.name; kn++ ) {
-////		if ( keynum == kn.keynum ) {
-////			if ( !localized || kn.strId[0] != '#' ) {
-////				return kn.name;
-////			} else {
-////#if MACOS_X
-////				
-////				switch ( kn.keynum ) {
-////					case K_ENTER:		
-////					case K_BACKSPACE:	
-////					case K_ALT:			
-////					case K_INS:
-////					case K_PRINT_SCR:
-////						return OSX_GetLocalizedString( kn.name );
-////						break;
-////					default :
-////						return common.GetLanguageDict().GetString( kn.strId ); break;
-////				}
-////#else
-////				return common.GetLanguageDict().GetString( kn.strId );
-////#endif
-////			}
-////		}
-////	}
-////
-////	// check for European high-ASCII characters
-////	if ( localized && keynum >= 161 && keynum <= 255 ) {
-////		tinystr[0] = keynum;
-////		tinystr[1] = 0;
-////		return tinystr;
-////	}
-////
-////	// make a hex string
-////	i = keynum >> 4;
-////	j = keynum & 15;
-////
-////	tinystr[0] = '0';
-////	tinystr[1] = 'x';
-////	tinystr[2] = i > 9 ? i - 10 + 'a' : i + '0';
-////	tinystr[3] = j > 9 ? j - 10 + 'a' : j + '0';
-////	tinystr[4] = 0;
-////
-////	return tinystr;
-////}
-////
+/*
+===================
+idKeyInput::KeyNumToString
+
+Returns a string (either a single ascii char, a K_* name, or a 0x11 hex string) for the
+given keynum.
+===================
+*/
+    static KeyNumToString ( /*int*/ keynum: number, localized: boolean ): string {
+        var kn: keyname_t, knIdx: number;
+        var tinystr: string = ""; //static	char	tinystr[5];
+        var /*int */i: number, j: number;
+
+        if ( keynum == -1 ) {
+            return "<KEY NOT FOUND>";
+        }
+
+        if ( keynum < 0 || keynum > 255 ) {
+            return "<OUT OF RANGE>";
+        }
+
+        // check for printable ascii (don't use quote)
+        if ( keynum > 32 && keynum < 127 && keynum != '"'.charCodeAt( 0 ) && keynum != ';'.charCodeAt( 0 ) && keynum != '\''.charCodeAt( 0 ) ) {
+            tinystr = Sys_MapCharForKey( keynum );
+            return tinystr;
+        }
+
+        // check for a key string
+        for ( knIdx = 0, kn = keynames[knIdx]; kn && kn.name; knIdx++, kn = keynames[knIdx] ) {
+            if ( keynum == kn.keynum ) {
+                if ( !localized || kn.strId[0] != '#' ) {
+                    return kn.name;
+                } else {
+//#if MACOS_X
+//				
+//				switch ( kn.keynum ) {
+//					case keyNum_t.K_ENTER:		
+//					case keyNum_t.K_BACKSPACE:	
+//					case keyNum_t.K_ALT:			
+//					case keyNum_t.K_INS:
+//					case keyNum_t.K_PRINT_SCR:
+//						return OSX_GetLocalizedString( kn.name );
+//						break;
+//					default :
+//						return common.GetLanguageDict().GetString( kn.strId ); break;
+//				}
+//#else
+                    return common.GetLanguageDict ( ).GetString( kn.strId );
+//#endif
+                }
+            }
+        }
+
+        // check for European high-ASCII characters
+        if ( localized && keynum >= 161 && keynum <= 255 ) {
+            tinystr = String.fromCharCode( keynum );
+            return tinystr;
+        }
+
+        // make a hex string
+        i = keynum >> 4;
+        j = keynum & 15;
+
+        tinystr = '0';
+        tinystr += 'x';
+        tinystr += ( i > 9 ? i - 10 + 'a' : i + '0' );
+        tinystr += ( j > 9 ? j - 10 + 'a' : j + '0' );
+
+        return tinystr;
+    }
+
 /*
 ===================
 idKeyInput::SetBinding
@@ -838,33 +835,33 @@ Key_ListBinds_f
 		//}
 	}
 
-/////*
-////============
-////idKeyInput::KeysFromBinding
-////returns the localized name of the key for the binding
-////============
-////*/
-////static KeysFromBinding( const char *bind ):string {
-////	var i:number;
-////	static char keyName[MAX_STRING_CHARS];
-////
-////	keyName[0] = '\0';
-////	if ( bind && *bind ) {
-////		for ( i = 0; i < MAX_KEYS; i++ ) {
-////			if ( keys[i].binding.Icmp( bind ) == 0 ) {
-////				if ( keyName[0] != '\0' ) {
-////					idStr::Append( keyName, sizeof( keyName ), common.GetLanguageDict().GetString( "#str_07183" ) );
-////				} 
-////				idStr::Append( keyName, sizeof( keyName ), KeyNumToString( i, true ) );
-////			}
-////		}
-////	}
-////	if ( keyName[0] == '\0' ) {
-////		idStr::Copynz( keyName, common.GetLanguageDict().GetString( "#str_07133" ), sizeof( keyName ) );
-////	}
-////	idStr::ToLower( keyName );
-////	return keyName;
-////}
+/*
+============
+idKeyInput::KeysFromBinding
+returns the localized name of the key for the binding
+============
+*/
+static KeysFromBinding( bind:string ):string {
+	var i:number;
+	var keyName: string;
+
+	keyName = "";
+	if ( bind /*&& *bind*/ ) {
+		for ( i = 0; i < MAX_KEYS; i++ ) {
+			if ( keys[i].binding.Icmp( bind ) == 0 ) {
+				if ( keyName /*[0] != '\0'*/ ) {
+					keyName +=  common.GetLanguageDict().GetString( "#str_07183" ) ;//idStr::Append( keyName, sizeof( keyName ), common.GetLanguageDict().GetString( "#str_07183" ) );
+				} 
+				keyName +=  this.KeyNumToString( i, true );//idStr::Append( keyName, sizeof( keyName ), KeyNumToString( i, true ) );
+			}
+		}
+	}
+	if ( !keyName[0]/*== '\0'*/ ) {
+		keyName = common.GetLanguageDict().GetString( "#str_07133" );//idStr::Copynz( keyName, common.GetLanguageDict().GetString( "#str_07133" ), sizeof( keyName ) );
+	}
+	keyName = tolower(keyName);//idStr::ToLower( keyName );
+	return keyName;
+}
 ////
 /////*
 ////============

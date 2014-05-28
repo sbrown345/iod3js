@@ -116,10 +116,10 @@ class idGame {
 
 	// Caches media referenced from in key/value pairs in the given dictionary.
 	CacheDictionaryMedia ( dict: idDict ): void { throw "placeholder"; }
-//
-//	// Spawns the player entity to be used by the client.
-//	virtual void				SpawnPlayer( int clientNum ) = 0;
-//
+
+	// Spawns the player entity to be used by the client.
+	SpawnPlayer( /*int*/ clientNum:number ) { throw "placeholder"; }
+
 //	// Runs a game frame, may return a session command for level changing, etc
 //	virtual gameReturn_t		RunFrame( const usercmd_t *clientCmds ) = 0;
 //

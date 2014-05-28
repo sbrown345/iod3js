@@ -217,25 +217,25 @@ idAnimManager::JointName
 //idAnimManager::FlushUnusedAnims
 //================
 //*/
-	FlushUnusedAnims(): void {
-		todoThrow ( );
-//	var i:number /*int*/;
-//	idMD5Anim				**animptr;
-//	idList<idMD5Anim *>		removeAnims;
-//	
-//	for( i = 0; i < this.animations.Num(); i++ ) {
-//		animptr = this.animations.GetIndex( i );
-//		if ( animptr && *animptr ) {
-//			if ( ( *animptr ).NumRefs() <= 0 ) {
-//				removeAnims.Append( *animptr );
-//			}
-//		}
-//	}
-//
-//	for( i = 0; i < removeAnims.Num(); i++ ) {
-//		this.animations.Remove( removeAnims[ i ].Name() );
-//		delete removeAnims[ i ];
-//	}
-//}
-	}
+    FlushUnusedAnims ( ): void {
+        var i: number /*int*/;
+        //idMD5Anim				**animptr;
+        var removeAnims: idList<idMD5Anim> = new idList<idMD5Anim>( idMD5Anim, true );
+
+        for ( i = 0; i < this.animations.Num ( ); i++ ) {
+            todoThrow ( );
+            //animptr = this.animations.GetIndex( i );
+            //if ( animptr && *animptr ) {
+            //	if ( ( *animptr ).NumRefs() <= 0 ) {
+            //		removeAnims.Append( *animptr );
+            //	}
+            //}
+        }
+
+        for ( i = 0; i < removeAnims.Num ( ); i++ ) {
+            todoThrow ( );
+            //this.animations.Remove( removeAnims[i].Name ( ) );
+            //$delete( removeAnims[i] );
+        }
+    }
 }

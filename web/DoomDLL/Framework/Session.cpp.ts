@@ -1567,14 +1567,14 @@ idSessionLocal.prototype.ExecuteMapChange = function ( noFadeWipe: boolean = fal
 		game.SetServerInfo( this.mapSpawnData.serverInfo );
 		game.InitFromNewMap( fullMapName.c_str() + ".map", this.rw, this.sw, idAsyncNetwork.server.IsActive(), idAsyncNetwork.client.IsActive(), Sys_Milliseconds() );
 	}
-todoThrow()
-	//if ( !idAsyncNetwork::IsActive() && !this.loadingSaveGame ) {
-	//	// spawn players
-	//	for ( i = 0; i < this.numClients; i++ ) {
-	//		game.SpawnPlayer( i );
-	//	}
-	//}
 
+	if ( !idAsyncNetwork.IsActive() && !this.loadingSaveGame ) {
+		// spawn players
+		for ( i = 0; i < this.numClients; i++ ) {
+			game.SpawnPlayer( i );
+		}
+	}
+todoThrow()
 	//// actually purge/load the media
 	//if ( !reloadingSameMap ) {
 	//	renderSystem.EndLevelLoad();

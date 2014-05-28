@@ -187,11 +187,19 @@ class idInventory {
 class loggedAccel_t {
 	time: number/*int*/;
 	dir = new idVec3;		// scaled larger for running
+    memset0 ( ): void {
+        this.time = 0;
+        this.dir.memset0 ( );
+    }
 };
 
 class aasLocation_t{
 	areaNum: number/*int*/;
 	pos = new idVec3;
+    memset0 ( ): void {
+        this.areaNum = 0;
+        this.pos.memset0 ( );
+    }
 }
 
 class idPlayer extends idActor {
@@ -714,11 +722,11 @@ class idPlayer extends idActor {
 ////}
 ////
 ////ID_INLINE bool idPlayer::SelfSmooth( ) {
-////	return selfSmooth;
+////	return this.selfSmooth;
 ////}
 ////
 ////ID_INLINE void idPlayer::SetSelfSmooth( bool b ) {
-////	selfSmooth = b;
+////	this.selfSmooth = b;
 ////}
 ////
 ////#endif /* !__GAME_PLAYER_H__ */
@@ -1578,7 +1586,7 @@ idPlayer::idPlayer
 ////	savefile.WriteInt( lastDamageDef );
 ////	savefile.WriteVec3( lastDamageDir );
 ////	savefile.WriteInt( lastDamageLocation );
-////	savefile.WriteInt( smoothedFrame );
+////	savefile.WriteInt( this.smoothedFrame );
 ////	savefile.WriteBool( smoothedOriginUpdated );
 ////	savefile.WriteVec3( smoothedOrigin );
 ////	savefile.WriteAngles( smoothedAngles );
@@ -1819,7 +1827,7 @@ idPlayer::idPlayer
 ////	savefile.ReadInt( lastDamageDef );
 ////	savefile.ReadVec3( lastDamageDir );
 ////	savefile.ReadInt( lastDamageLocation );
-////	savefile.ReadInt( smoothedFrame );
+////	savefile.ReadInt( this.smoothedFrame );
 ////	savefile.ReadBool( smoothedOriginUpdated );
 ////	savefile.ReadVec3( smoothedOrigin );
 ////	savefile.ReadAngles( smoothedAngles );
@@ -7610,7 +7618,7 @@ idPlayer::UserInfoChanged
 ////	UpdateViewAngles();
 ////
 ////	// update the smoothed view angles
-////	if ( gameLocal.framenum >= smoothedFrame && this.entityNumber != gameLocal.localClientNum ) {
+////	if ( gameLocal.framenum >= this.smoothedFrame && this.entityNumber != gameLocal.localClientNum ) {
 ////		idAngles anglesDiff = this.viewAngles - smoothedAngles;
 ////		anglesDiff.Normalize180();
 ////		if ( idMath::Fabs( anglesDiff.yaw ) < 90.0f && idMath::Fabs( anglesDiff.pitch ) < 90.0f ) {
@@ -7718,16 +7726,16 @@ idPlayer::UserInfoChanged
 idPlayer::GetPhysicsToVisualTransform
 ================
 */
-		GetPhysicsToVisualTransform ( origin: idVec3, axis: idMat3 ): boolean {
-			todoThrow ( );
-////	if ( af.IsActive() ) {
-////		af.GetPhysicsToVisualTransform( origin, axis );
-////		return true;
-////	}
-////
-////	// smoothen the rendered origin and angles of other clients
-////	// smooth self origin if snapshots are telling us prediction is off
-////	if ( gameLocal.isClient && gameLocal.framenum >= smoothedFrame && ( this.entityNumber != gameLocal.localClientNum || selfSmooth ) ) {
+    GetPhysicsToVisualTransform ( origin: idVec3, axis: idMat3 ): boolean {
+        if ( this.af.IsActive ( ) ) {
+            this.af.GetPhysicsToVisualTransform( origin, axis );
+            return true;
+        }
+
+        // smoothen the rendered origin and angles of other clients
+        // smooth self origin if snapshots are telling us prediction is off
+        if ( gameLocal.isClient && gameLocal.framenum >= this.smoothedFrame && ( this.entityNumber != gameLocal.localClientNum || this.selfSmooth ) ) {
+            todoThrow ( );
 ////		// render origin and axis
 ////		idMat3 renderAxis = viewAxis * GetPhysics().GetAxis();
 ////		idVec3 renderOrigin = GetPhysics().GetOrigin() + modelOffset * renderAxis;
@@ -7737,7 +7745,7 @@ idPlayer::GetPhysicsToVisualTransform
 ////			idVec2 originDiff = renderOrigin.ToVec2() - smoothedOrigin.ToVec2();
 ////			if ( originDiff.LengthSqr() < Square( 100.0f ) ) {
 ////				// smoothen by pushing back to the previous position
-////				if ( selfSmooth ) {
+////				if ( this.selfSmooth ) {
 ////					assert( this.entityNumber == gameLocal.localClientNum );
 ////					renderOrigin.ToVec2() -= net_clientSelfSmoothing.GetFloat() * originDiff;
 ////				} else {
@@ -7746,21 +7754,21 @@ idPlayer::GetPhysicsToVisualTransform
 ////			}
 ////			smoothedOrigin = renderOrigin;
 ////
-////			smoothedFrame = gameLocal.framenum;
+////			this.smoothedFrame = gameLocal.framenum;
 ////			smoothedOriginUpdated = true;
 ////		}
 ////
 ////		axis = idAngles( 0.0, smoothedAngles.yaw, 0.0 ).ToMat3();
 ////		origin = ( smoothedOrigin - GetPhysics().GetOrigin() ) * axis.Transpose();
 ////
-////	} else {
-////
-////		axis = viewAxis;
-////		origin = modelOffset;
-////	}
-	return true;
-}
-	
+        } else {
+
+            axis.opEquals( this.viewAxis );
+            origin.opEquals( this.modelOffset );
+        }
+        return true;
+    }
+
 /*
 ================
 idPlayer::GetPhysicsToSoundTransform

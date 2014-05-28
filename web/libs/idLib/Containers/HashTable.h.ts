@@ -365,16 +365,16 @@ DeleteContents( ):void {
 	this.numentries = 0;
 }
 
-/////*
-////================
-////idHashTable<Type>::Num
-////================
-////*/
-////template< class Type >
-////ID_INLINE int idHashTable<Type>::Num( ) const {
-////	return this.numentries;
-////}
-////
+/*
+================
+idHashTable<Type>::Num
+================
+*/
+//template< class Type >
+Num( ) :number {
+	return this.numentries;
+}
+
 ////#if defined(ID_TYPEINFO)
 ////#define __GNUC__ 99
 ////#endif

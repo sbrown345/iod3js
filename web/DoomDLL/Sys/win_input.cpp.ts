@@ -892,6 +892,6 @@ function Sys_GrabMouseCursor ( grabIt: boolean ): void {
 //
 //void Sys_EndMouseInputEvents( void ) { }
 //
-//unsigned char Sys_MapCharForKey( int key ) {
-//	return (unsigned char)key;
-//}
+function Sys_MapCharForKey ( /*int*/ key: number ): string {
+    return /*(unsigned char)*/String.fromCharCode( key );
+}
