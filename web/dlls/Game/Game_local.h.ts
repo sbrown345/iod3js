@@ -184,10 +184,10 @@ enum gameState_t{
 	GAMESTATE_SHUTDOWN				// inside MapShutdown().  clearing memory.
 };
 
-////typedef struct {
-////	idEntity	*ent;
-////	int			dist;
-////} spawnSpot_t;
+class spawnSpot_t {
+    ent: idEntity;
+    dist: number /*int*/;
+}
 
 //============================================================================
 
@@ -1018,7 +1018,7 @@ idGameLocal::Init
 ////	savegame.WriteBool( this.inCinematic );
 ////	savegame.WriteBool( this.skipCinematic );
 
-////	savegame.WriteBool( isMultiplayer );
+////	savegame.WriteBool( this.isMultiplayer );
 ////	savegame.WriteInt( this.gameType );
 
 ////	savegame.WriteInt( this.framenum );
@@ -4637,75 +4637,76 @@ prepare for a sequence of initial player spawns
 ////	currentInitialSpot = 0;
     }
 
-/////*
-////===========
-////idGameLocal::SelectInitialSpawnPoint
-////spectators are spawned randomly anywhere
-////in-game clients are spawned based on distance to active players (randomized on the first half)
-////upon map restart, initial spawns are used (randomized ordered list of spawns flagged "initial")
-////  if there are more players than initial spots, overflow to regular spawning
-////============
-////*/
-////idEntity *idGameLocal::SelectInitialSpawnPoint( idPlayer *player ) {
-////	int				i, j, which;
-////	spawnSpot_t		spot;
-////	idVec3			pos;
-////	float			dist;
-////	bool			alone;
+/*
+===========
+idGameLocal::SelectInitialSpawnPoint
+spectators are spawned randomly anywhere
+in-game clients are spawned based on distance to active players (randomized on the first half)
+upon map restart, initial spawns are used (randomized ordered list of spawns flagged "initial")
+  if there are more players than initial spots, overflow to regular spawning
+============
+*/
+    SelectInitialSpawnPoint ( player: idPlayer ): idEntity {
+        var i: number /*int*/, j: number /*int*/, which: number /*int*/;
+        var spot: spawnSpot_t;
+        var pos = new idVec3;
+        var dist: number /*float*/;
+        var alone: boolean;
 
-////	if ( !isMultiplayer || !spawnSpots.Num() ) {
-////		spot.ent = FindEntityUsingDef( NULL, "info_player_start" );
-////		if ( !spot.ent ) {
-////			this.Error( "No info_player_start on map.\n" );
-////		}
-////		return spot.ent;
-////	}
-////	if ( player.spectating ) {
-////		// plain random spot, don't bother
-////		return spawnSpots[ this.random.RandomInt( spawnSpots.Num() ) ].ent;
-////	} else if ( player.useInitialSpawns && currentInitialSpot < initialSpots.Num() ) {
-////		return initialSpots[ currentInitialSpot++ ];
-////	} else {
-////		// check if we are alone in map
-////		alone = true;
-////		for ( j = 0; j < MAX_CLIENTS; j++ ) {
-////			if ( this.entities[ j ] && this.entities[ j ] != player ) {
-////				alone = false;
-////				break;
-////			}
-////		}
-////		if ( alone ) {
-////			// don't do distance-based
-////			return spawnSpots[ this.random.RandomInt( spawnSpots.Num() ) ].ent;
-////		}
+        todoThrow ( );
+        //if ( !this.isMultiplayer || !spawnSpots.Num() ) {
+        //	spot.ent = FindEntityUsingDef( NULL, "info_player_start" );
+        //	if ( !spot.ent ) {
+        //		this.Error( "No info_player_start on map.\n" );
+        //	}
+        //	return spot.ent;
+        //}
+        //if ( player.spectating ) {
+        //	// plain random spot, don't bother
+        //	return spawnSpots[ this.random.RandomInt( spawnSpots.Num() ) ].ent;
+        //} else if ( player.useInitialSpawns && currentInitialSpot < initialSpots.Num() ) {
+        //	return initialSpots[ currentInitialSpot++ ];
+        //} else {
+        //	// check if we are alone in map
+        //	alone = true;
+        //	for ( j = 0; j < MAX_CLIENTS; j++ ) {
+        //		if ( this.entities[ j ] && this.entities[ j ] != player ) {
+        //			alone = false;
+        //			break;
+        //		}
+        //	}
+        //	if ( alone ) {
+        //		// don't do distance-based
+        //		return spawnSpots[ this.random.RandomInt( spawnSpots.Num() ) ].ent;
+        //	}
 
-////		// find the distance to the closest active player for each spawn spot
-////		for( i = 0; i < spawnSpots.Num(); i++ ) {
-////			pos = spawnSpots[ i ].ent.GetPhysics().GetOrigin();
-////			spawnSpots[ i ].dist = 0x7fffffff;
-////			for( j = 0; j < MAX_CLIENTS; j++ ) {
-////				if ( !this.entities[ j ] || !this.entities[ j ].IsType( idPlayer::Type )
-////					|| this.entities[ j ] == player
-////					|| static_cast< idPlayer * >( this.entities[ j ] ).spectating ) {
-////					continue;
-////				}
+        //	// find the distance to the closest active player for each spawn spot
+        //	for( i = 0; i < spawnSpots.Num(); i++ ) {
+        //		pos = spawnSpots[ i ].ent.GetPhysics().GetOrigin();
+        //		spawnSpots[ i ].dist = 0x7fffffff;
+        //		for( j = 0; j < MAX_CLIENTS; j++ ) {
+        //			if ( !this.entities[ j ] || !this.entities[ j ].IsType( idPlayer::Type )
+        //				|| this.entities[ j ] == player
+        //				|| static_cast< idPlayer * >( this.entities[ j ] ).spectating ) {
+        //				continue;
+        //			}
 
-////				dist = ( pos - this.entities[ j ].GetPhysics().GetOrigin() ).LengthSqr();
-////				if ( dist < spawnSpots[ i ].dist ) {
-////					spawnSpots[ i ].dist = dist;
-////				}
-////			}
-////		}
+        //			dist = ( pos - this.entities[ j ].GetPhysics().GetOrigin() ).LengthSqr();
+        //			if ( dist < spawnSpots[ i ].dist ) {
+        //				spawnSpots[ i ].dist = dist;
+        //			}
+        //		}
+        //	}
 
-////		// sort the list
-////		qsort( ( void * )spawnSpots.Ptr(), spawnSpots.Num(), sizeof( spawnSpot_t ), ( int (*)(const void *, const void *) )sortSpawnPoints );
+        //	// sort the list
+        //	qsort( ( void * )spawnSpots.Ptr(), spawnSpots.Num(), sizeof( spawnSpot_t ), ( int (*)(const void *, const void *) )sortSpawnPoints );
 
-////		// choose a random one in the top half
-////		which = this.random.RandomInt( spawnSpots.Num() / 2 );
-////		spot = spawnSpots[ which ];
-////	}
-////	return spot.ent;
-////}
+        //	// choose a random one in the top half
+        //	which = this.random.RandomInt( spawnSpots.Num() / 2 );
+        //	spot = spawnSpots[ which ];
+        //}
+        return spot.ent;
+    }
 
 /*
 ================

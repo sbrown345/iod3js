@@ -260,23 +260,23 @@ idDeclPDA::FreeData
 ////	}
 ////	this.audios.Append( name );
 ////}
-////
-/////*
-////=================
-////idDeclPDA::AddEmail
-////=================
-////*/
-////void idDeclPDA::AddEmail( name:string, bool unique  = true) const {
-////	if ( unique && ( this.emails.Find( name ) != NULL ) ) {
-////		return;
-////	}
-////	if ( declManager.FindType( DECL_EMAIL, name, false ) == NULL ) {
-////		common.Printf( "Email %s not found\n", name );
-////		return;
-////	}
-////	this.emails.Append( name );
-////}
-////
+
+/*
+=================
+idDeclPDA::AddEmail
+=================
+*/
+    AddEmail ( name: string, unique = true ): void {
+        if ( unique && ( this.emails.Find( new idStr( name ) ) != null ) ) {
+            return;
+        }
+        if ( declManager.FindType( declType_t.DECL_EMAIL, name, false ) == null ) {
+            common.Printf( "Email %s not found\n", name );
+            return;
+        }
+        this.emails.Append( new idStr( name ) );
+    }
+
 /////*
 ////=================
 ////idDeclPDA::RemoveAddedEmailsAndVideos
@@ -364,7 +364,7 @@ idDeclPDA::GetNumEmails
 ////*/
 ////const idDeclEmail* idDeclPDA::GetEmailByIndex( int index ) const {
 ////	if ( index >= 0 && index < this.emails.Num() ) {
-////		return static_cast< const idDeclEmail* >( declManager.FindType( DECL_EMAIL, this.emails[index], false ) );
+////		return static_cast< const idDeclEmail* >( declManager.FindType( declType_t.DECL_EMAIL, this.emails[index], false ) );
 ////	}
 ////	return NULL;
 ////}

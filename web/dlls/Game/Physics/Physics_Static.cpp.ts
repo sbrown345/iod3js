@@ -657,30 +657,32 @@ GetOrigin( /*int*/ id:number  = 0) :idVec3 {
 	////	return gravity;
 	////}
 	////
-	/////*
-	////================
-	////idPhysics_Static::GetGravityNormal
-	////================
-	////*/
-	////const idVec3 &idPhysics_Static::GetGravityNormal( ) const {
-	////	static idVec3 gravity( 0, 0, -1 );
-	////	return gravity;
-	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::ClipTranslation
-	////================
-	////*/
-	////void idPhysics_Static::ClipTranslation( trace_t &results, const idVec3 &translation, const model:idClipModel ) const {
-	////	if ( model ) {
-	////		gameLocal.clip.TranslationModel( results, this.current.origin, this.current.origin + translation,
-	////			this.clipModel, this.current.axis, MASK_SOLID, model.Handle(), model.GetOrigin(), model.GetAxis() );
-	////	} else {
-	////		gameLocal.clip.Translation( results, this.current.origin, this.current.origin + translation,
-	////			this.clipModel, this.current.axis, MASK_SOLID, this.self );
-	////	}	
-	////}
+	/*
+	================
+	idPhysics_Static::GetGravityNormal
+	================
+	*/
+    private static gravity = new idVec3( 0, 0, -1 );
+	GetGravityNormal ( ): idVec3 {
+		
+		return idPhysics_Static.gravity;
+	}
+	
+	/*
+	================
+	idPhysics_Static::ClipTranslation
+	================
+	*/
+	ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void {
+	    todoThrow ( );
+		//if ( model ) {
+		//	gameLocal.clip.TranslationModel( results, this.current.origin, this.current.origin + translation,
+		//		this.clipModel, this.current.axis, MASK_SOLID, model.Handle(), model.GetOrigin(), model.GetAxis() );
+		//} else {
+		//	gameLocal.clip.Translation( results, this.current.origin, this.current.origin + translation,
+		//		this.clipModel, this.current.axis, MASK_SOLID, this.self );
+		//}	
+	}
 	////
 	/////*
 	////================
@@ -809,16 +811,16 @@ GetOrigin( /*int*/ id:number  = 0) :idVec3 {
 	////*/
 	////void idPhysics_Static::RemoveContactEntity( idEntity *e ) {
 	////}
-	////
-	/////*
-	////================
-	////idPhysics_Static::HasGroundContacts
-	////================
-	////*/
-	////bool idPhysics_Static::HasGroundContacts( ) const {
-	////	return false;
-	////}
-	////
+	
+	/*
+	================
+	idPhysics_Static::HasGroundContacts
+	================
+	*/
+	HasGroundContacts( ) :boolean {
+		return false;
+	}
+	
 	/////*
 	////================
 	////idPhysics_Static::IsGroundEntity

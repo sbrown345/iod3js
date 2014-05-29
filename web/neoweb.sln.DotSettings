@@ -20,6 +20,14 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3DE9A189F2018744B37F525312048259/Shortcut/@EntryValue">tp</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3DE9A189F2018744B37F525312048259/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3DE9A189F2018744B37F525312048259/Text/@EntryValue">{throw "placeholder";}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4F11B262F3BFD14789BD6C92776F6621/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4F11B262F3BFD14789BD6C92776F6621/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4F11B262F3BFD14789BD6C92776F6621/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4F11B262F3BFD14789BD6C92776F6621/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4F11B262F3BFD14789BD6C92776F6621/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4F11B262F3BFD14789BD6C92776F6621/Shortcut/@EntryValue">vf</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4F11B262F3BFD14789BD6C92776F6621/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4F11B262F3BFD14789BD6C92776F6621/Text/@EntryValue">= new idVec3</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=5DC9C119A5A72A4498495B0F7CF44A32/Reformat/@EntryValue">True</s:Boolean>
@@ -57,6 +65,14 @@
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/Shortcut/@EntryValue">nf</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=6E0EA4BCB2A544479C6D46A5296FB9B5/Text/@EntryValue">:number/*float*/</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=710788DDA591744D9A168E9AC9B61FE8/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=710788DDA591744D9A168E9AC9B61FE8/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=710788DDA591744D9A168E9AC9B61FE8/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=710788DDA591744D9A168E9AC9B61FE8/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=710788DDA591744D9A168E9AC9B61FE8/Scope/=139FF4CE89E7094686FDA7BF5FFBBE92/Type/@EntryValue">Everywhere</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=710788DDA591744D9A168E9AC9B61FE8/Shortcut/@EntryValue">bf</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=710788DDA591744D9A168E9AC9B61FE8/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=710788DDA591744D9A168E9AC9B61FE8/Text/@EntryValue">:boolean</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=7599BE21FD5DA4468E17929191ABF601/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=7599BE21FD5DA4468E17929191ABF601/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=7599BE21FD5DA4468E17929191ABF601/Field/=VAR_005FNAME/@KeyIndexDefined">True</s:Boolean>

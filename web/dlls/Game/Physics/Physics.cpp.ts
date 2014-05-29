@@ -160,9 +160,9 @@ class idPhysics extends idClass {
 	   //	// gravity
 	   //	virtual void				SetGravity(const idVec3 &newGravity) = 0;
 	   //	virtual const idVec3 &		GetGravity() const = 0;
-	   //	virtual const idVec3 &		GetGravityNormal() const = 0;
-	   //	// get first collision when translating or rotating this physics object
-	   //	virtual void				ClipTranslation(trace_t &results, const idVec3 &translation, const idClipModel *model) const = 0;
+	   GetGravityNormal(): idVec3 { throw "placeholder"; }
+	   // get first collision when translating or rotating this physics object
+	   ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void { throw "placeholder"; }
 	   //	virtual void				ClipRotation(trace_t &results, const idRotation &rotation, const idClipModel *model) const = 0;
 	   //	virtual int					ClipContents(const idClipModel *model) const = 0;
 	   //	// disable/enable the clip models contained by this physics object
@@ -179,7 +179,7 @@ class idPhysics extends idClass {
 	   //	virtual void				AddContactEntity(e:idEntity) = 0;
 	RemoveContactEntity ( e: idEntity ): void { throw "placeholder"; }
 	//	// ground contacts
-	   //	virtual bool				HasGroundContacts() const = 0;
+	   HasGroundContacts() :boolean { throw "placeholder"; }
 	   //	virtual bool				IsGroundEntity(int entityNum) const = 0;
 	   //	virtual bool				IsGroundClipModel(int entityNum, /*int*/ id:number) const = 0;
 	   //	// set the master entity for objects bound to a master

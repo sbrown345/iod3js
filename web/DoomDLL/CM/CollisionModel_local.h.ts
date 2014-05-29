@@ -1444,15 +1444,16 @@ idCollisionModelManagerLocal::SetupTrmModelStructure
 		this.trmBrushes[0].b.numPlanes = 0;
 	}
 
-/////*
-////================
-////idCollisionModelManagerLocal::SetupTrmModel
-////
-////Trace models (item boxes, etc) are converted to collision models on the fly, using the last model slot
-////as a reusable temporary buffer
-////================
-////*/
-////cmHandle_t idCollisionModelManagerLocal::SetupTrmModel( const trm: idTraceModel, material:idMaterial  ) {
+/*
+================
+idCollisionModelManagerLocal::SetupTrmModel
+
+Trace models (item boxes, etc) are converted to collision models on the fly, using the last model slot
+as a reusable temporary buffer
+================
+*/
+SetupTrmModel( trm: idTraceModel, material:idMaterial  ) :number/*cmHandle_t */{
+    todoThrow ( );
 ////	var /*int */i:number, j:number;
 ////	cm_vertex_t *vertex;
 ////	cm_edge_t *edge;
@@ -1528,8 +1529,8 @@ idCollisionModelManagerLocal::SetupTrmModelStructure
 ////	// convex
 ////	model.isConvex = trm.isConvex;
 ////
-////	return TRACE_MODEL_HANDLE;
-////}
+	return TRACE_MODEL_HANDLE;
+}
 
 /*
 ===============================================================================

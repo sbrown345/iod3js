@@ -208,12 +208,12 @@ class idClipModel {
 ////	static int				GetTraceModelHashKey( const idTraceModel &trm );
 ////};
 ////
-////
-////Translate( const idVec3 &translation ):void {
-////	this.Unlink();
-////	origin += translation;
-////}
-////
+
+    Translate ( translation: idVec3 ): void {
+        this.Unlink ( );
+        this.origin.opAdditionAssignment( translation );
+    }
+
 ////Rotate( const idRotation &rotation ) :void{
 ////	this.Unlink();
 ////	origin *= rotation;
@@ -301,14 +301,14 @@ class idClipModel {
 	}
 
 	IsEqual ( trm: idTraceModel ): boolean {
-		return ( this.traceModelIndex != -1 && this.GetCachedTraceModel( this.traceModelIndex ) == trm );
+		return ( this.traceModelIndex != -1 && idClipModel.GetCachedTraceModel( this.traceModelIndex ) == trm );
 	}
 
 	GetTraceModel ( ): idTraceModel {
 		if ( !this.IsTraceModel ( ) ) {
 			return null;
 		}
-		return this.GetCachedTraceModel( this.traceModelIndex );
+		return idClipModel.GetCachedTraceModel( this.traceModelIndex );
 	}
 
 
@@ -382,7 +382,7 @@ idClipModel::FreeTraceModel
 idClipModel::GetCachedTraceModel
 ===============
 */
-	GetCachedTraceModel ( /*int */traceModelIndex: number ): idTraceModel {
+	static GetCachedTraceModel ( /*int */traceModelIndex: number ): idTraceModel {
 		return traceModelCache[traceModelIndex].trm;
 	}
 
@@ -633,7 +633,7 @@ idClipModel::idClipModel
 		this.collisionModelHandle = model.collisionModelHandle;
 		this.traceModelIndex = -1;
 		if ( model.traceModelIndex != -1 ) {
-			this.LoadModel( /***/ this.GetCachedTraceModel( model.traceModelIndex ) );
+			this.LoadModel( /***/ idClipModel.GetCachedTraceModel( model.traceModelIndex ) );
 		}
 		this.renderModelHandle = model.renderModelHandle;
 		this.clipLinks = null;
@@ -732,27 +732,27 @@ idClipModel::~idClipModel
 ////	if ( this.clipLinks ) {
 ////		this.Unlink();	// unlink from old position
 ////	}
-////	this.origin = newOrigin;
-////	this.axis = newAxis;
+////	this.origin .opEquals( newOrigin);
+////	this.axis .opEquals( newAxis);
 ////}
-////
-/////*
-////================
-////idClipModel::Handle
-////================
-////*/
-////cmHandle_t idClipModel::Handle( ) const {
-////	assert( renderModelHandle == -1 );
-////	if ( this.collisionModelHandle ) {
-////		return this.collisionModelHandle;
-////	} else if ( this.traceModelIndex != -1 ) {
-////		return collisionModelManager.SetupTrmModel( *GetCachedTraceModel( this.traceModelIndex ), this.material );
-////	} else {
-////		// this happens in multiplayer on the combat models
-////		gameLocal.Warning( "idClipModel::Handle: clip model %d on '%s' (%x) is not a collision or trace model", this.id, entity.name.c_str(), entity.entityNumber );
-////		return 0;
-////	}
-////}
+
+/*
+================
+idClipModel::Handle
+================
+*/
+    Handle ( ): number /*cmHandle_t*/ {
+        assert( this.renderModelHandle == -1 );
+        if ( this.collisionModelHandle ) {
+            return this.collisionModelHandle;
+        } else if ( this.traceModelIndex != -1 ) {
+            return collisionModelManager.SetupTrmModel( /***/idClipModel.GetCachedTraceModel( this.traceModelIndex ), this.material );
+        } else {
+            // this happens in multiplayer on the combat models
+            gameLocal.Warning( "idClipModel::Handle: clip model %d on '%s' (%x) is not a collision or trace model", this.id, this.entity.name.c_str ( ), this.entity.entityNumber );
+            return 0;
+        }
+    }
 
 /*
 ================
@@ -1310,7 +1310,7 @@ idClip::Shutdown
 ////============
 ////*/
 ////void idClip::TraceRenderModel( trace_t &trace, start:idVec3, end:idVec3, const float radius, const idMat3 &axis, idClipModel *touch ) const {
-////	trace.fraction = 1.0f;
+////	trace.fraction = 1.0;
 ////
 ////	// if the trace is passing through the bounds
 ////	if ( touch.absBounds.Expand( radius ).LineIntersection( start, end ) ) {
@@ -1334,26 +1334,26 @@ idClip::Shutdown
 ////		}
 ////	}
 ////}
-////
-/////*
-////============
-////idClip::TraceModelForClipModel
-////============
-////*/
-////const idTraceModel *idClip::TraceModelForClipModel( const idClipModel *mdl ) const {
-////	if ( !mdl ) {
-////		return NULL;
-////	} else {
-////		if ( !mdl.IsTraceModel() ) {
-////			if ( mdl.GetEntity() ) {
-////				gameLocal.Error( "TraceModelForClipModel: clip model %d on '%s' is not a trace model\n", mdl.GetId(), mdl.GetEntity().name.c_str() );
-////			} else {
-////				gameLocal.Error( "TraceModelForClipModel: clip model %d is not a trace model\n", mdl.GetId() );
-////			}
-////		}
-////		return idClipModel::GetCachedTraceModel( mdl.traceModelIndex );
-////	}
-////}
+
+/*
+============
+idClip::TraceModelForClipModel
+============
+*/
+    TraceModelForClipModel ( mdl: idClipModel ): idTraceModel {
+        if ( !mdl ) {
+            return null;
+        } else {
+            if ( !mdl.IsTraceModel ( ) ) {
+                if ( mdl.GetEntity ( ) ) {
+                    gameLocal.Error( "TraceModelForClipModel: clip model %d on '%s' is not a trace model\n", mdl.GetId ( ), mdl.GetEntity ( ).name.c_str ( ) );
+                } else {
+                    gameLocal.Error( "TraceModelForClipModel: clip model %d is not a trace model\n", mdl.GetId ( ) );
+                }
+            }
+            return idClipModel.GetCachedTraceModel( mdl.traceModelIndex );
+        }
+    }
 ////
 /////*
 ////============
@@ -1364,7 +1364,7 @@ idClip::Shutdown
 ////	if ( mdl != NULL && ( end - start ).LengthSqr() > Square( CM_MAX_TRACE_DIST ) ) {
 ////		assert( 0 );
 ////
-////		results.fraction = 0.0f;
+////		results.fraction = 0.0;
 ////		results.endpos = start;
 ////		results.endAxis = trmAxis;
 ////		memset( &results.c, 0, sizeof( results.c ) );
@@ -1401,13 +1401,13 @@ idClip::Shutdown
 ////
 ////	trm = TraceModelForClipModel( mdl );
 ////
-////	results.fraction = 1.0f;
+////	results.fraction = 1.0;
 ////	results.endpos = end;
 ////	results.endAxis = trmAxis;
 ////
 ////	if ( !trm ) {
 ////		traceBounds.FromPointTranslation( start, end - start );
-////		radius = 0.0f;
+////		radius = 0.0;
 ////	} else {
 ////		traceBounds.FromBoundsTranslation( trm.bounds, start, trmAxis, end - start );
 ////		radius = trm.bounds.GetRadius();
@@ -1435,20 +1435,21 @@ idClip::Shutdown
 ////			results = trace;
 ////			results.c.entityNum = touch.entity.entityNumber;
 ////			results.c.id = touch.id;
-////			if ( results.fraction == 0.0f ) {
+////			if ( results.fraction == 0.0 ) {
 ////				break;
 ////			}
 ////		}
 ////	}
 ////}
-////
-/////*
-////============
-////idClip::Translation
-////============
-////*/
-////bool idClip::Translation( trace_t &results, start:idVec3, end:idVec3,
-////						const idClipModel *mdl, const idMat3 &trmAxis, int contentMask, passEntity:idEntity ) {
+
+/*
+============
+idClip::Translation
+============
+*/
+    Translation ( results: trace_t, start: idVec3, end: idVec3,
+        mdl: idClipModel, trmAxis: idMat3, /*int */contentMask: number, passEntity: idEntity ): boolean {
+        todoThrow ( );
 ////	int i, num;
 ////	idClipModel *touch, *clipModelList[MAX_GENTITIES];
 ////	idBounds traceBounds;
@@ -1466,20 +1467,20 @@ idClip::Shutdown
 ////		// test world
 ////		idClip::this.numTranslations++;
 ////		collisionModelManager.Translation( &results, start, end, trm, trmAxis, contentMask, 0, vec3_origin, mat3_default );
-////		results.c.entityNum = results.fraction != 1.0f ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
-////		if ( results.fraction == 0.0f ) {
+////		results.c.entityNum = results.fraction != 1.0 ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
+////		if ( results.fraction == 0.0 ) {
 ////			return true;		// blocked immediately by the world
 ////		}
 ////	} else {
 ////		memset( &results, 0, sizeof( results ) );
-////		results.fraction = 1.0f;
+////		results.fraction = 1.0;
 ////		results.endpos = end;
 ////		results.endAxis = trmAxis;
 ////	}
 ////
 ////	if ( !trm ) {
 ////		traceBounds.FromPointTranslation( start, results.endpos - start );
-////		radius = 0.0f;
+////		radius = 0.0;
 ////	} else {
 ////		traceBounds.FromBoundsTranslation( trm.bounds, start, trmAxis, results.endpos - start );
 ////		radius = trm.bounds.GetRadius();
@@ -1507,14 +1508,14 @@ idClip::Shutdown
 ////			results = trace;
 ////			results.c.entityNum = touch.entity.entityNumber;
 ////			results.c.id = touch.id;
-////			if ( results.fraction == 0.0f ) {
+////			if ( results.fraction == 0.0 ) {
 ////				break;
 ////			}
 ////		}
 ////	}
 ////
-////	return ( results.fraction < 1.0f );
-////}
+        return ( results.fraction < 1.0 );
+    }
 ////
 /////*
 ////============
@@ -1535,13 +1536,13 @@ idClip::Shutdown
 ////		// test world
 ////		idClip::this.numRotations++;
 ////		collisionModelManager.Rotation( &results, start, rotation, trm, trmAxis, contentMask, 0, vec3_origin, mat3_default );
-////		results.c.entityNum = results.fraction != 1.0f ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
-////		if ( results.fraction == 0.0f ) {
+////		results.c.entityNum = results.fraction != 1.0 ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
+////		if ( results.fraction == 0.0 ) {
 ////			return true;		// blocked immediately by the world
 ////		}
 ////	} else {
 ////		memset( &results, 0, sizeof( results ) );
-////		results.fraction = 1.0f;
+////		results.fraction = 1.0;
 ////		results.endpos = start;
 ////		results.endAxis = trmAxis * rotation.ToMat3();
 ////	}
@@ -1574,13 +1575,13 @@ idClip::Shutdown
 ////			results = trace;
 ////			results.c.entityNum = touch.entity.entityNumber;
 ////			results.c.id = touch.id;
-////			if ( results.fraction == 0.0f ) {
+////			if ( results.fraction == 0.0 ) {
 ////				break;
 ////			}
 ////		}
 ////	}
 ////
-////	return ( results.fraction < 1.0f );
+////	return ( results.fraction < 1.0 );
 ////}
 ////
 /////*
@@ -1605,7 +1606,7 @@ idClip::Shutdown
 ////		return true;
 ////	}
 ////
-////	if ( mdl != NULL && rotation.GetAngle() != 0.0f && rotation.GetVec() != vec3_origin ) {
+////	if ( mdl != NULL && rotation.GetAngle() != 0.0 && rotation.GetVec() != vec3_origin ) {
 ////		// if no translation
 ////		if ( start == end ) {
 ////			// pure rotation
@@ -1616,7 +1617,7 @@ idClip::Shutdown
 ////		return Translation( results, start, end, mdl, trmAxis, contentMask, passEntity );
 ////	} else {
 ////		// no motion
-////		results.fraction = 1.0f;
+////		results.fraction = 1.0;
 ////		results.endpos = start;
 ////		results.endAxis = trmAxis;
 ////		return false;
@@ -1630,20 +1631,20 @@ idClip::Shutdown
 ////		// translational collision with world
 ////		idClip::this.numTranslations++;
 ////		collisionModelManager.Translation( &translationalTrace, start, end, trm, trmAxis, contentMask, 0, vec3_origin, mat3_default );
-////		translationalTrace.c.entityNum = translationalTrace.fraction != 1.0f ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
+////		translationalTrace.c.entityNum = translationalTrace.fraction != 1.0 ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
 ////	} else {
 ////		memset( &translationalTrace, 0, sizeof( translationalTrace ) );
-////		translationalTrace.fraction = 1.0f;
+////		translationalTrace.fraction = 1.0;
 ////		translationalTrace.endpos = end;
 ////		translationalTrace.endAxis = trmAxis;
 ////	}
 ////
-////	if ( translationalTrace.fraction != 0.0f ) {
+////	if ( translationalTrace.fraction != 0.0 ) {
 ////
 ////		traceBounds.FromBoundsRotation( trm.bounds, start, trmAxis, rotation );
 ////		dir = translationalTrace.endpos - start;
 ////		for ( i = 0; i < 3; i++ ) {
-////			if ( dir[i] < 0.0f ) {
+////			if ( dir[i] < 0.0 ) {
 ////				traceBounds[0][i] += dir[i];
 ////			}
 ////			else {
@@ -1673,7 +1674,7 @@ idClip::Shutdown
 ////				translationalTrace = trace;
 ////				translationalTrace.c.entityNum = touch.entity.entityNumber;
 ////				translationalTrace.c.id = touch.id;
-////				if ( translationalTrace.fraction == 0.0f ) {
+////				if ( translationalTrace.fraction == 0.0 ) {
 ////					break;
 ////				}
 ////			}
@@ -1690,15 +1691,15 @@ idClip::Shutdown
 ////		// rotational collision with world
 ////		idClip::this.numRotations++;
 ////		collisionModelManager.Rotation( &rotationalTrace, endPosition, endRotation, trm, trmAxis, contentMask, 0, vec3_origin, mat3_default );
-////		rotationalTrace.c.entityNum = rotationalTrace.fraction != 1.0f ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
+////		rotationalTrace.c.entityNum = rotationalTrace.fraction != 1.0 ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
 ////	} else {
 ////		memset( &rotationalTrace, 0, sizeof( rotationalTrace ) );
-////		rotationalTrace.fraction = 1.0f;
+////		rotationalTrace.fraction = 1.0;
 ////		rotationalTrace.endpos = endPosition;
 ////		rotationalTrace.endAxis = trmAxis * rotation.ToMat3();
 ////	}
 ////
-////	if ( rotationalTrace.fraction != 0.0f ) {
+////	if ( rotationalTrace.fraction != 0.0 ) {
 ////
 ////		if ( num == -1 ) {
 ////			traceBounds.FromBoundsRotation( trm.bounds, endPosition, trmAxis, endRotation );
@@ -1725,14 +1726,14 @@ idClip::Shutdown
 ////				rotationalTrace = trace;
 ////				rotationalTrace.c.entityNum = touch.entity.entityNumber;
 ////				rotationalTrace.c.id = touch.id;
-////				if ( rotationalTrace.fraction == 0.0f ) {
+////				if ( rotationalTrace.fraction == 0.0 ) {
 ////					break;
 ////				}
 ////			}
 ////		}
 ////	}
 ////
-////	if ( rotationalTrace.fraction < 1.0f ) {
+////	if ( rotationalTrace.fraction < 1.0 ) {
 ////		results = rotationalTrace;
 ////	} else {
 ////		results = translationalTrace;
@@ -1741,7 +1742,7 @@ idClip::Shutdown
 ////
 ////	results.fraction = Max( translationalTrace.fraction, rotationalTrace.fraction );
 ////
-////	return ( translationalTrace.fraction < 1.0f || rotationalTrace.fraction < 1.0f );
+////	return ( translationalTrace.fraction < 1.0 || rotationalTrace.fraction < 1.0 );
 ////}
 ////
 /////*
@@ -1879,19 +1880,20 @@ idClip::Shutdown
 ////	return contents;
 ////}
 ////
-/////*
-////============
-////idClip::TranslationModel
-////============
-////*/
-////void idClip::TranslationModel( trace_t &results, start:idVec3, end:idVec3,
-////					const idClipModel *mdl, const idMat3 &trmAxis, int contentMask,
-////					cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) {
-////	const idTraceModel *trm = TraceModelForClipModel( mdl );
-////	idClip::this.numTranslations++;
-////	collisionModelManager.Translation( &results, start, end, trm, trmAxis, contentMask, model, modelOrigin, modelAxis );
-////}
-////
+/*
+============
+idClip::TranslationModel
+============
+*/
+    TranslationModel ( results: trace_t, start: idVec3, end: idVec3,
+        mdl: idClipModel, trmAxis: idMat3, /*int */contentMask: number,
+        model: number /*cmHandle_t */, modelOrigin: idVec3, modelAxis: idMat3 ): void {
+        var trm: idTraceModel = this.TraceModelForClipModel( mdl );
+        this.numTranslations++;
+        todoThrow ( );
+        //collisionModelManager.Translation( results, start, end, trm, trmAxis, contentMask, model, modelOrigin, modelAxis );
+    }
+
 /////*
 ////============
 ////idClip::RotationModel
@@ -2048,9 +2050,9 @@ idClip::Shutdown
 ////	axis = contact.normal.ToMat3();
 ////
 ////	if ( winding.GetNumPoints() == 1 ) {
-////		gameRenderWorld.DebugLine( colorCyan, winding[0].ToVec3(), winding[0].ToVec3() + 2.0f * axis[0], lifetime );
-////		gameRenderWorld.DebugLine( colorWhite, winding[0].ToVec3() - 1.0f * axis[1], winding[0].ToVec3() + 1.0f * axis[1], lifetime );
-////		gameRenderWorld.DebugLine( colorWhite, winding[0].ToVec3() - 1.0f * axis[2], winding[0].ToVec3() + 1.0f * axis[2], lifetime );
+////		gameRenderWorld.DebugLine( colorCyan, winding[0].ToVec3(), winding[0].ToVec3() + 2.0 * axis[0], lifetime );
+////		gameRenderWorld.DebugLine( colorWhite, winding[0].ToVec3() - 1.0 * axis[1], winding[0].ToVec3() + 1.0 * axis[1], lifetime );
+////		gameRenderWorld.DebugLine( colorWhite, winding[0].ToVec3() - 1.0 * axis[2], winding[0].ToVec3() + 1.0 * axis[2], lifetime );
 ////	} else {
 ////		for ( i = 0; i < winding.GetNumPoints(); i++ ) {
 ////			gameRenderWorld.DebugLine( colorCyan, winding[i].ToVec3(), winding[(i+1)%winding.GetNumPoints()].ToVec3(), lifetime );
@@ -2059,7 +2061,7 @@ idClip::Shutdown
 ////
 ////	axis[0] = -axis[0];
 ////	axis[2] = -axis[2];
-////	gameRenderWorld.DrawText( contact.material.GetName(), winding.GetCenter() - 4.0f * axis[2], 0.1f, colorWhite, axis, 1, 5000 );
+////	gameRenderWorld.DrawText( contact.material.GetName(), winding.GetCenter() - 4.0 * axis[2], 0.1f, colorWhite, axis, 1, 5000 );
 ////
 ////	return true;
 ////}

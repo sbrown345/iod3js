@@ -930,41 +930,41 @@ idWindow::RunTimeEvents
 		return true;
 	}
 
-/////*
-////================
-////idWindow::RunNamedEvent
-////================
-////*/
-////RunNamedEvent ( const char* eventName ):void
-////{
-////	var/*int*/i:number;
-////	int c;
-////
-////	// Find and run the event	
-////	c = this.namedEvents.Num( );
-////	for ( i = 0; i < c; i ++ ) {
-////		if ( this.namedEvents[i].mName.Icmp( eventName ) ) {	
-////			continue;
-////		}
-////
-////		UpdateWinVars();
-////
-////		// Make sure we got all the current values for stuff
-////		if (this.expressionRegisters.Num() && this.ops.Num()) {
-////			this.EvalRegs(-1, true);
-////		}
-////		
-////		RunScriptList( this.namedEvents[i].mEvent );
-////		
-////		break;
-////	}
-////	
-////	// Run the event in all the children as well
-////	c = this.children.Num();
-////	for ( i = 0; i < c; i++ ) {
-////		children[i].RunNamedEvent ( eventName );
-////	}
-////}
+/*
+================
+idWindow::RunNamedEvent
+================
+*/
+RunNamedEvent ( eventName:string ):void {
+    todoThrow ( );
+    //var/*int*/i:number;
+    //int c;
+
+    //// Find and run the event	
+    //c = this.namedEvents.Num( );
+    //for ( i = 0; i < c; i ++ ) {
+    //	if ( this.namedEvents[i].mName.Icmp( eventName ) ) {	
+    //		continue;
+    //	}
+
+    //	UpdateWinVars();
+
+    //	// Make sure we got all the current values for stuff
+    //	if (this.expressionRegisters.Num() && this.ops.Num()) {
+    //		this.EvalRegs(-1, true);
+    //	}
+
+    //	RunScriptList( this.namedEvents[i].mEvent );
+
+    //	break;
+    //}
+
+    //// Run the event in all the children as well
+    //c = this.children.Num();
+    //for ( i = 0; i < c; i++ ) {
+    //	children[i].RunNamedEvent ( eventName );
+    //}
+}
 ////
 /*
 ================

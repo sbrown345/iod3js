@@ -989,9 +989,9 @@ idClass::PostEventMS
 idClass::PostEventMS
 ================
 */
-	//PostEventMS ( ev: idEventDef, /*int */time: number, arg1: idEventArg ): boolean {
-	//	return this.PostEventArgs( ev, time, 1, arg1 );
-	//}
+    PostEventMS_1 ( ev: idEventDef, /*int */time: number, arg1: idEventArg ): boolean {
+        return this.PostEventArgs( ev, time, 1, arg1 );
+    }
 ////
 /////*
 ////================

@@ -462,7 +462,6 @@
 /// <reference path="dlls/game/player.cpp.ts" />
 /// <reference path="dlls/game/playericon.cpp.ts" />
 /// <reference path="dlls/game/playerview.h.ts" />
-/// <reference path="dlls/game/playerview.cpp.ts" />
 /// <reference path="dlls/game/projectile.h.ts" />
 /// <reference path="dlls/game/projectile.cpp.ts" />
 /// <reference path="dlls/game/pvs.cpp.ts" />

@@ -97,7 +97,6 @@
     <TypeScriptCompile Include="dlls\Game\Player.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Player.h.ts" />
     <TypeScriptCompile Include="dlls\Game\PlayerIcon.cpp.ts" />
-    <TypeScriptCompile Include="dlls\Game\PlayerView.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\PlayerView.h.ts" />
     <TypeScriptCompile Include="dlls\Game\Projectile.cpp.ts" />
     <TypeScriptCompile Include="dlls\Game\Projectile.h.ts" />

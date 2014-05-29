@@ -838,25 +838,25 @@ idPhysics_StaticMulti::SetGravity
 ////	return gravity;
 ////}
 ////
-/////*
-////================
-////idPhysics_StaticMulti::GetGravityNormal
-////================
-////*/
-////const idVec3 &idPhysics_StaticMulti::GetGravityNormal( ) const {
-////	static idVec3 gravity( 0, 0, -1 );
-////	return gravity;
-////}
-////
-/////*
-////================
-////idPhysics_StaticMulti::ClipTranslation
-////================
-////*/
-////void idPhysics_StaticMulti::ClipTranslation( trace_t &results, const idVec3 &translation, const idClipModel *model ) const {
-////	memset( &results, 0, sizeof( trace_t ) );
-////	gameLocal.Warning( "idPhysics_StaticMulti::ClipTranslation called" );
-////}
+/*
+================
+idPhysics_StaticMulti::GetGravityNormal
+================
+*/
+    static gravity = new idVec3( 0, 0, -1 );
+    GetGravityNormal ( ): idVec3 {
+        return idPhysics_StaticMulti.gravity;
+    }
+
+/*
+================
+idPhysics_StaticMulti::ClipTranslation
+================
+*/
+    ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void {
+        results.memset0 ( );
+        gameLocal.Warning( "idPhysics_StaticMulti::ClipTranslation called" );
+    }
 ////
 /////*
 ////================
@@ -1003,14 +1003,14 @@ idPhysics_StaticMulti::ClearContacts
 ////void idPhysics_StaticMulti::RemoveContactEntity( idEntity *e ) {
 ////}
 ////
-/////*
-////================
-////idPhysics_StaticMulti::HasGroundContacts
-////================
-////*/
-////bool idPhysics_StaticMulti::HasGroundContacts( ) const {
-////	return false;
-////}
+    /*
+    ================
+    idPhysics_StaticMulti::HasGroundContacts
+    ================
+    */
+    HasGroundContacts ( ): boolean {
+        return false;
+    }
 ////
 /////*
 ////================

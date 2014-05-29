@@ -383,16 +383,15 @@ class idPhysics_Actor extends idPhysics_Base {
 	================
 	*/
 	ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void {
-		todoThrow ( );
-		//if ( model ) {
-		//	gameLocal.clip.TranslationModel( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,
-		//							this.clipModel, this.clipModel.GetAxis(), this.clipMask,
-		//							model.Handle(), model.GetOrigin(), model.GetAxis() );
-		//}
-		//else {
-		//	gameLocal.clip.Translation( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,
-		//							this.clipModel, this.clipModel.GetAxis(), this.clipMask, this.self );
-		//}
+		if ( model ) {
+			gameLocal.clip.TranslationModel( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() .opAddition( translation),
+									this.clipModel, this.clipModel.GetAxis(), this.clipMask,
+									model.Handle(), model.GetOrigin(), model.GetAxis() );
+		}
+		else {
+			gameLocal.clip.Translation( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() .opAddition(  translation),
+									this.clipModel, this.clipModel.GetAxis(), this.clipMask, this.self );
+		}
 	}
 
 	/*

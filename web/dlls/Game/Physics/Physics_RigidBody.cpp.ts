@@ -1439,24 +1439,25 @@ idPhysics_RigidBody::GetAxis
 ////	curAngularVelocity = inverseWorldInertiaTensor * this.current.i.angularMomentum;
 ////	return curAngularVelocity;
 ////}
-////
-/////*
-////================
-////idPhysics_RigidBody::ClipTranslation
-////================
-////*/
-////void idPhysics_RigidBody::ClipTranslation( trace_t &results, const idVec3 &translation, const idClipModel *model ) const {
-////	if ( model ) {
-////		gameLocal.clip.TranslationModel( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,
-////											this.clipModel, this.clipModel.GetAxis(), clipMask,
-////											model.Handle(), model.GetOrigin(), model.GetAxis() );
-////	}
-////	else {
-////		gameLocal.clip.Translation( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,
-////											this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
-////	}
-////}
-////
+
+/*
+================
+idPhysics_RigidBody::ClipTranslation
+================
+*/
+ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void {
+    todoThrow ( );
+	//if ( model ) {
+	//	gameLocal.clip.TranslationModel( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,
+	//										this.clipModel, this.clipModel.GetAxis(), clipMask,
+	//										model.Handle(), model.GetOrigin(), model.GetAxis() );
+	//}
+	//else {
+	//	gameLocal.clip.Translation( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,
+	//										this.clipModel, this.clipModel.GetAxis(), clipMask, this.self );
+	//}
+}
+
 /////*
 ////================
 ////idPhysics_RigidBody::ClipRotation

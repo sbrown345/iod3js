@@ -217,7 +217,7 @@ class idPhysics_Base extends idPhysics {
 	//	savefile.WriteObject( this.self );
 	//	savefile.WriteInt( this.clipMask );
 	//	savefile.WriteVec3( gravityVector );
-	//	savefile.WriteVec3( gravityNormal );
+	//	savefile.WriteVec3( this.gravityNormal );
 	//
 	//	savefile.WriteInt( this.contacts.Num() );
 	//	for ( i = 0; i < this.contacts.Num(); i++ ) {
@@ -241,7 +241,7 @@ class idPhysics_Base extends idPhysics {
 	//	savefile.ReadObject( reinterpret_cast<idClass *&>( this.self ) );
 	//	savefile.ReadInt( this.clipMask );
 	//	savefile.ReadVec3( gravityVector );
-	//	savefile.ReadVec3( gravityNormal );
+	//	savefile.ReadVec3( this.gravityNormal );
 	//
 	//	savefile.ReadInt( num );
 	//	this.contacts.SetNum( num );
@@ -576,24 +576,24 @@ class idPhysics_Base extends idPhysics {
 	//	return gravityVector;
 	//}
 	//
-	///*
-	//================
-	//idPhysics_Base::GetGravityNormal
-	//================
-	//*/
-	//const idVec3 &idPhysics_Base::GetGravityNormal( ) const {
-	//	return gravityNormal;
-	//}
-	//
-	///*
-	//================
-	//idPhysics_Base::ClipTranslation
-	//================
-	//*/
-	//void idPhysics_Base::ClipTranslation( trace_t &results, const idVec3 &translation, const idClipModel *model ) const {
-	//	memset( &results, 0, sizeof( trace_t ) );
-	//}
-	//
+	/*
+	================
+	idPhysics_Base::GetGravityNormal
+	================
+	*/
+    GetGravityNormal ( ): idVec3 {
+        return this.gravityNormal
+    }
+    
+	/*
+	================
+	idPhysics_Base::ClipTranslation
+	================
+	*/
+	ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void {
+	    results.memset0 ( );
+	}
+	
 	///*
 	//================
 	//idPhysics_Base::ClipRotation
@@ -735,21 +735,21 @@ class idPhysics_Base extends idPhysics {
 	//	}
 	//}
 	//
-	///*
-	//================
-	//idPhysics_Base::HasGroundContacts
-	//================
-	//*/
-	//bool idPhysics_Base::HasGroundContacts( ) const {
-	//	var/*int*/i:number;
-	//
-	//	for ( i = 0; i < this.contacts.Num(); i++ ) {
-	//		if ( this.contacts[i].normal * -gravityNormal > 0.0 ) {
-	//			return true;
-	//		}
-	//	}
-	//	return false;
-	//}
+	/*
+	================
+	idPhysics_Base::HasGroundContacts
+	================
+	*/
+	HasGroundContacts( ):boolean {
+		var/*int*/i:number;
+
+	    for ( i = 0; i < this.contacts.Num ( ); i++ ) {
+	        if ( this.contacts[i].normal.timesVec( this.gravityNormal.opUnaryMinus ( ) ) > 0.0 ) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 	//
 	///*
 	//================
@@ -760,7 +760,7 @@ class idPhysics_Base extends idPhysics {
 	//	var/*int*/i:number;
 	//
 	//	for ( i = 0; i < this.contacts.Num(); i++ ) {
-	//		if ( this.contacts[i].entityNum == entityNum && ( this.contacts[i].normal * -gravityNormal > 0.0 ) ) {
+	//		if ( this.contacts[i].entityNum == entityNum && ( this.contacts[i].normal * -this.gravityNormal > 0.0 ) ) {
 	//			return true;
 	//		}
 	//	}
@@ -776,7 +776,7 @@ class idPhysics_Base extends idPhysics {
 	//	var/*int*/i:number;
 	//
 	//	for ( i = 0; i < this.contacts.Num(); i++ ) {
-	//		if ( this.contacts[i].entityNum == entityNum && this.contacts[i].id == id && ( this.contacts[i].normal * -gravityNormal > 0.0 ) ) {
+	//		if ( this.contacts[i].entityNum == entityNum && this.contacts[i].id == id && ( this.contacts[i].normal * -this.gravityNormal > 0.0 ) ) {
 	//			return true;
 	//		}
 	//	}
@@ -865,7 +865,7 @@ class idPhysics_Base extends idPhysics {
 	//	index = this.contacts.Num();
 	//	this.contacts.SetNum( index + 10, false );
 	//
-	//	dir.SubVec3(0) = gravityNormal;
+	//	dir.SubVec3(0) = this.gravityNormal;
 	//	dir.SubVec3(1) = vec3_origin;
 	//	num = gameLocal.clip.Contacts( &this.contacts[index], 10, clipModel.GetOrigin(),
 	//					dir, CONTACT_EPSILON, clipModel, clipModel.GetAxis(), this.clipMask, this.self );

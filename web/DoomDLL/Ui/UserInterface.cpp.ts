@@ -210,7 +210,7 @@ class idUserInterfaceManagerLocal extends idUserInterfaceManager {
 //idUserInterface *idUserInterfaceManagerLocal::FindDemoGui( const char *qpath ) {
 //	var c = demoGuis.Num();
 //	for ( var i = 0; i < c; i++ ) {
-//		if ( !idStr::Icmp( demoGuis[i].GetSourceFile(), qpath ) ) {
+//		if ( !idStr.Icmp( demoGuis[i].GetSourceFile(), qpath ) ) {
 //			return demoGuis[i];
 //		}
 //	}
@@ -375,12 +375,12 @@ class idUserInterfaceLocal extends idUserInterface {
 //
 		return "";
 	}
-//
-//void idUserInterfaceLocal::HandleNamedEvent ( const char* eventName ) {
-//	this.desktop.RunNamedEvent( eventName );
-//}
-//
-	Redraw ( /*int*/ _time: number ): void {
+
+    HandleNamedEvent ( eventName: string ): void {
+        this.desktop.RunNamedEvent( eventName );
+    }
+
+    Redraw ( /*int*/ _time: number ): void {
 		if ( r_skipGuiShaders.GetInteger ( ) > 5 ) {
 			return;
 		}
@@ -440,34 +440,33 @@ class idUserInterfaceLocal extends idUserInterface {
 //	return this.state.GetFloat(varName, defaultString);
 //}
 
-StateChanged( /*int*/ _time:number, /*bool */redraw :boolean = false):void {
-	this.time = _time;
-	if (this.desktop) {
-		this.desktop.StateChanged( redraw );
-	}
-	if ( this.state.GetBool( "noninteractive" ) ) {
-		this.interactive = false;
-	}
-	else {
-		if (this.desktop) {
-			this.interactive = this.desktop.Interactive();
-		} else {
-			this.interactive = false;
-		}
-	}
-}
+    StateChanged ( /*int*/ _time: number, /*bool */redraw: boolean = false ): void {
+        this.time = _time;
+        if ( this.desktop ) {
+            this.desktop.StateChanged( redraw );
+        }
+        if ( this.state.GetBool( "noninteractive" ) ) {
+            this.interactive = false;
+        } else {
+            if ( this.desktop ) {
+                this.interactive = this.desktop.Interactive ( );
+            } else {
+                this.interactive = false;
+            }
+        }
+    }
 
-//const char *idUserInterfaceLocal::Activate(bool activate, int _time) {
-//	this.time = _time;
-//	this.active = activate;
-//	if ( this.desktop ) {
-//		activateStr = "";
-//		this.desktop.Activate( activate, activateStr );
-//		return activateStr;
-//	}
-//	return "";
-//}
-//
+    Activate ( /*bool*/ activate: boolean, /*int*/ _time: number ): string {
+        this.time = _time;
+        this.active = activate;
+        if ( this.desktop ) {
+            this.activateStr.opEquals( "" );
+            this.desktop.Activate( activate, this.activateStr );
+            return this.activateStr.data;
+        }
+        return "";
+    }
+
 //void idUserInterfaceLocal::Trigger(int _time) {
 //	this.time = _time;
 //	if ( this.desktop ) {
@@ -544,9 +543,9 @@ StateChanged( /*int*/ _time:number, /*bool */redraw :boolean = false):void {
 //	savefile.Write( &this.interactive, sizeof( this.interactive ) );
 //	savefile.Write( &uniqued, sizeof( uniqued ) );
 //	savefile.Write( &this.time, sizeof( this.time ) );
-//	len = activateStr.Length();
+//	len = this.activateStr.Length();
 //	savefile.Write( &len, sizeof( len ) );
-//	savefile.Write( activateStr.c_str(), len );
+//	savefile.Write( this.activateStr.c_str(), len );
 //	len = pendingCmd.Length();
 //	savefile.Write( &len, sizeof( len ) );
 //	savefile.Write( pendingCmd.c_str(), len );
@@ -589,8 +588,8 @@ StateChanged( /*int*/ _time:number, /*bool */redraw :boolean = false):void {
 //	savefile.Read( &this.time, sizeof( this.time ) );
 //
 //	savefile.Read( &len, sizeof( len ) );
-//	activateStr.Fill( ' ', len );
-//	savefile.Read( &activateStr[0], len );
+//	this.activateStr.Fill( ' ', len );
+//	savefile.Read( &this.activateStr[0], len );
 //	savefile.Read( &len, sizeof( len ) );
 //	pendingCmd.Fill( ' ', len );
 //	savefile.Read( &pendingCmd[0], len );
@@ -642,7 +641,7 @@ idUserInterfaceLocal::SetKeyBindingNames
         // walk the windows
         this.RecurseSetKeyBindingNames( this.desktop );
     }
-//
+
 ///*
 //==============
 //idUserInterfaceLocal::SetCursor

@@ -165,11 +165,14 @@ class idTraceModel {
 
 	constructor ( );
 	constructor ( boxBounds: idBounds );
-	constructor ( a1?: any ) {
+	constructor ( boxBounds: idBounds, numSides: number /*int*/);
+	constructor ( a1?: any, a2?:any ) {
 		if ( arguments.length == 0 ) {
 			this.constructor_default ( );
 		} else if ( arguments.length == 1 ) {
 			this.constructor_bounds( a1 );
+		} else if ( arguments.length == 2 ) {
+			this.constructor_bounds_numSides( a1 ,a2 );
 		} else {
 			todoThrow ( );
 		}
@@ -185,6 +188,10 @@ class idTraceModel {
 		this.InitBox ( );
 		this.SetupBox( boxBounds );
 	}
+
+    constructor_bounds_numSides ( cylBounds: idBounds, numSides: number /*int*/ ): void {
+        this.SetupCylinder( cylBounds, numSides );
+    }
 ////
 ////ID_INLINE idTraceModel::idTraceModel(const idBounds &cylBounds, const int numSides) {
 ////	SetupCylinder(cylBounds, numSides);

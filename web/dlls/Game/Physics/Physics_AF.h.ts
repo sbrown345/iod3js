@@ -8230,40 +8230,40 @@ class idPhysics_AF extends idPhysics_Base {
 ////	}
 ////}
 ////
-/////*
-////================
-////idPhysics_AF::ClipTranslation
-////================
-////*/
-////void idPhysics_AF::ClipTranslation( trace_t &results, const idVec3 &translation, const idClipModel *model ) const {
-////	var/*int*/i:number;
-////	var body:idAFBody;
-////	trace_t bodyResults;
-////
-////	results.fraction = 1.0;
-////
-////	for ( i = 0; i < this.bodies.Num(); i++ ) {
-////		body = this.bodies[i];
-////
-////		if ( body.clipModel.IsTraceModel() ) {
-////			if ( model ) {
-////				gameLocal.clip.TranslationModel( bodyResults, body.current.worldOrigin, body.current.worldOrigin + translation,
-////									body.clipModel, body.current.worldAxis, body.clipMask,
-////										model.Handle(), model.GetOrigin(), model.GetAxis() );
-////			}
-////			else {
-////				gameLocal.clip.Translation( bodyResults, body.current.worldOrigin, body.current.worldOrigin + translation,
-////									body.clipModel, body.current.worldAxis, body.clipMask, this.self );
-////			}
-////			if ( bodyResults.fraction < results.fraction ) {
-////				results = bodyResults;
-////			}
-////		}
-////	}
-////
-////	results.endpos = this.bodies[0].current.worldOrigin + results.fraction * translation;
-////	results.endAxis = this.bodies[0].current.worldAxis;
-////}
+/*
+================
+idPhysics_AF::ClipTranslation
+================
+*/
+    ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void {
+        var /*int*/i: number;
+        var body: idAFBody;
+        var bodyResults = new trace_t;
+
+        results.fraction = 1.0;
+        todoThrow ( );
+        //for ( i = 0; i < this.bodies.Num(); i++ ) {
+        //	body = this.bodies[i];
+
+        //	if ( body.clipModel.IsTraceModel() ) {
+        //		if ( model ) {
+        //			gameLocal.clip.TranslationModel( bodyResults, body.current.worldOrigin, body.current.worldOrigin + translation,
+        //								body.clipModel, body.current.worldAxis, body.clipMask,
+        //									model.Handle(), model.GetOrigin(), model.GetAxis() );
+        //		}
+        //		else {
+        //			gameLocal.clip.Translation( bodyResults, body.current.worldOrigin, body.current.worldOrigin + translation,
+        //								body.clipModel, body.current.worldAxis, body.clipMask, this.self );
+        //		}
+        //		if ( bodyResults.fraction < results.fraction ) {
+        //			results = bodyResults;
+        //		}
+        //	}
+        //}
+
+        //results.endpos = this.bodies[0].current.worldOrigin + results.fraction * translation;
+        //results.endAxis = this.bodies[0].current.worldAxis;
+    }
 ////
 /////*
 ////================

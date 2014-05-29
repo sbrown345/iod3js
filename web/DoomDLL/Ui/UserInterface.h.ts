@@ -65,8 +65,7 @@ class idUserInterface {
 //								// any return and acts accordingly
 //	virtual const char *		HandleEvent( const sysEvent_t *event, /*int*/time:number, bool *updateVisuals = NULL ) = 0;
 //
-//								// handles a named event
-//	virtual void				HandleNamedEvent( const char *eventName ) = 0;
+    HandleNamedEvent( eventName :string) :void { throw "placeholder"; }
 //
 //								// repaints the ui
 //	virtual void				Redraw( /*int*/time:number ) = 0;
@@ -94,9 +93,9 @@ class idUserInterface {
 //
 	// The state has changed and the gui needs to update from the state idDict.
 	StateChanged( /*int*/time: number, redraw = false): void { throw "placeholder"; }
-//
-//								// Activated the gui.
-//	virtual const char *		Activate( bool activate, /*int*/time:number ) = 0;
+    
+    // Activated the gui.
+    Activate ( activate: boolean, /*int*/time: number ): string { throw"placeholder"; }
 //
 //								// Triggers the gui and runs the onTrigger scripts.
 //	virtual void				Trigger( /*int*/time:number ) = 0;

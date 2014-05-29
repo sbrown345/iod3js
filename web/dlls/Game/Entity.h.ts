@@ -720,7 +720,7 @@ idEntity::~idEntity
 		////	}
 		////	this.activeNode.Remove();
 		////
-		////	Signal( SIG_REMOVED );
+		////	Signal( signalNum_t.SIG_REMOVED );
 		////
 		////	// we have to set back the default physics object before unbinding because the entity
 		////	// specific physics object might be an entity variable and as such could already be destroyed.
@@ -2764,7 +2764,7 @@ idEntity::RunPhysics
 		//	}
 
 		//	// if the master pusher has a "blocked" function, call it
-		//	Signal( SIG_BLOCKED );
+		//	Signal( signalNum_t.SIG_BLOCKED );
 		//	ProcessEvent( &EV_TeamBlocked, blockedPart, blockingEntity );
 		//	// call the blocked function on the blocked part
 		//	blockedPart.ProcessEvent( &EV_PartBlocked, blockingEntity );
@@ -2870,7 +2870,7 @@ idEntity::GetFloorPos
         var result: trace_t;
 
         if ( !this.GetPhysics ( ).HasGroundContacts ( ) ) {
-            this.GetPhysics ( ).ClipTranslation( result, this.GetPhysics ( ).GetGravityNormal ( ) * max_dist, null );
+            this.GetPhysics ( ).ClipTranslation( result, this.GetPhysics ( ).GetGravityNormal ( ).timesFloat( max_dist), null );
             if ( result.fraction < 1.0 ) {
                 floorpos.opEquals( result.endpos );
                 return true;
@@ -3500,7 +3500,7 @@ Can be overridden by subclasses when a thread doesn't need to be allocated.
 ////				} else {
 ////					var ent:idEntity = gameLocal.FindEntity( token2 );
 ////					if ( ent ) {
-////						ent.Signal( SIG_TRIGGER );
+////						ent.Signal( signalNum_t.SIG_TRIGGER );
 ////						ent.PostEventMS( &EV_Activate, 0, this );
 ////					}
 ////				}
@@ -3673,35 +3673,36 @@ have been spawned when the entity is created at map load time, we have to wait
 ////		}
 ////	}
 ////}
-////
-/////*
-////==============================
-////idEntity::ActivateTargets
-////
-////"activator" should be set to the entity that initiated the firing.
-////==============================
-////*/
-////ActivateTargets( activator:idEntity ) const {
-////	idEntity	*ent;
-////	int			i, j;
-////	
-////	for( i = 0; i < this.targets.Num(); i++ ) {
-////		ent = this.targets[ i ].GetEntity();
-////		if ( !ent ) {
-////			continue;
-////		}
-////		if ( ent.RespondsTo( EV_Activate ) || ent.HasSignal( SIG_TRIGGER ) ) {
-////			ent.Signal( SIG_TRIGGER );
-////			ent.ProcessEvent( &EV_Activate, activator );
-////		} 		
-////		for ( j = 0; j < MAX_RENDERENTITY_GUI; j++ ) {
-////			if ( ent.renderEntity.gui[ j ] ) {
-////				ent.renderEntity.gui[ j ].Trigger( gameLocal.time );
-////			}
-////		}
-////	}
-////}
-////
+
+/*
+==============================
+idEntity::ActivateTargets
+
+"activator" should be set to the entity that initiated the firing.
+==============================
+*/
+    ActivateTargets ( activator: idEntity ): void {
+        var ent: idEntity;
+        var i: number /*int*/, j: number /*int*/;
+
+        for ( i = 0; i < this.targets.Num ( ); i++ ) {
+            ent = this.targets[i].GetEntity ( );
+            if ( !ent ) {
+                continue;
+            }
+            todoThrow ( );
+            //if ( ent.RespondsTo( EV_Activate ) || ent.HasSignal( signalNum_t.SIG_TRIGGER ) ) {
+            //    ent.Signal( signalNum_t.SIG_TRIGGER );
+            //    ent.ProcessEvent( EV_Activate, activator );
+            //}
+            //for ( j = 0; j < MAX_RENDERENTITY_GUI; j++ ) {
+            //    if ( ent.renderEntity.gui[j] ) {
+            //        ent.renderEntity.gui[j].Trigger( gameLocal.time );
+            //    }
+            //}
+        }
+    }
+
 /////***********************************************************************
 ////
 ////  Misc.
@@ -3751,7 +3752,7 @@ have been spawned when the entity is created at map load time, we have to wait
 ////
 ////		ent = cm.GetEntity();
 ////
-////		if ( !ent.RespondsTo( EV_Touch ) && !ent.HasSignal( SIG_TOUCH ) ) {
+////		if ( !ent.RespondsTo( EV_Touch ) && !ent.HasSignal( signalNum_t.SIG_TOUCH ) ) {
 ////			continue;
 ////		}
 ////
@@ -3765,7 +3766,7 @@ have been spawned when the entity is created at map load time, we have to wait
 ////		trace.c.entityNum = cm.GetEntity().entityNumber;
 ////		trace.c.id = cm.GetId();
 ////
-////		ent.Signal( SIG_TOUCH );
+////		ent.Signal( signalNum_t.SIG_TOUCH );
 ////		ent.ProcessEvent( &EV_Touch, this, &trace );
 ////
 ////		if ( !gameLocal.entities[ this.entityNumber ] ) {
