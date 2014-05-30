@@ -391,19 +391,19 @@ class exitPortal_t {
 //	float				x, y;			// 0.0 to 1.0 range if trace hit a gui, otherwise -1
 //	int					guiId;			// id of gui ( 0, 1, or 2 ) that the trace happened against
 //} guiPoint_t;
-//
-//
-//// modelTrace_t is for tracing vs. visual geometry
-//typedef struct modelTrace_s {
-//	float					fraction;			// fraction of trace completed
-//	idVec3					point;				// end point of trace in global space
-//	idVec3					normal;				// hit triangle normal vector in global space
-//	const idMaterial *		material;			// material of hit surface
-//	const renderEntity_t *	entity;				// render entity that was hit
-//	int						jointNumber;		// md5 joint nearest to the hit triangle
-//} modelTrace_t;
-//
-//
+
+
+// modelTrace_t is for tracing vs. visual geometry
+class modelTrace_t {
+    fraction: number /*float*/; // fraction of trace completed
+    point = new idVec3; // end point of trace in global space
+    normal = new idVec3; // hit triangle normal vector in global space
+    material: idMaterial; // material of hit surface
+    entity: renderEntity_t; // render entity that was hit
+    jointNumber: number /*int*/; // md5 joint nearest to the hit triangle
+}
+
+
 var NUM_PORTAL_ATTRIBUTES = 3;
 
 enum portalConnection_t{

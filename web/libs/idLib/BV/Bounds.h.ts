@@ -537,52 +537,52 @@ idBounds::PlaneSide
 		return PLANESIDE_CROSS;
 	}
 
-///*
-//============
-//idBounds::LineIntersection
+/*
+============
+idBounds::LineIntersection
 
-//Returns true if the line intersects the bounds between the start and end point.
-//============
-//*/
-//bool idBounds::LineIntersection(start:idVec3, end:idVec3) const {
-//	float ld[3];
-//	idVec3 center = (this.b[0] + this.b[1]) * 0.5;
-//	idVec3 extents = this.b[1] - center;
-//	idVec3 lineDir = 0.5 * (end - start);
-//	idVec3 lineCenter = start + lineDir;
-//	idVec3 dir = lineCenter - center;
+Returns true if the line intersects the bounds between the start and end point.
+============
+*/
+LineIntersection(start:idVec3, end:idVec3) :boolean {
+    var /*float */ld = [0.0, 0.0, 0.0];
+	idVec3 center = (this.b[0] + this.b[1]) * 0.5;
+	idVec3 extents = this.b[1] - center;
+	idVec3 lineDir = 0.5 * (end - start);
+	idVec3 lineCenter = start + lineDir;
+	idVec3 dir = lineCenter - center;
 
-//	ld[0] = idMath.Fabs(lineDir[0]);
-//	if (idMath.Fabs(dir[0]) > extents[0] + ld[0]) {
-//		return false;
-//	}
+	ld[0] = idMath.Fabs(lineDir[0]);
+	if (idMath.Fabs(dir[0]) > extents[0] + ld[0]) {
+		return false;
+	}
 
-//	ld[1] = idMath.Fabs(lineDir[1]);
-//	if (idMath.Fabs(dir[1]) > extents[1] + ld[1]) {
-//		return false;
-//	}
+	ld[1] = idMath.Fabs(lineDir[1]);
+	if (idMath.Fabs(dir[1]) > extents[1] + ld[1]) {
+		return false;
+	}
 
-//	ld[2] = idMath.Fabs(lineDir[2]);
-//	if (idMath.Fabs(dir[2]) > extents[2] + ld[2]) {
-//		return false;
-//	}
+	ld[2] = idMath.Fabs(lineDir[2]);
+	if (idMath.Fabs(dir[2]) > extents[2] + ld[2]) {
+		return false;
+	}
 
-//	idVec3 cross = lineDir.Cross(dir);
+	var cross = lineDir.Cross(dir);
 
-//	if (idMath.Fabs(cross[0]) > extents[1] * ld[2] + extents[2] * ld[1]) {
-//		return false;
-//	}
+	if (idMath.Fabs(cross[0]) > extents[1] * ld[2] + extents[2] * ld[1]) {
+		return false;
+	}
 
-//	if (idMath.Fabs(cross[1]) > extents[0] * ld[2] + extents[2] * ld[0]) {
-//		return false;
-//	}
+	if (idMath.Fabs(cross[1]) > extents[0] * ld[2] + extents[2] * ld[0]) {
+		return false;
+	}
 
-//	if (idMath.Fabs(cross[2]) > extents[0] * ld[1] + extents[1] * ld[0]) {
-//		return false;
-//	}
+	if (idMath.Fabs(cross[2]) > extents[0] * ld[1] + extents[1] * ld[0]) {
+		return false;
+	}
 
-//	return true;
-//}
+	return true;
+}
 
 ///*
 //============

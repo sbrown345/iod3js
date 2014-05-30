@@ -1303,37 +1303,37 @@ idClip::Shutdown
 ////
 ////	return num;
 ////}
-////
-/////*
-////============
-////idClip::TraceRenderModel
-////============
-////*/
-////void idClip::TraceRenderModel( trace_t &trace, start:idVec3, end:idVec3, const float radius, const idMat3 &axis, idClipModel *touch ) const {
-////	trace.fraction = 1.0;
-////
-////	// if the trace is passing through the bounds
-////	if ( touch.absBounds.Expand( radius ).LineIntersection( start, end ) ) {
-////		modelTrace_t modelTrace;
-////
-////		// test with exact render model and modify trace_t structure accordingly
-////		if ( gameRenderWorld.ModelTrace( modelTrace, touch.renderModelHandle, start, end, radius ) ) {
-////			trace.fraction = modelTrace.fraction;
-////			trace.endAxis = axis;
-////			trace.endpos = modelTrace.point;
-////			trace.c.normal = modelTrace.normal;
-////			trace.c.dist = modelTrace.point * modelTrace.normal;
-////			trace.c.point = modelTrace.point;
-////			trace.c.type = CONTACT_TRMVERTEX;
-////			trace.c.modelFeature = 0;
-////			trace.c.trmFeature = 0;
-////			trace.c.contents = modelTrace.material.GetContentFlags();
-////			trace.c.material = modelTrace.material;
-////			// NOTE: trace.c.id will be the joint number
-////			touch.id = JOINT_HANDLE_TO_CLIPMODEL_ID( modelTrace.jointNumber );
-////		}
-////	}
-////}
+
+/*
+============
+idClip::TraceRenderModel
+============
+*/
+    TraceRenderModel ( trace: trace_t, start: idVec3, end: idVec3, /*float */radius: number, axis: idMat3, touch: idClipModel ): void {
+        trace.fraction = 1.0;
+
+        // if the trace is passing through the bounds
+        if ( touch.absBounds.Expand( radius ).LineIntersection( start, end ) ) {
+            var modelTrace = new modelTrace_t;
+
+            // test with exact render model and modify trace_t structure accordingly
+            if ( gameRenderWorld.ModelTrace( modelTrace, touch.renderModelHandle, start, end, radius ) ) {
+                trace.fraction = modelTrace.fraction;
+                trace.endAxis.opEquals( axis );
+                trace.endpos.opEquals( modelTrace.point );
+                trace.c.normal.opEquals( modelTrace.normal );
+                trace.c.dist = modelTrace.point.timesVec( modelTrace.normal );
+                trace.c.point = modelTrace.point;
+                trace.c.type = contactType_t.CONTACT_TRMVERTEX;
+                trace.c.modelFeature = 0;
+                trace.c.trmFeature = 0;
+                trace.c.contents = modelTrace.material.GetContentFlags ( );
+                trace.c.material = modelTrace.material;
+                // NOTE: trace.c.id will be the joint number
+                touch.id = JOINT_HANDLE_TO_CLIPMODEL_ID( modelTrace.jointNumber );
+            }
+        }
+    }
 
 /*
 ============
@@ -1354,33 +1354,33 @@ idClip::TraceModelForClipModel
             return idClipModel.GetCachedTraceModel( mdl.traceModelIndex );
         }
     }
-////
-/////*
-////============
-////idClip::TestHugeTranslation
-////============
-////*/
-////ID_INLINE bool TestHugeTranslation( trace_t &results, const idClipModel *mdl, start:idVec3, end:idVec3, const idMat3 &trmAxis ) {
-////	if ( mdl != NULL && ( end - start ).LengthSqr() > Square( CM_MAX_TRACE_DIST ) ) {
-////		assert( 0 );
-////
-////		results.fraction = 0.0;
-////		results.endpos = start;
-////		results.endAxis = trmAxis;
-////		memset( &results.c, 0, sizeof( results.c ) );
-////		results.c.point = start;
-////		results.c.entityNum = ENTITYNUM_WORLD;
-////
-////		if ( mdl.GetEntity() ) {
-////			gameLocal.Printf( "huge translation for clip model %d on entity %d '%s'\n", mdl.GetId(), mdl.GetEntity().entityNumber, mdl.GetEntity().GetName() );
-////		} else {
-////			gameLocal.Printf( "huge translation for clip model %d\n", mdl.GetId() );
-////		}
-////		return true;
-////	}
-////	return false;
-////}
-////
+
+/*
+============
+idClip::TestHugeTranslation
+============
+*/
+    TestHugeTranslation ( results: trace_t, mdl: idClipModel, start: idVec3, end: idVec3, trmAxis: idMat3 ): boolean {
+        if ( mdl != null && ( end.opSubtraction( start ) ).LengthSqr ( ) > Square( CM_MAX_TRACE_DIST ) ) {
+            assert( 0 );
+
+            results.fraction = 0.0;
+            results.endpos.opEquals( start );
+            results.endAxis.opEquals( trmAxis );
+            results.c.memset0 ( );
+            results.c.point.opEquals( start );
+            results.c.entityNum = ENTITYNUM_WORLD;
+
+            if ( mdl.GetEntity ( ) ) {
+                gameLocal.Printf( "huge translation for clip model %d on entity %d '%s'\n", mdl.GetId ( ), mdl.GetEntity ( ).entityNumber, mdl.GetEntity ( ).GetName ( ) );
+            } else {
+                gameLocal.Printf( "huge translation for clip model %d\n", mdl.GetId ( ) );
+            }
+            return true;
+        }
+        return false;
+    }
+
 /////*
 ////============
 ////idClip::TranslationEntities
@@ -1395,7 +1395,7 @@ idClip::TraceModelForClipModel
 ////	trace_t trace;
 ////	const idTraceModel *trm;
 ////
-////	if ( TestHugeTranslation( results, mdl, start, end, trmAxis ) ) {
+////	if ( this.TestHugeTranslation( results, mdl, start, end, trmAxis ) ) {
 ////		return;
 ////	}
 ////
@@ -1424,7 +1424,7 @@ idClip::TraceModelForClipModel
 ////
 ////		if ( touch.renderModelHandle != -1 ) {
 ////			idClip::this.numRenderModelTraces++;
-////			TraceRenderModel( trace, start, end, radius, trmAxis, touch );
+////			this.TraceRenderModel( trace, start, end, radius, trmAxis, touch );
 ////		} else {
 ////			idClip::this.numTranslations++;
 ////			collisionModelManager.Translation( &trace, start, end, trm, trmAxis, contentMask,
@@ -1447,73 +1447,72 @@ idClip::TraceModelForClipModel
 idClip::Translation
 ============
 */
-    Translation ( results: trace_t, start: idVec3, end: idVec3,
+    Translation ( results: trace_t, start: idVec3, end: idVec3, 
         mdl: idClipModel, trmAxis: idMat3, /*int */contentMask: number, passEntity: idEntity ): boolean {
-        todoThrow ( );
-////	int i, num;
-////	idClipModel *touch, *clipModelList[MAX_GENTITIES];
-////	idBounds traceBounds;
-////	var/*float */radius:number;
-////	trace_t trace;
-////	const idTraceModel *trm;
-////
-////	if ( TestHugeTranslation( results, mdl, start, end, trmAxis ) ) {
-////		return true;
-////	}
-////
-////	trm = TraceModelForClipModel( mdl );
-////
-////	if ( !passEntity || passEntity.entityNumber != ENTITYNUM_WORLD ) {
-////		// test world
-////		idClip::this.numTranslations++;
-////		collisionModelManager.Translation( &results, start, end, trm, trmAxis, contentMask, 0, vec3_origin, mat3_default );
-////		results.c.entityNum = results.fraction != 1.0 ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
-////		if ( results.fraction == 0.0 ) {
-////			return true;		// blocked immediately by the world
-////		}
-////	} else {
-////		memset( &results, 0, sizeof( results ) );
-////		results.fraction = 1.0;
-////		results.endpos = end;
-////		results.endAxis = trmAxis;
-////	}
-////
-////	if ( !trm ) {
-////		traceBounds.FromPointTranslation( start, results.endpos - start );
-////		radius = 0.0;
-////	} else {
-////		traceBounds.FromBoundsTranslation( trm.bounds, start, trmAxis, results.endpos - start );
-////		radius = trm.bounds.GetRadius();
-////	}
-////
-////	num = GetTraceClipModels( traceBounds, contentMask, passEntity, clipModelList );
-////
-////	for ( i = 0; i < num; i++ ) {
-////		touch = clipModelList[i];
-////
-////		if ( !touch ) {
-////			continue;
-////		}
-////
-////		if ( touch.renderModelHandle != -1 ) {
-////			idClip::this.numRenderModelTraces++;
-////			TraceRenderModel( trace, start, end, radius, trmAxis, touch );
-////		} else {
-////			idClip::this.numTranslations++;
-////			collisionModelManager.Translation( &trace, start, end, trm, trmAxis, contentMask,
-////									touch.Handle(), touch.origin, touch.axis );
-////		}
-////
-////		if ( trace.fraction < results.fraction ) {
-////			results = trace;
-////			results.c.entityNum = touch.entity.entityNumber;
-////			results.c.id = touch.id;
-////			if ( results.fraction == 0.0 ) {
-////				break;
-////			}
-////		}
-////	}
-////
+	    var /*int */i:number, num:number;
+	    var touch:idClipModel , clipModelList = new Array<idClipModel>(MAX_GENTITIES);
+	    var traceBounds = new idBounds;
+	    var/*float */radius:number;
+	    var trace = new trace_t ;
+	    var trm:idTraceModel ;
+
+	    if ( this.TestHugeTranslation( results, mdl, start, end, trmAxis ) ) {
+		    return true;
+	    }
+
+	    trm = this.TraceModelForClipModel( mdl );
+
+	    if ( !passEntity || passEntity.entityNumber != ENTITYNUM_WORLD ) {
+		    // test world
+		    this.numTranslations++;
+		    collisionModelManager.Translation( results, start, end, trm, trmAxis, contentMask, 0, vec3_origin, mat3_default );
+		    results.c.entityNum = results.fraction != 1.0 ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
+		    if ( results.fraction == 0.0 ) {
+			    return true;		// blocked immediately by the world
+		    }
+	    } else {
+		    results.memset0();
+		    results.fraction = 1.0;
+	        results.endpos.opEquals( end );
+	        results.endAxis.opEquals( trmAxis );
+	    }
+
+	    if ( !trm ) {
+		    traceBounds.FromPointTranslation( start, results.endpos .opSubtraction( start ));
+		    radius = 0.0;
+	    } else {
+	        traceBounds.FromBoundsTranslation( trm.bounds, start, trmAxis, results.endpos.opSubtraction( start ) );
+		    radius = trm.bounds.GetRadius();
+	    }
+
+	    num = this.GetTraceClipModels( traceBounds, contentMask, passEntity, clipModelList );
+
+	    for ( i = 0; i < num; i++ ) {
+		    touch = clipModelList[i];
+
+		    if ( !touch ) {
+			    continue;
+		    }
+
+		    if ( touch.renderModelHandle != -1 ) {
+			    this.numRenderModelTraces++;
+			    this.TraceRenderModel( trace, start, end, radius, trmAxis, touch );
+		    } else {
+			    this.numTranslations++;
+			    collisionModelManager.Translation( trace, start, end, trm, trmAxis, contentMask,
+									    touch.Handle(), touch.origin, touch.axis );
+		    }
+
+		    if ( trace.fraction < results.fraction ) {
+			    results = trace;
+			    results.c.entityNum = touch.entity.entityNumber;
+			    results.c.id = touch.id;
+			    if ( results.fraction == 0.0 ) {
+				    break;
+			    }
+		    }
+	    }
+
         return ( results.fraction < 1.0 );
     }
 ////
@@ -1602,7 +1601,7 @@ idClip::Translation
 ////
 ////	assert( rotation.GetOrigin() == start );
 ////
-////	if ( TestHugeTranslation( results, mdl, start, end, trmAxis ) ) {
+////	if ( this.TestHugeTranslation( results, mdl, start, end, trmAxis ) ) {
 ////		return true;
 ////	}
 ////
@@ -1663,7 +1662,7 @@ idClip::Translation
 ////
 ////			if ( touch.renderModelHandle != -1 ) {
 ////				idClip::this.numRenderModelTraces++;
-////				TraceRenderModel( trace, start, end, radius, trmAxis, touch );
+////				this.TraceRenderModel( trace, start, end, radius, trmAxis, touch );
 ////			} else {
 ////				idClip::this.numTranslations++;
 ////				collisionModelManager.Translation( &trace, start, end, trm, trmAxis, contentMask,

@@ -808,11 +808,12 @@ class idVec3 implements IVector {
 		return /*( float )*/idMath.Sqrt( this.x * this.x + this.y * this.y + this.z * this.z );
 	}
 
-////ID_INLINE float idVec3::LengthSqr( ) const {
-////	return ( this.x * this.x + this.y * this.y + this.z * this.z );
-////}
+    LengthSqr ( ): number /*float*/ {
+        todoThrow ( );
+        return ( this.x * this.x + this.y * this.y + this.z * this.z );
+    }
 
-	LengthFast ( ): number {
+    LengthFast ( ): number {
 		var /*float */sqrLength: number;
 
 		sqrLength = this.x * this.x + this.y * this.y + this.z * this.z;
