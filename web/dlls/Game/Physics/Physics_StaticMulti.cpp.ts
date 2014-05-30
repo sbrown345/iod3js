@@ -853,8 +853,8 @@ idPhysics_StaticMulti::GetGravityNormal
 idPhysics_StaticMulti::ClipTranslation
 ================
 */
-    ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void {
-        results.memset0 ( );
+    ClipTranslation ( results: R<trace_t>, translation: idVec3, model: idClipModel ): void {
+        results.$.memset0 ( );
         gameLocal.Warning( "idPhysics_StaticMulti::ClipTranslation called" );
     }
 ////

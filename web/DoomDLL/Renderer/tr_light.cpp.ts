@@ -946,17 +946,18 @@ function R_SkyboxTexGen(surf: drawSurf_t, viewOrg: idVec3):void {
 //	return update;
 //}
 //
-///*
-//===================
-//R_EntityDefDynamicModel
-//
-//Issues a deferred entity callback if necessary.
-//If the model isn't dynamic, it returns the original.
-//Returns the cached dynamic model if present, otherwise creates
-//it and any necessary overlays
-//===================
-//*/
-//idRenderModel *R_EntityDefDynamicModel( idRenderEntityLocal *def ) {
+/*
+===================
+R_EntityDefDynamicModel
+
+Issues a deferred entity callback if necessary.
+If the model isn't dynamic, it returns the original.
+Returns the cached dynamic model if present, otherwise creates
+it and any necessary overlays
+===================
+*/
+function R_EntityDefDynamicModel ( def: idRenderEntityLocal ): idRenderModel {
+    todoThrow ( );
 //	bool callbackUpdate;
 //
 //	// allow deferred entities to construct themselves
@@ -1027,8 +1028,8 @@ function R_SkyboxTexGen(surf: drawSurf_t, viewOrg: idVec3):void {
 //	// FIXME: if any of the surfaces have deforms, create a frame-temporary model with references to the
 //	// undeformed surfaces.  This would allow deforms to be light interacting.
 //
-//	return def.dynamicModel;
-//}
+    return def.dynamicModel;
+}
 
 /*
 =================

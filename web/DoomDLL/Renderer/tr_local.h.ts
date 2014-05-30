@@ -2097,21 +2097,21 @@ class deformInfo_t {
 
 ////void R_DeformDrawSurf( drawSurf_t *drawSurf );
 
-/////*
-////=============================================================
+/*
+=============================================================
 
-////TR_TRACE
+TR_TRACE
 
-////=============================================================
-////*/
+=============================================================
+*/
 
-////typedef struct {
-////	float		fraction;
-////	// only valid if fraction < 1.0
-////	idVec3		point;
-////	idVec3		normal;
-////	int			indexes[3];
-////} localTrace_t;
+class localTrace_t {
+    fraction: number /*float*/;
+    // only valid if fraction < 1.0
+    point = new idVec3;
+    normal = new idVec3;
+    indexes = new Int32Array( 3 );
+}
 
 ////localTrace_t R_LocalTrace( start:idVec3, end:idVec3, const float radius, const srfTriangles_t *tri );
 ////void RB_ShowTrace( drawSurf_t **drawSurfs, int numDrawSurfs );

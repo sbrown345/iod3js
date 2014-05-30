@@ -374,7 +374,7 @@ Zero( ):void {
 //}
 
 //ID_INLINE idBounds &idBounds::RotateSelf( const idMat3 &rotation ) {
-//	FromTransformedBounds( this, vec3_origin, rotation );
+//	this.FromTransformedBounds( this, vec3_origin, rotation );
 //	return this;
 //}
 
@@ -544,45 +544,45 @@ idBounds::LineIntersection
 Returns true if the line intersects the bounds between the start and end point.
 ============
 */
-LineIntersection(start:idVec3, end:idVec3) :boolean {
-    var /*float */ld = [0.0, 0.0, 0.0];
-	idVec3 center = (this.b[0] + this.b[1]) * 0.5;
-	idVec3 extents = this.b[1] - center;
-	idVec3 lineDir = 0.5 * (end - start);
-	idVec3 lineCenter = start + lineDir;
-	idVec3 dir = lineCenter - center;
+    LineIntersection ( start: idVec3, end: idVec3 ): boolean {
+        var /*float */ld = [0.0, 0.0, 0.0];
+        var center = ( this.b[0].opAddition( this.b[1] ) ).timesFloat( 0.5 );
+        var extents = this.b[1].opSubtraction( center );
+        var lineDir = idVec3.opMultiplication_float( 0.5, ( end.opSubtraction( start ) ) );
+        var lineCenter = start.opAddition( lineDir );
+        var dir = lineCenter.opSubtraction( center );
 
-	ld[0] = idMath.Fabs(lineDir[0]);
-	if (idMath.Fabs(dir[0]) > extents[0] + ld[0]) {
-		return false;
-	}
+        ld[0] = idMath.Fabs( lineDir[0] );
+        if ( idMath.Fabs( dir[0] ) > extents[0] + ld[0] ) {
+            return false;
+        }
 
-	ld[1] = idMath.Fabs(lineDir[1]);
-	if (idMath.Fabs(dir[1]) > extents[1] + ld[1]) {
-		return false;
-	}
+        ld[1] = idMath.Fabs( lineDir[1] );
+        if ( idMath.Fabs( dir[1] ) > extents[1] + ld[1] ) {
+            return false;
+        }
 
-	ld[2] = idMath.Fabs(lineDir[2]);
-	if (idMath.Fabs(dir[2]) > extents[2] + ld[2]) {
-		return false;
-	}
+        ld[2] = idMath.Fabs( lineDir[2] );
+        if ( idMath.Fabs( dir[2] ) > extents[2] + ld[2] ) {
+            return false;
+        }
 
-	var cross = lineDir.Cross(dir);
+        var cross = lineDir.Cross( dir );
 
-	if (idMath.Fabs(cross[0]) > extents[1] * ld[2] + extents[2] * ld[1]) {
-		return false;
-	}
+        if ( idMath.Fabs( cross[0] ) > extents[1] * ld[2] + extents[2] * ld[1] ) {
+            return false;
+        }
 
-	if (idMath.Fabs(cross[1]) > extents[0] * ld[2] + extents[2] * ld[0]) {
-		return false;
-	}
+        if ( idMath.Fabs( cross[1] ) > extents[0] * ld[2] + extents[2] * ld[0] ) {
+            return false;
+        }
 
-	if (idMath.Fabs(cross[2]) > extents[0] * ld[1] + extents[1] * ld[0]) {
-		return false;
-	}
+        if ( idMath.Fabs( cross[2] ) > extents[0] * ld[1] + extents[1] * ld[0] ) {
+            return false;
+        }
 
-	return true;
-}
+        return true;
+    }
 
 ///*
 //============
@@ -670,54 +670,51 @@ idBounds::FromTransformedBounds
 //	SIMDProcessor.MinMax(this.b[0], this.b[1], points, numPoints);
 //}
 
-///*
-//============
-//idBounds::FromPointTranslation
+/*
+============
+idBounds::FromPointTranslation
 
-//Most tight bounds for the translational movement of the given point.
-//============
-//*/
-//void idBounds::FromPointTranslation(const idVec3 &point, const idVec3 &translation) {
-//	var/*int*/i:number;
+Most tight bounds for the translational movement of the given point.
+============
+*/
+    FromPointTranslation ( point: idVec3, translation: idVec3 ): void {
+        var /*int*/i: number;
 
-//	for (i = 0; i < 3; i++) {
-//		if (translation[i] < 0.0) {
-//			this.b[0][i] = point[i] + translation[i];
-//			this.b[1][i] = point[i];
-//		}
-//		else {
-//			this.b[0][i] = point[i];
-//			this.b[1][i] = point[i] + translation[i];
-//		}
-//	}
-//}
+        for ( i = 0; i < 3; i++ ) {
+            if ( translation[i] < 0.0 ) {
+                this.b[0][i] = point[i] + translation[i];
+                this.b[1][i] = point[i];
+            } else {
+                this.b[0][i] = point[i];
+                this.b[1][i] = point[i] + translation[i];
+            }
+        }
+    }
 
-///*
-//============
-//idBounds::FromBoundsTranslation
+/*
+============
+idBounds::FromBoundsTranslation
 
-//Most tight bounds for the translational movement of the given bounds.
-//============
-//*/
-//void idBounds::FromBoundsTranslation(bounds:idBounds, const idVec3 &origin, const idMat3 &axis, const idVec3 &translation) {
-//	var/*int*/i:number;
+Most tight bounds for the translational movement of the given bounds.
+============
+*/
+    FromBoundsTranslation ( bounds: idBounds, origin: idVec3, axis: idMat3, translation: idVec3 ): void {
+        var /*int*/i: number;
 
-//	if (axis.IsRotated()) {
-//		FromTransformedBounds(bounds, origin, axis);
-//	}
-//	else {
-//		this.b[0] = bounds[0] + origin;
-//		this.b[1] = bounds[1] + origin;
-//	}
-//	for (i = 0; i < 3; i++) {
-//		if (translation[i] < 0.0) {
-//			this.b[0][i] += translation[i];
-//		}
-//		else {
-//			this.b[1][i] += translation[i];
-//		}
-//	}
-//}
+        if ( axis.IsRotated ( ) ) {
+            this.FromTransformedBounds( bounds, origin, axis );
+        } else {
+            this.b[0].opEquals( bounds[0].opAddition( origin ) );
+            this.b[1].opEquals( bounds[1].opAddition( origin ) );
+        }
+        for ( i = 0; i < 3; i++ ) {
+            if ( translation[i] < 0.0 ) {
+                this.b[0][i] += translation[i];
+            } else {
+                this.b[1][i] += translation[i];
+            }
+        }
+    }
 
 ///*
 //================

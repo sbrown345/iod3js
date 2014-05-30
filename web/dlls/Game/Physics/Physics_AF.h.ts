@@ -8235,12 +8235,12 @@ class idPhysics_AF extends idPhysics_Base {
 idPhysics_AF::ClipTranslation
 ================
 */
-    ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void {
+    ClipTranslation ( results: R<trace_t>, translation: idVec3, model: idClipModel ): void {
         var /*int*/i: number;
         var body: idAFBody;
         var bodyResults = new trace_t;
 
-        results.fraction = 1.0;
+        results.$.fraction = 1.0;
         todoThrow ( );
         //for ( i = 0; i < this.bodies.Num(); i++ ) {
         //	body = this.bodies[i];

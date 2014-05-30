@@ -1237,97 +1237,98 @@ it will return 0 <= value < tr.world.numPortalAreas
 //
 //	return pt;
 //}
-//
-///*
-//===================
-//idRenderWorldLocal::ModelTrace
-//===================
-//*/
-//bool idRenderWorldLocal::ModelTrace( modelTrace_t &trace, qhandle_t entityHandle, start:idVec3, end:idVec3, const float radius ) const {
-//	var/*int*/i:number;
-//	bool collisionSurface;
-//	const modelSurface_t *surf;
-//	localTrace_t localTrace;
-//	idRenderModel *model;
-//	float modelMatrix[16];
-//	idVec3 localStart, localEnd;
-//	const idMaterial *shader;
-//
-//	trace.fraction = 1.0f;
-//
-//	if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num() ) {
-////		common.Error( "idRenderWorld::ModelTrace: index = %i", entityHandle );
-//		return false;
-//	}
-//
-//	idRenderEntityLocal	*def = this.entityDefs[entityHandle];
-//	if ( !def ) {
-//		return false;
-//	}
-//
-//	renderEntity_t *refEnt = &def.parms;
-//
-//	model = R_EntityDefDynamicModel( def );
-//	if ( !model ) {
-//		return false;
-//	}
-//
-//	// transform the points into local space
-//	R_AxisToModelMatrix( refEnt.axis, refEnt.origin, modelMatrix );
-//	R_GlobalPointToLocal( modelMatrix, start, localStart );
-//	R_GlobalPointToLocal( modelMatrix, end, localEnd );
-//
-//	// if we have explicit collision surfaces, only collide against them
-//	// (FIXME, should probably have a parm to control this)
-//	collisionSurface = false;
-//	for ( i = 0; i < model.NumBaseSurfaces(); i++ ) {
-//		surf = model.Surface( i );
-//
-//		shader = R_RemapShaderBySkin( surf.shader, def.parms.customSkin, def.parms.customShader );
-//
-//		if ( shader.GetSurfaceFlags() & SURF_COLLISION ) {
-//			collisionSurface = true;
-//			break;
-//		}
-//	}
-//
-//	// only use baseSurfaces, not any overlays
-//	for ( i = 0; i < model.NumBaseSurfaces(); i++ ) {
-//		surf = model.Surface( i );
-//
-//		shader = R_RemapShaderBySkin( surf.shader, def.parms.customSkin, def.parms.customShader );
-//
-//		if ( !surf.geometry || !shader ) {
-//			continue;
-//		}
-//
-//		if ( collisionSurface ) {
-//			// only trace vs collision surfaces
-//			if ( !( shader.GetSurfaceFlags() & SURF_COLLISION ) ) {
-//				continue;
-//			}
-//		} else {
-//			// skip if not drawn or translucent
-//			if ( !shader.IsDrawn() || ( shader.Coverage() != MC_OPAQUE && shader.Coverage() != MC_PERFORATED ) ) {
-//				continue;
-//			}
-//		}
-//
-//		localTrace = R_LocalTrace( localStart, localEnd, radius, surf.geometry );
-//
-//		if ( localTrace.fraction < trace.fraction ) {
-//			trace.fraction = localTrace.fraction;
-//			R_LocalPointToGlobal( modelMatrix, localTrace.point, trace.point );
-//			trace.normal = localTrace.normal * refEnt.axis;
-//			trace.material = shader;
-//			trace.entity = &def.parms;
-//			trace.jointNumber = refEnt.hModel.NearestJoint( i, localTrace.indexes[0], localTrace.indexes[1], localTrace.indexes[2] );
-//		}
-//	}
-//
-//	return ( trace.fraction < 1.0f );
-//}
-//
+
+/*
+===================
+idRenderWorldLocal::ModelTrace
+===================
+*/
+ModelTrace( trace:modelTrace_t , entityHandle:number/*qhandle_t */, start:idVec3, end:idVec3, /*float */radius :number) :boolean {
+	var/*int*/i:number;
+	var collisionSurface: boolean;
+	var surf:modelSurface_t ;
+	var localTrace = new localTrace_t ;
+	var model:idRenderModel ;
+    var modelMatrix = new Float32Array( 16 );
+	var localStart = new idVec3 , localEnd = new idVec3 ;
+	var shader:idMaterial ;
+
+	trace.fraction = 1.0;
+
+	if ( entityHandle < 0 || entityHandle >= this.entityDefs.Num() ) {
+//		common.Error( "idRenderWorld::ModelTrace: index = %i", entityHandle );
+		return false;
+	}
+
+	var	def = this.entityDefs[entityHandle];
+	if ( !def ) {
+		return false;
+	}
+
+	var refEnt = def.parms;
+
+	model = R_EntityDefDynamicModel( def );
+	if ( !model ) {
+		return false;
+	}
+
+	// transform the points into local space
+	R_AxisToModelMatrix( refEnt.axis, refEnt.origin, modelMatrix );
+	R_GlobalPointToLocal( modelMatrix, start, localStart );
+	R_GlobalPointToLocal( modelMatrix, end, localEnd );
+
+	// if we have explicit collision surfaces, only collide against them
+	// (FIXME, should probably have a parm to control this)
+	collisionSurface = false;
+	for ( i = 0; i < model.NumBaseSurfaces(); i++ ) {
+		surf = model.Surface( i );
+
+	    todoThrow ( );
+		//shader = R_RemapShaderBySkin( surf.shader, def.parms.customSkin, def.parms.customShader );
+
+		//if ( shader.GetSurfaceFlags() & surfaceFlags_t.SURF_COLLISION ) {
+		//	collisionSurface = true;
+		//	break;
+		//}
+	}
+
+	// only use baseSurfaces, not any overlays
+	for ( i = 0; i < model.NumBaseSurfaces(); i++ ) {
+		surf = model.Surface( i );
+	    todoThrow ( );
+		//shader = R_RemapShaderBySkin( surf.shader, def.parms.customSkin, def.parms.customShader );
+
+		//if ( !surf.geometry || !shader ) {
+		//	continue;
+		//}
+
+		//if ( collisionSurface ) {
+		//	// only trace vs collision surfaces
+		//	if ( !( shader.GetSurfaceFlags() & surfaceFlags_t.SURF_COLLISION ) ) {
+		//		continue;
+		//	}
+		//} else {
+		//	// skip if not drawn or translucent
+		//	if ( !shader.IsDrawn() || ( shader.Coverage() != materialCoverage_t.MC_OPAQUE && shader.Coverage() != materialCoverage_t.MC_PERFORATED ) ) {
+		//		continue;
+		//	}
+		//}
+
+		//localTrace = R_LocalTrace( localStart, localEnd, radius, surf.geometry );
+
+		//if ( localTrace.fraction < trace.fraction ) {
+		//	trace.fraction = localTrace.fraction;
+		//	R_LocalPointToGlobal( modelMatrix, localTrace.point, trace.point );
+		//    trace.normal.opEquals( idMat3.opMultiplication_VecMat( localTrace.normal, refEnt.axis ) );
+		//	trace.material = shader;
+		//	trace.entity = def.parms;
+		//	trace.jointNumber = refEnt.hModel.NearestJoint( i, localTrace.indexes[0], localTrace.indexes[1], localTrace.indexes[2] );
+		//}
+	}
+
+	return ( trace.fraction < 1.0 );
+}
+
 ///*
 //===================
 //idRenderWorldLocal::Trace
@@ -1359,7 +1360,7 @@ it will return 0 <= value < tr.world.numPortalAreas
 //	idVec3 localStart, localEnd;
 //	const idMaterial *shader;
 //
-//	trace.fraction = 1.0f;
+//	trace.fraction = 1.0;
 //	trace.point = end;
 //
 //	// bounds for the whole trace
@@ -1486,7 +1487,7 @@ it will return 0 <= value < tr.world.numPortalAreas
 //			}
 //		}
 //	}
-//	return ( trace.fraction < 1.0f );
+//	return ( trace.fraction < 1.0 );
 //}
 //
 ///*
@@ -1551,10 +1552,10 @@ it will return 0 <= value < tr.world.numPortalAreas
 //*/
 //bool idRenderWorldLocal::FastWorldTrace( modelTrace_t &results, start:idVec3, end:idVec3 ) const {
 //	memset( &results, 0, sizeof( modelTrace_t ) );
-//	results.fraction = 1.0f;
+//	results.fraction = 1.0;
 //	if ( this.areaNodes != NULL ) {
-//		RecurseProcBSP_r( &results, -1, 0, 0.0, 1.0f, start, end );
-//		return ( results.fraction < 1.0f );
+//		RecurseProcBSP_r( &results, -1, 0, 0.0, 1.0, start, end );
+//		return ( results.fraction < 1.0 );
 //	}
 //	return false;
 //}
@@ -1949,7 +1950,7 @@ idRenderWorldLocal::DebugClearLines
 //	// calculate sine and cosine when step size changes
 //	if ( arrowStep != r_debugArrowStep.GetInteger() ) {
 //		arrowStep = r_debugArrowStep.GetInteger();
-//		for (i = 0, a = 0; a < 360.0f; a += arrowStep, i++) {
+//		for (i = 0, a = 0; a < 360.0; a += arrowStep, i++) {
 //			arrowCos[i] = idMath::Cos16( DEG2RAD( a ) );
 //			arrowSin[i] = idMath::Sin16( DEG2RAD( a ) );
 //		}
@@ -1960,7 +1961,7 @@ idRenderWorldLocal::DebugClearLines
 //	forward = end - start;
 //	forward.Normalize();
 //	forward.NormalVectors( right, up);
-//	for (i = 0, a = 0; a < 360.0f; a += arrowStep, i++) {
+//	for (i = 0, a = 0; a < 360.0; a += arrowStep, i++) {
 //		s = 0.5f * size * arrowCos[i];
 //		v1 = end - size * forward;
 //		v1 = v1 + s * right;
@@ -2179,17 +2180,17 @@ idRenderWorldLocal::DebugClearLines
 //*/
 //void idRenderWorldLocal::DebugAxis( origin: idVec3, const idMat3 &axis ) {
 //	idVec3 start = origin;
-//	idVec3 end = start + axis[0] * 20.0f;
+//	idVec3 end = start + axis[0] * 20.0;
 //	DebugArrow( colorWhite, start, end, 2 );
-//	end = start + axis[0] * -20.0f;
+//	end = start + axis[0] * -20.0;
 //	DebugArrow( colorWhite, start, end, 2 );
-//	end = start + axis[1] * +20.0f;
+//	end = start + axis[1] * +20.0;
 //	DebugArrow( colorGreen, start, end, 2 );
-//	end = start + axis[1] * -20.0f;
+//	end = start + axis[1] * -20.0;
 //	DebugArrow( colorGreen, start, end, 2 );
-//	end = start + axis[2] * +20.0f;
+//	end = start + axis[2] * +20.0;
 //	DebugArrow( colorBlue, start, end, 2 );
-//	end = start + axis[2] * -20.0f;
+//	end = start + axis[2] * -20.0;
 //	DebugArrow( colorBlue, start, end, 2 );
 //}
 
@@ -2225,7 +2226,7 @@ idRenderWorldLocal::DebugPolygon
 //	centerx = ( viewDef.viewport.x2 - viewDef.viewport.x1 ) * 0.5f;
 //	centery = ( viewDef.viewport.y2 - viewDef.viewport.y1 ) * 0.5f;
 //
-//	dScale = r_znear.GetFloat() + 1.0f;
+//	dScale = r_znear.GetFloat() + 1.0;
 //	hScale = dScale * idMath::Tan16( DEG2RAD( viewDef.renderView.fov_x * 0.5f ) );
 //	vScale = dScale * idMath::Tan16( DEG2RAD( viewDef.renderView.fov_y * 0.5f ) );
 //
@@ -3002,8 +3003,8 @@ AddWorldModelEntities  (): void {
 //		R_LocalPointToGlobal( space.modelMatrix, (*w)[i].ToVec3(), v );
 //		R_GlobalToNormalizedDeviceCoordinates( v, ndc );
 //
-//		windowX = 0.5f * ( 1.0f + ndc[0] ) * ( tr.viewDef.viewport.x2 - tr.viewDef.viewport.x1 );
-//		windowY = 0.5f * ( 1.0f + ndc[1] ) * ( tr.viewDef.viewport.y2 - tr.viewDef.viewport.y1 );
+//		windowX = 0.5f * ( 1.0 + ndc[0] ) * ( tr.viewDef.viewport.x2 - tr.viewDef.viewport.x1 );
+//		windowY = 0.5f * ( 1.0 + ndc[1] ) * ( tr.viewDef.viewport.y2 - tr.viewDef.viewport.y1 );
 //
 //		r.AddPoint( windowX, windowY );
 //	}
@@ -3044,7 +3045,7 @@ AddWorldModelEntities  (): void {
 //	// if they left the default value on, set a fog distance of 500
 //	float	a;
 //
-//	if ( alpha <= 1.0f ) {
+//	if ( alpha <= 1.0 ) {
 //		a = -0.5f / DEFAULT_FOG_DISTANCE;
 //	} else {
 //		// otherwise, distance = alpha color
@@ -3123,7 +3124,7 @@ AddWorldModelEntities  (): void {
 //
 //		// if we are very close to the portal surface, don't bother clipping
 //		// it, which tends to give epsilon problems that make the area vanish
-//		if ( d < 1.0f ) {
+//		if ( d < 1.0 ) {
 //
 //			// go through this portal
 //			newStack = *ps;
@@ -3289,7 +3290,7 @@ AddWorldModelEntities  (): void {
 //
 //		// if we are very close to the portal surface, don't bother clipping
 //		// it, which tends to give epsilon problems that make the area vanish
-//		if ( d < 1.0f ) {
+//		if ( d < 1.0 ) {
 //			// go through this portal
 //			newStack = *ps;
 //			newStack.p = p;
@@ -3460,8 +3461,8 @@ AddWorldModelEntities  (): void {
 //	areaNumRef_t *a;
 //
 //	// bounds that cover the whole frustum
-//	bounds[0].Set( frustum.GetNearDistance(), -1.0f, -1.0f );
-//	bounds[1].Set( frustum.GetFarDistance(), 1.0f, 1.0f );
+//	bounds[0].Set( frustum.GetNearDistance(), -1.0, -1.0 );
+//	bounds[1].Set( frustum.GetFarDistance(), 1.0, 1.0 );
 //
 //	for ( a = areas; a; a = a.next ) {
 //		areas = FloodFrustumAreas_r( frustum, a.areaNum, bounds, areas );

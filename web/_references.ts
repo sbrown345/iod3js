@@ -218,7 +218,6 @@
 
 /// <reference path="doomdll/cm/collisionmodel.h.ts" />
 /// <reference path="doomdll/cm/collisionmodel_local.h.ts" />
-/// <reference path="doomdll/cm/collisionmodel_translate.cpp.ts" />
 /// <reference path="doomdll/cm/collisionmodel_contacts.cpp.ts" />
 /// <reference path="doomdll/cm/collisionmodel_contents.cpp.ts" />
 /// <reference path="doomdll/cm/collisionmodel_debug.cpp.ts" />

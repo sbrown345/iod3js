@@ -590,8 +590,8 @@ class idPhysics_Base extends idPhysics {
 	idPhysics_Base::ClipTranslation
 	================
 	*/
-	ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void {
-	    results.memset0 ( );
+	ClipTranslation ( results: R<trace_t>, translation: idVec3, model: idClipModel ): void {
+	    results.$.memset0 ( );
 	}
 	
 	///*

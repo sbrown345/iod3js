@@ -81,17 +81,25 @@ var vec3_boxEpsilon = new idVec3( CM_BOX_EPSILON, CM_BOX_EPSILON, CM_BOX_EPSILON
 
 var clipLinkAllocator = idBlockAlloc_template<clipLink_t>( clipLink_t, 1024 );
 
+class listParms_t {
+    bounds = new idBounds;
+    contentMask: number /*float*/;
+    list: idClipModel [];
+    count: number /*int*/;
+    maxCount: number /*int*/;
+}
 
-/////*
-////===============================================================================
-////
-////  Handles collision detection with the world and between physics objects.
-////
-////===============================================================================
-////*/
-////
+/*
+===============================================================================
+
+  Handles collision detection with the world and between physics objects.
+
+===============================================================================
+*/
+
 ////#define CLIPMODEL_ID_TO_JOINT_HANDLE( id )	( ( id ) >= 0 ? jointHandle_t.INVALID_JOINT : ((jointHandle_t) ( -1 - id )) )
-////#define JOINT_HANDLE_TO_CLIPMODEL_ID( id )	( -1 - id )
+function JOINT_HANDLE_TO_CLIPMODEL_ID ( id: number ) { return -1 - id }
+
 ////
 ////class idClip;
 ////class idClipModel;
@@ -900,87 +908,87 @@ idClipModel::CheckModel
 //===============================================================
 
 class idClip {
-	////
-	////	friend class idClipModel;
-	////
-	////public:
-	////							idClip( );
-	////
-	////	void					Init( );
-	//Shutdown ( ): void { throw "placeholder"; }
-	////
-	////	// clip versus the rest of the world
-	////	bool					Translation( trace_t &results, start:idVec3, end:idVec3,
-	////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask, passEntity:idEntity );
-	////	bool					Rotation( trace_t &results, start:idVec3, const idRotation &rotation,
-	////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask, passEntity:idEntity );
-	////	bool					Motion( trace_t &results, start:idVec3, end:idVec3, const idRotation &rotation,
-	////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask, passEntity:idEntity );
-	////	int						Contacts( contactInfo_t *contacts, const int maxContacts, start:idVec3, const idVec6 &dir, const float depth,
-	////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask, passEntity:idEntity );
-	////	int						Contents( start:idVec3,
-	////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask, passEntity:idEntity );
-	////
-	////	// special case translations versus the rest of the world
-	////	bool					TracePoint( trace_t &results, start:idVec3, end:idVec3,
-	////								int contentMask, passEntity:idEntity );
-	////	bool					TraceBounds( trace_t &results, start:idVec3, end:idVec3, const bounds: idBounds,
-	////								int contentMask, passEntity:idEntity );
-	////
-	////	// clip versus a specific model
-	////	void					TranslationModel( trace_t &results, start:idVec3, end:idVec3,
-	////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask,
-	////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
-	////	void					RotationModel( trace_t &results, start:idVec3, const idRotation &rotation,
-	////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask,
-	////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
-	////	int						ContactsModel( contactInfo_t *contacts, const int maxContacts, start:idVec3, const idVec6 &dir, const float depth,
-	////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask,
-	////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
-	////	int						ContentsModel( start:idVec3,
-	////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask,
-	////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
-	////
-	////	// clip versus all entities but not the world
-	////	void					TranslationEntities( trace_t &results, start:idVec3, end:idVec3,
-	////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask, passEntity:idEntity );
-	////
-	////	// get a contact feature
-	////	bool					GetModelContactFeature( const contactInfo_t &contact, const idClipModel *clipModel, idFixedWinding &winding ) const;
-	////
-	////	// get entities/clip models within or touching the given bounds
-	////	int						EntitiesTouchingBounds( const bounds: idBounds, int contentMask, idEntity **entityList, int maxCount ) const;
-	////	int						ClipModelsTouchingBounds( const bounds: idBounds, int contentMask, idClipModel **clipModelList, int maxCount ) const;
-	////
-	////	const idBounds &		GetWorldBounds( ) const;
-	////	idClipModel *			DefaultClipModel( );
-	////
-	////							// stats and debug drawing
-	////	void					PrintStatistics( );
-	////	void					DrawClipModels( const idVec3 &eye, const float radius, passEntity:idEntity );
-	////	bool					DrawModelContactFeature( const contactInfo_t &contact, const idClipModel *clipModel, int lifetime ) const;
-	////
-	////private:
-	numClipSectors: number /*int*/;
-	clipSectors: clipSector_t[];
-	worldBounds = new idBounds;
-	temporaryClipModel = new idClipModel;
-	defaultClipModel = new idClipModel;
-	touchCount: number /*int*/;
-	// statistics
-	numTranslations: number /*int*/;
-	numRotations: number /*int*/;
-	numMotions: number /*int*/;
-	numRenderModelTraces: number /*int*/;
-	numContents: number /*int*/;
-	numContacts: number /*int*/;
-	////
-	////private:
-	////	struct clipSector_s *	CreateClipSectors_r( const int depth, const bounds: idBounds, idVec3 &maxSector );
-	////	void					ClipModelsTouchingBounds_r( const struct clipSector_s *node, struct listParms_s &parms ) const;
-	////	const idTraceModel *	TraceModelForClipModel( const idClipModel *mdl ) const;
-	////	int						GetTraceClipModels( const bounds: idBounds, int contentMask, passEntity:idEntity, idClipModel **clipModelList ) const;
-	////	void					TraceRenderModel( trace_t &trace, start:idVec3, const idVec3 &end, const float radius, const idMat3 &axis, idClipModel *touch ) const;
+    ////
+    ////	friend class idClipModel;
+    ////
+    ////public:
+    ////							idClip( );
+    ////
+    ////	void					Init( );
+    //Shutdown ( ): void { throw "placeholder"; }
+    ////
+    ////	// clip versus the rest of the world
+    ////	bool					Translation( trace_t &results, start:idVec3, end:idVec3,
+    ////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask, passEntity:idEntity );
+    ////	bool					Rotation( trace_t &results, start:idVec3, const idRotation &rotation,
+    ////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask, passEntity:idEntity );
+    ////	bool					Motion( trace_t &results, start:idVec3, end:idVec3, const idRotation &rotation,
+    ////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask, passEntity:idEntity );
+    ////	int						Contacts( contactInfo_t *contacts, const int maxContacts, start:idVec3, const idVec6 &dir, const float depth,
+    ////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask, passEntity:idEntity );
+    ////	int						Contents( start:idVec3,
+    ////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask, passEntity:idEntity );
+    ////
+    ////	// special case translations versus the rest of the world
+    ////	bool					TracePoint( trace_t &results, start:idVec3, end:idVec3,
+    ////								int contentMask, passEntity:idEntity );
+    ////	bool					TraceBounds( trace_t &results, start:idVec3, end:idVec3, const bounds: idBounds,
+    ////								int contentMask, passEntity:idEntity );
+    ////
+    ////	// clip versus a specific model
+    ////	void					TranslationModel( trace_t &results, start:idVec3, end:idVec3,
+    ////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask,
+    ////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
+    ////	void					RotationModel( trace_t &results, start:idVec3, const idRotation &rotation,
+    ////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask,
+    ////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
+    ////	int						ContactsModel( contactInfo_t *contacts, const int maxContacts, start:idVec3, const idVec6 &dir, const float depth,
+    ////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask,
+    ////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
+    ////	int						ContentsModel( start:idVec3,
+    ////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask,
+    ////								cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis );
+    ////
+    ////	// clip versus all entities but not the world
+    ////	void					TranslationEntities( trace_t &results, start:idVec3, end:idVec3,
+    ////								const idClipModel *mdl, const idMat3 &trmAxis, int contentMask, passEntity:idEntity );
+    ////
+    ////	// get a contact feature
+    ////	bool					GetModelContactFeature( const contactInfo_t &contact, const idClipModel *clipModel, idFixedWinding &winding ) const;
+    ////
+    ////	// get entities/clip models within or touching the given bounds
+    ////	int						EntitiesTouchingBounds( const bounds: idBounds, int contentMask, idEntity **entityList, int maxCount ) const;
+    ////	int						ClipModelsTouchingBounds( const bounds: idBounds, int contentMask, idClipModel **clipModelList, int maxCount ) const;
+    ////
+    ////	const idBounds &		GetWorldBounds( ) const;
+    ////	idClipModel *			DefaultClipModel( );
+    ////
+    ////							// stats and debug drawing
+    ////	void					PrintStatistics( );
+    ////	void					DrawClipModels( const idVec3 &eye, const float radius, passEntity:idEntity );
+    ////	bool					DrawModelContactFeature( const contactInfo_t &contact, const idClipModel *clipModel, int lifetime ) const;
+    ////
+    ////private:
+    numClipSectors: number /*int*/;
+    clipSectors: clipSector_t[];
+    worldBounds = new idBounds;
+    temporaryClipModel = new idClipModel;
+    defaultClipModel = new idClipModel;
+    touchCount: number /*int*/;
+    // statistics
+    numTranslations: number /*int*/;
+    numRotations: number /*int*/;
+    numMotions: number /*int*/;
+    numRenderModelTraces: number /*int*/;
+    numContents: number /*int*/;
+    numContacts: number /*int*/;
+    ////
+    ////private:
+    ////	struct clipSector_s *	CreateClipSectors_r( const int depth, const bounds: idBounds, idVec3 &maxSector );
+    ////	void					ClipModelsTouchingBounds_r( const struct clipSector_s *node, struct listParms_s &parms ) const;
+    ////	const idTraceModel *	TraceModelForClipModel( const idClipModel *mdl ) const;
+    ////	int						GetTraceClipModels( const bounds: idBounds, int contentMask, passEntity:idEntity, idClipModel **clipModelList ) const;
+    ////	void					TraceRenderModel( trace_t &trace, start:idVec3, const idVec3 &end, const float radius, const idMat3 &axis, idClipModel *touch ) const;
 ////
 ////
 ////ID_INLINE bool idClip::TracePoint( trace_t &results, start:idVec3, const idVec3 &end, int contentMask, const passEntity:idEntity ) {
@@ -994,35 +1002,35 @@ class idClip {
 ////	return ( results.fraction < 1.0 );
 ////}
 
-	GetWorldBounds ( ): idBounds {
-		return this.worldBounds;
-	}
+    GetWorldBounds ( ): idBounds {
+        return this.worldBounds;
+    }
 
-	DefaultClipModel ( ): idClipModel {
-		return this.defaultClipModel;
-	}
+    DefaultClipModel ( ): idClipModel {
+        return this.defaultClipModel;
+    }
 
 /*
 ===============
 idClip::idClip
 ===============
 */
-	constructor ( ) {
-		this.numClipSectors = 0;
-		this.clipSectors = null;
-		this.worldBounds.Zero ( );
-		this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
-	}
+    constructor ( ) {
+        this.numClipSectors = 0;
+        this.clipSectors = null;
+        this.worldBounds.Zero ( );
+        this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
+    }
 
-	memset0 ( ): void {
-		this.numClipSectors = 0;
-		this.clipSectors = null;
-		this.worldBounds.Zero ( );
-		this.temporaryClipModel.memset0 ( );
-		this.defaultClipModel.memset0 ( );
-		this.touchCount = 0;
-		this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
-	}
+    memset0 ( ): void {
+        this.numClipSectors = 0;
+        this.clipSectors = null;
+        this.worldBounds.Zero ( );
+        this.temporaryClipModel.memset0 ( );
+        this.defaultClipModel.memset0 ( );
+        this.touchCount = 0;
+        this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
+    }
 
 /*
 ===============
@@ -1031,199 +1039,192 @@ idClip::CreateClipSectors_r
 Builds a uniformly subdivided tree for the given world size
 ===============
 */
-	CreateClipSectors_r ( /*int */depth: number, bounds: idBounds, maxSector: idVec3 ): clipSector_t {
-		var /*int*/i: number;
-		var anode: clipSector_t;
-		var size = new idVec3;
-		var front = new idBounds, back = new idBounds;
+    CreateClipSectors_r ( /*int */depth: number, bounds: idBounds, maxSector: idVec3 ): clipSector_t {
+        var /*int*/i: number;
+        var anode: clipSector_t;
+        var size = new idVec3;
+        var front = new idBounds, back = new idBounds;
 
-		anode = this.clipSectors[this.numClipSectors];
-		this.numClipSectors++;
+        anode = this.clipSectors[this.numClipSectors];
+        this.numClipSectors++;
 
-		if ( depth == MAX_SECTOR_DEPTH ) {
-			anode.axis = -1;
-			anode.children[0] = anode.children[1] = null;
+        if ( depth == MAX_SECTOR_DEPTH ) {
+            anode.axis = -1;
+            anode.children[0] = anode.children[1] = null;
 
-			for ( i = 0; i < 3; i++ ) {
-				if ( bounds[1][i] - bounds[0][i] > maxSector[i] ) {
-					maxSector[i] = bounds[1][i] - bounds[0][i];
-				}
-			}
-			return anode;
-		}
+            for ( i = 0; i < 3; i++ ) {
+                if ( bounds[1][i] - bounds[0][i] > maxSector[i] ) {
+                    maxSector[i] = bounds[1][i] - bounds[0][i];
+                }
+            }
+            return anode;
+        }
 
-		size.opEquals( bounds[1].opSubtraction( bounds[0] ) );
-		if ( size[0] >= size[1] && size[0] >= size[2] ) {
-			anode.axis = 0;
-		} else if ( size[1] >= size[0] && size[1] >= size[2] ) {
-			anode.axis = 1;
-		} else {
-			anode.axis = 2;
-		}
+        size.opEquals( bounds[1].opSubtraction( bounds[0] ) );
+        if ( size[0] >= size[1] && size[0] >= size[2] ) {
+            anode.axis = 0;
+        } else if ( size[1] >= size[0] && size[1] >= size[2] ) {
+            anode.axis = 1;
+        } else {
+            anode.axis = 2;
+        }
 
-		anode.dist = 0.5 * ( bounds[1][anode.axis] + bounds[0][anode.axis] );
+        anode.dist = 0.5 * ( bounds[1][anode.axis] + bounds[0][anode.axis] );
 
-		front.opEquals( bounds );
-		back.opEquals( bounds );
+        front.opEquals( bounds );
+        back.opEquals( bounds );
 
-		front[0][anode.axis] = back[1][anode.axis] = anode.dist;
+        front[0][anode.axis] = back[1][anode.axis] = anode.dist;
 
-		anode.children[0] = this.CreateClipSectors_r( depth + 1, front, maxSector );
-		anode.children[1] = this.CreateClipSectors_r( depth + 1, back, maxSector );
+        anode.children[0] = this.CreateClipSectors_r( depth + 1, front, maxSector );
+        anode.children[1] = this.CreateClipSectors_r( depth + 1, back, maxSector );
 
-		return anode;
-	}
+        return anode;
+    }
 
 /*
 ===============
 idClip::Init
 ===============
 */
-	Init ( ): void {
-		var h: number /*cmHandle_t*/;
-		var size = new idVec3, maxSector = new idVec3( vec3_origin.x, vec3_origin.y, vec3_origin.z );
+    Init ( ): void {
+        var h: number /*cmHandle_t*/;
+        var size = new idVec3, maxSector = new idVec3( vec3_origin.x, vec3_origin.y, vec3_origin.z );
 
-		// clear clip sectors
-		this.clipSectors = newStructArray<clipSector_t>( clipSector_t, MAX_SECTORS );
-		clearStructArray( this.clipSectors ); //	memset( this.clipSectors, 0, MAX_SECTORS * sizeof( clipSector_t ) );
-		this.numClipSectors = 0;
-		this.touchCount = -1;
-		// get world map bounds
-		h = collisionModelManager.LoadModel( "worldMap", false );
+        // clear clip sectors
+        this.clipSectors = newStructArray<clipSector_t>( clipSector_t, MAX_SECTORS );
+        clearStructArray( this.clipSectors ); //	memset( this.clipSectors, 0, MAX_SECTORS * sizeof( clipSector_t ) );
+        this.numClipSectors = 0;
+        this.touchCount = -1;
+        // get world map bounds
+        h = collisionModelManager.LoadModel( "worldMap", false );
 
-		collisionModelManager.GetModelBounds( h, this.worldBounds );
-		// create world sectors
-		this.CreateClipSectors_r( 0, this.worldBounds, maxSector );
+        collisionModelManager.GetModelBounds( h, this.worldBounds );
+        // create world sectors
+        this.CreateClipSectors_r( 0, this.worldBounds, maxSector );
 
-		size.opEquals( this.worldBounds[1].opSubtraction( this.worldBounds[0] ) );
-		gameLocal.Printf( "map bounds are (%1.1f, %1.1f, %1.1f)\n", size[0], size[1], size[2] );
-		gameLocal.Printf( "max clip sector is (%1.1f, %1.1f, %1.1f)\n", maxSector[0], maxSector[1], maxSector[2] );
+        size.opEquals( this.worldBounds[1].opSubtraction( this.worldBounds[0] ) );
+        gameLocal.Printf( "map bounds are (%1.1f, %1.1f, %1.1f)\n", size[0], size[1], size[2] );
+        gameLocal.Printf( "max clip sector is (%1.1f, %1.1f, %1.1f)\n", maxSector[0], maxSector[1], maxSector[2] );
 
-		// initialize a default clip model
-		this.defaultClipModel.LoadModel( new idTraceModel( new idBounds( new idVec3( 0, 0, 0 ) ).Expand( 8 ) ) );
+        // initialize a default clip model
+        this.defaultClipModel.LoadModel( new idTraceModel( new idBounds( new idVec3( 0, 0, 0 ) ).Expand( 8 ) ) );
 
-		// set counters to zero
-		this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
-	}
+        // set counters to zero
+        this.numRotations = this.numTranslations = this.numMotions = this.numRenderModelTraces = this.numContents = this.numContacts = 0;
+    }
 
 /*
 ===============
 idClip::Shutdown
 ===============
 */
-	Shutdown ( ): void {
-		$deleteArray( this.clipSectors );
-		this.clipSectors = null;
+    Shutdown ( ): void {
+        $deleteArray( this.clipSectors );
+        this.clipSectors = null;
 
-		// free the trace model used for the temporaryClipModel
-		if ( this.temporaryClipModel.traceModelIndex != -1 ) {
-			idClipModel.FreeTraceModel( this.temporaryClipModel.traceModelIndex );
-			this.temporaryClipModel.traceModelIndex = -1;
-		}
+        // free the trace model used for the temporaryClipModel
+        if ( this.temporaryClipModel.traceModelIndex != -1 ) {
+            idClipModel.FreeTraceModel( this.temporaryClipModel.traceModelIndex );
+            this.temporaryClipModel.traceModelIndex = -1;
+        }
 
-		// free the trace model used for the defaultClipModel
-		if ( this.defaultClipModel.traceModelIndex != -1 ) {
-			idClipModel.FreeTraceModel( this.defaultClipModel.traceModelIndex );
-			this.defaultClipModel.traceModelIndex = -1;
-		}
+        // free the trace model used for the defaultClipModel
+        if ( this.defaultClipModel.traceModelIndex != -1 ) {
+            idClipModel.FreeTraceModel( this.defaultClipModel.traceModelIndex );
+            this.defaultClipModel.traceModelIndex = -1;
+        }
 
-		clipLinkAllocator.Shutdown ( );
-	}
+        clipLinkAllocator.Shutdown ( );
+    }
 
-/////*
-////====================
-////idClip::ClipModelsTouchingBounds_r
-////====================
-////*/
-////typedef struct listParms_s {
-////	idBounds		bounds;
-////	int				contentMask;
-////	idClipModel	**	list;
-////	int				count;
-////	int				maxCount;
-////} listParms_t;
-////
-////void idClip::ClipModelsTouchingBounds_r( const struct clipSector_s *node, listParms_t &parms ) const {
-////
-////	while( node.axis != -1 ) {
-////		if ( parms.bounds[0][node.axis] > node.dist ) {
-////			node = node.children[0];
-////		} else if ( parms.bounds[1][node.axis] < node.dist ) {
-////			node = node.children[1];
-////		} else {
-////			ClipModelsTouchingBounds_r( node.children[0], parms );
-////			node = node.children[1];
-////		}
-////	}
-////
-////	for ( clipLink_t *link = node.clipLinks; link; link = link.nextInSector ) {
-////		idClipModel	*check = link.clipModel;
-////
-////		// if the clip model is enabled
-////		if ( !check.enabled ) {
-////			continue;
-////		}
-////
-////		// avoid duplicates in the list
-////		if ( check.touchCount == this.touchCount ) {
-////			continue;
-////		}
-////
-////		// if the clip model does not have any contents we are looking for
-////		if ( !( check.contents & parms.contentMask ) ) {
-////			continue;
-////		}
-////
-////		// if the bounds really do overlap
-////		if (	check.absBounds[0][0] > parms.bounds[1][0] ||
-////				check.absBounds[1][0] < parms.bounds[0][0] ||
-////				check.absBounds[0][1] > parms.bounds[1][1] ||
-////				check.absBounds[1][1] < parms.bounds[0][1] ||
-////				check.absBounds[0][2] > parms.bounds[1][2] ||
-////				check.absBounds[1][2] < parms.bounds[0][2] ) {
-////			continue;
-////		}
-////
-////		if ( parms.count >= parms.maxCount ) {
-////			gameLocal.Warning( "idClip::ClipModelsTouchingBounds_r: max count" );
-////			return;
-////		}
-////
-////		check.touchCount = this.touchCount;
-////		parms.list[parms.count] = check;
-////		parms.count++;
-////	}
-////}
-////
-/////*
-////================
-////idClip::ClipModelsTouchingBounds
-////================
-////*/
-////int idClip::ClipModelsTouchingBounds( const bounds: idBounds, int contentMask, idClipModel **clipModelList, int maxCount ) const {
-////	listParms_t parms;
-////
-////	if (	bounds[0][0] > bounds[1][0] ||
-////			bounds[0][1] > bounds[1][1] ||
-////			bounds[0][2] > bounds[1][2] ) {
-////		// we should not go through the tree for degenerate or backwards bounds
-////		assert( false );
-////		return 0;
-////	}
-////
-////	parms.bounds[0] = bounds[0] - vec3_boxEpsilon;
-////	parms.bounds[1] = bounds[1] + vec3_boxEpsilon;
-////	parms.contentMask = contentMask;
-////	parms.list = clipModelList;
-////	parms.count = 0;
-////	parms.maxCount = maxCount;
-////
-////	this.touchCount++;
-////	ClipModelsTouchingBounds_r( this.clipSectors, parms );
-////
-////	return parms.count;
-////}
-////
+/*
+====================
+idClip::ClipModelsTouchingBounds_r
+====================
+*/
+
+    ClipModelsTouchingBounds_r ( node: clipSector_t, parms: listParms_t ): void {
+
+        while ( node.axis != -1 ) {
+            if ( parms.bounds[0][node.axis] > node.dist ) {
+                node = node.children[0];
+            } else if ( parms.bounds[1][node.axis] < node.dist ) {
+                node = node.children[1];
+            } else {
+                this.ClipModelsTouchingBounds_r( node.children[0], parms );
+                node = node.children[1];
+            }
+        }
+
+        for ( var link: clipLink_t = node.clipLinks; link; link = link.nextInSector ) {
+            var check: idClipModel = link.clipModel;
+
+            // if the clip model is enabled
+            if ( !check.enabled ) {
+                continue;
+            }
+
+            // avoid duplicates in the list
+            if ( check.touchCount == this.touchCount ) {
+                continue;
+            }
+
+            // if the clip model does not have any contents we are looking for
+            if ( !( check.contents & parms.contentMask ) ) {
+                continue;
+            }
+
+            // if the bounds really do overlap
+            if ( check.absBounds[0][0] > parms.bounds[1][0] ||
+                check.absBounds[1][0] < parms.bounds[0][0] ||
+                check.absBounds[0][1] > parms.bounds[1][1] ||
+                check.absBounds[1][1] < parms.bounds[0][1] ||
+                check.absBounds[0][2] > parms.bounds[1][2] ||
+                check.absBounds[1][2] < parms.bounds[0][2] ) {
+                continue;
+            }
+
+            if ( parms.count >= parms.maxCount ) {
+                gameLocal.Warning( "idClip::ClipModelsTouchingBounds_r: max count" );
+                return;
+            }
+
+            check.touchCount = this.touchCount;
+            parms.list[parms.count] = check;
+            parms.count++;
+        }
+    }
+
+/*
+================
+idClip::ClipModelsTouchingBounds
+================
+*/
+    ClipModelsTouchingBounds ( bounds: idBounds, /*int */contentMask: number, clipModelList: idClipModel [], /*int */maxCount: number ): number {
+        var parms = new listParms_t;
+
+        if ( bounds[0][0] > bounds[1][0] ||
+            bounds[0][1] > bounds[1][1] ||
+            bounds[0][2] > bounds[1][2] ) {
+            // we should not go through the tree for degenerate or backwards bounds
+            assert( false );
+            return 0;
+        }
+
+        parms.bounds[0].opEquals( bounds[0].opSubtraction( vec3_boxEpsilon ) );
+        parms.bounds[1].opEquals( bounds[1].opSubtraction( vec3_boxEpsilon ) );
+        parms.contentMask = contentMask;
+        parms.list = clipModelList;
+        parms.count = 0;
+        parms.maxCount = maxCount;
+
+        this.touchCount++;
+        this.ClipModelsTouchingBounds_r( this.clipSectors[0], parms );
+
+        return parms.count;
+    }
+
 /////*
 ////================
 ////idClip::EntitiesTouchingBounds
@@ -1254,55 +1255,55 @@ idClip::Shutdown
 ////
 ////	return entCount;
 ////}
-////
-/////*
-////====================
-////idClip::GetTraceClipModels
-////
-////  an ent will be excluded from testing if:
-////  cm.entity == passEntity ( don't clip against the pass entity )
-////  cm.entity == passOwner ( missiles don't clip with owner )
-////  cm.owner == passEntity ( don't interact with your own missiles )
-////  cm.owner == passOwner ( don't interact with other missiles from same owner )
-////====================
-////*/
-////int idClip::GetTraceClipModels( const bounds: idBounds, int contentMask, passEntity:idEntity, idClipModel **clipModelList ) const {
-////	int i, num;
-////	idClipModel	*cm;
-////	idEntity *passOwner;
-////
-////	num = ClipModelsTouchingBounds( bounds, contentMask, clipModelList, MAX_GENTITIES );
-////
-////	if ( !passEntity ) {
-////		return num;
-////	}
-////
-////	if ( passEntity.GetPhysics().GetNumClipModels() > 0 ) {
-////		passOwner = passEntity.GetPhysics().GetClipModel().GetOwner();
-////	} else {
-////		passOwner = NULL;
-////	}
-////
-////	for ( i = 0; i < num; i++ ) {
-////
-////		cm = clipModelList[i];
-////
-////		// check if we should ignore this entity
-////		if ( cm.entity == passEntity ) {
-////			clipModelList[i] = NULL;			// don't clip against the pass entity
-////		} else if ( cm.entity == passOwner ) {
-////			clipModelList[i] = NULL;			// missiles don't clip with their owner
-////		} else if ( cm.owner ) {
-////			if ( cm.owner == passEntity ) {
-////				clipModelList[i] = NULL;		// don't clip against own missiles
-////			} else if ( cm.owner == passOwner ) {
-////				clipModelList[i] = NULL;		// don't clip against other missiles from same owner
-////			}
-////		}
-////	}
-////
-////	return num;
-////}
+
+/*
+====================
+idClip::GetTraceClipModels
+
+  an ent will be excluded from testing if:
+  cm.entity == passEntity ( don't clip against the pass entity )
+  cm.entity == passOwner ( missiles don't clip with owner )
+  cm.owner == passEntity ( don't interact with your own missiles )
+  cm.owner == passOwner ( don't interact with other missiles from same owner )
+====================
+*/
+    GetTraceClipModels ( bounds: idBounds, /*int */contentMask: number, passEntity: idEntity, /*idClipModel ***/clipModelList: idClipModel[] ): number {
+        var /*int */i: number, num: number;
+        var cm: idClipModel;
+        var passOwner: idEntity;
+
+        num = this.ClipModelsTouchingBounds( bounds, contentMask, clipModelList, MAX_GENTITIES );
+
+        if ( !passEntity ) {
+            return num;
+        }
+
+        if ( passEntity.GetPhysics ( ).GetNumClipModels ( ) > 0 ) {
+            passOwner = passEntity.GetPhysics ( ).GetClipModel ( ).GetOwner ( );
+        } else {
+            passOwner = null;
+        }
+
+        for ( i = 0; i < num; i++ ) {
+
+            cm = clipModelList[i];
+
+            // check if we should ignore this entity
+            if ( cm.entity == passEntity ) {
+                clipModelList[i] = null; // don't clip against the pass entity
+            } else if ( cm.entity == passOwner ) {
+                clipModelList[i] = null; // missiles don't clip with their owner
+            } else if ( cm.owner ) {
+                if ( cm.owner == passEntity ) {
+                    clipModelList[i] = null; // don't clip against own missiles
+                } else if ( cm.owner == passOwner ) {
+                    clipModelList[i] = null; // don't clip against other missiles from same owner
+                }
+            }
+        }
+
+        return num;
+    }
 
 /*
 ============
@@ -1447,73 +1448,73 @@ idClip::TestHugeTranslation
 idClip::Translation
 ============
 */
-    Translation ( results: trace_t, start: idVec3, end: idVec3, 
+    Translation ( results: R<trace_t>, start: idVec3, end: idVec3,
         mdl: idClipModel, trmAxis: idMat3, /*int */contentMask: number, passEntity: idEntity ): boolean {
-	    var /*int */i:number, num:number;
-	    var touch:idClipModel , clipModelList = new Array<idClipModel>(MAX_GENTITIES);
-	    var traceBounds = new idBounds;
-	    var/*float */radius:number;
-	    var trace = new trace_t ;
-	    var trm:idTraceModel ;
+        var /*int */i: number, num: number;
+        var touch: idClipModel, clipModelList = new Array<idClipModel>( MAX_GENTITIES );
+        var traceBounds = new idBounds;
+        var /*float */radius: number;
+        var trace = new trace_t;
+        var trm: idTraceModel;
 
-	    if ( this.TestHugeTranslation( results, mdl, start, end, trmAxis ) ) {
-		    return true;
-	    }
+        if ( this.TestHugeTranslation( results.$, mdl, start, end, trmAxis ) ) {
+            return true;
+        }
 
-	    trm = this.TraceModelForClipModel( mdl );
+        trm = this.TraceModelForClipModel( mdl );
 
-	    if ( !passEntity || passEntity.entityNumber != ENTITYNUM_WORLD ) {
-		    // test world
-		    this.numTranslations++;
-		    collisionModelManager.Translation( results, start, end, trm, trmAxis, contentMask, 0, vec3_origin, mat3_default );
-		    results.c.entityNum = results.fraction != 1.0 ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
-		    if ( results.fraction == 0.0 ) {
-			    return true;		// blocked immediately by the world
-		    }
-	    } else {
-		    results.memset0();
-		    results.fraction = 1.0;
-	        results.endpos.opEquals( end );
-	        results.endAxis.opEquals( trmAxis );
-	    }
+        if ( !passEntity || passEntity.entityNumber != ENTITYNUM_WORLD ) {
+            // test world
+            this.numTranslations++;
+            collisionModelManager.Translation( results.$, start, end, trm, trmAxis, contentMask, 0, vec3_origin, mat3_default );
+            results.$.c.entityNum = results.$.fraction != 1.0 ? ENTITYNUM_WORLD : ENTITYNUM_NONE;
+            if ( results.$.fraction == 0.0 ) {
+                return true; // blocked immediately by the world
+            }
+        } else {
+            results.$.memset0 ( );
+            results.$.fraction = 1.0;
+            results.$.endpos.opEquals( end );
+            results.$.endAxis.opEquals( trmAxis );
+        }
 
-	    if ( !trm ) {
-		    traceBounds.FromPointTranslation( start, results.endpos .opSubtraction( start ));
-		    radius = 0.0;
-	    } else {
-	        traceBounds.FromBoundsTranslation( trm.bounds, start, trmAxis, results.endpos.opSubtraction( start ) );
-		    radius = trm.bounds.GetRadius();
-	    }
+        if ( !trm ) {
+            traceBounds.FromPointTranslation( start, results.$.endpos.opSubtraction( start ) );
+            radius = 0.0;
+        } else {
+            traceBounds.FromBoundsTranslation( trm.bounds, start, trmAxis, results.$.endpos.opSubtraction( start ) );
+            radius = trm.bounds.GetRadius ( );
+        }
 
-	    num = this.GetTraceClipModels( traceBounds, contentMask, passEntity, clipModelList );
+        num = this.GetTraceClipModels( traceBounds, contentMask, passEntity, clipModelList );
 
-	    for ( i = 0; i < num; i++ ) {
-		    touch = clipModelList[i];
+        for ( i = 0; i < num; i++ ) {
+            touch = clipModelList[i];
 
-		    if ( !touch ) {
-			    continue;
-		    }
+            if ( !touch ) {
+                continue;
+            }
 
-		    if ( touch.renderModelHandle != -1 ) {
-			    this.numRenderModelTraces++;
-			    this.TraceRenderModel( trace, start, end, radius, trmAxis, touch );
-		    } else {
-			    this.numTranslations++;
-			    collisionModelManager.Translation( trace, start, end, trm, trmAxis, contentMask,
-									    touch.Handle(), touch.origin, touch.axis );
-		    }
+            if ( touch.renderModelHandle != -1 ) {
+                this.numRenderModelTraces++;
+                this.TraceRenderModel( trace, start, end, radius, trmAxis, touch );
+            } else {
+                this.numTranslations++;
+                collisionModelManager.Translation( trace, start, end, trm, trmAxis, contentMask,
+                    touch.Handle ( ), touch.origin, touch.axis );
+            }
 
-		    if ( trace.fraction < results.fraction ) {
-			    results = trace;
-			    results.c.entityNum = touch.entity.entityNumber;
-			    results.c.id = touch.id;
-			    if ( results.fraction == 0.0 ) {
-				    break;
-			    }
-		    }
-	    }
+            if ( trace.fraction < results.$.fraction ) {
+                results.$ = trace;
+                results.$.c.entityNum = touch.entity.entityNumber;
+                results.$.c.id = touch.id;
+                if ( results.$.fraction == 0.0 ) {
+                    break;
+                }
+            }
+        }
 
-        return ( results.fraction < 1.0 );
+        return ( results.$.fraction < 1.0 );
     }
 ////
 /////*
@@ -1884,7 +1885,7 @@ idClip::Translation
 idClip::TranslationModel
 ============
 */
-    TranslationModel ( results: trace_t, start: idVec3, end: idVec3,
+    TranslationModel ( results: R<trace_t>, start: idVec3, end: idVec3,
         mdl: idClipModel, trmAxis: idMat3, /*int */contentMask: number,
         model: number /*cmHandle_t */, modelOrigin: idVec3, modelAxis: idMat3 ): void {
         var trm: idTraceModel = this.TraceModelForClipModel( mdl );

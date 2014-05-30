@@ -1445,7 +1445,7 @@ idPhysics_RigidBody::GetAxis
 idPhysics_RigidBody::ClipTranslation
 ================
 */
-ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void {
+ClipTranslation ( results: R<trace_t>, translation: idVec3, model: idClipModel ): void {
     todoThrow ( );
 	//if ( model ) {
 	//	gameLocal.clip.TranslationModel( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() + translation,

@@ -148,13 +148,13 @@ class idPhysics_Actor extends idPhysics_Base {
 	idPhysics_Actor::~idPhysics_Actor
 	================
 	*/
-	destructor ( ) {
-		if ( this.clipModel ) {
-			delete this.clipModel;
-			this.clipModel = null;
-		}
-	}
-	//
+    destructor ( ): void {
+        if ( this.clipModel ) {
+            delete this.clipModel;
+            this.clipModel = null;
+        }
+    }
+    //
 	///*
 	//================
 	//idPhysics_Actor::Save
@@ -382,7 +382,7 @@ class idPhysics_Actor extends idPhysics_Base {
 	idPhysics_Actor::ClipTranslation
 	================
 	*/
-	ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void {
+	ClipTranslation ( results: R<trace_t>, translation: idVec3, model: idClipModel ): void {
 		if ( model ) {
 			gameLocal.clip.TranslationModel( results, this.clipModel.GetOrigin(), this.clipModel.GetOrigin() .opAddition( translation),
 									this.clipModel, this.clipModel.GetAxis(), this.clipMask,

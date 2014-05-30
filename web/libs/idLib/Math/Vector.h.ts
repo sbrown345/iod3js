@@ -809,7 +809,6 @@ class idVec3 implements IVector {
 	}
 
     LengthSqr ( ): number /*float*/ {
-        todoThrow ( );
         return ( this.x * this.x + this.y * this.y + this.z * this.z );
     }
 

@@ -673,7 +673,7 @@ GetOrigin( /*int*/ id:number  = 0) :idVec3 {
 	idPhysics_Static::ClipTranslation
 	================
 	*/
-	ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void {
+	ClipTranslation ( results: R<trace_t>, translation: idVec3, model: idClipModel ): void {
 	    todoThrow ( );
 		//if ( model ) {
 		//	gameLocal.clip.TranslationModel( results, this.current.origin, this.current.origin + translation,

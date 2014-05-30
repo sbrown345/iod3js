@@ -2867,12 +2867,12 @@ idEntity::GetFloorPos
 ================
 */
     GetFloorPos ( /*float*/ max_dist: number, floorpos: idVec3 ): boolean {
-        var result: trace_t;
+        var result = new R( new trace_t );
 
         if ( !this.GetPhysics ( ).HasGroundContacts ( ) ) {
             this.GetPhysics ( ).ClipTranslation( result, this.GetPhysics ( ).GetGravityNormal ( ).timesFloat( max_dist), null );
-            if ( result.fraction < 1.0 ) {
-                floorpos.opEquals( result.endpos );
+            if ( result.$.fraction < 1.0 ) {
+                floorpos.opEquals( result.$.endpos );
                 return true;
             } else {
                 floorpos.opEquals( this.GetPhysics ( ).GetOrigin ( ) );

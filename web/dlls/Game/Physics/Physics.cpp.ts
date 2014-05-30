@@ -162,7 +162,7 @@ class idPhysics extends idClass {
 	   //	virtual const idVec3 &		GetGravity() const = 0;
 	   GetGravityNormal(): idVec3 { throw "placeholder"; }
 	   // get first collision when translating or rotating this physics object
-	   ClipTranslation ( results: trace_t, translation: idVec3, model: idClipModel ): void { throw "placeholder"; }
+	   ClipTranslation ( results: R<trace_t>, translation: idVec3, model: idClipModel ): void { throw "placeholder"; }
 	   //	virtual void				ClipRotation(trace_t &results, const idRotation &rotation, const idClipModel *model) const = 0;
 	   //	virtual int					ClipContents(const idClipModel *model) const = 0;
 	   //	// disable/enable the clip models contained by this physics object
